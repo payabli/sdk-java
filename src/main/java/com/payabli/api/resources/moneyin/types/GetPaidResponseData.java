@@ -29,9 +29,9 @@ public final class GetPaidResponseData {
 
     private final String resultText;
 
-    private final Optional<String> avsResponseText;
+    private final String avsResponseText;
 
-    private final Optional<String> cvvResponseText;
+    private final String cvvResponseText;
 
     private final Optional<Long> customerId;
 
@@ -44,8 +44,8 @@ public final class GetPaidResponseData {
             String referenceId,
             int resultCode,
             String resultText,
-            Optional<String> avsResponseText,
-            Optional<String> cvvResponseText,
+            String avsResponseText,
+            String cvvResponseText,
             Optional<Long> customerId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
@@ -81,12 +81,12 @@ public final class GetPaidResponseData {
     }
 
     @JsonProperty("avsResponseText")
-    public Optional<String> getAvsResponseText() {
+    public String getAvsResponseText() {
         return avsResponseText;
     }
 
     @JsonProperty("cvvResponseText")
-    public Optional<String> getCvvResponseText() {
+    public String getCvvResponseText() {
         return cvvResponseText;
     }
 
@@ -155,7 +155,15 @@ public final class GetPaidResponseData {
     }
 
     public interface ResultTextStage {
-        _FinalStage resultText(@NotNull String resultText);
+        AvsResponseTextStage resultText(@NotNull String resultText);
+    }
+
+    public interface AvsResponseTextStage {
+        CvvResponseTextStage avsResponseText(@NotNull String avsResponseText);
+    }
+
+    public interface CvvResponseTextStage {
+        _FinalStage cvvResponseText(@NotNull String cvvResponseText);
     }
 
     public interface _FinalStage {
@@ -164,14 +172,6 @@ public final class GetPaidResponseData {
         _FinalStage authCode(Optional<String> authCode);
 
         _FinalStage authCode(String authCode);
-
-        _FinalStage avsResponseText(Optional<String> avsResponseText);
-
-        _FinalStage avsResponseText(String avsResponseText);
-
-        _FinalStage cvvResponseText(Optional<String> cvvResponseText);
-
-        _FinalStage cvvResponseText(String cvvResponseText);
 
         _FinalStage customerId(Optional<Long> customerId);
 
@@ -183,20 +183,26 @@ public final class GetPaidResponseData {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ReferenceIdStage, ResultCodeStage, ResultTextStage, _FinalStage {
+    public static final class Builder
+            implements ReferenceIdStage,
+                    ResultCodeStage,
+                    ResultTextStage,
+                    AvsResponseTextStage,
+                    CvvResponseTextStage,
+                    _FinalStage {
         private String referenceId;
 
         private int resultCode;
 
         private String resultText;
 
+        private String avsResponseText;
+
+        private String cvvResponseText;
+
         private Optional<String> methodReferenceId = Optional.empty();
 
         private Optional<Long> customerId = Optional.empty();
-
-        private Optional<String> cvvResponseText = Optional.empty();
-
-        private Optional<String> avsResponseText = Optional.empty();
 
         private Optional<String> authCode = Optional.empty();
 
@@ -234,8 +240,22 @@ public final class GetPaidResponseData {
 
         @java.lang.Override
         @JsonSetter("resultText")
-        public _FinalStage resultText(@NotNull String resultText) {
+        public AvsResponseTextStage resultText(@NotNull String resultText) {
             this.resultText = Objects.requireNonNull(resultText, "resultText must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("avsResponseText")
+        public CvvResponseTextStage avsResponseText(@NotNull String avsResponseText) {
+            this.avsResponseText = Objects.requireNonNull(avsResponseText, "avsResponseText must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("cvvResponseText")
+        public _FinalStage cvvResponseText(@NotNull String cvvResponseText) {
+            this.cvvResponseText = Objects.requireNonNull(cvvResponseText, "cvvResponseText must not be null");
             return this;
         }
 
@@ -262,32 +282,6 @@ public final class GetPaidResponseData {
         @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
         public _FinalStage customerId(Optional<Long> customerId) {
             this.customerId = customerId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage cvvResponseText(String cvvResponseText) {
-            this.cvvResponseText = Optional.ofNullable(cvvResponseText);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "cvvResponseText", nulls = Nulls.SKIP)
-        public _FinalStage cvvResponseText(Optional<String> cvvResponseText) {
-            this.cvvResponseText = cvvResponseText;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage avsResponseText(String avsResponseText) {
-            this.avsResponseText = Optional.ofNullable(avsResponseText);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "avsResponseText", nulls = Nulls.SKIP)
-        public _FinalStage avsResponseText(Optional<String> avsResponseText) {
-            this.avsResponseText = avsResponseText;
             return this;
         }
 

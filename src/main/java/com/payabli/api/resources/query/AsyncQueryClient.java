@@ -31,6 +31,7 @@ import com.payabli.api.resources.query.requests.ListTransactionsOrgRequest;
 import com.payabli.api.resources.query.requests.ListTransactionsRequest;
 import com.payabli.api.resources.query.requests.ListTransfersPaypointRequest;
 import com.payabli.api.resources.query.requests.ListTransfersRequest;
+import com.payabli.api.resources.query.requests.ListTransfersRequestOrg;
 import com.payabli.api.resources.query.requests.ListUsersOrgRequest;
 import com.payabli.api.resources.query.requests.ListUsersPaypointRequest;
 import com.payabli.api.resources.query.requests.ListVcardsOrgRequest;
@@ -38,6 +39,8 @@ import com.payabli.api.resources.query.requests.ListVcardsRequest;
 import com.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import com.payabli.api.resources.query.requests.ListVendorsRequest;
 import com.payabli.api.resources.query.types.ListOrganizationsResponse;
+import com.payabli.api.resources.query.types.QueryTransferDetailResponse;
+import com.payabli.api.types.QueryBatchesDetailResponse;
 import com.payabli.api.types.QueryBatchesOutResponse;
 import com.payabli.api.types.QueryBatchesResponse;
 import com.payabli.api.types.QueryChargebacksResponse;
@@ -50,10 +53,10 @@ import com.payabli.api.types.QueryResponseSettlements;
 import com.payabli.api.types.QueryResponseTransactions;
 import com.payabli.api.types.QueryResponseVendors;
 import com.payabli.api.types.QuerySubscriptionResponse;
-import com.payabli.api.types.QueryTransferDetailResponse;
 import com.payabli.api.types.QueryUserResponse;
 import com.payabli.api.types.TransferQueryResponse;
 import com.payabli.api.types.VCardQueryResponse;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncQueryClient {
@@ -74,36 +77,40 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and
+     * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<QueryResponseSettlements> listBatchDetails(String entry) {
+    public CompletableFuture<QueryBatchesDetailResponse> listBatchDetails(String entry) {
         return this.rawClient.listBatchDetails(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and
+     * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<QueryResponseSettlements> listBatchDetails(String entry, ListBatchDetailsRequest request) {
+    public CompletableFuture<QueryBatchesDetailResponse> listBatchDetails(
+            String entry, ListBatchDetailsRequest request) {
         return this.rawClient.listBatchDetails(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and
+     * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<QueryResponseSettlements> listBatchDetails(
+    public CompletableFuture<QueryBatchesDetailResponse> listBatchDetails(
             String entry, ListBatchDetailsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBatchDetails(entry, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listBatchDetailsOrg(int orgId) {
         return this.rawClient.listBatchDetailsOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request) {
@@ -111,7 +118,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request, RequestOptions requestOptions) {
@@ -121,21 +128,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesResponse> listBatches(String entry) {
         return this.rawClient.listBatches(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesResponse> listBatches(String entry, ListBatchesRequest request) {
         return this.rawClient.listBatches(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesResponse> listBatches(
             String entry, ListBatchesRequest request, RequestOptions requestOptions) {
@@ -143,21 +150,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of batches for an org. Use filters to limit results.
+     * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesResponse> listBatchesOrg(int orgId) {
         return this.rawClient.listBatchesOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches for an org. Use filters to limit results.
+     * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesResponse> listBatchesOrg(int orgId, ListBatchesOrgRequest request) {
         return this.rawClient.listBatchesOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of batches for an org. Use filters to limit results.
+     * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesResponse> listBatchesOrg(
             int orgId, ListBatchesOrgRequest request, RequestOptions requestOptions) {
@@ -165,21 +172,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesOutResponse> listBatchesOut(String entry) {
         return this.rawClient.listBatchesOut(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesOutResponse> listBatchesOut(String entry, ListBatchesOutRequest request) {
         return this.rawClient.listBatchesOut(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesOutResponse> listBatchesOut(
             String entry, ListBatchesOutRequest request, RequestOptions requestOptions) {
@@ -187,21 +194,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesOutResponse> listBatchesOutOrg(int orgId) {
         return this.rawClient.listBatchesOutOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesOutResponse> listBatchesOutOrg(int orgId, ListBatchesOutOrgRequest request) {
         return this.rawClient.listBatchesOutOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBatchesOutResponse> listBatchesOutOrg(
             int orgId, ListBatchesOutOrgRequest request, RequestOptions requestOptions) {
@@ -209,21 +216,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryChargebacksResponse> listChargebacks(String entry) {
         return this.rawClient.listChargebacks(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryChargebacksResponse> listChargebacks(String entry, ListChargebacksRequest request) {
         return this.rawClient.listChargebacks(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryChargebacksResponse> listChargebacks(
             String entry, ListChargebacksRequest request, RequestOptions requestOptions) {
@@ -231,14 +238,14 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryChargebacksResponse> listChargebacksOrg(int orgId) {
         return this.rawClient.listChargebacksOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryChargebacksResponse> listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request) {
@@ -246,7 +253,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryChargebacksResponse> listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request, RequestOptions requestOptions) {
@@ -254,21 +261,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieves a list of customers for a paypoint. Use filters to limit results.
+     * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryCustomerResponse> listCustomers(String entry) {
         return this.rawClient.listCustomers(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of customers for a paypoint. Use filters to limit results.
+     * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryCustomerResponse> listCustomers(String entry, ListCustomersRequest request) {
         return this.rawClient.listCustomers(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of customers for a paypoint. Use filters to limit results.
+     * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryCustomerResponse> listCustomers(
             String entry, ListCustomersRequest request, RequestOptions requestOptions) {
@@ -276,21 +283,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieves a list of customers for an org. Use filters to limit results.
+     * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryCustomerResponse> listCustomersOrg(int orgId) {
         return this.rawClient.listCustomersOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of customers for an org. Use filters to limit results.
+     * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryCustomerResponse> listCustomersOrg(int orgId, ListCustomersOrgRequest request) {
         return this.rawClient.listCustomersOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of customers for an org. Use filters to limit results.
+     * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryCustomerResponse> listCustomersOrg(
             int orgId, ListCustomersOrgRequest request, RequestOptions requestOptions) {
@@ -396,21 +403,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<ListOrganizationsResponse> listOrganizations(int orgId) {
         return this.rawClient.listOrganizations(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<ListOrganizationsResponse> listOrganizations(int orgId, ListOrganizationsRequest request) {
         return this.rawClient.listOrganizations(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<ListOrganizationsResponse> listOrganizations(
             int orgId, ListOrganizationsRequest request, RequestOptions requestOptions) {
@@ -418,21 +425,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryPayoutTransaction> listPayout(String entry) {
         return this.rawClient.listPayout(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryPayoutTransaction> listPayout(String entry, ListPayoutRequest request) {
         return this.rawClient.listPayout(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryPayoutTransaction> listPayout(
             String entry, ListPayoutRequest request, RequestOptions requestOptions) {
@@ -440,21 +447,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryPayoutTransaction> listPayoutOrg(int orgId) {
         return this.rawClient.listPayoutOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryPayoutTransaction> listPayoutOrg(int orgId, ListPayoutOrgRequest request) {
         return this.rawClient.listPayoutOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryPayoutTransaction> listPayoutOrg(
             int orgId, ListPayoutOrgRequest request, RequestOptions requestOptions) {
@@ -462,21 +469,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of paypoints in an organization. Use filters to limit results.
+     * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryEntrypointResponse> listPaypoints(int orgId) {
         return this.rawClient.listPaypoints(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of paypoints in an organization. Use filters to limit results.
+     * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryEntrypointResponse> listPaypoints(int orgId, ListPaypointsRequest request) {
         return this.rawClient.listPaypoints(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of paypoints in an organization. Use filters to limit results.
+     * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryEntrypointResponse> listPaypoints(
             int orgId, ListPaypointsRequest request, RequestOptions requestOptions) {
@@ -484,21 +491,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listSettlements(String entry) {
         return this.rawClient.listSettlements(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listSettlements(String entry, ListSettlementsRequest request) {
         return this.rawClient.listSettlements(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listSettlements(
             String entry, ListSettlementsRequest request, RequestOptions requestOptions) {
@@ -506,14 +513,14 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of settled transactions for an organization.
+     * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listSettlementsOrg(int orgId) {
         return this.rawClient.listSettlementsOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of settled transactions for an organization.
+     * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request) {
@@ -521,7 +528,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of settled transactions for an organization.
+     * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseSettlements> listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request, RequestOptions requestOptions) {
@@ -529,14 +536,14 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+     * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QuerySubscriptionResponse> listSubscriptions(String entry) {
         return this.rawClient.listSubscriptions(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+     * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QuerySubscriptionResponse> listSubscriptions(
             String entry, ListSubscriptionsRequest request) {
@@ -544,7 +551,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+     * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QuerySubscriptionResponse> listSubscriptions(
             String entry, ListSubscriptionsRequest request, RequestOptions requestOptions) {
@@ -552,14 +559,14 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of subscriptions for a single org. Use filters to limit results.
+     * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QuerySubscriptionResponse> listSubscriptionsOrg(int orgId) {
         return this.rawClient.listSubscriptionsOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of subscriptions for a single org. Use filters to limit results.
+     * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QuerySubscriptionResponse> listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request) {
@@ -567,7 +574,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of subscriptions for a single org. Use filters to limit results.
+     * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QuerySubscriptionResponse> listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request, RequestOptions requestOptions) {
@@ -577,7 +584,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
      * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
@@ -590,7 +597,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
      * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
@@ -604,7 +611,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
      * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
@@ -618,10 +625,12 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to limit results.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
+     * Retrieve a list of transactions for an organization. Use filters to
+     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
+     * <pre><code>curl --request GET \
+     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
      *   --header 'requestToken: &lt;api-key&gt;'
      *
      * </code></pre>
@@ -631,10 +640,12 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to limit results.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
+     * Retrieve a list of transactions for an organization. Use filters to
+     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
+     * <pre><code>curl --request GET \
+     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
      *   --header 'requestToken: &lt;api-key&gt;'
      *
      * </code></pre>
@@ -645,10 +656,12 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to limit results.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
+     * Retrieve a list of transactions for an organization. Use filters to
+     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
+     * <pre><code>curl --request GET \
+     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
      *   --header 'requestToken: &lt;api-key&gt;'
      *
      * </code></pre>
@@ -661,7 +674,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryTransferDetailResponse> listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request) {
@@ -669,7 +682,7 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryTransferDetailResponse> listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request, RequestOptions requestOptions) {
@@ -679,25 +692,48 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transfers for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<TransferQueryResponse> listTransfers(String entry) {
         return this.rawClient.listTransfers(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of transfers for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<TransferQueryResponse> listTransfers(String entry, ListTransfersRequest request) {
         return this.rawClient.listTransfers(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of transfers for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<TransferQueryResponse> listTransfers(
             String entry, ListTransfersRequest request, RequestOptions requestOptions) {
         return this.rawClient.listTransfers(entry, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<TransferQueryResponse> listTransfersOrg(Optional<Long> orgId) {
+        return this.rawClient.listTransfersOrg(orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<TransferQueryResponse> listTransfersOrg(
+            Optional<Long> orgId, ListTransfersRequestOrg request) {
+        return this.rawClient.listTransfersOrg(orgId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<TransferQueryResponse> listTransfersOrg(
+            Optional<Long> orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
+        return this.rawClient.listTransfersOrg(orgId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -745,21 +781,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseVendors> listVendors(String entry) {
         return this.rawClient.listVendors(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseVendors> listVendors(String entry, ListVendorsRequest request) {
         return this.rawClient.listVendors(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseVendors> listVendors(
             String entry, ListVendorsRequest request, RequestOptions requestOptions) {
@@ -767,21 +803,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of vendors for an organization. Use filters to limit results.
+     * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseVendors> listVendorsOrg(int orgId) {
         return this.rawClient.listVendorsOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vendors for an organization. Use filters to limit results.
+     * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseVendors> listVendorsOrg(int orgId, ListVendorsOrgRequest request) {
         return this.rawClient.listVendorsOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vendors for an organization. Use filters to limit results.
+     * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryResponseVendors> listVendorsOrg(
             int orgId, ListVendorsOrgRequest request, RequestOptions requestOptions) {
@@ -789,21 +825,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<VCardQueryResponse> listVcards(String entry) {
         return this.rawClient.listVcards(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<VCardQueryResponse> listVcards(String entry, ListVcardsRequest request) {
         return this.rawClient.listVcards(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<VCardQueryResponse> listVcards(
             String entry, ListVcardsRequest request, RequestOptions requestOptions) {
@@ -811,21 +847,21 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<VCardQueryResponse> listVcardsOrg(int orgId) {
         return this.rawClient.listVcardsOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<VCardQueryResponse> listVcardsOrg(int orgId, ListVcardsOrgRequest request) {
         return this.rawClient.listVcardsOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<VCardQueryResponse> listVcardsOrg(
             int orgId, ListVcardsOrgRequest request, RequestOptions requestOptions) {

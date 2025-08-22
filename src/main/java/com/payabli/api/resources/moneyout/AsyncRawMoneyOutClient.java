@@ -19,7 +19,9 @@ import com.payabli.api.errors.UnauthorizedError;
 import com.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import com.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import com.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
+import com.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import com.payabli.api.resources.moneyout.types.CaptureAllOutResponse;
+import com.payabli.api.resources.moneyout.types.OperationResult;
 import com.payabli.api.resources.moneyout.types.VCardGetResponse;
 import com.payabli.api.types.BillDetailResponse;
 import com.payabli.api.types.PayabliApiResponse;
@@ -651,6 +653,98 @@ public class AsyncRawMoneyOutClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), VCardGetResponse.class),
+                                response));
+                        return;
+                    }
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(),
+                            response.code(),
+                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                            response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<OperationResult>> sendVCardLink(SendVCardLinkRequest request) {
+        return sendVCardLink(request, null);
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<OperationResult>> sendVCardLink(
+            SendVCardLinkRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("vcard/send-card-link")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<OperationResult>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OperationResult.class),
                                 response));
                         return;
                     }

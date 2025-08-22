@@ -32,6 +32,8 @@ public final class BillDetailResponse {
 
     private final Optional<OffsetDateTime> createdDate;
 
+    private final Optional<OffsetDateTime> createdAt;
+
     private final Optional<List<QueryTransactionEvents>> events;
 
     private final Optional<Double> feeAmount;
@@ -45,6 +47,8 @@ public final class BillDetailResponse {
     private final Optional<Double> netAmount;
 
     private final Optional<String> parentOrgName;
+
+    private final Optional<Long> parentOrgId;
 
     private final Optional<QueryPaymentData> paymentData;
 
@@ -70,6 +74,32 @@ public final class BillDetailResponse {
 
     private final Optional<VendorQueryRecord> vendor;
 
+    private final Optional<String> externalPaypointId;
+
+    private final Optional<String> entryName;
+
+    private final Optional<String> batchId;
+
+    private final Optional<Boolean> hasVcardTransactions;
+
+    private final Optional<Boolean> isSameDayAch;
+
+    private final Optional<Long> scheduleId;
+
+    private final Optional<Integer> settlementStatus;
+
+    private final Optional<Boolean> riskFlagged;
+
+    private final Optional<OffsetDateTime> riskFlaggedOn;
+
+    private final Optional<String> riskStatus;
+
+    private final Optional<String> riskReason;
+
+    private final Optional<String> riskAction;
+
+    private final Optional<Integer> riskActionCode;
+
     private final Map<String, Object> additionalProperties;
 
     private BillDetailResponse(
@@ -78,6 +108,7 @@ public final class BillDetailResponse {
             Optional<String> checkNumber,
             Optional<String> comments,
             Optional<OffsetDateTime> createdDate,
+            Optional<OffsetDateTime> createdAt,
             Optional<List<QueryTransactionEvents>> events,
             Optional<Double> feeAmount,
             Optional<String> gateway,
@@ -85,6 +116,7 @@ public final class BillDetailResponse {
             Optional<OffsetDateTime> lastUpdated,
             Optional<Double> netAmount,
             Optional<String> parentOrgName,
+            Optional<Long> parentOrgId,
             Optional<QueryPaymentData> paymentData,
             Optional<String> paymentGroup,
             Optional<String> paymentId,
@@ -97,12 +129,26 @@ public final class BillDetailResponse {
             Optional<String> statusText,
             Optional<Double> totalAmount,
             Optional<VendorQueryRecord> vendor,
+            Optional<String> externalPaypointId,
+            Optional<String> entryName,
+            Optional<String> batchId,
+            Optional<Boolean> hasVcardTransactions,
+            Optional<Boolean> isSameDayAch,
+            Optional<Long> scheduleId,
+            Optional<Integer> settlementStatus,
+            Optional<Boolean> riskFlagged,
+            Optional<OffsetDateTime> riskFlaggedOn,
+            Optional<String> riskStatus,
+            Optional<String> riskReason,
+            Optional<String> riskAction,
+            Optional<Integer> riskActionCode,
             Map<String, Object> additionalProperties) {
         this.bills = bills;
         this.checkData = checkData;
         this.checkNumber = checkNumber;
         this.comments = comments;
         this.createdDate = createdDate;
+        this.createdAt = createdAt;
         this.events = events;
         this.feeAmount = feeAmount;
         this.gateway = gateway;
@@ -110,6 +156,7 @@ public final class BillDetailResponse {
         this.lastUpdated = lastUpdated;
         this.netAmount = netAmount;
         this.parentOrgName = parentOrgName;
+        this.parentOrgId = parentOrgId;
         this.paymentData = paymentData;
         this.paymentGroup = paymentGroup;
         this.paymentId = paymentId;
@@ -122,6 +169,19 @@ public final class BillDetailResponse {
         this.statusText = statusText;
         this.totalAmount = totalAmount;
         this.vendor = vendor;
+        this.externalPaypointId = externalPaypointId;
+        this.entryName = entryName;
+        this.batchId = batchId;
+        this.hasVcardTransactions = hasVcardTransactions;
+        this.isSameDayAch = isSameDayAch;
+        this.scheduleId = scheduleId;
+        this.settlementStatus = settlementStatus;
+        this.riskFlagged = riskFlagged;
+        this.riskFlaggedOn = riskFlaggedOn;
+        this.riskStatus = riskStatus;
+        this.riskReason = riskReason;
+        this.riskAction = riskAction;
+        this.riskActionCode = riskActionCode;
         this.additionalProperties = additionalProperties;
     }
 
@@ -165,6 +225,11 @@ public final class BillDetailResponse {
         return createdDate;
     }
 
+    @JsonProperty("CreatedAt")
+    public Optional<OffsetDateTime> getCreatedAt() {
+        return createdAt;
+    }
+
     /**
      * @return Events associated to this transaction.
      */
@@ -173,9 +238,6 @@ public final class BillDetailResponse {
         return events;
     }
 
-    /**
-     * @return Service fee or sub-charge applied.
-     */
     @JsonProperty("FeeAmount")
     public Optional<Double> getFeeAmount() {
         return feeAmount;
@@ -207,9 +269,14 @@ public final class BillDetailResponse {
         return netAmount;
     }
 
-    @JsonProperty("parentOrgName")
+    @JsonProperty("ParentOrgName")
     public Optional<String> getParentOrgName() {
         return parentOrgName;
+    }
+
+    @JsonProperty("ParentOrgId")
+    public Optional<Long> getParentOrgId() {
+        return parentOrgId;
     }
 
     @JsonProperty("PaymentData")
@@ -246,7 +313,7 @@ public final class BillDetailResponse {
         return paymentStatus;
     }
 
-    @JsonProperty("paypointDbaname")
+    @JsonProperty("PaypointDbaname")
     public Optional<String> getPaypointDbaname() {
         return paypointDbaname;
     }
@@ -254,7 +321,7 @@ public final class BillDetailResponse {
     /**
      * @return Paypoint legal name.
      */
-    @JsonProperty("paypointLegalname")
+    @JsonProperty("PaypointLegalname")
     public Optional<String> getPaypointLegalname() {
         return paypointLegalname;
     }
@@ -296,6 +363,74 @@ public final class BillDetailResponse {
         return vendor;
     }
 
+    @JsonProperty("externalPaypointID")
+    public Optional<String> getExternalPaypointId() {
+        return externalPaypointId;
+    }
+
+    @JsonProperty("EntryName")
+    public Optional<String> getEntryName() {
+        return entryName;
+    }
+
+    /**
+     * @return Identifier for the batch in which this transaction was processed. Used to track and reconcile batch-level operations.
+     */
+    @JsonProperty("BatchId")
+    public Optional<String> getBatchId() {
+        return batchId;
+    }
+
+    @JsonProperty("HasVcardTransactions")
+    public Optional<Boolean> getHasVcardTransactions() {
+        return hasVcardTransactions;
+    }
+
+    @JsonProperty("IsSameDayACH")
+    public Optional<Boolean> getIsSameDayAch() {
+        return isSameDayAch;
+    }
+
+    @JsonProperty("ScheduleId")
+    public Optional<Long> getScheduleId() {
+        return scheduleId;
+    }
+
+    @JsonProperty("SettlementStatus")
+    public Optional<Integer> getSettlementStatus() {
+        return settlementStatus;
+    }
+
+    @JsonProperty("RiskFlagged")
+    public Optional<Boolean> getRiskFlagged() {
+        return riskFlagged;
+    }
+
+    @JsonProperty("RiskFlaggedOn")
+    public Optional<OffsetDateTime> getRiskFlaggedOn() {
+        return riskFlaggedOn;
+    }
+
+    @JsonProperty("RiskStatus")
+    public Optional<String> getRiskStatus() {
+        return riskStatus;
+    }
+
+    @JsonProperty("RiskReason")
+    public Optional<String> getRiskReason() {
+        return riskReason;
+    }
+
+    @JsonProperty("RiskAction")
+    public Optional<String> getRiskAction() {
+        return riskAction;
+    }
+
+    @JsonProperty("RiskActionCode")
+    public Optional<Integer> getRiskActionCode() {
+        return riskActionCode;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -313,6 +448,7 @@ public final class BillDetailResponse {
                 && checkNumber.equals(other.checkNumber)
                 && comments.equals(other.comments)
                 && createdDate.equals(other.createdDate)
+                && createdAt.equals(other.createdAt)
                 && events.equals(other.events)
                 && feeAmount.equals(other.feeAmount)
                 && gateway.equals(other.gateway)
@@ -320,6 +456,7 @@ public final class BillDetailResponse {
                 && lastUpdated.equals(other.lastUpdated)
                 && netAmount.equals(other.netAmount)
                 && parentOrgName.equals(other.parentOrgName)
+                && parentOrgId.equals(other.parentOrgId)
                 && paymentData.equals(other.paymentData)
                 && paymentGroup.equals(other.paymentGroup)
                 && paymentId.equals(other.paymentId)
@@ -331,7 +468,20 @@ public final class BillDetailResponse {
                 && status.equals(other.status)
                 && statusText.equals(other.statusText)
                 && totalAmount.equals(other.totalAmount)
-                && vendor.equals(other.vendor);
+                && vendor.equals(other.vendor)
+                && externalPaypointId.equals(other.externalPaypointId)
+                && entryName.equals(other.entryName)
+                && batchId.equals(other.batchId)
+                && hasVcardTransactions.equals(other.hasVcardTransactions)
+                && isSameDayAch.equals(other.isSameDayAch)
+                && scheduleId.equals(other.scheduleId)
+                && settlementStatus.equals(other.settlementStatus)
+                && riskFlagged.equals(other.riskFlagged)
+                && riskFlaggedOn.equals(other.riskFlaggedOn)
+                && riskStatus.equals(other.riskStatus)
+                && riskReason.equals(other.riskReason)
+                && riskAction.equals(other.riskAction)
+                && riskActionCode.equals(other.riskActionCode);
     }
 
     @java.lang.Override
@@ -342,6 +492,7 @@ public final class BillDetailResponse {
                 this.checkNumber,
                 this.comments,
                 this.createdDate,
+                this.createdAt,
                 this.events,
                 this.feeAmount,
                 this.gateway,
@@ -349,6 +500,7 @@ public final class BillDetailResponse {
                 this.lastUpdated,
                 this.netAmount,
                 this.parentOrgName,
+                this.parentOrgId,
                 this.paymentData,
                 this.paymentGroup,
                 this.paymentId,
@@ -360,7 +512,20 @@ public final class BillDetailResponse {
                 this.status,
                 this.statusText,
                 this.totalAmount,
-                this.vendor);
+                this.vendor,
+                this.externalPaypointId,
+                this.entryName,
+                this.batchId,
+                this.hasVcardTransactions,
+                this.isSameDayAch,
+                this.scheduleId,
+                this.settlementStatus,
+                this.riskFlagged,
+                this.riskFlaggedOn,
+                this.riskStatus,
+                this.riskReason,
+                this.riskAction,
+                this.riskActionCode);
     }
 
     @java.lang.Override
@@ -384,6 +549,8 @@ public final class BillDetailResponse {
 
         private Optional<OffsetDateTime> createdDate = Optional.empty();
 
+        private Optional<OffsetDateTime> createdAt = Optional.empty();
+
         private Optional<List<QueryTransactionEvents>> events = Optional.empty();
 
         private Optional<Double> feeAmount = Optional.empty();
@@ -397,6 +564,8 @@ public final class BillDetailResponse {
         private Optional<Double> netAmount = Optional.empty();
 
         private Optional<String> parentOrgName = Optional.empty();
+
+        private Optional<Long> parentOrgId = Optional.empty();
 
         private Optional<QueryPaymentData> paymentData = Optional.empty();
 
@@ -422,6 +591,32 @@ public final class BillDetailResponse {
 
         private Optional<VendorQueryRecord> vendor = Optional.empty();
 
+        private Optional<String> externalPaypointId = Optional.empty();
+
+        private Optional<String> entryName = Optional.empty();
+
+        private Optional<String> batchId = Optional.empty();
+
+        private Optional<Boolean> hasVcardTransactions = Optional.empty();
+
+        private Optional<Boolean> isSameDayAch = Optional.empty();
+
+        private Optional<Long> scheduleId = Optional.empty();
+
+        private Optional<Integer> settlementStatus = Optional.empty();
+
+        private Optional<Boolean> riskFlagged = Optional.empty();
+
+        private Optional<OffsetDateTime> riskFlaggedOn = Optional.empty();
+
+        private Optional<String> riskStatus = Optional.empty();
+
+        private Optional<String> riskReason = Optional.empty();
+
+        private Optional<String> riskAction = Optional.empty();
+
+        private Optional<Integer> riskActionCode = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -433,6 +628,7 @@ public final class BillDetailResponse {
             checkNumber(other.getCheckNumber());
             comments(other.getComments());
             createdDate(other.getCreatedDate());
+            createdAt(other.getCreatedAt());
             events(other.getEvents());
             feeAmount(other.getFeeAmount());
             gateway(other.getGateway());
@@ -440,6 +636,7 @@ public final class BillDetailResponse {
             lastUpdated(other.getLastUpdated());
             netAmount(other.getNetAmount());
             parentOrgName(other.getParentOrgName());
+            parentOrgId(other.getParentOrgId());
             paymentData(other.getPaymentData());
             paymentGroup(other.getPaymentGroup());
             paymentId(other.getPaymentId());
@@ -452,6 +649,19 @@ public final class BillDetailResponse {
             statusText(other.getStatusText());
             totalAmount(other.getTotalAmount());
             vendor(other.getVendor());
+            externalPaypointId(other.getExternalPaypointId());
+            entryName(other.getEntryName());
+            batchId(other.getBatchId());
+            hasVcardTransactions(other.getHasVcardTransactions());
+            isSameDayAch(other.getIsSameDayAch());
+            scheduleId(other.getScheduleId());
+            settlementStatus(other.getSettlementStatus());
+            riskFlagged(other.getRiskFlagged());
+            riskFlaggedOn(other.getRiskFlaggedOn());
+            riskStatus(other.getRiskStatus());
+            riskReason(other.getRiskReason());
+            riskAction(other.getRiskAction());
+            riskActionCode(other.getRiskActionCode());
             return this;
         }
 
@@ -525,6 +735,17 @@ public final class BillDetailResponse {
             return this;
         }
 
+        @JsonSetter(value = "CreatedAt", nulls = Nulls.SKIP)
+        public Builder createdAt(Optional<OffsetDateTime> createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder createdAt(OffsetDateTime createdAt) {
+            this.createdAt = Optional.ofNullable(createdAt);
+            return this;
+        }
+
         /**
          * <p>Events associated to this transaction.</p>
          */
@@ -539,9 +760,6 @@ public final class BillDetailResponse {
             return this;
         }
 
-        /**
-         * <p>Service fee or sub-charge applied.</p>
-         */
         @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
         public Builder feeAmount(Optional<Double> feeAmount) {
             this.feeAmount = feeAmount;
@@ -603,7 +821,7 @@ public final class BillDetailResponse {
             return this;
         }
 
-        @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
         public Builder parentOrgName(Optional<String> parentOrgName) {
             this.parentOrgName = parentOrgName;
             return this;
@@ -611,6 +829,17 @@ public final class BillDetailResponse {
 
         public Builder parentOrgName(String parentOrgName) {
             this.parentOrgName = Optional.ofNullable(parentOrgName);
+            return this;
+        }
+
+        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
+        public Builder parentOrgId(Optional<Long> parentOrgId) {
+            this.parentOrgId = parentOrgId;
+            return this;
+        }
+
+        public Builder parentOrgId(Long parentOrgId) {
+            this.parentOrgId = Optional.ofNullable(parentOrgId);
             return this;
         }
 
@@ -678,7 +907,7 @@ public final class BillDetailResponse {
             return this;
         }
 
-        @JsonSetter(value = "paypointDbaname", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
         public Builder paypointDbaname(Optional<String> paypointDbaname) {
             this.paypointDbaname = paypointDbaname;
             return this;
@@ -692,7 +921,7 @@ public final class BillDetailResponse {
         /**
          * <p>Paypoint legal name.</p>
          */
-        @JsonSetter(value = "paypointLegalname", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
         public Builder paypointLegalname(Optional<String> paypointLegalname) {
             this.paypointLegalname = paypointLegalname;
             return this;
@@ -770,6 +999,152 @@ public final class BillDetailResponse {
             return this;
         }
 
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
+        public Builder externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
+            return this;
+        }
+
+        public Builder externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        @JsonSetter(value = "EntryName", nulls = Nulls.SKIP)
+        public Builder entryName(Optional<String> entryName) {
+            this.entryName = entryName;
+            return this;
+        }
+
+        public Builder entryName(String entryName) {
+            this.entryName = Optional.ofNullable(entryName);
+            return this;
+        }
+
+        /**
+         * <p>Identifier for the batch in which this transaction was processed. Used to track and reconcile batch-level operations.</p>
+         */
+        @JsonSetter(value = "BatchId", nulls = Nulls.SKIP)
+        public Builder batchId(Optional<String> batchId) {
+            this.batchId = batchId;
+            return this;
+        }
+
+        public Builder batchId(String batchId) {
+            this.batchId = Optional.ofNullable(batchId);
+            return this;
+        }
+
+        @JsonSetter(value = "HasVcardTransactions", nulls = Nulls.SKIP)
+        public Builder hasVcardTransactions(Optional<Boolean> hasVcardTransactions) {
+            this.hasVcardTransactions = hasVcardTransactions;
+            return this;
+        }
+
+        public Builder hasVcardTransactions(Boolean hasVcardTransactions) {
+            this.hasVcardTransactions = Optional.ofNullable(hasVcardTransactions);
+            return this;
+        }
+
+        @JsonSetter(value = "IsSameDayACH", nulls = Nulls.SKIP)
+        public Builder isSameDayAch(Optional<Boolean> isSameDayAch) {
+            this.isSameDayAch = isSameDayAch;
+            return this;
+        }
+
+        public Builder isSameDayAch(Boolean isSameDayAch) {
+            this.isSameDayAch = Optional.ofNullable(isSameDayAch);
+            return this;
+        }
+
+        @JsonSetter(value = "ScheduleId", nulls = Nulls.SKIP)
+        public Builder scheduleId(Optional<Long> scheduleId) {
+            this.scheduleId = scheduleId;
+            return this;
+        }
+
+        public Builder scheduleId(Long scheduleId) {
+            this.scheduleId = Optional.ofNullable(scheduleId);
+            return this;
+        }
+
+        @JsonSetter(value = "SettlementStatus", nulls = Nulls.SKIP)
+        public Builder settlementStatus(Optional<Integer> settlementStatus) {
+            this.settlementStatus = settlementStatus;
+            return this;
+        }
+
+        public Builder settlementStatus(Integer settlementStatus) {
+            this.settlementStatus = Optional.ofNullable(settlementStatus);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskFlagged", nulls = Nulls.SKIP)
+        public Builder riskFlagged(Optional<Boolean> riskFlagged) {
+            this.riskFlagged = riskFlagged;
+            return this;
+        }
+
+        public Builder riskFlagged(Boolean riskFlagged) {
+            this.riskFlagged = Optional.ofNullable(riskFlagged);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskFlaggedOn", nulls = Nulls.SKIP)
+        public Builder riskFlaggedOn(Optional<OffsetDateTime> riskFlaggedOn) {
+            this.riskFlaggedOn = riskFlaggedOn;
+            return this;
+        }
+
+        public Builder riskFlaggedOn(OffsetDateTime riskFlaggedOn) {
+            this.riskFlaggedOn = Optional.ofNullable(riskFlaggedOn);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskStatus", nulls = Nulls.SKIP)
+        public Builder riskStatus(Optional<String> riskStatus) {
+            this.riskStatus = riskStatus;
+            return this;
+        }
+
+        public Builder riskStatus(String riskStatus) {
+            this.riskStatus = Optional.ofNullable(riskStatus);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskReason", nulls = Nulls.SKIP)
+        public Builder riskReason(Optional<String> riskReason) {
+            this.riskReason = riskReason;
+            return this;
+        }
+
+        public Builder riskReason(String riskReason) {
+            this.riskReason = Optional.ofNullable(riskReason);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskAction", nulls = Nulls.SKIP)
+        public Builder riskAction(Optional<String> riskAction) {
+            this.riskAction = riskAction;
+            return this;
+        }
+
+        public Builder riskAction(String riskAction) {
+            this.riskAction = Optional.ofNullable(riskAction);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskActionCode", nulls = Nulls.SKIP)
+        public Builder riskActionCode(Optional<Integer> riskActionCode) {
+            this.riskActionCode = riskActionCode;
+            return this;
+        }
+
+        public Builder riskActionCode(Integer riskActionCode) {
+            this.riskActionCode = Optional.ofNullable(riskActionCode);
+            return this;
+        }
+
         public BillDetailResponse build() {
             return new BillDetailResponse(
                     bills,
@@ -777,6 +1152,7 @@ public final class BillDetailResponse {
                     checkNumber,
                     comments,
                     createdDate,
+                    createdAt,
                     events,
                     feeAmount,
                     gateway,
@@ -784,6 +1160,7 @@ public final class BillDetailResponse {
                     lastUpdated,
                     netAmount,
                     parentOrgName,
+                    parentOrgId,
                     paymentData,
                     paymentGroup,
                     paymentId,
@@ -796,6 +1173,19 @@ public final class BillDetailResponse {
                     statusText,
                     totalAmount,
                     vendor,
+                    externalPaypointId,
+                    entryName,
+                    batchId,
+                    hasVcardTransactions,
+                    isSameDayAch,
+                    scheduleId,
+                    settlementStatus,
+                    riskFlagged,
+                    riskFlaggedOn,
+                    riskStatus,
+                    riskReason,
+                    riskAction,
+                    riskActionCode,
                     additionalProperties);
         }
     }

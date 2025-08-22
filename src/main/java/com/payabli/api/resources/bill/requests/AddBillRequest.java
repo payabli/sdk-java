@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
-import com.payabli.api.types.BillOutData;
+import com.payabli.api.resources.bill.types.BillOutData;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

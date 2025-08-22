@@ -23,15 +23,15 @@ import com.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import com.payabli.api.resources.bill.requests.ListBillsRequest;
 import com.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import com.payabli.api.resources.bill.requests.SetApprovedBillRequest;
+import com.payabli.api.resources.bill.types.BillOutData;
+import com.payabli.api.resources.bill.types.BillResponse;
 import com.payabli.api.resources.bill.types.EditBillResponse;
 import com.payabli.api.resources.bill.types.GetBillResponse;
 import com.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
 import com.payabli.api.resources.bill.types.SetApprovedBillResponse;
-import com.payabli.api.types.BillOutData;
 import com.payabli.api.types.BillQueryResponse;
 import com.payabli.api.types.FileContent;
 import com.payabli.api.types.PayabliApiResponse;
-import com.payabli.api.types.PayabliApiResponseBills;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -56,15 +56,14 @@ public class AsyncRawBillClient {
     /**
      * Creates a bill in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> addBill(
-            String entry, AddBillRequest request) {
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> addBill(String entry, AddBillRequest request) {
         return addBill(entry, request, null);
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> addBill(
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> addBill(
             String entry, AddBillRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -93,15 +92,14 @@ public class AsyncRawBillClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<BillResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), PayabliApiResponseBills.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class),
                                 response));
                         return;
                     }
@@ -155,8 +153,7 @@ public class AsyncRawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> deleteAttachedFromBill(
-            String filename, int idBill) {
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> deleteAttachedFromBill(String filename, int idBill) {
         return deleteAttachedFromBill(
                 filename, idBill, DeleteAttachedFromBillRequest.builder().build());
     }
@@ -164,7 +161,7 @@ public class AsyncRawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> deleteAttachedFromBill(
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request) {
         return deleteAttachedFromBill(filename, idBill, request, null);
     }
@@ -172,7 +169,7 @@ public class AsyncRawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> deleteAttachedFromBill(
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -193,15 +190,14 @@ public class AsyncRawBillClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<BillResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), PayabliApiResponseBills.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class),
                                 response));
                         return;
                     }
@@ -255,14 +251,14 @@ public class AsyncRawBillClient {
     /**
      * Deletes a bill by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> deleteBill(int idBill) {
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> deleteBill(int idBill) {
         return deleteBill(idBill, null);
     }
 
     /**
      * Deletes a bill by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> deleteBill(
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> deleteBill(
             int idBill, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -279,15 +275,14 @@ public class AsyncRawBillClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<BillResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), PayabliApiResponseBills.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class),
                                 response));
                         return;
                     }
@@ -622,14 +617,14 @@ public class AsyncRawBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<BillQueryResponse>> listBills(String entry) {
         return listBills(entry, ListBillsRequest.builder().build());
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<BillQueryResponse>> listBills(
             String entry, ListBillsRequest request) {
@@ -637,7 +632,7 @@ public class AsyncRawBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<BillQueryResponse>> listBills(
             String entry, ListBillsRequest request, RequestOptions requestOptions) {
@@ -645,6 +640,10 @@ public class AsyncRawBillClient {
                 .newBuilder()
                 .addPathSegments("Query/bills")
                 .addPathSegment(entry);
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -730,14 +729,14 @@ public class AsyncRawBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<BillQueryResponse>> listBillsOrg(int orgId) {
         return listBillsOrg(orgId, ListBillsOrgRequest.builder().build());
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<BillQueryResponse>> listBillsOrg(
             int orgId, ListBillsOrgRequest request) {
@@ -745,7 +744,7 @@ public class AsyncRawBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<BillQueryResponse>> listBillsOrg(
             int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
@@ -753,6 +752,10 @@ public class AsyncRawBillClient {
                 .newBuilder()
                 .addPathSegments("Query/bills/org")
                 .addPathSegment(Integer.toString(orgId));
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -935,7 +938,7 @@ public class AsyncRawBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> sendToApprovalBill(
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> sendToApprovalBill(
             int idBill, SendToApprovalBillRequest request) {
         return sendToApprovalBill(idBill, request, null);
     }
@@ -943,7 +946,7 @@ public class AsyncRawBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> sendToApprovalBill(
+    public CompletableFuture<PayabliApiHttpResponse<BillResponse>> sendToApprovalBill(
             int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -975,15 +978,14 @@ public class AsyncRawBillClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseBills>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<BillResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), PayabliApiResponseBills.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class),
                                 response));
                         return;
                     }

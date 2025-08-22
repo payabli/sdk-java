@@ -8,7 +8,9 @@ import com.payabli.api.core.RequestOptions;
 import com.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import com.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import com.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
+import com.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import com.payabli.api.resources.moneyout.types.CaptureAllOutResponse;
+import com.payabli.api.resources.moneyout.types.OperationResult;
 import com.payabli.api.resources.moneyout.types.VCardGetResponse;
 import com.payabli.api.types.BillDetailResponse;
 import com.payabli.api.types.PayabliApiResponse0000;
@@ -139,6 +141,21 @@ public class AsyncMoneyOutClient {
      */
     public CompletableFuture<VCardGetResponse> vCardGet(String cardToken, RequestOptions requestOptions) {
         return this.rawClient.vCardGet(cardToken, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public CompletableFuture<OperationResult> sendVCardLink(SendVCardLinkRequest request) {
+        return this.rawClient.sendVCardLink(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public CompletableFuture<OperationResult> sendVCardLink(
+            SendVCardLinkRequest request, RequestOptions requestOptions) {
+        return this.rawClient.sendVCardLink(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**

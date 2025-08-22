@@ -174,21 +174,21 @@ public class BoardingClient {
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBoardingAppsListResponse listApplications(int orgId) {
         return this.rawClient.listApplications(orgId).body();
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBoardingAppsListResponse listApplications(int orgId, ListApplicationsRequest request) {
         return this.rawClient.listApplications(orgId, request).body();
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBoardingAppsListResponse listApplications(
             int orgId, ListApplicationsRequest request, RequestOptions requestOptions) {

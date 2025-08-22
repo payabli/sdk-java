@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
+import com.payabli.api.types.ExportFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,6 +21,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListVendorsOrgRequest.Builder.class)
 public final class ListVendorsOrgRequest {
+    private final Optional<ExportFormat> exportFormat;
+
     private final Optional<Integer> fromRecord;
 
     private final Optional<Integer> limitRecord;
@@ -31,16 +34,23 @@ public final class ListVendorsOrgRequest {
     private final Map<String, Object> additionalProperties;
 
     private ListVendorsOrgRequest(
+            Optional<ExportFormat> exportFormat,
             Optional<Integer> fromRecord,
             Optional<Integer> limitRecord,
             Optional<Map<String, Optional<String>>> parameters,
             Optional<String> sortBy,
             Map<String, Object> additionalProperties) {
+        this.exportFormat = exportFormat;
         this.fromRecord = fromRecord;
         this.limitRecord = limitRecord;
         this.parameters = parameters;
         this.sortBy = sortBy;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("exportFormat")
+    public Optional<ExportFormat> getExportFormat() {
+        return exportFormat;
     }
 
     /**
@@ -137,7 +147,8 @@ public final class ListVendorsOrgRequest {
     }
 
     private boolean equalTo(ListVendorsOrgRequest other) {
-        return fromRecord.equals(other.fromRecord)
+        return exportFormat.equals(other.exportFormat)
+                && fromRecord.equals(other.fromRecord)
                 && limitRecord.equals(other.limitRecord)
                 && parameters.equals(other.parameters)
                 && sortBy.equals(other.sortBy);
@@ -145,7 +156,7 @@ public final class ListVendorsOrgRequest {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.fromRecord, this.limitRecord, this.parameters, this.sortBy);
+        return Objects.hash(this.exportFormat, this.fromRecord, this.limitRecord, this.parameters, this.sortBy);
     }
 
     @java.lang.Override
@@ -159,6 +170,8 @@ public final class ListVendorsOrgRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<ExportFormat> exportFormat = Optional.empty();
+
         private Optional<Integer> fromRecord = Optional.empty();
 
         private Optional<Integer> limitRecord = Optional.empty();
@@ -173,10 +186,22 @@ public final class ListVendorsOrgRequest {
         private Builder() {}
 
         public Builder from(ListVendorsOrgRequest other) {
+            exportFormat(other.getExportFormat());
             fromRecord(other.getFromRecord());
             limitRecord(other.getLimitRecord());
             parameters(other.getParameters());
             sortBy(other.getSortBy());
+            return this;
+        }
+
+        @JsonSetter(value = "exportFormat", nulls = Nulls.SKIP)
+        public Builder exportFormat(Optional<ExportFormat> exportFormat) {
+            this.exportFormat = exportFormat;
+            return this;
+        }
+
+        public Builder exportFormat(ExportFormat exportFormat) {
+            this.exportFormat = Optional.ofNullable(exportFormat);
             return this;
         }
 
@@ -287,7 +312,8 @@ public final class ListVendorsOrgRequest {
         }
 
         public ListVendorsOrgRequest build() {
-            return new ListVendorsOrgRequest(fromRecord, limitRecord, parameters, sortBy, additionalProperties);
+            return new ListVendorsOrgRequest(
+                    exportFormat, fromRecord, limitRecord, parameters, sortBy, additionalProperties);
         }
     }
 }

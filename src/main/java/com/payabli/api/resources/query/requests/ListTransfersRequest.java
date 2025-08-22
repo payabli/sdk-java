@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
+import com.payabli.api.types.ExportFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,6 +21,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListTransfersRequest.Builder.class)
 public final class ListTransfersRequest {
+    private final Optional<ExportFormat> exportFormat;
+
     private final Optional<Integer> fromRecord;
 
     private final Optional<Integer> limitRecord;
@@ -31,16 +34,23 @@ public final class ListTransfersRequest {
     private final Map<String, Object> additionalProperties;
 
     private ListTransfersRequest(
+            Optional<ExportFormat> exportFormat,
             Optional<Integer> fromRecord,
             Optional<Integer> limitRecord,
             Optional<Map<String, Optional<String>>> parameters,
             Optional<String> sortBy,
             Map<String, Object> additionalProperties) {
+        this.exportFormat = exportFormat;
         this.fromRecord = fromRecord;
         this.limitRecord = limitRecord;
         this.parameters = parameters;
         this.sortBy = sortBy;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("exportFormat")
+    public Optional<ExportFormat> getExportFormat() {
+        return exportFormat;
     }
 
     /**
@@ -83,6 +93,10 @@ public final class ListTransfersRequest {
      * <li><code>transferStatus</code> (ne, eq, in, nin)</li>
      * <li><code>batchNumber</code> (ne, eq, ct, nct)</li>
      * <li><code>batchId</code> (ne, eq, in, nin)</li>
+     * <li><code>transferId</code> (in, nin, eq, ne)</li>
+     * <li><code>bankAccountNumber</code> (ct, nct, ne, eq)</li>
+     * <li><code>bankRoutingNumber</code> (ct, nct, ne, eq)</li>
+     * <li><code>batchCurrency</code> (in, nin, ne, eq)</li>
      * </ul>
      */
     @JsonProperty("parameters")
@@ -110,7 +124,8 @@ public final class ListTransfersRequest {
     }
 
     private boolean equalTo(ListTransfersRequest other) {
-        return fromRecord.equals(other.fromRecord)
+        return exportFormat.equals(other.exportFormat)
+                && fromRecord.equals(other.fromRecord)
                 && limitRecord.equals(other.limitRecord)
                 && parameters.equals(other.parameters)
                 && sortBy.equals(other.sortBy);
@@ -118,7 +133,7 @@ public final class ListTransfersRequest {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.fromRecord, this.limitRecord, this.parameters, this.sortBy);
+        return Objects.hash(this.exportFormat, this.fromRecord, this.limitRecord, this.parameters, this.sortBy);
     }
 
     @java.lang.Override
@@ -132,6 +147,8 @@ public final class ListTransfersRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<ExportFormat> exportFormat = Optional.empty();
+
         private Optional<Integer> fromRecord = Optional.empty();
 
         private Optional<Integer> limitRecord = Optional.empty();
@@ -146,10 +163,22 @@ public final class ListTransfersRequest {
         private Builder() {}
 
         public Builder from(ListTransfersRequest other) {
+            exportFormat(other.getExportFormat());
             fromRecord(other.getFromRecord());
             limitRecord(other.getLimitRecord());
             parameters(other.getParameters());
             sortBy(other.getSortBy());
+            return this;
+        }
+
+        @JsonSetter(value = "exportFormat", nulls = Nulls.SKIP)
+        public Builder exportFormat(Optional<ExportFormat> exportFormat) {
+            this.exportFormat = exportFormat;
+            return this;
+        }
+
+        public Builder exportFormat(ExportFormat exportFormat) {
+            this.exportFormat = Optional.ofNullable(exportFormat);
             return this;
         }
 
@@ -205,6 +234,10 @@ public final class ListTransfersRequest {
          * <li><code>transferStatus</code> (ne, eq, in, nin)</li>
          * <li><code>batchNumber</code> (ne, eq, ct, nct)</li>
          * <li><code>batchId</code> (ne, eq, in, nin)</li>
+         * <li><code>transferId</code> (in, nin, eq, ne)</li>
+         * <li><code>bankAccountNumber</code> (ct, nct, ne, eq)</li>
+         * <li><code>bankRoutingNumber</code> (ct, nct, ne, eq)</li>
+         * <li><code>batchCurrency</code> (in, nin, ne, eq)</li>
          * </ul>
          */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
@@ -233,7 +266,8 @@ public final class ListTransfersRequest {
         }
 
         public ListTransfersRequest build() {
-            return new ListTransfersRequest(fromRecord, limitRecord, parameters, sortBy, additionalProperties);
+            return new ListTransfersRequest(
+                    exportFormat, fromRecord, limitRecord, parameters, sortBy, additionalProperties);
         }
     }
 }

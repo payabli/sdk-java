@@ -9,13 +9,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -27,7 +25,7 @@ public final class RequestPaymentValidatePaymentMethod {
 
     private final String cardexp;
 
-    private final Optional<String> cardzip;
+    private final String cardzip;
 
     private final String cardHolder;
 
@@ -37,7 +35,7 @@ public final class RequestPaymentValidatePaymentMethod {
             RequestPaymentValidatePaymentMethodMethod method,
             String cardnumber,
             String cardexp,
-            Optional<String> cardzip,
+            String cardzip,
             String cardHolder,
             Map<String, Object> additionalProperties) {
         this.method = method;
@@ -64,7 +62,7 @@ public final class RequestPaymentValidatePaymentMethod {
     }
 
     @JsonProperty("cardzip")
-    public Optional<String> getCardzip() {
+    public String getCardzip() {
         return cardzip;
     }
 
@@ -118,7 +116,11 @@ public final class RequestPaymentValidatePaymentMethod {
     }
 
     public interface CardexpStage {
-        CardHolderStage cardexp(@NotNull String cardexp);
+        CardzipStage cardexp(@NotNull String cardexp);
+    }
+
+    public interface CardzipStage {
+        CardHolderStage cardzip(@NotNull String cardzip);
     }
 
     public interface CardHolderStage {
@@ -127,24 +129,20 @@ public final class RequestPaymentValidatePaymentMethod {
 
     public interface _FinalStage {
         RequestPaymentValidatePaymentMethod build();
-
-        _FinalStage cardzip(Optional<String> cardzip);
-
-        _FinalStage cardzip(String cardzip);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements MethodStage, CardnumberStage, CardexpStage, CardHolderStage, _FinalStage {
+            implements MethodStage, CardnumberStage, CardexpStage, CardzipStage, CardHolderStage, _FinalStage {
         private RequestPaymentValidatePaymentMethodMethod method;
 
         private String cardnumber;
 
         private String cardexp;
 
-        private String cardHolder;
+        private String cardzip;
 
-        private Optional<String> cardzip = Optional.empty();
+        private String cardHolder;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -177,8 +175,15 @@ public final class RequestPaymentValidatePaymentMethod {
 
         @java.lang.Override
         @JsonSetter("cardexp")
-        public CardHolderStage cardexp(@NotNull String cardexp) {
+        public CardzipStage cardexp(@NotNull String cardexp) {
             this.cardexp = Objects.requireNonNull(cardexp, "cardexp must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("cardzip")
+        public CardHolderStage cardzip(@NotNull String cardzip) {
+            this.cardzip = Objects.requireNonNull(cardzip, "cardzip must not be null");
             return this;
         }
 
@@ -186,19 +191,6 @@ public final class RequestPaymentValidatePaymentMethod {
         @JsonSetter("cardHolder")
         public _FinalStage cardHolder(@NotNull String cardHolder) {
             this.cardHolder = Objects.requireNonNull(cardHolder, "cardHolder must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage cardzip(String cardzip) {
-            this.cardzip = Optional.ofNullable(cardzip);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "cardzip", nulls = Nulls.SKIP)
-        public _FinalStage cardzip(Optional<String> cardzip) {
-            this.cardzip = cardzip;
             return this;
         }
 

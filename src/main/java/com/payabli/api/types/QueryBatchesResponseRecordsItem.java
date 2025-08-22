@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +22,10 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QueryBatchesResponseRecordsItem.Builder.class)
 public final class QueryBatchesResponseRecordsItem {
+    private final Optional<AchHolderType> achHolderType;
+
+    private final Optional<String> achSecCode;
+
     private final Optional<Double> batchAmount;
 
     private final Optional<Double> batchAuthAmount;
@@ -45,27 +50,55 @@ public final class QueryBatchesResponseRecordsItem {
 
     private final Optional<Integer> batchStatus;
 
+    private final Optional<Long> chargebackId;
+
+    private final Optional<List<QueryCFeeTransaction>> cfeeTransactions;
+
     private final Optional<String> connectorName;
 
     private final Optional<OffsetDateTime> depositDate;
 
+    private final Optional<String> deviceId;
+
     private final Optional<String> entryName;
+
+    private final Optional<Long> entryPageid;
 
     private final Optional<OffsetDateTime> expectedDepositDate;
 
     private final Optional<String> externalPaypointId;
 
+    private final Optional<Double> feeAmount;
+
     private final Optional<Integer> idBatch;
 
     private final Optional<String> method;
 
+    private final Optional<Long> orgId;
+
     private final Optional<String> parentOrgName;
+
+    private final Optional<Integer> paymentSettlementStatus;
+
+    private final Optional<Long> payorId;
 
     private final Optional<String> paypointDba;
 
     private final Optional<Long> paypointId;
 
     private final Optional<String> paypointName;
+
+    private final Optional<Double> pendingFeeAmount;
+
+    private final Optional<Long> refundId;
+
+    private final Optional<Long> retrievalId;
+
+    private final Optional<Long> returnedId;
+
+    private final Optional<List<SplitFundingContent>> splitFundingInstructions;
+
+    private final Optional<Double> totalAmount;
 
     private final Optional<String> transfer;
 
@@ -74,6 +107,8 @@ public final class QueryBatchesResponseRecordsItem {
     private final Map<String, Object> additionalProperties;
 
     private QueryBatchesResponseRecordsItem(
+            Optional<AchHolderType> achHolderType,
+            Optional<String> achSecCode,
             Optional<Double> batchAmount,
             Optional<Double> batchAuthAmount,
             Optional<OffsetDateTime> batchDate,
@@ -86,20 +121,36 @@ public final class QueryBatchesResponseRecordsItem {
             Optional<Double> batchReturnedAmount,
             Optional<Double> batchSplitAmount,
             Optional<Integer> batchStatus,
+            Optional<Long> chargebackId,
+            Optional<List<QueryCFeeTransaction>> cfeeTransactions,
             Optional<String> connectorName,
             Optional<OffsetDateTime> depositDate,
+            Optional<String> deviceId,
             Optional<String> entryName,
+            Optional<Long> entryPageid,
             Optional<OffsetDateTime> expectedDepositDate,
             Optional<String> externalPaypointId,
+            Optional<Double> feeAmount,
             Optional<Integer> idBatch,
             Optional<String> method,
+            Optional<Long> orgId,
             Optional<String> parentOrgName,
+            Optional<Integer> paymentSettlementStatus,
+            Optional<Long> payorId,
             Optional<String> paypointDba,
             Optional<Long> paypointId,
             Optional<String> paypointName,
+            Optional<Double> pendingFeeAmount,
+            Optional<Long> refundId,
+            Optional<Long> retrievalId,
+            Optional<Long> returnedId,
+            Optional<List<SplitFundingContent>> splitFundingInstructions,
+            Optional<Double> totalAmount,
             Optional<String> transfer,
             Optional<OffsetDateTime> transferDate,
             Map<String, Object> additionalProperties) {
+        this.achHolderType = achHolderType;
+        this.achSecCode = achSecCode;
         this.batchAmount = batchAmount;
         this.batchAuthAmount = batchAuthAmount;
         this.batchDate = batchDate;
@@ -112,20 +163,44 @@ public final class QueryBatchesResponseRecordsItem {
         this.batchReturnedAmount = batchReturnedAmount;
         this.batchSplitAmount = batchSplitAmount;
         this.batchStatus = batchStatus;
+        this.chargebackId = chargebackId;
+        this.cfeeTransactions = cfeeTransactions;
         this.connectorName = connectorName;
         this.depositDate = depositDate;
+        this.deviceId = deviceId;
         this.entryName = entryName;
+        this.entryPageid = entryPageid;
         this.expectedDepositDate = expectedDepositDate;
         this.externalPaypointId = externalPaypointId;
+        this.feeAmount = feeAmount;
         this.idBatch = idBatch;
         this.method = method;
+        this.orgId = orgId;
         this.parentOrgName = parentOrgName;
+        this.paymentSettlementStatus = paymentSettlementStatus;
+        this.payorId = payorId;
         this.paypointDba = paypointDba;
         this.paypointId = paypointId;
         this.paypointName = paypointName;
+        this.pendingFeeAmount = pendingFeeAmount;
+        this.refundId = refundId;
+        this.retrievalId = retrievalId;
+        this.returnedId = returnedId;
+        this.splitFundingInstructions = splitFundingInstructions;
+        this.totalAmount = totalAmount;
         this.transfer = transfer;
         this.transferDate = transferDate;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("AchHolderType")
+    public Optional<AchHolderType> getAchHolderType() {
+        return achHolderType;
+    }
+
+    @JsonProperty("AchSecCode")
+    public Optional<String> getAchSecCode() {
+        return achSecCode;
     }
 
     /**
@@ -221,6 +296,20 @@ public final class QueryBatchesResponseRecordsItem {
         return batchStatus;
     }
 
+    @JsonProperty("ChargebackId")
+    public Optional<Long> getChargebackId() {
+        return chargebackId;
+    }
+
+    /**
+     * @return Service Fee or sub-charge transaction associated to the main
+     * transaction.
+     */
+    @JsonProperty("CfeeTransactions")
+    public Optional<List<QueryCFeeTransaction>> getCfeeTransactions() {
+        return cfeeTransactions;
+    }
+
     /**
      * @return
      */
@@ -234,9 +323,19 @@ public final class QueryBatchesResponseRecordsItem {
         return depositDate;
     }
 
+    @JsonProperty("DeviceId")
+    public Optional<String> getDeviceId() {
+        return deviceId;
+    }
+
     @JsonProperty("EntryName")
     public Optional<String> getEntryName() {
         return entryName;
+    }
+
+    @JsonProperty("EntryPageid")
+    public Optional<Long> getEntryPageid() {
+        return entryPageid;
     }
 
     @JsonProperty("ExpectedDepositDate")
@@ -247,6 +346,11 @@ public final class QueryBatchesResponseRecordsItem {
     @JsonProperty("externalPaypointID")
     public Optional<String> getExternalPaypointId() {
         return externalPaypointId;
+    }
+
+    @JsonProperty("FeeAmount")
+    public Optional<Double> getFeeAmount() {
+        return feeAmount;
     }
 
     /**
@@ -265,12 +369,30 @@ public final class QueryBatchesResponseRecordsItem {
         return method;
     }
 
+    @JsonProperty("OrgId")
+    public Optional<Long> getOrgId() {
+        return orgId;
+    }
+
     /**
      * @return The entrypoint's parent org.
      */
     @JsonProperty("ParentOrgName")
     public Optional<String> getParentOrgName() {
         return parentOrgName;
+    }
+
+    /**
+     * @return The payment's settlement status.
+     */
+    @JsonProperty("PaymentSettlementStatus")
+    public Optional<Integer> getPaymentSettlementStatus() {
+        return paymentSettlementStatus;
+    }
+
+    @JsonProperty("PayorId")
+    public Optional<Long> getPayorId() {
+        return payorId;
     }
 
     /**
@@ -286,12 +408,45 @@ public final class QueryBatchesResponseRecordsItem {
         return paypointId;
     }
 
-    /**
-     * @return Paypoint legal name.
-     */
     @JsonProperty("PaypointName")
     public Optional<String> getPaypointName() {
         return paypointName;
+    }
+
+    @JsonProperty("PendingFeeAmount")
+    public Optional<Double> getPendingFeeAmount() {
+        return pendingFeeAmount;
+    }
+
+    @JsonProperty("RefundId")
+    public Optional<Long> getRefundId() {
+        return refundId;
+    }
+
+    @JsonProperty("RetrievalId")
+    public Optional<Long> getRetrievalId() {
+        return retrievalId;
+    }
+
+    @JsonProperty("ReturnedId")
+    public Optional<Long> getReturnedId() {
+        return returnedId;
+    }
+
+    /**
+     * @return Split funding instructions for the transaction
+     */
+    @JsonProperty("splitFundingInstructions")
+    public Optional<List<SplitFundingContent>> getSplitFundingInstructions() {
+        return splitFundingInstructions;
+    }
+
+    /**
+     * @return Total amount of the batch.
+     */
+    @JsonProperty("TotalAmount")
+    public Optional<Double> getTotalAmount() {
+        return totalAmount;
     }
 
     /**
@@ -322,7 +477,9 @@ public final class QueryBatchesResponseRecordsItem {
     }
 
     private boolean equalTo(QueryBatchesResponseRecordsItem other) {
-        return batchAmount.equals(other.batchAmount)
+        return achHolderType.equals(other.achHolderType)
+                && achSecCode.equals(other.achSecCode)
+                && batchAmount.equals(other.batchAmount)
                 && batchAuthAmount.equals(other.batchAuthAmount)
                 && batchDate.equals(other.batchDate)
                 && batchFeesAmount.equals(other.batchFeesAmount)
@@ -334,17 +491,31 @@ public final class QueryBatchesResponseRecordsItem {
                 && batchReturnedAmount.equals(other.batchReturnedAmount)
                 && batchSplitAmount.equals(other.batchSplitAmount)
                 && batchStatus.equals(other.batchStatus)
+                && chargebackId.equals(other.chargebackId)
+                && cfeeTransactions.equals(other.cfeeTransactions)
                 && connectorName.equals(other.connectorName)
                 && depositDate.equals(other.depositDate)
+                && deviceId.equals(other.deviceId)
                 && entryName.equals(other.entryName)
+                && entryPageid.equals(other.entryPageid)
                 && expectedDepositDate.equals(other.expectedDepositDate)
                 && externalPaypointId.equals(other.externalPaypointId)
+                && feeAmount.equals(other.feeAmount)
                 && idBatch.equals(other.idBatch)
                 && method.equals(other.method)
+                && orgId.equals(other.orgId)
                 && parentOrgName.equals(other.parentOrgName)
+                && paymentSettlementStatus.equals(other.paymentSettlementStatus)
+                && payorId.equals(other.payorId)
                 && paypointDba.equals(other.paypointDba)
                 && paypointId.equals(other.paypointId)
                 && paypointName.equals(other.paypointName)
+                && pendingFeeAmount.equals(other.pendingFeeAmount)
+                && refundId.equals(other.refundId)
+                && retrievalId.equals(other.retrievalId)
+                && returnedId.equals(other.returnedId)
+                && splitFundingInstructions.equals(other.splitFundingInstructions)
+                && totalAmount.equals(other.totalAmount)
                 && transfer.equals(other.transfer)
                 && transferDate.equals(other.transferDate);
     }
@@ -352,6 +523,8 @@ public final class QueryBatchesResponseRecordsItem {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.achHolderType,
+                this.achSecCode,
                 this.batchAmount,
                 this.batchAuthAmount,
                 this.batchDate,
@@ -364,17 +537,31 @@ public final class QueryBatchesResponseRecordsItem {
                 this.batchReturnedAmount,
                 this.batchSplitAmount,
                 this.batchStatus,
+                this.chargebackId,
+                this.cfeeTransactions,
                 this.connectorName,
                 this.depositDate,
+                this.deviceId,
                 this.entryName,
+                this.entryPageid,
                 this.expectedDepositDate,
                 this.externalPaypointId,
+                this.feeAmount,
                 this.idBatch,
                 this.method,
+                this.orgId,
                 this.parentOrgName,
+                this.paymentSettlementStatus,
+                this.payorId,
                 this.paypointDba,
                 this.paypointId,
                 this.paypointName,
+                this.pendingFeeAmount,
+                this.refundId,
+                this.retrievalId,
+                this.returnedId,
+                this.splitFundingInstructions,
+                this.totalAmount,
                 this.transfer,
                 this.transferDate);
     }
@@ -390,6 +577,10 @@ public final class QueryBatchesResponseRecordsItem {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<AchHolderType> achHolderType = Optional.empty();
+
+        private Optional<String> achSecCode = Optional.empty();
+
         private Optional<Double> batchAmount = Optional.empty();
 
         private Optional<Double> batchAuthAmount = Optional.empty();
@@ -414,27 +605,55 @@ public final class QueryBatchesResponseRecordsItem {
 
         private Optional<Integer> batchStatus = Optional.empty();
 
+        private Optional<Long> chargebackId = Optional.empty();
+
+        private Optional<List<QueryCFeeTransaction>> cfeeTransactions = Optional.empty();
+
         private Optional<String> connectorName = Optional.empty();
 
         private Optional<OffsetDateTime> depositDate = Optional.empty();
 
+        private Optional<String> deviceId = Optional.empty();
+
         private Optional<String> entryName = Optional.empty();
+
+        private Optional<Long> entryPageid = Optional.empty();
 
         private Optional<OffsetDateTime> expectedDepositDate = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
 
+        private Optional<Double> feeAmount = Optional.empty();
+
         private Optional<Integer> idBatch = Optional.empty();
 
         private Optional<String> method = Optional.empty();
 
+        private Optional<Long> orgId = Optional.empty();
+
         private Optional<String> parentOrgName = Optional.empty();
+
+        private Optional<Integer> paymentSettlementStatus = Optional.empty();
+
+        private Optional<Long> payorId = Optional.empty();
 
         private Optional<String> paypointDba = Optional.empty();
 
         private Optional<Long> paypointId = Optional.empty();
 
         private Optional<String> paypointName = Optional.empty();
+
+        private Optional<Double> pendingFeeAmount = Optional.empty();
+
+        private Optional<Long> refundId = Optional.empty();
+
+        private Optional<Long> retrievalId = Optional.empty();
+
+        private Optional<Long> returnedId = Optional.empty();
+
+        private Optional<List<SplitFundingContent>> splitFundingInstructions = Optional.empty();
+
+        private Optional<Double> totalAmount = Optional.empty();
 
         private Optional<String> transfer = Optional.empty();
 
@@ -446,6 +665,8 @@ public final class QueryBatchesResponseRecordsItem {
         private Builder() {}
 
         public Builder from(QueryBatchesResponseRecordsItem other) {
+            achHolderType(other.getAchHolderType());
+            achSecCode(other.getAchSecCode());
             batchAmount(other.getBatchAmount());
             batchAuthAmount(other.getBatchAuthAmount());
             batchDate(other.getBatchDate());
@@ -458,19 +679,55 @@ public final class QueryBatchesResponseRecordsItem {
             batchReturnedAmount(other.getBatchReturnedAmount());
             batchSplitAmount(other.getBatchSplitAmount());
             batchStatus(other.getBatchStatus());
+            chargebackId(other.getChargebackId());
+            cfeeTransactions(other.getCfeeTransactions());
             connectorName(other.getConnectorName());
             depositDate(other.getDepositDate());
+            deviceId(other.getDeviceId());
             entryName(other.getEntryName());
+            entryPageid(other.getEntryPageid());
             expectedDepositDate(other.getExpectedDepositDate());
             externalPaypointId(other.getExternalPaypointId());
+            feeAmount(other.getFeeAmount());
             idBatch(other.getIdBatch());
             method(other.getMethod());
+            orgId(other.getOrgId());
             parentOrgName(other.getParentOrgName());
+            paymentSettlementStatus(other.getPaymentSettlementStatus());
+            payorId(other.getPayorId());
             paypointDba(other.getPaypointDba());
             paypointId(other.getPaypointId());
             paypointName(other.getPaypointName());
+            pendingFeeAmount(other.getPendingFeeAmount());
+            refundId(other.getRefundId());
+            retrievalId(other.getRetrievalId());
+            returnedId(other.getReturnedId());
+            splitFundingInstructions(other.getSplitFundingInstructions());
+            totalAmount(other.getTotalAmount());
             transfer(other.getTransfer());
             transferDate(other.getTransferDate());
+            return this;
+        }
+
+        @JsonSetter(value = "AchHolderType", nulls = Nulls.SKIP)
+        public Builder achHolderType(Optional<AchHolderType> achHolderType) {
+            this.achHolderType = achHolderType;
+            return this;
+        }
+
+        public Builder achHolderType(AchHolderType achHolderType) {
+            this.achHolderType = Optional.ofNullable(achHolderType);
+            return this;
+        }
+
+        @JsonSetter(value = "AchSecCode", nulls = Nulls.SKIP)
+        public Builder achSecCode(Optional<String> achSecCode) {
+            this.achSecCode = achSecCode;
+            return this;
+        }
+
+        public Builder achSecCode(String achSecCode) {
+            this.achSecCode = Optional.ofNullable(achSecCode);
             return this;
         }
 
@@ -636,6 +893,32 @@ public final class QueryBatchesResponseRecordsItem {
             return this;
         }
 
+        @JsonSetter(value = "ChargebackId", nulls = Nulls.SKIP)
+        public Builder chargebackId(Optional<Long> chargebackId) {
+            this.chargebackId = chargebackId;
+            return this;
+        }
+
+        public Builder chargebackId(Long chargebackId) {
+            this.chargebackId = Optional.ofNullable(chargebackId);
+            return this;
+        }
+
+        /**
+         * <p>Service Fee or sub-charge transaction associated to the main
+         * transaction.</p>
+         */
+        @JsonSetter(value = "CfeeTransactions", nulls = Nulls.SKIP)
+        public Builder cfeeTransactions(Optional<List<QueryCFeeTransaction>> cfeeTransactions) {
+            this.cfeeTransactions = cfeeTransactions;
+            return this;
+        }
+
+        public Builder cfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions) {
+            this.cfeeTransactions = Optional.ofNullable(cfeeTransactions);
+            return this;
+        }
+
         @JsonSetter(value = "ConnectorName", nulls = Nulls.SKIP)
         public Builder connectorName(Optional<String> connectorName) {
             this.connectorName = connectorName;
@@ -658,6 +941,17 @@ public final class QueryBatchesResponseRecordsItem {
             return this;
         }
 
+        @JsonSetter(value = "DeviceId", nulls = Nulls.SKIP)
+        public Builder deviceId(Optional<String> deviceId) {
+            this.deviceId = deviceId;
+            return this;
+        }
+
+        public Builder deviceId(String deviceId) {
+            this.deviceId = Optional.ofNullable(deviceId);
+            return this;
+        }
+
         @JsonSetter(value = "EntryName", nulls = Nulls.SKIP)
         public Builder entryName(Optional<String> entryName) {
             this.entryName = entryName;
@@ -666,6 +960,17 @@ public final class QueryBatchesResponseRecordsItem {
 
         public Builder entryName(String entryName) {
             this.entryName = Optional.ofNullable(entryName);
+            return this;
+        }
+
+        @JsonSetter(value = "EntryPageid", nulls = Nulls.SKIP)
+        public Builder entryPageid(Optional<Long> entryPageid) {
+            this.entryPageid = entryPageid;
+            return this;
+        }
+
+        public Builder entryPageid(Long entryPageid) {
+            this.entryPageid = Optional.ofNullable(entryPageid);
             return this;
         }
 
@@ -688,6 +993,17 @@ public final class QueryBatchesResponseRecordsItem {
 
         public Builder externalPaypointId(String externalPaypointId) {
             this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
+        public Builder feeAmount(Optional<Double> feeAmount) {
+            this.feeAmount = feeAmount;
+            return this;
+        }
+
+        public Builder feeAmount(Double feeAmount) {
+            this.feeAmount = Optional.ofNullable(feeAmount);
             return this;
         }
 
@@ -719,6 +1035,17 @@ public final class QueryBatchesResponseRecordsItem {
             return this;
         }
 
+        @JsonSetter(value = "OrgId", nulls = Nulls.SKIP)
+        public Builder orgId(Optional<Long> orgId) {
+            this.orgId = orgId;
+            return this;
+        }
+
+        public Builder orgId(Long orgId) {
+            this.orgId = Optional.ofNullable(orgId);
+            return this;
+        }
+
         /**
          * <p>The entrypoint's parent org.</p>
          */
@@ -730,6 +1057,31 @@ public final class QueryBatchesResponseRecordsItem {
 
         public Builder parentOrgName(String parentOrgName) {
             this.parentOrgName = Optional.ofNullable(parentOrgName);
+            return this;
+        }
+
+        /**
+         * <p>The payment's settlement status.</p>
+         */
+        @JsonSetter(value = "PaymentSettlementStatus", nulls = Nulls.SKIP)
+        public Builder paymentSettlementStatus(Optional<Integer> paymentSettlementStatus) {
+            this.paymentSettlementStatus = paymentSettlementStatus;
+            return this;
+        }
+
+        public Builder paymentSettlementStatus(Integer paymentSettlementStatus) {
+            this.paymentSettlementStatus = Optional.ofNullable(paymentSettlementStatus);
+            return this;
+        }
+
+        @JsonSetter(value = "PayorId", nulls = Nulls.SKIP)
+        public Builder payorId(Optional<Long> payorId) {
+            this.payorId = payorId;
+            return this;
+        }
+
+        public Builder payorId(Long payorId) {
+            this.payorId = Optional.ofNullable(payorId);
             return this;
         }
 
@@ -758,9 +1110,6 @@ public final class QueryBatchesResponseRecordsItem {
             return this;
         }
 
-        /**
-         * <p>Paypoint legal name.</p>
-         */
         @JsonSetter(value = "PaypointName", nulls = Nulls.SKIP)
         public Builder paypointName(Optional<String> paypointName) {
             this.paypointName = paypointName;
@@ -769,6 +1118,78 @@ public final class QueryBatchesResponseRecordsItem {
 
         public Builder paypointName(String paypointName) {
             this.paypointName = Optional.ofNullable(paypointName);
+            return this;
+        }
+
+        @JsonSetter(value = "PendingFeeAmount", nulls = Nulls.SKIP)
+        public Builder pendingFeeAmount(Optional<Double> pendingFeeAmount) {
+            this.pendingFeeAmount = pendingFeeAmount;
+            return this;
+        }
+
+        public Builder pendingFeeAmount(Double pendingFeeAmount) {
+            this.pendingFeeAmount = Optional.ofNullable(pendingFeeAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "RefundId", nulls = Nulls.SKIP)
+        public Builder refundId(Optional<Long> refundId) {
+            this.refundId = refundId;
+            return this;
+        }
+
+        public Builder refundId(Long refundId) {
+            this.refundId = Optional.ofNullable(refundId);
+            return this;
+        }
+
+        @JsonSetter(value = "RetrievalId", nulls = Nulls.SKIP)
+        public Builder retrievalId(Optional<Long> retrievalId) {
+            this.retrievalId = retrievalId;
+            return this;
+        }
+
+        public Builder retrievalId(Long retrievalId) {
+            this.retrievalId = Optional.ofNullable(retrievalId);
+            return this;
+        }
+
+        @JsonSetter(value = "ReturnedId", nulls = Nulls.SKIP)
+        public Builder returnedId(Optional<Long> returnedId) {
+            this.returnedId = returnedId;
+            return this;
+        }
+
+        public Builder returnedId(Long returnedId) {
+            this.returnedId = Optional.ofNullable(returnedId);
+            return this;
+        }
+
+        /**
+         * <p>Split funding instructions for the transaction</p>
+         */
+        @JsonSetter(value = "splitFundingInstructions", nulls = Nulls.SKIP)
+        public Builder splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions) {
+            this.splitFundingInstructions = splitFundingInstructions;
+            return this;
+        }
+
+        public Builder splitFundingInstructions(List<SplitFundingContent> splitFundingInstructions) {
+            this.splitFundingInstructions = Optional.ofNullable(splitFundingInstructions);
+            return this;
+        }
+
+        /**
+         * <p>Total amount of the batch.</p>
+         */
+        @JsonSetter(value = "TotalAmount", nulls = Nulls.SKIP)
+        public Builder totalAmount(Optional<Double> totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Builder totalAmount(Double totalAmount) {
+            this.totalAmount = Optional.ofNullable(totalAmount);
             return this;
         }
 
@@ -799,6 +1220,8 @@ public final class QueryBatchesResponseRecordsItem {
 
         public QueryBatchesResponseRecordsItem build() {
             return new QueryBatchesResponseRecordsItem(
+                    achHolderType,
+                    achSecCode,
                     batchAmount,
                     batchAuthAmount,
                     batchDate,
@@ -811,17 +1234,31 @@ public final class QueryBatchesResponseRecordsItem {
                     batchReturnedAmount,
                     batchSplitAmount,
                     batchStatus,
+                    chargebackId,
+                    cfeeTransactions,
                     connectorName,
                     depositDate,
+                    deviceId,
                     entryName,
+                    entryPageid,
                     expectedDepositDate,
                     externalPaypointId,
+                    feeAmount,
                     idBatch,
                     method,
+                    orgId,
                     parentOrgName,
+                    paymentSettlementStatus,
+                    payorId,
                     paypointDba,
                     paypointId,
                     paypointName,
+                    pendingFeeAmount,
+                    refundId,
+                    retrievalId,
+                    returnedId,
+                    splitFundingInstructions,
+                    totalAmount,
                     transfer,
                     transferDate,
                     additionalProperties);

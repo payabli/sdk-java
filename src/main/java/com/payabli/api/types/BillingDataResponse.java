@@ -12,56 +12,126 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BillingDataResponse.Builder.class)
 public final class BillingDataResponse {
-    private final Optional<String> accountNumber;
+    private final int id;
 
-    private final Optional<Integer> bankAccountFunction;
+    private final Optional<Object> accountId;
 
-    private final Optional<String> bankAccountHolderName;
+    private final String nickname;
 
-    private final Optional<BankAccountHolderType> bankAccountHolderType;
+    private final String bankName;
 
-    private final Optional<String> bankName;
+    private final String routingAccount;
 
-    private final Optional<Integer> id;
+    private final String accountNumber;
 
-    private final Optional<String> routingAccount;
+    private final TypeAccount typeAccount;
 
-    private final Optional<TypeAccount> typeAccount;
+    private final String bankAccountHolderName;
+
+    private final BankAccountHolderType bankAccountHolderType;
+
+    private final int bankAccountFunction;
+
+    private final boolean verified;
+
+    private final int status;
+
+    private final List<Object> services;
+
+    private final boolean default_;
 
     private final Map<String, Object> additionalProperties;
 
     private BillingDataResponse(
-            Optional<String> accountNumber,
-            Optional<Integer> bankAccountFunction,
-            Optional<String> bankAccountHolderName,
-            Optional<BankAccountHolderType> bankAccountHolderType,
-            Optional<String> bankName,
-            Optional<Integer> id,
-            Optional<String> routingAccount,
-            Optional<TypeAccount> typeAccount,
+            int id,
+            Optional<Object> accountId,
+            String nickname,
+            String bankName,
+            String routingAccount,
+            String accountNumber,
+            TypeAccount typeAccount,
+            String bankAccountHolderName,
+            BankAccountHolderType bankAccountHolderType,
+            int bankAccountFunction,
+            boolean verified,
+            int status,
+            List<Object> services,
+            boolean default_,
             Map<String, Object> additionalProperties) {
+        this.id = id;
+        this.accountId = accountId;
+        this.nickname = nickname;
+        this.bankName = bankName;
+        this.routingAccount = routingAccount;
         this.accountNumber = accountNumber;
-        this.bankAccountFunction = bankAccountFunction;
+        this.typeAccount = typeAccount;
         this.bankAccountHolderName = bankAccountHolderName;
         this.bankAccountHolderType = bankAccountHolderType;
-        this.bankName = bankName;
-        this.id = id;
-        this.routingAccount = routingAccount;
-        this.typeAccount = typeAccount;
+        this.bankAccountFunction = bankAccountFunction;
+        this.verified = verified;
+        this.status = status;
+        this.services = services;
+        this.default_ = default_;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The bank's ID in Payabli.
+     */
+    @JsonProperty("id")
+    public int getId() {
+        return id;
+    }
+
+    @JsonProperty("accountId")
+    public Optional<Object> getAccountId() {
+        return accountId;
+    }
+
+    @JsonProperty("nickname")
+    public String getNickname() {
+        return nickname;
+    }
+
+    @JsonProperty("bankName")
+    public String getBankName() {
+        return bankName;
+    }
+
+    @JsonProperty("routingAccount")
+    public String getRoutingAccount() {
+        return routingAccount;
+    }
+
     @JsonProperty("accountNumber")
-    public Optional<String> getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
+    }
+
+    @JsonProperty("typeAccount")
+    public TypeAccount getTypeAccount() {
+        return typeAccount;
+    }
+
+    @JsonProperty("bankAccountHolderName")
+    public String getBankAccountHolderName() {
+        return bankAccountHolderName;
+    }
+
+    @JsonProperty("bankAccountHolderType")
+    public BankAccountHolderType getBankAccountHolderType() {
+        return bankAccountHolderType;
     }
 
     /**
@@ -73,41 +143,28 @@ public final class BillingDataResponse {
      * </ul>
      */
     @JsonProperty("bankAccountFunction")
-    public Optional<Integer> getBankAccountFunction() {
+    public int getBankAccountFunction() {
         return bankAccountFunction;
     }
 
-    @JsonProperty("bankAccountHolderName")
-    public Optional<String> getBankAccountHolderName() {
-        return bankAccountHolderName;
+    @JsonProperty("verified")
+    public boolean getVerified() {
+        return verified;
     }
 
-    @JsonProperty("bankAccountHolderType")
-    public Optional<BankAccountHolderType> getBankAccountHolderType() {
-        return bankAccountHolderType;
+    @JsonProperty("status")
+    public int getStatus() {
+        return status;
     }
 
-    @JsonProperty("bankName")
-    public Optional<String> getBankName() {
-        return bankName;
+    @JsonProperty("services")
+    public List<Object> getServices() {
+        return services;
     }
 
-    /**
-     * @return The bank's ID in Payabli.
-     */
-    @JsonProperty("id")
-    public Optional<Integer> getId() {
-        return id;
-    }
-
-    @JsonProperty("routingAccount")
-    public Optional<String> getRoutingAccount() {
-        return routingAccount;
-    }
-
-    @JsonProperty("typeAccount")
-    public Optional<TypeAccount> getTypeAccount() {
-        return typeAccount;
+    @JsonProperty("default")
+    public boolean getDefault() {
+        return default_;
     }
 
     @java.lang.Override
@@ -122,27 +179,39 @@ public final class BillingDataResponse {
     }
 
     private boolean equalTo(BillingDataResponse other) {
-        return accountNumber.equals(other.accountNumber)
-                && bankAccountFunction.equals(other.bankAccountFunction)
+        return id == other.id
+                && accountId.equals(other.accountId)
+                && nickname.equals(other.nickname)
+                && bankName.equals(other.bankName)
+                && routingAccount.equals(other.routingAccount)
+                && accountNumber.equals(other.accountNumber)
+                && typeAccount.equals(other.typeAccount)
                 && bankAccountHolderName.equals(other.bankAccountHolderName)
                 && bankAccountHolderType.equals(other.bankAccountHolderType)
-                && bankName.equals(other.bankName)
-                && id.equals(other.id)
-                && routingAccount.equals(other.routingAccount)
-                && typeAccount.equals(other.typeAccount);
+                && bankAccountFunction == other.bankAccountFunction
+                && verified == other.verified
+                && status == other.status
+                && services.equals(other.services)
+                && default_ == other.default_;
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.id,
+                this.accountId,
+                this.nickname,
+                this.bankName,
+                this.routingAccount,
                 this.accountNumber,
-                this.bankAccountFunction,
+                this.typeAccount,
                 this.bankAccountHolderName,
                 this.bankAccountHolderType,
-                this.bankName,
-                this.id,
-                this.routingAccount,
-                this.typeAccount);
+                this.bankAccountFunction,
+                this.verified,
+                this.status,
+                this.services,
+                this.default_);
     }
 
     @java.lang.Override
@@ -150,53 +219,212 @@ public final class BillingDataResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IdStage builder() {
         return new Builder();
     }
 
+    public interface IdStage {
+        /**
+         * <p>The bank's ID in Payabli.</p>
+         */
+        NicknameStage id(int id);
+
+        Builder from(BillingDataResponse other);
+    }
+
+    public interface NicknameStage {
+        BankNameStage nickname(@NotNull String nickname);
+    }
+
+    public interface BankNameStage {
+        RoutingAccountStage bankName(@NotNull String bankName);
+    }
+
+    public interface RoutingAccountStage {
+        AccountNumberStage routingAccount(@NotNull String routingAccount);
+    }
+
+    public interface AccountNumberStage {
+        TypeAccountStage accountNumber(@NotNull String accountNumber);
+    }
+
+    public interface TypeAccountStage {
+        BankAccountHolderNameStage typeAccount(@NotNull TypeAccount typeAccount);
+    }
+
+    public interface BankAccountHolderNameStage {
+        BankAccountHolderTypeStage bankAccountHolderName(@NotNull String bankAccountHolderName);
+    }
+
+    public interface BankAccountHolderTypeStage {
+        BankAccountFunctionStage bankAccountHolderType(@NotNull BankAccountHolderType bankAccountHolderType);
+    }
+
+    public interface BankAccountFunctionStage {
+        /**
+         * <p>Describes whether the bank account is used for deposits or withdrawals in Payabli:</p>
+         * <ul>
+         * <li><code>0</code>: Deposit</li>
+         * <li><code>1</code>: Withdrawal</li>
+         * <li><code>2</code>: Deposit and withdrawal</li>
+         * </ul>
+         */
+        VerifiedStage bankAccountFunction(int bankAccountFunction);
+    }
+
+    public interface VerifiedStage {
+        StatusStage verified(boolean verified);
+    }
+
+    public interface StatusStage {
+        DefaultStage status(int status);
+    }
+
+    public interface DefaultStage {
+        _FinalStage default_(boolean default_);
+    }
+
+    public interface _FinalStage {
+        BillingDataResponse build();
+
+        _FinalStage accountId(Optional<Object> accountId);
+
+        _FinalStage accountId(Object accountId);
+
+        _FinalStage services(List<Object> services);
+
+        _FinalStage addServices(Object services);
+
+        _FinalStage addAllServices(List<Object> services);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> accountNumber = Optional.empty();
+    public static final class Builder
+            implements IdStage,
+                    NicknameStage,
+                    BankNameStage,
+                    RoutingAccountStage,
+                    AccountNumberStage,
+                    TypeAccountStage,
+                    BankAccountHolderNameStage,
+                    BankAccountHolderTypeStage,
+                    BankAccountFunctionStage,
+                    VerifiedStage,
+                    StatusStage,
+                    DefaultStage,
+                    _FinalStage {
+        private int id;
 
-        private Optional<Integer> bankAccountFunction = Optional.empty();
+        private String nickname;
 
-        private Optional<String> bankAccountHolderName = Optional.empty();
+        private String bankName;
 
-        private Optional<BankAccountHolderType> bankAccountHolderType = Optional.empty();
+        private String routingAccount;
 
-        private Optional<String> bankName = Optional.empty();
+        private String accountNumber;
 
-        private Optional<Integer> id = Optional.empty();
+        private TypeAccount typeAccount;
 
-        private Optional<String> routingAccount = Optional.empty();
+        private String bankAccountHolderName;
 
-        private Optional<TypeAccount> typeAccount = Optional.empty();
+        private BankAccountHolderType bankAccountHolderType;
+
+        private int bankAccountFunction;
+
+        private boolean verified;
+
+        private int status;
+
+        private boolean default_;
+
+        private List<Object> services = new ArrayList<>();
+
+        private Optional<Object> accountId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(BillingDataResponse other) {
+            id(other.getId());
+            accountId(other.getAccountId());
+            nickname(other.getNickname());
+            bankName(other.getBankName());
+            routingAccount(other.getRoutingAccount());
             accountNumber(other.getAccountNumber());
-            bankAccountFunction(other.getBankAccountFunction());
+            typeAccount(other.getTypeAccount());
             bankAccountHolderName(other.getBankAccountHolderName());
             bankAccountHolderType(other.getBankAccountHolderType());
-            bankName(other.getBankName());
-            id(other.getId());
-            routingAccount(other.getRoutingAccount());
-            typeAccount(other.getTypeAccount());
+            bankAccountFunction(other.getBankAccountFunction());
+            verified(other.getVerified());
+            status(other.getStatus());
+            services(other.getServices());
+            default_(other.getDefault());
             return this;
         }
 
-        @JsonSetter(value = "accountNumber", nulls = Nulls.SKIP)
-        public Builder accountNumber(Optional<String> accountNumber) {
-            this.accountNumber = accountNumber;
+        /**
+         * <p>The bank's ID in Payabli.</p>
+         * <p>The bank's ID in Payabli.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("id")
+        public NicknameStage id(int id) {
+            this.id = id;
             return this;
         }
 
-        public Builder accountNumber(String accountNumber) {
-            this.accountNumber = Optional.ofNullable(accountNumber);
+        @java.lang.Override
+        @JsonSetter("nickname")
+        public BankNameStage nickname(@NotNull String nickname) {
+            this.nickname = Objects.requireNonNull(nickname, "nickname must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("bankName")
+        public RoutingAccountStage bankName(@NotNull String bankName) {
+            this.bankName = Objects.requireNonNull(bankName, "bankName must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("routingAccount")
+        public AccountNumberStage routingAccount(@NotNull String routingAccount) {
+            this.routingAccount = Objects.requireNonNull(routingAccount, "routingAccount must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("accountNumber")
+        public TypeAccountStage accountNumber(@NotNull String accountNumber) {
+            this.accountNumber = Objects.requireNonNull(accountNumber, "accountNumber must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("typeAccount")
+        public BankAccountHolderNameStage typeAccount(@NotNull TypeAccount typeAccount) {
+            this.typeAccount = Objects.requireNonNull(typeAccount, "typeAccount must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("bankAccountHolderName")
+        public BankAccountHolderTypeStage bankAccountHolderName(@NotNull String bankAccountHolderName) {
+            this.bankAccountHolderName =
+                    Objects.requireNonNull(bankAccountHolderName, "bankAccountHolderName must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("bankAccountHolderType")
+        public BankAccountFunctionStage bankAccountHolderType(@NotNull BankAccountHolderType bankAccountHolderType) {
+            this.bankAccountHolderType =
+                    Objects.requireNonNull(bankAccountHolderType, "bankAccountHolderType must not be null");
             return this;
         }
 
@@ -207,97 +435,92 @@ public final class BillingDataResponse {
          * <li><code>1</code>: Withdrawal</li>
          * <li><code>2</code>: Deposit and withdrawal</li>
          * </ul>
+         * <p>Describes whether the bank account is used for deposits or withdrawals in Payabli:</p>
+         * <ul>
+         * <li><code>0</code>: Deposit</li>
+         * <li><code>1</code>: Withdrawal</li>
+         * <li><code>2</code>: Deposit and withdrawal</li>
+         * </ul>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "bankAccountFunction", nulls = Nulls.SKIP)
-        public Builder bankAccountFunction(Optional<Integer> bankAccountFunction) {
+        @java.lang.Override
+        @JsonSetter("bankAccountFunction")
+        public VerifiedStage bankAccountFunction(int bankAccountFunction) {
             this.bankAccountFunction = bankAccountFunction;
             return this;
         }
 
-        public Builder bankAccountFunction(Integer bankAccountFunction) {
-            this.bankAccountFunction = Optional.ofNullable(bankAccountFunction);
+        @java.lang.Override
+        @JsonSetter("verified")
+        public StatusStage verified(boolean verified) {
+            this.verified = verified;
             return this;
         }
 
-        @JsonSetter(value = "bankAccountHolderName", nulls = Nulls.SKIP)
-        public Builder bankAccountHolderName(Optional<String> bankAccountHolderName) {
-            this.bankAccountHolderName = bankAccountHolderName;
+        @java.lang.Override
+        @JsonSetter("status")
+        public DefaultStage status(int status) {
+            this.status = status;
             return this;
         }
 
-        public Builder bankAccountHolderName(String bankAccountHolderName) {
-            this.bankAccountHolderName = Optional.ofNullable(bankAccountHolderName);
+        @java.lang.Override
+        @JsonSetter("default")
+        public _FinalStage default_(boolean default_) {
+            this.default_ = default_;
             return this;
         }
 
-        @JsonSetter(value = "bankAccountHolderType", nulls = Nulls.SKIP)
-        public Builder bankAccountHolderType(Optional<BankAccountHolderType> bankAccountHolderType) {
-            this.bankAccountHolderType = bankAccountHolderType;
+        @java.lang.Override
+        public _FinalStage addAllServices(List<Object> services) {
+            this.services.addAll(services);
             return this;
         }
 
-        public Builder bankAccountHolderType(BankAccountHolderType bankAccountHolderType) {
-            this.bankAccountHolderType = Optional.ofNullable(bankAccountHolderType);
+        @java.lang.Override
+        public _FinalStage addServices(Object services) {
+            this.services.add(services);
             return this;
         }
 
-        @JsonSetter(value = "bankName", nulls = Nulls.SKIP)
-        public Builder bankName(Optional<String> bankName) {
-            this.bankName = bankName;
+        @java.lang.Override
+        @JsonSetter(value = "services", nulls = Nulls.SKIP)
+        public _FinalStage services(List<Object> services) {
+            this.services.clear();
+            this.services.addAll(services);
             return this;
         }
 
-        public Builder bankName(String bankName) {
-            this.bankName = Optional.ofNullable(bankName);
+        @java.lang.Override
+        public _FinalStage accountId(Object accountId) {
+            this.accountId = Optional.ofNullable(accountId);
             return this;
         }
 
-        /**
-         * <p>The bank's ID in Payabli.</p>
-         */
-        @JsonSetter(value = "id", nulls = Nulls.SKIP)
-        public Builder id(Optional<Integer> id) {
-            this.id = id;
+        @java.lang.Override
+        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
+        public _FinalStage accountId(Optional<Object> accountId) {
+            this.accountId = accountId;
             return this;
         }
 
-        public Builder id(Integer id) {
-            this.id = Optional.ofNullable(id);
-            return this;
-        }
-
-        @JsonSetter(value = "routingAccount", nulls = Nulls.SKIP)
-        public Builder routingAccount(Optional<String> routingAccount) {
-            this.routingAccount = routingAccount;
-            return this;
-        }
-
-        public Builder routingAccount(String routingAccount) {
-            this.routingAccount = Optional.ofNullable(routingAccount);
-            return this;
-        }
-
-        @JsonSetter(value = "typeAccount", nulls = Nulls.SKIP)
-        public Builder typeAccount(Optional<TypeAccount> typeAccount) {
-            this.typeAccount = typeAccount;
-            return this;
-        }
-
-        public Builder typeAccount(TypeAccount typeAccount) {
-            this.typeAccount = Optional.ofNullable(typeAccount);
-            return this;
-        }
-
+        @java.lang.Override
         public BillingDataResponse build() {
             return new BillingDataResponse(
+                    id,
+                    accountId,
+                    nickname,
+                    bankName,
+                    routingAccount,
                     accountNumber,
-                    bankAccountFunction,
+                    typeAccount,
                     bankAccountHolderName,
                     bankAccountHolderType,
-                    bankName,
-                    id,
-                    routingAccount,
-                    typeAccount,
+                    bankAccountFunction,
+                    verified,
+                    status,
+                    services,
+                    default_,
                     additionalProperties);
         }
     }

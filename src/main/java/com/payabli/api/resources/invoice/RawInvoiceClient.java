@@ -4,6 +4,7 @@
 package com.payabli.api.resources.invoice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.payabli.api.core.ClientOptions;
 import com.payabli.api.core.MediaTypes;
 import com.payabli.api.core.ObjectMappers;
@@ -30,6 +31,7 @@ import com.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import com.payabli.api.types.FileContent;
 import com.payabli.api.types.PayabliApiResponse;
 import java.io.IOException;
+import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -537,21 +539,21 @@ public class RawInvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry) {
         return listInvoices(entry, ListInvoicesRequest.builder().build());
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry, ListInvoicesRequest request) {
         return listInvoices(entry, request, null);
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(
             String entry, ListInvoicesRequest request, RequestOptions requestOptions) {
@@ -559,6 +561,10 @@ public class RawInvoiceClient {
                 .newBuilder()
                 .addPathSegments("Query/invoices")
                 .addPathSegment(entry);
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -623,21 +629,21 @@ public class RawInvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId) {
         return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build());
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId, ListInvoicesOrgRequest request) {
         return listInvoicesOrg(orgId, request, null);
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request, RequestOptions requestOptions) {
@@ -645,6 +651,10 @@ public class RawInvoiceClient {
                 .newBuilder()
                 .addPathSegments("Query/invoices/org")
                 .addPathSegment(Integer.toString(orgId));
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -754,6 +764,70 @@ public class RawInvoiceClient {
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), SendInvoiceResponse.class),
+                        response);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                    response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Export a single invoice in PDF format.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice) {
+        return getInvoicePdf(idInvoice, null);
+    }
+
+    /**
+     * Export a single invoice in PDF format.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Export/invoicePdf")
+                .addPathSegment(Integer.toString(idInvoice))
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(
+                                responseBody.string(), new TypeReference<Map<String, Object>>() {}),
                         response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";

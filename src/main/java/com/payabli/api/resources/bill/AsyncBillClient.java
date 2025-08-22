@@ -12,14 +12,14 @@ import com.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import com.payabli.api.resources.bill.requests.ListBillsRequest;
 import com.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import com.payabli.api.resources.bill.requests.SetApprovedBillRequest;
+import com.payabli.api.resources.bill.types.BillOutData;
+import com.payabli.api.resources.bill.types.BillResponse;
 import com.payabli.api.resources.bill.types.EditBillResponse;
 import com.payabli.api.resources.bill.types.GetBillResponse;
 import com.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
 import com.payabli.api.resources.bill.types.SetApprovedBillResponse;
-import com.payabli.api.types.BillOutData;
 import com.payabli.api.types.BillQueryResponse;
 import com.payabli.api.types.FileContent;
-import com.payabli.api.types.PayabliApiResponseBills;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -43,14 +43,14 @@ public class AsyncBillClient {
     /**
      * Creates a bill in an entrypoint.
      */
-    public CompletableFuture<PayabliApiResponseBills> addBill(String entry, AddBillRequest request) {
+    public CompletableFuture<BillResponse> addBill(String entry, AddBillRequest request) {
         return this.rawClient.addBill(entry, request).thenApply(response -> response.body());
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public CompletableFuture<PayabliApiResponseBills> addBill(
+    public CompletableFuture<BillResponse> addBill(
             String entry, AddBillRequest request, RequestOptions requestOptions) {
         return this.rawClient.addBill(entry, request, requestOptions).thenApply(response -> response.body());
     }
@@ -58,14 +58,14 @@ public class AsyncBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<PayabliApiResponseBills> deleteAttachedFromBill(String filename, int idBill) {
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(String filename, int idBill) {
         return this.rawClient.deleteAttachedFromBill(filename, idBill).thenApply(response -> response.body());
     }
 
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<PayabliApiResponseBills> deleteAttachedFromBill(
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request) {
         return this.rawClient.deleteAttachedFromBill(filename, idBill, request).thenApply(response -> response.body());
     }
@@ -73,7 +73,7 @@ public class AsyncBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<PayabliApiResponseBills> deleteAttachedFromBill(
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .deleteAttachedFromBill(filename, idBill, request, requestOptions)
@@ -83,14 +83,14 @@ public class AsyncBillClient {
     /**
      * Deletes a bill by ID.
      */
-    public CompletableFuture<PayabliApiResponseBills> deleteBill(int idBill) {
+    public CompletableFuture<BillResponse> deleteBill(int idBill) {
         return this.rawClient.deleteBill(idBill).thenApply(response -> response.body());
     }
 
     /**
      * Deletes a bill by ID.
      */
-    public CompletableFuture<PayabliApiResponseBills> deleteBill(int idBill, RequestOptions requestOptions) {
+    public CompletableFuture<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
         return this.rawClient.deleteBill(idBill, requestOptions).thenApply(response -> response.body());
     }
 
@@ -156,21 +156,21 @@ public class AsyncBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<BillQueryResponse> listBills(String entry) {
         return this.rawClient.listBills(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<BillQueryResponse> listBills(String entry, ListBillsRequest request) {
         return this.rawClient.listBills(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<BillQueryResponse> listBills(
             String entry, ListBillsRequest request, RequestOptions requestOptions) {
@@ -178,21 +178,21 @@ public class AsyncBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<BillQueryResponse> listBillsOrg(int orgId) {
         return this.rawClient.listBillsOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<BillQueryResponse> listBillsOrg(int orgId, ListBillsOrgRequest request) {
         return this.rawClient.listBillsOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<BillQueryResponse> listBillsOrg(
             int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
@@ -219,15 +219,14 @@ public class AsyncBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public CompletableFuture<PayabliApiResponseBills> sendToApprovalBill(
-            int idBill, SendToApprovalBillRequest request) {
+    public CompletableFuture<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
         return this.rawClient.sendToApprovalBill(idBill, request).thenApply(response -> response.body());
     }
 
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public CompletableFuture<PayabliApiResponseBills> sendToApprovalBill(
+    public CompletableFuture<BillResponse> sendToApprovalBill(
             int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .sendToApprovalBill(idBill, request, requestOptions)

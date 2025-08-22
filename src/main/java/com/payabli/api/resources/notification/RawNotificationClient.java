@@ -4,6 +4,7 @@
 package com.payabli.api.resources.notification;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.payabli.api.core.ClientOptions;
 import com.payabli.api.core.MediaTypes;
 import com.payabli.api.core.ObjectMappers;
@@ -21,6 +22,7 @@ import com.payabli.api.types.NotificationQueryRecord;
 import com.payabli.api.types.PayabliApiResponse;
 import com.payabli.api.types.PayabliApiResponseNotifications;
 import java.io.IOException;
+import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -278,6 +280,70 @@ public class RawNotificationClient {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBody.string(), PayabliApiResponseNotifications.class),
+                        response);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                    response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Gets a copy of a generated report by ID.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> getReportFile(long id) {
+        return getReportFile(id, null);
+    }
+
+    /**
+     * Gets a copy of a generated report by ID.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> getReportFile(long id, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Export/notificationReport")
+                .addPathSegment(Long.toString(id))
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(
+                                responseBody.string(), new TypeReference<Map<String, Object>>() {}),
                         response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";

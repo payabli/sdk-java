@@ -124,6 +124,8 @@ public enum NotificationContentEventType {
 
     PAY_OUT_PAID("PayOutPaid"),
 
+    PAY_OUT_RETURNED("PayOutReturned"),
+
     PAYOUT_SUBSCRIPTION_CREATED("PayoutSubscriptionCreated"),
 
     PAYOUT_SUBSCRIPTION_UPDATED("PayoutSubscriptionUpdated"),

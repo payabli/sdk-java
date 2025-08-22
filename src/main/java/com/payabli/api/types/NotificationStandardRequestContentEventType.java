@@ -88,6 +88,8 @@ public enum NotificationStandardRequestContentEventType {
 
     BOARDING_APPLICATION("BoardingApplication"),
 
+    PAYPOINT_MOVED("PaypointMoved"),
+
     FRAUD_ALERT("FraudAlert"),
 
     INVOICE_SENT("InvoiceSent"),
@@ -129,6 +131,8 @@ public enum NotificationStandardRequestContentEventType {
     PAY_OUT_CANCELED("PayOutCanceled"),
 
     PAY_OUT_PAID("PayOutPaid"),
+
+    PAY_OUT_RETURNED("PayOutReturned"),
 
     PAYOUT_SUBSCRIPTION_CREATED("PayoutSubscriptionCreated"),
 

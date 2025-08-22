@@ -30,11 +30,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
     private final Optional<String> bankAccount;
 
+    private final Optional<BinData> binData;
+
     private final Optional<String> cloudSignatureData;
 
     private final Optional<String> cloudSignatureFormat;
 
+    private final Optional<PayoutGatewayConnector> gatewayConnector;
+
     private final Optional<String> holderName;
+
+    private final Optional<String> initiator;
 
     private final Optional<String> maskedAccount;
 
@@ -44,7 +50,11 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
     private final Optional<String> payorData;
 
+    private final Optional<String> sequence;
+
     private final Optional<String> storedId;
+
+    private final Optional<String> storedMethodUsageType;
 
     private final Map<String, Object> additionalProperties;
 
@@ -54,28 +64,38 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             Optional<String> accountType,
             Optional<String> accountZip,
             Optional<String> bankAccount,
+            Optional<BinData> binData,
             Optional<String> cloudSignatureData,
             Optional<String> cloudSignatureFormat,
+            Optional<PayoutGatewayConnector> gatewayConnector,
             Optional<String> holderName,
+            Optional<String> initiator,
             Optional<String> maskedAccount,
             Optional<String> orderDescription,
             Optional<PaymentDetail> paymentDetails,
             Optional<String> payorData,
+            Optional<String> sequence,
             Optional<String> storedId,
+            Optional<String> storedMethodUsageType,
             Map<String, Object> additionalProperties) {
         this.accountExp = accountExp;
         this.accountId = accountId;
         this.accountType = accountType;
         this.accountZip = accountZip;
         this.bankAccount = bankAccount;
+        this.binData = binData;
         this.cloudSignatureData = cloudSignatureData;
         this.cloudSignatureFormat = cloudSignatureFormat;
+        this.gatewayConnector = gatewayConnector;
         this.holderName = holderName;
+        this.initiator = initiator;
         this.maskedAccount = maskedAccount;
         this.orderDescription = orderDescription;
         this.paymentDetails = paymentDetails;
         this.payorData = payorData;
+        this.sequence = sequence;
         this.storedId = storedId;
+        this.storedMethodUsageType = storedMethodUsageType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -104,6 +124,11 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
         return bankAccount;
     }
 
+    @JsonProperty("binData")
+    public Optional<BinData> getBinData() {
+        return binData;
+    }
+
     @JsonProperty("cloudSignatureData")
     public Optional<String> getCloudSignatureData() {
         return cloudSignatureData;
@@ -114,12 +139,22 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
         return cloudSignatureFormat;
     }
 
+    @JsonProperty("gatewayConnector")
+    public Optional<PayoutGatewayConnector> getGatewayConnector() {
+        return gatewayConnector;
+    }
+
     /**
      * @return Card or bank account holder name.
      */
     @JsonProperty("HolderName")
     public Optional<String> getHolderName() {
         return holderName;
+    }
+
+    @JsonProperty("Initiator")
+    public Optional<String> getInitiator() {
+        return initiator;
     }
 
     @JsonProperty("MaskedAccount")
@@ -142,12 +177,22 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
         return payorData;
     }
 
+    @JsonProperty("Sequence")
+    public Optional<String> getSequence() {
+        return sequence;
+    }
+
     /**
      * @return Identifier of stored payment method used in transaction.
      */
     @JsonProperty("StoredId")
     public Optional<String> getStoredId() {
         return storedId;
+    }
+
+    @JsonProperty("StoredMethodUsageType")
+    public Optional<String> getStoredMethodUsageType() {
+        return storedMethodUsageType;
     }
 
     @java.lang.Override
@@ -168,14 +213,19 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
                 && accountType.equals(other.accountType)
                 && accountZip.equals(other.accountZip)
                 && bankAccount.equals(other.bankAccount)
+                && binData.equals(other.binData)
                 && cloudSignatureData.equals(other.cloudSignatureData)
                 && cloudSignatureFormat.equals(other.cloudSignatureFormat)
+                && gatewayConnector.equals(other.gatewayConnector)
                 && holderName.equals(other.holderName)
+                && initiator.equals(other.initiator)
                 && maskedAccount.equals(other.maskedAccount)
                 && orderDescription.equals(other.orderDescription)
                 && paymentDetails.equals(other.paymentDetails)
                 && payorData.equals(other.payorData)
-                && storedId.equals(other.storedId);
+                && sequence.equals(other.sequence)
+                && storedId.equals(other.storedId)
+                && storedMethodUsageType.equals(other.storedMethodUsageType);
     }
 
     @java.lang.Override
@@ -186,14 +236,19 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
                 this.accountType,
                 this.accountZip,
                 this.bankAccount,
+                this.binData,
                 this.cloudSignatureData,
                 this.cloudSignatureFormat,
+                this.gatewayConnector,
                 this.holderName,
+                this.initiator,
                 this.maskedAccount,
                 this.orderDescription,
                 this.paymentDetails,
                 this.payorData,
-                this.storedId);
+                this.sequence,
+                this.storedId,
+                this.storedMethodUsageType);
     }
 
     @java.lang.Override
@@ -217,11 +272,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
         private Optional<String> bankAccount = Optional.empty();
 
+        private Optional<BinData> binData = Optional.empty();
+
         private Optional<String> cloudSignatureData = Optional.empty();
 
         private Optional<String> cloudSignatureFormat = Optional.empty();
 
+        private Optional<PayoutGatewayConnector> gatewayConnector = Optional.empty();
+
         private Optional<String> holderName = Optional.empty();
+
+        private Optional<String> initiator = Optional.empty();
 
         private Optional<String> maskedAccount = Optional.empty();
 
@@ -231,7 +292,11 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
         private Optional<String> payorData = Optional.empty();
 
+        private Optional<String> sequence = Optional.empty();
+
         private Optional<String> storedId = Optional.empty();
+
+        private Optional<String> storedMethodUsageType = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -244,14 +309,19 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             accountType(other.getAccountType());
             accountZip(other.getAccountZip());
             bankAccount(other.getBankAccount());
+            binData(other.getBinData());
             cloudSignatureData(other.getCloudSignatureData());
             cloudSignatureFormat(other.getCloudSignatureFormat());
+            gatewayConnector(other.getGatewayConnector());
             holderName(other.getHolderName());
+            initiator(other.getInitiator());
             maskedAccount(other.getMaskedAccount());
             orderDescription(other.getOrderDescription());
             paymentDetails(other.getPaymentDetails());
             payorData(other.getPayorData());
+            sequence(other.getSequence());
             storedId(other.getStoredId());
+            storedMethodUsageType(other.getStoredMethodUsageType());
             return this;
         }
 
@@ -310,6 +380,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        @JsonSetter(value = "binData", nulls = Nulls.SKIP)
+        public Builder binData(Optional<BinData> binData) {
+            this.binData = binData;
+            return this;
+        }
+
+        public Builder binData(BinData binData) {
+            this.binData = Optional.ofNullable(binData);
+            return this;
+        }
+
         @JsonSetter(value = "cloudSignatureData", nulls = Nulls.SKIP)
         public Builder cloudSignatureData(Optional<String> cloudSignatureData) {
             this.cloudSignatureData = cloudSignatureData;
@@ -332,6 +413,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        @JsonSetter(value = "gatewayConnector", nulls = Nulls.SKIP)
+        public Builder gatewayConnector(Optional<PayoutGatewayConnector> gatewayConnector) {
+            this.gatewayConnector = gatewayConnector;
+            return this;
+        }
+
+        public Builder gatewayConnector(PayoutGatewayConnector gatewayConnector) {
+            this.gatewayConnector = Optional.ofNullable(gatewayConnector);
+            return this;
+        }
+
         /**
          * <p>Card or bank account holder name.</p>
          */
@@ -343,6 +435,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
         public Builder holderName(String holderName) {
             this.holderName = Optional.ofNullable(holderName);
+            return this;
+        }
+
+        @JsonSetter(value = "Initiator", nulls = Nulls.SKIP)
+        public Builder initiator(Optional<String> initiator) {
+            this.initiator = initiator;
+            return this;
+        }
+
+        public Builder initiator(String initiator) {
+            this.initiator = Optional.ofNullable(initiator);
             return this;
         }
 
@@ -390,6 +493,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        @JsonSetter(value = "Sequence", nulls = Nulls.SKIP)
+        public Builder sequence(Optional<String> sequence) {
+            this.sequence = sequence;
+            return this;
+        }
+
+        public Builder sequence(String sequence) {
+            this.sequence = Optional.ofNullable(sequence);
+            return this;
+        }
+
         /**
          * <p>Identifier of stored payment method used in transaction.</p>
          */
@@ -404,6 +518,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        @JsonSetter(value = "StoredMethodUsageType", nulls = Nulls.SKIP)
+        public Builder storedMethodUsageType(Optional<String> storedMethodUsageType) {
+            this.storedMethodUsageType = storedMethodUsageType;
+            return this;
+        }
+
+        public Builder storedMethodUsageType(String storedMethodUsageType) {
+            this.storedMethodUsageType = Optional.ofNullable(storedMethodUsageType);
+            return this;
+        }
+
         public QueryPayoutTransactionRecordsItemPaymentData build() {
             return new QueryPayoutTransactionRecordsItemPaymentData(
                     accountExp,
@@ -411,14 +536,19 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
                     accountType,
                     accountZip,
                     bankAccount,
+                    binData,
                     cloudSignatureData,
                     cloudSignatureFormat,
+                    gatewayConnector,
                     holderName,
+                    initiator,
                     maskedAccount,
                     orderDescription,
                     paymentDetails,
                     payorData,
+                    sequence,
                     storedId,
+                    storedMethodUsageType,
                     additionalProperties);
         }
     }

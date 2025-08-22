@@ -31,6 +31,7 @@ import com.payabli.api.resources.query.requests.ListTransactionsOrgRequest;
 import com.payabli.api.resources.query.requests.ListTransactionsRequest;
 import com.payabli.api.resources.query.requests.ListTransfersPaypointRequest;
 import com.payabli.api.resources.query.requests.ListTransfersRequest;
+import com.payabli.api.resources.query.requests.ListTransfersRequestOrg;
 import com.payabli.api.resources.query.requests.ListUsersOrgRequest;
 import com.payabli.api.resources.query.requests.ListUsersPaypointRequest;
 import com.payabli.api.resources.query.requests.ListVcardsOrgRequest;
@@ -38,6 +39,8 @@ import com.payabli.api.resources.query.requests.ListVcardsRequest;
 import com.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import com.payabli.api.resources.query.requests.ListVendorsRequest;
 import com.payabli.api.resources.query.types.ListOrganizationsResponse;
+import com.payabli.api.resources.query.types.QueryTransferDetailResponse;
+import com.payabli.api.types.QueryBatchesDetailResponse;
 import com.payabli.api.types.QueryBatchesOutResponse;
 import com.payabli.api.types.QueryBatchesResponse;
 import com.payabli.api.types.QueryChargebacksResponse;
@@ -50,10 +53,10 @@ import com.payabli.api.types.QueryResponseSettlements;
 import com.payabli.api.types.QueryResponseTransactions;
 import com.payabli.api.types.QueryResponseVendors;
 import com.payabli.api.types.QuerySubscriptionResponse;
-import com.payabli.api.types.QueryTransferDetailResponse;
 import com.payabli.api.types.QueryUserResponse;
 import com.payabli.api.types.TransferQueryResponse;
 import com.payabli.api.types.VCardQueryResponse;
+import java.util.Optional;
 
 public class QueryClient {
     protected final ClientOptions clientOptions;
@@ -73,43 +76,46 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and
+     * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetails(String entry) {
+    public QueryBatchesDetailResponse listBatchDetails(String entry) {
         return this.rawClient.listBatchDetails(entry).body();
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and
+     * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetails(String entry, ListBatchDetailsRequest request) {
+    public QueryBatchesDetailResponse listBatchDetails(String entry, ListBatchDetailsRequest request) {
         return this.rawClient.listBatchDetails(entry, request).body();
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and
+     * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetails(
+    public QueryBatchesDetailResponse listBatchDetails(
             String entry, ListBatchDetailsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBatchDetails(entry, request, requestOptions).body();
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listBatchDetailsOrg(int orgId) {
         return this.rawClient.listBatchDetailsOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listBatchDetailsOrg(int orgId, ListBatchDetailsOrgRequest request) {
         return this.rawClient.listBatchDetailsOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+     * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request, RequestOptions requestOptions) {
@@ -119,42 +125,42 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesResponse listBatches(String entry) {
         return this.rawClient.listBatches(entry).body();
     }
 
     /**
-     * Retrieve a list of batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesResponse listBatches(String entry, ListBatchesRequest request) {
         return this.rawClient.listBatches(entry, request).body();
     }
 
     /**
-     * Retrieve a list of batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesResponse listBatches(String entry, ListBatchesRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBatches(entry, request, requestOptions).body();
     }
 
     /**
-     * Retrieve a list of batches for an org. Use filters to limit results.
+     * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesResponse listBatchesOrg(int orgId) {
         return this.rawClient.listBatchesOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of batches for an org. Use filters to limit results.
+     * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesResponse listBatchesOrg(int orgId, ListBatchesOrgRequest request) {
         return this.rawClient.listBatchesOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of batches for an org. Use filters to limit results.
+     * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesResponse listBatchesOrg(
             int orgId, ListBatchesOrgRequest request, RequestOptions requestOptions) {
@@ -162,21 +168,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesOutResponse listBatchesOut(String entry) {
         return this.rawClient.listBatchesOut(entry).body();
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesOutResponse listBatchesOut(String entry, ListBatchesOutRequest request) {
         return this.rawClient.listBatchesOut(entry, request).body();
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesOutResponse listBatchesOut(
             String entry, ListBatchesOutRequest request, RequestOptions requestOptions) {
@@ -184,21 +190,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesOutResponse listBatchesOutOrg(int orgId) {
         return this.rawClient.listBatchesOutOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesOutResponse listBatchesOutOrg(int orgId, ListBatchesOutOrgRequest request) {
         return this.rawClient.listBatchesOutOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+     * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryBatchesOutResponse listBatchesOutOrg(
             int orgId, ListBatchesOutOrgRequest request, RequestOptions requestOptions) {
@@ -206,21 +212,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryChargebacksResponse listChargebacks(String entry) {
         return this.rawClient.listChargebacks(entry).body();
     }
 
     /**
-     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryChargebacksResponse listChargebacks(String entry, ListChargebacksRequest request) {
         return this.rawClient.listChargebacks(entry, request).body();
     }
 
     /**
-     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+     * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryChargebacksResponse listChargebacks(
             String entry, ListChargebacksRequest request, RequestOptions requestOptions) {
@@ -228,21 +234,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryChargebacksResponse listChargebacksOrg(int orgId) {
         return this.rawClient.listChargebacksOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryChargebacksResponse listChargebacksOrg(int orgId, ListChargebacksOrgRequest request) {
         return this.rawClient.listChargebacksOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+     * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryChargebacksResponse listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request, RequestOptions requestOptions) {
@@ -250,21 +256,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieves a list of customers for a paypoint. Use filters to limit results.
+     * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryCustomerResponse listCustomers(String entry) {
         return this.rawClient.listCustomers(entry).body();
     }
 
     /**
-     * Retrieves a list of customers for a paypoint. Use filters to limit results.
+     * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryCustomerResponse listCustomers(String entry, ListCustomersRequest request) {
         return this.rawClient.listCustomers(entry, request).body();
     }
 
     /**
-     * Retrieves a list of customers for a paypoint. Use filters to limit results.
+     * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryCustomerResponse listCustomers(
             String entry, ListCustomersRequest request, RequestOptions requestOptions) {
@@ -272,21 +278,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieves a list of customers for an org. Use filters to limit results.
+     * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryCustomerResponse listCustomersOrg(int orgId) {
         return this.rawClient.listCustomersOrg(orgId).body();
     }
 
     /**
-     * Retrieves a list of customers for an org. Use filters to limit results.
+     * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryCustomerResponse listCustomersOrg(int orgId, ListCustomersOrgRequest request) {
         return this.rawClient.listCustomersOrg(orgId, request).body();
     }
 
     /**
-     * Retrieves a list of customers for an org. Use filters to limit results.
+     * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryCustomerResponse listCustomersOrg(
             int orgId, ListCustomersOrgRequest request, RequestOptions requestOptions) {
@@ -390,21 +396,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public ListOrganizationsResponse listOrganizations(int orgId) {
         return this.rawClient.listOrganizations(orgId).body();
     }
 
     /**
-     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public ListOrganizationsResponse listOrganizations(int orgId, ListOrganizationsRequest request) {
         return this.rawClient.listOrganizations(orgId, request).body();
     }
 
     /**
-     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+     * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public ListOrganizationsResponse listOrganizations(
             int orgId, ListOrganizationsRequest request, RequestOptions requestOptions) {
@@ -412,42 +418,42 @@ public class QueryClient {
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryPayoutTransaction listPayout(String entry) {
         return this.rawClient.listPayout(entry).body();
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryPayoutTransaction listPayout(String entry, ListPayoutRequest request) {
         return this.rawClient.listPayout(entry, request).body();
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryPayoutTransaction listPayout(String entry, ListPayoutRequest request, RequestOptions requestOptions) {
         return this.rawClient.listPayout(entry, request, requestOptions).body();
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryPayoutTransaction listPayoutOrg(int orgId) {
         return this.rawClient.listPayoutOrg(orgId).body();
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryPayoutTransaction listPayoutOrg(int orgId, ListPayoutOrgRequest request) {
         return this.rawClient.listPayoutOrg(orgId, request).body();
     }
 
     /**
-     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+     * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryPayoutTransaction listPayoutOrg(
             int orgId, ListPayoutOrgRequest request, RequestOptions requestOptions) {
@@ -455,21 +461,21 @@ public class QueryClient {
     }
 
     /**
-     * Returns a list of paypoints in an organization. Use filters to limit results.
+     * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryEntrypointResponse listPaypoints(int orgId) {
         return this.rawClient.listPaypoints(orgId).body();
     }
 
     /**
-     * Returns a list of paypoints in an organization. Use filters to limit results.
+     * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryEntrypointResponse listPaypoints(int orgId, ListPaypointsRequest request) {
         return this.rawClient.listPaypoints(orgId, request).body();
     }
 
     /**
-     * Returns a list of paypoints in an organization. Use filters to limit results.
+     * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryEntrypointResponse listPaypoints(
             int orgId, ListPaypointsRequest request, RequestOptions requestOptions) {
@@ -477,21 +483,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listSettlements(String entry) {
         return this.rawClient.listSettlements(entry).body();
     }
 
     /**
-     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listSettlements(String entry, ListSettlementsRequest request) {
         return this.rawClient.listSettlements(entry, request).body();
     }
 
     /**
-     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listSettlements(
             String entry, ListSettlementsRequest request, RequestOptions requestOptions) {
@@ -499,21 +505,21 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of settled transactions for an organization.
+     * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listSettlementsOrg(int orgId) {
         return this.rawClient.listSettlementsOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of settled transactions for an organization.
+     * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listSettlementsOrg(int orgId, ListSettlementsOrgRequest request) {
         return this.rawClient.listSettlementsOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of settled transactions for an organization.
+     * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseSettlements listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request, RequestOptions requestOptions) {
@@ -521,21 +527,21 @@ public class QueryClient {
     }
 
     /**
-     * Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+     * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QuerySubscriptionResponse listSubscriptions(String entry) {
         return this.rawClient.listSubscriptions(entry).body();
     }
 
     /**
-     * Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+     * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QuerySubscriptionResponse listSubscriptions(String entry, ListSubscriptionsRequest request) {
         return this.rawClient.listSubscriptions(entry, request).body();
     }
 
     /**
-     * Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+     * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QuerySubscriptionResponse listSubscriptions(
             String entry, ListSubscriptionsRequest request, RequestOptions requestOptions) {
@@ -543,21 +549,21 @@ public class QueryClient {
     }
 
     /**
-     * Returns a list of subscriptions for a single org. Use filters to limit results.
+     * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QuerySubscriptionResponse listSubscriptionsOrg(int orgId) {
         return this.rawClient.listSubscriptionsOrg(orgId).body();
     }
 
     /**
-     * Returns a list of subscriptions for a single org. Use filters to limit results.
+     * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QuerySubscriptionResponse listSubscriptionsOrg(int orgId, ListSubscriptionsOrgRequest request) {
         return this.rawClient.listSubscriptionsOrg(orgId, request).body();
     }
 
     /**
-     * Returns a list of subscriptions for a single org. Use filters to limit results.
+     * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QuerySubscriptionResponse listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request, RequestOptions requestOptions) {
@@ -567,7 +573,7 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
      * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
@@ -580,7 +586,7 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
      * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
@@ -593,7 +599,7 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for a paypoint. Use filters to limit results.
+     * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
      * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
@@ -607,10 +613,12 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to limit results.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
+     * Retrieve a list of transactions for an organization. Use filters to
+     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
+     * <pre><code>curl --request GET \
+     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
      *   --header 'requestToken: &lt;api-key&gt;'
      *
      * </code></pre>
@@ -620,10 +628,12 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to limit results.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
+     * Retrieve a list of transactions for an organization. Use filters to
+     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
+     * <pre><code>curl --request GET \
+     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
      *   --header 'requestToken: &lt;api-key&gt;'
      *
      * </code></pre>
@@ -633,10 +643,12 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to limit results.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
+     * Retrieve a list of transactions for an organization. Use filters to
+     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
+     * <pre><code>curl --request GET \
+     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
      *   --header 'requestToken: &lt;api-key&gt;'
      *
      * </code></pre>
@@ -649,7 +661,7 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryTransferDetailResponse listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request) {
@@ -657,7 +669,7 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryTransferDetailResponse listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request, RequestOptions requestOptions) {
@@ -667,25 +679,47 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of transfers for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public TransferQueryResponse listTransfers(String entry) {
         return this.rawClient.listTransfers(entry).body();
     }
 
     /**
-     * Retrieve a list of transfers for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public TransferQueryResponse listTransfers(String entry, ListTransfersRequest request) {
         return this.rawClient.listTransfers(entry, request).body();
     }
 
     /**
-     * Retrieve a list of transfers for a paypoint. Use filters to limit results.
+     * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public TransferQueryResponse listTransfers(
             String entry, ListTransfersRequest request, RequestOptions requestOptions) {
         return this.rawClient.listTransfers(entry, request, requestOptions).body();
+    }
+
+    /**
+     * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public TransferQueryResponse listTransfersOrg(Optional<Long> orgId) {
+        return this.rawClient.listTransfersOrg(orgId).body();
+    }
+
+    /**
+     * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public TransferQueryResponse listTransfersOrg(Optional<Long> orgId, ListTransfersRequestOrg request) {
+        return this.rawClient.listTransfersOrg(orgId, request).body();
+    }
+
+    /**
+     * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public TransferQueryResponse listTransfersOrg(
+            Optional<Long> orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
+        return this.rawClient.listTransfersOrg(orgId, request, requestOptions).body();
     }
 
     /**
@@ -732,42 +766,42 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseVendors listVendors(String entry) {
         return this.rawClient.listVendors(entry).body();
     }
 
     /**
-     * Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseVendors listVendors(String entry, ListVendorsRequest request) {
         return this.rawClient.listVendors(entry, request).body();
     }
 
     /**
-     * Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseVendors listVendors(String entry, ListVendorsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listVendors(entry, request, requestOptions).body();
     }
 
     /**
-     * Retrieve a list of vendors for an organization. Use filters to limit results.
+     * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseVendors listVendorsOrg(int orgId) {
         return this.rawClient.listVendorsOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of vendors for an organization. Use filters to limit results.
+     * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseVendors listVendorsOrg(int orgId, ListVendorsOrgRequest request) {
         return this.rawClient.listVendorsOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of vendors for an organization. Use filters to limit results.
+     * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryResponseVendors listVendorsOrg(
             int orgId, ListVendorsOrgRequest request, RequestOptions requestOptions) {
@@ -775,42 +809,42 @@ public class QueryClient {
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public VCardQueryResponse listVcards(String entry) {
         return this.rawClient.listVcards(entry).body();
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public VCardQueryResponse listVcards(String entry, ListVcardsRequest request) {
         return this.rawClient.listVcards(entry, request).body();
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public VCardQueryResponse listVcards(String entry, ListVcardsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listVcards(entry, request, requestOptions).body();
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public VCardQueryResponse listVcardsOrg(int orgId) {
         return this.rawClient.listVcardsOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public VCardQueryResponse listVcardsOrg(int orgId, ListVcardsOrgRequest request) {
         return this.rawClient.listVcardsOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+     * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public VCardQueryResponse listVcardsOrg(int orgId, ListVcardsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient.listVcardsOrg(orgId, request, requestOptions).body();

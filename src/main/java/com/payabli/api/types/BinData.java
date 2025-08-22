@@ -20,7 +20,11 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BinData.Builder.class)
 public final class BinData {
+    private final Optional<String> binMatchedLength;
+
     private final Optional<String> binCardBrand;
+
+    private final Optional<String> binCardType;
 
     private final Optional<String> binCardCategory;
 
@@ -30,41 +34,68 @@ public final class BinData {
 
     private final Optional<String> binCardIssuerCountryCodeA2;
 
-    private final Optional<Double> binCardIssuerCountryNumber;
+    private final Optional<String> binCardIssuerCountryNumber;
 
-    private final Optional<String> binCardType;
+    private final Optional<String> binCardIsRegulated;
 
-    private final Optional<Double> binMatchedLength;
+    private final Optional<String> binCardUseCategory;
+
+    private final Optional<String> binCardIssuerCountryCodeA3;
 
     private final Map<String, Object> additionalProperties;
 
     private BinData(
+            Optional<String> binMatchedLength,
             Optional<String> binCardBrand,
+            Optional<String> binCardType,
             Optional<String> binCardCategory,
             Optional<String> binCardIssuer,
             Optional<String> binCardIssuerCountry,
             Optional<String> binCardIssuerCountryCodeA2,
-            Optional<Double> binCardIssuerCountryNumber,
-            Optional<String> binCardType,
-            Optional<Double> binMatchedLength,
+            Optional<String> binCardIssuerCountryNumber,
+            Optional<String> binCardIsRegulated,
+            Optional<String> binCardUseCategory,
+            Optional<String> binCardIssuerCountryCodeA3,
             Map<String, Object> additionalProperties) {
+        this.binMatchedLength = binMatchedLength;
         this.binCardBrand = binCardBrand;
+        this.binCardType = binCardType;
         this.binCardCategory = binCardCategory;
         this.binCardIssuer = binCardIssuer;
         this.binCardIssuerCountry = binCardIssuerCountry;
         this.binCardIssuerCountryCodeA2 = binCardIssuerCountryCodeA2;
         this.binCardIssuerCountryNumber = binCardIssuerCountryNumber;
-        this.binCardType = binCardType;
-        this.binMatchedLength = binMatchedLength;
+        this.binCardIsRegulated = binCardIsRegulated;
+        this.binCardUseCategory = binCardUseCategory;
+        this.binCardIssuerCountryCodeA3 = binCardIssuerCountryCodeA3;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The card brand. For example, Visa, Mastercard, American Express, Discover.
+     * @return The number of characters from the beginning of the card number that
+     * were matched against a Bank Identification Number (BIN) or the Card
+     * Range table.
+     */
+    @JsonProperty("binMatchedLength")
+    public Optional<String> getBinMatchedLength() {
+        return binMatchedLength;
+    }
+
+    /**
+     * @return The card brand. For example, Visa, Mastercard, American Express,
+     * Discover.
      */
     @JsonProperty("binCardBrand")
     public Optional<String> getBinCardBrand() {
         return binCardBrand;
+    }
+
+    /**
+     * @return The type of card: Credit or Debit.
+     */
+    @JsonProperty("binCardType")
+    public Optional<String> getBinCardType() {
+        return binCardType;
     }
 
     /**
@@ -103,24 +134,34 @@ public final class BinData {
      * @return The issuing financial institution's ISO standard numeric country code. See <a href="https://www.iso.org/obp/ui/#search">this resource</a> for a list of codes.
      */
     @JsonProperty("binCardIssuerCountryNumber")
-    public Optional<Double> getBinCardIssuerCountryNumber() {
+    public Optional<String> getBinCardIssuerCountryNumber() {
         return binCardIssuerCountryNumber;
     }
 
     /**
-     * @return The type of card: Credit or Debit.
+     * @return Indicates whether the card is regulated.
      */
-    @JsonProperty("binCardType")
-    public Optional<String> getBinCardType() {
-        return binCardType;
+    @JsonProperty("binCardIsRegulated")
+    public Optional<String> getBinCardIsRegulated() {
+        return binCardIsRegulated;
     }
 
     /**
-     * @return The number of characters from the beginning of the card number that were matched against a Bank Identification Number (BIN) or the Card Range table.
+     * @return The use category classification for the card.
      */
-    @JsonProperty("binMatchedLength")
-    public Optional<Double> getBinMatchedLength() {
-        return binMatchedLength;
+    @JsonProperty("binCardUseCategory")
+    public Optional<String> getBinCardUseCategory() {
+        return binCardUseCategory;
+    }
+
+    /**
+     * @return The issuing financial institution's three-character ISO country code.
+     * See <a href="https://www.iso.org/obp/ui/#search">this resource</a> for a list of
+     * codes.
+     */
+    @JsonProperty("binCardIssuerCountryCodeA3")
+    public Optional<String> getBinCardIssuerCountryCodeA3() {
+        return binCardIssuerCountryCodeA3;
     }
 
     @java.lang.Override
@@ -135,27 +176,33 @@ public final class BinData {
     }
 
     private boolean equalTo(BinData other) {
-        return binCardBrand.equals(other.binCardBrand)
+        return binMatchedLength.equals(other.binMatchedLength)
+                && binCardBrand.equals(other.binCardBrand)
+                && binCardType.equals(other.binCardType)
                 && binCardCategory.equals(other.binCardCategory)
                 && binCardIssuer.equals(other.binCardIssuer)
                 && binCardIssuerCountry.equals(other.binCardIssuerCountry)
                 && binCardIssuerCountryCodeA2.equals(other.binCardIssuerCountryCodeA2)
                 && binCardIssuerCountryNumber.equals(other.binCardIssuerCountryNumber)
-                && binCardType.equals(other.binCardType)
-                && binMatchedLength.equals(other.binMatchedLength);
+                && binCardIsRegulated.equals(other.binCardIsRegulated)
+                && binCardUseCategory.equals(other.binCardUseCategory)
+                && binCardIssuerCountryCodeA3.equals(other.binCardIssuerCountryCodeA3);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.binMatchedLength,
                 this.binCardBrand,
+                this.binCardType,
                 this.binCardCategory,
                 this.binCardIssuer,
                 this.binCardIssuerCountry,
                 this.binCardIssuerCountryCodeA2,
                 this.binCardIssuerCountryNumber,
-                this.binCardType,
-                this.binMatchedLength);
+                this.binCardIsRegulated,
+                this.binCardUseCategory,
+                this.binCardIssuerCountryCodeA3);
     }
 
     @java.lang.Override
@@ -169,7 +216,11 @@ public final class BinData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<String> binMatchedLength = Optional.empty();
+
         private Optional<String> binCardBrand = Optional.empty();
+
+        private Optional<String> binCardType = Optional.empty();
 
         private Optional<String> binCardCategory = Optional.empty();
 
@@ -179,11 +230,13 @@ public final class BinData {
 
         private Optional<String> binCardIssuerCountryCodeA2 = Optional.empty();
 
-        private Optional<Double> binCardIssuerCountryNumber = Optional.empty();
+        private Optional<String> binCardIssuerCountryNumber = Optional.empty();
 
-        private Optional<String> binCardType = Optional.empty();
+        private Optional<String> binCardIsRegulated = Optional.empty();
 
-        private Optional<Double> binMatchedLength = Optional.empty();
+        private Optional<String> binCardUseCategory = Optional.empty();
+
+        private Optional<String> binCardIssuerCountryCodeA3 = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -191,19 +244,39 @@ public final class BinData {
         private Builder() {}
 
         public Builder from(BinData other) {
+            binMatchedLength(other.getBinMatchedLength());
             binCardBrand(other.getBinCardBrand());
+            binCardType(other.getBinCardType());
             binCardCategory(other.getBinCardCategory());
             binCardIssuer(other.getBinCardIssuer());
             binCardIssuerCountry(other.getBinCardIssuerCountry());
             binCardIssuerCountryCodeA2(other.getBinCardIssuerCountryCodeA2());
             binCardIssuerCountryNumber(other.getBinCardIssuerCountryNumber());
-            binCardType(other.getBinCardType());
-            binMatchedLength(other.getBinMatchedLength());
+            binCardIsRegulated(other.getBinCardIsRegulated());
+            binCardUseCategory(other.getBinCardUseCategory());
+            binCardIssuerCountryCodeA3(other.getBinCardIssuerCountryCodeA3());
             return this;
         }
 
         /**
-         * <p>The card brand. For example, Visa, Mastercard, American Express, Discover.</p>
+         * <p>The number of characters from the beginning of the card number that
+         * were matched against a Bank Identification Number (BIN) or the Card
+         * Range table.</p>
+         */
+        @JsonSetter(value = "binMatchedLength", nulls = Nulls.SKIP)
+        public Builder binMatchedLength(Optional<String> binMatchedLength) {
+            this.binMatchedLength = binMatchedLength;
+            return this;
+        }
+
+        public Builder binMatchedLength(String binMatchedLength) {
+            this.binMatchedLength = Optional.ofNullable(binMatchedLength);
+            return this;
+        }
+
+        /**
+         * <p>The card brand. For example, Visa, Mastercard, American Express,
+         * Discover.</p>
          */
         @JsonSetter(value = "binCardBrand", nulls = Nulls.SKIP)
         public Builder binCardBrand(Optional<String> binCardBrand) {
@@ -213,6 +286,20 @@ public final class BinData {
 
         public Builder binCardBrand(String binCardBrand) {
             this.binCardBrand = Optional.ofNullable(binCardBrand);
+            return this;
+        }
+
+        /**
+         * <p>The type of card: Credit or Debit.</p>
+         */
+        @JsonSetter(value = "binCardType", nulls = Nulls.SKIP)
+        public Builder binCardType(Optional<String> binCardType) {
+            this.binCardType = binCardType;
+            return this;
+        }
+
+        public Builder binCardType(String binCardType) {
+            this.binCardType = Optional.ofNullable(binCardType);
             return this;
         }
 
@@ -276,54 +363,73 @@ public final class BinData {
          * <p>The issuing financial institution's ISO standard numeric country code. See <a href="https://www.iso.org/obp/ui/#search">this resource</a> for a list of codes.</p>
          */
         @JsonSetter(value = "binCardIssuerCountryNumber", nulls = Nulls.SKIP)
-        public Builder binCardIssuerCountryNumber(Optional<Double> binCardIssuerCountryNumber) {
+        public Builder binCardIssuerCountryNumber(Optional<String> binCardIssuerCountryNumber) {
             this.binCardIssuerCountryNumber = binCardIssuerCountryNumber;
             return this;
         }
 
-        public Builder binCardIssuerCountryNumber(Double binCardIssuerCountryNumber) {
+        public Builder binCardIssuerCountryNumber(String binCardIssuerCountryNumber) {
             this.binCardIssuerCountryNumber = Optional.ofNullable(binCardIssuerCountryNumber);
             return this;
         }
 
         /**
-         * <p>The type of card: Credit or Debit.</p>
+         * <p>Indicates whether the card is regulated.</p>
          */
-        @JsonSetter(value = "binCardType", nulls = Nulls.SKIP)
-        public Builder binCardType(Optional<String> binCardType) {
-            this.binCardType = binCardType;
+        @JsonSetter(value = "binCardIsRegulated", nulls = Nulls.SKIP)
+        public Builder binCardIsRegulated(Optional<String> binCardIsRegulated) {
+            this.binCardIsRegulated = binCardIsRegulated;
             return this;
         }
 
-        public Builder binCardType(String binCardType) {
-            this.binCardType = Optional.ofNullable(binCardType);
+        public Builder binCardIsRegulated(String binCardIsRegulated) {
+            this.binCardIsRegulated = Optional.ofNullable(binCardIsRegulated);
             return this;
         }
 
         /**
-         * <p>The number of characters from the beginning of the card number that were matched against a Bank Identification Number (BIN) or the Card Range table.</p>
+         * <p>The use category classification for the card.</p>
          */
-        @JsonSetter(value = "binMatchedLength", nulls = Nulls.SKIP)
-        public Builder binMatchedLength(Optional<Double> binMatchedLength) {
-            this.binMatchedLength = binMatchedLength;
+        @JsonSetter(value = "binCardUseCategory", nulls = Nulls.SKIP)
+        public Builder binCardUseCategory(Optional<String> binCardUseCategory) {
+            this.binCardUseCategory = binCardUseCategory;
             return this;
         }
 
-        public Builder binMatchedLength(Double binMatchedLength) {
-            this.binMatchedLength = Optional.ofNullable(binMatchedLength);
+        public Builder binCardUseCategory(String binCardUseCategory) {
+            this.binCardUseCategory = Optional.ofNullable(binCardUseCategory);
+            return this;
+        }
+
+        /**
+         * <p>The issuing financial institution's three-character ISO country code.
+         * See <a href="https://www.iso.org/obp/ui/#search">this resource</a> for a list of
+         * codes.</p>
+         */
+        @JsonSetter(value = "binCardIssuerCountryCodeA3", nulls = Nulls.SKIP)
+        public Builder binCardIssuerCountryCodeA3(Optional<String> binCardIssuerCountryCodeA3) {
+            this.binCardIssuerCountryCodeA3 = binCardIssuerCountryCodeA3;
+            return this;
+        }
+
+        public Builder binCardIssuerCountryCodeA3(String binCardIssuerCountryCodeA3) {
+            this.binCardIssuerCountryCodeA3 = Optional.ofNullable(binCardIssuerCountryCodeA3);
             return this;
         }
 
         public BinData build() {
             return new BinData(
+                    binMatchedLength,
                     binCardBrand,
+                    binCardType,
                     binCardCategory,
                     binCardIssuer,
                     binCardIssuerCountry,
                     binCardIssuerCountryCodeA2,
                     binCardIssuerCountryNumber,
-                    binCardType,
-                    binMatchedLength,
+                    binCardIsRegulated,
+                    binCardUseCategory,
+                    binCardIssuerCountryCodeA3,
                     additionalProperties);
         }
     }

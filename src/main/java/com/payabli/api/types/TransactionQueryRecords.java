@@ -234,9 +234,6 @@ public final class TransactionQueryRecords {
         return deviceId;
     }
 
-    /**
-     * @return If applicable, the internal reference ID to the payment page capturing the payment.
-     */
     @JsonProperty("EntrypageId")
     public Optional<Long> getEntrypageId() {
         return entrypageId;
@@ -247,9 +244,6 @@ public final class TransactionQueryRecords {
         return externalProcessorInformation;
     }
 
-    /**
-     * @return Service fee or sub-charge applied.
-     */
     @JsonProperty("FeeAmount")
     public Optional<Double> getFeeAmount() {
         return feeAmount;
@@ -320,9 +314,6 @@ public final class TransactionQueryRecords {
         return paymentTransId;
     }
 
-    /**
-     * @return Unique ID for customer linked to the transaction.
-     */
     @JsonProperty("PayorId")
     public Optional<Long> getPayorId() {
         return payorId;
@@ -365,9 +356,6 @@ public final class TransactionQueryRecords {
         return pendingFeeAmount;
     }
 
-    /**
-     * @return Identifier of refund transaction linked to this payment.
-     */
     @JsonProperty("RefundId")
     public Optional<Long> getRefundId() {
         return refundId;
@@ -378,9 +366,6 @@ public final class TransactionQueryRecords {
         return responseData;
     }
 
-    /**
-     * @return Identifier of return/chargeback transaction linked to this payment.
-     */
     @JsonProperty("ReturnedId")
     public Optional<Long> getReturnedId() {
         return returnedId;
@@ -780,9 +765,6 @@ public final class TransactionQueryRecords {
             return this;
         }
 
-        /**
-         * <p>If applicable, the internal reference ID to the payment page capturing the payment.</p>
-         */
         @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
         public Builder entrypageId(Optional<Long> entrypageId) {
             this.entrypageId = entrypageId;
@@ -805,9 +787,6 @@ public final class TransactionQueryRecords {
             return this;
         }
 
-        /**
-         * <p>Service fee or sub-charge applied.</p>
-         */
         @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
         public Builder feeAmount(Optional<Double> feeAmount) {
             this.feeAmount = feeAmount;
@@ -944,9 +923,6 @@ public final class TransactionQueryRecords {
             return this;
         }
 
-        /**
-         * <p>Unique ID for customer linked to the transaction.</p>
-         */
         @JsonSetter(value = "PayorId", nulls = Nulls.SKIP)
         public Builder payorId(Optional<Long> payorId) {
             this.payorId = payorId;
@@ -1025,9 +1001,6 @@ public final class TransactionQueryRecords {
             return this;
         }
 
-        /**
-         * <p>Identifier of refund transaction linked to this payment.</p>
-         */
         @JsonSetter(value = "RefundId", nulls = Nulls.SKIP)
         public Builder refundId(Optional<Long> refundId) {
             this.refundId = refundId;
@@ -1050,9 +1023,6 @@ public final class TransactionQueryRecords {
             return this;
         }
 
-        /**
-         * <p>Identifier of return/chargeback transaction linked to this payment.</p>
-         */
         @JsonSetter(value = "ReturnedId", nulls = Nulls.SKIP)
         public Builder returnedId(Optional<Long> returnedId) {
             this.returnedId = returnedId;

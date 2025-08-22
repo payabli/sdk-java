@@ -30,7 +30,7 @@ import com.payabli.api.resources.subscription.AsyncSubscriptionClient;
 import com.payabli.api.resources.templates.AsyncTemplatesClient;
 import com.payabli.api.resources.tokenstorage.AsyncTokenStorageClient;
 import com.payabli.api.resources.user.AsyncUserClient;
-import com.payabli.api.resources.vendorv.AsyncVendorvClient;
+import com.payabli.api.resources.vendor.AsyncVendorClient;
 import com.payabli.api.resources.wallet.AsyncWalletClient;
 import java.util.function.Supplier;
 
@@ -87,7 +87,7 @@ public class AsyncPayabliApiClient {
 
     protected final Supplier<AsyncUserClient> userClient;
 
-    protected final Supplier<AsyncVendorvClient> vendorvClient;
+    protected final Supplier<AsyncVendorClient> vendorClient;
 
     protected final Supplier<AsyncWalletClient> walletClient;
 
@@ -118,7 +118,7 @@ public class AsyncPayabliApiClient {
         this.templatesClient = Suppliers.memoize(() -> new AsyncTemplatesClient(clientOptions));
         this.tokenStorageClient = Suppliers.memoize(() -> new AsyncTokenStorageClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new AsyncUserClient(clientOptions));
-        this.vendorvClient = Suppliers.memoize(() -> new AsyncVendorvClient(clientOptions));
+        this.vendorClient = Suppliers.memoize(() -> new AsyncVendorClient(clientOptions));
         this.walletClient = Suppliers.memoize(() -> new AsyncWalletClient(clientOptions));
     }
 
@@ -222,8 +222,8 @@ public class AsyncPayabliApiClient {
         return this.userClient.get();
     }
 
-    public AsyncVendorvClient vendorv() {
-        return this.vendorvClient.get();
+    public AsyncVendorClient vendor() {
+        return this.vendorClient.get();
     }
 
     public AsyncWalletClient wallet() {

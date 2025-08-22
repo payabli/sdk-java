@@ -24,39 +24,39 @@ public final class QueryPayoutTransactionSummary {
 
     private final Optional<Integer> pageSize;
 
-    private final Optional<Float> totalAmount;
+    private final Optional<Double> totalAmount;
 
     private final Optional<Integer> totalAuthorized;
 
-    private final Optional<Float> totalAuthorizedAmount;
+    private final Optional<Double> totalAuthorizedAmount;
 
     private final Optional<Integer> totalCanceled;
 
-    private final Optional<Float> totalCanceledAmount;
+    private final Optional<Double> totalCanceledAmount;
 
     private final Optional<Integer> totalCaptured;
 
-    private final Optional<Float> totalCapturedAmount;
+    private final Optional<Double> totalCapturedAmount;
 
-    private final Optional<Float> totalNetAmount;
+    private final Optional<Double> totalNetAmount;
 
     private final Optional<Integer> totalOpen;
 
-    private final Optional<Float> totalOpenAmount;
+    private final Optional<Double> totalOpenAmount;
 
     private final Optional<Integer> totalPages;
 
     private final Optional<Integer> totalPaid;
 
-    private final Optional<Float> totalPaidAmount;
+    private final Optional<Double> totalPaidAmount;
 
     private final Optional<Integer> totalOnHold;
 
-    private final Optional<Float> totalOnHoldAmount;
+    private final Optional<Double> totalOnHoldAmount;
 
     private final Optional<Integer> totalProcessing;
 
-    private final Optional<Float> totalProcessingAmount;
+    private final Optional<Double> totalProcessingAmount;
 
     private final Optional<Integer> totalRecords;
 
@@ -65,23 +65,23 @@ public final class QueryPayoutTransactionSummary {
     private QueryPayoutTransactionSummary(
             Optional<String> pageIdentifier,
             Optional<Integer> pageSize,
-            Optional<Float> totalAmount,
+            Optional<Double> totalAmount,
             Optional<Integer> totalAuthorized,
-            Optional<Float> totalAuthorizedAmount,
+            Optional<Double> totalAuthorizedAmount,
             Optional<Integer> totalCanceled,
-            Optional<Float> totalCanceledAmount,
+            Optional<Double> totalCanceledAmount,
             Optional<Integer> totalCaptured,
-            Optional<Float> totalCapturedAmount,
-            Optional<Float> totalNetAmount,
+            Optional<Double> totalCapturedAmount,
+            Optional<Double> totalNetAmount,
             Optional<Integer> totalOpen,
-            Optional<Float> totalOpenAmount,
+            Optional<Double> totalOpenAmount,
             Optional<Integer> totalPages,
             Optional<Integer> totalPaid,
-            Optional<Float> totalPaidAmount,
+            Optional<Double> totalPaidAmount,
             Optional<Integer> totalOnHold,
-            Optional<Float> totalOnHoldAmount,
+            Optional<Double> totalOnHoldAmount,
             Optional<Integer> totalProcessing,
-            Optional<Float> totalProcessingAmount,
+            Optional<Double> totalProcessingAmount,
             Optional<Integer> totalRecords,
             Map<String, Object> additionalProperties) {
         this.pageIdentifier = pageIdentifier;
@@ -118,7 +118,7 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalAmount")
-    public Optional<Float> getTotalAmount() {
+    public Optional<Double> getTotalAmount() {
         return totalAmount;
     }
 
@@ -128,7 +128,7 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalAuthorizedAmount")
-    public Optional<Float> getTotalAuthorizedAmount() {
+    public Optional<Double> getTotalAuthorizedAmount() {
         return totalAuthorizedAmount;
     }
 
@@ -138,7 +138,7 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalCanceledAmount")
-    public Optional<Float> getTotalCanceledAmount() {
+    public Optional<Double> getTotalCanceledAmount() {
         return totalCanceledAmount;
     }
 
@@ -148,12 +148,12 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalCapturedAmount")
-    public Optional<Float> getTotalCapturedAmount() {
+    public Optional<Double> getTotalCapturedAmount() {
         return totalCapturedAmount;
     }
 
     @JsonProperty("totalNetAmount")
-    public Optional<Float> getTotalNetAmount() {
+    public Optional<Double> getTotalNetAmount() {
         return totalNetAmount;
     }
 
@@ -163,7 +163,7 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalOpenAmount")
-    public Optional<Float> getTotalOpenAmount() {
+    public Optional<Double> getTotalOpenAmount() {
         return totalOpenAmount;
     }
 
@@ -178,7 +178,7 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalPaidAmount")
-    public Optional<Float> getTotalPaidAmount() {
+    public Optional<Double> getTotalPaidAmount() {
         return totalPaidAmount;
     }
 
@@ -194,7 +194,7 @@ public final class QueryPayoutTransactionSummary {
      * @return Total amount of transactions that are currently on hold.
      */
     @JsonProperty("totalOnHoldAmount")
-    public Optional<Float> getTotalOnHoldAmount() {
+    public Optional<Double> getTotalOnHoldAmount() {
         return totalOnHoldAmount;
     }
 
@@ -204,7 +204,7 @@ public final class QueryPayoutTransactionSummary {
     }
 
     @JsonProperty("totalProcessingAmount")
-    public Optional<Float> getTotalProcessingAmount() {
+    public Optional<Double> getTotalProcessingAmount() {
         return totalProcessingAmount;
     }
 
@@ -287,39 +287,39 @@ public final class QueryPayoutTransactionSummary {
 
         private Optional<Integer> pageSize = Optional.empty();
 
-        private Optional<Float> totalAmount = Optional.empty();
+        private Optional<Double> totalAmount = Optional.empty();
 
         private Optional<Integer> totalAuthorized = Optional.empty();
 
-        private Optional<Float> totalAuthorizedAmount = Optional.empty();
+        private Optional<Double> totalAuthorizedAmount = Optional.empty();
 
         private Optional<Integer> totalCanceled = Optional.empty();
 
-        private Optional<Float> totalCanceledAmount = Optional.empty();
+        private Optional<Double> totalCanceledAmount = Optional.empty();
 
         private Optional<Integer> totalCaptured = Optional.empty();
 
-        private Optional<Float> totalCapturedAmount = Optional.empty();
+        private Optional<Double> totalCapturedAmount = Optional.empty();
 
-        private Optional<Float> totalNetAmount = Optional.empty();
+        private Optional<Double> totalNetAmount = Optional.empty();
 
         private Optional<Integer> totalOpen = Optional.empty();
 
-        private Optional<Float> totalOpenAmount = Optional.empty();
+        private Optional<Double> totalOpenAmount = Optional.empty();
 
         private Optional<Integer> totalPages = Optional.empty();
 
         private Optional<Integer> totalPaid = Optional.empty();
 
-        private Optional<Float> totalPaidAmount = Optional.empty();
+        private Optional<Double> totalPaidAmount = Optional.empty();
 
         private Optional<Integer> totalOnHold = Optional.empty();
 
-        private Optional<Float> totalOnHoldAmount = Optional.empty();
+        private Optional<Double> totalOnHoldAmount = Optional.empty();
 
         private Optional<Integer> totalProcessing = Optional.empty();
 
-        private Optional<Float> totalProcessingAmount = Optional.empty();
+        private Optional<Double> totalProcessingAmount = Optional.empty();
 
         private Optional<Integer> totalRecords = Optional.empty();
 
@@ -375,12 +375,12 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
-        public Builder totalAmount(Optional<Float> totalAmount) {
+        public Builder totalAmount(Optional<Double> totalAmount) {
             this.totalAmount = totalAmount;
             return this;
         }
 
-        public Builder totalAmount(Float totalAmount) {
+        public Builder totalAmount(Double totalAmount) {
             this.totalAmount = Optional.ofNullable(totalAmount);
             return this;
         }
@@ -397,12 +397,12 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalAuthorizedAmount", nulls = Nulls.SKIP)
-        public Builder totalAuthorizedAmount(Optional<Float> totalAuthorizedAmount) {
+        public Builder totalAuthorizedAmount(Optional<Double> totalAuthorizedAmount) {
             this.totalAuthorizedAmount = totalAuthorizedAmount;
             return this;
         }
 
-        public Builder totalAuthorizedAmount(Float totalAuthorizedAmount) {
+        public Builder totalAuthorizedAmount(Double totalAuthorizedAmount) {
             this.totalAuthorizedAmount = Optional.ofNullable(totalAuthorizedAmount);
             return this;
         }
@@ -419,12 +419,12 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalCanceledAmount", nulls = Nulls.SKIP)
-        public Builder totalCanceledAmount(Optional<Float> totalCanceledAmount) {
+        public Builder totalCanceledAmount(Optional<Double> totalCanceledAmount) {
             this.totalCanceledAmount = totalCanceledAmount;
             return this;
         }
 
-        public Builder totalCanceledAmount(Float totalCanceledAmount) {
+        public Builder totalCanceledAmount(Double totalCanceledAmount) {
             this.totalCanceledAmount = Optional.ofNullable(totalCanceledAmount);
             return this;
         }
@@ -441,23 +441,23 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalCapturedAmount", nulls = Nulls.SKIP)
-        public Builder totalCapturedAmount(Optional<Float> totalCapturedAmount) {
+        public Builder totalCapturedAmount(Optional<Double> totalCapturedAmount) {
             this.totalCapturedAmount = totalCapturedAmount;
             return this;
         }
 
-        public Builder totalCapturedAmount(Float totalCapturedAmount) {
+        public Builder totalCapturedAmount(Double totalCapturedAmount) {
             this.totalCapturedAmount = Optional.ofNullable(totalCapturedAmount);
             return this;
         }
 
         @JsonSetter(value = "totalNetAmount", nulls = Nulls.SKIP)
-        public Builder totalNetAmount(Optional<Float> totalNetAmount) {
+        public Builder totalNetAmount(Optional<Double> totalNetAmount) {
             this.totalNetAmount = totalNetAmount;
             return this;
         }
 
-        public Builder totalNetAmount(Float totalNetAmount) {
+        public Builder totalNetAmount(Double totalNetAmount) {
             this.totalNetAmount = Optional.ofNullable(totalNetAmount);
             return this;
         }
@@ -474,12 +474,12 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalOpenAmount", nulls = Nulls.SKIP)
-        public Builder totalOpenAmount(Optional<Float> totalOpenAmount) {
+        public Builder totalOpenAmount(Optional<Double> totalOpenAmount) {
             this.totalOpenAmount = totalOpenAmount;
             return this;
         }
 
-        public Builder totalOpenAmount(Float totalOpenAmount) {
+        public Builder totalOpenAmount(Double totalOpenAmount) {
             this.totalOpenAmount = Optional.ofNullable(totalOpenAmount);
             return this;
         }
@@ -507,12 +507,12 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalPaidAmount", nulls = Nulls.SKIP)
-        public Builder totalPaidAmount(Optional<Float> totalPaidAmount) {
+        public Builder totalPaidAmount(Optional<Double> totalPaidAmount) {
             this.totalPaidAmount = totalPaidAmount;
             return this;
         }
 
-        public Builder totalPaidAmount(Float totalPaidAmount) {
+        public Builder totalPaidAmount(Double totalPaidAmount) {
             this.totalPaidAmount = Optional.ofNullable(totalPaidAmount);
             return this;
         }
@@ -535,12 +535,12 @@ public final class QueryPayoutTransactionSummary {
          * <p>Total amount of transactions that are currently on hold.</p>
          */
         @JsonSetter(value = "totalOnHoldAmount", nulls = Nulls.SKIP)
-        public Builder totalOnHoldAmount(Optional<Float> totalOnHoldAmount) {
+        public Builder totalOnHoldAmount(Optional<Double> totalOnHoldAmount) {
             this.totalOnHoldAmount = totalOnHoldAmount;
             return this;
         }
 
-        public Builder totalOnHoldAmount(Float totalOnHoldAmount) {
+        public Builder totalOnHoldAmount(Double totalOnHoldAmount) {
             this.totalOnHoldAmount = Optional.ofNullable(totalOnHoldAmount);
             return this;
         }
@@ -557,12 +557,12 @@ public final class QueryPayoutTransactionSummary {
         }
 
         @JsonSetter(value = "totalProcessingAmount", nulls = Nulls.SKIP)
-        public Builder totalProcessingAmount(Optional<Float> totalProcessingAmount) {
+        public Builder totalProcessingAmount(Optional<Double> totalProcessingAmount) {
             this.totalProcessingAmount = totalProcessingAmount;
             return this;
         }
 
-        public Builder totalProcessingAmount(Float totalProcessingAmount) {
+        public Builder totalProcessingAmount(Double totalProcessingAmount) {
             this.totalProcessingAmount = Optional.ofNullable(totalProcessingAmount);
             return this;
         }

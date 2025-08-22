@@ -180,14 +180,14 @@ public class AsyncBoardingClient {
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBoardingAppsListResponse> listApplications(int orgId) {
         return this.rawClient.listApplications(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBoardingAppsListResponse> listApplications(
             int orgId, ListApplicationsRequest request) {
@@ -195,7 +195,7 @@ public class AsyncBoardingClient {
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryBoardingAppsListResponse> listApplications(
             int orgId, ListApplicationsRequest request, RequestOptions requestOptions) {

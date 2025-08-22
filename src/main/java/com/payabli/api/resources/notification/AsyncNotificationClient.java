@@ -9,6 +9,7 @@ import com.payabli.api.resources.notification.types.AddNotificationRequest;
 import com.payabli.api.resources.notification.types.UpdateNotificationRequest;
 import com.payabli.api.types.NotificationQueryRecord;
 import com.payabli.api.types.PayabliApiResponseNotifications;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncNotificationClient {
@@ -86,5 +87,19 @@ public class AsyncNotificationClient {
     public CompletableFuture<PayabliApiResponseNotifications> updateNotification(
             String nId, UpdateNotificationRequest request, RequestOptions requestOptions) {
         return this.rawClient.updateNotification(nId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Gets a copy of a generated report by ID.
+     */
+    public CompletableFuture<Map<String, Object>> getReportFile(long id) {
+        return this.rawClient.getReportFile(id).thenApply(response -> response.body());
+    }
+
+    /**
+     * Gets a copy of a generated report by ID.
+     */
+    public CompletableFuture<Map<String, Object>> getReportFile(long id, RequestOptions requestOptions) {
+        return this.rawClient.getReportFile(id, requestOptions).thenApply(response -> response.body());
     }
 }

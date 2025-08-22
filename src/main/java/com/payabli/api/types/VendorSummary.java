@@ -20,99 +20,153 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorSummary.Builder.class)
 public final class VendorSummary {
-    private final Optional<Integer> inTransitBills;
-
-    private final Optional<Double> inTransitBillsAmount;
-
-    private final Optional<Integer> overdueBills;
-
-    private final Optional<Double> overdueBillsAmount;
-
-    private final Optional<Integer> paidBills;
-
-    private final Optional<Double> paidBillsAmount;
+    private final Optional<Integer> activeBills;
 
     private final Optional<Integer> pendingBills;
 
-    private final Optional<Double> pendingBillsAmount;
+    private final Optional<Integer> inTransitBills;
+
+    private final Optional<Integer> paidBills;
+
+    private final Optional<Integer> overdueBills;
+
+    private final Optional<Integer> approvedBills;
+
+    private final Optional<Integer> disapprovedBills;
 
     private final Optional<Integer> totalBills;
+
+    private final Optional<Double> activeBillsAmount;
+
+    private final Optional<Double> pendingBillsAmount;
+
+    private final Optional<Double> inTransitBillsAmount;
+
+    private final Optional<Double> paidBillsAmount;
+
+    private final Optional<Double> overdueBillsAmount;
+
+    private final Optional<Double> approvedBillsAmount;
+
+    private final Optional<Double> disapprovedBillsAmount;
 
     private final Optional<Double> totalBillsAmount;
 
     private final Map<String, Object> additionalProperties;
 
     private VendorSummary(
-            Optional<Integer> inTransitBills,
-            Optional<Double> inTransitBillsAmount,
-            Optional<Integer> overdueBills,
-            Optional<Double> overdueBillsAmount,
-            Optional<Integer> paidBills,
-            Optional<Double> paidBillsAmount,
+            Optional<Integer> activeBills,
             Optional<Integer> pendingBills,
-            Optional<Double> pendingBillsAmount,
+            Optional<Integer> inTransitBills,
+            Optional<Integer> paidBills,
+            Optional<Integer> overdueBills,
+            Optional<Integer> approvedBills,
+            Optional<Integer> disapprovedBills,
             Optional<Integer> totalBills,
+            Optional<Double> activeBillsAmount,
+            Optional<Double> pendingBillsAmount,
+            Optional<Double> inTransitBillsAmount,
+            Optional<Double> paidBillsAmount,
+            Optional<Double> overdueBillsAmount,
+            Optional<Double> approvedBillsAmount,
+            Optional<Double> disapprovedBillsAmount,
             Optional<Double> totalBillsAmount,
             Map<String, Object> additionalProperties) {
-        this.inTransitBills = inTransitBills;
-        this.inTransitBillsAmount = inTransitBillsAmount;
-        this.overdueBills = overdueBills;
-        this.overdueBillsAmount = overdueBillsAmount;
-        this.paidBills = paidBills;
-        this.paidBillsAmount = paidBillsAmount;
+        this.activeBills = activeBills;
         this.pendingBills = pendingBills;
-        this.pendingBillsAmount = pendingBillsAmount;
+        this.inTransitBills = inTransitBills;
+        this.paidBills = paidBills;
+        this.overdueBills = overdueBills;
+        this.approvedBills = approvedBills;
+        this.disapprovedBills = disapprovedBills;
         this.totalBills = totalBills;
+        this.activeBillsAmount = activeBillsAmount;
+        this.pendingBillsAmount = pendingBillsAmount;
+        this.inTransitBillsAmount = inTransitBillsAmount;
+        this.paidBillsAmount = paidBillsAmount;
+        this.overdueBillsAmount = overdueBillsAmount;
+        this.approvedBillsAmount = approvedBillsAmount;
+        this.disapprovedBillsAmount = disapprovedBillsAmount;
         this.totalBillsAmount = totalBillsAmount;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("inTransitBills")
-    public Optional<Integer> getInTransitBills() {
-        return inTransitBills;
+    @JsonProperty("ActiveBills")
+    public Optional<Integer> getActiveBills() {
+        return activeBills;
     }
 
-    @JsonProperty("inTransitBillsAmount")
-    public Optional<Double> getInTransitBillsAmount() {
-        return inTransitBillsAmount;
-    }
-
-    @JsonProperty("overdueBills")
-    public Optional<Integer> getOverdueBills() {
-        return overdueBills;
-    }
-
-    @JsonProperty("overdueBillsAmount")
-    public Optional<Double> getOverdueBillsAmount() {
-        return overdueBillsAmount;
-    }
-
-    @JsonProperty("paidBills")
-    public Optional<Integer> getPaidBills() {
-        return paidBills;
-    }
-
-    @JsonProperty("paidBillsAmount")
-    public Optional<Double> getPaidBillsAmount() {
-        return paidBillsAmount;
-    }
-
-    @JsonProperty("pendingBills")
+    @JsonProperty("PendingBills")
     public Optional<Integer> getPendingBills() {
         return pendingBills;
     }
 
-    @JsonProperty("pendingBillsAmount")
-    public Optional<Double> getPendingBillsAmount() {
-        return pendingBillsAmount;
+    @JsonProperty("InTransitBills")
+    public Optional<Integer> getInTransitBills() {
+        return inTransitBills;
     }
 
-    @JsonProperty("totalBills")
+    @JsonProperty("PaidBills")
+    public Optional<Integer> getPaidBills() {
+        return paidBills;
+    }
+
+    @JsonProperty("OverdueBills")
+    public Optional<Integer> getOverdueBills() {
+        return overdueBills;
+    }
+
+    @JsonProperty("ApprovedBills")
+    public Optional<Integer> getApprovedBills() {
+        return approvedBills;
+    }
+
+    @JsonProperty("DisapprovedBills")
+    public Optional<Integer> getDisapprovedBills() {
+        return disapprovedBills;
+    }
+
+    @JsonProperty("TotalBills")
     public Optional<Integer> getTotalBills() {
         return totalBills;
     }
 
-    @JsonProperty("totalBillsAmount")
+    @JsonProperty("ActiveBillsAmount")
+    public Optional<Double> getActiveBillsAmount() {
+        return activeBillsAmount;
+    }
+
+    @JsonProperty("PendingBillsAmount")
+    public Optional<Double> getPendingBillsAmount() {
+        return pendingBillsAmount;
+    }
+
+    @JsonProperty("InTransitBillsAmount")
+    public Optional<Double> getInTransitBillsAmount() {
+        return inTransitBillsAmount;
+    }
+
+    @JsonProperty("PaidBillsAmount")
+    public Optional<Double> getPaidBillsAmount() {
+        return paidBillsAmount;
+    }
+
+    @JsonProperty("OverdueBillsAmount")
+    public Optional<Double> getOverdueBillsAmount() {
+        return overdueBillsAmount;
+    }
+
+    @JsonProperty("ApprovedBillsAmount")
+    public Optional<Double> getApprovedBillsAmount() {
+        return approvedBillsAmount;
+    }
+
+    @JsonProperty("DisapprovedBillsAmount")
+    public Optional<Double> getDisapprovedBillsAmount() {
+        return disapprovedBillsAmount;
+    }
+
+    @JsonProperty("TotalBillsAmount")
     public Optional<Double> getTotalBillsAmount() {
         return totalBillsAmount;
     }
@@ -129,30 +183,42 @@ public final class VendorSummary {
     }
 
     private boolean equalTo(VendorSummary other) {
-        return inTransitBills.equals(other.inTransitBills)
-                && inTransitBillsAmount.equals(other.inTransitBillsAmount)
-                && overdueBills.equals(other.overdueBills)
-                && overdueBillsAmount.equals(other.overdueBillsAmount)
-                && paidBills.equals(other.paidBills)
-                && paidBillsAmount.equals(other.paidBillsAmount)
+        return activeBills.equals(other.activeBills)
                 && pendingBills.equals(other.pendingBills)
-                && pendingBillsAmount.equals(other.pendingBillsAmount)
+                && inTransitBills.equals(other.inTransitBills)
+                && paidBills.equals(other.paidBills)
+                && overdueBills.equals(other.overdueBills)
+                && approvedBills.equals(other.approvedBills)
+                && disapprovedBills.equals(other.disapprovedBills)
                 && totalBills.equals(other.totalBills)
+                && activeBillsAmount.equals(other.activeBillsAmount)
+                && pendingBillsAmount.equals(other.pendingBillsAmount)
+                && inTransitBillsAmount.equals(other.inTransitBillsAmount)
+                && paidBillsAmount.equals(other.paidBillsAmount)
+                && overdueBillsAmount.equals(other.overdueBillsAmount)
+                && approvedBillsAmount.equals(other.approvedBillsAmount)
+                && disapprovedBillsAmount.equals(other.disapprovedBillsAmount)
                 && totalBillsAmount.equals(other.totalBillsAmount);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.inTransitBills,
-                this.inTransitBillsAmount,
-                this.overdueBills,
-                this.overdueBillsAmount,
-                this.paidBills,
-                this.paidBillsAmount,
+                this.activeBills,
                 this.pendingBills,
-                this.pendingBillsAmount,
+                this.inTransitBills,
+                this.paidBills,
+                this.overdueBills,
+                this.approvedBills,
+                this.disapprovedBills,
                 this.totalBills,
+                this.activeBillsAmount,
+                this.pendingBillsAmount,
+                this.inTransitBillsAmount,
+                this.paidBillsAmount,
+                this.overdueBillsAmount,
+                this.approvedBillsAmount,
+                this.disapprovedBillsAmount,
                 this.totalBillsAmount);
     }
 
@@ -167,23 +233,35 @@ public final class VendorSummary {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Integer> inTransitBills = Optional.empty();
-
-        private Optional<Double> inTransitBillsAmount = Optional.empty();
-
-        private Optional<Integer> overdueBills = Optional.empty();
-
-        private Optional<Double> overdueBillsAmount = Optional.empty();
-
-        private Optional<Integer> paidBills = Optional.empty();
-
-        private Optional<Double> paidBillsAmount = Optional.empty();
+        private Optional<Integer> activeBills = Optional.empty();
 
         private Optional<Integer> pendingBills = Optional.empty();
 
-        private Optional<Double> pendingBillsAmount = Optional.empty();
+        private Optional<Integer> inTransitBills = Optional.empty();
+
+        private Optional<Integer> paidBills = Optional.empty();
+
+        private Optional<Integer> overdueBills = Optional.empty();
+
+        private Optional<Integer> approvedBills = Optional.empty();
+
+        private Optional<Integer> disapprovedBills = Optional.empty();
 
         private Optional<Integer> totalBills = Optional.empty();
+
+        private Optional<Double> activeBillsAmount = Optional.empty();
+
+        private Optional<Double> pendingBillsAmount = Optional.empty();
+
+        private Optional<Double> inTransitBillsAmount = Optional.empty();
+
+        private Optional<Double> paidBillsAmount = Optional.empty();
+
+        private Optional<Double> overdueBillsAmount = Optional.empty();
+
+        private Optional<Double> approvedBillsAmount = Optional.empty();
+
+        private Optional<Double> disapprovedBillsAmount = Optional.empty();
 
         private Optional<Double> totalBillsAmount = Optional.empty();
 
@@ -193,86 +271,37 @@ public final class VendorSummary {
         private Builder() {}
 
         public Builder from(VendorSummary other) {
-            inTransitBills(other.getInTransitBills());
-            inTransitBillsAmount(other.getInTransitBillsAmount());
-            overdueBills(other.getOverdueBills());
-            overdueBillsAmount(other.getOverdueBillsAmount());
-            paidBills(other.getPaidBills());
-            paidBillsAmount(other.getPaidBillsAmount());
+            activeBills(other.getActiveBills());
             pendingBills(other.getPendingBills());
-            pendingBillsAmount(other.getPendingBillsAmount());
+            inTransitBills(other.getInTransitBills());
+            paidBills(other.getPaidBills());
+            overdueBills(other.getOverdueBills());
+            approvedBills(other.getApprovedBills());
+            disapprovedBills(other.getDisapprovedBills());
             totalBills(other.getTotalBills());
+            activeBillsAmount(other.getActiveBillsAmount());
+            pendingBillsAmount(other.getPendingBillsAmount());
+            inTransitBillsAmount(other.getInTransitBillsAmount());
+            paidBillsAmount(other.getPaidBillsAmount());
+            overdueBillsAmount(other.getOverdueBillsAmount());
+            approvedBillsAmount(other.getApprovedBillsAmount());
+            disapprovedBillsAmount(other.getDisapprovedBillsAmount());
             totalBillsAmount(other.getTotalBillsAmount());
             return this;
         }
 
-        @JsonSetter(value = "inTransitBills", nulls = Nulls.SKIP)
-        public Builder inTransitBills(Optional<Integer> inTransitBills) {
-            this.inTransitBills = inTransitBills;
+        @JsonSetter(value = "ActiveBills", nulls = Nulls.SKIP)
+        public Builder activeBills(Optional<Integer> activeBills) {
+            this.activeBills = activeBills;
             return this;
         }
 
-        public Builder inTransitBills(Integer inTransitBills) {
-            this.inTransitBills = Optional.ofNullable(inTransitBills);
+        public Builder activeBills(Integer activeBills) {
+            this.activeBills = Optional.ofNullable(activeBills);
             return this;
         }
 
-        @JsonSetter(value = "inTransitBillsAmount", nulls = Nulls.SKIP)
-        public Builder inTransitBillsAmount(Optional<Double> inTransitBillsAmount) {
-            this.inTransitBillsAmount = inTransitBillsAmount;
-            return this;
-        }
-
-        public Builder inTransitBillsAmount(Double inTransitBillsAmount) {
-            this.inTransitBillsAmount = Optional.ofNullable(inTransitBillsAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "overdueBills", nulls = Nulls.SKIP)
-        public Builder overdueBills(Optional<Integer> overdueBills) {
-            this.overdueBills = overdueBills;
-            return this;
-        }
-
-        public Builder overdueBills(Integer overdueBills) {
-            this.overdueBills = Optional.ofNullable(overdueBills);
-            return this;
-        }
-
-        @JsonSetter(value = "overdueBillsAmount", nulls = Nulls.SKIP)
-        public Builder overdueBillsAmount(Optional<Double> overdueBillsAmount) {
-            this.overdueBillsAmount = overdueBillsAmount;
-            return this;
-        }
-
-        public Builder overdueBillsAmount(Double overdueBillsAmount) {
-            this.overdueBillsAmount = Optional.ofNullable(overdueBillsAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "paidBills", nulls = Nulls.SKIP)
-        public Builder paidBills(Optional<Integer> paidBills) {
-            this.paidBills = paidBills;
-            return this;
-        }
-
-        public Builder paidBills(Integer paidBills) {
-            this.paidBills = Optional.ofNullable(paidBills);
-            return this;
-        }
-
-        @JsonSetter(value = "paidBillsAmount", nulls = Nulls.SKIP)
-        public Builder paidBillsAmount(Optional<Double> paidBillsAmount) {
-            this.paidBillsAmount = paidBillsAmount;
-            return this;
-        }
-
-        public Builder paidBillsAmount(Double paidBillsAmount) {
-            this.paidBillsAmount = Optional.ofNullable(paidBillsAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "pendingBills", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PendingBills", nulls = Nulls.SKIP)
         public Builder pendingBills(Optional<Integer> pendingBills) {
             this.pendingBills = pendingBills;
             return this;
@@ -283,18 +312,62 @@ public final class VendorSummary {
             return this;
         }
 
-        @JsonSetter(value = "pendingBillsAmount", nulls = Nulls.SKIP)
-        public Builder pendingBillsAmount(Optional<Double> pendingBillsAmount) {
-            this.pendingBillsAmount = pendingBillsAmount;
+        @JsonSetter(value = "InTransitBills", nulls = Nulls.SKIP)
+        public Builder inTransitBills(Optional<Integer> inTransitBills) {
+            this.inTransitBills = inTransitBills;
             return this;
         }
 
-        public Builder pendingBillsAmount(Double pendingBillsAmount) {
-            this.pendingBillsAmount = Optional.ofNullable(pendingBillsAmount);
+        public Builder inTransitBills(Integer inTransitBills) {
+            this.inTransitBills = Optional.ofNullable(inTransitBills);
             return this;
         }
 
-        @JsonSetter(value = "totalBills", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaidBills", nulls = Nulls.SKIP)
+        public Builder paidBills(Optional<Integer> paidBills) {
+            this.paidBills = paidBills;
+            return this;
+        }
+
+        public Builder paidBills(Integer paidBills) {
+            this.paidBills = Optional.ofNullable(paidBills);
+            return this;
+        }
+
+        @JsonSetter(value = "OverdueBills", nulls = Nulls.SKIP)
+        public Builder overdueBills(Optional<Integer> overdueBills) {
+            this.overdueBills = overdueBills;
+            return this;
+        }
+
+        public Builder overdueBills(Integer overdueBills) {
+            this.overdueBills = Optional.ofNullable(overdueBills);
+            return this;
+        }
+
+        @JsonSetter(value = "ApprovedBills", nulls = Nulls.SKIP)
+        public Builder approvedBills(Optional<Integer> approvedBills) {
+            this.approvedBills = approvedBills;
+            return this;
+        }
+
+        public Builder approvedBills(Integer approvedBills) {
+            this.approvedBills = Optional.ofNullable(approvedBills);
+            return this;
+        }
+
+        @JsonSetter(value = "DisapprovedBills", nulls = Nulls.SKIP)
+        public Builder disapprovedBills(Optional<Integer> disapprovedBills) {
+            this.disapprovedBills = disapprovedBills;
+            return this;
+        }
+
+        public Builder disapprovedBills(Integer disapprovedBills) {
+            this.disapprovedBills = Optional.ofNullable(disapprovedBills);
+            return this;
+        }
+
+        @JsonSetter(value = "TotalBills", nulls = Nulls.SKIP)
         public Builder totalBills(Optional<Integer> totalBills) {
             this.totalBills = totalBills;
             return this;
@@ -305,7 +378,84 @@ public final class VendorSummary {
             return this;
         }
 
-        @JsonSetter(value = "totalBillsAmount", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ActiveBillsAmount", nulls = Nulls.SKIP)
+        public Builder activeBillsAmount(Optional<Double> activeBillsAmount) {
+            this.activeBillsAmount = activeBillsAmount;
+            return this;
+        }
+
+        public Builder activeBillsAmount(Double activeBillsAmount) {
+            this.activeBillsAmount = Optional.ofNullable(activeBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "PendingBillsAmount", nulls = Nulls.SKIP)
+        public Builder pendingBillsAmount(Optional<Double> pendingBillsAmount) {
+            this.pendingBillsAmount = pendingBillsAmount;
+            return this;
+        }
+
+        public Builder pendingBillsAmount(Double pendingBillsAmount) {
+            this.pendingBillsAmount = Optional.ofNullable(pendingBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "InTransitBillsAmount", nulls = Nulls.SKIP)
+        public Builder inTransitBillsAmount(Optional<Double> inTransitBillsAmount) {
+            this.inTransitBillsAmount = inTransitBillsAmount;
+            return this;
+        }
+
+        public Builder inTransitBillsAmount(Double inTransitBillsAmount) {
+            this.inTransitBillsAmount = Optional.ofNullable(inTransitBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "PaidBillsAmount", nulls = Nulls.SKIP)
+        public Builder paidBillsAmount(Optional<Double> paidBillsAmount) {
+            this.paidBillsAmount = paidBillsAmount;
+            return this;
+        }
+
+        public Builder paidBillsAmount(Double paidBillsAmount) {
+            this.paidBillsAmount = Optional.ofNullable(paidBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "OverdueBillsAmount", nulls = Nulls.SKIP)
+        public Builder overdueBillsAmount(Optional<Double> overdueBillsAmount) {
+            this.overdueBillsAmount = overdueBillsAmount;
+            return this;
+        }
+
+        public Builder overdueBillsAmount(Double overdueBillsAmount) {
+            this.overdueBillsAmount = Optional.ofNullable(overdueBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "ApprovedBillsAmount", nulls = Nulls.SKIP)
+        public Builder approvedBillsAmount(Optional<Double> approvedBillsAmount) {
+            this.approvedBillsAmount = approvedBillsAmount;
+            return this;
+        }
+
+        public Builder approvedBillsAmount(Double approvedBillsAmount) {
+            this.approvedBillsAmount = Optional.ofNullable(approvedBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "DisapprovedBillsAmount", nulls = Nulls.SKIP)
+        public Builder disapprovedBillsAmount(Optional<Double> disapprovedBillsAmount) {
+            this.disapprovedBillsAmount = disapprovedBillsAmount;
+            return this;
+        }
+
+        public Builder disapprovedBillsAmount(Double disapprovedBillsAmount) {
+            this.disapprovedBillsAmount = Optional.ofNullable(disapprovedBillsAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "TotalBillsAmount", nulls = Nulls.SKIP)
         public Builder totalBillsAmount(Optional<Double> totalBillsAmount) {
             this.totalBillsAmount = totalBillsAmount;
             return this;
@@ -318,15 +468,21 @@ public final class VendorSummary {
 
         public VendorSummary build() {
             return new VendorSummary(
-                    inTransitBills,
-                    inTransitBillsAmount,
-                    overdueBills,
-                    overdueBillsAmount,
-                    paidBills,
-                    paidBillsAmount,
+                    activeBills,
                     pendingBills,
-                    pendingBillsAmount,
+                    inTransitBills,
+                    paidBills,
+                    overdueBills,
+                    approvedBills,
+                    disapprovedBills,
                     totalBills,
+                    activeBillsAmount,
+                    pendingBillsAmount,
+                    inTransitBillsAmount,
+                    paidBillsAmount,
+                    overdueBillsAmount,
+                    approvedBillsAmount,
+                    disapprovedBillsAmount,
                     totalBillsAmount,
                     additionalProperties);
         }

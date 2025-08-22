@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AuthResponseResponseData.Builder.class)
 public final class AuthResponseResponseData {
-    private final Optional<String> authCode;
+    private final String authCode;
 
     private final String referenceId;
 
@@ -29,9 +29,9 @@ public final class AuthResponseResponseData {
 
     private final String resultText;
 
-    private final Optional<String> avsResponseText;
+    private final String avsResponseText;
 
-    private final Optional<String> cvvResponseText;
+    private final String cvvResponseText;
 
     private final Optional<Long> customerId;
 
@@ -40,12 +40,12 @@ public final class AuthResponseResponseData {
     private final Map<String, Object> additionalProperties;
 
     private AuthResponseResponseData(
-            Optional<String> authCode,
+            String authCode,
             String referenceId,
             int resultCode,
             String resultText,
-            Optional<String> avsResponseText,
-            Optional<String> cvvResponseText,
+            String avsResponseText,
+            String cvvResponseText,
             Optional<Long> customerId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
@@ -61,7 +61,7 @@ public final class AuthResponseResponseData {
     }
 
     @JsonProperty("authCode")
-    public Optional<String> getAuthCode() {
+    public String getAuthCode() {
         return authCode;
     }
 
@@ -81,12 +81,12 @@ public final class AuthResponseResponseData {
     }
 
     @JsonProperty("avsResponseText")
-    public Optional<String> getAvsResponseText() {
+    public String getAvsResponseText() {
         return avsResponseText;
     }
 
     @JsonProperty("cvvResponseText")
-    public Optional<String> getCvvResponseText() {
+    public String getCvvResponseText() {
         return cvvResponseText;
     }
 
@@ -140,14 +140,18 @@ public final class AuthResponseResponseData {
         return ObjectMappers.stringify(this);
     }
 
-    public static ReferenceIdStage builder() {
+    public static AuthCodeStage builder() {
         return new Builder();
+    }
+
+    public interface AuthCodeStage {
+        ReferenceIdStage authCode(@NotNull String authCode);
+
+        Builder from(AuthResponseResponseData other);
     }
 
     public interface ReferenceIdStage {
         ResultCodeStage referenceId(@NotNull String referenceId);
-
-        Builder from(AuthResponseResponseData other);
     }
 
     public interface ResultCodeStage {
@@ -155,23 +159,19 @@ public final class AuthResponseResponseData {
     }
 
     public interface ResultTextStage {
-        _FinalStage resultText(@NotNull String resultText);
+        AvsResponseTextStage resultText(@NotNull String resultText);
+    }
+
+    public interface AvsResponseTextStage {
+        CvvResponseTextStage avsResponseText(@NotNull String avsResponseText);
+    }
+
+    public interface CvvResponseTextStage {
+        _FinalStage cvvResponseText(@NotNull String cvvResponseText);
     }
 
     public interface _FinalStage {
         AuthResponseResponseData build();
-
-        _FinalStage authCode(Optional<String> authCode);
-
-        _FinalStage authCode(String authCode);
-
-        _FinalStage avsResponseText(Optional<String> avsResponseText);
-
-        _FinalStage avsResponseText(String avsResponseText);
-
-        _FinalStage cvvResponseText(Optional<String> cvvResponseText);
-
-        _FinalStage cvvResponseText(String cvvResponseText);
 
         _FinalStage customerId(Optional<Long> customerId);
 
@@ -183,22 +183,29 @@ public final class AuthResponseResponseData {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ReferenceIdStage, ResultCodeStage, ResultTextStage, _FinalStage {
+    public static final class Builder
+            implements AuthCodeStage,
+                    ReferenceIdStage,
+                    ResultCodeStage,
+                    ResultTextStage,
+                    AvsResponseTextStage,
+                    CvvResponseTextStage,
+                    _FinalStage {
+        private String authCode;
+
         private String referenceId;
 
         private int resultCode;
 
         private String resultText;
 
+        private String avsResponseText;
+
+        private String cvvResponseText;
+
         private Optional<String> methodReferenceId = Optional.empty();
 
         private Optional<Long> customerId = Optional.empty();
-
-        private Optional<String> cvvResponseText = Optional.empty();
-
-        private Optional<String> avsResponseText = Optional.empty();
-
-        private Optional<String> authCode = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -219,6 +226,13 @@ public final class AuthResponseResponseData {
         }
 
         @java.lang.Override
+        @JsonSetter("authCode")
+        public ReferenceIdStage authCode(@NotNull String authCode) {
+            this.authCode = Objects.requireNonNull(authCode, "authCode must not be null");
+            return this;
+        }
+
+        @java.lang.Override
         @JsonSetter("referenceId")
         public ResultCodeStage referenceId(@NotNull String referenceId) {
             this.referenceId = Objects.requireNonNull(referenceId, "referenceId must not be null");
@@ -234,8 +248,22 @@ public final class AuthResponseResponseData {
 
         @java.lang.Override
         @JsonSetter("resultText")
-        public _FinalStage resultText(@NotNull String resultText) {
+        public AvsResponseTextStage resultText(@NotNull String resultText) {
             this.resultText = Objects.requireNonNull(resultText, "resultText must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("avsResponseText")
+        public CvvResponseTextStage avsResponseText(@NotNull String avsResponseText) {
+            this.avsResponseText = Objects.requireNonNull(avsResponseText, "avsResponseText must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("cvvResponseText")
+        public _FinalStage cvvResponseText(@NotNull String cvvResponseText) {
+            this.cvvResponseText = Objects.requireNonNull(cvvResponseText, "cvvResponseText must not be null");
             return this;
         }
 
@@ -262,45 +290,6 @@ public final class AuthResponseResponseData {
         @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
         public _FinalStage customerId(Optional<Long> customerId) {
             this.customerId = customerId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage cvvResponseText(String cvvResponseText) {
-            this.cvvResponseText = Optional.ofNullable(cvvResponseText);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "cvvResponseText", nulls = Nulls.SKIP)
-        public _FinalStage cvvResponseText(Optional<String> cvvResponseText) {
-            this.cvvResponseText = cvvResponseText;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage avsResponseText(String avsResponseText) {
-            this.avsResponseText = Optional.ofNullable(avsResponseText);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "avsResponseText", nulls = Nulls.SKIP)
-        public _FinalStage avsResponseText(Optional<String> avsResponseText) {
-            this.avsResponseText = avsResponseText;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage authCode(String authCode) {
-            this.authCode = Optional.ofNullable(authCode);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "authCode", nulls = Nulls.SKIP)
-        public _FinalStage authCode(Optional<String> authCode) {
-            this.authCode = authCode;
             return this;
         }
 

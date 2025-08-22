@@ -34,7 +34,7 @@ import com.payabli.api.resources.export.requests.ExportTransferDetailsRequest;
 import com.payabli.api.resources.export.requests.ExportTransfersRequest;
 import com.payabli.api.resources.export.requests.ExportVendorsOrgRequest;
 import com.payabli.api.resources.export.requests.ExportVendorsRequest;
-import com.payabli.api.resources.export.types.ExportFormat;
+import com.payabli.api.resources.export.types.ExportFormat1;
 import java.util.Map;
 
 public class ExportClient {
@@ -57,14 +57,14 @@ public class ExportClient {
     /**
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportApplications(ExportFormat format, int orgId) {
+    public Map<String, Object> exportApplications(ExportFormat1 format, int orgId) {
         return this.rawClient.exportApplications(format, orgId).body();
     }
 
     /**
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportApplications(ExportFormat format, int orgId, ExportApplicationsRequest request) {
+    public Map<String, Object> exportApplications(ExportFormat1 format, int orgId, ExportApplicationsRequest request) {
         return this.rawClient.exportApplications(format, orgId, request).body();
     }
 
@@ -72,39 +72,39 @@ public class ExportClient {
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportApplications(
-            ExportFormat format, int orgId, ExportApplicationsRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportApplicationsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportApplications(format, orgId, request, requestOptions)
                 .body();
     }
 
-    public Map<String, Object> exportBatchDetails(String entry, ExportFormat format) {
+    public Map<String, Object> exportBatchDetails(String entry, ExportFormat1 format) {
         return this.rawClient.exportBatchDetails(entry, format).body();
     }
 
     public Map<String, Object> exportBatchDetails(
-            String entry, ExportFormat format, ExportBatchDetailsRequest request) {
+            String entry, ExportFormat1 format, ExportBatchDetailsRequest request) {
         return this.rawClient.exportBatchDetails(entry, format, request).body();
     }
 
     public Map<String, Object> exportBatchDetails(
-            String entry, ExportFormat format, ExportBatchDetailsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBatchDetailsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBatchDetails(entry, format, request, requestOptions)
                 .body();
     }
 
-    public Map<String, Object> exportBatchDetailsOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportBatchDetailsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportBatchDetailsOrg(format, orgId).body();
     }
 
     public Map<String, Object> exportBatchDetailsOrg(
-            ExportFormat format, int orgId, ExportBatchDetailsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request) {
         return this.rawClient.exportBatchDetailsOrg(format, orgId, request).body();
     }
 
     public Map<String, Object> exportBatchDetailsOrg(
-            ExportFormat format, int orgId, ExportBatchDetailsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBatchDetailsOrg(format, orgId, request, requestOptions)
                 .body();
@@ -113,14 +113,14 @@ public class ExportClient {
     /**
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportBatches(String entry, ExportFormat format) {
+    public Map<String, Object> exportBatches(String entry, ExportFormat1 format) {
         return this.rawClient.exportBatches(entry, format).body();
     }
 
     /**
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportBatches(String entry, ExportFormat format, ExportBatchesRequest request) {
+    public Map<String, Object> exportBatches(String entry, ExportFormat1 format, ExportBatchesRequest request) {
         return this.rawClient.exportBatches(entry, format, request).body();
     }
 
@@ -128,7 +128,7 @@ public class ExportClient {
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportBatches(
-            String entry, ExportFormat format, ExportBatchesRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBatchesRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBatches(entry, format, request, requestOptions)
                 .body();
@@ -137,14 +137,14 @@ public class ExportClient {
     /**
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportBatchesOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportBatchesOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportBatchesOrg(format, orgId).body();
     }
 
     /**
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportBatchesOrg(ExportFormat format, int orgId, ExportBatchesOrgRequest request) {
+    public Map<String, Object> exportBatchesOrg(ExportFormat1 format, int orgId, ExportBatchesOrgRequest request) {
         return this.rawClient.exportBatchesOrg(format, orgId, request).body();
     }
 
@@ -152,7 +152,7 @@ public class ExportClient {
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportBatchesOrg(
-            ExportFormat format, int orgId, ExportBatchesOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBatchesOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBatchesOrg(format, orgId, request, requestOptions)
                 .body();
@@ -161,14 +161,14 @@ public class ExportClient {
     /**
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportBatchesOut(String entry, ExportFormat format) {
+    public Map<String, Object> exportBatchesOut(String entry, ExportFormat1 format) {
         return this.rawClient.exportBatchesOut(entry, format).body();
     }
 
     /**
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportBatchesOut(String entry, ExportFormat format, ExportBatchesOutRequest request) {
+    public Map<String, Object> exportBatchesOut(String entry, ExportFormat1 format, ExportBatchesOutRequest request) {
         return this.rawClient.exportBatchesOut(entry, format, request).body();
     }
 
@@ -176,7 +176,7 @@ public class ExportClient {
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public Map<String, Object> exportBatchesOut(
-            String entry, ExportFormat format, ExportBatchesOutRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBatchesOutRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBatchesOut(entry, format, request, requestOptions)
                 .body();
@@ -185,14 +185,15 @@ public class ExportClient {
     /**
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportBatchesOutOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportBatchesOutOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportBatchesOutOrg(format, orgId).body();
     }
 
     /**
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportBatchesOutOrg(ExportFormat format, int orgId, ExportBatchesOutOrgRequest request) {
+    public Map<String, Object> exportBatchesOutOrg(
+            ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request) {
         return this.rawClient.exportBatchesOutOrg(format, orgId, request).body();
     }
 
@@ -200,7 +201,7 @@ public class ExportClient {
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportBatchesOutOrg(
-            ExportFormat format, int orgId, ExportBatchesOutOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBatchesOutOrg(format, orgId, request, requestOptions)
                 .body();
@@ -209,14 +210,14 @@ public class ExportClient {
     /**
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportBills(String entry, ExportFormat format) {
+    public Map<String, Object> exportBills(String entry, ExportFormat1 format) {
         return this.rawClient.exportBills(entry, format).body();
     }
 
     /**
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportBills(String entry, ExportFormat format, ExportBillsRequest request) {
+    public Map<String, Object> exportBills(String entry, ExportFormat1 format, ExportBillsRequest request) {
         return this.rawClient.exportBills(entry, format, request).body();
     }
 
@@ -224,7 +225,7 @@ public class ExportClient {
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportBills(
-            String entry, ExportFormat format, ExportBillsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBillsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBills(entry, format, request, requestOptions)
                 .body();
@@ -233,14 +234,14 @@ public class ExportClient {
     /**
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportBillsOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportBillsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportBillsOrg(format, orgId).body();
     }
 
     /**
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportBillsOrg(ExportFormat format, int orgId, ExportBillsOrgRequest request) {
+    public Map<String, Object> exportBillsOrg(ExportFormat1 format, int orgId, ExportBillsOrgRequest request) {
         return this.rawClient.exportBillsOrg(format, orgId, request).body();
     }
 
@@ -248,7 +249,7 @@ public class ExportClient {
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportBillsOrg(
-            ExportFormat format, int orgId, ExportBillsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBillsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportBillsOrg(format, orgId, request, requestOptions)
                 .body();
@@ -257,14 +258,14 @@ public class ExportClient {
     /**
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportChargebacks(String entry, ExportFormat format) {
+    public Map<String, Object> exportChargebacks(String entry, ExportFormat1 format) {
         return this.rawClient.exportChargebacks(entry, format).body();
     }
 
     /**
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportChargebacks(String entry, ExportFormat format, ExportChargebacksRequest request) {
+    public Map<String, Object> exportChargebacks(String entry, ExportFormat1 format, ExportChargebacksRequest request) {
         return this.rawClient.exportChargebacks(entry, format, request).body();
     }
 
@@ -272,7 +273,7 @@ public class ExportClient {
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportChargebacks(
-            String entry, ExportFormat format, ExportChargebacksRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportChargebacksRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportChargebacks(entry, format, request, requestOptions)
                 .body();
@@ -281,7 +282,7 @@ public class ExportClient {
     /**
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportChargebacksOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportChargebacksOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportChargebacksOrg(format, orgId).body();
     }
 
@@ -289,7 +290,7 @@ public class ExportClient {
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportChargebacksOrg(
-            ExportFormat format, int orgId, ExportChargebacksOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request) {
         return this.rawClient.exportChargebacksOrg(format, orgId, request).body();
     }
 
@@ -297,7 +298,7 @@ public class ExportClient {
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportChargebacksOrg(
-            ExportFormat format, int orgId, ExportChargebacksOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportChargebacksOrg(format, orgId, request, requestOptions)
                 .body();
@@ -306,14 +307,14 @@ public class ExportClient {
     /**
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportCustomers(String entry, ExportFormat format) {
+    public Map<String, Object> exportCustomers(String entry, ExportFormat1 format) {
         return this.rawClient.exportCustomers(entry, format).body();
     }
 
     /**
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportCustomers(String entry, ExportFormat format, ExportCustomersRequest request) {
+    public Map<String, Object> exportCustomers(String entry, ExportFormat1 format, ExportCustomersRequest request) {
         return this.rawClient.exportCustomers(entry, format, request).body();
     }
 
@@ -321,7 +322,7 @@ public class ExportClient {
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportCustomers(
-            String entry, ExportFormat format, ExportCustomersRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportCustomersRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportCustomers(entry, format, request, requestOptions)
                 .body();
@@ -330,14 +331,14 @@ public class ExportClient {
     /**
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportCustomersOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportCustomersOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportCustomersOrg(format, orgId).body();
     }
 
     /**
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportCustomersOrg(ExportFormat format, int orgId, ExportCustomersOrgRequest request) {
+    public Map<String, Object> exportCustomersOrg(ExportFormat1 format, int orgId, ExportCustomersOrgRequest request) {
         return this.rawClient.exportCustomersOrg(format, orgId, request).body();
     }
 
@@ -345,7 +346,7 @@ public class ExportClient {
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportCustomersOrg(
-            ExportFormat format, int orgId, ExportCustomersOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportCustomersOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportCustomersOrg(format, orgId, request, requestOptions)
                 .body();
@@ -354,14 +355,14 @@ public class ExportClient {
     /**
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportInvoices(String entry, ExportFormat format) {
+    public Map<String, Object> exportInvoices(String entry, ExportFormat1 format) {
         return this.rawClient.exportInvoices(entry, format).body();
     }
 
     /**
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportInvoices(String entry, ExportFormat format, ExportInvoicesRequest request) {
+    public Map<String, Object> exportInvoices(String entry, ExportFormat1 format, ExportInvoicesRequest request) {
         return this.rawClient.exportInvoices(entry, format, request).body();
     }
 
@@ -369,7 +370,7 @@ public class ExportClient {
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportInvoices(
-            String entry, ExportFormat format, ExportInvoicesRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportInvoicesRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportInvoices(entry, format, request, requestOptions)
                 .body();
@@ -378,14 +379,14 @@ public class ExportClient {
     /**
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportInvoicesOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportInvoicesOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportInvoicesOrg(format, orgId).body();
     }
 
     /**
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportInvoicesOrg(ExportFormat format, int orgId, ExportInvoicesOrgRequest request) {
+    public Map<String, Object> exportInvoicesOrg(ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request) {
         return this.rawClient.exportInvoicesOrg(format, orgId, request).body();
     }
 
@@ -393,7 +394,7 @@ public class ExportClient {
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportInvoicesOrg(
-            ExportFormat format, int orgId, ExportInvoicesOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportInvoicesOrg(format, orgId, request, requestOptions)
                 .body();
@@ -402,14 +403,15 @@ public class ExportClient {
     /**
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public Map<String, Object> exportOrganizations(ExportFormat format, int orgId) {
+    public Map<String, Object> exportOrganizations(ExportFormat1 format, int orgId) {
         return this.rawClient.exportOrganizations(format, orgId).body();
     }
 
     /**
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public Map<String, Object> exportOrganizations(ExportFormat format, int orgId, ExportOrganizationsRequest request) {
+    public Map<String, Object> exportOrganizations(
+            ExportFormat1 format, int orgId, ExportOrganizationsRequest request) {
         return this.rawClient.exportOrganizations(format, orgId, request).body();
     }
 
@@ -417,7 +419,7 @@ public class ExportClient {
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public Map<String, Object> exportOrganizations(
-            ExportFormat format, int orgId, ExportOrganizationsRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportOrganizationsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportOrganizations(format, orgId, request, requestOptions)
                 .body();
@@ -426,14 +428,14 @@ public class ExportClient {
     /**
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportPayout(String entry, ExportFormat format) {
+    public Map<String, Object> exportPayout(String entry, ExportFormat1 format) {
         return this.rawClient.exportPayout(entry, format).body();
     }
 
     /**
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportPayout(String entry, ExportFormat format, ExportPayoutRequest request) {
+    public Map<String, Object> exportPayout(String entry, ExportFormat1 format, ExportPayoutRequest request) {
         return this.rawClient.exportPayout(entry, format, request).body();
     }
 
@@ -441,7 +443,7 @@ public class ExportClient {
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportPayout(
-            String entry, ExportFormat format, ExportPayoutRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportPayoutRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportPayout(entry, format, request, requestOptions)
                 .body();
@@ -450,14 +452,14 @@ public class ExportClient {
     /**
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportPayoutOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportPayoutOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportPayoutOrg(format, orgId).body();
     }
 
     /**
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportPayoutOrg(ExportFormat format, int orgId, ExportPayoutOrgRequest request) {
+    public Map<String, Object> exportPayoutOrg(ExportFormat1 format, int orgId, ExportPayoutOrgRequest request) {
         return this.rawClient.exportPayoutOrg(format, orgId, request).body();
     }
 
@@ -465,7 +467,7 @@ public class ExportClient {
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportPayoutOrg(
-            ExportFormat format, int orgId, ExportPayoutOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportPayoutOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportPayoutOrg(format, orgId, request, requestOptions)
                 .body();
@@ -474,14 +476,14 @@ public class ExportClient {
     /**
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportPaypoints(ExportFormat format, int orgId) {
+    public Map<String, Object> exportPaypoints(ExportFormat1 format, int orgId) {
         return this.rawClient.exportPaypoints(format, orgId).body();
     }
 
     /**
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportPaypoints(ExportFormat format, int orgId, ExportPaypointsRequest request) {
+    public Map<String, Object> exportPaypoints(ExportFormat1 format, int orgId, ExportPaypointsRequest request) {
         return this.rawClient.exportPaypoints(format, orgId, request).body();
     }
 
@@ -489,7 +491,7 @@ public class ExportClient {
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public Map<String, Object> exportPaypoints(
-            ExportFormat format, int orgId, ExportPaypointsRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportPaypointsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportPaypoints(format, orgId, request, requestOptions)
                 .body();
@@ -498,14 +500,14 @@ public class ExportClient {
     /**
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportSettlements(String entry, ExportFormat format) {
+    public Map<String, Object> exportSettlements(String entry, ExportFormat1 format) {
         return this.rawClient.exportSettlements(entry, format).body();
     }
 
     /**
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportSettlements(String entry, ExportFormat format, ExportSettlementsRequest request) {
+    public Map<String, Object> exportSettlements(String entry, ExportFormat1 format, ExportSettlementsRequest request) {
         return this.rawClient.exportSettlements(entry, format, request).body();
     }
 
@@ -513,7 +515,7 @@ public class ExportClient {
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportSettlements(
-            String entry, ExportFormat format, ExportSettlementsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportSettlementsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportSettlements(entry, format, request, requestOptions)
                 .body();
@@ -522,7 +524,7 @@ public class ExportClient {
     /**
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportSettlementsOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportSettlementsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportSettlementsOrg(format, orgId).body();
     }
 
@@ -530,7 +532,7 @@ public class ExportClient {
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportSettlementsOrg(
-            ExportFormat format, int orgId, ExportSettlementsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request) {
         return this.rawClient.exportSettlementsOrg(format, orgId, request).body();
     }
 
@@ -538,7 +540,7 @@ public class ExportClient {
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportSettlementsOrg(
-            ExportFormat format, int orgId, ExportSettlementsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportSettlementsOrg(format, orgId, request, requestOptions)
                 .body();
@@ -547,7 +549,7 @@ public class ExportClient {
     /**
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportSubscriptions(String entry, ExportFormat format) {
+    public Map<String, Object> exportSubscriptions(String entry, ExportFormat1 format) {
         return this.rawClient.exportSubscriptions(entry, format).body();
     }
 
@@ -555,7 +557,7 @@ public class ExportClient {
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportSubscriptions(
-            String entry, ExportFormat format, ExportSubscriptionsRequest request) {
+            String entry, ExportFormat1 format, ExportSubscriptionsRequest request) {
         return this.rawClient.exportSubscriptions(entry, format, request).body();
     }
 
@@ -563,7 +565,7 @@ public class ExportClient {
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportSubscriptions(
-            String entry, ExportFormat format, ExportSubscriptionsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportSubscriptionsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportSubscriptions(entry, format, request, requestOptions)
                 .body();
@@ -572,7 +574,7 @@ public class ExportClient {
     /**
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportSubscriptionsOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportSubscriptionsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportSubscriptionsOrg(format, orgId).body();
     }
 
@@ -580,7 +582,7 @@ public class ExportClient {
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportSubscriptionsOrg(
-            ExportFormat format, int orgId, ExportSubscriptionsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request) {
         return this.rawClient.exportSubscriptionsOrg(format, orgId, request).body();
     }
 
@@ -588,7 +590,7 @@ public class ExportClient {
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportSubscriptionsOrg(
-            ExportFormat format, int orgId, ExportSubscriptionsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportSubscriptionsOrg(format, orgId, request, requestOptions)
                 .body();
@@ -597,7 +599,7 @@ public class ExportClient {
     /**
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public Map<String, Object> exportTransactions(String entry, ExportFormat format) {
+    public Map<String, Object> exportTransactions(String entry, ExportFormat1 format) {
         return this.rawClient.exportTransactions(entry, format).body();
     }
 
@@ -605,7 +607,7 @@ public class ExportClient {
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public Map<String, Object> exportTransactions(
-            String entry, ExportFormat format, ExportTransactionsRequest request) {
+            String entry, ExportFormat1 format, ExportTransactionsRequest request) {
         return this.rawClient.exportTransactions(entry, format, request).body();
     }
 
@@ -613,7 +615,7 @@ public class ExportClient {
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public Map<String, Object> exportTransactions(
-            String entry, ExportFormat format, ExportTransactionsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportTransactionsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportTransactions(entry, format, request, requestOptions)
                 .body();
@@ -622,7 +624,7 @@ public class ExportClient {
     /**
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public Map<String, Object> exportTransactionsOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportTransactionsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportTransactionsOrg(format, orgId).body();
     }
 
@@ -630,7 +632,7 @@ public class ExportClient {
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public Map<String, Object> exportTransactionsOrg(
-            ExportFormat format, int orgId, ExportTransactionsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request) {
         return this.rawClient.exportTransactionsOrg(format, orgId, request).body();
     }
 
@@ -638,7 +640,7 @@ public class ExportClient {
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public Map<String, Object> exportTransactionsOrg(
-            ExportFormat format, int orgId, ExportTransactionsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportTransactionsOrg(format, orgId, request, requestOptions)
                 .body();
@@ -647,7 +649,7 @@ public class ExportClient {
     /**
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportTransferDetails(String entry, ExportFormat format, long transferId) {
+    public Map<String, Object> exportTransferDetails(String entry, ExportFormat1 format, long transferId) {
         return this.rawClient.exportTransferDetails(entry, format, transferId).body();
     }
 
@@ -655,7 +657,7 @@ public class ExportClient {
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportTransferDetails(
-            String entry, ExportFormat format, long transferId, ExportTransferDetailsRequest request) {
+            String entry, ExportFormat1 format, long transferId, ExportTransferDetailsRequest request) {
         return this.rawClient
                 .exportTransferDetails(entry, format, transferId, request)
                 .body();
@@ -666,7 +668,7 @@ public class ExportClient {
      */
     public Map<String, Object> exportTransferDetails(
             String entry,
-            ExportFormat format,
+            ExportFormat1 format,
             long transferId,
             ExportTransferDetailsRequest request,
             RequestOptions requestOptions) {
@@ -700,14 +702,14 @@ public class ExportClient {
     /**
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportVendors(String entry, ExportFormat format) {
+    public Map<String, Object> exportVendors(String entry, ExportFormat1 format) {
         return this.rawClient.exportVendors(entry, format).body();
     }
 
     /**
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public Map<String, Object> exportVendors(String entry, ExportFormat format, ExportVendorsRequest request) {
+    public Map<String, Object> exportVendors(String entry, ExportFormat1 format, ExportVendorsRequest request) {
         return this.rawClient.exportVendors(entry, format, request).body();
     }
 
@@ -715,7 +717,7 @@ public class ExportClient {
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public Map<String, Object> exportVendors(
-            String entry, ExportFormat format, ExportVendorsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportVendorsRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportVendors(entry, format, request, requestOptions)
                 .body();
@@ -724,14 +726,14 @@ public class ExportClient {
     /**
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportVendorsOrg(ExportFormat format, int orgId) {
+    public Map<String, Object> exportVendorsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportVendorsOrg(format, orgId).body();
     }
 
     /**
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public Map<String, Object> exportVendorsOrg(ExportFormat format, int orgId, ExportVendorsOrgRequest request) {
+    public Map<String, Object> exportVendorsOrg(ExportFormat1 format, int orgId, ExportVendorsOrgRequest request) {
         return this.rawClient.exportVendorsOrg(format, orgId, request).body();
     }
 
@@ -739,37 +741,9 @@ public class ExportClient {
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public Map<String, Object> exportVendorsOrg(
-            ExportFormat format, int orgId, ExportVendorsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportVendorsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .exportVendorsOrg(format, orgId, request, requestOptions)
                 .body();
-    }
-
-    /**
-     * Export a single invoice in PDF format.
-     */
-    public Map<String, Object> getInvoicePdf(int idInvoice) {
-        return this.rawClient.getInvoicePdf(idInvoice).body();
-    }
-
-    /**
-     * Export a single invoice in PDF format.
-     */
-    public Map<String, Object> getInvoicePdf(int idInvoice, RequestOptions requestOptions) {
-        return this.rawClient.getInvoicePdf(idInvoice, requestOptions).body();
-    }
-
-    /**
-     * Gets a copy of a generated report by ID.'
-     */
-    public Map<String, Object> getReportFile(long id) {
-        return this.rawClient.getReportFile(id).body();
-    }
-
-    /**
-     * Gets a copy of a generated report by ID.'
-     */
-    public Map<String, Object> getReportFile(long id, RequestOptions requestOptions) {
-        return this.rawClient.getReportFile(id, requestOptions).body();
     }
 }

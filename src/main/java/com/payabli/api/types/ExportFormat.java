@@ -5,18 +5,14 @@ package com.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum VendorPaymentMethodMethod {
-    MANAGED("managed"),
+public enum ExportFormat {
+    CSV("csv"),
 
-    VCARD("vcard"),
-
-    ACH("ach"),
-
-    CHECK("check");
+    XLSX("xlsx");
 
     private final String value;
 
-    VendorPaymentMethodMethod(String value) {
+    ExportFormat(String value) {
         this.value = value;
     }
 

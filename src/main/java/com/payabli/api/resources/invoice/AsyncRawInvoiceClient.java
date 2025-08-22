@@ -4,6 +4,7 @@
 package com.payabli.api.resources.invoice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.payabli.api.core.ClientOptions;
 import com.payabli.api.core.MediaTypes;
 import com.payabli.api.core.ObjectMappers;
@@ -30,6 +31,7 @@ import com.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import com.payabli.api.types.FileContent;
 import com.payabli.api.types.PayabliApiResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -699,14 +701,14 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(String entry) {
         return listInvoices(entry, ListInvoicesRequest.builder().build());
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(
             String entry, ListInvoicesRequest request) {
@@ -714,7 +716,7 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(
             String entry, ListInvoicesRequest request, RequestOptions requestOptions) {
@@ -722,6 +724,10 @@ public class AsyncRawInvoiceClient {
                 .newBuilder()
                 .addPathSegments("Query/invoices")
                 .addPathSegment(entry);
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -807,14 +813,14 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(int orgId) {
         return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build());
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request) {
@@ -822,7 +828,7 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request, RequestOptions requestOptions) {
@@ -830,6 +836,10 @@ public class AsyncRawInvoiceClient {
                 .newBuilder()
                 .addPathSegments("Query/invoices/org")
                 .addPathSegment(Integer.toString(orgId));
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -964,6 +974,92 @@ public class AsyncRawInvoiceClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), SendInvoiceResponse.class),
+                                response));
+                        return;
+                    }
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(),
+                            response.code(),
+                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                            response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Export a single invoice in PDF format.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> getInvoicePdf(int idInvoice) {
+        return getInvoicePdf(idInvoice, null);
+    }
+
+    /**
+     * Export a single invoice in PDF format.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> getInvoicePdf(
+            int idInvoice, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Export/invoicePdf")
+                .addPathSegment(Integer.toString(idInvoice))
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBody.string(), new TypeReference<Map<String, Object>>() {}),
                                 response));
                         return;
                     }

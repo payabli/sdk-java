@@ -166,9 +166,6 @@ public final class SubscriptionQueryRecords {
         return endDate;
     }
 
-    /**
-     * @return If applicable, the internal reference ID to the payment page capturing the payment.
-     */
     @JsonProperty("EntrypageId")
     public Optional<Long> getEntrypageId() {
         return entrypageId;
@@ -583,9 +580,6 @@ public final class SubscriptionQueryRecords {
             return this;
         }
 
-        /**
-         * <p>If applicable, the internal reference ID to the payment page capturing the payment.</p>
-         */
         @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
         public Builder entrypageId(Optional<Long> entrypageId) {
             this.entrypageId = entrypageId;

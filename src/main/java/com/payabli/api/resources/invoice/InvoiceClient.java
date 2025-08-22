@@ -17,6 +17,7 @@ import com.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
 import com.payabli.api.resources.invoice.types.QueryInvoiceResponse;
 import com.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import com.payabli.api.types.FileContent;
+import java.util.Map;
 
 public class InvoiceClient {
     protected final ClientOptions clientOptions;
@@ -152,42 +153,42 @@ public class InvoiceClient {
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryInvoiceResponse listInvoices(String entry) {
         return this.rawClient.listInvoices(entry).body();
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryInvoiceResponse listInvoices(String entry, ListInvoicesRequest request) {
         return this.rawClient.listInvoices(entry, request).body();
     }
 
     /**
-     * Returns a list of invoices for an entrypoint. Use filters to limit results.
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryInvoiceResponse listInvoices(String entry, ListInvoicesRequest request, RequestOptions requestOptions) {
         return this.rawClient.listInvoices(entry, request, requestOptions).body();
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryInvoiceResponse listInvoicesOrg(int orgId) {
         return this.rawClient.listInvoicesOrg(orgId).body();
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryInvoiceResponse listInvoicesOrg(int orgId, ListInvoicesOrgRequest request) {
         return this.rawClient.listInvoicesOrg(orgId, request).body();
     }
 
     /**
-     * Returns a list of invoices for an org. Use filters to limit results.
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryInvoiceResponse listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request, RequestOptions requestOptions) {
@@ -213,5 +214,19 @@ public class InvoiceClient {
      */
     public SendInvoiceResponse sendInvoice(int idInvoice, SendInvoiceRequest request, RequestOptions requestOptions) {
         return this.rawClient.sendInvoice(idInvoice, request, requestOptions).body();
+    }
+
+    /**
+     * Export a single invoice in PDF format.
+     */
+    public Map<String, Object> getInvoicePdf(int idInvoice) {
+        return this.rawClient.getInvoicePdf(idInvoice).body();
+    }
+
+    /**
+     * Export a single invoice in PDF format.
+     */
+    public Map<String, Object> getInvoicePdf(int idInvoice, RequestOptions requestOptions) {
+        return this.rawClient.getInvoicePdf(idInvoice, requestOptions).body();
     }
 }

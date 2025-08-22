@@ -9,6 +9,8 @@ import com.payabli.api.resources.paypoint.requests.GetEntryConfigRequest;
 import com.payabli.api.resources.paypoint.types.GetBasicEntryByIdResponse;
 import com.payabli.api.resources.paypoint.types.GetBasicEntryResponse;
 import com.payabli.api.resources.paypoint.types.GetEntryConfigResponse;
+import com.payabli.api.resources.paypoint.types.MigratePaypointResponse;
+import com.payabli.api.resources.paypoint.types.PaypointMoveRequest;
 import com.payabli.api.types.FileContent;
 import com.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import com.payabli.api.types.PayabliApiResponseGeneric2Part;
@@ -144,5 +146,19 @@ public class PaypointClient {
      */
     public SettingsQueryRecord settingsPage(String entry, RequestOptions requestOptions) {
         return this.rawClient.settingsPage(entry, requestOptions).body();
+    }
+
+    /**
+     * Migrates a paypoint to a new parent organization.
+     */
+    public MigratePaypointResponse migrate(PaypointMoveRequest request) {
+        return this.rawClient.migrate(request).body();
+    }
+
+    /**
+     * Migrates a paypoint to a new parent organization.
+     */
+    public MigratePaypointResponse migrate(PaypointMoveRequest request, RequestOptions requestOptions) {
+        return this.rawClient.migrate(request, requestOptions).body();
     }
 }

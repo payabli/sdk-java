@@ -45,7 +45,7 @@ import com.payabli.api.resources.export.requests.ExportTransferDetailsRequest;
 import com.payabli.api.resources.export.requests.ExportTransfersRequest;
 import com.payabli.api.resources.export.requests.ExportVendorsOrgRequest;
 import com.payabli.api.resources.export.requests.ExportVendorsRequest;
-import com.payabli.api.resources.export.types.ExportFormat;
+import com.payabli.api.resources.export.types.ExportFormat1;
 import com.payabli.api.types.PayabliApiResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -66,7 +66,7 @@ public class RawExportClient {
     /**
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportApplications(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportApplications(ExportFormat1 format, int orgId) {
         return exportApplications(
                 format, orgId, ExportApplicationsRequest.builder().build());
     }
@@ -75,7 +75,7 @@ public class RawExportClient {
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportApplications(
-            ExportFormat format, int orgId, ExportApplicationsRequest request) {
+            ExportFormat1 format, int orgId, ExportApplicationsRequest request) {
         return exportApplications(format, orgId, request, null);
     }
 
@@ -83,7 +83,7 @@ public class RawExportClient {
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportApplications(
-            ExportFormat format, int orgId, ExportApplicationsRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportApplicationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/boarding")
@@ -153,18 +153,18 @@ public class RawExportClient {
         }
     }
 
-    public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetails(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetails(String entry, ExportFormat1 format) {
         return exportBatchDetails(
                 entry, format, ExportBatchDetailsRequest.builder().build());
     }
 
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetails(
-            String entry, ExportFormat format, ExportBatchDetailsRequest request) {
+            String entry, ExportFormat1 format, ExportBatchDetailsRequest request) {
         return exportBatchDetails(entry, format, request, null);
     }
 
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetails(
-            String entry, ExportFormat format, ExportBatchDetailsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBatchDetailsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/batchDetails")
@@ -234,18 +234,18 @@ public class RawExportClient {
         }
     }
 
-    public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetailsOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetailsOrg(ExportFormat1 format, int orgId) {
         return exportBatchDetailsOrg(
                 format, orgId, ExportBatchDetailsOrgRequest.builder().build());
     }
 
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetailsOrg(
-            ExportFormat format, int orgId, ExportBatchDetailsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request) {
         return exportBatchDetailsOrg(format, orgId, request, null);
     }
 
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetailsOrg(
-            ExportFormat format, int orgId, ExportBatchDetailsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/batchDetails")
@@ -319,7 +319,7 @@ public class RawExportClient {
     /**
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportBatches(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatches(String entry, ExportFormat1 format) {
         return exportBatches(entry, format, ExportBatchesRequest.builder().build());
     }
 
@@ -327,7 +327,7 @@ public class RawExportClient {
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatches(
-            String entry, ExportFormat format, ExportBatchesRequest request) {
+            String entry, ExportFormat1 format, ExportBatchesRequest request) {
         return exportBatches(entry, format, request, null);
     }
 
@@ -335,7 +335,7 @@ public class RawExportClient {
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatches(
-            String entry, ExportFormat format, ExportBatchesRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBatchesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/batches")
@@ -408,7 +408,7 @@ public class RawExportClient {
     /**
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOrg(ExportFormat1 format, int orgId) {
         return exportBatchesOrg(format, orgId, ExportBatchesOrgRequest.builder().build());
     }
 
@@ -416,7 +416,7 @@ public class RawExportClient {
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOrg(
-            ExportFormat format, int orgId, ExportBatchesOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportBatchesOrgRequest request) {
         return exportBatchesOrg(format, orgId, request, null);
     }
 
@@ -424,7 +424,7 @@ public class RawExportClient {
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOrg(
-            ExportFormat format, int orgId, ExportBatchesOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBatchesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/batches")
@@ -498,7 +498,7 @@ public class RawExportClient {
     /**
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOut(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOut(String entry, ExportFormat1 format) {
         return exportBatchesOut(entry, format, ExportBatchesOutRequest.builder().build());
     }
 
@@ -506,7 +506,7 @@ public class RawExportClient {
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOut(
-            String entry, ExportFormat format, ExportBatchesOutRequest request) {
+            String entry, ExportFormat1 format, ExportBatchesOutRequest request) {
         return exportBatchesOut(entry, format, request, null);
     }
 
@@ -514,7 +514,7 @@ public class RawExportClient {
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOut(
-            String entry, ExportFormat format, ExportBatchesOutRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBatchesOutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/batchesOut")
@@ -587,7 +587,7 @@ public class RawExportClient {
     /**
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOutOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOutOrg(ExportFormat1 format, int orgId) {
         return exportBatchesOutOrg(
                 format, orgId, ExportBatchesOutOrgRequest.builder().build());
     }
@@ -596,7 +596,7 @@ public class RawExportClient {
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOutOrg(
-            ExportFormat format, int orgId, ExportBatchesOutOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request) {
         return exportBatchesOutOrg(format, orgId, request, null);
     }
 
@@ -604,7 +604,7 @@ public class RawExportClient {
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOutOrg(
-            ExportFormat format, int orgId, ExportBatchesOutOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/batchesOut")
@@ -678,7 +678,7 @@ public class RawExportClient {
     /**
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportBills(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBills(String entry, ExportFormat1 format) {
         return exportBills(entry, format, ExportBillsRequest.builder().build());
     }
 
@@ -686,7 +686,7 @@ public class RawExportClient {
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBills(
-            String entry, ExportFormat format, ExportBillsRequest request) {
+            String entry, ExportFormat1 format, ExportBillsRequest request) {
         return exportBills(entry, format, request, null);
     }
 
@@ -694,7 +694,7 @@ public class RawExportClient {
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBills(
-            String entry, ExportFormat format, ExportBillsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportBillsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/bills")
@@ -767,7 +767,7 @@ public class RawExportClient {
     /**
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportBillsOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportBillsOrg(ExportFormat1 format, int orgId) {
         return exportBillsOrg(format, orgId, ExportBillsOrgRequest.builder().build());
     }
 
@@ -775,7 +775,7 @@ public class RawExportClient {
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBillsOrg(
-            ExportFormat format, int orgId, ExportBillsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportBillsOrgRequest request) {
         return exportBillsOrg(format, orgId, request, null);
     }
 
@@ -783,7 +783,7 @@ public class RawExportClient {
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBillsOrg(
-            ExportFormat format, int orgId, ExportBillsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportBillsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/bills")
@@ -857,7 +857,7 @@ public class RawExportClient {
     /**
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportChargebacks(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportChargebacks(String entry, ExportFormat1 format) {
         return exportChargebacks(
                 entry, format, ExportChargebacksRequest.builder().build());
     }
@@ -866,7 +866,7 @@ public class RawExportClient {
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportChargebacks(
-            String entry, ExportFormat format, ExportChargebacksRequest request) {
+            String entry, ExportFormat1 format, ExportChargebacksRequest request) {
         return exportChargebacks(entry, format, request, null);
     }
 
@@ -874,7 +874,7 @@ public class RawExportClient {
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportChargebacks(
-            String entry, ExportFormat format, ExportChargebacksRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportChargebacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/chargebacks")
@@ -947,7 +947,7 @@ public class RawExportClient {
     /**
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportChargebacksOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportChargebacksOrg(ExportFormat1 format, int orgId) {
         return exportChargebacksOrg(
                 format, orgId, ExportChargebacksOrgRequest.builder().build());
     }
@@ -956,7 +956,7 @@ public class RawExportClient {
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportChargebacksOrg(
-            ExportFormat format, int orgId, ExportChargebacksOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request) {
         return exportChargebacksOrg(format, orgId, request, null);
     }
 
@@ -964,7 +964,7 @@ public class RawExportClient {
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportChargebacksOrg(
-            ExportFormat format, int orgId, ExportChargebacksOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/chargebacks")
@@ -1038,7 +1038,7 @@ public class RawExportClient {
     /**
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportCustomers(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportCustomers(String entry, ExportFormat1 format) {
         return exportCustomers(entry, format, ExportCustomersRequest.builder().build());
     }
 
@@ -1046,7 +1046,7 @@ public class RawExportClient {
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportCustomers(
-            String entry, ExportFormat format, ExportCustomersRequest request) {
+            String entry, ExportFormat1 format, ExportCustomersRequest request) {
         return exportCustomers(entry, format, request, null);
     }
 
@@ -1054,7 +1054,7 @@ public class RawExportClient {
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportCustomers(
-            String entry, ExportFormat format, ExportCustomersRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportCustomersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/customers")
@@ -1127,7 +1127,7 @@ public class RawExportClient {
     /**
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportCustomersOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportCustomersOrg(ExportFormat1 format, int orgId) {
         return exportCustomersOrg(
                 format, orgId, ExportCustomersOrgRequest.builder().build());
     }
@@ -1136,7 +1136,7 @@ public class RawExportClient {
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportCustomersOrg(
-            ExportFormat format, int orgId, ExportCustomersOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportCustomersOrgRequest request) {
         return exportCustomersOrg(format, orgId, request, null);
     }
 
@@ -1144,7 +1144,7 @@ public class RawExportClient {
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportCustomersOrg(
-            ExportFormat format, int orgId, ExportCustomersOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportCustomersOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/customers")
@@ -1218,7 +1218,7 @@ public class RawExportClient {
     /**
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportInvoices(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportInvoices(String entry, ExportFormat1 format) {
         return exportInvoices(entry, format, ExportInvoicesRequest.builder().build());
     }
 
@@ -1226,7 +1226,7 @@ public class RawExportClient {
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportInvoices(
-            String entry, ExportFormat format, ExportInvoicesRequest request) {
+            String entry, ExportFormat1 format, ExportInvoicesRequest request) {
         return exportInvoices(entry, format, request, null);
     }
 
@@ -1234,7 +1234,7 @@ public class RawExportClient {
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportInvoices(
-            String entry, ExportFormat format, ExportInvoicesRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportInvoicesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/invoices")
@@ -1307,7 +1307,7 @@ public class RawExportClient {
     /**
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportInvoicesOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportInvoicesOrg(ExportFormat1 format, int orgId) {
         return exportInvoicesOrg(
                 format, orgId, ExportInvoicesOrgRequest.builder().build());
     }
@@ -1316,7 +1316,7 @@ public class RawExportClient {
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportInvoicesOrg(
-            ExportFormat format, int orgId, ExportInvoicesOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request) {
         return exportInvoicesOrg(format, orgId, request, null);
     }
 
@@ -1324,7 +1324,7 @@ public class RawExportClient {
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportInvoicesOrg(
-            ExportFormat format, int orgId, ExportInvoicesOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/invoices")
@@ -1398,7 +1398,7 @@ public class RawExportClient {
     /**
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportOrganizations(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportOrganizations(ExportFormat1 format, int orgId) {
         return exportOrganizations(
                 format, orgId, ExportOrganizationsRequest.builder().build());
     }
@@ -1407,7 +1407,7 @@ public class RawExportClient {
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportOrganizations(
-            ExportFormat format, int orgId, ExportOrganizationsRequest request) {
+            ExportFormat1 format, int orgId, ExportOrganizationsRequest request) {
         return exportOrganizations(format, orgId, request, null);
     }
 
@@ -1415,7 +1415,7 @@ public class RawExportClient {
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportOrganizations(
-            ExportFormat format, int orgId, ExportOrganizationsRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportOrganizationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/organizations")
@@ -1489,7 +1489,7 @@ public class RawExportClient {
     /**
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportPayout(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportPayout(String entry, ExportFormat1 format) {
         return exportPayout(entry, format, ExportPayoutRequest.builder().build());
     }
 
@@ -1497,7 +1497,7 @@ public class RawExportClient {
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPayout(
-            String entry, ExportFormat format, ExportPayoutRequest request) {
+            String entry, ExportFormat1 format, ExportPayoutRequest request) {
         return exportPayout(entry, format, request, null);
     }
 
@@ -1505,7 +1505,7 @@ public class RawExportClient {
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPayout(
-            String entry, ExportFormat format, ExportPayoutRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportPayoutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/payouts")
@@ -1578,7 +1578,7 @@ public class RawExportClient {
     /**
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportPayoutOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportPayoutOrg(ExportFormat1 format, int orgId) {
         return exportPayoutOrg(format, orgId, ExportPayoutOrgRequest.builder().build());
     }
 
@@ -1586,7 +1586,7 @@ public class RawExportClient {
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPayoutOrg(
-            ExportFormat format, int orgId, ExportPayoutOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportPayoutOrgRequest request) {
         return exportPayoutOrg(format, orgId, request, null);
     }
 
@@ -1594,7 +1594,7 @@ public class RawExportClient {
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPayoutOrg(
-            ExportFormat format, int orgId, ExportPayoutOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportPayoutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/payouts")
@@ -1668,7 +1668,7 @@ public class RawExportClient {
     /**
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportPaypoints(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportPaypoints(ExportFormat1 format, int orgId) {
         return exportPaypoints(format, orgId, ExportPaypointsRequest.builder().build());
     }
 
@@ -1676,7 +1676,7 @@ public class RawExportClient {
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPaypoints(
-            ExportFormat format, int orgId, ExportPaypointsRequest request) {
+            ExportFormat1 format, int orgId, ExportPaypointsRequest request) {
         return exportPaypoints(format, orgId, request, null);
     }
 
@@ -1684,7 +1684,7 @@ public class RawExportClient {
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPaypoints(
-            ExportFormat format, int orgId, ExportPaypointsRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportPaypointsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/paypoints")
@@ -1757,7 +1757,7 @@ public class RawExportClient {
     /**
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportSettlements(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportSettlements(String entry, ExportFormat1 format) {
         return exportSettlements(
                 entry, format, ExportSettlementsRequest.builder().build());
     }
@@ -1766,7 +1766,7 @@ public class RawExportClient {
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSettlements(
-            String entry, ExportFormat format, ExportSettlementsRequest request) {
+            String entry, ExportFormat1 format, ExportSettlementsRequest request) {
         return exportSettlements(entry, format, request, null);
     }
 
@@ -1774,7 +1774,7 @@ public class RawExportClient {
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSettlements(
-            String entry, ExportFormat format, ExportSettlementsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportSettlementsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/settlements")
@@ -1847,7 +1847,7 @@ public class RawExportClient {
     /**
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportSettlementsOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportSettlementsOrg(ExportFormat1 format, int orgId) {
         return exportSettlementsOrg(
                 format, orgId, ExportSettlementsOrgRequest.builder().build());
     }
@@ -1856,7 +1856,7 @@ public class RawExportClient {
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSettlementsOrg(
-            ExportFormat format, int orgId, ExportSettlementsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request) {
         return exportSettlementsOrg(format, orgId, request, null);
     }
 
@@ -1864,7 +1864,7 @@ public class RawExportClient {
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSettlementsOrg(
-            ExportFormat format, int orgId, ExportSettlementsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/settlements")
@@ -1938,7 +1938,7 @@ public class RawExportClient {
     /**
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptions(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptions(String entry, ExportFormat1 format) {
         return exportSubscriptions(
                 entry, format, ExportSubscriptionsRequest.builder().build());
     }
@@ -1947,7 +1947,7 @@ public class RawExportClient {
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptions(
-            String entry, ExportFormat format, ExportSubscriptionsRequest request) {
+            String entry, ExportFormat1 format, ExportSubscriptionsRequest request) {
         return exportSubscriptions(entry, format, request, null);
     }
 
@@ -1955,7 +1955,7 @@ public class RawExportClient {
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptions(
-            String entry, ExportFormat format, ExportSubscriptionsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportSubscriptionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/subscriptions")
@@ -2028,7 +2028,7 @@ public class RawExportClient {
     /**
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptionsOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptionsOrg(ExportFormat1 format, int orgId) {
         return exportSubscriptionsOrg(
                 format, orgId, ExportSubscriptionsOrgRequest.builder().build());
     }
@@ -2037,7 +2037,7 @@ public class RawExportClient {
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptionsOrg(
-            ExportFormat format, int orgId, ExportSubscriptionsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request) {
         return exportSubscriptionsOrg(format, orgId, request, null);
     }
 
@@ -2045,7 +2045,7 @@ public class RawExportClient {
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptionsOrg(
-            ExportFormat format, int orgId, ExportSubscriptionsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/subscriptions")
@@ -2119,7 +2119,7 @@ public class RawExportClient {
     /**
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportTransactions(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportTransactions(String entry, ExportFormat1 format) {
         return exportTransactions(
                 entry, format, ExportTransactionsRequest.builder().build());
     }
@@ -2128,7 +2128,7 @@ public class RawExportClient {
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransactions(
-            String entry, ExportFormat format, ExportTransactionsRequest request) {
+            String entry, ExportFormat1 format, ExportTransactionsRequest request) {
         return exportTransactions(entry, format, request, null);
     }
 
@@ -2136,7 +2136,7 @@ public class RawExportClient {
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransactions(
-            String entry, ExportFormat format, ExportTransactionsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportTransactionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/transactions")
@@ -2209,7 +2209,7 @@ public class RawExportClient {
     /**
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportTransactionsOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportTransactionsOrg(ExportFormat1 format, int orgId) {
         return exportTransactionsOrg(
                 format, orgId, ExportTransactionsOrgRequest.builder().build());
     }
@@ -2218,7 +2218,7 @@ public class RawExportClient {
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransactionsOrg(
-            ExportFormat format, int orgId, ExportTransactionsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request) {
         return exportTransactionsOrg(format, orgId, request, null);
     }
 
@@ -2226,7 +2226,7 @@ public class RawExportClient {
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransactionsOrg(
-            ExportFormat format, int orgId, ExportTransactionsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/transactions")
@@ -2301,7 +2301,7 @@ public class RawExportClient {
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransferDetails(
-            String entry, ExportFormat format, long transferId) {
+            String entry, ExportFormat1 format, long transferId) {
         return exportTransferDetails(
                 entry,
                 format,
@@ -2313,7 +2313,7 @@ public class RawExportClient {
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransferDetails(
-            String entry, ExportFormat format, long transferId, ExportTransferDetailsRequest request) {
+            String entry, ExportFormat1 format, long transferId, ExportTransferDetailsRequest request) {
         return exportTransferDetails(entry, format, transferId, request, null);
     }
 
@@ -2322,7 +2322,7 @@ public class RawExportClient {
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransferDetails(
             String entry,
-            ExportFormat format,
+            ExportFormat1 format,
             long transferId,
             ExportTransferDetailsRequest request,
             RequestOptions requestOptions) {
@@ -2494,7 +2494,7 @@ public class RawExportClient {
     /**
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportVendors(String entry, ExportFormat format) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportVendors(String entry, ExportFormat1 format) {
         return exportVendors(entry, format, ExportVendorsRequest.builder().build());
     }
 
@@ -2502,7 +2502,7 @@ public class RawExportClient {
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportVendors(
-            String entry, ExportFormat format, ExportVendorsRequest request) {
+            String entry, ExportFormat1 format, ExportVendorsRequest request) {
         return exportVendors(entry, format, request, null);
     }
 
@@ -2510,7 +2510,7 @@ public class RawExportClient {
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportVendors(
-            String entry, ExportFormat format, ExportVendorsRequest request, RequestOptions requestOptions) {
+            String entry, ExportFormat1 format, ExportVendorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/vendors")
@@ -2583,7 +2583,7 @@ public class RawExportClient {
     /**
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> exportVendorsOrg(ExportFormat format, int orgId) {
+    public PayabliApiHttpResponse<Map<String, Object>> exportVendorsOrg(ExportFormat1 format, int orgId) {
         return exportVendorsOrg(format, orgId, ExportVendorsOrgRequest.builder().build());
     }
 
@@ -2591,7 +2591,7 @@ public class RawExportClient {
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportVendorsOrg(
-            ExportFormat format, int orgId, ExportVendorsOrgRequest request) {
+            ExportFormat1 format, int orgId, ExportVendorsOrgRequest request) {
         return exportVendorsOrg(format, orgId, request, null);
     }
 
@@ -2599,7 +2599,7 @@ public class RawExportClient {
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportVendorsOrg(
-            ExportFormat format, int orgId, ExportVendorsOrgRequest request, RequestOptions requestOptions) {
+            ExportFormat1 format, int orgId, ExportVendorsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/vendors")
@@ -2628,134 +2628,6 @@ public class RawExportClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), new TypeReference<Map<String, Object>>() {}),
-                        response);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Export a single invoice in PDF format.
-     */
-    public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice) {
-        return getInvoicePdf(idInvoice, null);
-    }
-
-    /**
-     * Export a single invoice in PDF format.
-     */
-    public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Export/invoicePdf")
-                .addPathSegment(Integer.toString(idInvoice))
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), new TypeReference<Map<String, Object>>() {}),
-                        response);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Gets a copy of a generated report by ID.'
-     */
-    public PayabliApiHttpResponse<Map<String, Object>> getReportFile(long id) {
-        return getReportFile(id, null);
-    }
-
-    /**
-     * Gets a copy of a generated report by ID.'
-     */
-    public PayabliApiHttpResponse<Map<String, Object>> getReportFile(long id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Export/notificationReport")
-                .addPathSegment(Long.toString(id))
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);

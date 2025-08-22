@@ -19,7 +19,9 @@ import com.payabli.api.errors.UnauthorizedError;
 import com.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import com.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import com.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
+import com.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import com.payabli.api.resources.moneyout.types.CaptureAllOutResponse;
+import com.payabli.api.resources.moneyout.types.OperationResult;
 import com.payabli.api.resources.moneyout.types.VCardGetResponse;
 import com.payabli.api.types.BillDetailResponse;
 import com.payabli.api.types.PayabliApiResponse;
@@ -511,6 +513,76 @@ public class RawMoneyOutClient {
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), VCardGetResponse.class), response);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                    response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public PayabliApiHttpResponse<OperationResult> sendVCardLink(SendVCardLinkRequest request) {
+        return sendVCardLink(request, null);
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public PayabliApiHttpResponse<OperationResult> sendVCardLink(
+            SendVCardLinkRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("vcard/send-card-link")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OperationResult.class), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

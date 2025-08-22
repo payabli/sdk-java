@@ -39,7 +39,7 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final Optional<Long> paypointId;
 
-    private final Optional<String> invoiceNumber;
+    private final String invoiceNumber;
 
     private final Optional<String> invoiceDate;
 
@@ -59,7 +59,7 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final Frequency frequency;
 
-    private final Optional<String> paymentTerms;
+    private final String paymentTerms;
 
     private final Optional<String> termsConditions;
 
@@ -85,21 +85,21 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final Optional<String> company;
 
-    private final Optional<String> shippingAddress1;
+    private final String shippingAddress1;
 
-    private final Optional<String> shippingAddress2;
+    private final String shippingAddress2;
 
     private final String shippingCity;
 
     private final String shippingState;
 
-    private final Optional<String> shippingZip;
+    private final String shippingZip;
 
     private final String shippingFromZip;
 
     private final String shippingCountry;
 
-    private final Optional<String> shippingEmail;
+    private final String shippingEmail;
 
     private final String shippingPhone;
 
@@ -115,9 +115,9 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final Optional<BillOptions> scheduledOptions;
 
-    private final Optional<String> paypointLegalname;
+    private final String paypointLegalname;
 
-    private final Optional<String> paypointDbaname;
+    private final String paypointDbaname;
 
     private final String paypointEntryname;
 
@@ -129,7 +129,7 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final Optional<DocumentsRef> documentsRef;
 
-    private final Optional<String> externalPaypointId;
+    private final String externalPaypointId;
 
     private final Optional<String> pageIdentifier;
 
@@ -139,7 +139,7 @@ public final class QueryInvoiceResponseRecordsItem {
             long invoiceId,
             Optional<Long> customerId,
             Optional<Long> paypointId,
-            Optional<String> invoiceNumber,
+            String invoiceNumber,
             Optional<String> invoiceDate,
             Optional<String> invoiceDueDate,
             Optional<String> invoiceSentDate,
@@ -149,7 +149,7 @@ public final class QueryInvoiceResponseRecordsItem {
             int invoiceStatus,
             int invoiceType,
             Frequency frequency,
-            Optional<String> paymentTerms,
+            String paymentTerms,
             Optional<String> termsConditions,
             Optional<String> notes,
             Optional<Double> tax,
@@ -162,14 +162,14 @@ public final class QueryInvoiceResponseRecordsItem {
             String firstName,
             String lastName,
             Optional<String> company,
-            Optional<String> shippingAddress1,
-            Optional<String> shippingAddress2,
+            String shippingAddress1,
+            String shippingAddress2,
             String shippingCity,
             String shippingState,
-            Optional<String> shippingZip,
+            String shippingZip,
             String shippingFromZip,
             String shippingCountry,
-            Optional<String> shippingEmail,
+            String shippingEmail,
             String shippingPhone,
             Optional<String> summaryCommodityCode,
             List<BillItem> items,
@@ -177,14 +177,14 @@ public final class QueryInvoiceResponseRecordsItem {
             String paylinkId,
             Optional<List<GeneralEvents>> billEvents,
             Optional<BillOptions> scheduledOptions,
-            Optional<String> paypointLegalname,
-            Optional<String> paypointDbaname,
+            String paypointLegalname,
+            String paypointDbaname,
             String paypointEntryname,
             Optional<Long> parentOrgId,
             String parentOrgName,
             Optional<Map<String, Object>> additionalData,
             Optional<DocumentsRef> documentsRef,
-            Optional<String> externalPaypointId,
+            String externalPaypointId,
             Optional<String> pageIdentifier,
             Map<String, Object> additionalProperties) {
         this.invoiceId = invoiceId;
@@ -256,7 +256,7 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("invoiceNumber")
-    public Optional<String> getInvoiceNumber() {
+    public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
@@ -295,11 +295,8 @@ public final class QueryInvoiceResponseRecordsItem {
     /**
      * @return Timestamp of last payment.
      */
-    @JsonIgnore
+    @JsonProperty("lastPaymentDate")
     public Optional<OffsetDateTime> getLastPaymentDate() {
-        if (lastPaymentDate == null) {
-            return Optional.empty();
-        }
         return lastPaymentDate;
     }
 
@@ -327,12 +324,15 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("paymentTerms")
-    public Optional<String> getPaymentTerms() {
+    public String getPaymentTerms() {
         return paymentTerms;
     }
 
-    @JsonProperty("termsConditions")
+    @JsonIgnore
     public Optional<String> getTermsConditions() {
+        if (termsConditions == null) {
+            return Optional.empty();
+        }
         return termsConditions;
     }
 
@@ -413,12 +413,12 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("shippingAddress1")
-    public Optional<String> getShippingAddress1() {
+    public String getShippingAddress1() {
         return shippingAddress1;
     }
 
     @JsonProperty("shippingAddress2")
-    public Optional<String> getShippingAddress2() {
+    public String getShippingAddress2() {
         return shippingAddress2;
     }
 
@@ -433,7 +433,7 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("shippingZip")
-    public Optional<String> getShippingZip() {
+    public String getShippingZip() {
         return shippingZip;
     }
 
@@ -451,7 +451,7 @@ public final class QueryInvoiceResponseRecordsItem {
      * @return Shipping recipient's contact email address.
      */
     @JsonProperty("shippingEmail")
-    public Optional<String> getShippingEmail() {
+    public String getShippingEmail() {
         return shippingEmail;
     }
 
@@ -463,8 +463,11 @@ public final class QueryInvoiceResponseRecordsItem {
         return shippingPhone;
     }
 
-    @JsonProperty("summaryCommodityCode")
+    @JsonIgnore
     public Optional<String> getSummaryCommodityCode() {
+        if (summaryCommodityCode == null) {
+            return Optional.empty();
+        }
         return summaryCommodityCode;
     }
 
@@ -506,7 +509,7 @@ public final class QueryInvoiceResponseRecordsItem {
      * @return Paypoint's legal name.
      */
     @JsonProperty("PaypointLegalname")
-    public Optional<String> getPaypointLegalname() {
+    public String getPaypointLegalname() {
         return paypointLegalname;
     }
 
@@ -514,7 +517,7 @@ public final class QueryInvoiceResponseRecordsItem {
      * @return Paypoint's DBA name.
      */
     @JsonProperty("PaypointDbaname")
-    public Optional<String> getPaypointDbaname() {
+    public String getPaypointDbaname() {
         return paypointDbaname;
     }
 
@@ -559,7 +562,7 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("externalPaypointID")
-    public Optional<String> getExternalPaypointId() {
+    public String getExternalPaypointId() {
         return externalPaypointId;
     }
 
@@ -572,9 +575,9 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
-    @JsonProperty("lastPaymentDate")
-    private Optional<OffsetDateTime> _getLastPaymentDate() {
-        return lastPaymentDate;
+    @JsonProperty("termsConditions")
+    private Optional<String> _getTermsConditions() {
+        return termsConditions;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -593,6 +596,12 @@ public final class QueryInvoiceResponseRecordsItem {
     @JsonProperty("company")
     private Optional<String> _getCompany() {
         return company;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("summaryCommodityCode")
+    private Optional<String> _getSummaryCommodityCode() {
+        return summaryCommodityCode;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -748,9 +757,13 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface InvoiceIdStage {
-        CreatedAtStage invoiceId(long invoiceId);
+        InvoiceNumberStage invoiceId(long invoiceId);
 
         Builder from(QueryInvoiceResponseRecordsItem other);
+    }
+
+    public interface InvoiceNumberStage {
+        CreatedAtStage invoiceNumber(@NotNull String invoiceNumber);
     }
 
     public interface CreatedAtStage {
@@ -769,7 +782,11 @@ public final class QueryInvoiceResponseRecordsItem {
         /**
          * <p>Frequency of scheduled invoice.</p>
          */
-        InvoicePaidAmountStage frequency(@NotNull Frequency frequency);
+        PaymentTermsStage frequency(@NotNull Frequency frequency);
+    }
+
+    public interface PaymentTermsStage {
+        InvoicePaidAmountStage paymentTerms(@NotNull String paymentTerms);
     }
 
     public interface InvoicePaidAmountStage {
@@ -787,7 +804,15 @@ public final class QueryInvoiceResponseRecordsItem {
         /**
          * <p>Last name of the recipient of the invoice.</p>
          */
-        ShippingCityStage lastName(@NotNull String lastName);
+        ShippingAddress1Stage lastName(@NotNull String lastName);
+    }
+
+    public interface ShippingAddress1Stage {
+        ShippingAddress2Stage shippingAddress1(@NotNull String shippingAddress1);
+    }
+
+    public interface ShippingAddress2Stage {
+        ShippingCityStage shippingAddress2(@NotNull String shippingAddress2);
     }
 
     public interface ShippingCityStage {
@@ -795,7 +820,11 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface ShippingStateStage {
-        ShippingFromZipStage shippingState(@NotNull String shippingState);
+        ShippingZipStage shippingState(@NotNull String shippingState);
+    }
+
+    public interface ShippingZipStage {
+        ShippingFromZipStage shippingZip(@NotNull String shippingZip);
     }
 
     public interface ShippingFromZipStage {
@@ -803,7 +832,14 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface ShippingCountryStage {
-        ShippingPhoneStage shippingCountry(@NotNull String shippingCountry);
+        ShippingEmailStage shippingCountry(@NotNull String shippingCountry);
+    }
+
+    public interface ShippingEmailStage {
+        /**
+         * <p>Shipping recipient's contact email address.</p>
+         */
+        ShippingPhoneStage shippingEmail(@NotNull String shippingEmail);
     }
 
     public interface ShippingPhoneStage {
@@ -818,7 +854,21 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface PaylinkIdStage {
-        PaypointEntrynameStage paylinkId(@NotNull String paylinkId);
+        PaypointLegalnameStage paylinkId(@NotNull String paylinkId);
+    }
+
+    public interface PaypointLegalnameStage {
+        /**
+         * <p>Paypoint's legal name.</p>
+         */
+        PaypointDbanameStage paypointLegalname(@NotNull String paypointLegalname);
+    }
+
+    public interface PaypointDbanameStage {
+        /**
+         * <p>Paypoint's DBA name.</p>
+         */
+        PaypointEntrynameStage paypointDbaname(@NotNull String paypointDbaname);
     }
 
     public interface PaypointEntrynameStage {
@@ -829,7 +879,11 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface ParentOrgNameStage {
-        _FinalStage parentOrgName(@NotNull String parentOrgName);
+        ExternalPaypointIdStage parentOrgName(@NotNull String parentOrgName);
+    }
+
+    public interface ExternalPaypointIdStage {
+        _FinalStage externalPaypointId(@NotNull String externalPaypointId);
     }
 
     public interface _FinalStage {
@@ -842,10 +896,6 @@ public final class QueryInvoiceResponseRecordsItem {
         _FinalStage paypointId(Optional<Long> paypointId);
 
         _FinalStage paypointId(Long paypointId);
-
-        _FinalStage invoiceNumber(Optional<String> invoiceNumber);
-
-        _FinalStage invoiceNumber(String invoiceNumber);
 
         /**
          * <p>Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
@@ -882,15 +932,11 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage lastPaymentDate(OffsetDateTime lastPaymentDate);
 
-        _FinalStage lastPaymentDate(Nullable<OffsetDateTime> lastPaymentDate);
-
-        _FinalStage paymentTerms(Optional<String> paymentTerms);
-
-        _FinalStage paymentTerms(String paymentTerms);
-
         _FinalStage termsConditions(Optional<String> termsConditions);
 
         _FinalStage termsConditions(String termsConditions);
+
+        _FinalStage termsConditions(Nullable<String> termsConditions);
 
         /**
          * <p>Invoice notes.</p>
@@ -936,28 +982,11 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage company(Nullable<String> company);
 
-        _FinalStage shippingAddress1(Optional<String> shippingAddress1);
-
-        _FinalStage shippingAddress1(String shippingAddress1);
-
-        _FinalStage shippingAddress2(Optional<String> shippingAddress2);
-
-        _FinalStage shippingAddress2(String shippingAddress2);
-
-        _FinalStage shippingZip(Optional<String> shippingZip);
-
-        _FinalStage shippingZip(String shippingZip);
-
-        /**
-         * <p>Shipping recipient's contact email address.</p>
-         */
-        _FinalStage shippingEmail(Optional<String> shippingEmail);
-
-        _FinalStage shippingEmail(String shippingEmail);
-
         _FinalStage summaryCommodityCode(Optional<String> summaryCommodityCode);
 
         _FinalStage summaryCommodityCode(String summaryCommodityCode);
+
+        _FinalStage summaryCommodityCode(Nullable<String> summaryCommodityCode);
 
         /**
          * <p>Array of line items included in the invoice.</p>
@@ -981,20 +1010,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage scheduledOptions(Nullable<BillOptions> scheduledOptions);
 
-        /**
-         * <p>Paypoint's legal name.</p>
-         */
-        _FinalStage paypointLegalname(Optional<String> paypointLegalname);
-
-        _FinalStage paypointLegalname(String paypointLegalname);
-
-        /**
-         * <p>Paypoint's DBA name.</p>
-         */
-        _FinalStage paypointDbaname(Optional<String> paypointDbaname);
-
-        _FinalStage paypointDbaname(String paypointDbaname);
-
         _FinalStage parentOrgId(Optional<Long> parentOrgId);
 
         _FinalStage parentOrgId(Long parentOrgId);
@@ -1017,10 +1032,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage documentsRef(Nullable<DocumentsRef> documentsRef);
 
-        _FinalStage externalPaypointId(Optional<String> externalPaypointId);
-
-        _FinalStage externalPaypointId(String externalPaypointId);
-
         _FinalStage pageIdentifier(Optional<String> pageIdentifier);
 
         _FinalStage pageIdentifier(String pageIdentifier);
@@ -1031,24 +1042,35 @@ public final class QueryInvoiceResponseRecordsItem {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
             implements InvoiceIdStage,
+                    InvoiceNumberStage,
                     CreatedAtStage,
                     InvoiceStatusStage,
                     InvoiceTypeStage,
                     FrequencyStage,
+                    PaymentTermsStage,
                     InvoicePaidAmountStage,
                     FirstNameStage,
                     LastNameStage,
+                    ShippingAddress1Stage,
+                    ShippingAddress2Stage,
                     ShippingCityStage,
                     ShippingStateStage,
+                    ShippingZipStage,
                     ShippingFromZipStage,
                     ShippingCountryStage,
+                    ShippingEmailStage,
                     ShippingPhoneStage,
                     CustomerStage,
                     PaylinkIdStage,
+                    PaypointLegalnameStage,
+                    PaypointDbanameStage,
                     PaypointEntrynameStage,
                     ParentOrgNameStage,
+                    ExternalPaypointIdStage,
                     _FinalStage {
         private long invoiceId;
+
+        private String invoiceNumber;
 
         private OffsetDateTime createdAt;
 
@@ -1058,19 +1080,29 @@ public final class QueryInvoiceResponseRecordsItem {
 
         private Frequency frequency;
 
+        private String paymentTerms;
+
         private double invoicePaidAmount;
 
         private String firstName;
 
         private String lastName;
 
+        private String shippingAddress1;
+
+        private String shippingAddress2;
+
         private String shippingCity;
 
         private String shippingState;
 
+        private String shippingZip;
+
         private String shippingFromZip;
 
         private String shippingCountry;
+
+        private String shippingEmail;
 
         private String shippingPhone;
 
@@ -1078,23 +1110,23 @@ public final class QueryInvoiceResponseRecordsItem {
 
         private String paylinkId;
 
+        private String paypointLegalname;
+
+        private String paypointDbaname;
+
         private String paypointEntryname;
 
         private String parentOrgName;
 
-        private Optional<String> pageIdentifier = Optional.empty();
+        private String externalPaypointId;
 
-        private Optional<String> externalPaypointId = Optional.empty();
+        private Optional<String> pageIdentifier = Optional.empty();
 
         private Optional<DocumentsRef> documentsRef = Optional.empty();
 
         private Optional<Map<String, Object>> additionalData = Optional.empty();
 
         private Optional<Long> parentOrgId = Optional.empty();
-
-        private Optional<String> paypointDbaname = Optional.empty();
-
-        private Optional<String> paypointLegalname = Optional.empty();
 
         private Optional<BillOptions> scheduledOptions = Optional.empty();
 
@@ -1103,14 +1135,6 @@ public final class QueryInvoiceResponseRecordsItem {
         private List<BillItem> items = new ArrayList<>();
 
         private Optional<String> summaryCommodityCode = Optional.empty();
-
-        private Optional<String> shippingEmail = Optional.empty();
-
-        private Optional<String> shippingZip = Optional.empty();
-
-        private Optional<String> shippingAddress2 = Optional.empty();
-
-        private Optional<String> shippingAddress1 = Optional.empty();
 
         private Optional<String> company = Optional.empty();
 
@@ -1130,8 +1154,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         private Optional<String> termsConditions = Optional.empty();
 
-        private Optional<String> paymentTerms = Optional.empty();
-
         private Optional<OffsetDateTime> lastPaymentDate = Optional.empty();
 
         private Optional<String> invoiceEndDate = Optional.empty();
@@ -1141,8 +1163,6 @@ public final class QueryInvoiceResponseRecordsItem {
         private Optional<String> invoiceDueDate = Optional.empty();
 
         private Optional<String> invoiceDate = Optional.empty();
-
-        private Optional<String> invoiceNumber = Optional.empty();
 
         private Optional<Long> paypointId = Optional.empty();
 
@@ -1210,8 +1230,15 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("invoiceId")
-        public CreatedAtStage invoiceId(long invoiceId) {
+        public InvoiceNumberStage invoiceId(long invoiceId) {
             this.invoiceId = invoiceId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("invoiceNumber")
+        public CreatedAtStage invoiceNumber(@NotNull String invoiceNumber) {
+            this.invoiceNumber = Objects.requireNonNull(invoiceNumber, "invoiceNumber must not be null");
             return this;
         }
 
@@ -1243,8 +1270,15 @@ public final class QueryInvoiceResponseRecordsItem {
          */
         @java.lang.Override
         @JsonSetter("frequency")
-        public InvoicePaidAmountStage frequency(@NotNull Frequency frequency) {
+        public PaymentTermsStage frequency(@NotNull Frequency frequency) {
             this.frequency = Objects.requireNonNull(frequency, "frequency must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paymentTerms")
+        public InvoicePaidAmountStage paymentTerms(@NotNull String paymentTerms) {
+            this.paymentTerms = Objects.requireNonNull(paymentTerms, "paymentTerms must not be null");
             return this;
         }
 
@@ -1274,8 +1308,22 @@ public final class QueryInvoiceResponseRecordsItem {
          */
         @java.lang.Override
         @JsonSetter("lastName")
-        public ShippingCityStage lastName(@NotNull String lastName) {
+        public ShippingAddress1Stage lastName(@NotNull String lastName) {
             this.lastName = Objects.requireNonNull(lastName, "lastName must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("shippingAddress1")
+        public ShippingAddress2Stage shippingAddress1(@NotNull String shippingAddress1) {
+            this.shippingAddress1 = Objects.requireNonNull(shippingAddress1, "shippingAddress1 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("shippingAddress2")
+        public ShippingCityStage shippingAddress2(@NotNull String shippingAddress2) {
+            this.shippingAddress2 = Objects.requireNonNull(shippingAddress2, "shippingAddress2 must not be null");
             return this;
         }
 
@@ -1288,8 +1336,15 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("shippingState")
-        public ShippingFromZipStage shippingState(@NotNull String shippingState) {
+        public ShippingZipStage shippingState(@NotNull String shippingState) {
             this.shippingState = Objects.requireNonNull(shippingState, "shippingState must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("shippingZip")
+        public ShippingFromZipStage shippingZip(@NotNull String shippingZip) {
+            this.shippingZip = Objects.requireNonNull(shippingZip, "shippingZip must not be null");
             return this;
         }
 
@@ -1302,8 +1357,20 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("shippingCountry")
-        public ShippingPhoneStage shippingCountry(@NotNull String shippingCountry) {
+        public ShippingEmailStage shippingCountry(@NotNull String shippingCountry) {
             this.shippingCountry = Objects.requireNonNull(shippingCountry, "shippingCountry must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Shipping recipient's contact email address.</p>
+         * <p>Shipping recipient's contact email address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("shippingEmail")
+        public ShippingPhoneStage shippingEmail(@NotNull String shippingEmail) {
+            this.shippingEmail = Objects.requireNonNull(shippingEmail, "shippingEmail must not be null");
             return this;
         }
 
@@ -1328,8 +1395,32 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("paylinkId")
-        public PaypointEntrynameStage paylinkId(@NotNull String paylinkId) {
+        public PaypointLegalnameStage paylinkId(@NotNull String paylinkId) {
             this.paylinkId = Objects.requireNonNull(paylinkId, "paylinkId must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's legal name.</p>
+         * <p>Paypoint's legal name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("PaypointLegalname")
+        public PaypointDbanameStage paypointLegalname(@NotNull String paypointLegalname) {
+            this.paypointLegalname = Objects.requireNonNull(paypointLegalname, "paypointLegalname must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's DBA name.</p>
+         * <p>Paypoint's DBA name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("PaypointDbaname")
+        public PaypointEntrynameStage paypointDbaname(@NotNull String paypointDbaname) {
+            this.paypointDbaname = Objects.requireNonNull(paypointDbaname, "paypointDbaname must not be null");
             return this;
         }
 
@@ -1347,8 +1438,15 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("ParentOrgName")
-        public _FinalStage parentOrgName(@NotNull String parentOrgName) {
+        public ExternalPaypointIdStage parentOrgName(@NotNull String parentOrgName) {
             this.parentOrgName = Objects.requireNonNull(parentOrgName, "parentOrgName must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("externalPaypointID")
+        public _FinalStage externalPaypointId(@NotNull String externalPaypointId) {
+            this.externalPaypointId = Objects.requireNonNull(externalPaypointId, "externalPaypointId must not be null");
             return this;
         }
 
@@ -1374,19 +1472,6 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
         public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
             this.pageIdentifier = pageIdentifier;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage externalPaypointId(String externalPaypointId) {
-            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
-        public _FinalStage externalPaypointId(Optional<String> externalPaypointId) {
-            this.externalPaypointId = externalPaypointId;
             return this;
         }
 
@@ -1476,46 +1561,6 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         /**
-         * <p>Paypoint's DBA name.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage paypointDbaname(String paypointDbaname) {
-            this.paypointDbaname = Optional.ofNullable(paypointDbaname);
-            return this;
-        }
-
-        /**
-         * <p>Paypoint's DBA name.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
-        public _FinalStage paypointDbaname(Optional<String> paypointDbaname) {
-            this.paypointDbaname = paypointDbaname;
-            return this;
-        }
-
-        /**
-         * <p>Paypoint's legal name.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage paypointLegalname(String paypointLegalname) {
-            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
-            return this;
-        }
-
-        /**
-         * <p>Paypoint's legal name.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
-        public _FinalStage paypointLegalname(Optional<String> paypointLegalname) {
-            this.paypointLegalname = paypointLegalname;
-            return this;
-        }
-
-        /**
          * <p>Object with options for scheduled invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1596,6 +1641,18 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         @java.lang.Override
+        public _FinalStage summaryCommodityCode(Nullable<String> summaryCommodityCode) {
+            if (summaryCommodityCode.isNull()) {
+                this.summaryCommodityCode = null;
+            } else if (summaryCommodityCode.isEmpty()) {
+                this.summaryCommodityCode = Optional.empty();
+            } else {
+                this.summaryCommodityCode = Optional.of(summaryCommodityCode.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage summaryCommodityCode(String summaryCommodityCode) {
             this.summaryCommodityCode = Optional.ofNullable(summaryCommodityCode);
             return this;
@@ -1605,65 +1662,6 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "summaryCommodityCode", nulls = Nulls.SKIP)
         public _FinalStage summaryCommodityCode(Optional<String> summaryCommodityCode) {
             this.summaryCommodityCode = summaryCommodityCode;
-            return this;
-        }
-
-        /**
-         * <p>Shipping recipient's contact email address.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage shippingEmail(String shippingEmail) {
-            this.shippingEmail = Optional.ofNullable(shippingEmail);
-            return this;
-        }
-
-        /**
-         * <p>Shipping recipient's contact email address.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "shippingEmail", nulls = Nulls.SKIP)
-        public _FinalStage shippingEmail(Optional<String> shippingEmail) {
-            this.shippingEmail = shippingEmail;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage shippingZip(String shippingZip) {
-            this.shippingZip = Optional.ofNullable(shippingZip);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "shippingZip", nulls = Nulls.SKIP)
-        public _FinalStage shippingZip(Optional<String> shippingZip) {
-            this.shippingZip = shippingZip;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage shippingAddress2(String shippingAddress2) {
-            this.shippingAddress2 = Optional.ofNullable(shippingAddress2);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "shippingAddress2", nulls = Nulls.SKIP)
-        public _FinalStage shippingAddress2(Optional<String> shippingAddress2) {
-            this.shippingAddress2 = shippingAddress2;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage shippingAddress1(String shippingAddress1) {
-            this.shippingAddress1 = Optional.ofNullable(shippingAddress1);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "shippingAddress1", nulls = Nulls.SKIP)
-        public _FinalStage shippingAddress1(Optional<String> shippingAddress1) {
-            this.shippingAddress1 = shippingAddress1;
             return this;
         }
 
@@ -1830,6 +1828,18 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         @java.lang.Override
+        public _FinalStage termsConditions(Nullable<String> termsConditions) {
+            if (termsConditions.isNull()) {
+                this.termsConditions = null;
+            } else if (termsConditions.isEmpty()) {
+                this.termsConditions = Optional.empty();
+            } else {
+                this.termsConditions = Optional.of(termsConditions.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage termsConditions(String termsConditions) {
             this.termsConditions = Optional.ofNullable(termsConditions);
             return this;
@@ -1839,35 +1849,6 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "termsConditions", nulls = Nulls.SKIP)
         public _FinalStage termsConditions(Optional<String> termsConditions) {
             this.termsConditions = termsConditions;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage paymentTerms(String paymentTerms) {
-            this.paymentTerms = Optional.ofNullable(paymentTerms);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "paymentTerms", nulls = Nulls.SKIP)
-        public _FinalStage paymentTerms(Optional<String> paymentTerms) {
-            this.paymentTerms = paymentTerms;
-            return this;
-        }
-
-        /**
-         * <p>Timestamp of last payment.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage lastPaymentDate(Nullable<OffsetDateTime> lastPaymentDate) {
-            if (lastPaymentDate.isNull()) {
-                this.lastPaymentDate = null;
-            } else if (lastPaymentDate.isEmpty()) {
-                this.lastPaymentDate = Optional.empty();
-            } else {
-                this.lastPaymentDate = Optional.of(lastPaymentDate.get());
-            }
             return this;
         }
 
@@ -1968,19 +1949,6 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDate(Optional<String> invoiceDate) {
             this.invoiceDate = invoiceDate;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage invoiceNumber(String invoiceNumber) {
-            this.invoiceNumber = Optional.ofNullable(invoiceNumber);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "invoiceNumber", nulls = Nulls.SKIP)
-        public _FinalStage invoiceNumber(Optional<String> invoiceNumber) {
-            this.invoiceNumber = invoiceNumber;
             return this;
         }
 

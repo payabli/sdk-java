@@ -23,15 +23,15 @@ import com.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import com.payabli.api.resources.bill.requests.ListBillsRequest;
 import com.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import com.payabli.api.resources.bill.requests.SetApprovedBillRequest;
+import com.payabli.api.resources.bill.types.BillOutData;
+import com.payabli.api.resources.bill.types.BillResponse;
 import com.payabli.api.resources.bill.types.EditBillResponse;
 import com.payabli.api.resources.bill.types.GetBillResponse;
 import com.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
 import com.payabli.api.resources.bill.types.SetApprovedBillResponse;
-import com.payabli.api.types.BillOutData;
 import com.payabli.api.types.BillQueryResponse;
 import com.payabli.api.types.FileContent;
 import com.payabli.api.types.PayabliApiResponse;
-import com.payabli.api.types.PayabliApiResponseBills;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -52,14 +52,14 @@ public class RawBillClient {
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> addBill(String entry, AddBillRequest request) {
+    public PayabliApiHttpResponse<BillResponse> addBill(String entry, AddBillRequest request) {
         return addBill(entry, request, null);
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> addBill(
+    public PayabliApiHttpResponse<BillResponse> addBill(
             String entry, AddBillRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -92,8 +92,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseBills.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -128,7 +127,7 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> deleteAttachedFromBill(String filename, int idBill) {
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(String filename, int idBill) {
         return deleteAttachedFromBill(
                 filename, idBill, DeleteAttachedFromBillRequest.builder().build());
     }
@@ -136,7 +135,7 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> deleteAttachedFromBill(
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request) {
         return deleteAttachedFromBill(filename, idBill, request, null);
     }
@@ -144,7 +143,7 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> deleteAttachedFromBill(
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -169,8 +168,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseBills.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -205,14 +203,14 @@ public class RawBillClient {
     /**
      * Deletes a bill by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> deleteBill(int idBill) {
+    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill) {
         return deleteBill(idBill, null);
     }
 
     /**
      * Deletes a bill by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> deleteBill(int idBill, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
@@ -232,8 +230,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseBills.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -482,21 +479,21 @@ public class RawBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry) {
         return listBills(entry, ListBillsRequest.builder().build());
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry, ListBillsRequest request) {
         return listBills(entry, request, null);
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<BillQueryResponse> listBills(
             String entry, ListBillsRequest request, RequestOptions requestOptions) {
@@ -504,6 +501,10 @@ public class RawBillClient {
                 .newBuilder()
                 .addPathSegments("Query/bills")
                 .addPathSegment(entry);
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -567,21 +568,21 @@ public class RawBillClient {
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId) {
         return listBillsOrg(orgId, ListBillsOrgRequest.builder().build());
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId, ListBillsOrgRequest request) {
         return listBillsOrg(orgId, request, null);
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(
             int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
@@ -589,6 +590,10 @@ public class RawBillClient {
                 .newBuilder()
                 .addPathSegments("Query/bills/org")
                 .addPathSegment(Integer.toString(orgId));
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
@@ -726,15 +731,14 @@ public class RawBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> sendToApprovalBill(
-            int idBill, SendToApprovalBillRequest request) {
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
         return sendToApprovalBill(idBill, request, null);
     }
 
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseBills> sendToApprovalBill(
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
             int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -770,8 +774,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseBills.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BillResponse.class), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

@@ -32,13 +32,17 @@ public final class VendorQueryRecord {
 
     private final Optional<String> city;
 
-    private final Optional<List<Contacts>> contacts;
+    private final Optional<ContactsResponse> contacts;
 
     private final Optional<String> country;
 
     private final Optional<OffsetDateTime> createdDate;
 
     private final Optional<String> customerVendorAccount;
+
+    private final Optional<String> customField1;
+
+    private final Optional<String> customField2;
 
     private final Optional<String> ein;
 
@@ -62,6 +66,8 @@ public final class VendorQueryRecord {
 
     private final Optional<String> parentOrgName;
 
+    private final Optional<Long> parentOrgId;
+
     private final Optional<String> payeeName1;
 
     private final Optional<String> payeeName2;
@@ -84,11 +90,15 @@ public final class VendorQueryRecord {
 
     private final Optional<String> remitCountry;
 
+    private final Optional<String> remitEmail;
+
     private final Optional<String> remitState;
 
     private final Optional<String> remitZip;
 
     private final Optional<String> state;
+
+    private final Optional<List<VendorResponseStoredMethod>> storedMethods;
 
     private final Optional<VendorSummary> summary;
 
@@ -108,10 +118,12 @@ public final class VendorQueryRecord {
             Optional<String> address2,
             Optional<BillingDataResponse> billingData,
             Optional<String> city,
-            Optional<List<Contacts>> contacts,
+            Optional<ContactsResponse> contacts,
             Optional<String> country,
             Optional<OffsetDateTime> createdDate,
             Optional<String> customerVendorAccount,
+            Optional<String> customField1,
+            Optional<String> customField2,
             Optional<String> ein,
             Optional<String> email,
             Optional<String> enrollmentStatus,
@@ -123,6 +135,7 @@ public final class VendorQueryRecord {
             Optional<String> name1,
             Optional<String> name2,
             Optional<String> parentOrgName,
+            Optional<Long> parentOrgId,
             Optional<String> payeeName1,
             Optional<String> payeeName2,
             Optional<VendorPaymentMethod> paymentMethod,
@@ -134,9 +147,11 @@ public final class VendorQueryRecord {
             Optional<String> remitAddress2,
             Optional<String> remitCity,
             Optional<String> remitCountry,
+            Optional<String> remitEmail,
             Optional<String> remitState,
             Optional<String> remitZip,
             Optional<String> state,
+            Optional<List<VendorResponseStoredMethod>> storedMethods,
             Optional<VendorSummary> summary,
             Optional<Integer> vendorId,
             Optional<String> vendorNumber,
@@ -152,6 +167,8 @@ public final class VendorQueryRecord {
         this.country = country;
         this.createdDate = createdDate;
         this.customerVendorAccount = customerVendorAccount;
+        this.customField1 = customField1;
+        this.customField2 = customField2;
         this.ein = ein;
         this.email = email;
         this.enrollmentStatus = enrollmentStatus;
@@ -163,6 +180,7 @@ public final class VendorQueryRecord {
         this.name1 = name1;
         this.name2 = name2;
         this.parentOrgName = parentOrgName;
+        this.parentOrgId = parentOrgId;
         this.payeeName1 = payeeName1;
         this.payeeName2 = payeeName2;
         this.paymentMethod = paymentMethod;
@@ -174,9 +192,11 @@ public final class VendorQueryRecord {
         this.remitAddress2 = remitAddress2;
         this.remitCity = remitCity;
         this.remitCountry = remitCountry;
+        this.remitEmail = remitEmail;
         this.remitState = remitState;
         this.remitZip = remitZip;
         this.state = state;
+        this.storedMethods = storedMethods;
         this.summary = summary;
         this.vendorId = vendorId;
         this.vendorNumber = vendorNumber;
@@ -190,126 +210,114 @@ public final class VendorQueryRecord {
         return additionalData;
     }
 
-    /**
-     * @return Vendor's address.
-     */
-    @JsonProperty("address1")
+    @JsonProperty("Address1")
     public Optional<String> getAddress1() {
         return address1;
     }
 
-    /**
-     * @return Additional line for vendor's address.
-     */
-    @JsonProperty("address2")
+    @JsonProperty("Address2")
     public Optional<String> getAddress2() {
         return address2;
     }
 
-    @JsonProperty("billingData")
+    @JsonProperty("BillingData")
     public Optional<BillingDataResponse> getBillingData() {
         return billingData;
     }
 
-    /**
-     * @return Vendor's city.
-     */
-    @JsonProperty("city")
+    @JsonProperty("City")
     public Optional<String> getCity() {
         return city;
     }
 
-    @JsonProperty("contacts")
-    public Optional<List<Contacts>> getContacts() {
+    @JsonProperty("Contacts")
+    public Optional<ContactsResponse> getContacts() {
         return contacts;
     }
 
-    /**
-     * @return Vendor's country.
-     */
-    @JsonProperty("country")
+    @JsonProperty("Country")
     public Optional<String> getCountry() {
         return country;
     }
 
-    @JsonProperty("createdDate")
+    @JsonProperty("CreatedDate")
     public Optional<OffsetDateTime> getCreatedDate() {
         return createdDate;
     }
 
-    /**
-     * @return Account number of paypoint in the vendor system.
-     */
     @JsonProperty("customerVendorAccount")
     public Optional<String> getCustomerVendorAccount() {
         return customerVendorAccount;
     }
 
-    @JsonProperty("ein")
+    @JsonProperty("customField1")
+    public Optional<String> getCustomField1() {
+        return customField1;
+    }
+
+    @JsonProperty("customField2")
+    public Optional<String> getCustomField2() {
+        return customField2;
+    }
+
+    @JsonProperty("EIN")
     public Optional<String> getEin() {
         return ein;
     }
 
-    /**
-     * @return Vendor's email address.
-     */
-    @JsonProperty("email")
+    @JsonProperty("Email")
     public Optional<String> getEmail() {
         return email;
     }
 
-    @JsonProperty("enrollmentStatus")
+    @JsonProperty("EnrollmentStatus")
     public Optional<String> getEnrollmentStatus() {
         return enrollmentStatus;
     }
 
-    @JsonProperty("externalPaypointId")
+    @JsonProperty("externalPaypointID")
     public Optional<String> getExternalPaypointId() {
         return externalPaypointId;
     }
 
-    @JsonProperty("internalReferenceId")
+    @JsonProperty("InternalReferenceId")
     public Optional<Long> getInternalReferenceId() {
         return internalReferenceId;
     }
 
-    @JsonProperty("lastUpdated")
+    @JsonProperty("LastUpdated")
     public Optional<OffsetDateTime> getLastUpdated() {
         return lastUpdated;
     }
 
-    /**
-     * @return Additional location code used to identify the vendor.
-     */
-    @JsonProperty("locationCode")
+    @JsonProperty("LocationCode")
     public Optional<String> getLocationCode() {
         return locationCode;
     }
 
-    @JsonProperty("mcc")
+    @JsonProperty("Mcc")
     public Optional<String> getMcc() {
         return mcc;
     }
 
-    /**
-     * @return Primary name for vendor.
-     */
-    @JsonProperty("name1")
+    @JsonProperty("Name1")
     public Optional<String> getName1() {
         return name1;
     }
 
-    /**
-     * @return Secondary name for vendor.
-     */
-    @JsonProperty("name2")
+    @JsonProperty("Name2")
     public Optional<String> getName2() {
         return name2;
     }
 
-    @JsonProperty("parentOrgName")
+    @JsonProperty("ParentOrgName")
     public Optional<String> getParentOrgName() {
         return parentOrgName;
+    }
+
+    @JsonProperty("ParentOrgId")
+    public Optional<Long> getParentOrgId() {
+        return parentOrgId;
     }
 
     @JsonProperty("payeeName1")
@@ -322,30 +330,27 @@ public final class VendorQueryRecord {
         return payeeName2;
     }
 
-    @JsonProperty("paymentMethod")
+    @JsonProperty("PaymentMethod")
     public Optional<VendorPaymentMethod> getPaymentMethod() {
         return paymentMethod;
     }
 
-    @JsonProperty("paypointDbaname")
+    @JsonProperty("PaypointDbaname")
     public Optional<String> getPaypointDbaname() {
         return paypointDbaname;
     }
 
-    @JsonProperty("paypointEntryname")
+    @JsonProperty("PaypointEntryname")
     public Optional<String> getPaypointEntryname() {
         return paypointEntryname;
     }
 
-    @JsonProperty("paypointLegalname")
+    @JsonProperty("PaypointLegalname")
     public Optional<String> getPaypointLegalname() {
         return paypointLegalname;
     }
 
-    /**
-     * @return Vendor's phone number.
-     */
-    @JsonProperty("phone")
+    @JsonProperty("Phone")
     public Optional<String> getPhone() {
         return phone;
     }
@@ -370,6 +375,11 @@ public final class VendorQueryRecord {
         return remitCountry;
     }
 
+    @JsonProperty("RemitEmail")
+    public Optional<String> getRemitEmail() {
+        return remitEmail;
+    }
+
     @JsonProperty("remitState")
     public Optional<String> getRemitState() {
         return remitState;
@@ -380,38 +390,37 @@ public final class VendorQueryRecord {
         return remitZip;
     }
 
-    /**
-     * @return Vendor's state.
-     */
-    @JsonProperty("state")
+    @JsonProperty("State")
     public Optional<String> getState() {
         return state;
     }
 
-    @JsonProperty("summary")
+    @JsonProperty("StoredMethods")
+    public Optional<List<VendorResponseStoredMethod>> getStoredMethods() {
+        return storedMethods;
+    }
+
+    @JsonProperty("Summary")
     public Optional<VendorSummary> getSummary() {
         return summary;
     }
 
-    @JsonProperty("vendorId")
+    @JsonProperty("VendorId")
     public Optional<Integer> getVendorId() {
         return vendorId;
     }
 
-    @JsonProperty("vendorNumber")
+    @JsonProperty("VendorNumber")
     public Optional<String> getVendorNumber() {
         return vendorNumber;
     }
 
-    @JsonProperty("vendorStatus")
+    @JsonProperty("VendorStatus")
     public Optional<Integer> getVendorStatus() {
         return vendorStatus;
     }
 
-    /**
-     * @return Vendor's zip code.
-     */
-    @JsonProperty("zip")
+    @JsonProperty("Zip")
     public Optional<String> getZip() {
         return zip;
     }
@@ -437,6 +446,8 @@ public final class VendorQueryRecord {
                 && country.equals(other.country)
                 && createdDate.equals(other.createdDate)
                 && customerVendorAccount.equals(other.customerVendorAccount)
+                && customField1.equals(other.customField1)
+                && customField2.equals(other.customField2)
                 && ein.equals(other.ein)
                 && email.equals(other.email)
                 && enrollmentStatus.equals(other.enrollmentStatus)
@@ -448,6 +459,7 @@ public final class VendorQueryRecord {
                 && name1.equals(other.name1)
                 && name2.equals(other.name2)
                 && parentOrgName.equals(other.parentOrgName)
+                && parentOrgId.equals(other.parentOrgId)
                 && payeeName1.equals(other.payeeName1)
                 && payeeName2.equals(other.payeeName2)
                 && paymentMethod.equals(other.paymentMethod)
@@ -459,9 +471,11 @@ public final class VendorQueryRecord {
                 && remitAddress2.equals(other.remitAddress2)
                 && remitCity.equals(other.remitCity)
                 && remitCountry.equals(other.remitCountry)
+                && remitEmail.equals(other.remitEmail)
                 && remitState.equals(other.remitState)
                 && remitZip.equals(other.remitZip)
                 && state.equals(other.state)
+                && storedMethods.equals(other.storedMethods)
                 && summary.equals(other.summary)
                 && vendorId.equals(other.vendorId)
                 && vendorNumber.equals(other.vendorNumber)
@@ -481,6 +495,8 @@ public final class VendorQueryRecord {
                 this.country,
                 this.createdDate,
                 this.customerVendorAccount,
+                this.customField1,
+                this.customField2,
                 this.ein,
                 this.email,
                 this.enrollmentStatus,
@@ -492,6 +508,7 @@ public final class VendorQueryRecord {
                 this.name1,
                 this.name2,
                 this.parentOrgName,
+                this.parentOrgId,
                 this.payeeName1,
                 this.payeeName2,
                 this.paymentMethod,
@@ -503,9 +520,11 @@ public final class VendorQueryRecord {
                 this.remitAddress2,
                 this.remitCity,
                 this.remitCountry,
+                this.remitEmail,
                 this.remitState,
                 this.remitZip,
                 this.state,
+                this.storedMethods,
                 this.summary,
                 this.vendorId,
                 this.vendorNumber,
@@ -534,13 +553,17 @@ public final class VendorQueryRecord {
 
         private Optional<String> city = Optional.empty();
 
-        private Optional<List<Contacts>> contacts = Optional.empty();
+        private Optional<ContactsResponse> contacts = Optional.empty();
 
         private Optional<String> country = Optional.empty();
 
         private Optional<OffsetDateTime> createdDate = Optional.empty();
 
         private Optional<String> customerVendorAccount = Optional.empty();
+
+        private Optional<String> customField1 = Optional.empty();
+
+        private Optional<String> customField2 = Optional.empty();
 
         private Optional<String> ein = Optional.empty();
 
@@ -564,6 +587,8 @@ public final class VendorQueryRecord {
 
         private Optional<String> parentOrgName = Optional.empty();
 
+        private Optional<Long> parentOrgId = Optional.empty();
+
         private Optional<String> payeeName1 = Optional.empty();
 
         private Optional<String> payeeName2 = Optional.empty();
@@ -586,11 +611,15 @@ public final class VendorQueryRecord {
 
         private Optional<String> remitCountry = Optional.empty();
 
+        private Optional<String> remitEmail = Optional.empty();
+
         private Optional<String> remitState = Optional.empty();
 
         private Optional<String> remitZip = Optional.empty();
 
         private Optional<String> state = Optional.empty();
+
+        private Optional<List<VendorResponseStoredMethod>> storedMethods = Optional.empty();
 
         private Optional<VendorSummary> summary = Optional.empty();
 
@@ -617,6 +646,8 @@ public final class VendorQueryRecord {
             country(other.getCountry());
             createdDate(other.getCreatedDate());
             customerVendorAccount(other.getCustomerVendorAccount());
+            customField1(other.getCustomField1());
+            customField2(other.getCustomField2());
             ein(other.getEin());
             email(other.getEmail());
             enrollmentStatus(other.getEnrollmentStatus());
@@ -628,6 +659,7 @@ public final class VendorQueryRecord {
             name1(other.getName1());
             name2(other.getName2());
             parentOrgName(other.getParentOrgName());
+            parentOrgId(other.getParentOrgId());
             payeeName1(other.getPayeeName1());
             payeeName2(other.getPayeeName2());
             paymentMethod(other.getPaymentMethod());
@@ -639,9 +671,11 @@ public final class VendorQueryRecord {
             remitAddress2(other.getRemitAddress2());
             remitCity(other.getRemitCity());
             remitCountry(other.getRemitCountry());
+            remitEmail(other.getRemitEmail());
             remitState(other.getRemitState());
             remitZip(other.getRemitZip());
             state(other.getState());
+            storedMethods(other.getStoredMethods());
             summary(other.getSummary());
             vendorId(other.getVendorId());
             vendorNumber(other.getVendorNumber());
@@ -661,10 +695,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Vendor's address.</p>
-         */
-        @JsonSetter(value = "address1", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Address1", nulls = Nulls.SKIP)
         public Builder address1(Optional<String> address1) {
             this.address1 = address1;
             return this;
@@ -675,10 +706,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Additional line for vendor's address.</p>
-         */
-        @JsonSetter(value = "address2", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Address2", nulls = Nulls.SKIP)
         public Builder address2(Optional<String> address2) {
             this.address2 = address2;
             return this;
@@ -689,7 +717,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "billingData", nulls = Nulls.SKIP)
+        @JsonSetter(value = "BillingData", nulls = Nulls.SKIP)
         public Builder billingData(Optional<BillingDataResponse> billingData) {
             this.billingData = billingData;
             return this;
@@ -700,10 +728,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Vendor's city.</p>
-         */
-        @JsonSetter(value = "city", nulls = Nulls.SKIP)
+        @JsonSetter(value = "City", nulls = Nulls.SKIP)
         public Builder city(Optional<String> city) {
             this.city = city;
             return this;
@@ -714,21 +739,18 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "contacts", nulls = Nulls.SKIP)
-        public Builder contacts(Optional<List<Contacts>> contacts) {
+        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
+        public Builder contacts(Optional<ContactsResponse> contacts) {
             this.contacts = contacts;
             return this;
         }
 
-        public Builder contacts(List<Contacts> contacts) {
+        public Builder contacts(ContactsResponse contacts) {
             this.contacts = Optional.ofNullable(contacts);
             return this;
         }
 
-        /**
-         * <p>Vendor's country.</p>
-         */
-        @JsonSetter(value = "country", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Country", nulls = Nulls.SKIP)
         public Builder country(Optional<String> country) {
             this.country = country;
             return this;
@@ -739,7 +761,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "createdDate", nulls = Nulls.SKIP)
+        @JsonSetter(value = "CreatedDate", nulls = Nulls.SKIP)
         public Builder createdDate(Optional<OffsetDateTime> createdDate) {
             this.createdDate = createdDate;
             return this;
@@ -750,9 +772,6 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Account number of paypoint in the vendor system.</p>
-         */
         @JsonSetter(value = "customerVendorAccount", nulls = Nulls.SKIP)
         public Builder customerVendorAccount(Optional<String> customerVendorAccount) {
             this.customerVendorAccount = customerVendorAccount;
@@ -764,7 +783,29 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "ein", nulls = Nulls.SKIP)
+        @JsonSetter(value = "customField1", nulls = Nulls.SKIP)
+        public Builder customField1(Optional<String> customField1) {
+            this.customField1 = customField1;
+            return this;
+        }
+
+        public Builder customField1(String customField1) {
+            this.customField1 = Optional.ofNullable(customField1);
+            return this;
+        }
+
+        @JsonSetter(value = "customField2", nulls = Nulls.SKIP)
+        public Builder customField2(Optional<String> customField2) {
+            this.customField2 = customField2;
+            return this;
+        }
+
+        public Builder customField2(String customField2) {
+            this.customField2 = Optional.ofNullable(customField2);
+            return this;
+        }
+
+        @JsonSetter(value = "EIN", nulls = Nulls.SKIP)
         public Builder ein(Optional<String> ein) {
             this.ein = ein;
             return this;
@@ -775,10 +816,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Vendor's email address.</p>
-         */
-        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Email", nulls = Nulls.SKIP)
         public Builder email(Optional<String> email) {
             this.email = email;
             return this;
@@ -789,7 +827,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "enrollmentStatus", nulls = Nulls.SKIP)
+        @JsonSetter(value = "EnrollmentStatus", nulls = Nulls.SKIP)
         public Builder enrollmentStatus(Optional<String> enrollmentStatus) {
             this.enrollmentStatus = enrollmentStatus;
             return this;
@@ -800,7 +838,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "externalPaypointId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
         public Builder externalPaypointId(Optional<String> externalPaypointId) {
             this.externalPaypointId = externalPaypointId;
             return this;
@@ -811,7 +849,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "internalReferenceId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "InternalReferenceId", nulls = Nulls.SKIP)
         public Builder internalReferenceId(Optional<Long> internalReferenceId) {
             this.internalReferenceId = internalReferenceId;
             return this;
@@ -822,7 +860,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "lastUpdated", nulls = Nulls.SKIP)
+        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
         public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
             this.lastUpdated = lastUpdated;
             return this;
@@ -833,10 +871,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Additional location code used to identify the vendor.</p>
-         */
-        @JsonSetter(value = "locationCode", nulls = Nulls.SKIP)
+        @JsonSetter(value = "LocationCode", nulls = Nulls.SKIP)
         public Builder locationCode(Optional<String> locationCode) {
             this.locationCode = locationCode;
             return this;
@@ -847,7 +882,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "mcc", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Mcc", nulls = Nulls.SKIP)
         public Builder mcc(Optional<String> mcc) {
             this.mcc = mcc;
             return this;
@@ -858,10 +893,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Primary name for vendor.</p>
-         */
-        @JsonSetter(value = "name1", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Name1", nulls = Nulls.SKIP)
         public Builder name1(Optional<String> name1) {
             this.name1 = name1;
             return this;
@@ -872,10 +904,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Secondary name for vendor.</p>
-         */
-        @JsonSetter(value = "name2", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Name2", nulls = Nulls.SKIP)
         public Builder name2(Optional<String> name2) {
             this.name2 = name2;
             return this;
@@ -886,7 +915,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
         public Builder parentOrgName(Optional<String> parentOrgName) {
             this.parentOrgName = parentOrgName;
             return this;
@@ -894,6 +923,17 @@ public final class VendorQueryRecord {
 
         public Builder parentOrgName(String parentOrgName) {
             this.parentOrgName = Optional.ofNullable(parentOrgName);
+            return this;
+        }
+
+        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
+        public Builder parentOrgId(Optional<Long> parentOrgId) {
+            this.parentOrgId = parentOrgId;
+            return this;
+        }
+
+        public Builder parentOrgId(Long parentOrgId) {
+            this.parentOrgId = Optional.ofNullable(parentOrgId);
             return this;
         }
 
@@ -919,7 +959,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "paymentMethod", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
         public Builder paymentMethod(Optional<VendorPaymentMethod> paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
@@ -930,7 +970,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "paypointDbaname", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
         public Builder paypointDbaname(Optional<String> paypointDbaname) {
             this.paypointDbaname = paypointDbaname;
             return this;
@@ -941,7 +981,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "paypointEntryname", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaypointEntryname", nulls = Nulls.SKIP)
         public Builder paypointEntryname(Optional<String> paypointEntryname) {
             this.paypointEntryname = paypointEntryname;
             return this;
@@ -952,7 +992,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "paypointLegalname", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
         public Builder paypointLegalname(Optional<String> paypointLegalname) {
             this.paypointLegalname = paypointLegalname;
             return this;
@@ -963,10 +1003,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Vendor's phone number.</p>
-         */
-        @JsonSetter(value = "phone", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Phone", nulls = Nulls.SKIP)
         public Builder phone(Optional<String> phone) {
             this.phone = phone;
             return this;
@@ -1021,6 +1058,17 @@ public final class VendorQueryRecord {
             return this;
         }
 
+        @JsonSetter(value = "RemitEmail", nulls = Nulls.SKIP)
+        public Builder remitEmail(Optional<String> remitEmail) {
+            this.remitEmail = remitEmail;
+            return this;
+        }
+
+        public Builder remitEmail(String remitEmail) {
+            this.remitEmail = Optional.ofNullable(remitEmail);
+            return this;
+        }
+
         @JsonSetter(value = "remitState", nulls = Nulls.SKIP)
         public Builder remitState(Optional<String> remitState) {
             this.remitState = remitState;
@@ -1043,10 +1091,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Vendor's state.</p>
-         */
-        @JsonSetter(value = "state", nulls = Nulls.SKIP)
+        @JsonSetter(value = "State", nulls = Nulls.SKIP)
         public Builder state(Optional<String> state) {
             this.state = state;
             return this;
@@ -1057,7 +1102,18 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "summary", nulls = Nulls.SKIP)
+        @JsonSetter(value = "StoredMethods", nulls = Nulls.SKIP)
+        public Builder storedMethods(Optional<List<VendorResponseStoredMethod>> storedMethods) {
+            this.storedMethods = storedMethods;
+            return this;
+        }
+
+        public Builder storedMethods(List<VendorResponseStoredMethod> storedMethods) {
+            this.storedMethods = Optional.ofNullable(storedMethods);
+            return this;
+        }
+
+        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
         public Builder summary(Optional<VendorSummary> summary) {
             this.summary = summary;
             return this;
@@ -1068,7 +1124,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "VendorId", nulls = Nulls.SKIP)
         public Builder vendorId(Optional<Integer> vendorId) {
             this.vendorId = vendorId;
             return this;
@@ -1079,7 +1135,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "vendorNumber", nulls = Nulls.SKIP)
+        @JsonSetter(value = "VendorNumber", nulls = Nulls.SKIP)
         public Builder vendorNumber(Optional<String> vendorNumber) {
             this.vendorNumber = vendorNumber;
             return this;
@@ -1090,7 +1146,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "vendorStatus", nulls = Nulls.SKIP)
+        @JsonSetter(value = "VendorStatus", nulls = Nulls.SKIP)
         public Builder vendorStatus(Optional<Integer> vendorStatus) {
             this.vendorStatus = vendorStatus;
             return this;
@@ -1101,10 +1157,7 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        /**
-         * <p>Vendor's zip code.</p>
-         */
-        @JsonSetter(value = "zip", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Zip", nulls = Nulls.SKIP)
         public Builder zip(Optional<String> zip) {
             this.zip = zip;
             return this;
@@ -1126,6 +1179,8 @@ public final class VendorQueryRecord {
                     country,
                     createdDate,
                     customerVendorAccount,
+                    customField1,
+                    customField2,
                     ein,
                     email,
                     enrollmentStatus,
@@ -1137,6 +1192,7 @@ public final class VendorQueryRecord {
                     name1,
                     name2,
                     parentOrgName,
+                    parentOrgId,
                     payeeName1,
                     payeeName2,
                     paymentMethod,
@@ -1148,9 +1204,11 @@ public final class VendorQueryRecord {
                     remitAddress2,
                     remitCity,
                     remitCountry,
+                    remitEmail,
                     remitState,
                     remitZip,
                     state,
+                    storedMethods,
                     summary,
                     vendorId,
                     vendorNumber,

@@ -12,11 +12,11 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -24,13 +24,27 @@ import org.jetbrains.annotations.NotNull;
 public final class Transfer {
     private final int transferId;
 
-    private final int paypointId;
+    private final Optional<Long> paypointId;
 
     private final String batchNumber;
+
+    private final Optional<String> batchCurrency;
+
+    private final Optional<Integer> batchRecords;
 
     private final String transferIdentifier;
 
     private final int batchId;
+
+    private final Optional<String> paypointEntryName;
+
+    private final Optional<String> paypointLegalName;
+
+    private final Optional<String> paypointDbaName;
+
+    private final Optional<String> paypointLogo;
+
+    private final Optional<TransferBankAccount> bankAccount;
 
     private final String transferDate;
 
@@ -56,18 +70,25 @@ public final class Transfer {
 
     private final double netTransferAmount;
 
-    private final List<TransferEvent> eventsData;
+    private final Optional<List<GeneralEvents>> eventsData;
 
-    private final List<String> messages;
+    private final Optional<List<TransferMessage>> messages;
 
     private final Map<String, Object> additionalProperties;
 
     private Transfer(
             int transferId,
-            int paypointId,
+            Optional<Long> paypointId,
             String batchNumber,
+            Optional<String> batchCurrency,
+            Optional<Integer> batchRecords,
             String transferIdentifier,
             int batchId,
+            Optional<String> paypointEntryName,
+            Optional<String> paypointLegalName,
+            Optional<String> paypointDbaName,
+            Optional<String> paypointLogo,
+            Optional<TransferBankAccount> bankAccount,
             String transferDate,
             String processor,
             int transferStatus,
@@ -80,14 +101,21 @@ public final class Transfer {
             double thirdPartyPaidAmount,
             double adjustmentsAmount,
             double netTransferAmount,
-            List<TransferEvent> eventsData,
-            List<String> messages,
+            Optional<List<GeneralEvents>> eventsData,
+            Optional<List<TransferMessage>> messages,
             Map<String, Object> additionalProperties) {
         this.transferId = transferId;
         this.paypointId = paypointId;
         this.batchNumber = batchNumber;
+        this.batchCurrency = batchCurrency;
+        this.batchRecords = batchRecords;
         this.transferIdentifier = transferIdentifier;
         this.batchId = batchId;
+        this.paypointEntryName = paypointEntryName;
+        this.paypointLegalName = paypointLegalName;
+        this.paypointDbaName = paypointDbaName;
+        this.paypointLogo = paypointLogo;
+        this.bankAccount = bankAccount;
         this.transferDate = transferDate;
         this.processor = processor;
         this.transferStatus = transferStatus;
@@ -113,20 +141,30 @@ public final class Transfer {
         return transferId;
     }
 
-    /**
-     * @return The ID of the paypoint the transfer belongs to.
-     */
     @JsonProperty("paypointId")
-    public int getPaypointId() {
+    public Optional<Long> getPaypointId() {
         return paypointId;
     }
 
-    /**
-     * @return The batch number associated with the transfer.
-     */
     @JsonProperty("batchNumber")
     public String getBatchNumber() {
         return batchNumber;
+    }
+
+    /**
+     * @return The currency of the batch, either USD or CAD.
+     */
+    @JsonProperty("batchCurrency")
+    public Optional<String> getBatchCurrency() {
+        return batchCurrency;
+    }
+
+    /**
+     * @return Number of records in the batch.
+     */
+    @JsonProperty("batchRecords")
+    public Optional<Integer> getBatchRecords() {
+        return batchRecords;
     }
 
     /**
@@ -143,6 +181,46 @@ public final class Transfer {
     @JsonProperty("batchId")
     public int getBatchId() {
         return batchId;
+    }
+
+    /**
+     * @return The paypoint entry name.
+     */
+    @JsonProperty("paypointEntryName")
+    public Optional<String> getPaypointEntryName() {
+        return paypointEntryName;
+    }
+
+    /**
+     * @return The paypoint legal name.
+     */
+    @JsonProperty("paypointLegalName")
+    public Optional<String> getPaypointLegalName() {
+        return paypointLegalName;
+    }
+
+    /**
+     * @return The paypoint DBA name.
+     */
+    @JsonProperty("paypointDbaName")
+    public Optional<String> getPaypointDbaName() {
+        return paypointDbaName;
+    }
+
+    /**
+     * @return The paypoint logo URL.
+     */
+    @JsonProperty("paypointLogo")
+    public Optional<String> getPaypointLogo() {
+        return paypointLogo;
+    }
+
+    /**
+     * @return Bank account information for the transfer.
+     */
+    @JsonProperty("bankAccount")
+    public Optional<TransferBankAccount> getBankAccount() {
+        return bankAccount;
     }
 
     /**
@@ -245,7 +323,7 @@ public final class Transfer {
      * @return List of events associated with the transfer.
      */
     @JsonProperty("eventsData")
-    public List<TransferEvent> getEventsData() {
+    public Optional<List<GeneralEvents>> getEventsData() {
         return eventsData;
     }
 
@@ -253,7 +331,7 @@ public final class Transfer {
      * @return List of messages related to the transfer.
      */
     @JsonProperty("messages")
-    public List<String> getMessages() {
+    public Optional<List<TransferMessage>> getMessages() {
         return messages;
     }
 
@@ -270,10 +348,17 @@ public final class Transfer {
 
     private boolean equalTo(Transfer other) {
         return transferId == other.transferId
-                && paypointId == other.paypointId
+                && paypointId.equals(other.paypointId)
                 && batchNumber.equals(other.batchNumber)
+                && batchCurrency.equals(other.batchCurrency)
+                && batchRecords.equals(other.batchRecords)
                 && transferIdentifier.equals(other.transferIdentifier)
                 && batchId == other.batchId
+                && paypointEntryName.equals(other.paypointEntryName)
+                && paypointLegalName.equals(other.paypointLegalName)
+                && paypointDbaName.equals(other.paypointDbaName)
+                && paypointLogo.equals(other.paypointLogo)
+                && bankAccount.equals(other.bankAccount)
                 && transferDate.equals(other.transferDate)
                 && processor.equals(other.processor)
                 && transferStatus == other.transferStatus
@@ -296,8 +381,15 @@ public final class Transfer {
                 this.transferId,
                 this.paypointId,
                 this.batchNumber,
+                this.batchCurrency,
+                this.batchRecords,
                 this.transferIdentifier,
                 this.batchId,
+                this.paypointEntryName,
+                this.paypointLegalName,
+                this.paypointDbaName,
+                this.paypointLogo,
+                this.bankAccount,
                 this.transferDate,
                 this.processor,
                 this.transferStatus,
@@ -327,22 +419,12 @@ public final class Transfer {
         /**
          * <p>The transfer ID.</p>
          */
-        PaypointIdStage transferId(int transferId);
+        BatchNumberStage transferId(int transferId);
 
         Builder from(Transfer other);
     }
 
-    public interface PaypointIdStage {
-        /**
-         * <p>The ID of the paypoint the transfer belongs to.</p>
-         */
-        BatchNumberStage paypointId(int paypointId);
-    }
-
     public interface BatchNumberStage {
-        /**
-         * <p>The batch number associated with the transfer.</p>
-         */
         TransferIdentifierStage batchNumber(@NotNull String batchNumber);
     }
 
@@ -447,29 +529,77 @@ public final class Transfer {
     public interface _FinalStage {
         Transfer build();
 
+        _FinalStage paypointId(Optional<Long> paypointId);
+
+        _FinalStage paypointId(Long paypointId);
+
+        /**
+         * <p>The currency of the batch, either USD or CAD.</p>
+         */
+        _FinalStage batchCurrency(Optional<String> batchCurrency);
+
+        _FinalStage batchCurrency(String batchCurrency);
+
+        /**
+         * <p>Number of records in the batch.</p>
+         */
+        _FinalStage batchRecords(Optional<Integer> batchRecords);
+
+        _FinalStage batchRecords(Integer batchRecords);
+
+        /**
+         * <p>The paypoint entry name.</p>
+         */
+        _FinalStage paypointEntryName(Optional<String> paypointEntryName);
+
+        _FinalStage paypointEntryName(String paypointEntryName);
+
+        /**
+         * <p>The paypoint legal name.</p>
+         */
+        _FinalStage paypointLegalName(Optional<String> paypointLegalName);
+
+        _FinalStage paypointLegalName(String paypointLegalName);
+
+        /**
+         * <p>The paypoint DBA name.</p>
+         */
+        _FinalStage paypointDbaName(Optional<String> paypointDbaName);
+
+        _FinalStage paypointDbaName(String paypointDbaName);
+
+        /**
+         * <p>The paypoint logo URL.</p>
+         */
+        _FinalStage paypointLogo(Optional<String> paypointLogo);
+
+        _FinalStage paypointLogo(String paypointLogo);
+
+        /**
+         * <p>Bank account information for the transfer.</p>
+         */
+        _FinalStage bankAccount(Optional<TransferBankAccount> bankAccount);
+
+        _FinalStage bankAccount(TransferBankAccount bankAccount);
+
         /**
          * <p>List of events associated with the transfer.</p>
          */
-        _FinalStage eventsData(List<TransferEvent> eventsData);
+        _FinalStage eventsData(Optional<List<GeneralEvents>> eventsData);
 
-        _FinalStage addEventsData(TransferEvent eventsData);
-
-        _FinalStage addAllEventsData(List<TransferEvent> eventsData);
+        _FinalStage eventsData(List<GeneralEvents> eventsData);
 
         /**
          * <p>List of messages related to the transfer.</p>
          */
-        _FinalStage messages(List<String> messages);
+        _FinalStage messages(Optional<List<TransferMessage>> messages);
 
-        _FinalStage addMessages(String messages);
-
-        _FinalStage addAllMessages(List<String> messages);
+        _FinalStage messages(List<TransferMessage> messages);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
             implements TransferIdStage,
-                    PaypointIdStage,
                     BatchNumberStage,
                     TransferIdentifierStage,
                     BatchIdStage,
@@ -487,8 +617,6 @@ public final class Transfer {
                     NetTransferAmountStage,
                     _FinalStage {
         private int transferId;
-
-        private int paypointId;
 
         private String batchNumber;
 
@@ -520,9 +648,25 @@ public final class Transfer {
 
         private double netTransferAmount;
 
-        private List<String> messages = new ArrayList<>();
+        private Optional<List<TransferMessage>> messages = Optional.empty();
 
-        private List<TransferEvent> eventsData = new ArrayList<>();
+        private Optional<List<GeneralEvents>> eventsData = Optional.empty();
+
+        private Optional<TransferBankAccount> bankAccount = Optional.empty();
+
+        private Optional<String> paypointLogo = Optional.empty();
+
+        private Optional<String> paypointDbaName = Optional.empty();
+
+        private Optional<String> paypointLegalName = Optional.empty();
+
+        private Optional<String> paypointEntryName = Optional.empty();
+
+        private Optional<Integer> batchRecords = Optional.empty();
+
+        private Optional<String> batchCurrency = Optional.empty();
+
+        private Optional<Long> paypointId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -534,8 +678,15 @@ public final class Transfer {
             transferId(other.getTransferId());
             paypointId(other.getPaypointId());
             batchNumber(other.getBatchNumber());
+            batchCurrency(other.getBatchCurrency());
+            batchRecords(other.getBatchRecords());
             transferIdentifier(other.getTransferIdentifier());
             batchId(other.getBatchId());
+            paypointEntryName(other.getPaypointEntryName());
+            paypointLegalName(other.getPaypointLegalName());
+            paypointDbaName(other.getPaypointDbaName());
+            paypointLogo(other.getPaypointLogo());
+            bankAccount(other.getBankAccount());
             transferDate(other.getTransferDate());
             processor(other.getProcessor());
             transferStatus(other.getTransferStatus());
@@ -560,28 +711,11 @@ public final class Transfer {
          */
         @java.lang.Override
         @JsonSetter("transferId")
-        public PaypointIdStage transferId(int transferId) {
+        public BatchNumberStage transferId(int transferId) {
             this.transferId = transferId;
             return this;
         }
 
-        /**
-         * <p>The ID of the paypoint the transfer belongs to.</p>
-         * <p>The ID of the paypoint the transfer belongs to.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("paypointId")
-        public BatchNumberStage paypointId(int paypointId) {
-            this.paypointId = paypointId;
-            return this;
-        }
-
-        /**
-         * <p>The batch number associated with the transfer.</p>
-         * <p>The batch number associated with the transfer.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
         @JsonSetter("batchNumber")
         public TransferIdentifierStage batchNumber(@NotNull String batchNumber) {
@@ -762,18 +896,8 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllMessages(List<String> messages) {
-            this.messages.addAll(messages);
-            return this;
-        }
-
-        /**
-         * <p>List of messages related to the transfer.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage addMessages(String messages) {
-            this.messages.add(messages);
+        public _FinalStage messages(List<TransferMessage> messages) {
+            this.messages = Optional.ofNullable(messages);
             return this;
         }
 
@@ -782,9 +906,8 @@ public final class Transfer {
          */
         @java.lang.Override
         @JsonSetter(value = "messages", nulls = Nulls.SKIP)
-        public _FinalStage messages(List<String> messages) {
-            this.messages.clear();
-            this.messages.addAll(messages);
+        public _FinalStage messages(Optional<List<TransferMessage>> messages) {
+            this.messages = messages;
             return this;
         }
 
@@ -793,18 +916,8 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllEventsData(List<TransferEvent> eventsData) {
-            this.eventsData.addAll(eventsData);
-            return this;
-        }
-
-        /**
-         * <p>List of events associated with the transfer.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage addEventsData(TransferEvent eventsData) {
-            this.eventsData.add(eventsData);
+        public _FinalStage eventsData(List<GeneralEvents> eventsData) {
+            this.eventsData = Optional.ofNullable(eventsData);
             return this;
         }
 
@@ -813,9 +926,161 @@ public final class Transfer {
          */
         @java.lang.Override
         @JsonSetter(value = "eventsData", nulls = Nulls.SKIP)
-        public _FinalStage eventsData(List<TransferEvent> eventsData) {
-            this.eventsData.clear();
-            this.eventsData.addAll(eventsData);
+        public _FinalStage eventsData(Optional<List<GeneralEvents>> eventsData) {
+            this.eventsData = eventsData;
+            return this;
+        }
+
+        /**
+         * <p>Bank account information for the transfer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage bankAccount(TransferBankAccount bankAccount) {
+            this.bankAccount = Optional.ofNullable(bankAccount);
+            return this;
+        }
+
+        /**
+         * <p>Bank account information for the transfer.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "bankAccount", nulls = Nulls.SKIP)
+        public _FinalStage bankAccount(Optional<TransferBankAccount> bankAccount) {
+            this.bankAccount = bankAccount;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint logo URL.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLogo(String paypointLogo) {
+            this.paypointLogo = Optional.ofNullable(paypointLogo);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint logo URL.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointLogo", nulls = Nulls.SKIP)
+        public _FinalStage paypointLogo(Optional<String> paypointLogo) {
+            this.paypointLogo = paypointLogo;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint DBA name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointDbaName(String paypointDbaName) {
+            this.paypointDbaName = Optional.ofNullable(paypointDbaName);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint DBA name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointDbaName", nulls = Nulls.SKIP)
+        public _FinalStage paypointDbaName(Optional<String> paypointDbaName) {
+            this.paypointDbaName = paypointDbaName;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint legal name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLegalName(String paypointLegalName) {
+            this.paypointLegalName = Optional.ofNullable(paypointLegalName);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint legal name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointLegalName", nulls = Nulls.SKIP)
+        public _FinalStage paypointLegalName(Optional<String> paypointLegalName) {
+            this.paypointLegalName = paypointLegalName;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint entry name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointEntryName(String paypointEntryName) {
+            this.paypointEntryName = Optional.ofNullable(paypointEntryName);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint entry name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointEntryName", nulls = Nulls.SKIP)
+        public _FinalStage paypointEntryName(Optional<String> paypointEntryName) {
+            this.paypointEntryName = paypointEntryName;
+            return this;
+        }
+
+        /**
+         * <p>Number of records in the batch.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchRecords(Integer batchRecords) {
+            this.batchRecords = Optional.ofNullable(batchRecords);
+            return this;
+        }
+
+        /**
+         * <p>Number of records in the batch.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "batchRecords", nulls = Nulls.SKIP)
+        public _FinalStage batchRecords(Optional<Integer> batchRecords) {
+            this.batchRecords = batchRecords;
+            return this;
+        }
+
+        /**
+         * <p>The currency of the batch, either USD or CAD.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchCurrency(String batchCurrency) {
+            this.batchCurrency = Optional.ofNullable(batchCurrency);
+            return this;
+        }
+
+        /**
+         * <p>The currency of the batch, either USD or CAD.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "batchCurrency", nulls = Nulls.SKIP)
+        public _FinalStage batchCurrency(Optional<String> batchCurrency) {
+            this.batchCurrency = batchCurrency;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paypointId(Long paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
+        public _FinalStage paypointId(Optional<Long> paypointId) {
+            this.paypointId = paypointId;
             return this;
         }
 
@@ -825,8 +1090,15 @@ public final class Transfer {
                     transferId,
                     paypointId,
                     batchNumber,
+                    batchCurrency,
+                    batchRecords,
                     transferIdentifier,
                     batchId,
+                    paypointEntryName,
+                    paypointLegalName,
+                    paypointDbaName,
+                    paypointLogo,
+                    bankAccount,
                     transferDate,
                     processor,
                     transferStatus,

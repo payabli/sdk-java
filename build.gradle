@@ -43,53 +43,10 @@ java {
 }
 
 
-group = 'com.payabli.fern'
-
-version = '0.0.209'
-
-jar {
-    dependsOn(":generatePomFileForMavenPublication")
-    archiveBaseName = "api-sdk"
-}
-
-sourcesJar {
-    archiveBaseName = "api-sdk"
-}
-
-javadocJar {
-    archiveBaseName = "api-sdk"
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.payabli.fern'
-            artifactId = 'api-sdk'
-            version = '0.0.209'
-            from components.java
-            pom {
-                licenses {
-                    license {
-                        name = 'The MIT License (MIT)'
-                        url = 'https://mit-license.org/'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/YOUR-ORG/YOUR-REPO.git'
-                    developerConnection = 'scm:git:git://github.com/YOUR-ORG/YOUR-REPO.git'
-                    url = 'https://github.com/YOUR-ORG/YOUR-REPO'
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            url "$System.env.MAVEN_PUBLISH_REGISTRY_URL"
-            credentials {
-                username "$System.env.MAVEN_USERNAME"
-                password "$System.env.MAVEN_PASSWORD"
-            }
-        }
+test {
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
     }
 }
 

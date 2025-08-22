@@ -37,6 +37,10 @@ public final class VendorData {
 
     private final Optional<String> country;
 
+    private final Optional<String> customField1;
+
+    private final Optional<String> customField2;
+
     private final Optional<String> customerVendorAccount;
 
     private final Optional<String> ein;
@@ -69,6 +73,8 @@ public final class VendorData {
 
     private final Optional<String> remitCountry;
 
+    private final Optional<String> remitEmail;
+
     private final Optional<String> remitState;
 
     private final Optional<String> remitZip;
@@ -90,6 +96,8 @@ public final class VendorData {
             Optional<String> city,
             Optional<List<Contacts>> contacts,
             Optional<String> country,
+            Optional<String> customField1,
+            Optional<String> customField2,
             Optional<String> customerVendorAccount,
             Optional<String> ein,
             Optional<String> email,
@@ -106,6 +114,7 @@ public final class VendorData {
             Optional<String> remitAddress2,
             Optional<String> remitCity,
             Optional<String> remitCountry,
+            Optional<String> remitEmail,
             Optional<String> remitState,
             Optional<String> remitZip,
             Optional<String> state,
@@ -120,6 +129,8 @@ public final class VendorData {
         this.city = city;
         this.contacts = contacts;
         this.country = country;
+        this.customField1 = customField1;
+        this.customField2 = customField2;
         this.customerVendorAccount = customerVendorAccount;
         this.ein = ein;
         this.email = email;
@@ -136,6 +147,7 @@ public final class VendorData {
         this.remitAddress2 = remitAddress2;
         this.remitCity = remitCity;
         this.remitCountry = remitCountry;
+        this.remitEmail = remitEmail;
         this.remitState = remitState;
         this.remitZip = remitZip;
         this.state = state;
@@ -200,6 +212,22 @@ public final class VendorData {
     @JsonProperty("country")
     public Optional<String> getCountry() {
         return country;
+    }
+
+    /**
+     * @return Custom field 1 for vendor
+     */
+    @JsonProperty("customField1")
+    public Optional<String> getCustomField1() {
+        return customField1;
+    }
+
+    /**
+     * @return Custom field 2 for vendor
+     */
+    @JsonProperty("customField2")
+    public Optional<String> getCustomField2() {
+        return customField2;
     }
 
     /**
@@ -291,6 +319,11 @@ public final class VendorData {
         return remitCountry;
     }
 
+    @JsonProperty("remitEmail")
+    public Optional<String> getRemitEmail() {
+        return remitEmail;
+    }
+
     @JsonProperty("remitState")
     public Optional<String> getRemitState() {
         return remitState;
@@ -342,6 +375,8 @@ public final class VendorData {
                 && city.equals(other.city)
                 && contacts.equals(other.contacts)
                 && country.equals(other.country)
+                && customField1.equals(other.customField1)
+                && customField2.equals(other.customField2)
                 && customerVendorAccount.equals(other.customerVendorAccount)
                 && ein.equals(other.ein)
                 && email.equals(other.email)
@@ -358,6 +393,7 @@ public final class VendorData {
                 && remitAddress2.equals(other.remitAddress2)
                 && remitCity.equals(other.remitCity)
                 && remitCountry.equals(other.remitCountry)
+                && remitEmail.equals(other.remitEmail)
                 && remitState.equals(other.remitState)
                 && remitZip.equals(other.remitZip)
                 && state.equals(other.state)
@@ -376,6 +412,8 @@ public final class VendorData {
                 this.city,
                 this.contacts,
                 this.country,
+                this.customField1,
+                this.customField2,
                 this.customerVendorAccount,
                 this.ein,
                 this.email,
@@ -392,6 +430,7 @@ public final class VendorData {
                 this.remitAddress2,
                 this.remitCity,
                 this.remitCountry,
+                this.remitEmail,
                 this.remitState,
                 this.remitZip,
                 this.state,
@@ -426,6 +465,10 @@ public final class VendorData {
 
         private Optional<String> country = Optional.empty();
 
+        private Optional<String> customField1 = Optional.empty();
+
+        private Optional<String> customField2 = Optional.empty();
+
         private Optional<String> customerVendorAccount = Optional.empty();
 
         private Optional<String> ein = Optional.empty();
@@ -458,6 +501,8 @@ public final class VendorData {
 
         private Optional<String> remitCountry = Optional.empty();
 
+        private Optional<String> remitEmail = Optional.empty();
+
         private Optional<String> remitState = Optional.empty();
 
         private Optional<String> remitZip = Optional.empty();
@@ -482,6 +527,8 @@ public final class VendorData {
             city(other.getCity());
             contacts(other.getContacts());
             country(other.getCountry());
+            customField1(other.getCustomField1());
+            customField2(other.getCustomField2());
             customerVendorAccount(other.getCustomerVendorAccount());
             ein(other.getEin());
             email(other.getEmail());
@@ -498,6 +545,7 @@ public final class VendorData {
             remitAddress2(other.getRemitAddress2());
             remitCity(other.getRemitCity());
             remitCountry(other.getRemitCountry());
+            remitEmail(other.getRemitEmail());
             remitState(other.getRemitState());
             remitZip(other.getRemitZip());
             state(other.getState());
@@ -609,6 +657,34 @@ public final class VendorData {
 
         public Builder country(String country) {
             this.country = Optional.ofNullable(country);
+            return this;
+        }
+
+        /**
+         * <p>Custom field 1 for vendor</p>
+         */
+        @JsonSetter(value = "customField1", nulls = Nulls.SKIP)
+        public Builder customField1(Optional<String> customField1) {
+            this.customField1 = customField1;
+            return this;
+        }
+
+        public Builder customField1(String customField1) {
+            this.customField1 = Optional.ofNullable(customField1);
+            return this;
+        }
+
+        /**
+         * <p>Custom field 2 for vendor</p>
+         */
+        @JsonSetter(value = "customField2", nulls = Nulls.SKIP)
+        public Builder customField2(Optional<String> customField2) {
+            this.customField2 = customField2;
+            return this;
+        }
+
+        public Builder customField2(String customField2) {
+            this.customField2 = Optional.ofNullable(customField2);
             return this;
         }
 
@@ -797,6 +873,17 @@ public final class VendorData {
             return this;
         }
 
+        @JsonSetter(value = "remitEmail", nulls = Nulls.SKIP)
+        public Builder remitEmail(Optional<String> remitEmail) {
+            this.remitEmail = remitEmail;
+            return this;
+        }
+
+        public Builder remitEmail(String remitEmail) {
+            this.remitEmail = Optional.ofNullable(remitEmail);
+            return this;
+        }
+
         @JsonSetter(value = "remitState", nulls = Nulls.SKIP)
         public Builder remitState(Optional<String> remitState) {
             this.remitState = remitState;
@@ -868,6 +955,8 @@ public final class VendorData {
                     city,
                     contacts,
                     country,
+                    customField1,
+                    customField2,
                     customerVendorAccount,
                     ein,
                     email,
@@ -884,6 +973,7 @@ public final class VendorData {
                     remitAddress2,
                     remitCity,
                     remitCountry,
+                    remitEmail,
                     remitState,
                     remitZip,
                     state,

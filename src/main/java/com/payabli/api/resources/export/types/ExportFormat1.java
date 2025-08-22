@@ -5,14 +5,14 @@ package com.payabli.api.resources.export.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ExportFormat {
+public enum ExportFormat1 {
     CSV("csv"),
 
     XLSX("xlsx");
 
     private final String value;
 
-    ExportFormat(String value) {
+    ExportFormat1(String value) {
         this.value = value;
     }
 

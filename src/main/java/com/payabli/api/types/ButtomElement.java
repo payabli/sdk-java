@@ -16,18 +16,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ButtomElement.Builder.class)
 public final class ButtomElement {
-    private final Optional<String> label;
+    private final String label;
 
     private final Optional<ButtomElementSize> size;
 
     private final Map<String, Object> additionalProperties;
 
-    private ButtomElement(
-            Optional<String> label, Optional<ButtomElementSize> size, Map<String, Object> additionalProperties) {
+    private ButtomElement(String label, Optional<ButtomElementSize> size, Map<String, Object> additionalProperties) {
         this.label = label;
         this.size = size;
         this.additionalProperties = additionalProperties;
@@ -37,7 +37,7 @@ public final class ButtomElement {
      * @return Label for custom payment button
      */
     @JsonProperty("label")
-    public Optional<String> getLabel() {
+    public String getLabel() {
         return label;
     }
 
@@ -74,13 +74,33 @@ public final class ButtomElement {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static LabelStage builder() {
         return new Builder();
     }
 
+    public interface LabelStage {
+        /**
+         * <p>Label for custom payment button</p>
+         */
+        _FinalStage label(@NotNull String label);
+
+        Builder from(ButtomElement other);
+    }
+
+    public interface _FinalStage {
+        ButtomElement build();
+
+        /**
+         * <p>Specify size of custom payment button</p>
+         */
+        _FinalStage size(Optional<ButtomElementSize> size);
+
+        _FinalStage size(ButtomElementSize size);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> label = Optional.empty();
+    public static final class Builder implements LabelStage, _FinalStage {
+        private String label;
 
         private Optional<ButtomElementSize> size = Optional.empty();
 
@@ -89,6 +109,7 @@ public final class ButtomElement {
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(ButtomElement other) {
             label(other.getLabel());
             size(other.getSize());
@@ -97,32 +118,37 @@ public final class ButtomElement {
 
         /**
          * <p>Label for custom payment button</p>
+         * <p>Label for custom payment button</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "label", nulls = Nulls.SKIP)
-        public Builder label(Optional<String> label) {
-            this.label = label;
+        @java.lang.Override
+        @JsonSetter("label")
+        public _FinalStage label(@NotNull String label) {
+            this.label = Objects.requireNonNull(label, "label must not be null");
             return this;
         }
 
-        public Builder label(String label) {
-            this.label = Optional.ofNullable(label);
+        /**
+         * <p>Specify size of custom payment button</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage size(ButtomElementSize size) {
+            this.size = Optional.ofNullable(size);
             return this;
         }
 
         /**
          * <p>Specify size of custom payment button</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "size", nulls = Nulls.SKIP)
-        public Builder size(Optional<ButtomElementSize> size) {
+        public _FinalStage size(Optional<ButtomElementSize> size) {
             this.size = size;
             return this;
         }
 
-        public Builder size(ButtomElementSize size) {
-            this.size = Optional.ofNullable(size);
-            return this;
-        }
-
+        @java.lang.Override
         public ButtomElement build() {
             return new ButtomElement(label, size, additionalProperties);
         }

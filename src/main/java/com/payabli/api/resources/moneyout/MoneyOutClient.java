@@ -8,7 +8,9 @@ import com.payabli.api.core.RequestOptions;
 import com.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import com.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import com.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
+import com.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import com.payabli.api.resources.moneyout.types.CaptureAllOutResponse;
+import com.payabli.api.resources.moneyout.types.OperationResult;
 import com.payabli.api.resources.moneyout.types.VCardGetResponse;
 import com.payabli.api.types.BillDetailResponse;
 import com.payabli.api.types.PayabliApiResponse0000;
@@ -136,6 +138,20 @@ public class MoneyOutClient {
      */
     public VCardGetResponse vCardGet(String cardToken, RequestOptions requestOptions) {
         return this.rawClient.vCardGet(cardToken, requestOptions).body();
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public OperationResult sendVCardLink(SendVCardLinkRequest request) {
+        return this.rawClient.sendVCardLink(request).body();
+    }
+
+    /**
+     * Sends a virtual card link via email to the vendor associated with the <code>transId</code>.
+     */
+    public OperationResult sendVCardLink(SendVCardLinkRequest request, RequestOptions requestOptions) {
+        return this.rawClient.sendVCardLink(request, requestOptions).body();
     }
 
     /**

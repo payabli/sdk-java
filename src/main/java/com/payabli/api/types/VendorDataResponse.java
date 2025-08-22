@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorDataResponse.Builder.class)
 public final class VendorDataResponse {
-    private final Optional<String> vendorNumber;
+    private final String vendorNumber;
 
     private final String name1;
 
@@ -35,7 +35,7 @@ public final class VendorDataResponse {
 
     private final String phone;
 
-    private final Optional<String> email;
+    private final String email;
 
     private final Optional<String> remitEmail;
 
@@ -51,7 +51,7 @@ public final class VendorDataResponse {
 
     private final String country;
 
-    private final Optional<String> mcc;
+    private final String mcc;
 
     private final String locationCode;
 
@@ -83,21 +83,21 @@ public final class VendorDataResponse {
 
     private final OffsetDateTime lastUpdated;
 
-    private final Optional<String> remitAddress1;
+    private final String remitAddress1;
 
-    private final Optional<String> remitAddress2;
+    private final String remitAddress2;
 
-    private final Optional<String> remitCity;
+    private final String remitCity;
 
-    private final Optional<String> remitState;
+    private final String remitState;
 
-    private final Optional<String> remitZip;
+    private final String remitZip;
 
-    private final Optional<String> remitCountry;
+    private final String remitCountry;
 
-    private final Optional<String> payeeName1;
+    private final String payeeName1;
 
-    private final Optional<String> payeeName2;
+    private final String payeeName2;
 
     private final String customField1;
 
@@ -116,12 +116,12 @@ public final class VendorDataResponse {
     private final Map<String, Object> additionalProperties;
 
     private VendorDataResponse(
-            Optional<String> vendorNumber,
+            String vendorNumber,
             String name1,
             String name2,
             String ein,
             String phone,
-            Optional<String> email,
+            String email,
             Optional<String> remitEmail,
             String address1,
             String address2,
@@ -129,7 +129,7 @@ public final class VendorDataResponse {
             String state,
             String zip,
             String country,
-            Optional<String> mcc,
+            String mcc,
             String locationCode,
             List<ContactsResponse> contacts,
             VendorResponseBillingData billingData,
@@ -145,14 +145,14 @@ public final class VendorDataResponse {
             int parentOrgId,
             OffsetDateTime createdDate,
             OffsetDateTime lastUpdated,
-            Optional<String> remitAddress1,
-            Optional<String> remitAddress2,
-            Optional<String> remitCity,
-            Optional<String> remitState,
-            Optional<String> remitZip,
-            Optional<String> remitCountry,
-            Optional<String> payeeName1,
-            Optional<String> payeeName2,
+            String remitAddress1,
+            String remitAddress2,
+            String remitCity,
+            String remitState,
+            String remitZip,
+            String remitCountry,
+            String payeeName1,
+            String payeeName2,
             String customField1,
             String customField2,
             Optional<String> customerVendorAccount,
@@ -209,7 +209,7 @@ public final class VendorDataResponse {
     }
 
     @JsonProperty("VendorNumber")
-    public Optional<String> getVendorNumber() {
+    public String getVendorNumber() {
         return vendorNumber;
     }
 
@@ -246,7 +246,7 @@ public final class VendorDataResponse {
     }
 
     @JsonProperty("Email")
-    public Optional<String> getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -307,7 +307,7 @@ public final class VendorDataResponse {
     }
 
     @JsonProperty("Mcc")
-    public Optional<String> getMcc() {
+    public String getMcc() {
         return mcc;
     }
 
@@ -426,42 +426,42 @@ public final class VendorDataResponse {
     }
 
     @JsonProperty("remitAddress1")
-    public Optional<String> getRemitAddress1() {
+    public String getRemitAddress1() {
         return remitAddress1;
     }
 
     @JsonProperty("remitAddress2")
-    public Optional<String> getRemitAddress2() {
+    public String getRemitAddress2() {
         return remitAddress2;
     }
 
     @JsonProperty("remitCity")
-    public Optional<String> getRemitCity() {
+    public String getRemitCity() {
         return remitCity;
     }
 
     @JsonProperty("remitState")
-    public Optional<String> getRemitState() {
+    public String getRemitState() {
         return remitState;
     }
 
     @JsonProperty("remitZip")
-    public Optional<String> getRemitZip() {
+    public String getRemitZip() {
         return remitZip;
     }
 
     @JsonProperty("remitCountry")
-    public Optional<String> getRemitCountry() {
+    public String getRemitCountry() {
         return remitCountry;
     }
 
     @JsonProperty("payeeName1")
-    public Optional<String> getPayeeName1() {
+    public String getPayeeName1() {
         return payeeName1;
     }
 
     @JsonProperty("payeeName2")
-    public Optional<String> getPayeeName2() {
+    public String getPayeeName2() {
         return payeeName2;
     }
 
@@ -627,8 +627,14 @@ public final class VendorDataResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Name1Stage builder() {
+    public static VendorNumberStage builder() {
         return new Builder();
+    }
+
+    public interface VendorNumberStage {
+        Name1Stage vendorNumber(@NotNull String vendorNumber);
+
+        Builder from(VendorDataResponse other);
     }
 
     public interface Name1Stage {
@@ -636,8 +642,6 @@ public final class VendorDataResponse {
          * <p>Primary name for vendor.</p>
          */
         Name2Stage name1(@NotNull String name1);
-
-        Builder from(VendorDataResponse other);
     }
 
     public interface Name2Stage {
@@ -658,7 +662,11 @@ public final class VendorDataResponse {
         /**
          * <p>Vendor's phone number.</p>
          */
-        Address1Stage phone(@NotNull String phone);
+        EmailStage phone(@NotNull String phone);
+    }
+
+    public interface EmailStage {
+        Address1Stage email(@NotNull String email);
     }
 
     public interface Address1Stage {
@@ -700,7 +708,11 @@ public final class VendorDataResponse {
         /**
          * <p>Vendor's country. Payabli supports only US and Canadian vendors.</p>
          */
-        LocationCodeStage country(@NotNull String country);
+        MccStage country(@NotNull String country);
+    }
+
+    public interface MccStage {
+        LocationCodeStage mcc(@NotNull String mcc);
     }
 
     public interface LocationCodeStage {
@@ -777,7 +789,39 @@ public final class VendorDataResponse {
         /**
          * <p>Date when vendor was last updated</p>
          */
-        CustomField1Stage lastUpdated(@NotNull OffsetDateTime lastUpdated);
+        RemitAddress1Stage lastUpdated(@NotNull OffsetDateTime lastUpdated);
+    }
+
+    public interface RemitAddress1Stage {
+        RemitAddress2Stage remitAddress1(@NotNull String remitAddress1);
+    }
+
+    public interface RemitAddress2Stage {
+        RemitCityStage remitAddress2(@NotNull String remitAddress2);
+    }
+
+    public interface RemitCityStage {
+        RemitStateStage remitCity(@NotNull String remitCity);
+    }
+
+    public interface RemitStateStage {
+        RemitZipStage remitState(@NotNull String remitState);
+    }
+
+    public interface RemitZipStage {
+        RemitCountryStage remitZip(@NotNull String remitZip);
+    }
+
+    public interface RemitCountryStage {
+        PayeeName1Stage remitCountry(@NotNull String remitCountry);
+    }
+
+    public interface PayeeName1Stage {
+        PayeeName2Stage payeeName1(@NotNull String payeeName1);
+    }
+
+    public interface PayeeName2Stage {
+        CustomField1Stage payeeName2(@NotNull String payeeName2);
     }
 
     public interface CustomField1Stage {
@@ -804,24 +848,12 @@ public final class VendorDataResponse {
     public interface _FinalStage {
         VendorDataResponse build();
 
-        _FinalStage vendorNumber(Optional<String> vendorNumber);
-
-        _FinalStage vendorNumber(String vendorNumber);
-
-        _FinalStage email(Optional<String> email);
-
-        _FinalStage email(String email);
-
         /**
          * <p>Email address for remittance</p>
          */
         _FinalStage remitEmail(Optional<String> remitEmail);
 
         _FinalStage remitEmail(String remitEmail);
-
-        _FinalStage mcc(Optional<String> mcc);
-
-        _FinalStage mcc(String mcc);
 
         /**
          * <p>Array of objects describing the vendor's contacts.</p>
@@ -846,38 +878,6 @@ public final class VendorDataResponse {
         _FinalStage enrollmentStatus(Optional<String> enrollmentStatus);
 
         _FinalStage enrollmentStatus(String enrollmentStatus);
-
-        _FinalStage remitAddress1(Optional<String> remitAddress1);
-
-        _FinalStage remitAddress1(String remitAddress1);
-
-        _FinalStage remitAddress2(Optional<String> remitAddress2);
-
-        _FinalStage remitAddress2(String remitAddress2);
-
-        _FinalStage remitCity(Optional<String> remitCity);
-
-        _FinalStage remitCity(String remitCity);
-
-        _FinalStage remitState(Optional<String> remitState);
-
-        _FinalStage remitState(String remitState);
-
-        _FinalStage remitZip(Optional<String> remitZip);
-
-        _FinalStage remitZip(String remitZip);
-
-        _FinalStage remitCountry(Optional<String> remitCountry);
-
-        _FinalStage remitCountry(String remitCountry);
-
-        _FinalStage payeeName1(Optional<String> payeeName1);
-
-        _FinalStage payeeName1(String payeeName1);
-
-        _FinalStage payeeName2(Optional<String> payeeName2);
-
-        _FinalStage payeeName2(String payeeName2);
 
         /**
          * <p>Account number of paypoint in the Vendor side.</p>
@@ -908,16 +908,19 @@ public final class VendorDataResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements Name1Stage,
+            implements VendorNumberStage,
+                    Name1Stage,
                     Name2Stage,
                     EinStage,
                     PhoneStage,
+                    EmailStage,
                     Address1Stage,
                     Address2Stage,
                     CityStage,
                     StateStage,
                     ZipStage,
                     CountryStage,
+                    MccStage,
                     LocationCodeStage,
                     BillingDataStage,
                     PaymentMethodStage,
@@ -929,10 +932,20 @@ public final class VendorDataResponse {
                     ParentOrgIdStage,
                     CreatedDateStage,
                     LastUpdatedStage,
+                    RemitAddress1Stage,
+                    RemitAddress2Stage,
+                    RemitCityStage,
+                    RemitStateStage,
+                    RemitZipStage,
+                    RemitCountryStage,
+                    PayeeName1Stage,
+                    PayeeName2Stage,
                     CustomField1Stage,
                     CustomField2Stage,
                     ExternalPaypointIdStage,
                     _FinalStage {
+        private String vendorNumber;
+
         private String name1;
 
         private String name2;
@@ -940,6 +953,8 @@ public final class VendorDataResponse {
         private String ein;
 
         private String phone;
+
+        private String email;
 
         private String address1;
 
@@ -952,6 +967,8 @@ public final class VendorDataResponse {
         private String zip;
 
         private String country;
+
+        private String mcc;
 
         private String locationCode;
 
@@ -975,6 +992,22 @@ public final class VendorDataResponse {
 
         private OffsetDateTime lastUpdated;
 
+        private String remitAddress1;
+
+        private String remitAddress2;
+
+        private String remitCity;
+
+        private String remitState;
+
+        private String remitZip;
+
+        private String remitCountry;
+
+        private String payeeName1;
+
+        private String payeeName2;
+
         private String customField1;
 
         private String customField2;
@@ -989,22 +1022,6 @@ public final class VendorDataResponse {
 
         private Optional<String> customerVendorAccount = Optional.empty();
 
-        private Optional<String> payeeName2 = Optional.empty();
-
-        private Optional<String> payeeName1 = Optional.empty();
-
-        private Optional<String> remitCountry = Optional.empty();
-
-        private Optional<String> remitZip = Optional.empty();
-
-        private Optional<String> remitState = Optional.empty();
-
-        private Optional<String> remitCity = Optional.empty();
-
-        private Optional<String> remitAddress2 = Optional.empty();
-
-        private Optional<String> remitAddress1 = Optional.empty();
-
         private Optional<String> enrollmentStatus = Optional.empty();
 
         private Optional<Integer> vendorId = Optional.empty();
@@ -1013,13 +1030,7 @@ public final class VendorDataResponse {
 
         private List<ContactsResponse> contacts = new ArrayList<>();
 
-        private Optional<String> mcc = Optional.empty();
-
         private Optional<String> remitEmail = Optional.empty();
-
-        private Optional<String> email = Optional.empty();
-
-        private Optional<String> vendorNumber = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -1075,6 +1086,13 @@ public final class VendorDataResponse {
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter("VendorNumber")
+        public Name1Stage vendorNumber(@NotNull String vendorNumber) {
+            this.vendorNumber = Objects.requireNonNull(vendorNumber, "vendorNumber must not be null");
+            return this;
+        }
+
         /**
          * <p>Primary name for vendor.</p>
          * <p>Primary name for vendor.</p>
@@ -1118,8 +1136,15 @@ public final class VendorDataResponse {
          */
         @java.lang.Override
         @JsonSetter("Phone")
-        public Address1Stage phone(@NotNull String phone) {
+        public EmailStage phone(@NotNull String phone) {
             this.phone = Objects.requireNonNull(phone, "phone must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("Email")
+        public Address1Stage email(@NotNull String email) {
+            this.email = Objects.requireNonNull(email, "email must not be null");
             return this;
         }
 
@@ -1190,8 +1215,15 @@ public final class VendorDataResponse {
          */
         @java.lang.Override
         @JsonSetter("Country")
-        public LocationCodeStage country(@NotNull String country) {
+        public MccStage country(@NotNull String country) {
             this.country = Objects.requireNonNull(country, "country must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("Mcc")
+        public LocationCodeStage mcc(@NotNull String mcc) {
+            this.mcc = Objects.requireNonNull(mcc, "mcc must not be null");
             return this;
         }
 
@@ -1322,8 +1354,64 @@ public final class VendorDataResponse {
          */
         @java.lang.Override
         @JsonSetter("LastUpdated")
-        public CustomField1Stage lastUpdated(@NotNull OffsetDateTime lastUpdated) {
+        public RemitAddress1Stage lastUpdated(@NotNull OffsetDateTime lastUpdated) {
             this.lastUpdated = Objects.requireNonNull(lastUpdated, "lastUpdated must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("remitAddress1")
+        public RemitAddress2Stage remitAddress1(@NotNull String remitAddress1) {
+            this.remitAddress1 = Objects.requireNonNull(remitAddress1, "remitAddress1 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("remitAddress2")
+        public RemitCityStage remitAddress2(@NotNull String remitAddress2) {
+            this.remitAddress2 = Objects.requireNonNull(remitAddress2, "remitAddress2 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("remitCity")
+        public RemitStateStage remitCity(@NotNull String remitCity) {
+            this.remitCity = Objects.requireNonNull(remitCity, "remitCity must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("remitState")
+        public RemitZipStage remitState(@NotNull String remitState) {
+            this.remitState = Objects.requireNonNull(remitState, "remitState must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("remitZip")
+        public RemitCountryStage remitZip(@NotNull String remitZip) {
+            this.remitZip = Objects.requireNonNull(remitZip, "remitZip must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("remitCountry")
+        public PayeeName1Stage remitCountry(@NotNull String remitCountry) {
+            this.remitCountry = Objects.requireNonNull(remitCountry, "remitCountry must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("payeeName1")
+        public PayeeName2Stage payeeName1(@NotNull String payeeName1) {
+            this.payeeName1 = Objects.requireNonNull(payeeName1, "payeeName1 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("payeeName2")
+        public CustomField1Stage payeeName2(@NotNull String payeeName2) {
+            this.payeeName2 = Objects.requireNonNull(payeeName2, "payeeName2 must not be null");
             return this;
         }
 
@@ -1447,110 +1535,6 @@ public final class VendorDataResponse {
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage payeeName2(String payeeName2) {
-            this.payeeName2 = Optional.ofNullable(payeeName2);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "payeeName2", nulls = Nulls.SKIP)
-        public _FinalStage payeeName2(Optional<String> payeeName2) {
-            this.payeeName2 = payeeName2;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage payeeName1(String payeeName1) {
-            this.payeeName1 = Optional.ofNullable(payeeName1);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "payeeName1", nulls = Nulls.SKIP)
-        public _FinalStage payeeName1(Optional<String> payeeName1) {
-            this.payeeName1 = payeeName1;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage remitCountry(String remitCountry) {
-            this.remitCountry = Optional.ofNullable(remitCountry);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "remitCountry", nulls = Nulls.SKIP)
-        public _FinalStage remitCountry(Optional<String> remitCountry) {
-            this.remitCountry = remitCountry;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage remitZip(String remitZip) {
-            this.remitZip = Optional.ofNullable(remitZip);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "remitZip", nulls = Nulls.SKIP)
-        public _FinalStage remitZip(Optional<String> remitZip) {
-            this.remitZip = remitZip;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage remitState(String remitState) {
-            this.remitState = Optional.ofNullable(remitState);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "remitState", nulls = Nulls.SKIP)
-        public _FinalStage remitState(Optional<String> remitState) {
-            this.remitState = remitState;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage remitCity(String remitCity) {
-            this.remitCity = Optional.ofNullable(remitCity);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "remitCity", nulls = Nulls.SKIP)
-        public _FinalStage remitCity(Optional<String> remitCity) {
-            this.remitCity = remitCity;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage remitAddress2(String remitAddress2) {
-            this.remitAddress2 = Optional.ofNullable(remitAddress2);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "remitAddress2", nulls = Nulls.SKIP)
-        public _FinalStage remitAddress2(Optional<String> remitAddress2) {
-            this.remitAddress2 = remitAddress2;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage remitAddress1(String remitAddress1) {
-            this.remitAddress1 = Optional.ofNullable(remitAddress1);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "remitAddress1", nulls = Nulls.SKIP)
-        public _FinalStage remitAddress1(Optional<String> remitAddress1) {
-            this.remitAddress1 = remitAddress1;
-            return this;
-        }
-
         /**
          * <p>Vendor enrollment status</p>
          * @return Reference to {@code this} so that method calls can be chained together.
@@ -1628,19 +1612,6 @@ public final class VendorDataResponse {
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage mcc(String mcc) {
-            this.mcc = Optional.ofNullable(mcc);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "Mcc", nulls = Nulls.SKIP)
-        public _FinalStage mcc(Optional<String> mcc) {
-            this.mcc = mcc;
-            return this;
-        }
-
         /**
          * <p>Email address for remittance</p>
          * @return Reference to {@code this} so that method calls can be chained together.
@@ -1658,32 +1629,6 @@ public final class VendorDataResponse {
         @JsonSetter(value = "RemitEmail", nulls = Nulls.SKIP)
         public _FinalStage remitEmail(Optional<String> remitEmail) {
             this.remitEmail = remitEmail;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage email(String email) {
-            this.email = Optional.ofNullable(email);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "Email", nulls = Nulls.SKIP)
-        public _FinalStage email(Optional<String> email) {
-            this.email = email;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage vendorNumber(String vendorNumber) {
-            this.vendorNumber = Optional.ofNullable(vendorNumber);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "VendorNumber", nulls = Nulls.SKIP)
-        public _FinalStage vendorNumber(Optional<String> vendorNumber) {
-            this.vendorNumber = vendorNumber;
             return this;
         }
 

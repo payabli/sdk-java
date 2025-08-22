@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ResponseDataRefunds.Builder.class)
 public final class ResponseDataRefunds {
-    private final Optional<String> authCode;
+    private final String authCode;
 
     private final Optional<String> avsResponseText;
 
@@ -40,7 +40,7 @@ public final class ResponseDataRefunds {
     private final Map<String, Object> additionalProperties;
 
     private ResponseDataRefunds(
-            Optional<String> authCode,
+            String authCode,
             Optional<String> avsResponseText,
             Optional<Long> customerId,
             Optional<String> cvvResponseText,
@@ -61,7 +61,7 @@ public final class ResponseDataRefunds {
     }
 
     @JsonProperty("authCode")
-    public Optional<String> getAuthCode() {
+    public String getAuthCode() {
         return authCode;
     }
 
@@ -152,14 +152,18 @@ public final class ResponseDataRefunds {
         return ObjectMappers.stringify(this);
     }
 
-    public static ReferenceIdStage builder() {
+    public static AuthCodeStage builder() {
         return new Builder();
+    }
+
+    public interface AuthCodeStage {
+        ReferenceIdStage authCode(@NotNull String authCode);
+
+        Builder from(ResponseDataRefunds other);
     }
 
     public interface ReferenceIdStage {
         ResultCodeStage referenceId(@NotNull String referenceId);
-
-        Builder from(ResponseDataRefunds other);
     }
 
     public interface ResultCodeStage {
@@ -175,10 +179,6 @@ public final class ResponseDataRefunds {
 
     public interface _FinalStage {
         ResponseDataRefunds build();
-
-        _FinalStage authCode(Optional<String> authCode);
-
-        _FinalStage authCode(String authCode);
 
         /**
          * <p>This field isn't applicable to refund operations.</p>
@@ -207,7 +207,10 @@ public final class ResponseDataRefunds {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ReferenceIdStage, ResultCodeStage, ResultTextStage, _FinalStage {
+    public static final class Builder
+            implements AuthCodeStage, ReferenceIdStage, ResultCodeStage, ResultTextStage, _FinalStage {
+        private String authCode;
+
         private String referenceId;
 
         private int resultCode;
@@ -221,8 +224,6 @@ public final class ResponseDataRefunds {
         private Optional<Long> customerId = Optional.empty();
 
         private Optional<String> avsResponseText = Optional.empty();
-
-        private Optional<String> authCode = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -239,6 +240,13 @@ public final class ResponseDataRefunds {
             referenceId(other.getReferenceId());
             resultCode(other.getResultCode());
             resultText(other.getResultText());
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("authCode")
+        public ReferenceIdStage authCode(@NotNull String authCode) {
+            this.authCode = Objects.requireNonNull(authCode, "authCode must not be null");
             return this;
         }
 
@@ -338,19 +346,6 @@ public final class ResponseDataRefunds {
         @JsonSetter(value = "avsResponseText", nulls = Nulls.SKIP)
         public _FinalStage avsResponseText(Optional<String> avsResponseText) {
             this.avsResponseText = avsResponseText;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage authCode(String authCode) {
-            this.authCode = Optional.ofNullable(authCode);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "authCode", nulls = Nulls.SKIP)
-        public _FinalStage authCode(Optional<String> authCode) {
-            this.authCode = authCode;
             return this;
         }
 

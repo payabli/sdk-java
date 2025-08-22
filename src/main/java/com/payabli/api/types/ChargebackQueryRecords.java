@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ChargebackQueryRecords.Builder.class)
@@ -34,9 +35,9 @@ public final class ChargebackQueryRecords {
 
     private final Optional<Long> id;
 
-    private final Optional<String> lastFour;
+    private final String lastFour;
 
-    private final Optional<String> method;
+    private final String method;
 
     private final Optional<Double> netAmount;
 
@@ -77,8 +78,8 @@ public final class ChargebackQueryRecords {
             Optional<OffsetDateTime> createdAt,
             Optional<QueryTransactionPayorData> customer,
             Optional<Long> id,
-            Optional<String> lastFour,
-            Optional<String> method,
+            String lastFour,
+            String method,
             Optional<Double> netAmount,
             Optional<String> orderId,
             Optional<String> parentOrgName,
@@ -167,7 +168,7 @@ public final class ChargebackQueryRecords {
      * @return Last 4 digits of card or bank account involved in chargeback or return.
      */
     @JsonProperty("lastFour")
-    public Optional<String> getLastFour() {
+    public String getLastFour() {
         return lastFour;
     }
 
@@ -175,7 +176,7 @@ public final class ChargebackQueryRecords {
      * @return Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>.
      */
     @JsonProperty("method")
-    public Optional<String> getMethod() {
+    public String getMethod() {
         return method;
     }
 
@@ -362,63 +363,218 @@ public final class ChargebackQueryRecords {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static LastFourStage builder() {
         return new Builder();
     }
 
+    public interface LastFourStage {
+        /**
+         * <p>Last 4 digits of card or bank account involved in chargeback or return.</p>
+         */
+        MethodStage lastFour(@NotNull String lastFour);
+
+        Builder from(ChargebackQueryRecords other);
+    }
+
+    public interface MethodStage {
+        /**
+         * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>.</p>
+         */
+        _FinalStage method(@NotNull String method);
+    }
+
+    public interface _FinalStage {
+        ChargebackQueryRecords build();
+
+        _FinalStage accountType(Optional<String> accountType);
+
+        _FinalStage accountType(String accountType);
+
+        /**
+         * <p>Number of case assigned to the chargeback.</p>
+         */
+        _FinalStage caseNumber(Optional<String> caseNumber);
+
+        _FinalStage caseNumber(String caseNumber);
+
+        /**
+         * <p>Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.</p>
+         */
+        _FinalStage chargebackDate(Optional<OffsetDateTime> chargebackDate);
+
+        _FinalStage chargebackDate(OffsetDateTime chargebackDate);
+
+        /**
+         * <p>Timestamp when the register was created, in UTC.</p>
+         */
+        _FinalStage createdAt(Optional<OffsetDateTime> createdAt);
+
+        _FinalStage createdAt(OffsetDateTime createdAt);
+
+        _FinalStage customer(Optional<QueryTransactionPayorData> customer);
+
+        _FinalStage customer(QueryTransactionPayorData customer);
+
+        /**
+         * <p>Identifier of chargeback or return.</p>
+         */
+        _FinalStage id(Optional<Long> id);
+
+        _FinalStage id(Long id);
+
+        /**
+         * <p>Net amount in chargeback or ACH return.</p>
+         */
+        _FinalStage netAmount(Optional<Double> netAmount);
+
+        _FinalStage netAmount(Double netAmount);
+
+        _FinalStage orderId(Optional<String> orderId);
+
+        _FinalStage orderId(String orderId);
+
+        _FinalStage parentOrgName(Optional<String> parentOrgName);
+
+        _FinalStage parentOrgName(String parentOrgName);
+
+        _FinalStage paymentData(Optional<QueryPaymentData> paymentData);
+
+        _FinalStage paymentData(QueryPaymentData paymentData);
+
+        /**
+         * <p>ReferenceId of the transaction in Payabli.</p>
+         */
+        _FinalStage paymentId(Optional<String> paymentId);
+
+        _FinalStage paymentId(String paymentId);
+
+        /**
+         * <p>The paypoint's DBA name.</p>
+         */
+        _FinalStage paypointDbaname(Optional<String> paypointDbaname);
+
+        _FinalStage paypointDbaname(String paypointDbaname);
+
+        /**
+         * <p>The paypoint's entryname.</p>
+         */
+        _FinalStage paypointEntryname(Optional<String> paypointEntryname);
+
+        _FinalStage paypointEntryname(String paypointEntryname);
+
+        /**
+         * <p>The paypoint's legal name.</p>
+         */
+        _FinalStage paypointLegalname(Optional<String> paypointLegalname);
+
+        _FinalStage paypointLegalname(String paypointLegalname);
+
+        /**
+         * <p>Text describing the chargeback or ACH return reason.</p>
+         */
+        _FinalStage reason(Optional<String> reason);
+
+        _FinalStage reason(String reason);
+
+        /**
+         * <p>R code for returned ACH or custom code identifying the reason.</p>
+         */
+        _FinalStage reasonCode(Optional<String> reasonCode);
+
+        _FinalStage reasonCode(String reasonCode);
+
+        /**
+         * <p>Processor reference number to the chargeback.</p>
+         */
+        _FinalStage referenceNumber(Optional<String> referenceNumber);
+
+        _FinalStage referenceNumber(String referenceNumber);
+
+        /**
+         * <p>Chargeback response records.</p>
+         */
+        _FinalStage responses(Optional<List<ChargeBackResponse>> responses);
+
+        _FinalStage responses(List<ChargeBackResponse> responses);
+
+        /**
+         * <p>Status for chargeback or ACH return</p>
+         * <ul>
+         * <li>0: Open (chargebacks only)</li>
+         * <li>1: Pending (chargebacks only)</li>
+         * <li>2: Closed-Won (chargebacks only)</li>
+         * <li>3: Closed-Lost (chargebacks only)</li>
+         * <li>4: ACH Return (ACH only)</li>
+         * <li>5: ACH Dispute, Not Authorized (ACH only)</li>
+         * </ul>
+         */
+        _FinalStage status(Optional<Integer> status);
+
+        _FinalStage status(Integer status);
+
+        _FinalStage transaction(Optional<TransactionQueryRecords> transaction);
+
+        _FinalStage transaction(TransactionQueryRecords transaction);
+
+        _FinalStage transactionTime(Optional<OffsetDateTime> transactionTime);
+
+        _FinalStage transactionTime(OffsetDateTime transactionTime);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> accountType = Optional.empty();
+    public static final class Builder implements LastFourStage, MethodStage, _FinalStage {
+        private String lastFour;
 
-        private Optional<String> caseNumber = Optional.empty();
+        private String method;
 
-        private Optional<OffsetDateTime> chargebackDate = Optional.empty();
-
-        private Optional<OffsetDateTime> createdAt = Optional.empty();
-
-        private Optional<QueryTransactionPayorData> customer = Optional.empty();
-
-        private Optional<Long> id = Optional.empty();
-
-        private Optional<String> lastFour = Optional.empty();
-
-        private Optional<String> method = Optional.empty();
-
-        private Optional<Double> netAmount = Optional.empty();
-
-        private Optional<String> orderId = Optional.empty();
-
-        private Optional<String> parentOrgName = Optional.empty();
-
-        private Optional<QueryPaymentData> paymentData = Optional.empty();
-
-        private Optional<String> paymentId = Optional.empty();
-
-        private Optional<String> paypointDbaname = Optional.empty();
-
-        private Optional<String> paypointEntryname = Optional.empty();
-
-        private Optional<String> paypointLegalname = Optional.empty();
-
-        private Optional<String> reason = Optional.empty();
-
-        private Optional<String> reasonCode = Optional.empty();
-
-        private Optional<String> referenceNumber = Optional.empty();
-
-        private Optional<List<ChargeBackResponse>> responses = Optional.empty();
-
-        private Optional<Integer> status = Optional.empty();
+        private Optional<OffsetDateTime> transactionTime = Optional.empty();
 
         private Optional<TransactionQueryRecords> transaction = Optional.empty();
 
-        private Optional<OffsetDateTime> transactionTime = Optional.empty();
+        private Optional<Integer> status = Optional.empty();
+
+        private Optional<List<ChargeBackResponse>> responses = Optional.empty();
+
+        private Optional<String> referenceNumber = Optional.empty();
+
+        private Optional<String> reasonCode = Optional.empty();
+
+        private Optional<String> reason = Optional.empty();
+
+        private Optional<String> paypointLegalname = Optional.empty();
+
+        private Optional<String> paypointEntryname = Optional.empty();
+
+        private Optional<String> paypointDbaname = Optional.empty();
+
+        private Optional<String> paymentId = Optional.empty();
+
+        private Optional<QueryPaymentData> paymentData = Optional.empty();
+
+        private Optional<String> parentOrgName = Optional.empty();
+
+        private Optional<String> orderId = Optional.empty();
+
+        private Optional<Double> netAmount = Optional.empty();
+
+        private Optional<Long> id = Optional.empty();
+
+        private Optional<QueryTransactionPayorData> customer = Optional.empty();
+
+        private Optional<OffsetDateTime> createdAt = Optional.empty();
+
+        private Optional<OffsetDateTime> chargebackDate = Optional.empty();
+
+        private Optional<String> caseNumber = Optional.empty();
+
+        private Optional<String> accountType = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(ChargebackQueryRecords other) {
             accountType(other.getAccountType());
             caseNumber(other.getCaseNumber());
@@ -446,268 +602,71 @@ public final class ChargebackQueryRecords {
             return this;
         }
 
-        @JsonSetter(value = "accountType", nulls = Nulls.SKIP)
-        public Builder accountType(Optional<String> accountType) {
-            this.accountType = accountType;
-            return this;
-        }
-
-        public Builder accountType(String accountType) {
-            this.accountType = Optional.ofNullable(accountType);
-            return this;
-        }
-
-        /**
-         * <p>Number of case assigned to the chargeback.</p>
-         */
-        @JsonSetter(value = "caseNumber", nulls = Nulls.SKIP)
-        public Builder caseNumber(Optional<String> caseNumber) {
-            this.caseNumber = caseNumber;
-            return this;
-        }
-
-        public Builder caseNumber(String caseNumber) {
-            this.caseNumber = Optional.ofNullable(caseNumber);
-            return this;
-        }
-
-        /**
-         * <p>Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.</p>
-         */
-        @JsonSetter(value = "chargebackDate", nulls = Nulls.SKIP)
-        public Builder chargebackDate(Optional<OffsetDateTime> chargebackDate) {
-            this.chargebackDate = chargebackDate;
-            return this;
-        }
-
-        public Builder chargebackDate(OffsetDateTime chargebackDate) {
-            this.chargebackDate = Optional.ofNullable(chargebackDate);
-            return this;
-        }
-
-        /**
-         * <p>Timestamp when the register was created, in UTC.</p>
-         */
-        @JsonSetter(value = "createdAt", nulls = Nulls.SKIP)
-        public Builder createdAt(Optional<OffsetDateTime> createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public Builder createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.ofNullable(createdAt);
-            return this;
-        }
-
-        @JsonSetter(value = "customer", nulls = Nulls.SKIP)
-        public Builder customer(Optional<QueryTransactionPayorData> customer) {
-            this.customer = customer;
-            return this;
-        }
-
-        public Builder customer(QueryTransactionPayorData customer) {
-            this.customer = Optional.ofNullable(customer);
-            return this;
-        }
-
-        /**
-         * <p>Identifier of chargeback or return.</p>
-         */
-        @JsonSetter(value = "id", nulls = Nulls.SKIP)
-        public Builder id(Optional<Long> id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder id(Long id) {
-            this.id = Optional.ofNullable(id);
-            return this;
-        }
-
         /**
          * <p>Last 4 digits of card or bank account involved in chargeback or return.</p>
+         * <p>Last 4 digits of card or bank account involved in chargeback or return.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "lastFour", nulls = Nulls.SKIP)
-        public Builder lastFour(Optional<String> lastFour) {
-            this.lastFour = lastFour;
-            return this;
-        }
-
-        public Builder lastFour(String lastFour) {
-            this.lastFour = Optional.ofNullable(lastFour);
+        @java.lang.Override
+        @JsonSetter("lastFour")
+        public MethodStage lastFour(@NotNull String lastFour) {
+            this.lastFour = Objects.requireNonNull(lastFour, "lastFour must not be null");
             return this;
         }
 
         /**
          * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>.</p>
+         * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "method", nulls = Nulls.SKIP)
-        public Builder method(Optional<String> method) {
-            this.method = method;
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull String method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
             return this;
         }
 
-        public Builder method(String method) {
-            this.method = Optional.ofNullable(method);
+        @java.lang.Override
+        public _FinalStage transactionTime(OffsetDateTime transactionTime) {
+            this.transactionTime = Optional.ofNullable(transactionTime);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "transactionTime", nulls = Nulls.SKIP)
+        public _FinalStage transactionTime(Optional<OffsetDateTime> transactionTime) {
+            this.transactionTime = transactionTime;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage transaction(TransactionQueryRecords transaction) {
+            this.transaction = Optional.ofNullable(transaction);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "transaction", nulls = Nulls.SKIP)
+        public _FinalStage transaction(Optional<TransactionQueryRecords> transaction) {
+            this.transaction = transaction;
             return this;
         }
 
         /**
-         * <p>Net amount in chargeback or ACH return.</p>
+         * <p>Status for chargeback or ACH return</p>
+         * <ul>
+         * <li>0: Open (chargebacks only)</li>
+         * <li>1: Pending (chargebacks only)</li>
+         * <li>2: Closed-Won (chargebacks only)</li>
+         * <li>3: Closed-Lost (chargebacks only)</li>
+         * <li>4: ACH Return (ACH only)</li>
+         * <li>5: ACH Dispute, Not Authorized (ACH only)</li>
+         * </ul>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "netAmount", nulls = Nulls.SKIP)
-        public Builder netAmount(Optional<Double> netAmount) {
-            this.netAmount = netAmount;
-            return this;
-        }
-
-        public Builder netAmount(Double netAmount) {
-            this.netAmount = Optional.ofNullable(netAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "orderId", nulls = Nulls.SKIP)
-        public Builder orderId(Optional<String> orderId) {
-            this.orderId = orderId;
-            return this;
-        }
-
-        public Builder orderId(String orderId) {
-            this.orderId = Optional.ofNullable(orderId);
-            return this;
-        }
-
-        @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
-        public Builder parentOrgName(Optional<String> parentOrgName) {
-            this.parentOrgName = parentOrgName;
-            return this;
-        }
-
-        public Builder parentOrgName(String parentOrgName) {
-            this.parentOrgName = Optional.ofNullable(parentOrgName);
-            return this;
-        }
-
-        @JsonSetter(value = "paymentData", nulls = Nulls.SKIP)
-        public Builder paymentData(Optional<QueryPaymentData> paymentData) {
-            this.paymentData = paymentData;
-            return this;
-        }
-
-        public Builder paymentData(QueryPaymentData paymentData) {
-            this.paymentData = Optional.ofNullable(paymentData);
-            return this;
-        }
-
-        /**
-         * <p>ReferenceId of the transaction in Payabli.</p>
-         */
-        @JsonSetter(value = "PaymentId", nulls = Nulls.SKIP)
-        public Builder paymentId(Optional<String> paymentId) {
-            this.paymentId = paymentId;
-            return this;
-        }
-
-        public Builder paymentId(String paymentId) {
-            this.paymentId = Optional.ofNullable(paymentId);
-            return this;
-        }
-
-        /**
-         * <p>The paypoint's DBA name.</p>
-         */
-        @JsonSetter(value = "paypointDbaname", nulls = Nulls.SKIP)
-        public Builder paypointDbaname(Optional<String> paypointDbaname) {
-            this.paypointDbaname = paypointDbaname;
-            return this;
-        }
-
-        public Builder paypointDbaname(String paypointDbaname) {
-            this.paypointDbaname = Optional.ofNullable(paypointDbaname);
-            return this;
-        }
-
-        /**
-         * <p>The paypoint's entryname.</p>
-         */
-        @JsonSetter(value = "paypointEntryname", nulls = Nulls.SKIP)
-        public Builder paypointEntryname(Optional<String> paypointEntryname) {
-            this.paypointEntryname = paypointEntryname;
-            return this;
-        }
-
-        public Builder paypointEntryname(String paypointEntryname) {
-            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
-            return this;
-        }
-
-        /**
-         * <p>The paypoint's legal name.</p>
-         */
-        @JsonSetter(value = "paypointLegalname", nulls = Nulls.SKIP)
-        public Builder paypointLegalname(Optional<String> paypointLegalname) {
-            this.paypointLegalname = paypointLegalname;
-            return this;
-        }
-
-        public Builder paypointLegalname(String paypointLegalname) {
-            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
-            return this;
-        }
-
-        /**
-         * <p>Text describing the chargeback or ACH return reason.</p>
-         */
-        @JsonSetter(value = "reason", nulls = Nulls.SKIP)
-        public Builder reason(Optional<String> reason) {
-            this.reason = reason;
-            return this;
-        }
-
-        public Builder reason(String reason) {
-            this.reason = Optional.ofNullable(reason);
-            return this;
-        }
-
-        /**
-         * <p>R code for returned ACH or custom code identifying the reason.</p>
-         */
-        @JsonSetter(value = "reasonCode", nulls = Nulls.SKIP)
-        public Builder reasonCode(Optional<String> reasonCode) {
-            this.reasonCode = reasonCode;
-            return this;
-        }
-
-        public Builder reasonCode(String reasonCode) {
-            this.reasonCode = Optional.ofNullable(reasonCode);
-            return this;
-        }
-
-        /**
-         * <p>Processor reference number to the chargeback.</p>
-         */
-        @JsonSetter(value = "referenceNumber", nulls = Nulls.SKIP)
-        public Builder referenceNumber(Optional<String> referenceNumber) {
-            this.referenceNumber = referenceNumber;
-            return this;
-        }
-
-        public Builder referenceNumber(String referenceNumber) {
-            this.referenceNumber = Optional.ofNullable(referenceNumber);
-            return this;
-        }
-
-        /**
-         * <p>Chargeback response records.</p>
-         */
-        @JsonSetter(value = "responses", nulls = Nulls.SKIP)
-        public Builder responses(Optional<List<ChargeBackResponse>> responses) {
-            this.responses = responses;
-            return this;
-        }
-
-        public Builder responses(List<ChargeBackResponse> responses) {
-            this.responses = Optional.ofNullable(responses);
+        @java.lang.Override
+        public _FinalStage status(Integer status) {
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -722,39 +681,339 @@ public final class ChargebackQueryRecords {
          * <li>5: ACH Dispute, Not Authorized (ACH only)</li>
          * </ul>
          */
+        @java.lang.Override
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public Builder status(Optional<Integer> status) {
+        public _FinalStage status(Optional<Integer> status) {
             this.status = status;
             return this;
         }
 
-        public Builder status(Integer status) {
-            this.status = Optional.ofNullable(status);
+        /**
+         * <p>Chargeback response records.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responses(List<ChargeBackResponse> responses) {
+            this.responses = Optional.ofNullable(responses);
             return this;
         }
 
-        @JsonSetter(value = "transaction", nulls = Nulls.SKIP)
-        public Builder transaction(Optional<TransactionQueryRecords> transaction) {
-            this.transaction = transaction;
+        /**
+         * <p>Chargeback response records.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "responses", nulls = Nulls.SKIP)
+        public _FinalStage responses(Optional<List<ChargeBackResponse>> responses) {
+            this.responses = responses;
             return this;
         }
 
-        public Builder transaction(TransactionQueryRecords transaction) {
-            this.transaction = Optional.ofNullable(transaction);
+        /**
+         * <p>Processor reference number to the chargeback.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage referenceNumber(String referenceNumber) {
+            this.referenceNumber = Optional.ofNullable(referenceNumber);
             return this;
         }
 
-        @JsonSetter(value = "transactionTime", nulls = Nulls.SKIP)
-        public Builder transactionTime(Optional<OffsetDateTime> transactionTime) {
-            this.transactionTime = transactionTime;
+        /**
+         * <p>Processor reference number to the chargeback.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "referenceNumber", nulls = Nulls.SKIP)
+        public _FinalStage referenceNumber(Optional<String> referenceNumber) {
+            this.referenceNumber = referenceNumber;
             return this;
         }
 
-        public Builder transactionTime(OffsetDateTime transactionTime) {
-            this.transactionTime = Optional.ofNullable(transactionTime);
+        /**
+         * <p>R code for returned ACH or custom code identifying the reason.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage reasonCode(String reasonCode) {
+            this.reasonCode = Optional.ofNullable(reasonCode);
             return this;
         }
 
+        /**
+         * <p>R code for returned ACH or custom code identifying the reason.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "reasonCode", nulls = Nulls.SKIP)
+        public _FinalStage reasonCode(Optional<String> reasonCode) {
+            this.reasonCode = reasonCode;
+            return this;
+        }
+
+        /**
+         * <p>Text describing the chargeback or ACH return reason.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage reason(String reason) {
+            this.reason = Optional.ofNullable(reason);
+            return this;
+        }
+
+        /**
+         * <p>Text describing the chargeback or ACH return reason.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "reason", nulls = Nulls.SKIP)
+        public _FinalStage reason(Optional<String> reason) {
+            this.reason = reason;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint's legal name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLegalname(String paypointLegalname) {
+            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint's legal name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointLegalname", nulls = Nulls.SKIP)
+        public _FinalStage paypointLegalname(Optional<String> paypointLegalname) {
+            this.paypointLegalname = paypointLegalname;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint's entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointEntryname(String paypointEntryname) {
+            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint's entryname.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointEntryname", nulls = Nulls.SKIP)
+        public _FinalStage paypointEntryname(Optional<String> paypointEntryname) {
+            this.paypointEntryname = paypointEntryname;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint's DBA name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointDbaname(String paypointDbaname) {
+            this.paypointDbaname = Optional.ofNullable(paypointDbaname);
+            return this;
+        }
+
+        /**
+         * <p>The paypoint's DBA name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointDbaname", nulls = Nulls.SKIP)
+        public _FinalStage paypointDbaname(Optional<String> paypointDbaname) {
+            this.paypointDbaname = paypointDbaname;
+            return this;
+        }
+
+        /**
+         * <p>ReferenceId of the transaction in Payabli.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentId(String paymentId) {
+            this.paymentId = Optional.ofNullable(paymentId);
+            return this;
+        }
+
+        /**
+         * <p>ReferenceId of the transaction in Payabli.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaymentId", nulls = Nulls.SKIP)
+        public _FinalStage paymentId(Optional<String> paymentId) {
+            this.paymentId = paymentId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paymentData(QueryPaymentData paymentData) {
+            this.paymentData = Optional.ofNullable(paymentData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentData", nulls = Nulls.SKIP)
+        public _FinalStage paymentData(Optional<QueryPaymentData> paymentData) {
+            this.paymentData = paymentData;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage parentOrgName(String parentOrgName) {
+            this.parentOrgName = Optional.ofNullable(parentOrgName);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
+        public _FinalStage parentOrgName(Optional<String> parentOrgName) {
+            this.parentOrgName = parentOrgName;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage orderId(String orderId) {
+            this.orderId = Optional.ofNullable(orderId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "orderId", nulls = Nulls.SKIP)
+        public _FinalStage orderId(Optional<String> orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
+        /**
+         * <p>Net amount in chargeback or ACH return.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage netAmount(Double netAmount) {
+            this.netAmount = Optional.ofNullable(netAmount);
+            return this;
+        }
+
+        /**
+         * <p>Net amount in chargeback or ACH return.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "netAmount", nulls = Nulls.SKIP)
+        public _FinalStage netAmount(Optional<Double> netAmount) {
+            this.netAmount = netAmount;
+            return this;
+        }
+
+        /**
+         * <p>Identifier of chargeback or return.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage id(Long id) {
+            this.id = Optional.ofNullable(id);
+            return this;
+        }
+
+        /**
+         * <p>Identifier of chargeback or return.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "id", nulls = Nulls.SKIP)
+        public _FinalStage id(Optional<Long> id) {
+            this.id = id;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customer(QueryTransactionPayorData customer) {
+            this.customer = Optional.ofNullable(customer);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customer", nulls = Nulls.SKIP)
+        public _FinalStage customer(Optional<QueryTransactionPayorData> customer) {
+            this.customer = customer;
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the register was created, in UTC.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = Optional.ofNullable(createdAt);
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the register was created, in UTC.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "createdAt", nulls = Nulls.SKIP)
+        public _FinalStage createdAt(Optional<OffsetDateTime> createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        /**
+         * <p>Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage chargebackDate(OffsetDateTime chargebackDate) {
+            this.chargebackDate = Optional.ofNullable(chargebackDate);
+            return this;
+        }
+
+        /**
+         * <p>Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "chargebackDate", nulls = Nulls.SKIP)
+        public _FinalStage chargebackDate(Optional<OffsetDateTime> chargebackDate) {
+            this.chargebackDate = chargebackDate;
+            return this;
+        }
+
+        /**
+         * <p>Number of case assigned to the chargeback.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage caseNumber(String caseNumber) {
+            this.caseNumber = Optional.ofNullable(caseNumber);
+            return this;
+        }
+
+        /**
+         * <p>Number of case assigned to the chargeback.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "caseNumber", nulls = Nulls.SKIP)
+        public _FinalStage caseNumber(Optional<String> caseNumber) {
+            this.caseNumber = caseNumber;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage accountType(String accountType) {
+            this.accountType = Optional.ofNullable(accountType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "accountType", nulls = Nulls.SKIP)
+        public _FinalStage accountType(Optional<String> accountType) {
+            this.accountType = accountType;
+            return this;
+        }
+
+        @java.lang.Override
         public ChargebackQueryRecords build() {
             return new ChargebackQueryRecords(
                     accountType,

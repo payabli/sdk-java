@@ -9,6 +9,7 @@ import com.payabli.api.resources.notification.types.AddNotificationRequest;
 import com.payabli.api.resources.notification.types.UpdateNotificationRequest;
 import com.payabli.api.types.NotificationQueryRecord;
 import com.payabli.api.types.PayabliApiResponseNotifications;
+import java.util.Map;
 
 public class NotificationClient {
     protected final ClientOptions clientOptions;
@@ -83,5 +84,19 @@ public class NotificationClient {
     public PayabliApiResponseNotifications updateNotification(
             String nId, UpdateNotificationRequest request, RequestOptions requestOptions) {
         return this.rawClient.updateNotification(nId, request, requestOptions).body();
+    }
+
+    /**
+     * Gets a copy of a generated report by ID.
+     */
+    public Map<String, Object> getReportFile(long id) {
+        return this.rawClient.getReportFile(id).body();
+    }
+
+    /**
+     * Gets a copy of a generated report by ID.
+     */
+    public Map<String, Object> getReportFile(long id, RequestOptions requestOptions) {
+        return this.rawClient.getReportFile(id, requestOptions).body();
     }
 }

@@ -12,14 +12,14 @@ import com.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import com.payabli.api.resources.bill.requests.ListBillsRequest;
 import com.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import com.payabli.api.resources.bill.requests.SetApprovedBillRequest;
+import com.payabli.api.resources.bill.types.BillOutData;
+import com.payabli.api.resources.bill.types.BillResponse;
 import com.payabli.api.resources.bill.types.EditBillResponse;
 import com.payabli.api.resources.bill.types.GetBillResponse;
 import com.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
 import com.payabli.api.resources.bill.types.SetApprovedBillResponse;
-import com.payabli.api.types.BillOutData;
 import com.payabli.api.types.BillQueryResponse;
 import com.payabli.api.types.FileContent;
-import com.payabli.api.types.PayabliApiResponseBills;
 import java.util.List;
 
 public class BillClient {
@@ -42,36 +42,35 @@ public class BillClient {
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiResponseBills addBill(String entry, AddBillRequest request) {
+    public BillResponse addBill(String entry, AddBillRequest request) {
         return this.rawClient.addBill(entry, request).body();
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiResponseBills addBill(String entry, AddBillRequest request, RequestOptions requestOptions) {
+    public BillResponse addBill(String entry, AddBillRequest request, RequestOptions requestOptions) {
         return this.rawClient.addBill(entry, request, requestOptions).body();
     }
 
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiResponseBills deleteAttachedFromBill(String filename, int idBill) {
+    public BillResponse deleteAttachedFromBill(String filename, int idBill) {
         return this.rawClient.deleteAttachedFromBill(filename, idBill).body();
     }
 
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiResponseBills deleteAttachedFromBill(
-            String filename, int idBill, DeleteAttachedFromBillRequest request) {
+    public BillResponse deleteAttachedFromBill(String filename, int idBill, DeleteAttachedFromBillRequest request) {
         return this.rawClient.deleteAttachedFromBill(filename, idBill, request).body();
     }
 
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiResponseBills deleteAttachedFromBill(
+    public BillResponse deleteAttachedFromBill(
             String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .deleteAttachedFromBill(filename, idBill, request, requestOptions)
@@ -81,14 +80,14 @@ public class BillClient {
     /**
      * Deletes a bill by ID.
      */
-    public PayabliApiResponseBills deleteBill(int idBill) {
+    public BillResponse deleteBill(int idBill) {
         return this.rawClient.deleteBill(idBill).body();
     }
 
     /**
      * Deletes a bill by ID.
      */
-    public PayabliApiResponseBills deleteBill(int idBill, RequestOptions requestOptions) {
+    public BillResponse deleteBill(int idBill, RequestOptions requestOptions) {
         return this.rawClient.deleteBill(idBill, requestOptions).body();
     }
 
@@ -152,42 +151,42 @@ public class BillClient {
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public BillQueryResponse listBills(String entry) {
         return this.rawClient.listBills(entry).body();
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public BillQueryResponse listBills(String entry, ListBillsRequest request) {
         return this.rawClient.listBills(entry, request).body();
     }
 
     /**
-     * Retrieve a list of bills for an entrypoint. Use filters to limit results.
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public BillQueryResponse listBills(String entry, ListBillsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBills(entry, request, requestOptions).body();
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public BillQueryResponse listBillsOrg(int orgId) {
         return this.rawClient.listBillsOrg(orgId).body();
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public BillQueryResponse listBillsOrg(int orgId, ListBillsOrgRequest request) {
         return this.rawClient.listBillsOrg(orgId, request).body();
     }
 
     /**
-     * Retrieve a list of bills for an organization. Use filters to limit results.
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public BillQueryResponse listBillsOrg(int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBillsOrg(orgId, request, requestOptions).body();
@@ -213,14 +212,14 @@ public class BillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiResponseBills sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
+    public BillResponse sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
         return this.rawClient.sendToApprovalBill(idBill, request).body();
     }
 
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiResponseBills sendToApprovalBill(
+    public BillResponse sendToApprovalBill(
             int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .sendToApprovalBill(idBill, request, requestOptions)

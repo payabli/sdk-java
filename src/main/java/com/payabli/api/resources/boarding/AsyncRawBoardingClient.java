@@ -782,14 +782,14 @@ public class AsyncRawBoardingClient {
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(int orgId) {
         return listApplications(orgId, ListApplicationsRequest.builder().build());
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
             int orgId, ListApplicationsRequest request) {
@@ -797,7 +797,7 @@ public class AsyncRawBoardingClient {
     }
 
     /**
-     * Returns a list of boarding applications for an organization. Use filters to limit results.
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
             int orgId, ListApplicationsRequest request, RequestOptions requestOptions) {
@@ -805,6 +805,10 @@ public class AsyncRawBoardingClient {
                 .newBuilder()
                 .addPathSegments("Query/boarding")
                 .addPathSegment(Integer.toString(orgId));
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
         if (request.getFromRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "fromRecord", request.getFromRecord().get(), false);
