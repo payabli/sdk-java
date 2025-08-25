@@ -1074,7 +1074,7 @@ client.boarding().addApplication(
                     .build()
             )
             .phonenumber("1234567890")
-            .processingRegion(BoardingProcessingRegion.US)
+            .processingRegion("US")
             .signer(
                 SignerDataRequest
                     .builder()

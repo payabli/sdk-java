@@ -5,14 +5,16 @@ package com.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum BoardingProcessingRegion {
-    US("US"),
+public enum ButtonElementSize {
+    SM("sm"),
 
-    CA("CA");
+    MD("md"),
+
+    LG("lg");
 
     private final String value;
 
-    BoardingProcessingRegion(String value) {
+    ButtonElementSize(String value) {
         this.value = value;
     }
 

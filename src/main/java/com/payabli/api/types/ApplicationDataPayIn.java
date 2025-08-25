@@ -98,7 +98,7 @@ public final class ApplicationDataPayIn {
 
     private final String phonenumber;
 
-    private final BoardingProcessingRegion processingRegion;
+    private final String processingRegion;
 
     private final Optional<String> recipientEmail;
 
@@ -175,7 +175,7 @@ public final class ApplicationDataPayIn {
             Optional<Long> orgId,
             Optional<List<ApplicationDataPayInOwnershipItem>> ownership,
             String phonenumber,
-            BoardingProcessingRegion processingRegion,
+            String processingRegion,
             Optional<String> recipientEmail,
             Optional<Boolean> recipientEmailNotification,
             Optional<Boolean> resumable,
@@ -354,6 +354,9 @@ public final class ApplicationDataPayIn {
         return contacts;
     }
 
+    /**
+     * @return The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
+     */
     @JsonProperty("creditLimit")
     public Optional<String> getCreditLimit() {
         return creditLimit;
@@ -461,8 +464,11 @@ public final class ApplicationDataPayIn {
         return phonenumber;
     }
 
+    /**
+     * @return The business's processing region, either <code>US</code> or <code>CA</code>.
+     */
     @JsonProperty("processingRegion")
-    public BoardingProcessingRegion getProcessingRegion() {
+    public String getProcessingRegion() {
         return processingRegion;
     }
 
@@ -715,7 +721,10 @@ public final class ApplicationDataPayIn {
     }
 
     public interface ProcessingRegionStage {
-        SignerStage processingRegion(@NotNull BoardingProcessingRegion processingRegion);
+        /**
+         * <p>The business's processing region, either <code>US</code> or <code>CA</code>.</p>
+         */
+        SignerStage processingRegion(@NotNull String processingRegion);
     }
 
     public interface SignerStage {
@@ -815,6 +824,9 @@ public final class ApplicationDataPayIn {
 
         _FinalStage contacts(List<ApplicationDataPayInContactsItem> contacts);
 
+        /**
+         * <p>The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.</p>
+         */
         _FinalStage creditLimit(Optional<String> creditLimit);
 
         _FinalStage creditLimit(String creditLimit);
@@ -969,7 +981,7 @@ public final class ApplicationDataPayIn {
 
         private String phonenumber;
 
-        private BoardingProcessingRegion processingRegion;
+        private String processingRegion;
 
         private SignerDataRequest signer;
 
@@ -1167,9 +1179,14 @@ public final class ApplicationDataPayIn {
             return this;
         }
 
+        /**
+         * <p>The business's processing region, either <code>US</code> or <code>CA</code>.</p>
+         * <p>The business's processing region, either <code>US</code> or <code>CA</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("processingRegion")
-        public SignerStage processingRegion(@NotNull BoardingProcessingRegion processingRegion) {
+        public SignerStage processingRegion(@NotNull String processingRegion) {
             this.processingRegion = Objects.requireNonNull(processingRegion, "processingRegion must not be null");
             return this;
         }
@@ -1621,12 +1638,19 @@ public final class ApplicationDataPayIn {
             return this;
         }
 
+        /**
+         * <p>The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage creditLimit(String creditLimit) {
             this.creditLimit = Optional.ofNullable(creditLimit);
             return this;
         }
 
+        /**
+         * <p>The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creditLimit", nulls = Nulls.SKIP)
         public _FinalStage creditLimit(Optional<String> creditLimit) {

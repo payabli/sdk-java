@@ -28,7 +28,7 @@ public final class PageSetting {
 
     private final Optional<FileContent> pageLogo;
 
-    private final Optional<ButtomElement> paymentButton;
+    private final Optional<ButtonElement> paymentButton;
 
     private final Optional<Boolean> redirectAfterApprove;
 
@@ -41,7 +41,7 @@ public final class PageSetting {
             Optional<String> customCssUrl,
             Optional<String> language,
             Optional<FileContent> pageLogo,
-            Optional<ButtomElement> paymentButton,
+            Optional<ButtonElement> paymentButton,
             Optional<Boolean> redirectAfterApprove,
             Optional<String> redirectAfterApproveUrl,
             Map<String, Object> additionalProperties) {
@@ -88,7 +88,7 @@ public final class PageSetting {
     }
 
     @JsonProperty("paymentButton")
-    public Optional<ButtomElement> getPaymentButton() {
+    public Optional<ButtonElement> getPaymentButton() {
         return paymentButton;
     }
 
@@ -160,7 +160,7 @@ public final class PageSetting {
 
         private Optional<FileContent> pageLogo = Optional.empty();
 
-        private Optional<ButtomElement> paymentButton = Optional.empty();
+        private Optional<ButtonElement> paymentButton = Optional.empty();
 
         private Optional<Boolean> redirectAfterApprove = Optional.empty();
 
@@ -239,12 +239,12 @@ public final class PageSetting {
         }
 
         @JsonSetter(value = "paymentButton", nulls = Nulls.SKIP)
-        public Builder paymentButton(Optional<ButtomElement> paymentButton) {
+        public Builder paymentButton(Optional<ButtonElement> paymentButton) {
             this.paymentButton = paymentButton;
             return this;
         }
 
-        public Builder paymentButton(ButtomElement paymentButton) {
+        public Builder paymentButton(ButtonElement paymentButton) {
             this.paymentButton = Optional.ofNullable(paymentButton);
             return this;
         }

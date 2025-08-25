@@ -34,7 +34,7 @@ public final class ClientOptions {
             {
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.payabli.fern:api-sdk");
-                put("X-Fern-SDK-Version", "0.0.268");
+                put("X-Fern-SDK-Version", "0.0.277");
             }
         });
         this.headerSuppliers = headerSuppliers;

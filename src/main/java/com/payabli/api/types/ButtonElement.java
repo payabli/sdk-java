@@ -19,15 +19,15 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = ButtomElement.Builder.class)
-public final class ButtomElement {
+@JsonDeserialize(builder = ButtonElement.Builder.class)
+public final class ButtonElement {
     private final String label;
 
-    private final Optional<ButtomElementSize> size;
+    private final Optional<ButtonElementSize> size;
 
     private final Map<String, Object> additionalProperties;
 
-    private ButtomElement(String label, Optional<ButtomElementSize> size, Map<String, Object> additionalProperties) {
+    private ButtonElement(String label, Optional<ButtonElementSize> size, Map<String, Object> additionalProperties) {
         this.label = label;
         this.size = size;
         this.additionalProperties = additionalProperties;
@@ -45,14 +45,14 @@ public final class ButtomElement {
      * @return Specify size of custom payment button
      */
     @JsonProperty("size")
-    public Optional<ButtomElementSize> getSize() {
+    public Optional<ButtonElementSize> getSize() {
         return size;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ButtomElement && equalTo((ButtomElement) other);
+        return other instanceof ButtonElement && equalTo((ButtonElement) other);
     }
 
     @JsonAnyGetter
@@ -60,7 +60,7 @@ public final class ButtomElement {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ButtomElement other) {
+    private boolean equalTo(ButtonElement other) {
         return label.equals(other.label) && size.equals(other.size);
     }
 
@@ -84,25 +84,25 @@ public final class ButtomElement {
          */
         _FinalStage label(@NotNull String label);
 
-        Builder from(ButtomElement other);
+        Builder from(ButtonElement other);
     }
 
     public interface _FinalStage {
-        ButtomElement build();
+        ButtonElement build();
 
         /**
          * <p>Specify size of custom payment button</p>
          */
-        _FinalStage size(Optional<ButtomElementSize> size);
+        _FinalStage size(Optional<ButtonElementSize> size);
 
-        _FinalStage size(ButtomElementSize size);
+        _FinalStage size(ButtonElementSize size);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements LabelStage, _FinalStage {
         private String label;
 
-        private Optional<ButtomElementSize> size = Optional.empty();
+        private Optional<ButtonElementSize> size = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -110,7 +110,7 @@ public final class ButtomElement {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(ButtomElement other) {
+        public Builder from(ButtonElement other) {
             label(other.getLabel());
             size(other.getSize());
             return this;
@@ -133,7 +133,7 @@ public final class ButtomElement {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage size(ButtomElementSize size) {
+        public _FinalStage size(ButtonElementSize size) {
             this.size = Optional.ofNullable(size);
             return this;
         }
@@ -143,14 +143,14 @@ public final class ButtomElement {
          */
         @java.lang.Override
         @JsonSetter(value = "size", nulls = Nulls.SKIP)
-        public _FinalStage size(Optional<ButtomElementSize> size) {
+        public _FinalStage size(Optional<ButtonElementSize> size) {
             this.size = size;
             return this;
         }
 
         @java.lang.Override
-        public ButtomElement build() {
-            return new ButtomElement(label, size, additionalProperties);
+        public ButtonElement build() {
+            return new ButtonElement(label, size, additionalProperties);
         }
     }
 }

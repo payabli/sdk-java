@@ -38,9 +38,9 @@ import com.payabli.api.resources.query.requests.ListVcardsOrgRequest;
 import com.payabli.api.resources.query.requests.ListVcardsRequest;
 import com.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import com.payabli.api.resources.query.requests.ListVendorsRequest;
-import com.payabli.api.resources.query.types.ListOrganizationsResponse;
-import com.payabli.api.resources.query.types.QueryTransferDetailResponse;
-import com.payabli.api.types.QueryBatchesDetailResponse;
+import com.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
+import com.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
+import com.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import com.payabli.api.types.QueryBatchesOutResponse;
 import com.payabli.api.types.QueryBatchesResponse;
 import com.payabli.api.types.QueryChargebacksResponse;
@@ -658,6 +658,13 @@ public class QueryClient {
         return this.rawClient
                 .listTransactionsOrg(orgId, request, requestOptions)
                 .body();
+    }
+
+    /**
+     * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public QueryTransferDetailResponse listTransferDetails(String entry, int transferId) {
+        return this.rawClient.listTransferDetails(entry, transferId).body();
     }
 
     /**
