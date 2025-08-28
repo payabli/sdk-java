@@ -16,7 +16,6 @@ import com.payabli.api.errors.BadRequestError;
 import com.payabli.api.errors.InternalServerError;
 import com.payabli.api.errors.ServiceUnavailableError;
 import com.payabli.api.errors.UnauthorizedError;
-import com.payabli.api.resources.moneyin.errors.CaptureError;
 import com.payabli.api.resources.moneyin.requests.RequestCredit;
 import com.payabli.api.resources.moneyin.requests.RequestPayment;
 import com.payabli.api.resources.moneyin.requests.RequestPaymentAuthorize;
@@ -35,7 +34,6 @@ import com.payabli.api.resources.moneyin.types.ValidateResponse;
 import com.payabli.api.resources.moneyin.types.VoidResponse;
 import com.payabli.api.types.PayabliApiResponse;
 import com.payabli.api.types.PayabliApiResponse0;
-import com.payabli.api.types.PayabliApiResponseError400;
 import com.payabli.api.types.TransactionQueryRecords;
 import java.io.IOException;
 import java.util.HashMap;
@@ -309,12 +307,6 @@ public class AsyncRawMoneyInClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
-                            case 400:
-                                future.completeExceptionally(new CaptureError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponseError400.class),
-                                        response));
-                                return;
                             case 400:
                                 future.completeExceptionally(new BadRequestError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),

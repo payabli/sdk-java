@@ -206,6 +206,6 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>com.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.278</version>
+  <version>0.0.279</version>
 </dependency>
 ```
