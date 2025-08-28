@@ -40,9 +40,9 @@ import com.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import com.payabli.api.resources.query.requests.ListVendorsRequest;
 import com.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
 import com.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
+import com.payabli.api.resources.querytypes.types.QueryBatchesResponse;
 import com.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import com.payabli.api.types.QueryBatchesOutResponse;
-import com.payabli.api.types.QueryBatchesResponse;
 import com.payabli.api.types.QueryChargebacksResponse;
 import com.payabli.api.types.QueryCustomerResponse;
 import com.payabli.api.types.QueryEntrypointResponse;
@@ -56,7 +56,6 @@ import com.payabli.api.types.QuerySubscriptionResponse;
 import com.payabli.api.types.QueryUserResponse;
 import com.payabli.api.types.TransferQueryResponse;
 import com.payabli.api.types.VCardQueryResponse;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncQueryClient {
@@ -723,15 +722,14 @@ public class AsyncQueryClient {
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<TransferQueryResponse> listTransfersOrg(Optional<Long> orgId) {
+    public CompletableFuture<TransferQueryResponse> listTransfersOrg(long orgId) {
         return this.rawClient.listTransfersOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<TransferQueryResponse> listTransfersOrg(
-            Optional<Long> orgId, ListTransfersRequestOrg request) {
+    public CompletableFuture<TransferQueryResponse> listTransfersOrg(long orgId, ListTransfersRequestOrg request) {
         return this.rawClient.listTransfersOrg(orgId, request).thenApply(response -> response.body());
     }
 
@@ -739,7 +737,7 @@ public class AsyncQueryClient {
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<TransferQueryResponse> listTransfersOrg(
-            Optional<Long> orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
+            long orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
         return this.rawClient.listTransfersOrg(orgId, request, requestOptions).thenApply(response -> response.body());
     }
 

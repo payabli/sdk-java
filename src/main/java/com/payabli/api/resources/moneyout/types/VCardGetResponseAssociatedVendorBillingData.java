@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,43 +21,107 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VCardGetResponseAssociatedVendorBillingData.Builder.class)
 public final class VCardGetResponseAssociatedVendorBillingData {
+    private final Optional<Integer> id;
+
+    private final Optional<String> accountId;
+
+    private final Optional<String> nickname;
+
+    private final Optional<String> bankName;
+
+    private final Optional<String> routingAccount;
+
     private final Optional<String> accountNumber;
 
-    private final Optional<Integer> bankAccountFunction;
+    private final Optional<String> typeAccount;
 
     private final Optional<String> bankAccountHolderName;
 
     private final Optional<String> bankAccountHolderType;
 
-    private final Optional<String> bankName;
+    private final Optional<Integer> bankAccountFunction;
 
-    private final Optional<String> id;
+    private final Optional<Boolean> verified;
 
-    private final Optional<String> routingAccount;
+    private final Optional<Integer> status;
 
-    private final Optional<String> typeAccount;
+    private final Optional<List<Object>> services;
+
+    private final Optional<Boolean> default_;
 
     private final Map<String, Object> additionalProperties;
 
     private VCardGetResponseAssociatedVendorBillingData(
+            Optional<Integer> id,
+            Optional<String> accountId,
+            Optional<String> nickname,
+            Optional<String> bankName,
+            Optional<String> routingAccount,
             Optional<String> accountNumber,
-            Optional<Integer> bankAccountFunction,
+            Optional<String> typeAccount,
             Optional<String> bankAccountHolderName,
             Optional<String> bankAccountHolderType,
-            Optional<String> bankName,
-            Optional<String> id,
-            Optional<String> routingAccount,
-            Optional<String> typeAccount,
+            Optional<Integer> bankAccountFunction,
+            Optional<Boolean> verified,
+            Optional<Integer> status,
+            Optional<List<Object>> services,
+            Optional<Boolean> default_,
             Map<String, Object> additionalProperties) {
+        this.id = id;
+        this.accountId = accountId;
+        this.nickname = nickname;
+        this.bankName = bankName;
+        this.routingAccount = routingAccount;
         this.accountNumber = accountNumber;
-        this.bankAccountFunction = bankAccountFunction;
+        this.typeAccount = typeAccount;
         this.bankAccountHolderName = bankAccountHolderName;
         this.bankAccountHolderType = bankAccountHolderType;
-        this.bankName = bankName;
-        this.id = id;
-        this.routingAccount = routingAccount;
-        this.typeAccount = typeAccount;
+        this.bankAccountFunction = bankAccountFunction;
+        this.verified = verified;
+        this.status = status;
+        this.services = services;
+        this.default_ = default_;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Unique identifier for billing data.
+     */
+    @JsonProperty("id")
+    public Optional<Integer> getId() {
+        return id;
+    }
+
+    /**
+     * @return Account identifier.
+     */
+    @JsonProperty("accountId")
+    public Optional<String> getAccountId() {
+        return accountId;
+    }
+
+    /**
+     * @return Nickname for the account.
+     */
+    @JsonProperty("nickname")
+    public Optional<String> getNickname() {
+        return nickname;
+    }
+
+    /**
+     * @return Name of the bank used for transactions.
+     */
+    @JsonProperty("bankName")
+    public Optional<String> getBankName() {
+        return bankName;
+    }
+
+    /**
+     * @return Routing number for the bank account.
+     */
+    @JsonProperty("routingAccount")
+    public Optional<String> getRoutingAccount() {
+        return routingAccount;
     }
 
     /**
@@ -68,11 +133,11 @@ public final class VCardGetResponseAssociatedVendorBillingData {
     }
 
     /**
-     * @return Function of the bank account.
+     * @return Type of the bank account.
      */
-    @JsonProperty("bankAccountFunction")
-    public Optional<Integer> getBankAccountFunction() {
-        return bankAccountFunction;
+    @JsonProperty("typeAccount")
+    public Optional<String> getTypeAccount() {
+        return typeAccount;
     }
 
     /**
@@ -92,35 +157,43 @@ public final class VCardGetResponseAssociatedVendorBillingData {
     }
 
     /**
-     * @return Name of the bank used for transactions.
+     * @return Function of the bank account.
      */
-    @JsonProperty("bankName")
-    public Optional<String> getBankName() {
-        return bankName;
+    @JsonProperty("bankAccountFunction")
+    public Optional<Integer> getBankAccountFunction() {
+        return bankAccountFunction;
     }
 
     /**
-     * @return Unique identifier for billing data.
+     * @return Indicates if the account is verified.
      */
-    @JsonProperty("id")
-    public Optional<String> getId() {
-        return id;
+    @JsonProperty("verified")
+    public Optional<Boolean> getVerified() {
+        return verified;
     }
 
     /**
-     * @return Routing number for the bank account.
+     * @return Status of the billing data.
      */
-    @JsonProperty("routingAccount")
-    public Optional<String> getRoutingAccount() {
-        return routingAccount;
+    @JsonProperty("status")
+    public Optional<Integer> getStatus() {
+        return status;
     }
 
     /**
-     * @return Type of the bank account.
+     * @return Services associated with the account.
      */
-    @JsonProperty("typeAccount")
-    public Optional<String> getTypeAccount() {
-        return typeAccount;
+    @JsonProperty("services")
+    public Optional<List<Object>> getServices() {
+        return services;
+    }
+
+    /**
+     * @return Indicates if this is the default billing account.
+     */
+    @JsonProperty("default")
+    public Optional<Boolean> getDefault() {
+        return default_;
     }
 
     @java.lang.Override
@@ -136,27 +209,39 @@ public final class VCardGetResponseAssociatedVendorBillingData {
     }
 
     private boolean equalTo(VCardGetResponseAssociatedVendorBillingData other) {
-        return accountNumber.equals(other.accountNumber)
-                && bankAccountFunction.equals(other.bankAccountFunction)
+        return id.equals(other.id)
+                && accountId.equals(other.accountId)
+                && nickname.equals(other.nickname)
+                && bankName.equals(other.bankName)
+                && routingAccount.equals(other.routingAccount)
+                && accountNumber.equals(other.accountNumber)
+                && typeAccount.equals(other.typeAccount)
                 && bankAccountHolderName.equals(other.bankAccountHolderName)
                 && bankAccountHolderType.equals(other.bankAccountHolderType)
-                && bankName.equals(other.bankName)
-                && id.equals(other.id)
-                && routingAccount.equals(other.routingAccount)
-                && typeAccount.equals(other.typeAccount);
+                && bankAccountFunction.equals(other.bankAccountFunction)
+                && verified.equals(other.verified)
+                && status.equals(other.status)
+                && services.equals(other.services)
+                && default_.equals(other.default_);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.id,
+                this.accountId,
+                this.nickname,
+                this.bankName,
+                this.routingAccount,
                 this.accountNumber,
-                this.bankAccountFunction,
+                this.typeAccount,
                 this.bankAccountHolderName,
                 this.bankAccountHolderType,
-                this.bankName,
-                this.id,
-                this.routingAccount,
-                this.typeAccount);
+                this.bankAccountFunction,
+                this.verified,
+                this.status,
+                this.services,
+                this.default_);
     }
 
     @java.lang.Override
@@ -170,21 +255,33 @@ public final class VCardGetResponseAssociatedVendorBillingData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Integer> id = Optional.empty();
+
+        private Optional<String> accountId = Optional.empty();
+
+        private Optional<String> nickname = Optional.empty();
+
+        private Optional<String> bankName = Optional.empty();
+
+        private Optional<String> routingAccount = Optional.empty();
+
         private Optional<String> accountNumber = Optional.empty();
 
-        private Optional<Integer> bankAccountFunction = Optional.empty();
+        private Optional<String> typeAccount = Optional.empty();
 
         private Optional<String> bankAccountHolderName = Optional.empty();
 
         private Optional<String> bankAccountHolderType = Optional.empty();
 
-        private Optional<String> bankName = Optional.empty();
+        private Optional<Integer> bankAccountFunction = Optional.empty();
 
-        private Optional<String> id = Optional.empty();
+        private Optional<Boolean> verified = Optional.empty();
 
-        private Optional<String> routingAccount = Optional.empty();
+        private Optional<Integer> status = Optional.empty();
 
-        private Optional<String> typeAccount = Optional.empty();
+        private Optional<List<Object>> services = Optional.empty();
+
+        private Optional<Boolean> default_ = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -192,14 +289,90 @@ public final class VCardGetResponseAssociatedVendorBillingData {
         private Builder() {}
 
         public Builder from(VCardGetResponseAssociatedVendorBillingData other) {
+            id(other.getId());
+            accountId(other.getAccountId());
+            nickname(other.getNickname());
+            bankName(other.getBankName());
+            routingAccount(other.getRoutingAccount());
             accountNumber(other.getAccountNumber());
-            bankAccountFunction(other.getBankAccountFunction());
+            typeAccount(other.getTypeAccount());
             bankAccountHolderName(other.getBankAccountHolderName());
             bankAccountHolderType(other.getBankAccountHolderType());
-            bankName(other.getBankName());
-            id(other.getId());
-            routingAccount(other.getRoutingAccount());
-            typeAccount(other.getTypeAccount());
+            bankAccountFunction(other.getBankAccountFunction());
+            verified(other.getVerified());
+            status(other.getStatus());
+            services(other.getServices());
+            default_(other.getDefault());
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for billing data.</p>
+         */
+        @JsonSetter(value = "id", nulls = Nulls.SKIP)
+        public Builder id(Optional<Integer> id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder id(Integer id) {
+            this.id = Optional.ofNullable(id);
+            return this;
+        }
+
+        /**
+         * <p>Account identifier.</p>
+         */
+        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
+        public Builder accountId(Optional<String> accountId) {
+            this.accountId = accountId;
+            return this;
+        }
+
+        public Builder accountId(String accountId) {
+            this.accountId = Optional.ofNullable(accountId);
+            return this;
+        }
+
+        /**
+         * <p>Nickname for the account.</p>
+         */
+        @JsonSetter(value = "nickname", nulls = Nulls.SKIP)
+        public Builder nickname(Optional<String> nickname) {
+            this.nickname = nickname;
+            return this;
+        }
+
+        public Builder nickname(String nickname) {
+            this.nickname = Optional.ofNullable(nickname);
+            return this;
+        }
+
+        /**
+         * <p>Name of the bank used for transactions.</p>
+         */
+        @JsonSetter(value = "bankName", nulls = Nulls.SKIP)
+        public Builder bankName(Optional<String> bankName) {
+            this.bankName = bankName;
+            return this;
+        }
+
+        public Builder bankName(String bankName) {
+            this.bankName = Optional.ofNullable(bankName);
+            return this;
+        }
+
+        /**
+         * <p>Routing number for the bank account.</p>
+         */
+        @JsonSetter(value = "routingAccount", nulls = Nulls.SKIP)
+        public Builder routingAccount(Optional<String> routingAccount) {
+            this.routingAccount = routingAccount;
+            return this;
+        }
+
+        public Builder routingAccount(String routingAccount) {
+            this.routingAccount = Optional.ofNullable(routingAccount);
             return this;
         }
 
@@ -218,16 +391,16 @@ public final class VCardGetResponseAssociatedVendorBillingData {
         }
 
         /**
-         * <p>Function of the bank account.</p>
+         * <p>Type of the bank account.</p>
          */
-        @JsonSetter(value = "bankAccountFunction", nulls = Nulls.SKIP)
-        public Builder bankAccountFunction(Optional<Integer> bankAccountFunction) {
-            this.bankAccountFunction = bankAccountFunction;
+        @JsonSetter(value = "typeAccount", nulls = Nulls.SKIP)
+        public Builder typeAccount(Optional<String> typeAccount) {
+            this.typeAccount = typeAccount;
             return this;
         }
 
-        public Builder bankAccountFunction(Integer bankAccountFunction) {
-            this.bankAccountFunction = Optional.ofNullable(bankAccountFunction);
+        public Builder typeAccount(String typeAccount) {
+            this.typeAccount = Optional.ofNullable(typeAccount);
             return this;
         }
 
@@ -260,71 +433,91 @@ public final class VCardGetResponseAssociatedVendorBillingData {
         }
 
         /**
-         * <p>Name of the bank used for transactions.</p>
+         * <p>Function of the bank account.</p>
          */
-        @JsonSetter(value = "bankName", nulls = Nulls.SKIP)
-        public Builder bankName(Optional<String> bankName) {
-            this.bankName = bankName;
+        @JsonSetter(value = "bankAccountFunction", nulls = Nulls.SKIP)
+        public Builder bankAccountFunction(Optional<Integer> bankAccountFunction) {
+            this.bankAccountFunction = bankAccountFunction;
             return this;
         }
 
-        public Builder bankName(String bankName) {
-            this.bankName = Optional.ofNullable(bankName);
+        public Builder bankAccountFunction(Integer bankAccountFunction) {
+            this.bankAccountFunction = Optional.ofNullable(bankAccountFunction);
             return this;
         }
 
         /**
-         * <p>Unique identifier for billing data.</p>
+         * <p>Indicates if the account is verified.</p>
          */
-        @JsonSetter(value = "id", nulls = Nulls.SKIP)
-        public Builder id(Optional<String> id) {
-            this.id = id;
+        @JsonSetter(value = "verified", nulls = Nulls.SKIP)
+        public Builder verified(Optional<Boolean> verified) {
+            this.verified = verified;
             return this;
         }
 
-        public Builder id(String id) {
-            this.id = Optional.ofNullable(id);
+        public Builder verified(Boolean verified) {
+            this.verified = Optional.ofNullable(verified);
             return this;
         }
 
         /**
-         * <p>Routing number for the bank account.</p>
+         * <p>Status of the billing data.</p>
          */
-        @JsonSetter(value = "routingAccount", nulls = Nulls.SKIP)
-        public Builder routingAccount(Optional<String> routingAccount) {
-            this.routingAccount = routingAccount;
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public Builder status(Optional<Integer> status) {
+            this.status = status;
             return this;
         }
 
-        public Builder routingAccount(String routingAccount) {
-            this.routingAccount = Optional.ofNullable(routingAccount);
+        public Builder status(Integer status) {
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
         /**
-         * <p>Type of the bank account.</p>
+         * <p>Services associated with the account.</p>
          */
-        @JsonSetter(value = "typeAccount", nulls = Nulls.SKIP)
-        public Builder typeAccount(Optional<String> typeAccount) {
-            this.typeAccount = typeAccount;
+        @JsonSetter(value = "services", nulls = Nulls.SKIP)
+        public Builder services(Optional<List<Object>> services) {
+            this.services = services;
             return this;
         }
 
-        public Builder typeAccount(String typeAccount) {
-            this.typeAccount = Optional.ofNullable(typeAccount);
+        public Builder services(List<Object> services) {
+            this.services = Optional.ofNullable(services);
+            return this;
+        }
+
+        /**
+         * <p>Indicates if this is the default billing account.</p>
+         */
+        @JsonSetter(value = "default", nulls = Nulls.SKIP)
+        public Builder default_(Optional<Boolean> default_) {
+            this.default_ = default_;
+            return this;
+        }
+
+        public Builder default_(Boolean default_) {
+            this.default_ = Optional.ofNullable(default_);
             return this;
         }
 
         public VCardGetResponseAssociatedVendorBillingData build() {
             return new VCardGetResponseAssociatedVendorBillingData(
+                    id,
+                    accountId,
+                    nickname,
+                    bankName,
+                    routingAccount,
                     accountNumber,
-                    bankAccountFunction,
+                    typeAccount,
                     bankAccountHolderName,
                     bankAccountHolderType,
-                    bankName,
-                    id,
-                    routingAccount,
-                    typeAccount,
+                    bankAccountFunction,
+                    verified,
+                    status,
+                    services,
+                    default_,
                     additionalProperties);
         }
     }

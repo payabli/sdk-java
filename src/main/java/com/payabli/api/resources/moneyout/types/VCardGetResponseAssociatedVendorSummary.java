@@ -22,33 +22,33 @@ import java.util.Optional;
 public final class VCardGetResponseAssociatedVendorSummary {
     private final Optional<Integer> activeBills;
 
-    private final Optional<Double> activeBillsAmount;
-
-    private final Optional<Integer> approvedBills;
-
-    private final Optional<Double> approvedBillsAmount;
-
-    private final Optional<Integer> disapprovedBills;
-
-    private final Optional<Double> disapprovedBillsAmount;
+    private final Optional<Integer> pendingBills;
 
     private final Optional<Integer> inTransitBills;
 
-    private final Optional<Double> inTransitBillsAmount;
+    private final Optional<Integer> paidBills;
 
     private final Optional<Integer> overdueBills;
 
-    private final Optional<Double> overdueBillsAmount;
+    private final Optional<Integer> approvedBills;
 
-    private final Optional<Integer> paidBills;
+    private final Optional<Integer> disapprovedBills;
 
-    private final Optional<Double> paidBillsAmount;
+    private final Optional<Integer> totalBills;
 
-    private final Optional<Integer> pendingBills;
+    private final Optional<Double> activeBillsAmount;
 
     private final Optional<Double> pendingBillsAmount;
 
-    private final Optional<Integer> totalBills;
+    private final Optional<Double> inTransitBillsAmount;
+
+    private final Optional<Double> paidBillsAmount;
+
+    private final Optional<Double> overdueBillsAmount;
+
+    private final Optional<Double> approvedBillsAmount;
+
+    private final Optional<Double> disapprovedBillsAmount;
 
     private final Optional<Double> totalBillsAmount;
 
@@ -56,37 +56,37 @@ public final class VCardGetResponseAssociatedVendorSummary {
 
     private VCardGetResponseAssociatedVendorSummary(
             Optional<Integer> activeBills,
-            Optional<Double> activeBillsAmount,
-            Optional<Integer> approvedBills,
-            Optional<Double> approvedBillsAmount,
-            Optional<Integer> disapprovedBills,
-            Optional<Double> disapprovedBillsAmount,
-            Optional<Integer> inTransitBills,
-            Optional<Double> inTransitBillsAmount,
-            Optional<Integer> overdueBills,
-            Optional<Double> overdueBillsAmount,
-            Optional<Integer> paidBills,
-            Optional<Double> paidBillsAmount,
             Optional<Integer> pendingBills,
-            Optional<Double> pendingBillsAmount,
+            Optional<Integer> inTransitBills,
+            Optional<Integer> paidBills,
+            Optional<Integer> overdueBills,
+            Optional<Integer> approvedBills,
+            Optional<Integer> disapprovedBills,
             Optional<Integer> totalBills,
+            Optional<Double> activeBillsAmount,
+            Optional<Double> pendingBillsAmount,
+            Optional<Double> inTransitBillsAmount,
+            Optional<Double> paidBillsAmount,
+            Optional<Double> overdueBillsAmount,
+            Optional<Double> approvedBillsAmount,
+            Optional<Double> disapprovedBillsAmount,
             Optional<Double> totalBillsAmount,
             Map<String, Object> additionalProperties) {
         this.activeBills = activeBills;
-        this.activeBillsAmount = activeBillsAmount;
-        this.approvedBills = approvedBills;
-        this.approvedBillsAmount = approvedBillsAmount;
-        this.disapprovedBills = disapprovedBills;
-        this.disapprovedBillsAmount = disapprovedBillsAmount;
-        this.inTransitBills = inTransitBills;
-        this.inTransitBillsAmount = inTransitBillsAmount;
-        this.overdueBills = overdueBills;
-        this.overdueBillsAmount = overdueBillsAmount;
-        this.paidBills = paidBills;
-        this.paidBillsAmount = paidBillsAmount;
         this.pendingBills = pendingBills;
-        this.pendingBillsAmount = pendingBillsAmount;
+        this.inTransitBills = inTransitBills;
+        this.paidBills = paidBills;
+        this.overdueBills = overdueBills;
+        this.approvedBills = approvedBills;
+        this.disapprovedBills = disapprovedBills;
         this.totalBills = totalBills;
+        this.activeBillsAmount = activeBillsAmount;
+        this.pendingBillsAmount = pendingBillsAmount;
+        this.inTransitBillsAmount = inTransitBillsAmount;
+        this.paidBillsAmount = paidBillsAmount;
+        this.overdueBillsAmount = overdueBillsAmount;
+        this.approvedBillsAmount = approvedBillsAmount;
+        this.disapprovedBillsAmount = disapprovedBillsAmount;
         this.totalBillsAmount = totalBillsAmount;
         this.additionalProperties = additionalProperties;
     }
@@ -100,43 +100,11 @@ public final class VCardGetResponseAssociatedVendorSummary {
     }
 
     /**
-     * @return Total amount of active bills.
+     * @return Number of bills pending approval or payment.
      */
-    @JsonProperty("ActiveBillsAmount")
-    public Optional<Double> getActiveBillsAmount() {
-        return activeBillsAmount;
-    }
-
-    /**
-     * @return Number of bills that have been approved.
-     */
-    @JsonProperty("ApprovedBills")
-    public Optional<Integer> getApprovedBills() {
-        return approvedBills;
-    }
-
-    /**
-     * @return Total amount of approved bills.
-     */
-    @JsonProperty("ApprovedBillsAmount")
-    public Optional<Double> getApprovedBillsAmount() {
-        return approvedBillsAmount;
-    }
-
-    /**
-     * @return Number of bills that have been disapproved.
-     */
-    @JsonProperty("DisapprovedBills")
-    public Optional<Integer> getDisapprovedBills() {
-        return disapprovedBills;
-    }
-
-    /**
-     * @return Total amount of rejected bills.
-     */
-    @JsonProperty("DisapprovedBillsAmount")
-    public Optional<Double> getDisapprovedBillsAmount() {
-        return disapprovedBillsAmount;
+    @JsonProperty("PendingBills")
+    public Optional<Integer> getPendingBills() {
+        return pendingBills;
     }
 
     /**
@@ -148,11 +116,11 @@ public final class VCardGetResponseAssociatedVendorSummary {
     }
 
     /**
-     * @return Total amount of bills in transit.
+     * @return Number of bills that have been paid.
      */
-    @JsonProperty("InTransitBillsAmount")
-    public Optional<Double> getInTransitBillsAmount() {
-        return inTransitBillsAmount;
+    @JsonProperty("PaidBills")
+    public Optional<Integer> getPaidBills() {
+        return paidBills;
     }
 
     /**
@@ -164,35 +132,35 @@ public final class VCardGetResponseAssociatedVendorSummary {
     }
 
     /**
-     * @return Total amount of overdue bills.
+     * @return Number of bills that have been approved.
      */
-    @JsonProperty("OverdueBillsAmount")
-    public Optional<Double> getOverdueBillsAmount() {
-        return overdueBillsAmount;
+    @JsonProperty("ApprovedBills")
+    public Optional<Integer> getApprovedBills() {
+        return approvedBills;
     }
 
     /**
-     * @return Number of bills that have been paid.
+     * @return Number of bills that have been disapproved.
      */
-    @JsonProperty("PaidBills")
-    public Optional<Integer> getPaidBills() {
-        return paidBills;
+    @JsonProperty("DisapprovedBills")
+    public Optional<Integer> getDisapprovedBills() {
+        return disapprovedBills;
     }
 
     /**
-     * @return Total amount of paid bills.
+     * @return Total number of bills.
      */
-    @JsonProperty("PaidBillsAmount")
-    public Optional<Double> getPaidBillsAmount() {
-        return paidBillsAmount;
+    @JsonProperty("TotalBills")
+    public Optional<Integer> getTotalBills() {
+        return totalBills;
     }
 
     /**
-     * @return Number of bills pending approval or payment.
+     * @return Total amount of active bills.
      */
-    @JsonProperty("PendingBills")
-    public Optional<Integer> getPendingBills() {
-        return pendingBills;
+    @JsonProperty("ActiveBillsAmount")
+    public Optional<Double> getActiveBillsAmount() {
+        return activeBillsAmount;
     }
 
     /**
@@ -204,11 +172,43 @@ public final class VCardGetResponseAssociatedVendorSummary {
     }
 
     /**
-     * @return Total number of bills.
+     * @return Total amount of bills in transit.
      */
-    @JsonProperty("TotalBills")
-    public Optional<Integer> getTotalBills() {
-        return totalBills;
+    @JsonProperty("InTransitBillsAmount")
+    public Optional<Double> getInTransitBillsAmount() {
+        return inTransitBillsAmount;
+    }
+
+    /**
+     * @return Total amount of paid bills.
+     */
+    @JsonProperty("PaidBillsAmount")
+    public Optional<Double> getPaidBillsAmount() {
+        return paidBillsAmount;
+    }
+
+    /**
+     * @return Total amount of overdue bills.
+     */
+    @JsonProperty("OverdueBillsAmount")
+    public Optional<Double> getOverdueBillsAmount() {
+        return overdueBillsAmount;
+    }
+
+    /**
+     * @return Total amount of approved bills.
+     */
+    @JsonProperty("ApprovedBillsAmount")
+    public Optional<Double> getApprovedBillsAmount() {
+        return approvedBillsAmount;
+    }
+
+    /**
+     * @return Total amount of rejected bills.
+     */
+    @JsonProperty("DisapprovedBillsAmount")
+    public Optional<Double> getDisapprovedBillsAmount() {
+        return disapprovedBillsAmount;
     }
 
     /**
@@ -233,20 +233,20 @@ public final class VCardGetResponseAssociatedVendorSummary {
 
     private boolean equalTo(VCardGetResponseAssociatedVendorSummary other) {
         return activeBills.equals(other.activeBills)
-                && activeBillsAmount.equals(other.activeBillsAmount)
-                && approvedBills.equals(other.approvedBills)
-                && approvedBillsAmount.equals(other.approvedBillsAmount)
-                && disapprovedBills.equals(other.disapprovedBills)
-                && disapprovedBillsAmount.equals(other.disapprovedBillsAmount)
-                && inTransitBills.equals(other.inTransitBills)
-                && inTransitBillsAmount.equals(other.inTransitBillsAmount)
-                && overdueBills.equals(other.overdueBills)
-                && overdueBillsAmount.equals(other.overdueBillsAmount)
-                && paidBills.equals(other.paidBills)
-                && paidBillsAmount.equals(other.paidBillsAmount)
                 && pendingBills.equals(other.pendingBills)
-                && pendingBillsAmount.equals(other.pendingBillsAmount)
+                && inTransitBills.equals(other.inTransitBills)
+                && paidBills.equals(other.paidBills)
+                && overdueBills.equals(other.overdueBills)
+                && approvedBills.equals(other.approvedBills)
+                && disapprovedBills.equals(other.disapprovedBills)
                 && totalBills.equals(other.totalBills)
+                && activeBillsAmount.equals(other.activeBillsAmount)
+                && pendingBillsAmount.equals(other.pendingBillsAmount)
+                && inTransitBillsAmount.equals(other.inTransitBillsAmount)
+                && paidBillsAmount.equals(other.paidBillsAmount)
+                && overdueBillsAmount.equals(other.overdueBillsAmount)
+                && approvedBillsAmount.equals(other.approvedBillsAmount)
+                && disapprovedBillsAmount.equals(other.disapprovedBillsAmount)
                 && totalBillsAmount.equals(other.totalBillsAmount);
     }
 
@@ -254,20 +254,20 @@ public final class VCardGetResponseAssociatedVendorSummary {
     public int hashCode() {
         return Objects.hash(
                 this.activeBills,
-                this.activeBillsAmount,
-                this.approvedBills,
-                this.approvedBillsAmount,
-                this.disapprovedBills,
-                this.disapprovedBillsAmount,
-                this.inTransitBills,
-                this.inTransitBillsAmount,
-                this.overdueBills,
-                this.overdueBillsAmount,
-                this.paidBills,
-                this.paidBillsAmount,
                 this.pendingBills,
-                this.pendingBillsAmount,
+                this.inTransitBills,
+                this.paidBills,
+                this.overdueBills,
+                this.approvedBills,
+                this.disapprovedBills,
                 this.totalBills,
+                this.activeBillsAmount,
+                this.pendingBillsAmount,
+                this.inTransitBillsAmount,
+                this.paidBillsAmount,
+                this.overdueBillsAmount,
+                this.approvedBillsAmount,
+                this.disapprovedBillsAmount,
                 this.totalBillsAmount);
     }
 
@@ -284,33 +284,33 @@ public final class VCardGetResponseAssociatedVendorSummary {
     public static final class Builder {
         private Optional<Integer> activeBills = Optional.empty();
 
-        private Optional<Double> activeBillsAmount = Optional.empty();
-
-        private Optional<Integer> approvedBills = Optional.empty();
-
-        private Optional<Double> approvedBillsAmount = Optional.empty();
-
-        private Optional<Integer> disapprovedBills = Optional.empty();
-
-        private Optional<Double> disapprovedBillsAmount = Optional.empty();
+        private Optional<Integer> pendingBills = Optional.empty();
 
         private Optional<Integer> inTransitBills = Optional.empty();
 
-        private Optional<Double> inTransitBillsAmount = Optional.empty();
+        private Optional<Integer> paidBills = Optional.empty();
 
         private Optional<Integer> overdueBills = Optional.empty();
 
-        private Optional<Double> overdueBillsAmount = Optional.empty();
+        private Optional<Integer> approvedBills = Optional.empty();
 
-        private Optional<Integer> paidBills = Optional.empty();
+        private Optional<Integer> disapprovedBills = Optional.empty();
 
-        private Optional<Double> paidBillsAmount = Optional.empty();
+        private Optional<Integer> totalBills = Optional.empty();
 
-        private Optional<Integer> pendingBills = Optional.empty();
+        private Optional<Double> activeBillsAmount = Optional.empty();
 
         private Optional<Double> pendingBillsAmount = Optional.empty();
 
-        private Optional<Integer> totalBills = Optional.empty();
+        private Optional<Double> inTransitBillsAmount = Optional.empty();
+
+        private Optional<Double> paidBillsAmount = Optional.empty();
+
+        private Optional<Double> overdueBillsAmount = Optional.empty();
+
+        private Optional<Double> approvedBillsAmount = Optional.empty();
+
+        private Optional<Double> disapprovedBillsAmount = Optional.empty();
 
         private Optional<Double> totalBillsAmount = Optional.empty();
 
@@ -321,20 +321,20 @@ public final class VCardGetResponseAssociatedVendorSummary {
 
         public Builder from(VCardGetResponseAssociatedVendorSummary other) {
             activeBills(other.getActiveBills());
-            activeBillsAmount(other.getActiveBillsAmount());
-            approvedBills(other.getApprovedBills());
-            approvedBillsAmount(other.getApprovedBillsAmount());
-            disapprovedBills(other.getDisapprovedBills());
-            disapprovedBillsAmount(other.getDisapprovedBillsAmount());
-            inTransitBills(other.getInTransitBills());
-            inTransitBillsAmount(other.getInTransitBillsAmount());
-            overdueBills(other.getOverdueBills());
-            overdueBillsAmount(other.getOverdueBillsAmount());
-            paidBills(other.getPaidBills());
-            paidBillsAmount(other.getPaidBillsAmount());
             pendingBills(other.getPendingBills());
-            pendingBillsAmount(other.getPendingBillsAmount());
+            inTransitBills(other.getInTransitBills());
+            paidBills(other.getPaidBills());
+            overdueBills(other.getOverdueBills());
+            approvedBills(other.getApprovedBills());
+            disapprovedBills(other.getDisapprovedBills());
             totalBills(other.getTotalBills());
+            activeBillsAmount(other.getActiveBillsAmount());
+            pendingBillsAmount(other.getPendingBillsAmount());
+            inTransitBillsAmount(other.getInTransitBillsAmount());
+            paidBillsAmount(other.getPaidBillsAmount());
+            overdueBillsAmount(other.getOverdueBillsAmount());
+            approvedBillsAmount(other.getApprovedBillsAmount());
+            disapprovedBillsAmount(other.getDisapprovedBillsAmount());
             totalBillsAmount(other.getTotalBillsAmount());
             return this;
         }
@@ -354,72 +354,16 @@ public final class VCardGetResponseAssociatedVendorSummary {
         }
 
         /**
-         * <p>Total amount of active bills.</p>
+         * <p>Number of bills pending approval or payment.</p>
          */
-        @JsonSetter(value = "ActiveBillsAmount", nulls = Nulls.SKIP)
-        public Builder activeBillsAmount(Optional<Double> activeBillsAmount) {
-            this.activeBillsAmount = activeBillsAmount;
+        @JsonSetter(value = "PendingBills", nulls = Nulls.SKIP)
+        public Builder pendingBills(Optional<Integer> pendingBills) {
+            this.pendingBills = pendingBills;
             return this;
         }
 
-        public Builder activeBillsAmount(Double activeBillsAmount) {
-            this.activeBillsAmount = Optional.ofNullable(activeBillsAmount);
-            return this;
-        }
-
-        /**
-         * <p>Number of bills that have been approved.</p>
-         */
-        @JsonSetter(value = "ApprovedBills", nulls = Nulls.SKIP)
-        public Builder approvedBills(Optional<Integer> approvedBills) {
-            this.approvedBills = approvedBills;
-            return this;
-        }
-
-        public Builder approvedBills(Integer approvedBills) {
-            this.approvedBills = Optional.ofNullable(approvedBills);
-            return this;
-        }
-
-        /**
-         * <p>Total amount of approved bills.</p>
-         */
-        @JsonSetter(value = "ApprovedBillsAmount", nulls = Nulls.SKIP)
-        public Builder approvedBillsAmount(Optional<Double> approvedBillsAmount) {
-            this.approvedBillsAmount = approvedBillsAmount;
-            return this;
-        }
-
-        public Builder approvedBillsAmount(Double approvedBillsAmount) {
-            this.approvedBillsAmount = Optional.ofNullable(approvedBillsAmount);
-            return this;
-        }
-
-        /**
-         * <p>Number of bills that have been disapproved.</p>
-         */
-        @JsonSetter(value = "DisapprovedBills", nulls = Nulls.SKIP)
-        public Builder disapprovedBills(Optional<Integer> disapprovedBills) {
-            this.disapprovedBills = disapprovedBills;
-            return this;
-        }
-
-        public Builder disapprovedBills(Integer disapprovedBills) {
-            this.disapprovedBills = Optional.ofNullable(disapprovedBills);
-            return this;
-        }
-
-        /**
-         * <p>Total amount of rejected bills.</p>
-         */
-        @JsonSetter(value = "DisapprovedBillsAmount", nulls = Nulls.SKIP)
-        public Builder disapprovedBillsAmount(Optional<Double> disapprovedBillsAmount) {
-            this.disapprovedBillsAmount = disapprovedBillsAmount;
-            return this;
-        }
-
-        public Builder disapprovedBillsAmount(Double disapprovedBillsAmount) {
-            this.disapprovedBillsAmount = Optional.ofNullable(disapprovedBillsAmount);
+        public Builder pendingBills(Integer pendingBills) {
+            this.pendingBills = Optional.ofNullable(pendingBills);
             return this;
         }
 
@@ -438,16 +382,16 @@ public final class VCardGetResponseAssociatedVendorSummary {
         }
 
         /**
-         * <p>Total amount of bills in transit.</p>
+         * <p>Number of bills that have been paid.</p>
          */
-        @JsonSetter(value = "InTransitBillsAmount", nulls = Nulls.SKIP)
-        public Builder inTransitBillsAmount(Optional<Double> inTransitBillsAmount) {
-            this.inTransitBillsAmount = inTransitBillsAmount;
+        @JsonSetter(value = "PaidBills", nulls = Nulls.SKIP)
+        public Builder paidBills(Optional<Integer> paidBills) {
+            this.paidBills = paidBills;
             return this;
         }
 
-        public Builder inTransitBillsAmount(Double inTransitBillsAmount) {
-            this.inTransitBillsAmount = Optional.ofNullable(inTransitBillsAmount);
+        public Builder paidBills(Integer paidBills) {
+            this.paidBills = Optional.ofNullable(paidBills);
             return this;
         }
 
@@ -466,58 +410,58 @@ public final class VCardGetResponseAssociatedVendorSummary {
         }
 
         /**
-         * <p>Total amount of overdue bills.</p>
+         * <p>Number of bills that have been approved.</p>
          */
-        @JsonSetter(value = "OverdueBillsAmount", nulls = Nulls.SKIP)
-        public Builder overdueBillsAmount(Optional<Double> overdueBillsAmount) {
-            this.overdueBillsAmount = overdueBillsAmount;
+        @JsonSetter(value = "ApprovedBills", nulls = Nulls.SKIP)
+        public Builder approvedBills(Optional<Integer> approvedBills) {
+            this.approvedBills = approvedBills;
             return this;
         }
 
-        public Builder overdueBillsAmount(Double overdueBillsAmount) {
-            this.overdueBillsAmount = Optional.ofNullable(overdueBillsAmount);
+        public Builder approvedBills(Integer approvedBills) {
+            this.approvedBills = Optional.ofNullable(approvedBills);
             return this;
         }
 
         /**
-         * <p>Number of bills that have been paid.</p>
+         * <p>Number of bills that have been disapproved.</p>
          */
-        @JsonSetter(value = "PaidBills", nulls = Nulls.SKIP)
-        public Builder paidBills(Optional<Integer> paidBills) {
-            this.paidBills = paidBills;
+        @JsonSetter(value = "DisapprovedBills", nulls = Nulls.SKIP)
+        public Builder disapprovedBills(Optional<Integer> disapprovedBills) {
+            this.disapprovedBills = disapprovedBills;
             return this;
         }
 
-        public Builder paidBills(Integer paidBills) {
-            this.paidBills = Optional.ofNullable(paidBills);
+        public Builder disapprovedBills(Integer disapprovedBills) {
+            this.disapprovedBills = Optional.ofNullable(disapprovedBills);
             return this;
         }
 
         /**
-         * <p>Total amount of paid bills.</p>
+         * <p>Total number of bills.</p>
          */
-        @JsonSetter(value = "PaidBillsAmount", nulls = Nulls.SKIP)
-        public Builder paidBillsAmount(Optional<Double> paidBillsAmount) {
-            this.paidBillsAmount = paidBillsAmount;
+        @JsonSetter(value = "TotalBills", nulls = Nulls.SKIP)
+        public Builder totalBills(Optional<Integer> totalBills) {
+            this.totalBills = totalBills;
             return this;
         }
 
-        public Builder paidBillsAmount(Double paidBillsAmount) {
-            this.paidBillsAmount = Optional.ofNullable(paidBillsAmount);
+        public Builder totalBills(Integer totalBills) {
+            this.totalBills = Optional.ofNullable(totalBills);
             return this;
         }
 
         /**
-         * <p>Number of bills pending approval or payment.</p>
+         * <p>Total amount of active bills.</p>
          */
-        @JsonSetter(value = "PendingBills", nulls = Nulls.SKIP)
-        public Builder pendingBills(Optional<Integer> pendingBills) {
-            this.pendingBills = pendingBills;
+        @JsonSetter(value = "ActiveBillsAmount", nulls = Nulls.SKIP)
+        public Builder activeBillsAmount(Optional<Double> activeBillsAmount) {
+            this.activeBillsAmount = activeBillsAmount;
             return this;
         }
 
-        public Builder pendingBills(Integer pendingBills) {
-            this.pendingBills = Optional.ofNullable(pendingBills);
+        public Builder activeBillsAmount(Double activeBillsAmount) {
+            this.activeBillsAmount = Optional.ofNullable(activeBillsAmount);
             return this;
         }
 
@@ -536,16 +480,72 @@ public final class VCardGetResponseAssociatedVendorSummary {
         }
 
         /**
-         * <p>Total number of bills.</p>
+         * <p>Total amount of bills in transit.</p>
          */
-        @JsonSetter(value = "TotalBills", nulls = Nulls.SKIP)
-        public Builder totalBills(Optional<Integer> totalBills) {
-            this.totalBills = totalBills;
+        @JsonSetter(value = "InTransitBillsAmount", nulls = Nulls.SKIP)
+        public Builder inTransitBillsAmount(Optional<Double> inTransitBillsAmount) {
+            this.inTransitBillsAmount = inTransitBillsAmount;
             return this;
         }
 
-        public Builder totalBills(Integer totalBills) {
-            this.totalBills = Optional.ofNullable(totalBills);
+        public Builder inTransitBillsAmount(Double inTransitBillsAmount) {
+            this.inTransitBillsAmount = Optional.ofNullable(inTransitBillsAmount);
+            return this;
+        }
+
+        /**
+         * <p>Total amount of paid bills.</p>
+         */
+        @JsonSetter(value = "PaidBillsAmount", nulls = Nulls.SKIP)
+        public Builder paidBillsAmount(Optional<Double> paidBillsAmount) {
+            this.paidBillsAmount = paidBillsAmount;
+            return this;
+        }
+
+        public Builder paidBillsAmount(Double paidBillsAmount) {
+            this.paidBillsAmount = Optional.ofNullable(paidBillsAmount);
+            return this;
+        }
+
+        /**
+         * <p>Total amount of overdue bills.</p>
+         */
+        @JsonSetter(value = "OverdueBillsAmount", nulls = Nulls.SKIP)
+        public Builder overdueBillsAmount(Optional<Double> overdueBillsAmount) {
+            this.overdueBillsAmount = overdueBillsAmount;
+            return this;
+        }
+
+        public Builder overdueBillsAmount(Double overdueBillsAmount) {
+            this.overdueBillsAmount = Optional.ofNullable(overdueBillsAmount);
+            return this;
+        }
+
+        /**
+         * <p>Total amount of approved bills.</p>
+         */
+        @JsonSetter(value = "ApprovedBillsAmount", nulls = Nulls.SKIP)
+        public Builder approvedBillsAmount(Optional<Double> approvedBillsAmount) {
+            this.approvedBillsAmount = approvedBillsAmount;
+            return this;
+        }
+
+        public Builder approvedBillsAmount(Double approvedBillsAmount) {
+            this.approvedBillsAmount = Optional.ofNullable(approvedBillsAmount);
+            return this;
+        }
+
+        /**
+         * <p>Total amount of rejected bills.</p>
+         */
+        @JsonSetter(value = "DisapprovedBillsAmount", nulls = Nulls.SKIP)
+        public Builder disapprovedBillsAmount(Optional<Double> disapprovedBillsAmount) {
+            this.disapprovedBillsAmount = disapprovedBillsAmount;
+            return this;
+        }
+
+        public Builder disapprovedBillsAmount(Double disapprovedBillsAmount) {
+            this.disapprovedBillsAmount = Optional.ofNullable(disapprovedBillsAmount);
             return this;
         }
 
@@ -566,20 +566,20 @@ public final class VCardGetResponseAssociatedVendorSummary {
         public VCardGetResponseAssociatedVendorSummary build() {
             return new VCardGetResponseAssociatedVendorSummary(
                     activeBills,
-                    activeBillsAmount,
-                    approvedBills,
-                    approvedBillsAmount,
-                    disapprovedBills,
-                    disapprovedBillsAmount,
-                    inTransitBills,
-                    inTransitBillsAmount,
-                    overdueBills,
-                    overdueBillsAmount,
-                    paidBills,
-                    paidBillsAmount,
                     pendingBills,
-                    pendingBillsAmount,
+                    inTransitBills,
+                    paidBills,
+                    overdueBills,
+                    approvedBills,
+                    disapprovedBills,
                     totalBills,
+                    activeBillsAmount,
+                    pendingBillsAmount,
+                    inTransitBillsAmount,
+                    paidBillsAmount,
+                    overdueBillsAmount,
+                    approvedBillsAmount,
+                    disapprovedBillsAmount,
                     totalBillsAmount,
                     additionalProperties);
         }

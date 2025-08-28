@@ -107,7 +107,7 @@ public final class BatchDetailResponseRecord {
 
     private final long retrievalId;
 
-    private final Optional<Long> chargebackId;
+    private final long chargebackId;
 
     private final AchHolderType achHolderType;
 
@@ -115,19 +115,19 @@ public final class BatchDetailResponseRecord {
 
     private final String connectorName;
 
-    private final Optional<Long> entrypageId;
+    private final long entrypageId;
 
     private final double feeAmount;
 
-    private final Optional<Long> orgId;
+    private final long orgId;
 
-    private final Optional<Long> payorId;
+    private final long payorId;
 
-    private final Optional<Long> paypointId;
+    private final long paypointId;
 
     private final Optional<Double> pendingFeeAmount;
 
-    private final Optional<Long> refundId;
+    private final long refundId;
 
     private final long returnedId;
 
@@ -184,17 +184,17 @@ public final class BatchDetailResponseRecord {
             String paypointEntryname,
             Optional<String> deviceId,
             long retrievalId,
-            Optional<Long> chargebackId,
+            long chargebackId,
             AchHolderType achHolderType,
             String achSecCode,
             String connectorName,
-            Optional<Long> entrypageId,
+            long entrypageId,
             double feeAmount,
-            Optional<Long> orgId,
-            Optional<Long> payorId,
-            Optional<Long> paypointId,
+            long orgId,
+            long payorId,
+            long paypointId,
             Optional<Double> pendingFeeAmount,
-            Optional<Long> refundId,
+            long refundId,
             long returnedId,
             Optional<List<SplitFundingContent>> splitFundingInstructions,
             double totalAmount,
@@ -446,7 +446,7 @@ public final class BatchDetailResponseRecord {
     }
 
     @JsonProperty("ChargebackId")
-    public Optional<Long> getChargebackId() {
+    public long getChargebackId() {
         return chargebackId;
     }
 
@@ -466,7 +466,7 @@ public final class BatchDetailResponseRecord {
     }
 
     @JsonProperty("EntrypageId")
-    public Optional<Long> getEntrypageId() {
+    public long getEntrypageId() {
         return entrypageId;
     }
 
@@ -476,17 +476,17 @@ public final class BatchDetailResponseRecord {
     }
 
     @JsonProperty("OrgId")
-    public Optional<Long> getOrgId() {
+    public long getOrgId() {
         return orgId;
     }
 
     @JsonProperty("PayorId")
-    public Optional<Long> getPayorId() {
+    public long getPayorId() {
         return payorId;
     }
 
     @JsonProperty("PaypointId")
-    public Optional<Long> getPaypointId() {
+    public long getPaypointId() {
         return paypointId;
     }
 
@@ -496,7 +496,7 @@ public final class BatchDetailResponseRecord {
     }
 
     @JsonProperty("RefundId")
-    public Optional<Long> getRefundId() {
+    public long getRefundId() {
         return refundId;
     }
 
@@ -594,17 +594,17 @@ public final class BatchDetailResponseRecord {
                 && paypointEntryname.equals(other.paypointEntryname)
                 && deviceId.equals(other.deviceId)
                 && retrievalId == other.retrievalId
-                && chargebackId.equals(other.chargebackId)
+                && chargebackId == other.chargebackId
                 && achHolderType.equals(other.achHolderType)
                 && achSecCode.equals(other.achSecCode)
                 && connectorName.equals(other.connectorName)
-                && entrypageId.equals(other.entrypageId)
+                && entrypageId == other.entrypageId
                 && feeAmount == other.feeAmount
-                && orgId.equals(other.orgId)
-                && payorId.equals(other.payorId)
-                && paypointId.equals(other.paypointId)
+                && orgId == other.orgId
+                && payorId == other.payorId
+                && paypointId == other.paypointId
                 && pendingFeeAmount.equals(other.pendingFeeAmount)
-                && refundId.equals(other.refundId)
+                && refundId == other.refundId
                 && returnedId == other.returnedId
                 && splitFundingInstructions.equals(other.splitFundingInstructions)
                 && totalAmount == other.totalAmount
@@ -799,7 +799,11 @@ public final class BatchDetailResponseRecord {
     }
 
     public interface RetrievalIdStage {
-        AchHolderTypeStage retrievalId(long retrievalId);
+        ChargebackIdStage retrievalId(long retrievalId);
+    }
+
+    public interface ChargebackIdStage {
+        AchHolderTypeStage chargebackId(long chargebackId);
     }
 
     public interface AchHolderTypeStage {
@@ -811,11 +815,31 @@ public final class BatchDetailResponseRecord {
     }
 
     public interface ConnectorNameStage {
-        FeeAmountStage connectorName(@NotNull String connectorName);
+        EntrypageIdStage connectorName(@NotNull String connectorName);
+    }
+
+    public interface EntrypageIdStage {
+        FeeAmountStage entrypageId(long entrypageId);
     }
 
     public interface FeeAmountStage {
-        ReturnedIdStage feeAmount(double feeAmount);
+        OrgIdStage feeAmount(double feeAmount);
+    }
+
+    public interface OrgIdStage {
+        PayorIdStage orgId(long orgId);
+    }
+
+    public interface PayorIdStage {
+        PaypointIdStage payorId(long payorId);
+    }
+
+    public interface PaypointIdStage {
+        RefundIdStage paypointId(long paypointId);
+    }
+
+    public interface RefundIdStage {
+        ReturnedIdStage refundId(long refundId);
     }
 
     public interface ReturnedIdStage {
@@ -867,33 +891,9 @@ public final class BatchDetailResponseRecord {
 
         _FinalStage deviceId(String deviceId);
 
-        _FinalStage chargebackId(Optional<Long> chargebackId);
-
-        _FinalStage chargebackId(Long chargebackId);
-
-        _FinalStage entrypageId(Optional<Long> entrypageId);
-
-        _FinalStage entrypageId(Long entrypageId);
-
-        _FinalStage orgId(Optional<Long> orgId);
-
-        _FinalStage orgId(Long orgId);
-
-        _FinalStage payorId(Optional<Long> payorId);
-
-        _FinalStage payorId(Long payorId);
-
-        _FinalStage paypointId(Optional<Long> paypointId);
-
-        _FinalStage paypointId(Long paypointId);
-
         _FinalStage pendingFeeAmount(Optional<Double> pendingFeeAmount);
 
         _FinalStage pendingFeeAmount(Double pendingFeeAmount);
-
-        _FinalStage refundId(Optional<Long> refundId);
-
-        _FinalStage refundId(Long refundId);
 
         _FinalStage splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions);
 
@@ -947,10 +947,16 @@ public final class BatchDetailResponseRecord {
                     ParentOrgIdStage,
                     PaypointEntrynameStage,
                     RetrievalIdStage,
+                    ChargebackIdStage,
                     AchHolderTypeStage,
                     AchSecCodeStage,
                     ConnectorNameStage,
+                    EntrypageIdStage,
                     FeeAmountStage,
+                    OrgIdStage,
+                    PayorIdStage,
+                    PaypointIdStage,
+                    RefundIdStage,
                     ReturnedIdStage,
                     TotalAmountStage,
                     ExternalPaypointIdStage,
@@ -1014,13 +1020,25 @@ public final class BatchDetailResponseRecord {
 
         private long retrievalId;
 
+        private long chargebackId;
+
         private AchHolderType achHolderType;
 
         private String achSecCode;
 
         private String connectorName;
 
+        private long entrypageId;
+
         private double feeAmount;
+
+        private long orgId;
+
+        private long payorId;
+
+        private long paypointId;
+
+        private long refundId;
 
         private long returnedId;
 
@@ -1038,19 +1056,7 @@ public final class BatchDetailResponseRecord {
 
         private Optional<List<SplitFundingContent>> splitFundingInstructions = Optional.empty();
 
-        private Optional<Long> refundId = Optional.empty();
-
         private Optional<Double> pendingFeeAmount = Optional.empty();
-
-        private Optional<Long> paypointId = Optional.empty();
-
-        private Optional<Long> payorId = Optional.empty();
-
-        private Optional<Long> orgId = Optional.empty();
-
-        private Optional<Long> entrypageId = Optional.empty();
-
-        private Optional<Long> chargebackId = Optional.empty();
 
         private Optional<String> deviceId = Optional.empty();
 
@@ -1330,8 +1336,15 @@ public final class BatchDetailResponseRecord {
 
         @java.lang.Override
         @JsonSetter("RetrievalId")
-        public AchHolderTypeStage retrievalId(long retrievalId) {
+        public ChargebackIdStage retrievalId(long retrievalId) {
             this.retrievalId = retrievalId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("ChargebackId")
+        public AchHolderTypeStage chargebackId(long chargebackId) {
+            this.chargebackId = chargebackId;
             return this;
         }
 
@@ -1351,15 +1364,50 @@ public final class BatchDetailResponseRecord {
 
         @java.lang.Override
         @JsonSetter("ConnectorName")
-        public FeeAmountStage connectorName(@NotNull String connectorName) {
+        public EntrypageIdStage connectorName(@NotNull String connectorName) {
             this.connectorName = Objects.requireNonNull(connectorName, "connectorName must not be null");
             return this;
         }
 
         @java.lang.Override
+        @JsonSetter("EntrypageId")
+        public FeeAmountStage entrypageId(long entrypageId) {
+            this.entrypageId = entrypageId;
+            return this;
+        }
+
+        @java.lang.Override
         @JsonSetter("FeeAmount")
-        public ReturnedIdStage feeAmount(double feeAmount) {
+        public OrgIdStage feeAmount(double feeAmount) {
             this.feeAmount = feeAmount;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("OrgId")
+        public PayorIdStage orgId(long orgId) {
+            this.orgId = orgId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("PayorId")
+        public PaypointIdStage payorId(long payorId) {
+            this.payorId = payorId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("PaypointId")
+        public RefundIdStage paypointId(long paypointId) {
+            this.paypointId = paypointId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("RefundId")
+        public ReturnedIdStage refundId(long refundId) {
+            this.refundId = refundId;
             return this;
         }
 
@@ -1458,19 +1506,6 @@ public final class BatchDetailResponseRecord {
         }
 
         @java.lang.Override
-        public _FinalStage refundId(Long refundId) {
-            this.refundId = Optional.ofNullable(refundId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "RefundId", nulls = Nulls.SKIP)
-        public _FinalStage refundId(Optional<Long> refundId) {
-            this.refundId = refundId;
-            return this;
-        }
-
-        @java.lang.Override
         public _FinalStage pendingFeeAmount(Double pendingFeeAmount) {
             this.pendingFeeAmount = Optional.ofNullable(pendingFeeAmount);
             return this;
@@ -1480,71 +1515,6 @@ public final class BatchDetailResponseRecord {
         @JsonSetter(value = "PendingFeeAmount", nulls = Nulls.SKIP)
         public _FinalStage pendingFeeAmount(Optional<Double> pendingFeeAmount) {
             this.pendingFeeAmount = pendingFeeAmount;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage paypointId(Long paypointId) {
-            this.paypointId = Optional.ofNullable(paypointId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
-        public _FinalStage paypointId(Optional<Long> paypointId) {
-            this.paypointId = paypointId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage payorId(Long payorId) {
-            this.payorId = Optional.ofNullable(payorId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "PayorId", nulls = Nulls.SKIP)
-        public _FinalStage payorId(Optional<Long> payorId) {
-            this.payorId = payorId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage orgId(Long orgId) {
-            this.orgId = Optional.ofNullable(orgId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "OrgId", nulls = Nulls.SKIP)
-        public _FinalStage orgId(Optional<Long> orgId) {
-            this.orgId = orgId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage entrypageId(Long entrypageId) {
-            this.entrypageId = Optional.ofNullable(entrypageId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
-        public _FinalStage entrypageId(Optional<Long> entrypageId) {
-            this.entrypageId = entrypageId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage chargebackId(Long chargebackId) {
-            this.chargebackId = Optional.ofNullable(chargebackId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "ChargebackId", nulls = Nulls.SKIP)
-        public _FinalStage chargebackId(Optional<Long> chargebackId) {
-            this.chargebackId = chargebackId;
             return this;
         }
 

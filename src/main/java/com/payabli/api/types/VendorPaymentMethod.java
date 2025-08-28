@@ -3,318 +3,155 @@
  */
 package com.payabli.api.types;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.payabli.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonDeserialize(builder = VendorPaymentMethod.Builder.class)
 public final class VendorPaymentMethod {
-    private final Value value;
+    private final String method;
 
-    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    private VendorPaymentMethod(Value value) {
-        this.value = value;
+    private final Optional<String> storedMethodId;
+
+    private final Map<String, Object> additionalProperties;
+
+    private VendorPaymentMethod(
+            String method, Optional<String> storedMethodId, Map<String, Object> additionalProperties) {
+        this.method = method;
+        this.storedMethodId = storedMethodId;
+        this.additionalProperties = additionalProperties;
     }
 
-    public <T> T visit(Visitor<T> visitor) {
-        return value.visit(visitor);
+    /**
+     * @return Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;
+     */
+    @JsonProperty("method")
+    public String getMethod() {
+        return method;
     }
 
-    public static VendorPaymentMethod managed(ManagedPaymentMethod value) {
-        return new VendorPaymentMethod(new ManagedValue(value));
+    /**
+     * @return ID of the stored ACH payment method. Only applicable when method is &quot;ach&quot;. Required when using a previously saved ACH method when the vendor has more than one saved method. See the <a href="/developers/developer-guides/pay-out-manage-payouts">Payouts with saved ACH payment methods</a> section for more details.
+     */
+    @JsonProperty("storedMethodId")
+    public Optional<String> getStoredMethodId() {
+        return storedMethodId;
     }
 
-    public static VendorPaymentMethod vcard(VCardPaymentMethod value) {
-        return new VendorPaymentMethod(new VcardValue(value));
+    @java.lang.Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof VendorPaymentMethod && equalTo((VendorPaymentMethod) other);
     }
 
-    public static VendorPaymentMethod ach(AchPaymentMethod value) {
-        return new VendorPaymentMethod(new AchValue(value));
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
-    public static VendorPaymentMethod check(CheckPaymentMethod value) {
-        return new VendorPaymentMethod(new CheckValue(value));
+    private boolean equalTo(VendorPaymentMethod other) {
+        return method.equals(other.method) && storedMethodId.equals(other.storedMethodId);
     }
 
-    public boolean isManaged() {
-        return value instanceof ManagedValue;
+    @java.lang.Override
+    public int hashCode() {
+        return Objects.hash(this.method, this.storedMethodId);
     }
 
-    public boolean isVcard() {
-        return value instanceof VcardValue;
+    @java.lang.Override
+    public String toString() {
+        return ObjectMappers.stringify(this);
     }
 
-    public boolean isAch() {
-        return value instanceof AchValue;
+    public static MethodStage builder() {
+        return new Builder();
     }
 
-    public boolean isCheck() {
-        return value instanceof CheckValue;
+    public interface MethodStage {
+        /**
+         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
+         */
+        _FinalStage method(@NotNull String method);
+
+        Builder from(VendorPaymentMethod other);
     }
 
-    public boolean _isUnknown() {
-        return value instanceof _UnknownValue;
+    public interface _FinalStage {
+        VendorPaymentMethod build();
+
+        /**
+         * <p>ID of the stored ACH payment method. Only applicable when method is &quot;ach&quot;. Required when using a previously saved ACH method when the vendor has more than one saved method. See the <a href="/developers/developer-guides/pay-out-manage-payouts">Payouts with saved ACH payment methods</a> section for more details.</p>
+         */
+        _FinalStage storedMethodId(Optional<String> storedMethodId);
+
+        _FinalStage storedMethodId(String storedMethodId);
     }
 
-    public Optional<ManagedPaymentMethod> getManaged() {
-        if (isManaged()) {
-            return Optional.of(((ManagedValue) value).value);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<VCardPaymentMethod> getVcard() {
-        if (isVcard()) {
-            return Optional.of(((VcardValue) value).value);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<AchPaymentMethod> getAch() {
-        if (isAch()) {
-            return Optional.of(((AchValue) value).value);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<CheckPaymentMethod> getCheck() {
-        if (isCheck()) {
-            return Optional.of(((CheckValue) value).value);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<Object> _getUnknown() {
-        if (_isUnknown()) {
-            return Optional.of(((_UnknownValue) value).value);
-        }
-        return Optional.empty();
-    }
-
-    @JsonValue
-    private Value getValue() {
-        return this.value;
-    }
-
-    public interface Visitor<T> {
-        T visitManaged(ManagedPaymentMethod managed);
-
-        T visitVcard(VCardPaymentMethod vcard);
-
-        T visitAch(AchPaymentMethod ach);
-
-        T visitCheck(CheckPaymentMethod check);
-
-        T _visitUnknown(Object unknownType);
-    }
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "method", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes({
-        @JsonSubTypes.Type(ManagedValue.class),
-        @JsonSubTypes.Type(VcardValue.class),
-        @JsonSubTypes.Type(AchValue.class),
-        @JsonSubTypes.Type(CheckValue.class)
-    })
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private interface Value {
-        <T> T visit(Visitor<T> visitor);
-    }
+    public static final class Builder implements MethodStage, _FinalStage {
+        private String method;
 
-    @JsonTypeName("managed")
-    @JsonIgnoreProperties("method")
-    private static final class ManagedValue implements Value {
-        @JsonUnwrapped
-        private ManagedPaymentMethod value;
+        private Optional<String> storedMethodId = Optional.empty();
 
-        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private ManagedValue() {}
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
-        private ManagedValue(ManagedPaymentMethod value) {
-            this.value = value;
+        private Builder() {}
+
+        @java.lang.Override
+        public Builder from(VendorPaymentMethod other) {
+            method(other.getMethod());
+            storedMethodId(other.getStoredMethodId());
+            return this;
+        }
+
+        /**
+         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
+         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull String method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
+            return this;
+        }
+
+        /**
+         * <p>ID of the stored ACH payment method. Only applicable when method is &quot;ach&quot;. Required when using a previously saved ACH method when the vendor has more than one saved method. See the <a href="/developers/developer-guides/pay-out-manage-payouts">Payouts with saved ACH payment methods</a> section for more details.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage storedMethodId(String storedMethodId) {
+            this.storedMethodId = Optional.ofNullable(storedMethodId);
+            return this;
+        }
+
+        /**
+         * <p>ID of the stored ACH payment method. Only applicable when method is &quot;ach&quot;. Required when using a previously saved ACH method when the vendor has more than one saved method. See the <a href="/developers/developer-guides/pay-out-manage-payouts">Payouts with saved ACH payment methods</a> section for more details.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "storedMethodId", nulls = Nulls.SKIP)
+        public _FinalStage storedMethodId(Optional<String> storedMethodId) {
+            this.storedMethodId = storedMethodId;
+            return this;
         }
 
         @java.lang.Override
-        public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitManaged(value);
-        }
-
-        @java.lang.Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            return other instanceof ManagedValue && equalTo((ManagedValue) other);
-        }
-
-        private boolean equalTo(ManagedValue other) {
-            return value.equals(other.value);
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            return Objects.hash(this.value);
-        }
-
-        @java.lang.Override
-        public String toString() {
-            return "VendorPaymentMethod{" + "value: " + value + "}";
-        }
-    }
-
-    @JsonTypeName("vcard")
-    @JsonIgnoreProperties("method")
-    private static final class VcardValue implements Value {
-        @JsonUnwrapped
-        private VCardPaymentMethod value;
-
-        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private VcardValue() {}
-
-        private VcardValue(VCardPaymentMethod value) {
-            this.value = value;
-        }
-
-        @java.lang.Override
-        public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitVcard(value);
-        }
-
-        @java.lang.Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            return other instanceof VcardValue && equalTo((VcardValue) other);
-        }
-
-        private boolean equalTo(VcardValue other) {
-            return value.equals(other.value);
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            return Objects.hash(this.value);
-        }
-
-        @java.lang.Override
-        public String toString() {
-            return "VendorPaymentMethod{" + "value: " + value + "}";
-        }
-    }
-
-    @JsonTypeName("ach")
-    @JsonIgnoreProperties("method")
-    private static final class AchValue implements Value {
-        @JsonUnwrapped
-        private AchPaymentMethod value;
-
-        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private AchValue() {}
-
-        private AchValue(AchPaymentMethod value) {
-            this.value = value;
-        }
-
-        @java.lang.Override
-        public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitAch(value);
-        }
-
-        @java.lang.Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            return other instanceof AchValue && equalTo((AchValue) other);
-        }
-
-        private boolean equalTo(AchValue other) {
-            return value.equals(other.value);
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            return Objects.hash(this.value);
-        }
-
-        @java.lang.Override
-        public String toString() {
-            return "VendorPaymentMethod{" + "value: " + value + "}";
-        }
-    }
-
-    @JsonTypeName("check")
-    @JsonIgnoreProperties("method")
-    private static final class CheckValue implements Value {
-        @JsonUnwrapped
-        private CheckPaymentMethod value;
-
-        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private CheckValue() {}
-
-        private CheckValue(CheckPaymentMethod value) {
-            this.value = value;
-        }
-
-        @java.lang.Override
-        public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitCheck(value);
-        }
-
-        @java.lang.Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            return other instanceof CheckValue && equalTo((CheckValue) other);
-        }
-
-        private boolean equalTo(CheckValue other) {
-            return value.equals(other.value);
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            return Objects.hash(this.value);
-        }
-
-        @java.lang.Override
-        public String toString() {
-            return "VendorPaymentMethod{" + "value: " + value + "}";
-        }
-    }
-
-    @JsonIgnoreProperties("method")
-    private static final class _UnknownValue implements Value {
-        private String type;
-
-        @JsonValue
-        private Object value;
-
-        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private _UnknownValue(@JsonProperty("value") Object value) {}
-
-        @java.lang.Override
-        public <T> T visit(Visitor<T> visitor) {
-            return visitor._visitUnknown(value);
-        }
-
-        @java.lang.Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
-        }
-
-        private boolean equalTo(_UnknownValue other) {
-            return type.equals(other.type) && value.equals(other.value);
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            return Objects.hash(this.type, this.value);
-        }
-
-        @java.lang.Override
-        public String toString() {
-            return "VendorPaymentMethod{" + "type: " + type + ", value: " + value + "}";
+        public VendorPaymentMethod build() {
+            return new VendorPaymentMethod(method, storedMethodId, additionalProperties);
         }
     }
 }

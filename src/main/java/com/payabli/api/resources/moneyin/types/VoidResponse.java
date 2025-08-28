@@ -25,7 +25,7 @@ public final class VoidResponse {
 
     private final Optional<String> pageIdentifier;
 
-    private final Optional<Long> roomId;
+    private final long roomId;
 
     private final boolean isSuccess;
 
@@ -38,7 +38,7 @@ public final class VoidResponse {
     private VoidResponse(
             int responseCode,
             Optional<String> pageIdentifier,
-            Optional<Long> roomId,
+            long roomId,
             boolean isSuccess,
             String responseText,
             VoidResponseData responseData,
@@ -63,7 +63,7 @@ public final class VoidResponse {
     }
 
     @JsonProperty("roomId")
-    public Optional<Long> getRoomId() {
+    public long getRoomId() {
         return roomId;
     }
 
@@ -96,7 +96,7 @@ public final class VoidResponse {
     private boolean equalTo(VoidResponse other) {
         return responseCode == other.responseCode
                 && pageIdentifier.equals(other.pageIdentifier)
-                && roomId.equals(other.roomId)
+                && roomId == other.roomId
                 && isSuccess == other.isSuccess
                 && responseText.equals(other.responseText)
                 && responseData.equals(other.responseData);
@@ -123,9 +123,13 @@ public final class VoidResponse {
     }
 
     public interface ResponseCodeStage {
-        IsSuccessStage responseCode(int responseCode);
+        RoomIdStage responseCode(int responseCode);
 
         Builder from(VoidResponse other);
+    }
+
+    public interface RoomIdStage {
+        IsSuccessStage roomId(long roomId);
     }
 
     public interface IsSuccessStage {
@@ -146,24 +150,25 @@ public final class VoidResponse {
         _FinalStage pageIdentifier(Optional<String> pageIdentifier);
 
         _FinalStage pageIdentifier(String pageIdentifier);
-
-        _FinalStage roomId(Optional<Long> roomId);
-
-        _FinalStage roomId(Long roomId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements ResponseCodeStage, IsSuccessStage, ResponseTextStage, ResponseDataStage, _FinalStage {
+            implements ResponseCodeStage,
+                    RoomIdStage,
+                    IsSuccessStage,
+                    ResponseTextStage,
+                    ResponseDataStage,
+                    _FinalStage {
         private int responseCode;
+
+        private long roomId;
 
         private boolean isSuccess;
 
         private String responseText;
 
         private VoidResponseData responseData;
-
-        private Optional<Long> roomId = Optional.empty();
 
         private Optional<String> pageIdentifier = Optional.empty();
 
@@ -185,8 +190,15 @@ public final class VoidResponse {
 
         @java.lang.Override
         @JsonSetter("responseCode")
-        public IsSuccessStage responseCode(int responseCode) {
+        public RoomIdStage responseCode(int responseCode) {
             this.responseCode = responseCode;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("roomId")
+        public IsSuccessStage roomId(long roomId) {
+            this.roomId = roomId;
             return this;
         }
 
@@ -208,19 +220,6 @@ public final class VoidResponse {
         @JsonSetter("responseData")
         public _FinalStage responseData(@NotNull VoidResponseData responseData) {
             this.responseData = Objects.requireNonNull(responseData, "responseData must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage roomId(Long roomId) {
-            this.roomId = Optional.ofNullable(roomId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "roomId", nulls = Nulls.SKIP)
-        public _FinalStage roomId(Optional<Long> roomId) {
-            this.roomId = roomId;
             return this;
         }
 

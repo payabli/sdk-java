@@ -35,9 +35,9 @@ import org.jetbrains.annotations.NotNull;
 public final class QueryInvoiceResponseRecordsItem {
     private final long invoiceId;
 
-    private final Optional<Long> customerId;
+    private final long customerId;
 
-    private final Optional<Long> paypointId;
+    private final long paypointId;
 
     private final String invoiceNumber;
 
@@ -69,7 +69,7 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final Optional<Double> discount;
 
-    private final Optional<Double> invoiceAmount;
+    private final double invoiceAmount;
 
     private final double invoicePaidAmount;
 
@@ -121,7 +121,7 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private final String paypointEntryname;
 
-    private final Optional<Long> parentOrgId;
+    private final long parentOrgId;
 
     private final String parentOrgName;
 
@@ -137,8 +137,8 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private QueryInvoiceResponseRecordsItem(
             long invoiceId,
-            Optional<Long> customerId,
-            Optional<Long> paypointId,
+            long customerId,
+            long paypointId,
             String invoiceNumber,
             Optional<String> invoiceDate,
             Optional<String> invoiceDueDate,
@@ -154,7 +154,7 @@ public final class QueryInvoiceResponseRecordsItem {
             Optional<String> notes,
             Optional<Double> tax,
             Optional<Double> discount,
-            Optional<Double> invoiceAmount,
+            double invoiceAmount,
             double invoicePaidAmount,
             Optional<Double> freightAmount,
             Optional<Double> dutyAmount,
@@ -180,7 +180,7 @@ public final class QueryInvoiceResponseRecordsItem {
             String paypointLegalname,
             String paypointDbaname,
             String paypointEntryname,
-            Optional<Long> parentOrgId,
+            long parentOrgId,
             String parentOrgName,
             Optional<Map<String, Object>> additionalData,
             Optional<DocumentsRef> documentsRef,
@@ -246,12 +246,12 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("customerId")
-    public Optional<Long> getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
     @JsonProperty("paypointId")
-    public Optional<Long> getPaypointId() {
+    public long getPaypointId() {
         return paypointId;
     }
 
@@ -358,7 +358,7 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("invoiceAmount")
-    public Optional<Double> getInvoiceAmount() {
+    public double getInvoiceAmount() {
         return invoiceAmount;
     }
 
@@ -530,7 +530,7 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     @JsonProperty("ParentOrgId")
-    public Optional<Long> getParentOrgId() {
+    public long getParentOrgId() {
         return parentOrgId;
     }
 
@@ -641,8 +641,8 @@ public final class QueryInvoiceResponseRecordsItem {
 
     private boolean equalTo(QueryInvoiceResponseRecordsItem other) {
         return invoiceId == other.invoiceId
-                && customerId.equals(other.customerId)
-                && paypointId.equals(other.paypointId)
+                && customerId == other.customerId
+                && paypointId == other.paypointId
                 && invoiceNumber.equals(other.invoiceNumber)
                 && invoiceDate.equals(other.invoiceDate)
                 && invoiceDueDate.equals(other.invoiceDueDate)
@@ -658,7 +658,7 @@ public final class QueryInvoiceResponseRecordsItem {
                 && notes.equals(other.notes)
                 && tax.equals(other.tax)
                 && discount.equals(other.discount)
-                && invoiceAmount.equals(other.invoiceAmount)
+                && invoiceAmount == other.invoiceAmount
                 && invoicePaidAmount == other.invoicePaidAmount
                 && freightAmount.equals(other.freightAmount)
                 && dutyAmount.equals(other.dutyAmount)
@@ -684,7 +684,7 @@ public final class QueryInvoiceResponseRecordsItem {
                 && paypointLegalname.equals(other.paypointLegalname)
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointEntryname.equals(other.paypointEntryname)
-                && parentOrgId.equals(other.parentOrgId)
+                && parentOrgId == other.parentOrgId
                 && parentOrgName.equals(other.parentOrgName)
                 && additionalData.equals(other.additionalData)
                 && documentsRef.equals(other.documentsRef)
@@ -757,9 +757,17 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface InvoiceIdStage {
-        InvoiceNumberStage invoiceId(long invoiceId);
+        CustomerIdStage invoiceId(long invoiceId);
 
         Builder from(QueryInvoiceResponseRecordsItem other);
+    }
+
+    public interface CustomerIdStage {
+        PaypointIdStage customerId(long customerId);
+    }
+
+    public interface PaypointIdStage {
+        InvoiceNumberStage paypointId(long paypointId);
     }
 
     public interface InvoiceNumberStage {
@@ -786,7 +794,11 @@ public final class QueryInvoiceResponseRecordsItem {
     }
 
     public interface PaymentTermsStage {
-        InvoicePaidAmountStage paymentTerms(@NotNull String paymentTerms);
+        InvoiceAmountStage paymentTerms(@NotNull String paymentTerms);
+    }
+
+    public interface InvoiceAmountStage {
+        InvoicePaidAmountStage invoiceAmount(double invoiceAmount);
     }
 
     public interface InvoicePaidAmountStage {
@@ -875,7 +887,11 @@ public final class QueryInvoiceResponseRecordsItem {
         /**
          * <p>Paypoint's entryname.</p>
          */
-        ParentOrgNameStage paypointEntryname(@NotNull String paypointEntryname);
+        ParentOrgIdStage paypointEntryname(@NotNull String paypointEntryname);
+    }
+
+    public interface ParentOrgIdStage {
+        ParentOrgNameStage parentOrgId(long parentOrgId);
     }
 
     public interface ParentOrgNameStage {
@@ -888,14 +904,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
     public interface _FinalStage {
         QueryInvoiceResponseRecordsItem build();
-
-        _FinalStage customerId(Optional<Long> customerId);
-
-        _FinalStage customerId(Long customerId);
-
-        _FinalStage paypointId(Optional<Long> paypointId);
-
-        _FinalStage paypointId(Long paypointId);
 
         /**
          * <p>Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
@@ -955,10 +963,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage discount(Double discount);
 
-        _FinalStage invoiceAmount(Optional<Double> invoiceAmount);
-
-        _FinalStage invoiceAmount(Double invoiceAmount);
-
         _FinalStage freightAmount(Optional<Double> freightAmount);
 
         _FinalStage freightAmount(Double freightAmount);
@@ -1010,10 +1014,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage scheduledOptions(Nullable<BillOptions> scheduledOptions);
 
-        _FinalStage parentOrgId(Optional<Long> parentOrgId);
-
-        _FinalStage parentOrgId(Long parentOrgId);
-
         /**
          * <p>Custom list of key:value pairs. This field is used to store any data related to the invoice or for your system.</p>
          */
@@ -1042,12 +1042,15 @@ public final class QueryInvoiceResponseRecordsItem {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
             implements InvoiceIdStage,
+                    CustomerIdStage,
+                    PaypointIdStage,
                     InvoiceNumberStage,
                     CreatedAtStage,
                     InvoiceStatusStage,
                     InvoiceTypeStage,
                     FrequencyStage,
                     PaymentTermsStage,
+                    InvoiceAmountStage,
                     InvoicePaidAmountStage,
                     FirstNameStage,
                     LastNameStage,
@@ -1065,10 +1068,15 @@ public final class QueryInvoiceResponseRecordsItem {
                     PaypointLegalnameStage,
                     PaypointDbanameStage,
                     PaypointEntrynameStage,
+                    ParentOrgIdStage,
                     ParentOrgNameStage,
                     ExternalPaypointIdStage,
                     _FinalStage {
         private long invoiceId;
+
+        private long customerId;
+
+        private long paypointId;
 
         private String invoiceNumber;
 
@@ -1081,6 +1089,8 @@ public final class QueryInvoiceResponseRecordsItem {
         private Frequency frequency;
 
         private String paymentTerms;
+
+        private double invoiceAmount;
 
         private double invoicePaidAmount;
 
@@ -1116,6 +1126,8 @@ public final class QueryInvoiceResponseRecordsItem {
 
         private String paypointEntryname;
 
+        private long parentOrgId;
+
         private String parentOrgName;
 
         private String externalPaypointId;
@@ -1125,8 +1137,6 @@ public final class QueryInvoiceResponseRecordsItem {
         private Optional<DocumentsRef> documentsRef = Optional.empty();
 
         private Optional<Map<String, Object>> additionalData = Optional.empty();
-
-        private Optional<Long> parentOrgId = Optional.empty();
 
         private Optional<BillOptions> scheduledOptions = Optional.empty();
 
@@ -1143,8 +1153,6 @@ public final class QueryInvoiceResponseRecordsItem {
         private Optional<Double> dutyAmount = Optional.empty();
 
         private Optional<Double> freightAmount = Optional.empty();
-
-        private Optional<Double> invoiceAmount = Optional.empty();
 
         private Optional<Double> discount = Optional.empty();
 
@@ -1163,10 +1171,6 @@ public final class QueryInvoiceResponseRecordsItem {
         private Optional<String> invoiceDueDate = Optional.empty();
 
         private Optional<String> invoiceDate = Optional.empty();
-
-        private Optional<Long> paypointId = Optional.empty();
-
-        private Optional<Long> customerId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -1230,8 +1234,22 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("invoiceId")
-        public InvoiceNumberStage invoiceId(long invoiceId) {
+        public CustomerIdStage invoiceId(long invoiceId) {
             this.invoiceId = invoiceId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("customerId")
+        public PaypointIdStage customerId(long customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paypointId")
+        public InvoiceNumberStage paypointId(long paypointId) {
+            this.paypointId = paypointId;
             return this;
         }
 
@@ -1277,8 +1295,15 @@ public final class QueryInvoiceResponseRecordsItem {
 
         @java.lang.Override
         @JsonSetter("paymentTerms")
-        public InvoicePaidAmountStage paymentTerms(@NotNull String paymentTerms) {
+        public InvoiceAmountStage paymentTerms(@NotNull String paymentTerms) {
             this.paymentTerms = Objects.requireNonNull(paymentTerms, "paymentTerms must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("invoiceAmount")
+        public InvoicePaidAmountStage invoiceAmount(double invoiceAmount) {
+            this.invoiceAmount = invoiceAmount;
             return this;
         }
 
@@ -1431,8 +1456,15 @@ public final class QueryInvoiceResponseRecordsItem {
          */
         @java.lang.Override
         @JsonSetter("PaypointEntryname")
-        public ParentOrgNameStage paypointEntryname(@NotNull String paypointEntryname) {
+        public ParentOrgIdStage paypointEntryname(@NotNull String paypointEntryname) {
             this.paypointEntryname = Objects.requireNonNull(paypointEntryname, "paypointEntryname must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("ParentOrgId")
+        public ParentOrgNameStage parentOrgId(long parentOrgId) {
+            this.parentOrgId = parentOrgId;
             return this;
         }
 
@@ -1544,19 +1576,6 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
         public _FinalStage additionalData(Optional<Map<String, Object>> additionalData) {
             this.additionalData = additionalData;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage parentOrgId(Long parentOrgId) {
-            this.parentOrgId = Optional.ofNullable(parentOrgId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
-        public _FinalStage parentOrgId(Optional<Long> parentOrgId) {
-            this.parentOrgId = parentOrgId;
             return this;
         }
 
@@ -1753,19 +1772,6 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         @java.lang.Override
-        public _FinalStage invoiceAmount(Double invoiceAmount) {
-            this.invoiceAmount = Optional.ofNullable(invoiceAmount);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "invoiceAmount", nulls = Nulls.SKIP)
-        public _FinalStage invoiceAmount(Optional<Double> invoiceAmount) {
-            this.invoiceAmount = invoiceAmount;
-            return this;
-        }
-
-        @java.lang.Override
         public _FinalStage discount(Double discount) {
             this.discount = Optional.ofNullable(discount);
             return this;
@@ -1949,32 +1955,6 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDate(Optional<String> invoiceDate) {
             this.invoiceDate = invoiceDate;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage paypointId(Long paypointId) {
-            this.paypointId = Optional.ofNullable(paypointId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
-        public _FinalStage paypointId(Optional<Long> paypointId) {
-            this.paypointId = paypointId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage customerId(Long customerId) {
-            this.customerId = Optional.ofNullable(customerId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
-        public _FinalStage customerId(Optional<Long> customerId) {
-            this.customerId = customerId;
             return this;
         }
 

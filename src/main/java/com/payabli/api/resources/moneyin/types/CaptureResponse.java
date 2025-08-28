@@ -5,12 +5,15 @@ package com.payabli.api.resources.moneyin.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.payabli.api.core.Nullable;
+import com.payabli.api.core.NullableNonemptyFilter;
 import com.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +28,7 @@ public final class CaptureResponse {
 
     private final Optional<String> pageIdentifier;
 
-    private final Optional<Long> roomId;
+    private final long roomId;
 
     private final boolean isSuccess;
 
@@ -38,7 +41,7 @@ public final class CaptureResponse {
     private CaptureResponse(
             int responseCode,
             Optional<String> pageIdentifier,
-            Optional<Long> roomId,
+            long roomId,
             boolean isSuccess,
             String responseText,
             CaptureResponseData responseData,
@@ -57,13 +60,16 @@ public final class CaptureResponse {
         return responseCode;
     }
 
-    @JsonProperty("pageIdentifier")
+    @JsonIgnore
     public Optional<String> getPageIdentifier() {
+        if (pageIdentifier == null) {
+            return Optional.empty();
+        }
         return pageIdentifier;
     }
 
     @JsonProperty("roomId")
-    public Optional<Long> getRoomId() {
+    public long getRoomId() {
         return roomId;
     }
 
@@ -82,6 +88,12 @@ public final class CaptureResponse {
         return responseData;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageIdentifier")
+    private Optional<String> _getPageIdentifier() {
+        return pageIdentifier;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -96,7 +108,7 @@ public final class CaptureResponse {
     private boolean equalTo(CaptureResponse other) {
         return responseCode == other.responseCode
                 && pageIdentifier.equals(other.pageIdentifier)
-                && roomId.equals(other.roomId)
+                && roomId == other.roomId
                 && isSuccess == other.isSuccess
                 && responseText.equals(other.responseText)
                 && responseData.equals(other.responseData);
@@ -123,9 +135,13 @@ public final class CaptureResponse {
     }
 
     public interface ResponseCodeStage {
-        IsSuccessStage responseCode(int responseCode);
+        RoomIdStage responseCode(int responseCode);
 
         Builder from(CaptureResponse other);
+    }
+
+    public interface RoomIdStage {
+        IsSuccessStage roomId(long roomId);
     }
 
     public interface IsSuccessStage {
@@ -147,23 +163,26 @@ public final class CaptureResponse {
 
         _FinalStage pageIdentifier(String pageIdentifier);
 
-        _FinalStage roomId(Optional<Long> roomId);
-
-        _FinalStage roomId(Long roomId);
+        _FinalStage pageIdentifier(Nullable<String> pageIdentifier);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements ResponseCodeStage, IsSuccessStage, ResponseTextStage, ResponseDataStage, _FinalStage {
+            implements ResponseCodeStage,
+                    RoomIdStage,
+                    IsSuccessStage,
+                    ResponseTextStage,
+                    ResponseDataStage,
+                    _FinalStage {
         private int responseCode;
+
+        private long roomId;
 
         private boolean isSuccess;
 
         private String responseText;
 
         private CaptureResponseData responseData;
-
-        private Optional<Long> roomId = Optional.empty();
 
         private Optional<String> pageIdentifier = Optional.empty();
 
@@ -185,8 +204,15 @@ public final class CaptureResponse {
 
         @java.lang.Override
         @JsonSetter("responseCode")
-        public IsSuccessStage responseCode(int responseCode) {
+        public RoomIdStage responseCode(int responseCode) {
             this.responseCode = responseCode;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("roomId")
+        public IsSuccessStage roomId(long roomId) {
+            this.roomId = roomId;
             return this;
         }
 
@@ -212,15 +238,14 @@ public final class CaptureResponse {
         }
 
         @java.lang.Override
-        public _FinalStage roomId(Long roomId) {
-            this.roomId = Optional.ofNullable(roomId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "roomId", nulls = Nulls.SKIP)
-        public _FinalStage roomId(Optional<Long> roomId) {
-            this.roomId = roomId;
+        public _FinalStage pageIdentifier(Nullable<String> pageIdentifier) {
+            if (pageIdentifier.isNull()) {
+                this.pageIdentifier = null;
+            } else if (pageIdentifier.isEmpty()) {
+                this.pageIdentifier = Optional.empty();
+            } else {
+                this.pageIdentifier = Optional.of(pageIdentifier.get());
+            }
             return this;
         }
 

@@ -20,147 +20,123 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VCardGetResponse.Builder.class)
 public final class VCardGetResponse {
-    private final Optional<Double> amount;
-
-    private final Optional<String> associatedCustomer;
-
-    private final Optional<VCardGetResponseAssociatedVendor> associatedVendor;
-
-    private final Optional<String> cardNumber;
+    private final Optional<Boolean> vcardSent;
 
     private final Optional<String> cardToken;
 
-    private final Optional<Double> currentBalance;
-
-    private final Optional<Integer> currentNumberOfUses;
+    private final Optional<String> cardNumber;
 
     private final Optional<String> cvc;
 
-    private final Optional<String> dateCreated;
+    private final Optional<String> expirationDate;
 
-    private final Optional<String> dateModified;
+    private final Optional<String> status;
 
-    private final Optional<Boolean> exactAmount;
+    private final Optional<Double> amount;
+
+    private final Optional<Double> currentBalance;
 
     private final Optional<Double> expenseLimit;
 
     private final Optional<String> expenseLimitPeriod;
 
-    private final Optional<String> expirationDate;
-
-    private final Optional<String> externalPaypointId;
-
     private final Optional<Integer> maxNumberOfUses;
 
+    private final Optional<Integer> currentNumberOfUses;
+
+    private final Optional<Boolean> exactAmount;
+
     private final Optional<String> mcc;
+
+    private final Optional<String> tcc;
 
     private final Optional<String> misc1;
 
     private final Optional<String> misc2;
 
+    private final Optional<String> dateCreated;
+
+    private final Optional<String> dateModified;
+
+    private final Optional<VCardGetResponseAssociatedVendor> associatedVendor;
+
+    private final Optional<String> associatedCustomer;
+
     private final Optional<String> parentOrgName;
 
     private final Optional<String> paypointDbaname;
 
-    private final Optional<String> paypointEntryname;
-
     private final Optional<String> paypointLegalname;
 
-    private final Optional<String> status;
+    private final Optional<String> paypointEntryname;
 
-    private final Optional<String> tcc;
-
-    private final Optional<Boolean> vcardSent;
+    private final Optional<String> externalPaypointId;
 
     private final Map<String, Object> additionalProperties;
 
     private VCardGetResponse(
-            Optional<Double> amount,
-            Optional<String> associatedCustomer,
-            Optional<VCardGetResponseAssociatedVendor> associatedVendor,
-            Optional<String> cardNumber,
+            Optional<Boolean> vcardSent,
             Optional<String> cardToken,
-            Optional<Double> currentBalance,
-            Optional<Integer> currentNumberOfUses,
+            Optional<String> cardNumber,
             Optional<String> cvc,
-            Optional<String> dateCreated,
-            Optional<String> dateModified,
-            Optional<Boolean> exactAmount,
+            Optional<String> expirationDate,
+            Optional<String> status,
+            Optional<Double> amount,
+            Optional<Double> currentBalance,
             Optional<Double> expenseLimit,
             Optional<String> expenseLimitPeriod,
-            Optional<String> expirationDate,
-            Optional<String> externalPaypointId,
             Optional<Integer> maxNumberOfUses,
+            Optional<Integer> currentNumberOfUses,
+            Optional<Boolean> exactAmount,
             Optional<String> mcc,
+            Optional<String> tcc,
             Optional<String> misc1,
             Optional<String> misc2,
+            Optional<String> dateCreated,
+            Optional<String> dateModified,
+            Optional<VCardGetResponseAssociatedVendor> associatedVendor,
+            Optional<String> associatedCustomer,
             Optional<String> parentOrgName,
             Optional<String> paypointDbaname,
-            Optional<String> paypointEntryname,
             Optional<String> paypointLegalname,
-            Optional<String> status,
-            Optional<String> tcc,
-            Optional<Boolean> vcardSent,
+            Optional<String> paypointEntryname,
+            Optional<String> externalPaypointId,
             Map<String, Object> additionalProperties) {
-        this.amount = amount;
-        this.associatedCustomer = associatedCustomer;
-        this.associatedVendor = associatedVendor;
-        this.cardNumber = cardNumber;
+        this.vcardSent = vcardSent;
         this.cardToken = cardToken;
-        this.currentBalance = currentBalance;
-        this.currentNumberOfUses = currentNumberOfUses;
+        this.cardNumber = cardNumber;
         this.cvc = cvc;
-        this.dateCreated = dateCreated;
-        this.dateModified = dateModified;
-        this.exactAmount = exactAmount;
+        this.expirationDate = expirationDate;
+        this.status = status;
+        this.amount = amount;
+        this.currentBalance = currentBalance;
         this.expenseLimit = expenseLimit;
         this.expenseLimitPeriod = expenseLimitPeriod;
-        this.expirationDate = expirationDate;
-        this.externalPaypointId = externalPaypointId;
         this.maxNumberOfUses = maxNumberOfUses;
+        this.currentNumberOfUses = currentNumberOfUses;
+        this.exactAmount = exactAmount;
         this.mcc = mcc;
+        this.tcc = tcc;
         this.misc1 = misc1;
         this.misc2 = misc2;
+        this.dateCreated = dateCreated;
+        this.dateModified = dateModified;
+        this.associatedVendor = associatedVendor;
+        this.associatedCustomer = associatedCustomer;
         this.parentOrgName = parentOrgName;
         this.paypointDbaname = paypointDbaname;
-        this.paypointEntryname = paypointEntryname;
         this.paypointLegalname = paypointLegalname;
-        this.status = status;
-        this.tcc = tcc;
-        this.vcardSent = vcardSent;
+        this.paypointEntryname = paypointEntryname;
+        this.externalPaypointId = externalPaypointId;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The initial amount loaded on the card.
+     * @return Indicates if the virtual card was sent.
      */
-    @JsonProperty("amount")
-    public Optional<Double> getAmount() {
-        return amount;
-    }
-
-    /**
-     * @return Information about the associated customer, if applicable.
-     */
-    @JsonProperty("associatedCustomer")
-    public Optional<String> getAssociatedCustomer() {
-        return associatedCustomer;
-    }
-
-    /**
-     * @return Information about the associated vendor.
-     */
-    @JsonProperty("associatedVendor")
-    public Optional<VCardGetResponseAssociatedVendor> getAssociatedVendor() {
-        return associatedVendor;
-    }
-
-    /**
-     * @return The masked number of the card.
-     */
-    @JsonProperty("cardNumber")
-    public Optional<String> getCardNumber() {
-        return cardNumber;
+    @JsonProperty("vcardSent")
+    public Optional<Boolean> getVcardSent() {
+        return vcardSent;
     }
 
     /**
@@ -172,19 +148,11 @@ public final class VCardGetResponse {
     }
 
     /**
-     * @return The current balance available on the card.
+     * @return The masked number of the card.
      */
-    @JsonProperty("currentBalance")
-    public Optional<Double> getCurrentBalance() {
-        return currentBalance;
-    }
-
-    /**
-     * @return The current number of times the card has been used.
-     */
-    @JsonProperty("currentNumberOfUses")
-    public Optional<Integer> getCurrentNumberOfUses() {
-        return currentNumberOfUses;
+    @JsonProperty("cardNumber")
+    public Optional<String> getCardNumber() {
+        return cardNumber;
     }
 
     /**
@@ -196,27 +164,35 @@ public final class VCardGetResponse {
     }
 
     /**
-     * @return The creation date of the record.
+     * @return The expiration date of the card.
      */
-    @JsonProperty("dateCreated")
-    public Optional<String> getDateCreated() {
-        return dateCreated;
+    @JsonProperty("expirationDate")
+    public Optional<String> getExpirationDate() {
+        return expirationDate;
     }
 
     /**
-     * @return The last modified date of the record.
+     * @return The current status of the card.
      */
-    @JsonProperty("dateModified")
-    public Optional<String> getDateModified() {
-        return dateModified;
+    @JsonProperty("status")
+    public Optional<String> getStatus() {
+        return status;
     }
 
     /**
-     * @return Indicates if only the exact amount is allowed for transactions.
+     * @return The initial amount loaded on the card.
      */
-    @JsonProperty("exactAmount")
-    public Optional<Boolean> getExactAmount() {
-        return exactAmount;
+    @JsonProperty("amount")
+    public Optional<Double> getAmount() {
+        return amount;
+    }
+
+    /**
+     * @return The current balance available on the card.
+     */
+    @JsonProperty("currentBalance")
+    public Optional<Double> getCurrentBalance() {
+        return currentBalance;
     }
 
     /**
@@ -236,19 +212,6 @@ public final class VCardGetResponse {
     }
 
     /**
-     * @return The expiration date of the card.
-     */
-    @JsonProperty("expirationDate")
-    public Optional<String> getExpirationDate() {
-        return expirationDate;
-    }
-
-    @JsonProperty("externalPaypointID")
-    public Optional<String> getExternalPaypointId() {
-        return externalPaypointId;
-    }
-
-    /**
      * @return Maximum number of uses allowed for the card.
      */
     @JsonProperty("maxNumberOfUses")
@@ -257,11 +220,35 @@ public final class VCardGetResponse {
     }
 
     /**
+     * @return The current number of times the card has been used.
+     */
+    @JsonProperty("currentNumberOfUses")
+    public Optional<Integer> getCurrentNumberOfUses() {
+        return currentNumberOfUses;
+    }
+
+    /**
+     * @return Indicates if only the exact amount is allowed for transactions.
+     */
+    @JsonProperty("exactAmount")
+    public Optional<Boolean> getExactAmount() {
+        return exactAmount;
+    }
+
+    /**
      * @return Merchant Category Code, if applicable.
      */
     @JsonProperty("mcc")
     public Optional<String> getMcc() {
         return mcc;
+    }
+
+    /**
+     * @return Transaction Category Code, if applicable.
+     */
+    @JsonProperty("tcc")
+    public Optional<String> getTcc() {
+        return tcc;
     }
 
     /**
@@ -281,6 +268,38 @@ public final class VCardGetResponse {
     }
 
     /**
+     * @return The creation date of the record.
+     */
+    @JsonProperty("dateCreated")
+    public Optional<String> getDateCreated() {
+        return dateCreated;
+    }
+
+    /**
+     * @return The last modified date of the record.
+     */
+    @JsonProperty("dateModified")
+    public Optional<String> getDateModified() {
+        return dateModified;
+    }
+
+    /**
+     * @return Information about the associated vendor.
+     */
+    @JsonProperty("associatedVendor")
+    public Optional<VCardGetResponseAssociatedVendor> getAssociatedVendor() {
+        return associatedVendor;
+    }
+
+    /**
+     * @return Information about the associated customer, if applicable.
+     */
+    @JsonProperty("associatedCustomer")
+    public Optional<String> getAssociatedCustomer() {
+        return associatedCustomer;
+    }
+
+    /**
      * @return Name of the parent organization.
      */
     @JsonProperty("ParentOrgName")
@@ -297,14 +316,6 @@ public final class VCardGetResponse {
     }
 
     /**
-     * @return Entry name for the Paypoint, if applicable.
-     */
-    @JsonProperty("PaypointEntryname")
-    public Optional<String> getPaypointEntryname() {
-        return paypointEntryname;
-    }
-
-    /**
      * @return The legal name of the Paypoint.
      */
     @JsonProperty("PaypointLegalname")
@@ -313,27 +324,16 @@ public final class VCardGetResponse {
     }
 
     /**
-     * @return The current status of the card.
+     * @return Entry name for the Paypoint, if applicable.
      */
-    @JsonProperty("status")
-    public Optional<String> getStatus() {
-        return status;
+    @JsonProperty("PaypointEntryname")
+    public Optional<String> getPaypointEntryname() {
+        return paypointEntryname;
     }
 
-    /**
-     * @return Transaction Category Code, if applicable.
-     */
-    @JsonProperty("tcc")
-    public Optional<String> getTcc() {
-        return tcc;
-    }
-
-    /**
-     * @return Indicates if the virtual card was sent.
-     */
-    @JsonProperty("vcardSent")
-    public Optional<Boolean> getVcardSent() {
-        return vcardSent;
+    @JsonProperty("externalPaypointID")
+    public Optional<String> getExternalPaypointId() {
+        return externalPaypointId;
     }
 
     @java.lang.Override
@@ -348,63 +348,63 @@ public final class VCardGetResponse {
     }
 
     private boolean equalTo(VCardGetResponse other) {
-        return amount.equals(other.amount)
-                && associatedCustomer.equals(other.associatedCustomer)
-                && associatedVendor.equals(other.associatedVendor)
-                && cardNumber.equals(other.cardNumber)
+        return vcardSent.equals(other.vcardSent)
                 && cardToken.equals(other.cardToken)
-                && currentBalance.equals(other.currentBalance)
-                && currentNumberOfUses.equals(other.currentNumberOfUses)
+                && cardNumber.equals(other.cardNumber)
                 && cvc.equals(other.cvc)
-                && dateCreated.equals(other.dateCreated)
-                && dateModified.equals(other.dateModified)
-                && exactAmount.equals(other.exactAmount)
+                && expirationDate.equals(other.expirationDate)
+                && status.equals(other.status)
+                && amount.equals(other.amount)
+                && currentBalance.equals(other.currentBalance)
                 && expenseLimit.equals(other.expenseLimit)
                 && expenseLimitPeriod.equals(other.expenseLimitPeriod)
-                && expirationDate.equals(other.expirationDate)
-                && externalPaypointId.equals(other.externalPaypointId)
                 && maxNumberOfUses.equals(other.maxNumberOfUses)
+                && currentNumberOfUses.equals(other.currentNumberOfUses)
+                && exactAmount.equals(other.exactAmount)
                 && mcc.equals(other.mcc)
+                && tcc.equals(other.tcc)
                 && misc1.equals(other.misc1)
                 && misc2.equals(other.misc2)
+                && dateCreated.equals(other.dateCreated)
+                && dateModified.equals(other.dateModified)
+                && associatedVendor.equals(other.associatedVendor)
+                && associatedCustomer.equals(other.associatedCustomer)
                 && parentOrgName.equals(other.parentOrgName)
                 && paypointDbaname.equals(other.paypointDbaname)
-                && paypointEntryname.equals(other.paypointEntryname)
                 && paypointLegalname.equals(other.paypointLegalname)
-                && status.equals(other.status)
-                && tcc.equals(other.tcc)
-                && vcardSent.equals(other.vcardSent);
+                && paypointEntryname.equals(other.paypointEntryname)
+                && externalPaypointId.equals(other.externalPaypointId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.amount,
-                this.associatedCustomer,
-                this.associatedVendor,
-                this.cardNumber,
+                this.vcardSent,
                 this.cardToken,
-                this.currentBalance,
-                this.currentNumberOfUses,
+                this.cardNumber,
                 this.cvc,
-                this.dateCreated,
-                this.dateModified,
-                this.exactAmount,
+                this.expirationDate,
+                this.status,
+                this.amount,
+                this.currentBalance,
                 this.expenseLimit,
                 this.expenseLimitPeriod,
-                this.expirationDate,
-                this.externalPaypointId,
                 this.maxNumberOfUses,
+                this.currentNumberOfUses,
+                this.exactAmount,
                 this.mcc,
+                this.tcc,
                 this.misc1,
                 this.misc2,
+                this.dateCreated,
+                this.dateModified,
+                this.associatedVendor,
+                this.associatedCustomer,
                 this.parentOrgName,
                 this.paypointDbaname,
-                this.paypointEntryname,
                 this.paypointLegalname,
-                this.status,
-                this.tcc,
-                this.vcardSent);
+                this.paypointEntryname,
+                this.externalPaypointId);
     }
 
     @java.lang.Override
@@ -418,57 +418,57 @@ public final class VCardGetResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Double> amount = Optional.empty();
-
-        private Optional<String> associatedCustomer = Optional.empty();
-
-        private Optional<VCardGetResponseAssociatedVendor> associatedVendor = Optional.empty();
-
-        private Optional<String> cardNumber = Optional.empty();
+        private Optional<Boolean> vcardSent = Optional.empty();
 
         private Optional<String> cardToken = Optional.empty();
 
-        private Optional<Double> currentBalance = Optional.empty();
-
-        private Optional<Integer> currentNumberOfUses = Optional.empty();
+        private Optional<String> cardNumber = Optional.empty();
 
         private Optional<String> cvc = Optional.empty();
 
-        private Optional<String> dateCreated = Optional.empty();
+        private Optional<String> expirationDate = Optional.empty();
 
-        private Optional<String> dateModified = Optional.empty();
+        private Optional<String> status = Optional.empty();
 
-        private Optional<Boolean> exactAmount = Optional.empty();
+        private Optional<Double> amount = Optional.empty();
+
+        private Optional<Double> currentBalance = Optional.empty();
 
         private Optional<Double> expenseLimit = Optional.empty();
 
         private Optional<String> expenseLimitPeriod = Optional.empty();
 
-        private Optional<String> expirationDate = Optional.empty();
-
-        private Optional<String> externalPaypointId = Optional.empty();
-
         private Optional<Integer> maxNumberOfUses = Optional.empty();
 
+        private Optional<Integer> currentNumberOfUses = Optional.empty();
+
+        private Optional<Boolean> exactAmount = Optional.empty();
+
         private Optional<String> mcc = Optional.empty();
+
+        private Optional<String> tcc = Optional.empty();
 
         private Optional<String> misc1 = Optional.empty();
 
         private Optional<String> misc2 = Optional.empty();
 
+        private Optional<String> dateCreated = Optional.empty();
+
+        private Optional<String> dateModified = Optional.empty();
+
+        private Optional<VCardGetResponseAssociatedVendor> associatedVendor = Optional.empty();
+
+        private Optional<String> associatedCustomer = Optional.empty();
+
         private Optional<String> parentOrgName = Optional.empty();
 
         private Optional<String> paypointDbaname = Optional.empty();
 
-        private Optional<String> paypointEntryname = Optional.empty();
-
         private Optional<String> paypointLegalname = Optional.empty();
 
-        private Optional<String> status = Optional.empty();
+        private Optional<String> paypointEntryname = Optional.empty();
 
-        private Optional<String> tcc = Optional.empty();
-
-        private Optional<Boolean> vcardSent = Optional.empty();
+        private Optional<String> externalPaypointId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -476,88 +476,46 @@ public final class VCardGetResponse {
         private Builder() {}
 
         public Builder from(VCardGetResponse other) {
-            amount(other.getAmount());
-            associatedCustomer(other.getAssociatedCustomer());
-            associatedVendor(other.getAssociatedVendor());
-            cardNumber(other.getCardNumber());
+            vcardSent(other.getVcardSent());
             cardToken(other.getCardToken());
-            currentBalance(other.getCurrentBalance());
-            currentNumberOfUses(other.getCurrentNumberOfUses());
+            cardNumber(other.getCardNumber());
             cvc(other.getCvc());
-            dateCreated(other.getDateCreated());
-            dateModified(other.getDateModified());
-            exactAmount(other.getExactAmount());
+            expirationDate(other.getExpirationDate());
+            status(other.getStatus());
+            amount(other.getAmount());
+            currentBalance(other.getCurrentBalance());
             expenseLimit(other.getExpenseLimit());
             expenseLimitPeriod(other.getExpenseLimitPeriod());
-            expirationDate(other.getExpirationDate());
-            externalPaypointId(other.getExternalPaypointId());
             maxNumberOfUses(other.getMaxNumberOfUses());
+            currentNumberOfUses(other.getCurrentNumberOfUses());
+            exactAmount(other.getExactAmount());
             mcc(other.getMcc());
+            tcc(other.getTcc());
             misc1(other.getMisc1());
             misc2(other.getMisc2());
+            dateCreated(other.getDateCreated());
+            dateModified(other.getDateModified());
+            associatedVendor(other.getAssociatedVendor());
+            associatedCustomer(other.getAssociatedCustomer());
             parentOrgName(other.getParentOrgName());
             paypointDbaname(other.getPaypointDbaname());
-            paypointEntryname(other.getPaypointEntryname());
             paypointLegalname(other.getPaypointLegalname());
-            status(other.getStatus());
-            tcc(other.getTcc());
-            vcardSent(other.getVcardSent());
+            paypointEntryname(other.getPaypointEntryname());
+            externalPaypointId(other.getExternalPaypointId());
             return this;
         }
 
         /**
-         * <p>The initial amount loaded on the card.</p>
+         * <p>Indicates if the virtual card was sent.</p>
          */
-        @JsonSetter(value = "amount", nulls = Nulls.SKIP)
-        public Builder amount(Optional<Double> amount) {
-            this.amount = amount;
+        @JsonSetter(value = "vcardSent", nulls = Nulls.SKIP)
+        public Builder vcardSent(Optional<Boolean> vcardSent) {
+            this.vcardSent = vcardSent;
             return this;
         }
 
-        public Builder amount(Double amount) {
-            this.amount = Optional.ofNullable(amount);
-            return this;
-        }
-
-        /**
-         * <p>Information about the associated customer, if applicable.</p>
-         */
-        @JsonSetter(value = "associatedCustomer", nulls = Nulls.SKIP)
-        public Builder associatedCustomer(Optional<String> associatedCustomer) {
-            this.associatedCustomer = associatedCustomer;
-            return this;
-        }
-
-        public Builder associatedCustomer(String associatedCustomer) {
-            this.associatedCustomer = Optional.ofNullable(associatedCustomer);
-            return this;
-        }
-
-        /**
-         * <p>Information about the associated vendor.</p>
-         */
-        @JsonSetter(value = "associatedVendor", nulls = Nulls.SKIP)
-        public Builder associatedVendor(Optional<VCardGetResponseAssociatedVendor> associatedVendor) {
-            this.associatedVendor = associatedVendor;
-            return this;
-        }
-
-        public Builder associatedVendor(VCardGetResponseAssociatedVendor associatedVendor) {
-            this.associatedVendor = Optional.ofNullable(associatedVendor);
-            return this;
-        }
-
-        /**
-         * <p>The masked number of the card.</p>
-         */
-        @JsonSetter(value = "cardNumber", nulls = Nulls.SKIP)
-        public Builder cardNumber(Optional<String> cardNumber) {
-            this.cardNumber = cardNumber;
-            return this;
-        }
-
-        public Builder cardNumber(String cardNumber) {
-            this.cardNumber = Optional.ofNullable(cardNumber);
+        public Builder vcardSent(Boolean vcardSent) {
+            this.vcardSent = Optional.ofNullable(vcardSent);
             return this;
         }
 
@@ -576,30 +534,16 @@ public final class VCardGetResponse {
         }
 
         /**
-         * <p>The current balance available on the card.</p>
+         * <p>The masked number of the card.</p>
          */
-        @JsonSetter(value = "currentBalance", nulls = Nulls.SKIP)
-        public Builder currentBalance(Optional<Double> currentBalance) {
-            this.currentBalance = currentBalance;
+        @JsonSetter(value = "cardNumber", nulls = Nulls.SKIP)
+        public Builder cardNumber(Optional<String> cardNumber) {
+            this.cardNumber = cardNumber;
             return this;
         }
 
-        public Builder currentBalance(Double currentBalance) {
-            this.currentBalance = Optional.ofNullable(currentBalance);
-            return this;
-        }
-
-        /**
-         * <p>The current number of times the card has been used.</p>
-         */
-        @JsonSetter(value = "currentNumberOfUses", nulls = Nulls.SKIP)
-        public Builder currentNumberOfUses(Optional<Integer> currentNumberOfUses) {
-            this.currentNumberOfUses = currentNumberOfUses;
-            return this;
-        }
-
-        public Builder currentNumberOfUses(Integer currentNumberOfUses) {
-            this.currentNumberOfUses = Optional.ofNullable(currentNumberOfUses);
+        public Builder cardNumber(String cardNumber) {
+            this.cardNumber = Optional.ofNullable(cardNumber);
             return this;
         }
 
@@ -618,44 +562,58 @@ public final class VCardGetResponse {
         }
 
         /**
-         * <p>The creation date of the record.</p>
+         * <p>The expiration date of the card.</p>
          */
-        @JsonSetter(value = "dateCreated", nulls = Nulls.SKIP)
-        public Builder dateCreated(Optional<String> dateCreated) {
-            this.dateCreated = dateCreated;
+        @JsonSetter(value = "expirationDate", nulls = Nulls.SKIP)
+        public Builder expirationDate(Optional<String> expirationDate) {
+            this.expirationDate = expirationDate;
             return this;
         }
 
-        public Builder dateCreated(String dateCreated) {
-            this.dateCreated = Optional.ofNullable(dateCreated);
+        public Builder expirationDate(String expirationDate) {
+            this.expirationDate = Optional.ofNullable(expirationDate);
             return this;
         }
 
         /**
-         * <p>The last modified date of the record.</p>
+         * <p>The current status of the card.</p>
          */
-        @JsonSetter(value = "dateModified", nulls = Nulls.SKIP)
-        public Builder dateModified(Optional<String> dateModified) {
-            this.dateModified = dateModified;
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public Builder status(Optional<String> status) {
+            this.status = status;
             return this;
         }
 
-        public Builder dateModified(String dateModified) {
-            this.dateModified = Optional.ofNullable(dateModified);
+        public Builder status(String status) {
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
         /**
-         * <p>Indicates if only the exact amount is allowed for transactions.</p>
+         * <p>The initial amount loaded on the card.</p>
          */
-        @JsonSetter(value = "exactAmount", nulls = Nulls.SKIP)
-        public Builder exactAmount(Optional<Boolean> exactAmount) {
-            this.exactAmount = exactAmount;
+        @JsonSetter(value = "amount", nulls = Nulls.SKIP)
+        public Builder amount(Optional<Double> amount) {
+            this.amount = amount;
             return this;
         }
 
-        public Builder exactAmount(Boolean exactAmount) {
-            this.exactAmount = Optional.ofNullable(exactAmount);
+        public Builder amount(Double amount) {
+            this.amount = Optional.ofNullable(amount);
+            return this;
+        }
+
+        /**
+         * <p>The current balance available on the card.</p>
+         */
+        @JsonSetter(value = "currentBalance", nulls = Nulls.SKIP)
+        public Builder currentBalance(Optional<Double> currentBalance) {
+            this.currentBalance = currentBalance;
+            return this;
+        }
+
+        public Builder currentBalance(Double currentBalance) {
+            this.currentBalance = Optional.ofNullable(currentBalance);
             return this;
         }
 
@@ -688,31 +646,6 @@ public final class VCardGetResponse {
         }
 
         /**
-         * <p>The expiration date of the card.</p>
-         */
-        @JsonSetter(value = "expirationDate", nulls = Nulls.SKIP)
-        public Builder expirationDate(Optional<String> expirationDate) {
-            this.expirationDate = expirationDate;
-            return this;
-        }
-
-        public Builder expirationDate(String expirationDate) {
-            this.expirationDate = Optional.ofNullable(expirationDate);
-            return this;
-        }
-
-        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
-        public Builder externalPaypointId(Optional<String> externalPaypointId) {
-            this.externalPaypointId = externalPaypointId;
-            return this;
-        }
-
-        public Builder externalPaypointId(String externalPaypointId) {
-            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
-            return this;
-        }
-
-        /**
          * <p>Maximum number of uses allowed for the card.</p>
          */
         @JsonSetter(value = "maxNumberOfUses", nulls = Nulls.SKIP)
@@ -727,6 +660,34 @@ public final class VCardGetResponse {
         }
 
         /**
+         * <p>The current number of times the card has been used.</p>
+         */
+        @JsonSetter(value = "currentNumberOfUses", nulls = Nulls.SKIP)
+        public Builder currentNumberOfUses(Optional<Integer> currentNumberOfUses) {
+            this.currentNumberOfUses = currentNumberOfUses;
+            return this;
+        }
+
+        public Builder currentNumberOfUses(Integer currentNumberOfUses) {
+            this.currentNumberOfUses = Optional.ofNullable(currentNumberOfUses);
+            return this;
+        }
+
+        /**
+         * <p>Indicates if only the exact amount is allowed for transactions.</p>
+         */
+        @JsonSetter(value = "exactAmount", nulls = Nulls.SKIP)
+        public Builder exactAmount(Optional<Boolean> exactAmount) {
+            this.exactAmount = exactAmount;
+            return this;
+        }
+
+        public Builder exactAmount(Boolean exactAmount) {
+            this.exactAmount = Optional.ofNullable(exactAmount);
+            return this;
+        }
+
+        /**
          * <p>Merchant Category Code, if applicable.</p>
          */
         @JsonSetter(value = "mcc", nulls = Nulls.SKIP)
@@ -737,6 +698,20 @@ public final class VCardGetResponse {
 
         public Builder mcc(String mcc) {
             this.mcc = Optional.ofNullable(mcc);
+            return this;
+        }
+
+        /**
+         * <p>Transaction Category Code, if applicable.</p>
+         */
+        @JsonSetter(value = "tcc", nulls = Nulls.SKIP)
+        public Builder tcc(Optional<String> tcc) {
+            this.tcc = tcc;
+            return this;
+        }
+
+        public Builder tcc(String tcc) {
+            this.tcc = Optional.ofNullable(tcc);
             return this;
         }
 
@@ -769,6 +744,62 @@ public final class VCardGetResponse {
         }
 
         /**
+         * <p>The creation date of the record.</p>
+         */
+        @JsonSetter(value = "dateCreated", nulls = Nulls.SKIP)
+        public Builder dateCreated(Optional<String> dateCreated) {
+            this.dateCreated = dateCreated;
+            return this;
+        }
+
+        public Builder dateCreated(String dateCreated) {
+            this.dateCreated = Optional.ofNullable(dateCreated);
+            return this;
+        }
+
+        /**
+         * <p>The last modified date of the record.</p>
+         */
+        @JsonSetter(value = "dateModified", nulls = Nulls.SKIP)
+        public Builder dateModified(Optional<String> dateModified) {
+            this.dateModified = dateModified;
+            return this;
+        }
+
+        public Builder dateModified(String dateModified) {
+            this.dateModified = Optional.ofNullable(dateModified);
+            return this;
+        }
+
+        /**
+         * <p>Information about the associated vendor.</p>
+         */
+        @JsonSetter(value = "associatedVendor", nulls = Nulls.SKIP)
+        public Builder associatedVendor(Optional<VCardGetResponseAssociatedVendor> associatedVendor) {
+            this.associatedVendor = associatedVendor;
+            return this;
+        }
+
+        public Builder associatedVendor(VCardGetResponseAssociatedVendor associatedVendor) {
+            this.associatedVendor = Optional.ofNullable(associatedVendor);
+            return this;
+        }
+
+        /**
+         * <p>Information about the associated customer, if applicable.</p>
+         */
+        @JsonSetter(value = "associatedCustomer", nulls = Nulls.SKIP)
+        public Builder associatedCustomer(Optional<String> associatedCustomer) {
+            this.associatedCustomer = associatedCustomer;
+            return this;
+        }
+
+        public Builder associatedCustomer(String associatedCustomer) {
+            this.associatedCustomer = Optional.ofNullable(associatedCustomer);
+            return this;
+        }
+
+        /**
          * <p>Name of the parent organization.</p>
          */
         @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
@@ -797,20 +828,6 @@ public final class VCardGetResponse {
         }
 
         /**
-         * <p>Entry name for the Paypoint, if applicable.</p>
-         */
-        @JsonSetter(value = "PaypointEntryname", nulls = Nulls.SKIP)
-        public Builder paypointEntryname(Optional<String> paypointEntryname) {
-            this.paypointEntryname = paypointEntryname;
-            return this;
-        }
-
-        public Builder paypointEntryname(String paypointEntryname) {
-            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
-            return this;
-        }
-
-        /**
          * <p>The legal name of the Paypoint.</p>
          */
         @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
@@ -825,75 +842,58 @@ public final class VCardGetResponse {
         }
 
         /**
-         * <p>The current status of the card.</p>
+         * <p>Entry name for the Paypoint, if applicable.</p>
          */
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public Builder status(Optional<String> status) {
-            this.status = status;
+        @JsonSetter(value = "PaypointEntryname", nulls = Nulls.SKIP)
+        public Builder paypointEntryname(Optional<String> paypointEntryname) {
+            this.paypointEntryname = paypointEntryname;
             return this;
         }
 
-        public Builder status(String status) {
-            this.status = Optional.ofNullable(status);
+        public Builder paypointEntryname(String paypointEntryname) {
+            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
             return this;
         }
 
-        /**
-         * <p>Transaction Category Code, if applicable.</p>
-         */
-        @JsonSetter(value = "tcc", nulls = Nulls.SKIP)
-        public Builder tcc(Optional<String> tcc) {
-            this.tcc = tcc;
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
+        public Builder externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
             return this;
         }
 
-        public Builder tcc(String tcc) {
-            this.tcc = Optional.ofNullable(tcc);
-            return this;
-        }
-
-        /**
-         * <p>Indicates if the virtual card was sent.</p>
-         */
-        @JsonSetter(value = "vcardSent", nulls = Nulls.SKIP)
-        public Builder vcardSent(Optional<Boolean> vcardSent) {
-            this.vcardSent = vcardSent;
-            return this;
-        }
-
-        public Builder vcardSent(Boolean vcardSent) {
-            this.vcardSent = Optional.ofNullable(vcardSent);
+        public Builder externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
             return this;
         }
 
         public VCardGetResponse build() {
             return new VCardGetResponse(
-                    amount,
-                    associatedCustomer,
-                    associatedVendor,
-                    cardNumber,
+                    vcardSent,
                     cardToken,
-                    currentBalance,
-                    currentNumberOfUses,
+                    cardNumber,
                     cvc,
-                    dateCreated,
-                    dateModified,
-                    exactAmount,
+                    expirationDate,
+                    status,
+                    amount,
+                    currentBalance,
                     expenseLimit,
                     expenseLimitPeriod,
-                    expirationDate,
-                    externalPaypointId,
                     maxNumberOfUses,
+                    currentNumberOfUses,
+                    exactAmount,
                     mcc,
+                    tcc,
                     misc1,
                     misc2,
+                    dateCreated,
+                    dateModified,
+                    associatedVendor,
+                    associatedCustomer,
                     parentOrgName,
                     paypointDbaname,
-                    paypointEntryname,
                     paypointLegalname,
-                    status,
-                    tcc,
-                    vcardSent,
+                    paypointEntryname,
+                    externalPaypointId,
                     additionalProperties);
         }
     }

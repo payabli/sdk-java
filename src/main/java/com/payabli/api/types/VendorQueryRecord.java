@@ -72,7 +72,7 @@ public final class VendorQueryRecord {
 
     private final Optional<String> payeeName2;
 
-    private final Optional<VendorPaymentMethod> paymentMethod;
+    private final Optional<String> paymentMethod;
 
     private final Optional<String> paypointDbaname;
 
@@ -138,7 +138,7 @@ public final class VendorQueryRecord {
             Optional<Long> parentOrgId,
             Optional<String> payeeName1,
             Optional<String> payeeName2,
-            Optional<VendorPaymentMethod> paymentMethod,
+            Optional<String> paymentMethod,
             Optional<String> paypointDbaname,
             Optional<String> paypointEntryname,
             Optional<String> paypointLegalname,
@@ -331,7 +331,7 @@ public final class VendorQueryRecord {
     }
 
     @JsonProperty("PaymentMethod")
-    public Optional<VendorPaymentMethod> getPaymentMethod() {
+    public Optional<String> getPaymentMethod() {
         return paymentMethod;
     }
 
@@ -593,7 +593,7 @@ public final class VendorQueryRecord {
 
         private Optional<String> payeeName2 = Optional.empty();
 
-        private Optional<VendorPaymentMethod> paymentMethod = Optional.empty();
+        private Optional<String> paymentMethod = Optional.empty();
 
         private Optional<String> paypointDbaname = Optional.empty();
 
@@ -960,12 +960,12 @@ public final class VendorQueryRecord {
         }
 
         @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
-        public Builder paymentMethod(Optional<VendorPaymentMethod> paymentMethod) {
+        public Builder paymentMethod(Optional<String> paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
 
-        public Builder paymentMethod(VendorPaymentMethod paymentMethod) {
+        public Builder paymentMethod(String paymentMethod) {
             this.paymentMethod = Optional.ofNullable(paymentMethod);
             return this;
         }

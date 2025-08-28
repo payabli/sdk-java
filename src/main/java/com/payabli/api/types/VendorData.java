@@ -61,7 +61,7 @@ public final class VendorData {
 
     private final Optional<String> payeeName2;
 
-    private final Optional<VendorPaymentMethod> paymentMethod;
+    private final Optional<String> paymentMethod;
 
     private final Optional<String> phone;
 
@@ -108,7 +108,7 @@ public final class VendorData {
             Optional<String> name2,
             Optional<String> payeeName1,
             Optional<String> payeeName2,
-            Optional<VendorPaymentMethod> paymentMethod,
+            Optional<String> paymentMethod,
             Optional<String> phone,
             Optional<String> remitAddress1,
             Optional<String> remitAddress2,
@@ -290,7 +290,7 @@ public final class VendorData {
     }
 
     @JsonProperty("paymentMethod")
-    public Optional<VendorPaymentMethod> getPaymentMethod() {
+    public Optional<String> getPaymentMethod() {
         return paymentMethod;
     }
 
@@ -489,7 +489,7 @@ public final class VendorData {
 
         private Optional<String> payeeName2 = Optional.empty();
 
-        private Optional<VendorPaymentMethod> paymentMethod = Optional.empty();
+        private Optional<String> paymentMethod = Optional.empty();
 
         private Optional<String> phone = Optional.empty();
 
@@ -808,12 +808,12 @@ public final class VendorData {
         }
 
         @JsonSetter(value = "paymentMethod", nulls = Nulls.SKIP)
-        public Builder paymentMethod(Optional<VendorPaymentMethod> paymentMethod) {
+        public Builder paymentMethod(Optional<String> paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
 
-        public Builder paymentMethod(VendorPaymentMethod paymentMethod) {
+        public Builder paymentMethod(String paymentMethod) {
             this.paymentMethod = Optional.ofNullable(paymentMethod);
             return this;
         }

@@ -12,10 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.payabli.api.core.ObjectMappers;
-import com.payabli.api.types.Contacts;
-import com.payabli.api.types.VendorPaymentMethod;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,63 +21,63 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VCardGetResponseAssociatedVendor.Builder.class)
 public final class VCardGetResponseAssociatedVendor {
-    private final Optional<String> additionalData;
-
-    private final Optional<String> address1;
-
-    private final Optional<String> address2;
-
-    private final Optional<VCardGetResponseAssociatedVendorBillingData> billingData;
-
-    private final Optional<String> city;
-
-    private final Optional<Contacts> contacts;
-
-    private final Optional<String> country;
-
-    private final Optional<OffsetDateTime> createdDate;
-
-    private final Optional<String> customerVendorAccount;
-
-    private final Optional<String> customField1;
-
-    private final Optional<String> customField2;
-
-    private final Optional<String> ein;
-
-    private final Optional<String> email;
-
-    private final Optional<String> enrollmentStatus;
-
-    private final Optional<String> externalPaypointId;
-
-    private final Optional<Integer> internalReferenceId;
-
-    private final Optional<OffsetDateTime> lastUpdated;
-
-    private final Optional<String> locationCode;
-
-    private final Optional<String> mcc;
+    private final Optional<String> vendorNumber;
 
     private final Optional<String> name1;
 
     private final Optional<String> name2;
 
-    private final Optional<String> parentOrgName;
+    private final Optional<String> ein;
 
-    private final Optional<String> payeeName1;
+    private final Optional<String> phone;
 
-    private final Optional<String> payeeName2;
+    private final Optional<String> email;
 
-    private final Optional<VendorPaymentMethod> paymentMethod;
+    private final Optional<String> remitEmail;
+
+    private final Optional<String> address1;
+
+    private final Optional<String> address2;
+
+    private final Optional<String> city;
+
+    private final Optional<String> state;
+
+    private final Optional<String> zip;
+
+    private final Optional<String> country;
+
+    private final Optional<String> mcc;
+
+    private final Optional<String> locationCode;
+
+    private final Optional<List<VCardGetResponseContact>> contacts;
+
+    private final Optional<VCardGetResponseAssociatedVendorBillingData> billingData;
+
+    private final Optional<String> paymentMethod;
+
+    private final Optional<Integer> vendorStatus;
+
+    private final Optional<Integer> vendorId;
+
+    private final Optional<String> enrollmentStatus;
+
+    private final Optional<VCardGetResponseAssociatedVendorSummary> summary;
+
+    private final Optional<String> paypointLegalname;
 
     private final Optional<String> paypointDbaname;
 
     private final Optional<String> paypointEntryname;
 
-    private final Optional<String> paypointLegalname;
+    private final Optional<String> parentOrgName;
 
-    private final Optional<String> phone;
+    private final Optional<Integer> parentOrgId;
+
+    private final Optional<String> createdDate;
+
+    private final Optional<String> lastUpdated;
 
     private final Optional<String> remitAddress1;
 
@@ -87,119 +85,179 @@ public final class VCardGetResponseAssociatedVendor {
 
     private final Optional<String> remitCity;
 
-    private final Optional<String> remitCountry;
-
     private final Optional<String> remitState;
 
     private final Optional<String> remitZip;
 
-    private final Optional<String> state;
+    private final Optional<String> remitCountry;
 
-    private final Optional<VCardGetResponseAssociatedVendorSummary> summary;
+    private final Optional<String> payeeName1;
 
-    private final Optional<Integer> vendorId;
+    private final Optional<String> payeeName2;
 
-    private final Optional<String> vendorNumber;
+    private final Optional<String> customField1;
 
-    private final Optional<Integer> vendorStatus;
+    private final Optional<String> customField2;
 
-    private final Optional<String> zip;
+    private final Optional<String> customerVendorAccount;
+
+    private final Optional<Integer> internalReferenceId;
+
+    private final Optional<String> additionalData;
+
+    private final Optional<String> externalPaypointId;
+
+    private final Optional<String> storedMethods;
 
     private final Map<String, Object> additionalProperties;
 
     private VCardGetResponseAssociatedVendor(
-            Optional<String> additionalData,
-            Optional<String> address1,
-            Optional<String> address2,
-            Optional<VCardGetResponseAssociatedVendorBillingData> billingData,
-            Optional<String> city,
-            Optional<Contacts> contacts,
-            Optional<String> country,
-            Optional<OffsetDateTime> createdDate,
-            Optional<String> customerVendorAccount,
-            Optional<String> customField1,
-            Optional<String> customField2,
-            Optional<String> ein,
-            Optional<String> email,
-            Optional<String> enrollmentStatus,
-            Optional<String> externalPaypointId,
-            Optional<Integer> internalReferenceId,
-            Optional<OffsetDateTime> lastUpdated,
-            Optional<String> locationCode,
-            Optional<String> mcc,
+            Optional<String> vendorNumber,
             Optional<String> name1,
             Optional<String> name2,
-            Optional<String> parentOrgName,
-            Optional<String> payeeName1,
-            Optional<String> payeeName2,
-            Optional<VendorPaymentMethod> paymentMethod,
+            Optional<String> ein,
+            Optional<String> phone,
+            Optional<String> email,
+            Optional<String> remitEmail,
+            Optional<String> address1,
+            Optional<String> address2,
+            Optional<String> city,
+            Optional<String> state,
+            Optional<String> zip,
+            Optional<String> country,
+            Optional<String> mcc,
+            Optional<String> locationCode,
+            Optional<List<VCardGetResponseContact>> contacts,
+            Optional<VCardGetResponseAssociatedVendorBillingData> billingData,
+            Optional<String> paymentMethod,
+            Optional<Integer> vendorStatus,
+            Optional<Integer> vendorId,
+            Optional<String> enrollmentStatus,
+            Optional<VCardGetResponseAssociatedVendorSummary> summary,
+            Optional<String> paypointLegalname,
             Optional<String> paypointDbaname,
             Optional<String> paypointEntryname,
-            Optional<String> paypointLegalname,
-            Optional<String> phone,
+            Optional<String> parentOrgName,
+            Optional<Integer> parentOrgId,
+            Optional<String> createdDate,
+            Optional<String> lastUpdated,
             Optional<String> remitAddress1,
             Optional<String> remitAddress2,
             Optional<String> remitCity,
-            Optional<String> remitCountry,
             Optional<String> remitState,
             Optional<String> remitZip,
-            Optional<String> state,
-            Optional<VCardGetResponseAssociatedVendorSummary> summary,
-            Optional<Integer> vendorId,
-            Optional<String> vendorNumber,
-            Optional<Integer> vendorStatus,
-            Optional<String> zip,
+            Optional<String> remitCountry,
+            Optional<String> payeeName1,
+            Optional<String> payeeName2,
+            Optional<String> customField1,
+            Optional<String> customField2,
+            Optional<String> customerVendorAccount,
+            Optional<Integer> internalReferenceId,
+            Optional<String> additionalData,
+            Optional<String> externalPaypointId,
+            Optional<String> storedMethods,
             Map<String, Object> additionalProperties) {
-        this.additionalData = additionalData;
-        this.address1 = address1;
-        this.address2 = address2;
-        this.billingData = billingData;
-        this.city = city;
-        this.contacts = contacts;
-        this.country = country;
-        this.createdDate = createdDate;
-        this.customerVendorAccount = customerVendorAccount;
-        this.customField1 = customField1;
-        this.customField2 = customField2;
-        this.ein = ein;
-        this.email = email;
-        this.enrollmentStatus = enrollmentStatus;
-        this.externalPaypointId = externalPaypointId;
-        this.internalReferenceId = internalReferenceId;
-        this.lastUpdated = lastUpdated;
-        this.locationCode = locationCode;
-        this.mcc = mcc;
+        this.vendorNumber = vendorNumber;
         this.name1 = name1;
         this.name2 = name2;
-        this.parentOrgName = parentOrgName;
-        this.payeeName1 = payeeName1;
-        this.payeeName2 = payeeName2;
+        this.ein = ein;
+        this.phone = phone;
+        this.email = email;
+        this.remitEmail = remitEmail;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.country = country;
+        this.mcc = mcc;
+        this.locationCode = locationCode;
+        this.contacts = contacts;
+        this.billingData = billingData;
         this.paymentMethod = paymentMethod;
+        this.vendorStatus = vendorStatus;
+        this.vendorId = vendorId;
+        this.enrollmentStatus = enrollmentStatus;
+        this.summary = summary;
+        this.paypointLegalname = paypointLegalname;
         this.paypointDbaname = paypointDbaname;
         this.paypointEntryname = paypointEntryname;
-        this.paypointLegalname = paypointLegalname;
-        this.phone = phone;
+        this.parentOrgName = parentOrgName;
+        this.parentOrgId = parentOrgId;
+        this.createdDate = createdDate;
+        this.lastUpdated = lastUpdated;
         this.remitAddress1 = remitAddress1;
         this.remitAddress2 = remitAddress2;
         this.remitCity = remitCity;
-        this.remitCountry = remitCountry;
         this.remitState = remitState;
         this.remitZip = remitZip;
-        this.state = state;
-        this.summary = summary;
-        this.vendorId = vendorId;
-        this.vendorNumber = vendorNumber;
-        this.vendorStatus = vendorStatus;
-        this.zip = zip;
+        this.remitCountry = remitCountry;
+        this.payeeName1 = payeeName1;
+        this.payeeName2 = payeeName2;
+        this.customField1 = customField1;
+        this.customField2 = customField2;
+        this.customerVendorAccount = customerVendorAccount;
+        this.internalReferenceId = internalReferenceId;
+        this.additionalData = additionalData;
+        this.externalPaypointId = externalPaypointId;
+        this.storedMethods = storedMethods;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return Field for additional data, if any.
+     * @return Unique code identifying the vendor.
      */
-    @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
-        return additionalData;
+    @JsonProperty("VendorNumber")
+    public Optional<String> getVendorNumber() {
+        return vendorNumber;
+    }
+
+    /**
+     * @return The primary name associated with the vendor.
+     */
+    @JsonProperty("Name1")
+    public Optional<String> getName1() {
+        return name1;
+    }
+
+    /**
+     * @return Additional name information for the vendor.
+     */
+    @JsonProperty("Name2")
+    public Optional<String> getName2() {
+        return name2;
+    }
+
+    /**
+     * @return Employer Identification Number of the vendor.
+     */
+    @JsonProperty("EIN")
+    public Optional<String> getEin() {
+        return ein;
+    }
+
+    /**
+     * @return Contact phone number of the vendor.
+     */
+    @JsonProperty("Phone")
+    public Optional<String> getPhone() {
+        return phone;
+    }
+
+    /**
+     * @return Contact email address of the vendor.
+     */
+    @JsonProperty("Email")
+    public Optional<String> getEmail() {
+        return email;
+    }
+
+    /**
+     * @return Email address for remittance.
+     */
+    @JsonProperty("RemitEmail")
+    public Optional<String> getRemitEmail() {
+        return remitEmail;
     }
 
     /**
@@ -219,14 +277,6 @@ public final class VCardGetResponseAssociatedVendor {
     }
 
     /**
-     * @return Billing data for the vendor.
-     */
-    @JsonProperty("BillingData")
-    public Optional<VCardGetResponseAssociatedVendorBillingData> getBillingData() {
-        return billingData;
-    }
-
-    /**
      * @return City where the vendor is located.
      */
     @JsonProperty("City")
@@ -234,9 +284,20 @@ public final class VCardGetResponseAssociatedVendor {
         return city;
     }
 
-    @JsonProperty("Contacts")
-    public Optional<Contacts> getContacts() {
-        return contacts;
+    /**
+     * @return State where the vendor is located.
+     */
+    @JsonProperty("State")
+    public Optional<String> getState() {
+        return state;
+    }
+
+    /**
+     * @return ZIP code for the vendor's location.
+     */
+    @JsonProperty("Zip")
+    public Optional<String> getZip() {
+        return zip;
     }
 
     /**
@@ -248,19 +309,174 @@ public final class VCardGetResponseAssociatedVendor {
     }
 
     /**
+     * @return Merchant Category Code for the vendor.
+     */
+    @JsonProperty("Mcc")
+    public Optional<String> getMcc() {
+        return mcc;
+    }
+
+    /**
+     * @return Unique location code for the vendor.
+     */
+    @JsonProperty("LocationCode")
+    public Optional<String> getLocationCode() {
+        return locationCode;
+    }
+
+    /**
+     * @return Array of objects describing the vendor's contacts.
+     */
+    @JsonProperty("Contacts")
+    public Optional<List<VCardGetResponseContact>> getContacts() {
+        return contacts;
+    }
+
+    /**
+     * @return Billing data for the vendor.
+     */
+    @JsonProperty("BillingData")
+    public Optional<VCardGetResponseAssociatedVendorBillingData> getBillingData() {
+        return billingData;
+    }
+
+    /**
+     * @return Preferred payment method for vendor.
+     */
+    @JsonProperty("PaymentMethod")
+    public Optional<String> getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    /**
+     * @return Status of the vendor.
+     */
+    @JsonProperty("VendorStatus")
+    public Optional<Integer> getVendorStatus() {
+        return vendorStatus;
+    }
+
+    /**
+     * @return Unique identifier for the vendor.
+     */
+    @JsonProperty("VendorId")
+    public Optional<Integer> getVendorId() {
+        return vendorId;
+    }
+
+    /**
+     * @return Enrollment status of the vendor.
+     */
+    @JsonProperty("EnrollmentStatus")
+    public Optional<String> getEnrollmentStatus() {
+        return enrollmentStatus;
+    }
+
+    /**
+     * @return Summary of vendor's billing and transaction status.
+     */
+    @JsonProperty("Summary")
+    public Optional<VCardGetResponseAssociatedVendorSummary> getSummary() {
+        return summary;
+    }
+
+    /**
+     * @return Legal name of the paypoint.
+     */
+    @JsonProperty("PaypointLegalname")
+    public Optional<String> getPaypointLegalname() {
+        return paypointLegalname;
+    }
+
+    /**
+     * @return DBA name of the paypoint.
+     */
+    @JsonProperty("PaypointDbaname")
+    public Optional<String> getPaypointDbaname() {
+        return paypointDbaname;
+    }
+
+    /**
+     * @return Entryname of the paypoint.
+     */
+    @JsonProperty("PaypointEntryname")
+    public Optional<String> getPaypointEntryname() {
+        return paypointEntryname;
+    }
+
+    @JsonProperty("ParentOrgName")
+    public Optional<String> getParentOrgName() {
+        return parentOrgName;
+    }
+
+    /**
+     * @return ID of the parent organization.
+     */
+    @JsonProperty("ParentOrgId")
+    public Optional<Integer> getParentOrgId() {
+        return parentOrgId;
+    }
+
+    /**
      * @return Date when the vendor record was created.
      */
     @JsonProperty("CreatedDate")
-    public Optional<OffsetDateTime> getCreatedDate() {
+    public Optional<String> getCreatedDate() {
         return createdDate;
     }
 
     /**
-     * @return Account number of paypoint in the vendor side.
+     * @return Date when the vendor's information was last updated.
      */
-    @JsonProperty("customerVendorAccount")
-    public Optional<String> getCustomerVendorAccount() {
-        return customerVendorAccount;
+    @JsonProperty("LastUpdated")
+    public Optional<String> getLastUpdated() {
+        return lastUpdated;
+    }
+
+    @JsonProperty("remitAddress1")
+    public Optional<String> getRemitAddress1() {
+        return remitAddress1;
+    }
+
+    @JsonProperty("remitAddress2")
+    public Optional<String> getRemitAddress2() {
+        return remitAddress2;
+    }
+
+    @JsonProperty("remitCity")
+    public Optional<String> getRemitCity() {
+        return remitCity;
+    }
+
+    @JsonProperty("remitState")
+    public Optional<String> getRemitState() {
+        return remitState;
+    }
+
+    @JsonProperty("remitZip")
+    public Optional<String> getRemitZip() {
+        return remitZip;
+    }
+
+    @JsonProperty("remitCountry")
+    public Optional<String> getRemitCountry() {
+        return remitCountry;
+    }
+
+    /**
+     * @return Primary name of the payee.
+     */
+    @JsonProperty("payeeName1")
+    public Optional<String> getPayeeName1() {
+        return payeeName1;
+    }
+
+    /**
+     * @return Secondary name of the payee.
+     */
+    @JsonProperty("payeeName2")
+    public Optional<String> getPayeeName2() {
+        return payeeName2;
     }
 
     /**
@@ -280,32 +496,11 @@ public final class VCardGetResponseAssociatedVendor {
     }
 
     /**
-     * @return Employer Identification Number of the vendor.
+     * @return Account number of paypoint in the vendor side.
      */
-    @JsonProperty("EIN")
-    public Optional<String> getEin() {
-        return ein;
-    }
-
-    /**
-     * @return Contact email address of the vendor.
-     */
-    @JsonProperty("Email")
-    public Optional<String> getEmail() {
-        return email;
-    }
-
-    /**
-     * @return Enrollment status of the vendor.
-     */
-    @JsonProperty("EnrollmentStatus")
-    public Optional<String> getEnrollmentStatus() {
-        return enrollmentStatus;
-    }
-
-    @JsonProperty("externalPaypointID")
-    public Optional<String> getExternalPaypointId() {
-        return externalPaypointId;
+    @JsonProperty("customerVendorAccount")
+    public Optional<String> getCustomerVendorAccount() {
+        return customerVendorAccount;
     }
 
     /**
@@ -317,179 +512,24 @@ public final class VCardGetResponseAssociatedVendor {
     }
 
     /**
-     * @return Date when the vendor's information was last updated.
+     * @return Field for additional data, if any.
      */
-    @JsonProperty("LastUpdated")
-    public Optional<OffsetDateTime> getLastUpdated() {
-        return lastUpdated;
+    @JsonProperty("additionalData")
+    public Optional<String> getAdditionalData() {
+        return additionalData;
+    }
+
+    @JsonProperty("externalPaypointID")
+    public Optional<String> getExternalPaypointId() {
+        return externalPaypointId;
     }
 
     /**
-     * @return Unique location code for the vendor.
+     * @return Stored payment methods for the vendor.
      */
-    @JsonProperty("LocationCode")
-    public Optional<String> getLocationCode() {
-        return locationCode;
-    }
-
-    /**
-     * @return Merchant Category Code for the vendor.
-     */
-    @JsonProperty("Mcc")
-    public Optional<String> getMcc() {
-        return mcc;
-    }
-
-    /**
-     * @return The primary name associated with the vendor.
-     */
-    @JsonProperty("Name1")
-    public Optional<String> getName1() {
-        return name1;
-    }
-
-    /**
-     * @return Additional name information for the vendor.
-     */
-    @JsonProperty("Name2")
-    public Optional<String> getName2() {
-        return name2;
-    }
-
-    @JsonProperty("ParentOrgName")
-    public Optional<String> getParentOrgName() {
-        return parentOrgName;
-    }
-
-    /**
-     * @return Primary name of the payee.
-     */
-    @JsonProperty("payeeName1")
-    public Optional<String> getPayeeName1() {
-        return payeeName1;
-    }
-
-    /**
-     * @return Secondary name of the payee.
-     */
-    @JsonProperty("payeeName2")
-    public Optional<String> getPayeeName2() {
-        return payeeName2;
-    }
-
-    @JsonProperty("paymentMethod")
-    public Optional<VendorPaymentMethod> getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    /**
-     * @return DBA name of the paypoint.
-     */
-    @JsonProperty("PaypointDbaname")
-    public Optional<String> getPaypointDbaname() {
-        return paypointDbaname;
-    }
-
-    /**
-     * @return Entryname of the paypoint.
-     */
-    @JsonProperty("PaypointEntryname")
-    public Optional<String> getPaypointEntryname() {
-        return paypointEntryname;
-    }
-
-    /**
-     * @return Legal name of the paypoint.
-     */
-    @JsonProperty("PaypointLegalname")
-    public Optional<String> getPaypointLegalname() {
-        return paypointLegalname;
-    }
-
-    /**
-     * @return Contact phone number of the vendor.
-     */
-    @JsonProperty("Phone")
-    public Optional<String> getPhone() {
-        return phone;
-    }
-
-    @JsonProperty("remitAddress1")
-    public Optional<String> getRemitAddress1() {
-        return remitAddress1;
-    }
-
-    @JsonProperty("remitAddress2")
-    public Optional<String> getRemitAddress2() {
-        return remitAddress2;
-    }
-
-    @JsonProperty("remitCity")
-    public Optional<String> getRemitCity() {
-        return remitCity;
-    }
-
-    @JsonProperty("remitCountry")
-    public Optional<String> getRemitCountry() {
-        return remitCountry;
-    }
-
-    @JsonProperty("remitState")
-    public Optional<String> getRemitState() {
-        return remitState;
-    }
-
-    @JsonProperty("remitZip")
-    public Optional<String> getRemitZip() {
-        return remitZip;
-    }
-
-    /**
-     * @return State where the vendor is located.
-     */
-    @JsonProperty("State")
-    public Optional<String> getState() {
-        return state;
-    }
-
-    /**
-     * @return Summary of vendor's billing and transaction status.
-     */
-    @JsonProperty("Summary")
-    public Optional<VCardGetResponseAssociatedVendorSummary> getSummary() {
-        return summary;
-    }
-
-    /**
-     * @return Unique identifier for the vendor.
-     */
-    @JsonProperty("VendorId")
-    public Optional<Integer> getVendorId() {
-        return vendorId;
-    }
-
-    /**
-     * @return Unique code identifying the vendor.
-     */
-    @JsonProperty("VendorNumber")
-    public Optional<String> getVendorNumber() {
-        return vendorNumber;
-    }
-
-    /**
-     * @return Status of the vendor.
-     */
-    @JsonProperty("VendorStatus")
-    public Optional<Integer> getVendorStatus() {
-        return vendorStatus;
-    }
-
-    /**
-     * @return ZIP code for the vendor's location.
-     */
-    @JsonProperty("Zip")
-    public Optional<String> getZip() {
-        return zip;
+    @JsonProperty("StoredMethods")
+    public Optional<String> getStoredMethods() {
+        return storedMethods;
     }
 
     @java.lang.Override
@@ -504,93 +544,99 @@ public final class VCardGetResponseAssociatedVendor {
     }
 
     private boolean equalTo(VCardGetResponseAssociatedVendor other) {
-        return additionalData.equals(other.additionalData)
-                && address1.equals(other.address1)
-                && address2.equals(other.address2)
-                && billingData.equals(other.billingData)
-                && city.equals(other.city)
-                && contacts.equals(other.contacts)
-                && country.equals(other.country)
-                && createdDate.equals(other.createdDate)
-                && customerVendorAccount.equals(other.customerVendorAccount)
-                && customField1.equals(other.customField1)
-                && customField2.equals(other.customField2)
-                && ein.equals(other.ein)
-                && email.equals(other.email)
-                && enrollmentStatus.equals(other.enrollmentStatus)
-                && externalPaypointId.equals(other.externalPaypointId)
-                && internalReferenceId.equals(other.internalReferenceId)
-                && lastUpdated.equals(other.lastUpdated)
-                && locationCode.equals(other.locationCode)
-                && mcc.equals(other.mcc)
+        return vendorNumber.equals(other.vendorNumber)
                 && name1.equals(other.name1)
                 && name2.equals(other.name2)
-                && parentOrgName.equals(other.parentOrgName)
-                && payeeName1.equals(other.payeeName1)
-                && payeeName2.equals(other.payeeName2)
+                && ein.equals(other.ein)
+                && phone.equals(other.phone)
+                && email.equals(other.email)
+                && remitEmail.equals(other.remitEmail)
+                && address1.equals(other.address1)
+                && address2.equals(other.address2)
+                && city.equals(other.city)
+                && state.equals(other.state)
+                && zip.equals(other.zip)
+                && country.equals(other.country)
+                && mcc.equals(other.mcc)
+                && locationCode.equals(other.locationCode)
+                && contacts.equals(other.contacts)
+                && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
+                && vendorStatus.equals(other.vendorStatus)
+                && vendorId.equals(other.vendorId)
+                && enrollmentStatus.equals(other.enrollmentStatus)
+                && summary.equals(other.summary)
+                && paypointLegalname.equals(other.paypointLegalname)
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointEntryname.equals(other.paypointEntryname)
-                && paypointLegalname.equals(other.paypointLegalname)
-                && phone.equals(other.phone)
+                && parentOrgName.equals(other.parentOrgName)
+                && parentOrgId.equals(other.parentOrgId)
+                && createdDate.equals(other.createdDate)
+                && lastUpdated.equals(other.lastUpdated)
                 && remitAddress1.equals(other.remitAddress1)
                 && remitAddress2.equals(other.remitAddress2)
                 && remitCity.equals(other.remitCity)
-                && remitCountry.equals(other.remitCountry)
                 && remitState.equals(other.remitState)
                 && remitZip.equals(other.remitZip)
-                && state.equals(other.state)
-                && summary.equals(other.summary)
-                && vendorId.equals(other.vendorId)
-                && vendorNumber.equals(other.vendorNumber)
-                && vendorStatus.equals(other.vendorStatus)
-                && zip.equals(other.zip);
+                && remitCountry.equals(other.remitCountry)
+                && payeeName1.equals(other.payeeName1)
+                && payeeName2.equals(other.payeeName2)
+                && customField1.equals(other.customField1)
+                && customField2.equals(other.customField2)
+                && customerVendorAccount.equals(other.customerVendorAccount)
+                && internalReferenceId.equals(other.internalReferenceId)
+                && additionalData.equals(other.additionalData)
+                && externalPaypointId.equals(other.externalPaypointId)
+                && storedMethods.equals(other.storedMethods);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.additionalData,
-                this.address1,
-                this.address2,
-                this.billingData,
-                this.city,
-                this.contacts,
-                this.country,
-                this.createdDate,
-                this.customerVendorAccount,
-                this.customField1,
-                this.customField2,
-                this.ein,
-                this.email,
-                this.enrollmentStatus,
-                this.externalPaypointId,
-                this.internalReferenceId,
-                this.lastUpdated,
-                this.locationCode,
-                this.mcc,
+                this.vendorNumber,
                 this.name1,
                 this.name2,
-                this.parentOrgName,
-                this.payeeName1,
-                this.payeeName2,
+                this.ein,
+                this.phone,
+                this.email,
+                this.remitEmail,
+                this.address1,
+                this.address2,
+                this.city,
+                this.state,
+                this.zip,
+                this.country,
+                this.mcc,
+                this.locationCode,
+                this.contacts,
+                this.billingData,
                 this.paymentMethod,
+                this.vendorStatus,
+                this.vendorId,
+                this.enrollmentStatus,
+                this.summary,
+                this.paypointLegalname,
                 this.paypointDbaname,
                 this.paypointEntryname,
-                this.paypointLegalname,
-                this.phone,
+                this.parentOrgName,
+                this.parentOrgId,
+                this.createdDate,
+                this.lastUpdated,
                 this.remitAddress1,
                 this.remitAddress2,
                 this.remitCity,
-                this.remitCountry,
                 this.remitState,
                 this.remitZip,
-                this.state,
-                this.summary,
-                this.vendorId,
-                this.vendorNumber,
-                this.vendorStatus,
-                this.zip);
+                this.remitCountry,
+                this.payeeName1,
+                this.payeeName2,
+                this.customField1,
+                this.customField2,
+                this.customerVendorAccount,
+                this.internalReferenceId,
+                this.additionalData,
+                this.externalPaypointId,
+                this.storedMethods);
     }
 
     @java.lang.Override
@@ -604,63 +650,63 @@ public final class VCardGetResponseAssociatedVendor {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> additionalData = Optional.empty();
-
-        private Optional<String> address1 = Optional.empty();
-
-        private Optional<String> address2 = Optional.empty();
-
-        private Optional<VCardGetResponseAssociatedVendorBillingData> billingData = Optional.empty();
-
-        private Optional<String> city = Optional.empty();
-
-        private Optional<Contacts> contacts = Optional.empty();
-
-        private Optional<String> country = Optional.empty();
-
-        private Optional<OffsetDateTime> createdDate = Optional.empty();
-
-        private Optional<String> customerVendorAccount = Optional.empty();
-
-        private Optional<String> customField1 = Optional.empty();
-
-        private Optional<String> customField2 = Optional.empty();
-
-        private Optional<String> ein = Optional.empty();
-
-        private Optional<String> email = Optional.empty();
-
-        private Optional<String> enrollmentStatus = Optional.empty();
-
-        private Optional<String> externalPaypointId = Optional.empty();
-
-        private Optional<Integer> internalReferenceId = Optional.empty();
-
-        private Optional<OffsetDateTime> lastUpdated = Optional.empty();
-
-        private Optional<String> locationCode = Optional.empty();
-
-        private Optional<String> mcc = Optional.empty();
+        private Optional<String> vendorNumber = Optional.empty();
 
         private Optional<String> name1 = Optional.empty();
 
         private Optional<String> name2 = Optional.empty();
 
-        private Optional<String> parentOrgName = Optional.empty();
+        private Optional<String> ein = Optional.empty();
 
-        private Optional<String> payeeName1 = Optional.empty();
+        private Optional<String> phone = Optional.empty();
 
-        private Optional<String> payeeName2 = Optional.empty();
+        private Optional<String> email = Optional.empty();
 
-        private Optional<VendorPaymentMethod> paymentMethod = Optional.empty();
+        private Optional<String> remitEmail = Optional.empty();
+
+        private Optional<String> address1 = Optional.empty();
+
+        private Optional<String> address2 = Optional.empty();
+
+        private Optional<String> city = Optional.empty();
+
+        private Optional<String> state = Optional.empty();
+
+        private Optional<String> zip = Optional.empty();
+
+        private Optional<String> country = Optional.empty();
+
+        private Optional<String> mcc = Optional.empty();
+
+        private Optional<String> locationCode = Optional.empty();
+
+        private Optional<List<VCardGetResponseContact>> contacts = Optional.empty();
+
+        private Optional<VCardGetResponseAssociatedVendorBillingData> billingData = Optional.empty();
+
+        private Optional<String> paymentMethod = Optional.empty();
+
+        private Optional<Integer> vendorStatus = Optional.empty();
+
+        private Optional<Integer> vendorId = Optional.empty();
+
+        private Optional<String> enrollmentStatus = Optional.empty();
+
+        private Optional<VCardGetResponseAssociatedVendorSummary> summary = Optional.empty();
+
+        private Optional<String> paypointLegalname = Optional.empty();
 
         private Optional<String> paypointDbaname = Optional.empty();
 
         private Optional<String> paypointEntryname = Optional.empty();
 
-        private Optional<String> paypointLegalname = Optional.empty();
+        private Optional<String> parentOrgName = Optional.empty();
 
-        private Optional<String> phone = Optional.empty();
+        private Optional<Integer> parentOrgId = Optional.empty();
+
+        private Optional<String> createdDate = Optional.empty();
+
+        private Optional<String> lastUpdated = Optional.empty();
 
         private Optional<String> remitAddress1 = Optional.empty();
 
@@ -668,23 +714,29 @@ public final class VCardGetResponseAssociatedVendor {
 
         private Optional<String> remitCity = Optional.empty();
 
-        private Optional<String> remitCountry = Optional.empty();
-
         private Optional<String> remitState = Optional.empty();
 
         private Optional<String> remitZip = Optional.empty();
 
-        private Optional<String> state = Optional.empty();
+        private Optional<String> remitCountry = Optional.empty();
 
-        private Optional<VCardGetResponseAssociatedVendorSummary> summary = Optional.empty();
+        private Optional<String> payeeName1 = Optional.empty();
 
-        private Optional<Integer> vendorId = Optional.empty();
+        private Optional<String> payeeName2 = Optional.empty();
 
-        private Optional<String> vendorNumber = Optional.empty();
+        private Optional<String> customField1 = Optional.empty();
 
-        private Optional<Integer> vendorStatus = Optional.empty();
+        private Optional<String> customField2 = Optional.empty();
 
-        private Optional<String> zip = Optional.empty();
+        private Optional<String> customerVendorAccount = Optional.empty();
+
+        private Optional<Integer> internalReferenceId = Optional.empty();
+
+        private Optional<String> additionalData = Optional.empty();
+
+        private Optional<String> externalPaypointId = Optional.empty();
+
+        private Optional<String> storedMethods = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -692,61 +744,148 @@ public final class VCardGetResponseAssociatedVendor {
         private Builder() {}
 
         public Builder from(VCardGetResponseAssociatedVendor other) {
-            additionalData(other.getAdditionalData());
-            address1(other.getAddress1());
-            address2(other.getAddress2());
-            billingData(other.getBillingData());
-            city(other.getCity());
-            contacts(other.getContacts());
-            country(other.getCountry());
-            createdDate(other.getCreatedDate());
-            customerVendorAccount(other.getCustomerVendorAccount());
-            customField1(other.getCustomField1());
-            customField2(other.getCustomField2());
-            ein(other.getEin());
-            email(other.getEmail());
-            enrollmentStatus(other.getEnrollmentStatus());
-            externalPaypointId(other.getExternalPaypointId());
-            internalReferenceId(other.getInternalReferenceId());
-            lastUpdated(other.getLastUpdated());
-            locationCode(other.getLocationCode());
-            mcc(other.getMcc());
+            vendorNumber(other.getVendorNumber());
             name1(other.getName1());
             name2(other.getName2());
-            parentOrgName(other.getParentOrgName());
-            payeeName1(other.getPayeeName1());
-            payeeName2(other.getPayeeName2());
+            ein(other.getEin());
+            phone(other.getPhone());
+            email(other.getEmail());
+            remitEmail(other.getRemitEmail());
+            address1(other.getAddress1());
+            address2(other.getAddress2());
+            city(other.getCity());
+            state(other.getState());
+            zip(other.getZip());
+            country(other.getCountry());
+            mcc(other.getMcc());
+            locationCode(other.getLocationCode());
+            contacts(other.getContacts());
+            billingData(other.getBillingData());
             paymentMethod(other.getPaymentMethod());
+            vendorStatus(other.getVendorStatus());
+            vendorId(other.getVendorId());
+            enrollmentStatus(other.getEnrollmentStatus());
+            summary(other.getSummary());
+            paypointLegalname(other.getPaypointLegalname());
             paypointDbaname(other.getPaypointDbaname());
             paypointEntryname(other.getPaypointEntryname());
-            paypointLegalname(other.getPaypointLegalname());
-            phone(other.getPhone());
+            parentOrgName(other.getParentOrgName());
+            parentOrgId(other.getParentOrgId());
+            createdDate(other.getCreatedDate());
+            lastUpdated(other.getLastUpdated());
             remitAddress1(other.getRemitAddress1());
             remitAddress2(other.getRemitAddress2());
             remitCity(other.getRemitCity());
-            remitCountry(other.getRemitCountry());
             remitState(other.getRemitState());
             remitZip(other.getRemitZip());
-            state(other.getState());
-            summary(other.getSummary());
-            vendorId(other.getVendorId());
-            vendorNumber(other.getVendorNumber());
-            vendorStatus(other.getVendorStatus());
-            zip(other.getZip());
+            remitCountry(other.getRemitCountry());
+            payeeName1(other.getPayeeName1());
+            payeeName2(other.getPayeeName2());
+            customField1(other.getCustomField1());
+            customField2(other.getCustomField2());
+            customerVendorAccount(other.getCustomerVendorAccount());
+            internalReferenceId(other.getInternalReferenceId());
+            additionalData(other.getAdditionalData());
+            externalPaypointId(other.getExternalPaypointId());
+            storedMethods(other.getStoredMethods());
             return this;
         }
 
         /**
-         * <p>Field for additional data, if any.</p>
+         * <p>Unique code identifying the vendor.</p>
          */
-        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
-            this.additionalData = additionalData;
+        @JsonSetter(value = "VendorNumber", nulls = Nulls.SKIP)
+        public Builder vendorNumber(Optional<String> vendorNumber) {
+            this.vendorNumber = vendorNumber;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
-            this.additionalData = Optional.ofNullable(additionalData);
+        public Builder vendorNumber(String vendorNumber) {
+            this.vendorNumber = Optional.ofNullable(vendorNumber);
+            return this;
+        }
+
+        /**
+         * <p>The primary name associated with the vendor.</p>
+         */
+        @JsonSetter(value = "Name1", nulls = Nulls.SKIP)
+        public Builder name1(Optional<String> name1) {
+            this.name1 = name1;
+            return this;
+        }
+
+        public Builder name1(String name1) {
+            this.name1 = Optional.ofNullable(name1);
+            return this;
+        }
+
+        /**
+         * <p>Additional name information for the vendor.</p>
+         */
+        @JsonSetter(value = "Name2", nulls = Nulls.SKIP)
+        public Builder name2(Optional<String> name2) {
+            this.name2 = name2;
+            return this;
+        }
+
+        public Builder name2(String name2) {
+            this.name2 = Optional.ofNullable(name2);
+            return this;
+        }
+
+        /**
+         * <p>Employer Identification Number of the vendor.</p>
+         */
+        @JsonSetter(value = "EIN", nulls = Nulls.SKIP)
+        public Builder ein(Optional<String> ein) {
+            this.ein = ein;
+            return this;
+        }
+
+        public Builder ein(String ein) {
+            this.ein = Optional.ofNullable(ein);
+            return this;
+        }
+
+        /**
+         * <p>Contact phone number of the vendor.</p>
+         */
+        @JsonSetter(value = "Phone", nulls = Nulls.SKIP)
+        public Builder phone(Optional<String> phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = Optional.ofNullable(phone);
+            return this;
+        }
+
+        /**
+         * <p>Contact email address of the vendor.</p>
+         */
+        @JsonSetter(value = "Email", nulls = Nulls.SKIP)
+        public Builder email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
+        /**
+         * <p>Email address for remittance.</p>
+         */
+        @JsonSetter(value = "RemitEmail", nulls = Nulls.SKIP)
+        public Builder remitEmail(Optional<String> remitEmail) {
+            this.remitEmail = remitEmail;
+            return this;
+        }
+
+        public Builder remitEmail(String remitEmail) {
+            this.remitEmail = Optional.ofNullable(remitEmail);
             return this;
         }
 
@@ -779,20 +918,6 @@ public final class VCardGetResponseAssociatedVendor {
         }
 
         /**
-         * <p>Billing data for the vendor.</p>
-         */
-        @JsonSetter(value = "BillingData", nulls = Nulls.SKIP)
-        public Builder billingData(Optional<VCardGetResponseAssociatedVendorBillingData> billingData) {
-            this.billingData = billingData;
-            return this;
-        }
-
-        public Builder billingData(VCardGetResponseAssociatedVendorBillingData billingData) {
-            this.billingData = Optional.ofNullable(billingData);
-            return this;
-        }
-
-        /**
          * <p>City where the vendor is located.</p>
          */
         @JsonSetter(value = "City", nulls = Nulls.SKIP)
@@ -806,14 +931,31 @@ public final class VCardGetResponseAssociatedVendor {
             return this;
         }
 
-        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
-        public Builder contacts(Optional<Contacts> contacts) {
-            this.contacts = contacts;
+        /**
+         * <p>State where the vendor is located.</p>
+         */
+        @JsonSetter(value = "State", nulls = Nulls.SKIP)
+        public Builder state(Optional<String> state) {
+            this.state = state;
             return this;
         }
 
-        public Builder contacts(Contacts contacts) {
-            this.contacts = Optional.ofNullable(contacts);
+        public Builder state(String state) {
+            this.state = Optional.ofNullable(state);
+            return this;
+        }
+
+        /**
+         * <p>ZIP code for the vendor's location.</p>
+         */
+        @JsonSetter(value = "Zip", nulls = Nulls.SKIP)
+        public Builder zip(Optional<String> zip) {
+            this.zip = zip;
+            return this;
+        }
+
+        public Builder zip(String zip) {
+            this.zip = Optional.ofNullable(zip);
             return this;
         }
 
@@ -832,139 +974,16 @@ public final class VCardGetResponseAssociatedVendor {
         }
 
         /**
-         * <p>Date when the vendor record was created.</p>
+         * <p>Merchant Category Code for the vendor.</p>
          */
-        @JsonSetter(value = "CreatedDate", nulls = Nulls.SKIP)
-        public Builder createdDate(Optional<OffsetDateTime> createdDate) {
-            this.createdDate = createdDate;
+        @JsonSetter(value = "Mcc", nulls = Nulls.SKIP)
+        public Builder mcc(Optional<String> mcc) {
+            this.mcc = mcc;
             return this;
         }
 
-        public Builder createdDate(OffsetDateTime createdDate) {
-            this.createdDate = Optional.ofNullable(createdDate);
-            return this;
-        }
-
-        /**
-         * <p>Account number of paypoint in the vendor side.</p>
-         */
-        @JsonSetter(value = "customerVendorAccount", nulls = Nulls.SKIP)
-        public Builder customerVendorAccount(Optional<String> customerVendorAccount) {
-            this.customerVendorAccount = customerVendorAccount;
-            return this;
-        }
-
-        public Builder customerVendorAccount(String customerVendorAccount) {
-            this.customerVendorAccount = Optional.ofNullable(customerVendorAccount);
-            return this;
-        }
-
-        /**
-         * <p>A custom field for additional data.</p>
-         */
-        @JsonSetter(value = "customField1", nulls = Nulls.SKIP)
-        public Builder customField1(Optional<String> customField1) {
-            this.customField1 = customField1;
-            return this;
-        }
-
-        public Builder customField1(String customField1) {
-            this.customField1 = Optional.ofNullable(customField1);
-            return this;
-        }
-
-        /**
-         * <p>Another custom field for extra data.</p>
-         */
-        @JsonSetter(value = "customField2", nulls = Nulls.SKIP)
-        public Builder customField2(Optional<String> customField2) {
-            this.customField2 = customField2;
-            return this;
-        }
-
-        public Builder customField2(String customField2) {
-            this.customField2 = Optional.ofNullable(customField2);
-            return this;
-        }
-
-        /**
-         * <p>Employer Identification Number of the vendor.</p>
-         */
-        @JsonSetter(value = "EIN", nulls = Nulls.SKIP)
-        public Builder ein(Optional<String> ein) {
-            this.ein = ein;
-            return this;
-        }
-
-        public Builder ein(String ein) {
-            this.ein = Optional.ofNullable(ein);
-            return this;
-        }
-
-        /**
-         * <p>Contact email address of the vendor.</p>
-         */
-        @JsonSetter(value = "Email", nulls = Nulls.SKIP)
-        public Builder email(Optional<String> email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = Optional.ofNullable(email);
-            return this;
-        }
-
-        /**
-         * <p>Enrollment status of the vendor.</p>
-         */
-        @JsonSetter(value = "EnrollmentStatus", nulls = Nulls.SKIP)
-        public Builder enrollmentStatus(Optional<String> enrollmentStatus) {
-            this.enrollmentStatus = enrollmentStatus;
-            return this;
-        }
-
-        public Builder enrollmentStatus(String enrollmentStatus) {
-            this.enrollmentStatus = Optional.ofNullable(enrollmentStatus);
-            return this;
-        }
-
-        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
-        public Builder externalPaypointId(Optional<String> externalPaypointId) {
-            this.externalPaypointId = externalPaypointId;
-            return this;
-        }
-
-        public Builder externalPaypointId(String externalPaypointId) {
-            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
-            return this;
-        }
-
-        /**
-         * <p>Internal reference ID used within the system.</p>
-         */
-        @JsonSetter(value = "InternalReferenceId", nulls = Nulls.SKIP)
-        public Builder internalReferenceId(Optional<Integer> internalReferenceId) {
-            this.internalReferenceId = internalReferenceId;
-            return this;
-        }
-
-        public Builder internalReferenceId(Integer internalReferenceId) {
-            this.internalReferenceId = Optional.ofNullable(internalReferenceId);
-            return this;
-        }
-
-        /**
-         * <p>Date when the vendor's information was last updated.</p>
-         */
-        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
-        public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
-            this.lastUpdated = lastUpdated;
-            return this;
-        }
-
-        public Builder lastUpdated(OffsetDateTime lastUpdated) {
-            this.lastUpdated = Optional.ofNullable(lastUpdated);
+        public Builder mcc(String mcc) {
+            this.mcc = Optional.ofNullable(mcc);
             return this;
         }
 
@@ -983,94 +1002,114 @@ public final class VCardGetResponseAssociatedVendor {
         }
 
         /**
-         * <p>Merchant Category Code for the vendor.</p>
+         * <p>Array of objects describing the vendor's contacts.</p>
          */
-        @JsonSetter(value = "Mcc", nulls = Nulls.SKIP)
-        public Builder mcc(Optional<String> mcc) {
-            this.mcc = mcc;
+        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
+        public Builder contacts(Optional<List<VCardGetResponseContact>> contacts) {
+            this.contacts = contacts;
             return this;
         }
 
-        public Builder mcc(String mcc) {
-            this.mcc = Optional.ofNullable(mcc);
+        public Builder contacts(List<VCardGetResponseContact> contacts) {
+            this.contacts = Optional.ofNullable(contacts);
             return this;
         }
 
         /**
-         * <p>The primary name associated with the vendor.</p>
+         * <p>Billing data for the vendor.</p>
          */
-        @JsonSetter(value = "Name1", nulls = Nulls.SKIP)
-        public Builder name1(Optional<String> name1) {
-            this.name1 = name1;
+        @JsonSetter(value = "BillingData", nulls = Nulls.SKIP)
+        public Builder billingData(Optional<VCardGetResponseAssociatedVendorBillingData> billingData) {
+            this.billingData = billingData;
             return this;
         }
 
-        public Builder name1(String name1) {
-            this.name1 = Optional.ofNullable(name1);
+        public Builder billingData(VCardGetResponseAssociatedVendorBillingData billingData) {
+            this.billingData = Optional.ofNullable(billingData);
             return this;
         }
 
         /**
-         * <p>Additional name information for the vendor.</p>
+         * <p>Preferred payment method for vendor.</p>
          */
-        @JsonSetter(value = "Name2", nulls = Nulls.SKIP)
-        public Builder name2(Optional<String> name2) {
-            this.name2 = name2;
-            return this;
-        }
-
-        public Builder name2(String name2) {
-            this.name2 = Optional.ofNullable(name2);
-            return this;
-        }
-
-        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
-        public Builder parentOrgName(Optional<String> parentOrgName) {
-            this.parentOrgName = parentOrgName;
-            return this;
-        }
-
-        public Builder parentOrgName(String parentOrgName) {
-            this.parentOrgName = Optional.ofNullable(parentOrgName);
-            return this;
-        }
-
-        /**
-         * <p>Primary name of the payee.</p>
-         */
-        @JsonSetter(value = "payeeName1", nulls = Nulls.SKIP)
-        public Builder payeeName1(Optional<String> payeeName1) {
-            this.payeeName1 = payeeName1;
-            return this;
-        }
-
-        public Builder payeeName1(String payeeName1) {
-            this.payeeName1 = Optional.ofNullable(payeeName1);
-            return this;
-        }
-
-        /**
-         * <p>Secondary name of the payee.</p>
-         */
-        @JsonSetter(value = "payeeName2", nulls = Nulls.SKIP)
-        public Builder payeeName2(Optional<String> payeeName2) {
-            this.payeeName2 = payeeName2;
-            return this;
-        }
-
-        public Builder payeeName2(String payeeName2) {
-            this.payeeName2 = Optional.ofNullable(payeeName2);
-            return this;
-        }
-
-        @JsonSetter(value = "paymentMethod", nulls = Nulls.SKIP)
-        public Builder paymentMethod(Optional<VendorPaymentMethod> paymentMethod) {
+        @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
+        public Builder paymentMethod(Optional<String> paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
 
-        public Builder paymentMethod(VendorPaymentMethod paymentMethod) {
+        public Builder paymentMethod(String paymentMethod) {
             this.paymentMethod = Optional.ofNullable(paymentMethod);
+            return this;
+        }
+
+        /**
+         * <p>Status of the vendor.</p>
+         */
+        @JsonSetter(value = "VendorStatus", nulls = Nulls.SKIP)
+        public Builder vendorStatus(Optional<Integer> vendorStatus) {
+            this.vendorStatus = vendorStatus;
+            return this;
+        }
+
+        public Builder vendorStatus(Integer vendorStatus) {
+            this.vendorStatus = Optional.ofNullable(vendorStatus);
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the vendor.</p>
+         */
+        @JsonSetter(value = "VendorId", nulls = Nulls.SKIP)
+        public Builder vendorId(Optional<Integer> vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        public Builder vendorId(Integer vendorId) {
+            this.vendorId = Optional.ofNullable(vendorId);
+            return this;
+        }
+
+        /**
+         * <p>Enrollment status of the vendor.</p>
+         */
+        @JsonSetter(value = "EnrollmentStatus", nulls = Nulls.SKIP)
+        public Builder enrollmentStatus(Optional<String> enrollmentStatus) {
+            this.enrollmentStatus = enrollmentStatus;
+            return this;
+        }
+
+        public Builder enrollmentStatus(String enrollmentStatus) {
+            this.enrollmentStatus = Optional.ofNullable(enrollmentStatus);
+            return this;
+        }
+
+        /**
+         * <p>Summary of vendor's billing and transaction status.</p>
+         */
+        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
+        public Builder summary(Optional<VCardGetResponseAssociatedVendorSummary> summary) {
+            this.summary = summary;
+            return this;
+        }
+
+        public Builder summary(VCardGetResponseAssociatedVendorSummary summary) {
+            this.summary = Optional.ofNullable(summary);
+            return this;
+        }
+
+        /**
+         * <p>Legal name of the paypoint.</p>
+         */
+        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
+        public Builder paypointLegalname(Optional<String> paypointLegalname) {
+            this.paypointLegalname = paypointLegalname;
+            return this;
+        }
+
+        public Builder paypointLegalname(String paypointLegalname) {
+            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
             return this;
         }
 
@@ -1102,31 +1141,56 @@ public final class VCardGetResponseAssociatedVendor {
             return this;
         }
 
-        /**
-         * <p>Legal name of the paypoint.</p>
-         */
-        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
-        public Builder paypointLegalname(Optional<String> paypointLegalname) {
-            this.paypointLegalname = paypointLegalname;
+        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
+        public Builder parentOrgName(Optional<String> parentOrgName) {
+            this.parentOrgName = parentOrgName;
             return this;
         }
 
-        public Builder paypointLegalname(String paypointLegalname) {
-            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
+        public Builder parentOrgName(String parentOrgName) {
+            this.parentOrgName = Optional.ofNullable(parentOrgName);
             return this;
         }
 
         /**
-         * <p>Contact phone number of the vendor.</p>
+         * <p>ID of the parent organization.</p>
          */
-        @JsonSetter(value = "Phone", nulls = Nulls.SKIP)
-        public Builder phone(Optional<String> phone) {
-            this.phone = phone;
+        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
+        public Builder parentOrgId(Optional<Integer> parentOrgId) {
+            this.parentOrgId = parentOrgId;
             return this;
         }
 
-        public Builder phone(String phone) {
-            this.phone = Optional.ofNullable(phone);
+        public Builder parentOrgId(Integer parentOrgId) {
+            this.parentOrgId = Optional.ofNullable(parentOrgId);
+            return this;
+        }
+
+        /**
+         * <p>Date when the vendor record was created.</p>
+         */
+        @JsonSetter(value = "CreatedDate", nulls = Nulls.SKIP)
+        public Builder createdDate(Optional<String> createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
+        public Builder createdDate(String createdDate) {
+            this.createdDate = Optional.ofNullable(createdDate);
+            return this;
+        }
+
+        /**
+         * <p>Date when the vendor's information was last updated.</p>
+         */
+        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
+        public Builder lastUpdated(Optional<String> lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return this;
+        }
+
+        public Builder lastUpdated(String lastUpdated) {
+            this.lastUpdated = Optional.ofNullable(lastUpdated);
             return this;
         }
 
@@ -1163,17 +1227,6 @@ public final class VCardGetResponseAssociatedVendor {
             return this;
         }
 
-        @JsonSetter(value = "remitCountry", nulls = Nulls.SKIP)
-        public Builder remitCountry(Optional<String> remitCountry) {
-            this.remitCountry = remitCountry;
-            return this;
-        }
-
-        public Builder remitCountry(String remitCountry) {
-            this.remitCountry = Optional.ofNullable(remitCountry);
-            return this;
-        }
-
         @JsonSetter(value = "remitState", nulls = Nulls.SKIP)
         public Builder remitState(Optional<String> remitState) {
             this.remitState = remitState;
@@ -1196,133 +1249,186 @@ public final class VCardGetResponseAssociatedVendor {
             return this;
         }
 
-        /**
-         * <p>State where the vendor is located.</p>
-         */
-        @JsonSetter(value = "State", nulls = Nulls.SKIP)
-        public Builder state(Optional<String> state) {
-            this.state = state;
+        @JsonSetter(value = "remitCountry", nulls = Nulls.SKIP)
+        public Builder remitCountry(Optional<String> remitCountry) {
+            this.remitCountry = remitCountry;
             return this;
         }
 
-        public Builder state(String state) {
-            this.state = Optional.ofNullable(state);
-            return this;
-        }
-
-        /**
-         * <p>Summary of vendor's billing and transaction status.</p>
-         */
-        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
-        public Builder summary(Optional<VCardGetResponseAssociatedVendorSummary> summary) {
-            this.summary = summary;
-            return this;
-        }
-
-        public Builder summary(VCardGetResponseAssociatedVendorSummary summary) {
-            this.summary = Optional.ofNullable(summary);
+        public Builder remitCountry(String remitCountry) {
+            this.remitCountry = Optional.ofNullable(remitCountry);
             return this;
         }
 
         /**
-         * <p>Unique identifier for the vendor.</p>
+         * <p>Primary name of the payee.</p>
          */
-        @JsonSetter(value = "VendorId", nulls = Nulls.SKIP)
-        public Builder vendorId(Optional<Integer> vendorId) {
-            this.vendorId = vendorId;
+        @JsonSetter(value = "payeeName1", nulls = Nulls.SKIP)
+        public Builder payeeName1(Optional<String> payeeName1) {
+            this.payeeName1 = payeeName1;
             return this;
         }
 
-        public Builder vendorId(Integer vendorId) {
-            this.vendorId = Optional.ofNullable(vendorId);
+        public Builder payeeName1(String payeeName1) {
+            this.payeeName1 = Optional.ofNullable(payeeName1);
             return this;
         }
 
         /**
-         * <p>Unique code identifying the vendor.</p>
+         * <p>Secondary name of the payee.</p>
          */
-        @JsonSetter(value = "VendorNumber", nulls = Nulls.SKIP)
-        public Builder vendorNumber(Optional<String> vendorNumber) {
-            this.vendorNumber = vendorNumber;
+        @JsonSetter(value = "payeeName2", nulls = Nulls.SKIP)
+        public Builder payeeName2(Optional<String> payeeName2) {
+            this.payeeName2 = payeeName2;
             return this;
         }
 
-        public Builder vendorNumber(String vendorNumber) {
-            this.vendorNumber = Optional.ofNullable(vendorNumber);
+        public Builder payeeName2(String payeeName2) {
+            this.payeeName2 = Optional.ofNullable(payeeName2);
             return this;
         }
 
         /**
-         * <p>Status of the vendor.</p>
+         * <p>A custom field for additional data.</p>
          */
-        @JsonSetter(value = "VendorStatus", nulls = Nulls.SKIP)
-        public Builder vendorStatus(Optional<Integer> vendorStatus) {
-            this.vendorStatus = vendorStatus;
+        @JsonSetter(value = "customField1", nulls = Nulls.SKIP)
+        public Builder customField1(Optional<String> customField1) {
+            this.customField1 = customField1;
             return this;
         }
 
-        public Builder vendorStatus(Integer vendorStatus) {
-            this.vendorStatus = Optional.ofNullable(vendorStatus);
+        public Builder customField1(String customField1) {
+            this.customField1 = Optional.ofNullable(customField1);
             return this;
         }
 
         /**
-         * <p>ZIP code for the vendor's location.</p>
+         * <p>Another custom field for extra data.</p>
          */
-        @JsonSetter(value = "Zip", nulls = Nulls.SKIP)
-        public Builder zip(Optional<String> zip) {
-            this.zip = zip;
+        @JsonSetter(value = "customField2", nulls = Nulls.SKIP)
+        public Builder customField2(Optional<String> customField2) {
+            this.customField2 = customField2;
             return this;
         }
 
-        public Builder zip(String zip) {
-            this.zip = Optional.ofNullable(zip);
+        public Builder customField2(String customField2) {
+            this.customField2 = Optional.ofNullable(customField2);
+            return this;
+        }
+
+        /**
+         * <p>Account number of paypoint in the vendor side.</p>
+         */
+        @JsonSetter(value = "customerVendorAccount", nulls = Nulls.SKIP)
+        public Builder customerVendorAccount(Optional<String> customerVendorAccount) {
+            this.customerVendorAccount = customerVendorAccount;
+            return this;
+        }
+
+        public Builder customerVendorAccount(String customerVendorAccount) {
+            this.customerVendorAccount = Optional.ofNullable(customerVendorAccount);
+            return this;
+        }
+
+        /**
+         * <p>Internal reference ID used within the system.</p>
+         */
+        @JsonSetter(value = "InternalReferenceId", nulls = Nulls.SKIP)
+        public Builder internalReferenceId(Optional<Integer> internalReferenceId) {
+            this.internalReferenceId = internalReferenceId;
+            return this;
+        }
+
+        public Builder internalReferenceId(Integer internalReferenceId) {
+            this.internalReferenceId = Optional.ofNullable(internalReferenceId);
+            return this;
+        }
+
+        /**
+         * <p>Field for additional data, if any.</p>
+         */
+        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
+        public Builder additionalData(Optional<String> additionalData) {
+            this.additionalData = additionalData;
+            return this;
+        }
+
+        public Builder additionalData(String additionalData) {
+            this.additionalData = Optional.ofNullable(additionalData);
+            return this;
+        }
+
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
+        public Builder externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
+            return this;
+        }
+
+        public Builder externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        /**
+         * <p>Stored payment methods for the vendor.</p>
+         */
+        @JsonSetter(value = "StoredMethods", nulls = Nulls.SKIP)
+        public Builder storedMethods(Optional<String> storedMethods) {
+            this.storedMethods = storedMethods;
+            return this;
+        }
+
+        public Builder storedMethods(String storedMethods) {
+            this.storedMethods = Optional.ofNullable(storedMethods);
             return this;
         }
 
         public VCardGetResponseAssociatedVendor build() {
             return new VCardGetResponseAssociatedVendor(
-                    additionalData,
-                    address1,
-                    address2,
-                    billingData,
-                    city,
-                    contacts,
-                    country,
-                    createdDate,
-                    customerVendorAccount,
-                    customField1,
-                    customField2,
-                    ein,
-                    email,
-                    enrollmentStatus,
-                    externalPaypointId,
-                    internalReferenceId,
-                    lastUpdated,
-                    locationCode,
-                    mcc,
+                    vendorNumber,
                     name1,
                     name2,
-                    parentOrgName,
-                    payeeName1,
-                    payeeName2,
+                    ein,
+                    phone,
+                    email,
+                    remitEmail,
+                    address1,
+                    address2,
+                    city,
+                    state,
+                    zip,
+                    country,
+                    mcc,
+                    locationCode,
+                    contacts,
+                    billingData,
                     paymentMethod,
+                    vendorStatus,
+                    vendorId,
+                    enrollmentStatus,
+                    summary,
+                    paypointLegalname,
                     paypointDbaname,
                     paypointEntryname,
-                    paypointLegalname,
-                    phone,
+                    parentOrgName,
+                    parentOrgId,
+                    createdDate,
+                    lastUpdated,
                     remitAddress1,
                     remitAddress2,
                     remitCity,
-                    remitCountry,
                     remitState,
                     remitZip,
-                    state,
-                    summary,
-                    vendorId,
-                    vendorNumber,
-                    vendorStatus,
-                    zip,
+                    remitCountry,
+                    payeeName1,
+                    payeeName2,
+                    customField1,
+                    customField2,
+                    customerVendorAccount,
+                    internalReferenceId,
+                    additionalData,
+                    externalPaypointId,
+                    storedMethods,
                     additionalProperties);
         }
     }

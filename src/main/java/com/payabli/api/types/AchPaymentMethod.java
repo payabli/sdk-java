@@ -30,6 +30,14 @@ public final class AchPaymentMethod {
     }
 
     /**
+     * @return Payment method type
+     */
+    @JsonProperty("method")
+    public String getMethod() {
+        return "ach";
+    }
+
+    /**
      * @return ID of the stored ACH payment method. Required when using a previously saved ACH method when the vendor has more than one saved method. See the <a href="/developers/developer-guides/pay-out-manage-payouts">Payouts with saved ACH payment methods</a> section for more details.
      */
     @JsonProperty("storedMethodId")

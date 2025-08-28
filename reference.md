@@ -9625,7 +9625,12 @@ client.moneyIn().authorize(
 <dl>
 <dd>
 
-Capture an [authorized transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
+<Warning>
+  This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+</Warning>
+  
+  Capture an [authorized
+transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 </dd>
 </dl>
 </dd>
@@ -9655,7 +9660,7 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0);
 <dl>
 <dd>
 
-**amount:** `Float` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction.
+**amount:** `Float` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
     
 </dd>
 </dl>
@@ -9664,6 +9669,82 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0);
 <dd>
 
 **transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.captureAuth(transId, request) -> CaptureResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Capture an [authorized transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account. 
+
+You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().captureAuth(
+    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    CaptureRequest
+        .builder()
+        .paymentDetails(
+            CapturePaymentDetails
+                .builder()
+                .totalAmount(105)
+                .serviceFee(5)
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CaptureRequest` 
     
 </dd>
 </dl>
@@ -10657,11 +10738,10 @@ client.moneyOut().authorizeOut(
                 )
                 .orderDescription("Window Painting")
                 .paymentMethod(
-                    VendorPaymentMethod.managed(
-                        ManagedPaymentMethod
-                            .builder()
-                            .build()
-                    )
+                    VendorPaymentMethod
+                        .builder()
+                        .method("managed")
+                        .build()
                 )
                 .build()
         )
@@ -18464,7 +18544,7 @@ client.query().listTransfersOrg(
 <dl>
 <dd>
 
-**orgId:** `Optional<Integer>` 
+**orgId:** `Integer` 
     
 </dd>
 </dl>
@@ -21722,13 +21802,7 @@ client.vendor().addVendor(
                 .bankAccountFunction(0)
                 .build()
         )
-        .paymentMethod(
-            VendorPaymentMethod.managed(
-                ManagedPaymentMethod
-                    .builder()
-                    .build()
-            )
-        )
+        .paymentMethod("managed")
         .vendorStatus(1)
         .remitAddress1("123 Walnut Street")
         .remitAddress2("Suite 900")

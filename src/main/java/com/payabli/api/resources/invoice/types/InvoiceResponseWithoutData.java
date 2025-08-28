@@ -35,7 +35,7 @@ public final class InvoiceResponseWithoutData {
 
     private final Optional<String> pageidentifier;
 
-    private final Optional<Long> roomId;
+    private final long roomId;
 
     private final Map<String, Object> additionalProperties;
 
@@ -45,7 +45,7 @@ public final class InvoiceResponseWithoutData {
             Responsedatanonobject responseData,
             String responseText,
             Optional<String> pageidentifier,
-            Optional<Long> roomId,
+            long roomId,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseCode = responseCode;
@@ -88,7 +88,7 @@ public final class InvoiceResponseWithoutData {
     }
 
     @JsonProperty("roomId")
-    public Optional<Long> getRoomId() {
+    public long getRoomId() {
         return roomId;
     }
 
@@ -115,7 +115,7 @@ public final class InvoiceResponseWithoutData {
                 && responseData.equals(other.responseData)
                 && responseText.equals(other.responseText)
                 && pageidentifier.equals(other.pageidentifier)
-                && roomId.equals(other.roomId);
+                && roomId == other.roomId;
     }
 
     @java.lang.Override
@@ -156,7 +156,11 @@ public final class InvoiceResponseWithoutData {
     }
 
     public interface ResponseTextStage {
-        _FinalStage responseText(@NotNull String responseText);
+        RoomIdStage responseText(@NotNull String responseText);
+    }
+
+    public interface RoomIdStage {
+        _FinalStage roomId(long roomId);
     }
 
     public interface _FinalStage {
@@ -167,15 +171,16 @@ public final class InvoiceResponseWithoutData {
         _FinalStage pageidentifier(String pageidentifier);
 
         _FinalStage pageidentifier(Nullable<String> pageidentifier);
-
-        _FinalStage roomId(Optional<Long> roomId);
-
-        _FinalStage roomId(Long roomId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements IsSuccessStage, ResponseCodeStage, ResponseDataStage, ResponseTextStage, _FinalStage {
+            implements IsSuccessStage,
+                    ResponseCodeStage,
+                    ResponseDataStage,
+                    ResponseTextStage,
+                    RoomIdStage,
+                    _FinalStage {
         private boolean isSuccess;
 
         private int responseCode;
@@ -184,7 +189,7 @@ public final class InvoiceResponseWithoutData {
 
         private String responseText;
 
-        private Optional<Long> roomId = Optional.empty();
+        private long roomId;
 
         private Optional<String> pageidentifier = Optional.empty();
 
@@ -232,20 +237,14 @@ public final class InvoiceResponseWithoutData {
 
         @java.lang.Override
         @JsonSetter("responseText")
-        public _FinalStage responseText(@NotNull String responseText) {
+        public RoomIdStage responseText(@NotNull String responseText) {
             this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
         @java.lang.Override
-        public _FinalStage roomId(Long roomId) {
-            this.roomId = Optional.ofNullable(roomId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "roomId", nulls = Nulls.SKIP)
-        public _FinalStage roomId(Optional<Long> roomId) {
+        @JsonSetter("roomId")
+        public _FinalStage roomId(long roomId) {
             this.roomId = roomId;
             return this;
         }

@@ -50,10 +50,10 @@ import com.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import com.payabli.api.resources.query.requests.ListVendorsRequest;
 import com.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
 import com.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
+import com.payabli.api.resources.querytypes.types.QueryBatchesResponse;
 import com.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import com.payabli.api.types.PayabliApiResponse;
 import com.payabli.api.types.QueryBatchesOutResponse;
-import com.payabli.api.types.QueryBatchesResponse;
 import com.payabli.api.types.QueryChargebacksResponse;
 import com.payabli.api.types.QueryCustomerResponse;
 import com.payabli.api.types.QueryEntrypointResponse;
@@ -68,7 +68,6 @@ import com.payabli.api.types.QueryUserResponse;
 import com.payabli.api.types.TransferQueryResponse;
 import com.payabli.api.types.VCardQueryResponse;
 import java.io.IOException;
-import java.util.Optional;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -2478,15 +2477,14 @@ public class RawQueryClient {
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(Optional<Long> orgId) {
+    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(long orgId) {
         return listTransfersOrg(orgId, ListTransfersRequestOrg.builder().build());
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(
-            Optional<Long> orgId, ListTransfersRequestOrg request) {
+    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(long orgId, ListTransfersRequestOrg request) {
         return listTransfersOrg(orgId, request, null);
     }
 
@@ -2494,13 +2492,11 @@ public class RawQueryClient {
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(
-            Optional<Long> orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
+            long orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Query/transfers/org");
-        if (orgId.isPresent()) {
-            httpUrl.addPathSegment(orgId.get().toString());
-        }
+                .addPathSegments("Query/transfers/org")
+                .addPathSegment(Long.toString(orgId));
         if (request.getExportFormat().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "exportFormat", request.getExportFormat().get(), false);

@@ -5,12 +5,15 @@ package com.payabli.api.resources.moneyin.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.payabli.api.core.Nullable;
+import com.payabli.api.core.NullableNonemptyFilter;
 import com.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,23 +83,59 @@ public final class CaptureResponseData {
         return resultText;
     }
 
-    @JsonProperty("avsResponseText")
+    @JsonIgnore
     public Optional<String> getAvsResponseText() {
+        if (avsResponseText == null) {
+            return Optional.empty();
+        }
         return avsResponseText;
     }
 
-    @JsonProperty("cvvResponseText")
+    @JsonIgnore
     public Optional<String> getCvvResponseText() {
+        if (cvvResponseText == null) {
+            return Optional.empty();
+        }
         return cvvResponseText;
     }
 
-    @JsonProperty("customerId")
+    @JsonIgnore
     public Optional<Long> getCustomerId() {
+        if (customerId == null) {
+            return Optional.empty();
+        }
         return customerId;
     }
 
-    @JsonProperty("methodReferenceId")
+    @JsonIgnore
     public Optional<String> getMethodReferenceId() {
+        if (methodReferenceId == null) {
+            return Optional.empty();
+        }
+        return methodReferenceId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("avsResponseText")
+    private Optional<String> _getAvsResponseText() {
+        return avsResponseText;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cvvResponseText")
+    private Optional<String> _getCvvResponseText() {
+        return cvvResponseText;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerId")
+    private Optional<Long> _getCustomerId() {
+        return customerId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("methodReferenceId")
+    private Optional<String> _getMethodReferenceId() {
         return methodReferenceId;
     }
 
@@ -169,17 +208,25 @@ public final class CaptureResponseData {
 
         _FinalStage avsResponseText(String avsResponseText);
 
+        _FinalStage avsResponseText(Nullable<String> avsResponseText);
+
         _FinalStage cvvResponseText(Optional<String> cvvResponseText);
 
         _FinalStage cvvResponseText(String cvvResponseText);
+
+        _FinalStage cvvResponseText(Nullable<String> cvvResponseText);
 
         _FinalStage customerId(Optional<Long> customerId);
 
         _FinalStage customerId(Long customerId);
 
+        _FinalStage customerId(Nullable<Long> customerId);
+
         _FinalStage methodReferenceId(Optional<String> methodReferenceId);
 
         _FinalStage methodReferenceId(String methodReferenceId);
+
+        _FinalStage methodReferenceId(Nullable<String> methodReferenceId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -248,6 +295,18 @@ public final class CaptureResponseData {
         }
 
         @java.lang.Override
+        public _FinalStage methodReferenceId(Nullable<String> methodReferenceId) {
+            if (methodReferenceId.isNull()) {
+                this.methodReferenceId = null;
+            } else if (methodReferenceId.isEmpty()) {
+                this.methodReferenceId = Optional.empty();
+            } else {
+                this.methodReferenceId = Optional.of(methodReferenceId.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage methodReferenceId(String methodReferenceId) {
             this.methodReferenceId = Optional.ofNullable(methodReferenceId);
             return this;
@@ -257,6 +316,18 @@ public final class CaptureResponseData {
         @JsonSetter(value = "methodReferenceId", nulls = Nulls.SKIP)
         public _FinalStage methodReferenceId(Optional<String> methodReferenceId) {
             this.methodReferenceId = methodReferenceId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customerId(Nullable<Long> customerId) {
+            if (customerId.isNull()) {
+                this.customerId = null;
+            } else if (customerId.isEmpty()) {
+                this.customerId = Optional.empty();
+            } else {
+                this.customerId = Optional.of(customerId.get());
+            }
             return this;
         }
 
@@ -274,6 +345,18 @@ public final class CaptureResponseData {
         }
 
         @java.lang.Override
+        public _FinalStage cvvResponseText(Nullable<String> cvvResponseText) {
+            if (cvvResponseText.isNull()) {
+                this.cvvResponseText = null;
+            } else if (cvvResponseText.isEmpty()) {
+                this.cvvResponseText = Optional.empty();
+            } else {
+                this.cvvResponseText = Optional.of(cvvResponseText.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage cvvResponseText(String cvvResponseText) {
             this.cvvResponseText = Optional.ofNullable(cvvResponseText);
             return this;
@@ -283,6 +366,18 @@ public final class CaptureResponseData {
         @JsonSetter(value = "cvvResponseText", nulls = Nulls.SKIP)
         public _FinalStage cvvResponseText(Optional<String> cvvResponseText) {
             this.cvvResponseText = cvvResponseText;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage avsResponseText(Nullable<String> avsResponseText) {
+            if (avsResponseText.isNull()) {
+                this.avsResponseText = null;
+            } else if (avsResponseText.isEmpty()) {
+                this.avsResponseText = Optional.empty();
+            } else {
+                this.avsResponseText = Optional.of(avsResponseText.get());
+            }
             return this;
         }
 

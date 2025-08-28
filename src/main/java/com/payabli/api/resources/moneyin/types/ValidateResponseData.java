@@ -33,7 +33,7 @@ public final class ValidateResponseData {
 
     private final String cvvResponseText;
 
-    private final Optional<Long> customerId;
+    private final long customerId;
 
     private final Optional<String> methodReferenceId;
 
@@ -46,7 +46,7 @@ public final class ValidateResponseData {
             String resultText,
             String avsResponseText,
             String cvvResponseText,
-            Optional<Long> customerId,
+            long customerId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
         this.authCode = authCode;
@@ -91,7 +91,7 @@ public final class ValidateResponseData {
     }
 
     @JsonProperty("customerId")
-    public Optional<Long> getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
@@ -118,7 +118,7 @@ public final class ValidateResponseData {
                 && resultText.equals(other.resultText)
                 && avsResponseText.equals(other.avsResponseText)
                 && cvvResponseText.equals(other.cvvResponseText)
-                && customerId.equals(other.customerId)
+                && customerId == other.customerId
                 && methodReferenceId.equals(other.methodReferenceId);
     }
 
@@ -167,15 +167,15 @@ public final class ValidateResponseData {
     }
 
     public interface CvvResponseTextStage {
-        _FinalStage cvvResponseText(@NotNull String cvvResponseText);
+        CustomerIdStage cvvResponseText(@NotNull String cvvResponseText);
+    }
+
+    public interface CustomerIdStage {
+        _FinalStage customerId(long customerId);
     }
 
     public interface _FinalStage {
         ValidateResponseData build();
-
-        _FinalStage customerId(Optional<Long> customerId);
-
-        _FinalStage customerId(Long customerId);
 
         _FinalStage methodReferenceId(Optional<String> methodReferenceId);
 
@@ -190,6 +190,7 @@ public final class ValidateResponseData {
                     ResultTextStage,
                     AvsResponseTextStage,
                     CvvResponseTextStage,
+                    CustomerIdStage,
                     _FinalStage {
         private String authCode;
 
@@ -203,9 +204,9 @@ public final class ValidateResponseData {
 
         private String cvvResponseText;
 
-        private Optional<String> methodReferenceId = Optional.empty();
+        private long customerId;
 
-        private Optional<Long> customerId = Optional.empty();
+        private Optional<String> methodReferenceId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -262,8 +263,15 @@ public final class ValidateResponseData {
 
         @java.lang.Override
         @JsonSetter("cvvResponseText")
-        public _FinalStage cvvResponseText(@NotNull String cvvResponseText) {
+        public CustomerIdStage cvvResponseText(@NotNull String cvvResponseText) {
             this.cvvResponseText = Objects.requireNonNull(cvvResponseText, "cvvResponseText must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("customerId")
+        public _FinalStage customerId(long customerId) {
+            this.customerId = customerId;
             return this;
         }
 
@@ -277,19 +285,6 @@ public final class ValidateResponseData {
         @JsonSetter(value = "methodReferenceId", nulls = Nulls.SKIP)
         public _FinalStage methodReferenceId(Optional<String> methodReferenceId) {
             this.methodReferenceId = methodReferenceId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage customerId(Long customerId) {
-            this.customerId = Optional.ofNullable(customerId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
-        public _FinalStage customerId(Optional<Long> customerId) {
-            this.customerId = customerId;
             return this;
         }
 

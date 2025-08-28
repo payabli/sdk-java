@@ -105,7 +105,7 @@ public final class VendorDataResponse {
 
     private final Optional<String> customerVendorAccount;
 
-    private final Optional<Long> internalReferenceId;
+    private final long internalReferenceId;
 
     private final Map<String, String> additionalData;
 
@@ -156,7 +156,7 @@ public final class VendorDataResponse {
             String customField1,
             String customField2,
             Optional<String> customerVendorAccount,
-            Optional<Long> internalReferenceId,
+            long internalReferenceId,
             Map<String, String> additionalData,
             String externalPaypointId,
             List<VendorResponseStoredMethod> storedMethods,
@@ -490,7 +490,7 @@ public final class VendorDataResponse {
     }
 
     @JsonProperty("InternalReferenceId")
-    public Optional<Long> getInternalReferenceId() {
+    public long getInternalReferenceId() {
         return internalReferenceId;
     }
 
@@ -567,7 +567,7 @@ public final class VendorDataResponse {
                 && customField1.equals(other.customField1)
                 && customField2.equals(other.customField2)
                 && customerVendorAccount.equals(other.customerVendorAccount)
-                && internalReferenceId.equals(other.internalReferenceId)
+                && internalReferenceId == other.internalReferenceId
                 && additionalData.equals(other.additionalData)
                 && externalPaypointId.equals(other.externalPaypointId)
                 && storedMethods.equals(other.storedMethods);
@@ -835,7 +835,11 @@ public final class VendorDataResponse {
         /**
          * <p>Custom field 2 for vendor</p>
          */
-        ExternalPaypointIdStage customField2(@NotNull String customField2);
+        InternalReferenceIdStage customField2(@NotNull String customField2);
+    }
+
+    public interface InternalReferenceIdStage {
+        ExternalPaypointIdStage internalReferenceId(long internalReferenceId);
     }
 
     public interface ExternalPaypointIdStage {
@@ -885,10 +889,6 @@ public final class VendorDataResponse {
         _FinalStage customerVendorAccount(Optional<String> customerVendorAccount);
 
         _FinalStage customerVendorAccount(String customerVendorAccount);
-
-        _FinalStage internalReferenceId(Optional<Long> internalReferenceId);
-
-        _FinalStage internalReferenceId(Long internalReferenceId);
 
         _FinalStage additionalData(Map<String, String> additionalData);
 
@@ -942,6 +942,7 @@ public final class VendorDataResponse {
                     PayeeName2Stage,
                     CustomField1Stage,
                     CustomField2Stage,
+                    InternalReferenceIdStage,
                     ExternalPaypointIdStage,
                     _FinalStage {
         private String vendorNumber;
@@ -1012,13 +1013,13 @@ public final class VendorDataResponse {
 
         private String customField2;
 
+        private long internalReferenceId;
+
         private String externalPaypointId;
 
         private List<VendorResponseStoredMethod> storedMethods = new ArrayList<>();
 
         private Map<String, String> additionalData = new LinkedHashMap<>();
-
-        private Optional<Long> internalReferenceId = Optional.empty();
 
         private Optional<String> customerVendorAccount = Optional.empty();
 
@@ -1434,8 +1435,15 @@ public final class VendorDataResponse {
          */
         @java.lang.Override
         @JsonSetter("customField2")
-        public ExternalPaypointIdStage customField2(@NotNull String customField2) {
+        public InternalReferenceIdStage customField2(@NotNull String customField2) {
             this.customField2 = Objects.requireNonNull(customField2, "customField2 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("InternalReferenceId")
+        public ExternalPaypointIdStage internalReferenceId(long internalReferenceId) {
+            this.internalReferenceId = internalReferenceId;
             return this;
         }
 
@@ -1499,19 +1507,6 @@ public final class VendorDataResponse {
         public _FinalStage additionalData(Map<String, String> additionalData) {
             this.additionalData.clear();
             this.additionalData.putAll(additionalData);
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage internalReferenceId(Long internalReferenceId) {
-            this.internalReferenceId = Optional.ofNullable(internalReferenceId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "InternalReferenceId", nulls = Nulls.SKIP)
-        public _FinalStage internalReferenceId(Optional<Long> internalReferenceId) {
-            this.internalReferenceId = internalReferenceId;
             return this;
         }
 

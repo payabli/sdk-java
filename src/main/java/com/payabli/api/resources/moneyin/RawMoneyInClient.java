@@ -16,6 +16,7 @@ import com.payabli.api.errors.BadRequestError;
 import com.payabli.api.errors.InternalServerError;
 import com.payabli.api.errors.ServiceUnavailableError;
 import com.payabli.api.errors.UnauthorizedError;
+import com.payabli.api.resources.moneyin.errors.CaptureError;
 import com.payabli.api.resources.moneyin.requests.RequestCredit;
 import com.payabli.api.resources.moneyin.requests.RequestPayment;
 import com.payabli.api.resources.moneyin.requests.RequestPaymentAuthorize;
@@ -23,6 +24,7 @@ import com.payabli.api.resources.moneyin.requests.RequestPaymentValidate;
 import com.payabli.api.resources.moneyin.requests.RequestRefund;
 import com.payabli.api.resources.moneyin.requests.SendReceipt2TransRequest;
 import com.payabli.api.resources.moneyin.types.AuthResponse;
+import com.payabli.api.resources.moneyin.types.CaptureRequest;
 import com.payabli.api.resources.moneyin.types.CaptureResponse;
 import com.payabli.api.resources.moneyin.types.PayabliApiResponseGetPaid;
 import com.payabli.api.resources.moneyin.types.ReceiptResponse;
@@ -33,6 +35,7 @@ import com.payabli.api.resources.moneyin.types.ValidateResponse;
 import com.payabli.api.resources.moneyin.types.VoidResponse;
 import com.payabli.api.types.PayabliApiResponse;
 import com.payabli.api.types.PayabliApiResponse0;
+import com.payabli.api.types.PayabliApiResponseError400;
 import com.payabli.api.types.TransactionQueryRecords;
 import java.io.IOException;
 import java.util.HashMap;
@@ -135,14 +138,22 @@ public class RawMoneyInClient {
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     * &lt;/Warning&gt;</p>
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public PayabliApiHttpResponse<CaptureResponse> capture(double amount, String transId) {
         return capture(amount, transId, null);
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     * &lt;/Warning&gt;</p>
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public PayabliApiHttpResponse<CaptureResponse> capture(
             double amount, String transId, RequestOptions requestOptions) {
@@ -171,6 +182,84 @@ public class RawMoneyInClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                    response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     */
+    public PayabliApiHttpResponse<CaptureResponse> captureAuth(String transId, CaptureRequest request) {
+        return captureAuth(transId, request, null);
+    }
+
+    /**
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     */
+    public PayabliApiHttpResponse<CaptureResponse> captureAuth(
+            String transId, CaptureRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyIn/capture")
+                .addPathSegment(transId)
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CaptureResponse.class), response);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new CaptureError(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, PayabliApiResponseError400.class),
+                                response);
                     case 400:
                         throw new BadRequestError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

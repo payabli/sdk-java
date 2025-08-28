@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public final class Transfer {
     private final int transferId;
 
-    private final Optional<Long> paypointId;
+    private final long paypointId;
 
     private final String batchNumber;
 
@@ -78,7 +78,7 @@ public final class Transfer {
 
     private Transfer(
             int transferId,
-            Optional<Long> paypointId,
+            long paypointId,
             String batchNumber,
             Optional<String> batchCurrency,
             Optional<Integer> batchRecords,
@@ -142,7 +142,7 @@ public final class Transfer {
     }
 
     @JsonProperty("paypointId")
-    public Optional<Long> getPaypointId() {
+    public long getPaypointId() {
         return paypointId;
     }
 
@@ -167,9 +167,6 @@ public final class Transfer {
         return batchRecords;
     }
 
-    /**
-     * @return Unique identifier for the transfer.
-     */
     @JsonProperty("transferIdentifier")
     public String getTransferIdentifier() {
         return transferIdentifier;
@@ -348,7 +345,7 @@ public final class Transfer {
 
     private boolean equalTo(Transfer other) {
         return transferId == other.transferId
-                && paypointId.equals(other.paypointId)
+                && paypointId == other.paypointId
                 && batchNumber.equals(other.batchNumber)
                 && batchCurrency.equals(other.batchCurrency)
                 && batchRecords.equals(other.batchRecords)
@@ -419,9 +416,13 @@ public final class Transfer {
         /**
          * <p>The transfer ID.</p>
          */
-        BatchNumberStage transferId(int transferId);
+        PaypointIdStage transferId(int transferId);
 
         Builder from(Transfer other);
+    }
+
+    public interface PaypointIdStage {
+        BatchNumberStage paypointId(long paypointId);
     }
 
     public interface BatchNumberStage {
@@ -429,9 +430,6 @@ public final class Transfer {
     }
 
     public interface TransferIdentifierStage {
-        /**
-         * <p>Unique identifier for the transfer.</p>
-         */
         BatchIdStage transferIdentifier(@NotNull String transferIdentifier);
     }
 
@@ -529,10 +527,6 @@ public final class Transfer {
     public interface _FinalStage {
         Transfer build();
 
-        _FinalStage paypointId(Optional<Long> paypointId);
-
-        _FinalStage paypointId(Long paypointId);
-
         /**
          * <p>The currency of the batch, either USD or CAD.</p>
          */
@@ -600,6 +594,7 @@ public final class Transfer {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
             implements TransferIdStage,
+                    PaypointIdStage,
                     BatchNumberStage,
                     TransferIdentifierStage,
                     BatchIdStage,
@@ -617,6 +612,8 @@ public final class Transfer {
                     NetTransferAmountStage,
                     _FinalStage {
         private int transferId;
+
+        private long paypointId;
 
         private String batchNumber;
 
@@ -666,8 +663,6 @@ public final class Transfer {
 
         private Optional<String> batchCurrency = Optional.empty();
 
-        private Optional<Long> paypointId = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -711,8 +706,15 @@ public final class Transfer {
          */
         @java.lang.Override
         @JsonSetter("transferId")
-        public BatchNumberStage transferId(int transferId) {
+        public PaypointIdStage transferId(int transferId) {
             this.transferId = transferId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paypointId")
+        public BatchNumberStage paypointId(long paypointId) {
+            this.paypointId = paypointId;
             return this;
         }
 
@@ -723,11 +725,6 @@ public final class Transfer {
             return this;
         }
 
-        /**
-         * <p>Unique identifier for the transfer.</p>
-         * <p>Unique identifier for the transfer.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
         @JsonSetter("transferIdentifier")
         public BatchIdStage transferIdentifier(@NotNull String transferIdentifier) {
@@ -1068,19 +1065,6 @@ public final class Transfer {
         @JsonSetter(value = "batchCurrency", nulls = Nulls.SKIP)
         public _FinalStage batchCurrency(Optional<String> batchCurrency) {
             this.batchCurrency = batchCurrency;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage paypointId(Long paypointId) {
-            this.paypointId = Optional.ofNullable(paypointId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
-        public _FinalStage paypointId(Optional<Long> paypointId) {
-            this.paypointId = paypointId;
             return this;
         }
 

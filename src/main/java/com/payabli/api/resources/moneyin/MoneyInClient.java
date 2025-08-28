@@ -12,6 +12,7 @@ import com.payabli.api.resources.moneyin.requests.RequestPaymentValidate;
 import com.payabli.api.resources.moneyin.requests.RequestRefund;
 import com.payabli.api.resources.moneyin.requests.SendReceipt2TransRequest;
 import com.payabli.api.resources.moneyin.types.AuthResponse;
+import com.payabli.api.resources.moneyin.types.CaptureRequest;
 import com.payabli.api.resources.moneyin.types.CaptureResponse;
 import com.payabli.api.resources.moneyin.types.PayabliApiResponseGetPaid;
 import com.payabli.api.resources.moneyin.types.ReceiptResponse;
@@ -58,17 +59,41 @@ public class MoneyInClient {
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     * &lt;/Warning&gt;</p>
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public CaptureResponse capture(double amount, String transId) {
         return this.rawClient.capture(amount, transId).body();
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     * &lt;/Warning&gt;</p>
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public CaptureResponse capture(double amount, String transId, RequestOptions requestOptions) {
         return this.rawClient.capture(amount, transId, requestOptions).body();
+    }
+
+    /**
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     */
+    public CaptureResponse captureAuth(String transId, CaptureRequest request) {
+        return this.rawClient.captureAuth(transId, request).body();
+    }
+
+    /**
+     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     */
+    public CaptureResponse captureAuth(String transId, CaptureRequest request, RequestOptions requestOptions) {
+        return this.rawClient.captureAuth(transId, request, requestOptions).body();
     }
 
     /**

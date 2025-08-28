@@ -5,13 +5,17 @@ package com.payabli.api.resources.moneyin.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.payabli.api.core.Nullable;
+import com.payabli.api.core.NullableNonemptyFilter;
 import com.payabli.api.core.ObjectMappers;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 @JsonDeserialize(builder = ResponseDataRefunds.Builder.class)
 public final class ResponseDataRefunds {
     private final String authCode;
+
+    private final Optional<OffsetDateTime> expectedProcessingDateTime;
 
     private final Optional<String> avsResponseText;
 
@@ -41,6 +47,7 @@ public final class ResponseDataRefunds {
 
     private ResponseDataRefunds(
             String authCode,
+            Optional<OffsetDateTime> expectedProcessingDateTime,
             Optional<String> avsResponseText,
             Optional<Long> customerId,
             Optional<String> cvvResponseText,
@@ -50,6 +57,7 @@ public final class ResponseDataRefunds {
             String resultText,
             Map<String, Object> additionalProperties) {
         this.authCode = authCode;
+        this.expectedProcessingDateTime = expectedProcessingDateTime;
         this.avsResponseText = avsResponseText;
         this.customerId = customerId;
         this.cvvResponseText = cvvResponseText;
@@ -65,6 +73,14 @@ public final class ResponseDataRefunds {
         return authCode;
     }
 
+    @JsonIgnore
+    public Optional<OffsetDateTime> getExpectedProcessingDateTime() {
+        if (expectedProcessingDateTime == null) {
+            return Optional.empty();
+        }
+        return expectedProcessingDateTime;
+    }
+
     /**
      * @return This field isn't applicable to refund operations.
      */
@@ -73,24 +89,33 @@ public final class ResponseDataRefunds {
         return avsResponseText;
     }
 
-    @JsonProperty("customerId")
+    @JsonIgnore
     public Optional<Long> getCustomerId() {
+        if (customerId == null) {
+            return Optional.empty();
+        }
         return customerId;
     }
 
     /**
      * @return This field isn't applicable to refund operations.
      */
-    @JsonProperty("cvvResponseText")
+    @JsonIgnore
     public Optional<String> getCvvResponseText() {
+        if (cvvResponseText == null) {
+            return Optional.empty();
+        }
         return cvvResponseText;
     }
 
     /**
      * @return This field isn't applicable to refund operations.
      */
-    @JsonProperty("methodReferenceId")
+    @JsonIgnore
     public Optional<String> getMethodReferenceId() {
+        if (methodReferenceId == null) {
+            return Optional.empty();
+        }
         return methodReferenceId;
     }
 
@@ -112,6 +137,30 @@ public final class ResponseDataRefunds {
         return resultText;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("expectedProcessingDateTime")
+    private Optional<OffsetDateTime> _getExpectedProcessingDateTime() {
+        return expectedProcessingDateTime;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerId")
+    private Optional<Long> _getCustomerId() {
+        return customerId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cvvResponseText")
+    private Optional<String> _getCvvResponseText() {
+        return cvvResponseText;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("methodReferenceId")
+    private Optional<String> _getMethodReferenceId() {
+        return methodReferenceId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -125,6 +174,7 @@ public final class ResponseDataRefunds {
 
     private boolean equalTo(ResponseDataRefunds other) {
         return authCode.equals(other.authCode)
+                && expectedProcessingDateTime.equals(other.expectedProcessingDateTime)
                 && avsResponseText.equals(other.avsResponseText)
                 && customerId.equals(other.customerId)
                 && cvvResponseText.equals(other.cvvResponseText)
@@ -138,6 +188,7 @@ public final class ResponseDataRefunds {
     public int hashCode() {
         return Objects.hash(
                 this.authCode,
+                this.expectedProcessingDateTime,
                 this.avsResponseText,
                 this.customerId,
                 this.cvvResponseText,
@@ -180,6 +231,12 @@ public final class ResponseDataRefunds {
     public interface _FinalStage {
         ResponseDataRefunds build();
 
+        _FinalStage expectedProcessingDateTime(Optional<OffsetDateTime> expectedProcessingDateTime);
+
+        _FinalStage expectedProcessingDateTime(OffsetDateTime expectedProcessingDateTime);
+
+        _FinalStage expectedProcessingDateTime(Nullable<OffsetDateTime> expectedProcessingDateTime);
+
         /**
          * <p>This field isn't applicable to refund operations.</p>
          */
@@ -191,6 +248,8 @@ public final class ResponseDataRefunds {
 
         _FinalStage customerId(Long customerId);
 
+        _FinalStage customerId(Nullable<Long> customerId);
+
         /**
          * <p>This field isn't applicable to refund operations.</p>
          */
@@ -198,12 +257,16 @@ public final class ResponseDataRefunds {
 
         _FinalStage cvvResponseText(String cvvResponseText);
 
+        _FinalStage cvvResponseText(Nullable<String> cvvResponseText);
+
         /**
          * <p>This field isn't applicable to refund operations.</p>
          */
         _FinalStage methodReferenceId(Optional<String> methodReferenceId);
 
         _FinalStage methodReferenceId(String methodReferenceId);
+
+        _FinalStage methodReferenceId(Nullable<String> methodReferenceId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -225,6 +288,8 @@ public final class ResponseDataRefunds {
 
         private Optional<String> avsResponseText = Optional.empty();
 
+        private Optional<OffsetDateTime> expectedProcessingDateTime = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -233,6 +298,7 @@ public final class ResponseDataRefunds {
         @java.lang.Override
         public Builder from(ResponseDataRefunds other) {
             authCode(other.getAuthCode());
+            expectedProcessingDateTime(other.getExpectedProcessingDateTime());
             avsResponseText(other.getAvsResponseText());
             customerId(other.getCustomerId());
             cvvResponseText(other.getCvvResponseText());
@@ -281,6 +347,22 @@ public final class ResponseDataRefunds {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage methodReferenceId(Nullable<String> methodReferenceId) {
+            if (methodReferenceId.isNull()) {
+                this.methodReferenceId = null;
+            } else if (methodReferenceId.isEmpty()) {
+                this.methodReferenceId = Optional.empty();
+            } else {
+                this.methodReferenceId = Optional.of(methodReferenceId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>This field isn't applicable to refund operations.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage methodReferenceId(String methodReferenceId) {
             this.methodReferenceId = Optional.ofNullable(methodReferenceId);
             return this;
@@ -301,6 +383,22 @@ public final class ResponseDataRefunds {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage cvvResponseText(Nullable<String> cvvResponseText) {
+            if (cvvResponseText.isNull()) {
+                this.cvvResponseText = null;
+            } else if (cvvResponseText.isEmpty()) {
+                this.cvvResponseText = Optional.empty();
+            } else {
+                this.cvvResponseText = Optional.of(cvvResponseText.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>This field isn't applicable to refund operations.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage cvvResponseText(String cvvResponseText) {
             this.cvvResponseText = Optional.ofNullable(cvvResponseText);
             return this;
@@ -313,6 +411,18 @@ public final class ResponseDataRefunds {
         @JsonSetter(value = "cvvResponseText", nulls = Nulls.SKIP)
         public _FinalStage cvvResponseText(Optional<String> cvvResponseText) {
             this.cvvResponseText = cvvResponseText;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customerId(Nullable<Long> customerId) {
+            if (customerId.isNull()) {
+                this.customerId = null;
+            } else if (customerId.isEmpty()) {
+                this.customerId = Optional.empty();
+            } else {
+                this.customerId = Optional.of(customerId.get());
+            }
             return this;
         }
 
@@ -350,9 +460,35 @@ public final class ResponseDataRefunds {
         }
 
         @java.lang.Override
+        public _FinalStage expectedProcessingDateTime(Nullable<OffsetDateTime> expectedProcessingDateTime) {
+            if (expectedProcessingDateTime.isNull()) {
+                this.expectedProcessingDateTime = null;
+            } else if (expectedProcessingDateTime.isEmpty()) {
+                this.expectedProcessingDateTime = Optional.empty();
+            } else {
+                this.expectedProcessingDateTime = Optional.of(expectedProcessingDateTime.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage expectedProcessingDateTime(OffsetDateTime expectedProcessingDateTime) {
+            this.expectedProcessingDateTime = Optional.ofNullable(expectedProcessingDateTime);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "expectedProcessingDateTime", nulls = Nulls.SKIP)
+        public _FinalStage expectedProcessingDateTime(Optional<OffsetDateTime> expectedProcessingDateTime) {
+            this.expectedProcessingDateTime = expectedProcessingDateTime;
+            return this;
+        }
+
+        @java.lang.Override
         public ResponseDataRefunds build() {
             return new ResponseDataRefunds(
                     authCode,
+                    expectedProcessingDateTime,
                     avsResponseText,
                     customerId,
                     cvvResponseText,

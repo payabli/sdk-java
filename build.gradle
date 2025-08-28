@@ -2,12 +2,14 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'com.diffplug.spotless' version '6.11.0'
+    id 'signing'
+    id 'cl.franciscosolis.sonatype-central-upload' version '1.0.3'
 }
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/releases/'
+        url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
     }
 }
 
@@ -43,6 +45,27 @@ java {
 }
 
 
+group = 'com.payabli'
+
+version = '0.0.278'
+
+jar {
+    dependsOn(":generatePomFileForMavenPublication")
+    archiveBaseName = "sdk-java"
+}
+
+sourcesJar {
+    archiveBaseName = "sdk-java"
+}
+
+javadocJar {
+    archiveBaseName = "sdk-java"
+}
+
+signing {
+    sign(publishing.publications)
+}
+
 test {
     useJUnitPlatform()
     testLogging {
@@ -50,3 +73,59 @@ test {
     }
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.payabli'
+            artifactId = 'sdk-java'
+            version = '0.0.278'
+            from components.java
+            pom {
+                name = 'payabli'
+                description = 'The official SDK of payabli'
+                url = 'https://buildwithfern.com'
+                licenses {
+                    license {
+                        name = 'The MIT License (MIT)'
+                        url = 'https://mit-license.org/'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'payabli'
+                        email = 'developers@payabli.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/payabli/sdk-java.git'
+                    developerConnection = 'scm:git:git://github.com/payabli/sdk-java.git'
+                    url = 'https://github.com/payabli/sdk-java'
+                }
+            }
+        }
+    }
+}
+
+sonatypeCentralUpload {
+    username = "$System.env.MAVEN_USERNAME"
+    password = "$System.env.MAVEN_PASSWORD"
+
+    archives = files(
+        "$buildDir/libs/sdk-java-" + version + ".jar",
+        "$buildDir/libs/sdk-java-" + version + "-sources.jar",
+        "$buildDir/libs/sdk-java-" + version + "-javadoc.jar"
+    )
+
+    pom = file("$buildDir/publications/maven/pom-default.xml")
+    signingKey = "$System.env.MAVEN_SIGNATURE_SECRET_KEY"
+    signingKeyPassphrase = "$System.env.MAVEN_SIGNATURE_PASSWORD"
+}
+
+signing {
+    def signingKeyId = "$System.env.MAVEN_SIGNATURE_SECRET_KEY"
+    def signingPassword = "$System.env.MAVEN_SIGNATURE_PASSWORD"
+    useInMemoryPgpKeys(signingKeyId, signingPassword)
+    sign publishing.publications.maven
+}
+
+sonatypeCentralUpload.dependsOn build

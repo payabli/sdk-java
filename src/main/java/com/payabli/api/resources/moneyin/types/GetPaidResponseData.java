@@ -33,7 +33,7 @@ public final class GetPaidResponseData {
 
     private final String cvvResponseText;
 
-    private final Optional<Long> customerId;
+    private final long customerId;
 
     private final Optional<String> methodReferenceId;
 
@@ -46,7 +46,7 @@ public final class GetPaidResponseData {
             String resultText,
             String avsResponseText,
             String cvvResponseText,
-            Optional<Long> customerId,
+            long customerId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
         this.authCode = authCode;
@@ -91,7 +91,7 @@ public final class GetPaidResponseData {
     }
 
     @JsonProperty("customerId")
-    public Optional<Long> getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
@@ -118,7 +118,7 @@ public final class GetPaidResponseData {
                 && resultText.equals(other.resultText)
                 && avsResponseText.equals(other.avsResponseText)
                 && cvvResponseText.equals(other.cvvResponseText)
-                && customerId.equals(other.customerId)
+                && customerId == other.customerId
                 && methodReferenceId.equals(other.methodReferenceId);
     }
 
@@ -163,7 +163,11 @@ public final class GetPaidResponseData {
     }
 
     public interface CvvResponseTextStage {
-        _FinalStage cvvResponseText(@NotNull String cvvResponseText);
+        CustomerIdStage cvvResponseText(@NotNull String cvvResponseText);
+    }
+
+    public interface CustomerIdStage {
+        _FinalStage customerId(long customerId);
     }
 
     public interface _FinalStage {
@@ -172,10 +176,6 @@ public final class GetPaidResponseData {
         _FinalStage authCode(Optional<String> authCode);
 
         _FinalStage authCode(String authCode);
-
-        _FinalStage customerId(Optional<Long> customerId);
-
-        _FinalStage customerId(Long customerId);
 
         _FinalStage methodReferenceId(Optional<String> methodReferenceId);
 
@@ -189,6 +189,7 @@ public final class GetPaidResponseData {
                     ResultTextStage,
                     AvsResponseTextStage,
                     CvvResponseTextStage,
+                    CustomerIdStage,
                     _FinalStage {
         private String referenceId;
 
@@ -200,9 +201,9 @@ public final class GetPaidResponseData {
 
         private String cvvResponseText;
 
-        private Optional<String> methodReferenceId = Optional.empty();
+        private long customerId;
 
-        private Optional<Long> customerId = Optional.empty();
+        private Optional<String> methodReferenceId = Optional.empty();
 
         private Optional<String> authCode = Optional.empty();
 
@@ -254,8 +255,15 @@ public final class GetPaidResponseData {
 
         @java.lang.Override
         @JsonSetter("cvvResponseText")
-        public _FinalStage cvvResponseText(@NotNull String cvvResponseText) {
+        public CustomerIdStage cvvResponseText(@NotNull String cvvResponseText) {
             this.cvvResponseText = Objects.requireNonNull(cvvResponseText, "cvvResponseText must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("customerId")
+        public _FinalStage customerId(long customerId) {
+            this.customerId = customerId;
             return this;
         }
 
@@ -269,19 +277,6 @@ public final class GetPaidResponseData {
         @JsonSetter(value = "methodReferenceId", nulls = Nulls.SKIP)
         public _FinalStage methodReferenceId(Optional<String> methodReferenceId) {
             this.methodReferenceId = methodReferenceId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage customerId(Long customerId) {
-            this.customerId = Optional.ofNullable(customerId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
-        public _FinalStage customerId(Optional<Long> customerId) {
-            this.customerId = customerId;
             return this;
         }
 
