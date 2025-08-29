@@ -177,6 +177,32 @@ client.moneyIn().getpaid(
 );
 ```
 
+### Custom Headers
+
+The SDK allows you to add custom headers to requests. You can configure headers at the client level or at the request level.
+
+```java
+import com.payabli.api.PayabliApiClient;
+import com.payabli.api.core.RequestOptions;
+
+// Client level
+PayabliApiClient client = PayabliApiClient
+    .builder()
+    .addHeader("X-Custom-Header", "custom-value")
+    .addHeader("X-Request-Id", "abc-123")
+    .build();
+;
+
+// Request level
+client.moneyIn().getpaid(
+    ...,
+    RequestOptions
+        .builder()
+        .addHeader("X-Request-Header", "request-value")
+        .build()
+);
+```
+
 ## Contributing
 
 While we value open-source contributions to this SDK, this library is generated programmatically.
@@ -206,6 +232,10 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>com.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.281</version>
+  <version>0.0.282</version>
 </dependency>
 ```
+
+## Reference
+
+A full reference for this library is available [here](https://github.com/payabli/sdk-java/blob/HEAD/./reference.md).

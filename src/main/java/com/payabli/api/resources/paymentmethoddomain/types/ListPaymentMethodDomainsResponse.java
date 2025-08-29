@@ -121,7 +121,9 @@ public final class ListPaymentMethodDomainsResponse {
 
         @java.lang.Override
         public _FinalStage addAllRecords(List<PaymentMethodDomainApiResponse> records) {
-            this.records.addAll(records);
+            if (records != null) {
+                this.records.addAll(records);
+            }
             return this;
         }
 

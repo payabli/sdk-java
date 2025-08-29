@@ -1441,7 +1441,9 @@ public final class BatchDetailResponseRecord {
 
         @java.lang.Override
         public _FinalStage addAllTransactionEvents(List<QueryTransactionEvents> transactionEvents) {
-            this.transactionEvents.addAll(transactionEvents);
+            if (transactionEvents != null) {
+                this.transactionEvents.addAll(transactionEvents);
+            }
             return this;
         }
 
@@ -1474,7 +1476,9 @@ public final class BatchDetailResponseRecord {
 
         @java.lang.Override
         public _FinalStage addAllCfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions) {
-            this.cfeeTransactions.addAll(cfeeTransactions);
+            if (cfeeTransactions != null) {
+                this.cfeeTransactions.addAll(cfeeTransactions);
+            }
             return this;
         }
 

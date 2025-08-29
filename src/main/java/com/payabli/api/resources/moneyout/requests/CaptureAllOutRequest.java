@@ -121,7 +121,9 @@ public final class CaptureAllOutRequest {
         }
 
         public Builder addAllBody(List<String> body) {
-            this.body.addAll(body);
+            if (body != null) {
+                this.body.addAll(body);
+            }
             return this;
         }
 

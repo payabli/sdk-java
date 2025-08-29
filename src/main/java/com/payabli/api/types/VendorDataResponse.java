@@ -1465,7 +1465,9 @@ public final class VendorDataResponse {
          */
         @java.lang.Override
         public _FinalStage addAllStoredMethods(List<VendorResponseStoredMethod> storedMethods) {
-            this.storedMethods.addAll(storedMethods);
+            if (storedMethods != null) {
+                this.storedMethods.addAll(storedMethods);
+            }
             return this;
         }
 
@@ -1498,7 +1500,9 @@ public final class VendorDataResponse {
 
         @java.lang.Override
         public _FinalStage putAllAdditionalData(Map<String, String> additionalData) {
-            this.additionalData.putAll(additionalData);
+            if (additionalData != null) {
+                this.additionalData.putAll(additionalData);
+            }
             return this;
         }
 
@@ -1582,7 +1586,9 @@ public final class VendorDataResponse {
          */
         @java.lang.Override
         public _FinalStage addAllContacts(List<ContactsResponse> contacts) {
-            this.contacts.addAll(contacts);
+            if (contacts != null) {
+                this.contacts.addAll(contacts);
+            }
             return this;
         }
 

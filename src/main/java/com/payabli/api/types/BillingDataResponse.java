@@ -473,7 +473,9 @@ public final class BillingDataResponse {
 
         @java.lang.Override
         public _FinalStage addAllServices(List<Object> services) {
-            this.services.addAll(services);
+            if (services != null) {
+                this.services.addAll(services);
+            }
             return this;
         }
 

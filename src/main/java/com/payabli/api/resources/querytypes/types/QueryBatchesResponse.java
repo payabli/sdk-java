@@ -120,7 +120,9 @@ public final class QueryBatchesResponse {
 
         @java.lang.Override
         public _FinalStage addAllRecords(List<QueryBatchesResponseRecordsItem> records) {
-            this.records.addAll(records);
+            if (records != null) {
+                this.records.addAll(records);
+            }
             return this;
         }
 

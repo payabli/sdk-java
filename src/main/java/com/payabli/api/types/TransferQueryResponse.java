@@ -117,7 +117,9 @@ public final class TransferQueryResponse {
 
         @java.lang.Override
         public _FinalStage addAllRecords(List<Transfer> records) {
-            this.records.addAll(records);
+            if (records != null) {
+                this.records.addAll(records);
+            }
             return this;
         }
 

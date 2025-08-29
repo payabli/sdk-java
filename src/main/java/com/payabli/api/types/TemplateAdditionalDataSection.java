@@ -111,7 +111,9 @@ public final class TemplateAdditionalDataSection {
         }
 
         public Builder putAllFields(Map<String, TemplateAdditionalDataField> fields) {
-            this.fields.putAll(fields);
+            if (fields != null) {
+                this.fields.putAll(fields);
+            }
             return this;
         }
 

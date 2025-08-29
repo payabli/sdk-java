@@ -220,7 +220,9 @@ public final class PayabliApiResponsePaylinks {
          */
         @java.lang.Override
         public _FinalStage putAllResponseData(Map<String, Object> responseData) {
-            this.responseData.putAll(responseData);
+            if (responseData != null) {
+                this.responseData.putAll(responseData);
+            }
             return this;
         }
 

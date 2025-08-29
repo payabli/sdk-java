@@ -1634,7 +1634,9 @@ public final class QueryInvoiceResponseRecordsItem {
          */
         @java.lang.Override
         public _FinalStage addAllItems(List<BillItem> items) {
-            this.items.addAll(items);
+            if (items != null) {
+                this.items.addAll(items);
+            }
             return this;
         }
 
