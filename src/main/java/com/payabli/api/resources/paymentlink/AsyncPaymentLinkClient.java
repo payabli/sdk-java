@@ -5,12 +5,14 @@ package com.payabli.api.resources.paymentlink;
 
 import com.payabli.api.core.ClientOptions;
 import com.payabli.api.core.RequestOptions;
-import com.payabli.api.resources.paymentlink.requests.PayLinkData;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataBill;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataInvoice;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataOut;
 import com.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import com.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import com.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import com.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
-import com.payabli.api.types.PayabliApiResponsePaymentLinks;
+import com.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
 import com.payabli.api.types.PushPayLinkRequest;
 import java.util.concurrent.CompletableFuture;
 
@@ -34,14 +36,8 @@ public class AsyncPaymentLinkClient {
     /**
      * Generates a payment link for an invoice from the invoice ID.
      */
-    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(int idInvoice) {
-        return this.rawClient.addPayLinkFromInvoice(idInvoice).thenApply(response -> response.body());
-    }
-
-    /**
-     * Generates a payment link for an invoice from the invoice ID.
-     */
-    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(int idInvoice, PayLinkData request) {
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+            int idInvoice, PayLinkDataInvoice request) {
         return this.rawClient.addPayLinkFromInvoice(idInvoice, request).thenApply(response -> response.body());
     }
 
@@ -49,9 +45,26 @@ public class AsyncPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
-            int idInvoice, PayLinkData request, RequestOptions requestOptions) {
+            int idInvoice, PayLinkDataInvoice request, RequestOptions requestOptions) {
         return this.rawClient
                 .addPayLinkFromInvoice(idInvoice, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromBill(int billId, PayLinkDataBill request) {
+        return this.rawClient.addPayLinkFromBill(billId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+            int billId, PayLinkDataBill request, RequestOptions requestOptions) {
+        return this.rawClient
+                .addPayLinkFromBill(billId, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 
@@ -175,6 +188,24 @@ public class AsyncPaymentLinkClient {
             String payLinkId, PayLinkUpdateData request, RequestOptions requestOptions) {
         return this.rawClient
                 .updatePayLinkFromId(payLinkId, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromBillLotNumber(
+            String lotNumber, PayLinkDataOut request) {
+        return this.rawClient.addPayLinkFromBillLotNumber(lotNumber, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromBillLotNumber(
+            String lotNumber, PayLinkDataOut request, RequestOptions requestOptions) {
+        return this.rawClient
+                .addPayLinkFromBillLotNumber(lotNumber, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 }

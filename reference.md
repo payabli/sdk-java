@@ -12508,172 +12508,177 @@ Generates a payment link for an invoice from the invoice ID.
 ```java
 client.paymentLink().addPayLinkFromInvoice(
     23548884,
-    PayLinkData
+    PayLinkDataInvoice
         .builder()
-        .mail2("jo@example.com; ceo@example.com")
-        .contactUs(
-            ContactElement
+        .body(
+            PaymentPageRequestBody
                 .builder()
-                .emailLabel("Email")
-                .enabled(true)
-                .header("Contact Us")
-                .order(0)
-                .paymentIcons(true)
-                .phoneLabel("Phone")
-                .build()
-        )
-        .invoices(
-            InvoiceElement
-                .builder()
-                .enabled(true)
-                .invoiceLink(
-                    LabelElement
+                .contactUs(
+                    ContactElement
+                        .builder()
+                        .emailLabel("Email")
+                        .enabled(true)
+                        .header("Contact Us")
+                        .order(0)
+                        .paymentIcons(true)
+                        .phoneLabel("Phone")
+                        .build()
+                )
+                .invoices(
+                    InvoiceElement
                         .builder()
                         .enabled(true)
-                        .label("View Invoice")
-                        .order(0)
-                        .build()
-                )
-                .order(0)
-                .viewInvoiceDetails(
-                    LabelElement
-                        .builder()
-                        .enabled(true)
-                        .label("Invoice Details")
-                        .order(0)
-                        .build()
-                )
-                .build()
-        )
-        .logo(
-            Element
-                .builder()
-                .enabled(true)
-                .order(0)
-                .build()
-        )
-        .messageBeforePaying(
-            LabelElement
-                .builder()
-                .enabled(true)
-                .label("Please review your payment details")
-                .order(0)
-                .build()
-        )
-        .notes(
-            NoteElement
-                .builder()
-                .enabled(true)
-                .header("Additional Notes")
-                .order(0)
-                .placeholder("Enter any additional notes here")
-                .value("")
-                .build()
-        )
-        .page(
-            PageElement
-                .builder()
-                .description("Complete your payment securely")
-                .enabled(true)
-                .header("Payment Page")
-                .order(0)
-                .build()
-        )
-        .paymentButton(
-            LabelElement
-                .builder()
-                .enabled(true)
-                .label("Pay Now")
-                .order(0)
-                .build()
-        )
-        .paymentMethods(
-            MethodElement
-                .builder()
-                .allMethodsChecked(true)
-                .enabled(true)
-                .header("Payment Methods")
-                .methods(
-                    MethodsList
-                        .builder()
-                        .amex(true)
-                        .applePay(true)
-                        .discover(true)
-                        .eCheck(true)
-                        .mastercard(true)
-                        .visa(true)
-                        .build()
-                )
-                .order(0)
-                .settings(
-                    MethodElementSettings
-                        .builder()
-                        .applePay(
-                            MethodElementSettingsApplePay
+                        .invoiceLink(
+                            LabelElement
                                 .builder()
-                                .buttonStyle(MethodElementSettingsApplePayButtonStyle.BLACK)
-                                .buttonType(MethodElementSettingsApplePayButtonType.PAY)
-                                .language(MethodElementSettingsApplePayLanguage.EN_US)
-                                .build()
-                        )
-                        .build()
-                )
-                .build()
-        )
-        .payor(
-            PayorElement
-                .builder()
-                .enabled(true)
-                .fields(
-                    new ArrayList<PayorFields>(
-                        Arrays.asList(
-                            PayorFields
-                                .builder()
-                                .display(true)
-                                .fixed(true)
-                                .identifier(true)
-                                .label("Full Name")
-                                .name("fullName")
+                                .enabled(true)
+                                .label("View Invoice")
                                 .order(0)
-                                .required(true)
-                                .validation("^[a-zA-Z ]+$")
-                                .value("")
-                                .width(0)
                                 .build()
                         )
-                    )
-                )
-                .header("Payor Information")
-                .order(0)
-                .build()
-        )
-        .review(
-            HeaderElement
-                .builder()
-                .enabled(true)
-                .header("Review Payment")
-                .order(0)
-                .build()
-        )
-        .settings(
-            PagelinkSetting
-                .builder()
-                .color("#000000")
-                .customCssUrl("https://example.com/custom.css")
-                .language("en")
-                .pageLogo(
-                    FileContent
-                        .builder()
-                        .fContent("PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==")
-                        .filename("logo.jpg")
-                        .ftype(FileContentFtype.JPG)
-                        .furl("")
+                        .order(0)
+                        .viewInvoiceDetails(
+                            LabelElement
+                                .builder()
+                                .enabled(true)
+                                .label("Invoice Details")
+                                .order(0)
+                                .build()
+                        )
                         .build()
                 )
-                .redirectAfterApprove(true)
-                .redirectAfterApproveUrl("https://example.com/success")
+                .logo(
+                    Element
+                        .builder()
+                        .enabled(true)
+                        .order(0)
+                        .build()
+                )
+                .messageBeforePaying(
+                    LabelElement
+                        .builder()
+                        .enabled(true)
+                        .label("Please review your payment details")
+                        .order(0)
+                        .build()
+                )
+                .notes(
+                    NoteElement
+                        .builder()
+                        .enabled(true)
+                        .header("Additional Notes")
+                        .order(0)
+                        .placeholder("Enter any additional notes here")
+                        .value("")
+                        .build()
+                )
+                .page(
+                    PageElement
+                        .builder()
+                        .description("Complete your payment securely")
+                        .enabled(true)
+                        .header("Payment Page")
+                        .order(0)
+                        .build()
+                )
+                .paymentButton(
+                    LabelElement
+                        .builder()
+                        .enabled(true)
+                        .label("Pay Now")
+                        .order(0)
+                        .build()
+                )
+                .paymentMethods(
+                    MethodElement
+                        .builder()
+                        .allMethodsChecked(true)
+                        .enabled(true)
+                        .header("Payment Methods")
+                        .methods(
+                            MethodsList
+                                .builder()
+                                .amex(true)
+                                .applePay(true)
+                                .discover(true)
+                                .eCheck(true)
+                                .mastercard(true)
+                                .visa(true)
+                                .build()
+                        )
+                        .order(0)
+                        .settings(
+                            MethodElementSettings
+                                .builder()
+                                .applePay(
+                                    MethodElementSettingsApplePay
+                                        .builder()
+                                        .buttonStyle(MethodElementSettingsApplePayButtonStyle.BLACK)
+                                        .buttonType(MethodElementSettingsApplePayButtonType.PAY)
+                                        .language(MethodElementSettingsApplePayLanguage.EN_US)
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+                .payor(
+                    PayorElement
+                        .builder()
+                        .enabled(true)
+                        .fields(
+                            new ArrayList<PayorFields>(
+                                Arrays.asList(
+                                    PayorFields
+                                        .builder()
+                                        .display(true)
+                                        .fixed(true)
+                                        .identifier(true)
+                                        .label("Full Name")
+                                        .name("fullName")
+                                        .order(0)
+                                        .required(true)
+                                        .validation("^[a-zA-Z ]+$")
+                                        .value("")
+                                        .width(0)
+                                        .build()
+                                )
+                            )
+                        )
+                        .header("Payor Information")
+                        .order(0)
+                        .build()
+                )
+                .review(
+                    HeaderElement
+                        .builder()
+                        .enabled(true)
+                        .header("Review Payment")
+                        .order(0)
+                        .build()
+                )
+                .settings(
+                    PagelinkSetting
+                        .builder()
+                        .color("#000000")
+                        .customCssUrl("https://example.com/custom.css")
+                        .language("en")
+                        .pageLogo(
+                            FileContent
+                                .builder()
+                                .fContent("PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==")
+                                .filename("logo.jpg")
+                                .ftype(FileContentFtype.JPG)
+                                .furl("")
+                                .build()
+                        )
+                        .redirectAfterApprove(true)
+                        .redirectAfterApproveUrl("https://example.com/success")
+                        .build()
+                )
                 .build()
         )
+        .mail2("jo@example.com; ceo@example.com")
         .build()
 );
 ```
@@ -12722,7 +12727,187 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**contactUs:** `Optional<ContactElement>` — ContactUs section of payment link page
+**request:** `PaymentPageRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentLink.addPayLinkFromBill(billId, request) -> PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a payment link for a bill from the bill ID. 
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentLink().addPayLinkFromBill(
+    23548884,
+    PayLinkDataBill
+        .builder()
+        .body(
+            PaymentPageRequestBody
+                .builder()
+                .contactUs(
+                    ContactElement
+                        .builder()
+                        .emailLabel("Email")
+                        .enabled(true)
+                        .header("Contact Us")
+                        .order(0)
+                        .paymentIcons(true)
+                        .phoneLabel("Phone")
+                        .build()
+                )
+                .logo(
+                    Element
+                        .builder()
+                        .enabled(true)
+                        .order(0)
+                        .build()
+                )
+                .messageBeforePaying(
+                    LabelElement
+                        .builder()
+                        .enabled(true)
+                        .label("Please review your payment details")
+                        .order(0)
+                        .build()
+                )
+                .notes(
+                    NoteElement
+                        .builder()
+                        .enabled(true)
+                        .header("Additional Notes")
+                        .order(0)
+                        .placeholder("Enter any additional notes here")
+                        .value("")
+                        .build()
+                )
+                .page(
+                    PageElement
+                        .builder()
+                        .description("Get paid securely")
+                        .enabled(true)
+                        .header("Payment Page")
+                        .order(0)
+                        .build()
+                )
+                .paymentButton(
+                    LabelElement
+                        .builder()
+                        .enabled(true)
+                        .label("Pay Now")
+                        .order(0)
+                        .build()
+                )
+                .paymentMethods(
+                    MethodElement
+                        .builder()
+                        .allMethodsChecked(true)
+                        .enabled(true)
+                        .header("Payment Methods")
+                        .methods(
+                            MethodsList
+                                .builder()
+                                .amex(true)
+                                .applePay(true)
+                                .discover(true)
+                                .eCheck(true)
+                                .mastercard(true)
+                                .visa(true)
+                                .build()
+                        )
+                        .order(0)
+                        .build()
+                )
+                .payor(
+                    PayorElement
+                        .builder()
+                        .enabled(true)
+                        .fields(
+                            new ArrayList<PayorFields>(
+                                Arrays.asList(
+                                    PayorFields
+                                        .builder()
+                                        .display(true)
+                                        .fixed(true)
+                                        .identifier(true)
+                                        .label("Full Name")
+                                        .name("fullName")
+                                        .order(0)
+                                        .required(true)
+                                        .validation("^[a-zA-Z ]+$")
+                                        .value("")
+                                        .width(0)
+                                        .build()
+                                )
+                            )
+                        )
+                        .header("Payor Information")
+                        .order(0)
+                        .build()
+                )
+                .review(
+                    HeaderElement
+                        .builder()
+                        .enabled(true)
+                        .header("Review Payment")
+                        .order(0)
+                        .build()
+                )
+                .settings(
+                    PagelinkSetting
+                        .builder()
+                        .color("#000000")
+                        .language("en")
+                        .build()
+                )
+                .build()
+        )
+        .mail2("jo@example.com; ceo@example.com")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billId:** `Integer` — The Payabli ID for the bill.
     
 </dd>
 </dl>
@@ -12730,7 +12915,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**invoices:** `Optional<InvoiceElement>` — Invoices section of payment link page
+**amountFixed:** `Optional<Boolean>` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
     
 </dd>
 </dl>
@@ -12738,7 +12923,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**logo:** `Optional<Element>` — Logo section of payment link page
+**mail2:** `Optional<String>` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
     
 </dd>
 </dl>
@@ -12746,7 +12931,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**messageBeforePaying:** `Optional<LabelElement>` — Message section of payment link page
+**idempotencyKey:** `Optional<String>` 
     
 </dd>
 </dl>
@@ -12754,55 +12939,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**notes:** `Optional<NoteElement>` — Notes section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `Optional<PageElement>` — Page header section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentButton:** `Optional<LabelElement>` — Payment button section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentMethods:** `Optional<MethodElement>` — Payment methods section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payor:** `Optional<PayorElement>` — Customer/Payor section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**review:** `Optional<HeaderElement>` — Review section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**settings:** `Optional<PagelinkSetting>` — Settings section of payment link page
+**request:** `PaymentPageRequestBody` 
     
 </dd>
 </dl>
@@ -13272,6 +13409,229 @@ client.paymentLink().updatePayLinkFromId(
 <dd>
 
 **settings:** `Optional<PagelinkSetting>` — Settings section of payment link page
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentLink.addPayLinkFromBillLotNumber(lotNumber, request) -> PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentLink().addPayLinkFromBillLotNumber(
+    "LOT-2024-001",
+    PayLinkDataOut
+        .builder()
+        .entryPoint("billing")
+        .vendorNumber("VENDOR-123")
+        .body(
+            PaymentPageRequestBody
+                .builder()
+                .contactUs(
+                    ContactElement
+                        .builder()
+                        .emailLabel("Email")
+                        .enabled(true)
+                        .header("Contact Us")
+                        .order(0)
+                        .paymentIcons(true)
+                        .phoneLabel("Phone")
+                        .build()
+                )
+                .logo(
+                    Element
+                        .builder()
+                        .enabled(true)
+                        .order(0)
+                        .build()
+                )
+                .messageBeforePaying(
+                    LabelElement
+                        .builder()
+                        .enabled(true)
+                        .label("Please review your payment details")
+                        .order(0)
+                        .build()
+                )
+                .notes(
+                    NoteElement
+                        .builder()
+                        .enabled(true)
+                        .header("Additional Notes")
+                        .order(0)
+                        .placeholder("Enter any additional notes here")
+                        .value("")
+                        .build()
+                )
+                .page(
+                    PageElement
+                        .builder()
+                        .description("Get paid securely")
+                        .enabled(true)
+                        .header("Payment Page")
+                        .order(0)
+                        .build()
+                )
+                .paymentButton(
+                    LabelElement
+                        .builder()
+                        .enabled(true)
+                        .label("Pay Now")
+                        .order(0)
+                        .build()
+                )
+                .paymentMethods(
+                    MethodElement
+                        .builder()
+                        .allMethodsChecked(true)
+                        .enabled(true)
+                        .header("Payment Methods")
+                        .methods(
+                            MethodsList
+                                .builder()
+                                .amex(true)
+                                .applePay(true)
+                                .discover(true)
+                                .eCheck(true)
+                                .mastercard(true)
+                                .visa(true)
+                                .build()
+                        )
+                        .order(0)
+                        .build()
+                )
+                .payor(
+                    PayorElement
+                        .builder()
+                        .enabled(true)
+                        .fields(
+                            new ArrayList<PayorFields>(
+                                Arrays.asList(
+                                    PayorFields
+                                        .builder()
+                                        .display(true)
+                                        .fixed(true)
+                                        .identifier(true)
+                                        .label("Full Name")
+                                        .name("fullName")
+                                        .order(0)
+                                        .required(true)
+                                        .validation("^[a-zA-Z ]+$")
+                                        .value("")
+                                        .width(0)
+                                        .build()
+                                )
+                            )
+                        )
+                        .header("Payor Information")
+                        .order(0)
+                        .build()
+                )
+                .review(
+                    HeaderElement
+                        .builder()
+                        .enabled(true)
+                        .header("Review Payment")
+                        .order(0)
+                        .build()
+                )
+                .settings(
+                    PagelinkSetting
+                        .builder()
+                        .color("#000000")
+                        .language("en")
+                        .build()
+                )
+                .build()
+        )
+        .mail2("customer@example.com; billing@example.com")
+        .amountFixed("true")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lotNumber:** `String` — Lot number of the bills to pay. All bills with this lot number will be included.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorNumber:** `String` — The vendor number for the vendor being paid with this payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `Optional<String>` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amountFixed:** `Optional<String>` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PaymentPageRequestBody` 
     
 </dd>
 </dl>

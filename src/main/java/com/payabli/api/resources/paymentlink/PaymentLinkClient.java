@@ -5,12 +5,14 @@ package com.payabli.api.resources.paymentlink;
 
 import com.payabli.api.core.ClientOptions;
 import com.payabli.api.core.RequestOptions;
-import com.payabli.api.resources.paymentlink.requests.PayLinkData;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataBill;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataInvoice;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataOut;
 import com.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import com.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import com.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import com.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
-import com.payabli.api.types.PayabliApiResponsePaymentLinks;
+import com.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
 import com.payabli.api.types.PushPayLinkRequest;
 
 public class PaymentLinkClient {
@@ -33,14 +35,7 @@ public class PaymentLinkClient {
     /**
      * Generates a payment link for an invoice from the invoice ID.
      */
-    public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(int idInvoice) {
-        return this.rawClient.addPayLinkFromInvoice(idInvoice).body();
-    }
-
-    /**
-     * Generates a payment link for an invoice from the invoice ID.
-     */
-    public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(int idInvoice, PayLinkData request) {
+    public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(int idInvoice, PayLinkDataInvoice request) {
         return this.rawClient.addPayLinkFromInvoice(idInvoice, request).body();
     }
 
@@ -48,9 +43,26 @@ public class PaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      */
     public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(
-            int idInvoice, PayLinkData request, RequestOptions requestOptions) {
+            int idInvoice, PayLinkDataInvoice request, RequestOptions requestOptions) {
         return this.rawClient
                 .addPayLinkFromInvoice(idInvoice, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromBill(int billId, PayLinkDataBill request) {
+        return this.rawClient.addPayLinkFromBill(billId, request).body();
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromBill(
+            int billId, PayLinkDataBill request, RequestOptions requestOptions) {
+        return this.rawClient
+                .addPayLinkFromBill(billId, request, requestOptions)
                 .body();
     }
 
@@ -168,6 +180,23 @@ public class PaymentLinkClient {
             String payLinkId, PayLinkUpdateData request, RequestOptions requestOptions) {
         return this.rawClient
                 .updatePayLinkFromId(payLinkId, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromBillLotNumber(String lotNumber, PayLinkDataOut request) {
+        return this.rawClient.addPayLinkFromBillLotNumber(lotNumber, request).body();
+    }
+
+    /**
+     * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromBillLotNumber(
+            String lotNumber, PayLinkDataOut request, RequestOptions requestOptions) {
+        return this.rawClient
+                .addPayLinkFromBillLotNumber(lotNumber, request, requestOptions)
                 .body();
     }
 }

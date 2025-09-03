@@ -16,17 +16,17 @@ import com.payabli.api.errors.BadRequestError;
 import com.payabli.api.errors.InternalServerError;
 import com.payabli.api.errors.ServiceUnavailableError;
 import com.payabli.api.errors.UnauthorizedError;
-import com.payabli.api.resources.paymentlink.requests.PayLinkData;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataBill;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataInvoice;
+import com.payabli.api.resources.paymentlink.requests.PayLinkDataOut;
 import com.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import com.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import com.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import com.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
+import com.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
 import com.payabli.api.types.PayabliApiResponse;
-import com.payabli.api.types.PayabliApiResponsePaymentLinks;
 import com.payabli.api.types.PushPayLinkRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -50,15 +50,7 @@ public class AsyncRawPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromInvoice(
-            int idInvoice) {
-        return addPayLinkFromInvoice(idInvoice, PayLinkData.builder().build());
-    }
-
-    /**
-     * Generates a payment link for an invoice from the invoice ID.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromInvoice(
-            int idInvoice, PayLinkData request) {
+            int idInvoice, PayLinkDataInvoice request) {
         return addPayLinkFromInvoice(idInvoice, request, null);
     }
 
@@ -66,7 +58,7 @@ public class AsyncRawPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromInvoice(
-            int idInvoice, PayLinkData request, RequestOptions requestOptions) {
+            int idInvoice, PayLinkDataInvoice request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentLink")
@@ -79,44 +71,116 @@ public class AsyncRawPaymentLinkClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "mail2", request.getMail2().get(), false);
         }
-        Map<String, Object> properties = new HashMap<>();
-        if (request.getContactUs().isPresent()) {
-            properties.put("contactUs", request.getContactUs());
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        if (request.getInvoices().isPresent()) {
-            properties.put("invoices", request.getInvoices());
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        if (request.getIdempotencyKey().isPresent()) {
+            _requestBuilder.addHeader(
+                    "idempotencyKey", request.getIdempotencyKey().get());
         }
-        if (request.getLogo().isPresent()) {
-            properties.put("logo", request.getLogo());
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        if (request.getMessageBeforePaying().isPresent()) {
-            properties.put("messageBeforePaying", request.getMessageBeforePaying());
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBody.string(), PayabliApiResponsePaymentLinks.class),
+                                response));
+                        return;
+                    }
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(),
+                            response.code(),
+                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                            response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromBill(
+            int billId, PayLinkDataBill request) {
+        return addPayLinkFromBill(billId, request, null);
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromBill(
+            int billId, PayLinkDataBill request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("PaymentLink/bill")
+                .addPathSegment(Integer.toString(billId));
+        if (request.getAmountFixed().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "amountFixed", request.getAmountFixed().get(), false);
         }
-        if (request.getNotes().isPresent()) {
-            properties.put("notes", request.getNotes());
-        }
-        if (request.getPage().isPresent()) {
-            properties.put("page", request.getPage());
-        }
-        if (request.getPaymentButton().isPresent()) {
-            properties.put("paymentButton", request.getPaymentButton());
-        }
-        if (request.getPaymentMethods().isPresent()) {
-            properties.put("paymentMethods", request.getPaymentMethods());
-        }
-        if (request.getPayor().isPresent()) {
-            properties.put("payor", request.getPayor());
-        }
-        if (request.getReview().isPresent()) {
-            properties.put("review", request.getReview());
-        }
-        if (request.getSettings().isPresent()) {
-            properties.put("settings", request.getSettings());
+        if (request.getMail2().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "mail2", request.getMail2().get(), false);
         }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -703,6 +767,110 @@ public class AsyncRawPaymentLinkClient {
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBody.string(), PayabliApiResponsePaymentLinks.class),
+                                response));
+                        return;
+                    }
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(),
+                            response.code(),
+                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                            response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromBillLotNumber(
+            String lotNumber, PayLinkDataOut request) {
+        return addPayLinkFromBillLotNumber(lotNumber, request, null);
+    }
+
+    /**
+     * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromBillLotNumber(
+            String lotNumber, PayLinkDataOut request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("PaymentLink/bill/lotNumber")
+                .addPathSegment(lotNumber);
+        QueryStringMapper.addQueryParameter(httpUrl, "entryPoint", request.getEntryPoint(), false);
+        QueryStringMapper.addQueryParameter(httpUrl, "vendorNumber", request.getVendorNumber(), false);
+        if (request.getMail2().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "mail2", request.getMail2().get(), false);
+        }
+        if (request.getAmountFixed().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "amountFixed", request.getAmountFixed().get(), false);
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
