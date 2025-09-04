@@ -8,6 +8,6 @@ import java.lang.String;
 
 public final class App {
   public static void main(String[] args) {
-    // import io.github.payabli.api.AsyncPayabliApiClient
+    // import com.payabli.api.AsyncPayabliApiClient
   }
 }

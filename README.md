@@ -12,13 +12,13 @@ Instantiate and use the client with the following:
 ```java
 package com.example.usage;
 
-import io.github.payabli.api.PayabliApiClient;
-import io.github.payabli.api.resources.moneyin.requests.RequestPayment;
-import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
-import io.github.payabli.api.types.PayMethodCredit;
-import io.github.payabli.api.types.PaymentDetail;
-import io.github.payabli.api.types.PaymentMethod;
-import io.github.payabli.api.types.PayorDataRequest;
+import com.payabli.api.PayabliApiClient;
+import com.payabli.api.resources.moneyin.requests.RequestPayment;
+import com.payabli.api.resources.moneyin.types.TransRequestBody;
+import com.payabli.api.types.PayMethodCredit;
+import com.payabli.api.types.PaymentDetail;
+import com.payabli.api.types.PaymentMethod;
+import com.payabli.api.types.PayorDataRequest;
 
 public class Example {
     public static void main(String[] args) {
@@ -75,8 +75,8 @@ public class Example {
 This SDK allows you to configure different environments for API requests.
 
 ```java
-import io.github.payabli.api.PayabliApiClient;
-import io.github.payabli.api.core.Environment;
+import com.payabli.api.PayabliApiClient;
+import com.payabli.api.core.Environment;
 
 PayabliApiClient client = PayabliApiClient
     .builder()
@@ -89,7 +89,7 @@ PayabliApiClient client = PayabliApiClient
 You can set a custom base URL when constructing the client.
 
 ```java
-import io.github.payabli.api.PayabliApiClient;
+import com.payabli.api.PayabliApiClient;
 
 PayabliApiClient client = PayabliApiClient
     .builder()
@@ -102,7 +102,7 @@ PayabliApiClient client = PayabliApiClient
 When the API returns a non-success status code (4xx or 5xx response), an API exception will be thrown.
 
 ```java
-import io.github.payabli.api.core.PayabliApiApiException;
+import com.payabli.api.core.PayabliApiApiException;
 
 try {
     client.moneyIn().getpaid(...);
@@ -119,7 +119,7 @@ This SDK is built to work with any instance of `OkHttpClient`. By default, if no
 However, you can pass your own client like so:
 
 ```java
-import io.github.payabli.api.PayabliApiClient;
+import com.payabli.api.PayabliApiClient;
 import okhttp3.OkHttpClient;
 
 OkHttpClient customClient = ...;
@@ -145,7 +145,7 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `maxRetries` client option to configure this behavior.
 
 ```java
-import io.github.payabli.api.PayabliApiClient;
+import com.payabli.api.PayabliApiClient;
 
 PayabliApiClient client = PayabliApiClient
     .builder()
@@ -158,8 +158,8 @@ PayabliApiClient client = PayabliApiClient
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```java
-import io.github.payabli.api.PayabliApiClient;
-import io.github.payabli.api.core.RequestOptions;
+import com.payabli.api.PayabliApiClient;
+import com.payabli.api.core.RequestOptions;
 
 // Client level
 PayabliApiClient client = PayabliApiClient
@@ -182,8 +182,8 @@ client.moneyIn().getpaid(
 The SDK allows you to add custom headers to requests. You can configure headers at the client level or at the request level.
 
 ```java
-import io.github.payabli.api.PayabliApiClient;
-import io.github.payabli.api.core.RequestOptions;
+import com.payabli.api.PayabliApiClient;
+import com.payabli.api.core.RequestOptions;
 
 // Client level
 PayabliApiClient client = PayabliApiClient
@@ -232,7 +232,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>com.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.290</version>
+  <version>0.0.291</version>
 </dependency>
 ```
 
