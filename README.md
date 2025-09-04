@@ -1,7 +1,7 @@
 # Payabli Java Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fpayabli%2Fsdk-java)
-[![Maven Central](https://img.shields.io/maven-central/v/com.payabli/sdk-java)](https://central.sonatype.com/artifact/com.payabli/sdk-java)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.payabli/sdk-java)](https://central.sonatype.com/artifact/io.github.payabli/sdk-java)
 
 The Payabli Java library provides convenient access to the Payabli APIs from Java.
 
@@ -220,7 +220,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'com.payabli:sdk-java'
+  implementation 'io.github.payabli:sdk-java'
 }
 ```
 
@@ -230,9 +230,9 @@ Add the dependency in your `pom.xml` file:
 
 ```xml
 <dependency>
-  <groupId>com.payabli</groupId>
+  <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.286</version>
+  <version>0.0.287</version>
 </dependency>
 ```
 
