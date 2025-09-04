@@ -45,9 +45,9 @@ java {
 }
 
 
-group = 'io.github.payabli'
+group = 'com.payabli'
 
-version = '0.0.289'
+version = '0.0.290'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
@@ -76,9 +76,9 @@ test {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'io.github.payabli'
+            groupId = 'com.payabli'
             artifactId = 'sdk-java'
-            version = '0.0.289'
+            version = '0.0.290'
             from components.java
             pom {
                 name = 'payabli'
@@ -122,9 +122,10 @@ sonatypeCentralUpload {
 }
 
 signing {
-    def signingKeyId = "$System.env.MAVEN_SIGNATURE_SECRET_KEY"
+    def signingKeyId = "$System.env.MAVEN_SIGNATURE_KID"
+    def signingKey = "$System.env.MAVEN_SIGNATURE_SECRET_KEY"
     def signingPassword = "$System.env.MAVEN_SIGNATURE_PASSWORD"
-    useInMemoryPgpKeys(signingKeyId, signingPassword)
+    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign publishing.publications.maven
 }
 
