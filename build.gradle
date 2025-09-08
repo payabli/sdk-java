@@ -117,8 +117,8 @@ sonatypeCentralUpload {
     )
 
     pom = file("$buildDir/publications/maven/pom-default.xml")
-    signingKey = "$System.env.MAVEN_SIGNATURE_SECRET_KEY"
-    signingKeyPassphrase = "$System.env.MAVEN_SIGNATURE_PASSWORD"
+    signingKey = System.getenv("MAVEN_SIGNATURE_SECRET_KEY")
+    signingKeyPassphrase = System.getenv("MAVEN_SIGNATURE_PASSWORD")
 }
 
 signing {
