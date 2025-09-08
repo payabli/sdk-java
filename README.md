@@ -1,7 +1,7 @@
 # Payabli Java Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fpayabli%2Fsdk-java)
-[![Maven Central](https://img.shields.io/maven-central/v/com.payabli/sdk-java)](https://central.sonatype.com/artifact/com.payabli/sdk-java)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.payabli/sdk-java)](https://central.sonatype.com/artifact/io.github.payabli/sdk-java)
 
 The Payabli Java library provides convenient access to the Payabli APIs from Java.
 
@@ -12,13 +12,12 @@ Instantiate and use the client with the following:
 ```java
 package com.example.usage;
 
-import com.payabli.api.PayabliApiClient;
-import com.payabli.api.resources.moneyin.requests.RequestPayment;
-import com.payabli.api.resources.moneyin.types.TransRequestBody;
-import com.payabli.api.types.PayMethodCredit;
-import com.payabli.api.types.PaymentDetail;
-import com.payabli.api.types.PaymentMethod;
-import com.payabli.api.types.PayorDataRequest;
+import io.github.payabli.api.PayabliApiClient;
+import io.github.payabli.api.resources.moneyin.requests.RequestPayment;
+import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
+import io.github.payabli.api.types.PayMethodCredit;
+import io.github.payabli.api.types.PaymentDetail;
+import io.github.payabli.api.types.PaymentMethod;
 
 public class Example {
     public static void main(String[] args) {
@@ -36,32 +35,19 @@ public class Example {
                         .paymentDetails(
                             PaymentDetail
                                 .builder()
-                                .totalAmount(100)
-                                .serviceFee(0)
+                                .totalAmount(1.1)
                                 .build()
                         )
                         .paymentMethod(
                             PaymentMethod.ofPayMethodCredit(
                                 PayMethodCredit
                                     .builder()
-                                    .cardexp("02/27")
-                                    .cardnumber("4111111111111111")
+                                    .cardexp("alpha")
+                                    .cardnumber("cardnumber")
                                     .method("card")
-                                    .cardcvv("999")
-                                    .cardHolder("Kassiane Cassian")
-                                    .cardzip("12345")
-                                    .initiator("payor")
                                     .build()
                             )
                         )
-                        .customerData(
-                            PayorDataRequest
-                                .builder()
-                                .customerId(4440L)
-                                .build()
-                        )
-                        .entryPoint("f743aed24a")
-                        .ipaddress("255.255.255.255")
                         .build()
                 )
                 .build()
@@ -75,8 +61,8 @@ public class Example {
 This SDK allows you to configure different environments for API requests.
 
 ```java
-import com.payabli.api.PayabliApiClient;
-import com.payabli.api.core.Environment;
+import io.github.payabli.api.PayabliApiClient;
+import io.github.payabli.api.core.Environment;
 
 PayabliApiClient client = PayabliApiClient
     .builder()
@@ -89,7 +75,7 @@ PayabliApiClient client = PayabliApiClient
 You can set a custom base URL when constructing the client.
 
 ```java
-import com.payabli.api.PayabliApiClient;
+import io.github.payabli.api.PayabliApiClient;
 
 PayabliApiClient client = PayabliApiClient
     .builder()
@@ -102,7 +88,7 @@ PayabliApiClient client = PayabliApiClient
 When the API returns a non-success status code (4xx or 5xx response), an API exception will be thrown.
 
 ```java
-import com.payabli.api.core.PayabliApiApiException;
+import io.github.payabli.api.core.PayabliApiApiException;
 
 try {
     client.moneyIn().getpaid(...);
@@ -119,7 +105,7 @@ This SDK is built to work with any instance of `OkHttpClient`. By default, if no
 However, you can pass your own client like so:
 
 ```java
-import com.payabli.api.PayabliApiClient;
+import io.github.payabli.api.PayabliApiClient;
 import okhttp3.OkHttpClient;
 
 OkHttpClient customClient = ...;
@@ -145,7 +131,7 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `maxRetries` client option to configure this behavior.
 
 ```java
-import com.payabli.api.PayabliApiClient;
+import io.github.payabli.api.PayabliApiClient;
 
 PayabliApiClient client = PayabliApiClient
     .builder()
@@ -158,8 +144,8 @@ PayabliApiClient client = PayabliApiClient
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```java
-import com.payabli.api.PayabliApiClient;
-import com.payabli.api.core.RequestOptions;
+import io.github.payabli.api.PayabliApiClient;
+import io.github.payabli.api.core.RequestOptions;
 
 // Client level
 PayabliApiClient client = PayabliApiClient
@@ -182,8 +168,8 @@ client.moneyIn().getpaid(
 The SDK allows you to add custom headers to requests. You can configure headers at the client level or at the request level.
 
 ```java
-import com.payabli.api.PayabliApiClient;
-import com.payabli.api.core.RequestOptions;
+import io.github.payabli.api.PayabliApiClient;
+import io.github.payabli.api.core.RequestOptions;
 
 // Client level
 PayabliApiClient client = PayabliApiClient
@@ -220,7 +206,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'com.payabli:sdk-java'
+  implementation 'io.github.payabli:sdk-java'
 }
 ```
 
@@ -230,9 +216,9 @@ Add the dependency in your `pom.xml` file:
 
 ```xml
 <dependency>
-  <groupId>com.payabli</groupId>
+  <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.291</version>
+  <version>0.0.292</version>
 </dependency>
 ```
 

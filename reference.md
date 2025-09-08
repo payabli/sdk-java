@@ -10680,7 +10680,7 @@ client.moneyIn().void_("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 </details>
 
 ## MoneyOut
-<details><summary><code>client.moneyOut.authorizeOut(request) -> PayabliApiResponse11</code></summary>
+<details><summary><code>client.moneyOut.authorizeOut(request) -> AuthCapturePayoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -10692,7 +10692,7 @@ client.moneyIn().void_("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 <dl>
 <dd>
 
-Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use `referenceId` returned in the response to capture the transaction.
+Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use `referenceId` returned in the response to capture the transaction. 
 </dd>
 </dl>
 </dd>
@@ -10708,16 +10708,32 @@ Authorizes transaction for payout. Authorized transactions aren't flagged for se
 
 ```java
 client.moneyOut().authorizeOut(
-    RequestOutAuthorize
+    MoneyOutTypesRequestOutAuthorize
         .builder()
         .body(
             AuthorizePayoutBody
                 .builder()
                 .entryPoint("48acde49")
+                .invoiceData(
+                    new ArrayList<RequestOutAuthorizeInvoiceData>(
+                        Arrays.asList(
+                            RequestOutAuthorizeInvoiceData
+                                .builder()
+                                .billId(54323L)
+                                .build()
+                        )
+                    )
+                )
                 .paymentDetails(
                     RequestOutAuthorizePaymentDetails
                         .builder()
                         .totalAmount(47)
+                        .build()
+                )
+                .paymentMethod(
+                    VendorPaymentMethod
+                        .builder()
+                        .method("managed")
                         .build()
                 )
                 .vendorData(
@@ -10726,23 +10742,7 @@ client.moneyOut().authorizeOut(
                         .vendorNumber("7895433")
                         .build()
                 )
-                .invoiceData(
-                    new ArrayList<BillPayOutDataRequest>(
-                        Arrays.asList(
-                            BillPayOutDataRequest
-                                .builder()
-                                .billId(54323L)
-                                .build()
-                        )
-                    )
-                )
                 .orderDescription("Window Painting")
-                .paymentMethod(
-                    VendorPaymentMethod
-                        .builder()
-                        .method("managed")
-                        .build()
-                )
                 .build()
         )
         .build()
@@ -10988,7 +10988,7 @@ client.moneyOut().captureAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.moneyOut.captureOut(referenceId) -> PayabliApiResponse11</code></summary>
+<details><summary><code>client.moneyOut.captureOut(referenceId) -> AuthCapturePayoutResponse</code></summary>
 <dl>
 <dd>
 
