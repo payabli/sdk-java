@@ -5,12 +5,15 @@ package io.github.payabli.api.resources.querytypes.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.types.AchHolderType;
 import io.github.payabli.api.types.BillData;
@@ -321,232 +324,328 @@ public final class TransferDetailRecord {
     /**
      * @return Unique identifier for the transfer detail record
      */
-    @JsonProperty("transferDetailId")
+    @JsonIgnore
     public Optional<Integer> getTransferDetailId() {
+        if (transferDetailId == null) {
+            return Optional.empty();
+        }
         return transferDetailId;
     }
 
     /**
      * @return The ID of the transfer this detail belongs to
      */
-    @JsonProperty("transferId")
+    @JsonIgnore
     public Optional<Integer> getTransferId() {
+        if (transferId == null) {
+            return Optional.empty();
+        }
         return transferId;
     }
 
     /**
      * @return The transaction ID in Payabli's system
      */
-    @JsonProperty("transactionId")
+    @JsonIgnore
     public Optional<String> getTransactionId() {
+        if (transactionId == null) {
+            return Optional.empty();
+        }
         return transactionId;
     }
 
     /**
      * @return External transaction reference number
      */
-    @JsonProperty("transactionNumber")
+    @JsonIgnore
     public Optional<String> getTransactionNumber() {
+        if (transactionNumber == null) {
+            return Optional.empty();
+        }
         return transactionNumber;
     }
 
     /**
      * @return The transaction type (credit or debit)
      */
-    @JsonProperty("type")
+    @JsonIgnore
     public Optional<String> getType() {
+        if (type == null) {
+            return Optional.empty();
+        }
         return type;
     }
 
     /**
      * @return A field used to categorize the transaction details. Values include: auth, decline, refund, adj, cb, split
      */
-    @JsonProperty("category")
+    @JsonIgnore
     public Optional<String> getCategory() {
+        if (category == null) {
+            return Optional.empty();
+        }
         return category;
     }
 
     /**
      * @return The gross amount of the transaction
      */
-    @JsonProperty("grossAmount")
+    @JsonIgnore
     public Optional<Double> getGrossAmount() {
+        if (grossAmount == null) {
+            return Optional.empty();
+        }
         return grossAmount;
     }
 
     /**
      * @return Chargeback amount deducted from transaction
      */
-    @JsonProperty("chargeBackAmount")
+    @JsonIgnore
     public Optional<Double> getChargeBackAmount() {
+        if (chargeBackAmount == null) {
+            return Optional.empty();
+        }
         return chargeBackAmount;
     }
 
     /**
      * @return ACH return amount deducted from transaction
      */
-    @JsonProperty("returnedAmount")
+    @JsonIgnore
     public Optional<Double> getReturnedAmount() {
+        if (returnedAmount == null) {
+            return Optional.empty();
+        }
         return returnedAmount;
     }
 
     /**
      * @return Refund amount deducted from transaction
      */
-    @JsonProperty("refundAmount")
+    @JsonIgnore
     public Optional<Double> getRefundAmount() {
+        if (refundAmount == null) {
+            return Optional.empty();
+        }
         return refundAmount;
     }
 
     /**
      * @return Amount being held for fraud or risk concerns
      */
-    @JsonProperty("holdAmount")
+    @JsonIgnore
     public Optional<Double> getHoldAmount() {
+        if (holdAmount == null) {
+            return Optional.empty();
+        }
         return holdAmount;
     }
 
     /**
      * @return Previously held funds that have been released after a risk review
      */
-    @JsonProperty("releasedAmount")
+    @JsonIgnore
     public Optional<Double> getReleasedAmount() {
+        if (releasedAmount == null) {
+            return Optional.empty();
+        }
         return releasedAmount;
     }
 
     /**
      * @return Charges applied for transactions and services
      */
-    @JsonProperty("billingFeesAmount")
+    @JsonIgnore
     public Optional<Double> getBillingFeesAmount() {
+        if (billingFeesAmount == null) {
+            return Optional.empty();
+        }
         return billingFeesAmount;
     }
 
     /**
      * @return Payments captured in the batch cycle that are deposited separately. For example,  checks or cash payments recorded in the batch but not deposited via Payabli,  or card brands making a direct transfer in certain situations.
      */
-    @JsonProperty("thirdPartyPaidAmount")
+    @JsonIgnore
     public Optional<Double> getThirdPartyPaidAmount() {
+        if (thirdPartyPaidAmount == null) {
+            return Optional.empty();
+        }
         return thirdPartyPaidAmount;
     }
 
     /**
      * @return Corrections applied to Billing &amp; Fees charges
      */
-    @JsonProperty("adjustmentsAmount")
+    @JsonIgnore
     public Optional<Double> getAdjustmentsAmount() {
+        if (adjustmentsAmount == null) {
+            return Optional.empty();
+        }
         return adjustmentsAmount;
     }
 
     /**
      * @return The net amount after all deductions
      */
-    @JsonProperty("netTransferAmount")
+    @JsonIgnore
     public Optional<Double> getNetTransferAmount() {
+        if (netTransferAmount == null) {
+            return Optional.empty();
+        }
         return netTransferAmount;
     }
 
     /**
      * @return Total amount directed to split funding destinations
      */
-    @JsonProperty("splitFundingAmount")
+    @JsonIgnore
     public Optional<Double> getSplitFundingAmount() {
+        if (splitFundingAmount == null) {
+            return Optional.empty();
+        }
         return splitFundingAmount;
     }
 
-    @JsonProperty("billingFeesDetails")
+    @JsonIgnore
     public Optional<List<BillingFeeDetail>> getBillingFeesDetails() {
+        if (billingFeesDetails == null) {
+            return Optional.empty();
+        }
         return billingFeesDetails;
     }
 
-    @JsonProperty("ParentOrgName")
+    @JsonIgnore
     public Optional<String> getParentOrgName() {
+        if (parentOrgName == null) {
+            return Optional.empty();
+        }
         return parentOrgName;
     }
 
-    @JsonProperty("PaypointDbaname")
+    @JsonIgnore
     public Optional<String> getPaypointDbaname() {
+        if (paypointDbaname == null) {
+            return Optional.empty();
+        }
         return paypointDbaname;
     }
 
-    @JsonProperty("PaypointLegalname")
+    @JsonIgnore
     public Optional<String> getPaypointLegalname() {
+        if (paypointLegalname == null) {
+            return Optional.empty();
+        }
         return paypointLegalname;
     }
 
     /**
      * @return The paypoint's entryname
      */
-    @JsonProperty("PaypointEntryname")
+    @JsonIgnore
     public Optional<String> getPaypointEntryname() {
+        if (paypointEntryname == null) {
+            return Optional.empty();
+        }
         return paypointEntryname;
     }
 
     /**
      * @return The transaction ID for the payment
      */
-    @JsonProperty("PaymentTransId")
+    @JsonIgnore
     public Optional<String> getPaymentTransId() {
+        if (paymentTransId == null) {
+            return Optional.empty();
+        }
         return paymentTransId;
     }
 
     /**
      * @return The payment connector used to process the transaction
      */
-    @JsonProperty("ConnectorName")
+    @JsonIgnore
     public Optional<String> getConnectorName() {
+        if (connectorName == null) {
+            return Optional.empty();
+        }
         return connectorName;
     }
 
-    @JsonProperty("ExternalProcessorInformation")
+    @JsonIgnore
     public Optional<String> getExternalProcessorInformation() {
+        if (externalProcessorInformation == null) {
+            return Optional.empty();
+        }
         return externalProcessorInformation;
     }
 
     /**
      * @return Internal identifier used for processing
      */
-    @JsonProperty("GatewayTransId")
+    @JsonIgnore
     public Optional<String> getGatewayTransId() {
+        if (gatewayTransId == null) {
+            return Optional.empty();
+        }
         return gatewayTransId;
     }
 
-    @JsonProperty("OrderId")
+    @JsonIgnore
     public Optional<String> getOrderId() {
+        if (orderId == null) {
+            return Optional.empty();
+        }
         return orderId;
     }
 
     /**
      * @return Payment method used: card, ach, or wallet
      */
-    @JsonProperty("Method")
+    @JsonIgnore
     public Optional<String> getMethod() {
+        if (method == null) {
+            return Optional.empty();
+        }
         return method;
     }
 
-    @JsonProperty("BatchNumber")
+    @JsonIgnore
     public Optional<String> getBatchNumber() {
+        if (batchNumber == null) {
+            return Optional.empty();
+        }
         return batchNumber;
     }
 
     /**
      * @return The amount of the batch
      */
-    @JsonProperty("BatchAmount")
+    @JsonIgnore
     public Optional<Double> getBatchAmount() {
+        if (batchAmount == null) {
+            return Optional.empty();
+        }
         return batchAmount;
     }
 
     /**
      * @return Unique ID for customer linked to the transaction
      */
-    @JsonProperty("PayorId")
+    @JsonIgnore
     public Optional<Long> getPayorId() {
+        if (payorId == null) {
+            return Optional.empty();
+        }
         return payorId;
     }
 
-    @JsonProperty("PaymentData")
+    @JsonIgnore
     public Optional<QueryPaymentData> getPaymentData() {
+        if (paymentData == null) {
+            return Optional.empty();
+        }
         return paymentData;
     }
 
@@ -555,223 +654,757 @@ public final class TransferDetailRecord {
      * docs</a> for a
      * full reference.
      */
-    @JsonProperty("TransStatus")
+    @JsonIgnore
     public Optional<Integer> getTransStatus() {
+        if (transStatus == null) {
+            return Optional.empty();
+        }
         return transStatus;
     }
 
-    @JsonProperty("PaypointId")
+    @JsonIgnore
     public Optional<Long> getPaypointId() {
+        if (paypointId == null) {
+            return Optional.empty();
+        }
         return paypointId;
     }
 
     /**
      * @return Transaction total amount (including service fee or sub-charge)
      */
-    @JsonProperty("TotalAmount")
+    @JsonIgnore
     public Optional<Double> getTotalAmount() {
+        if (totalAmount == null) {
+            return Optional.empty();
+        }
         return totalAmount;
     }
 
     /**
      * @return Net amount paid
      */
-    @JsonProperty("NetAmount")
+    @JsonIgnore
     public Optional<Double> getNetAmount() {
+        if (netAmount == null) {
+            return Optional.empty();
+        }
         return netAmount;
     }
 
-    @JsonProperty("FeeAmount")
+    @JsonIgnore
     public Optional<Double> getFeeAmount() {
+        if (feeAmount == null) {
+            return Optional.empty();
+        }
         return feeAmount;
     }
 
     /**
      * @return Settlement status for transaction. See <a href="/developers/references/money-in-statuses#payment-funding-status">the docs</a> for a full reference.
      */
-    @JsonProperty("SettlementStatus")
+    @JsonIgnore
     public Optional<Integer> getSettlementStatus() {
+        if (settlementStatus == null) {
+            return Optional.empty();
+        }
         return settlementStatus;
     }
 
-    @JsonProperty("Operation")
+    @JsonIgnore
     public Optional<String> getOperation() {
+        if (operation == null) {
+            return Optional.empty();
+        }
         return operation;
     }
 
-    @JsonProperty("ResponseData")
+    @JsonIgnore
     public Optional<QueryResponseData> getResponseData() {
+        if (responseData == null) {
+            return Optional.empty();
+        }
         return responseData;
     }
 
-    @JsonProperty("Source")
+    @JsonIgnore
     public Optional<String> getSource() {
+        if (source == null) {
+            return Optional.empty();
+        }
         return source;
     }
 
     /**
      * @return Reference to the subscription or schedule that originated the transaction
      */
-    @JsonProperty("ScheduleReference")
+    @JsonIgnore
     public Optional<Integer> getScheduleReference() {
+        if (scheduleReference == null) {
+            return Optional.empty();
+        }
         return scheduleReference;
     }
 
-    @JsonProperty("OrgId")
+    @JsonIgnore
     public Optional<Long> getOrgId() {
+        if (orgId == null) {
+            return Optional.empty();
+        }
         return orgId;
     }
 
-    @JsonProperty("RefundId")
+    @JsonIgnore
     public Optional<Long> getRefundId() {
+        if (refundId == null) {
+            return Optional.empty();
+        }
         return refundId;
     }
 
-    @JsonProperty("ReturnedId")
+    @JsonIgnore
     public Optional<Long> getReturnedId() {
+        if (returnedId == null) {
+            return Optional.empty();
+        }
         return returnedId;
     }
 
-    @JsonProperty("ChargebackId")
+    @JsonIgnore
     public Optional<Long> getChargebackId() {
+        if (chargebackId == null) {
+            return Optional.empty();
+        }
         return chargebackId;
     }
 
-    @JsonProperty("RetrievalId")
+    @JsonIgnore
     public Optional<Long> getRetrievalId() {
+        if (retrievalId == null) {
+            return Optional.empty();
+        }
         return retrievalId;
     }
 
     /**
      * @return Additional transaction data
      */
-    @JsonProperty("TransAdditionalData")
+    @JsonIgnore
     public Optional<Object> getTransAdditionalData() {
+        if (transAdditionalData == null) {
+            return Optional.empty();
+        }
         return transAdditionalData;
     }
 
     /**
      * @return Associated invoice data
      */
-    @JsonProperty("invoiceData")
+    @JsonIgnore
     public Optional<BillData> getInvoiceData() {
+        if (invoiceData == null) {
+            return Optional.empty();
+        }
         return invoiceData;
     }
 
-    @JsonProperty("EntrypageId")
+    @JsonIgnore
     public Optional<Long> getEntrypageId() {
+        if (entrypageId == null) {
+            return Optional.empty();
+        }
         return entrypageId;
     }
 
-    @JsonProperty("externalPaypointID")
+    @JsonIgnore
     public Optional<String> getExternalPaypointId() {
+        if (externalPaypointId == null) {
+            return Optional.empty();
+        }
         return externalPaypointId;
     }
 
     /**
      * @return Indicates whether the ACH account has been validated
      */
-    @JsonProperty("IsValidatedACH")
+    @JsonIgnore
     public Optional<Boolean> getIsValidatedAch() {
+        if (isValidatedAch == null) {
+            return Optional.empty();
+        }
         return isValidatedAch;
     }
 
     /**
      * @return Transaction date and time, in UTC
      */
-    @JsonProperty("TransactionTime")
+    @JsonIgnore
     public Optional<OffsetDateTime> getTransactionTime() {
+        if (transactionTime == null) {
+            return Optional.empty();
+        }
         return transactionTime;
     }
 
-    @JsonProperty("Customer")
+    @JsonIgnore
     public Optional<QueryTransactionPayorData> getCustomer() {
+        if (customer == null) {
+            return Optional.empty();
+        }
         return customer;
     }
 
-    @JsonProperty("splitFundingInstructions")
+    @JsonIgnore
     public Optional<List<SplitFundingContent>> getSplitFundingInstructions() {
+        if (splitFundingInstructions == null) {
+            return Optional.empty();
+        }
         return splitFundingInstructions;
     }
 
-    @JsonProperty("CfeeTransactions")
+    @JsonIgnore
     public Optional<List<QueryCFeeTransaction>> getCfeeTransactions() {
+        if (cfeeTransactions == null) {
+            return Optional.empty();
+        }
         return cfeeTransactions;
     }
 
-    @JsonProperty("TransactionEvents")
+    @JsonIgnore
     public Optional<List<QueryTransactionEvents>> getTransactionEvents() {
+        if (transactionEvents == null) {
+            return Optional.empty();
+        }
         return transactionEvents;
     }
 
-    @JsonProperty("PendingFeeAmount")
+    @JsonIgnore
     public Optional<Double> getPendingFeeAmount() {
+        if (pendingFeeAmount == null) {
+            return Optional.empty();
+        }
         return pendingFeeAmount;
     }
 
-    @JsonProperty("RiskFlagged")
+    @JsonIgnore
     public Optional<Boolean> getRiskFlagged() {
+        if (riskFlagged == null) {
+            return Optional.empty();
+        }
         return riskFlagged;
     }
 
-    @JsonProperty("RiskFlaggedOn")
+    @JsonIgnore
     public Optional<OffsetDateTime> getRiskFlaggedOn() {
+        if (riskFlaggedOn == null) {
+            return Optional.empty();
+        }
         return riskFlaggedOn;
     }
 
-    @JsonProperty("RiskStatus")
+    @JsonIgnore
     public Optional<String> getRiskStatus() {
+        if (riskStatus == null) {
+            return Optional.empty();
+        }
         return riskStatus;
     }
 
-    @JsonProperty("RiskReason")
+    @JsonIgnore
     public Optional<String> getRiskReason() {
+        if (riskReason == null) {
+            return Optional.empty();
+        }
         return riskReason;
     }
 
-    @JsonProperty("RiskAction")
+    @JsonIgnore
     public Optional<String> getRiskAction() {
+        if (riskAction == null) {
+            return Optional.empty();
+        }
         return riskAction;
     }
 
-    @JsonProperty("RiskActionCode")
+    @JsonIgnore
     public Optional<Integer> getRiskActionCode() {
+        if (riskActionCode == null) {
+            return Optional.empty();
+        }
         return riskActionCode;
     }
 
-    @JsonProperty("DeviceId")
+    @JsonIgnore
     public Optional<String> getDeviceId() {
+        if (deviceId == null) {
+            return Optional.empty();
+        }
         return deviceId;
     }
 
-    @JsonProperty("AchSecCode")
+    @JsonIgnore
     public Optional<String> getAchSecCode() {
+        if (achSecCode == null) {
+            return Optional.empty();
+        }
         return achSecCode;
     }
 
-    @JsonProperty("AchHolderType")
+    @JsonIgnore
     public Optional<AchHolderType> getAchHolderType() {
+        if (achHolderType == null) {
+            return Optional.empty();
+        }
         return achHolderType;
     }
 
-    @JsonProperty("IpAddress")
+    @JsonIgnore
     public Optional<String> getIpAddress() {
+        if (ipAddress == null) {
+            return Optional.empty();
+        }
         return ipAddress;
     }
 
     /**
      * @return Indicates if this was a same-day ACH transaction.
      */
-    @JsonProperty("IsSameDayACH")
+    @JsonIgnore
     public Optional<Boolean> getIsSameDayAch() {
+        if (isSameDayAch == null) {
+            return Optional.empty();
+        }
         return isSameDayAch;
     }
 
     /**
      * @return Type of wallet used for the transaction (if applicable)
      */
-    @JsonProperty("WalletType")
+    @JsonIgnore
     public Optional<String> getWalletType() {
+        if (walletType == null) {
+            return Optional.empty();
+        }
+        return walletType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transferDetailId")
+    private Optional<Integer> _getTransferDetailId() {
+        return transferDetailId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transferId")
+    private Optional<Integer> _getTransferId() {
+        return transferId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transactionId")
+    private Optional<String> _getTransactionId() {
+        return transactionId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transactionNumber")
+    private Optional<String> _getTransactionNumber() {
+        return transactionNumber;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("type")
+    private Optional<String> _getType() {
+        return type;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("category")
+    private Optional<String> _getCategory() {
+        return category;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("grossAmount")
+    private Optional<Double> _getGrossAmount() {
+        return grossAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("chargeBackAmount")
+    private Optional<Double> _getChargeBackAmount() {
+        return chargeBackAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("returnedAmount")
+    private Optional<Double> _getReturnedAmount() {
+        return returnedAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("refundAmount")
+    private Optional<Double> _getRefundAmount() {
+        return refundAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("holdAmount")
+    private Optional<Double> _getHoldAmount() {
+        return holdAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("releasedAmount")
+    private Optional<Double> _getReleasedAmount() {
+        return releasedAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingFeesAmount")
+    private Optional<Double> _getBillingFeesAmount() {
+        return billingFeesAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("thirdPartyPaidAmount")
+    private Optional<Double> _getThirdPartyPaidAmount() {
+        return thirdPartyPaidAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("adjustmentsAmount")
+    private Optional<Double> _getAdjustmentsAmount() {
+        return adjustmentsAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("netTransferAmount")
+    private Optional<Double> _getNetTransferAmount() {
+        return netTransferAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("splitFundingAmount")
+    private Optional<Double> _getSplitFundingAmount() {
+        return splitFundingAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingFeesDetails")
+    private Optional<List<BillingFeeDetail>> _getBillingFeesDetails() {
+        return billingFeesDetails;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ParentOrgName")
+    private Optional<String> _getParentOrgName() {
+        return parentOrgName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaypointDbaname")
+    private Optional<String> _getPaypointDbaname() {
+        return paypointDbaname;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaypointLegalname")
+    private Optional<String> _getPaypointLegalname() {
+        return paypointLegalname;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaypointEntryname")
+    private Optional<String> _getPaypointEntryname() {
+        return paypointEntryname;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaymentTransId")
+    private Optional<String> _getPaymentTransId() {
+        return paymentTransId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ConnectorName")
+    private Optional<String> _getConnectorName() {
+        return connectorName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ExternalProcessorInformation")
+    private Optional<String> _getExternalProcessorInformation() {
+        return externalProcessorInformation;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("GatewayTransId")
+    private Optional<String> _getGatewayTransId() {
+        return gatewayTransId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("OrderId")
+    private Optional<String> _getOrderId() {
+        return orderId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Method")
+    private Optional<String> _getMethod() {
+        return method;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("BatchNumber")
+    private Optional<String> _getBatchNumber() {
+        return batchNumber;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("BatchAmount")
+    private Optional<Double> _getBatchAmount() {
+        return batchAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PayorId")
+    private Optional<Long> _getPayorId() {
+        return payorId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaymentData")
+    private Optional<QueryPaymentData> _getPaymentData() {
+        return paymentData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransStatus")
+    private Optional<Integer> _getTransStatus() {
+        return transStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaypointId")
+    private Optional<Long> _getPaypointId() {
+        return paypointId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TotalAmount")
+    private Optional<Double> _getTotalAmount() {
+        return totalAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("NetAmount")
+    private Optional<Double> _getNetAmount() {
+        return netAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("FeeAmount")
+    private Optional<Double> _getFeeAmount() {
+        return feeAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("SettlementStatus")
+    private Optional<Integer> _getSettlementStatus() {
+        return settlementStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Operation")
+    private Optional<String> _getOperation() {
+        return operation;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ResponseData")
+    private Optional<QueryResponseData> _getResponseData() {
+        return responseData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Source")
+    private Optional<String> _getSource() {
+        return source;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ScheduleReference")
+    private Optional<Integer> _getScheduleReference() {
+        return scheduleReference;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("OrgId")
+    private Optional<Long> _getOrgId() {
+        return orgId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RefundId")
+    private Optional<Long> _getRefundId() {
+        return refundId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ReturnedId")
+    private Optional<Long> _getReturnedId() {
+        return returnedId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ChargebackId")
+    private Optional<Long> _getChargebackId() {
+        return chargebackId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RetrievalId")
+    private Optional<Long> _getRetrievalId() {
+        return retrievalId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransAdditionalData")
+    private Optional<Object> _getTransAdditionalData() {
+        return transAdditionalData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceData")
+    private Optional<BillData> _getInvoiceData() {
+        return invoiceData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EntrypageId")
+    private Optional<Long> _getEntrypageId() {
+        return entrypageId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("externalPaypointID")
+    private Optional<String> _getExternalPaypointId() {
+        return externalPaypointId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("IsValidatedACH")
+    private Optional<Boolean> _getIsValidatedAch() {
+        return isValidatedAch;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransactionTime")
+    private Optional<OffsetDateTime> _getTransactionTime() {
+        return transactionTime;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Customer")
+    private Optional<QueryTransactionPayorData> _getCustomer() {
+        return customer;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("splitFundingInstructions")
+    private Optional<List<SplitFundingContent>> _getSplitFundingInstructions() {
+        return splitFundingInstructions;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("CfeeTransactions")
+    private Optional<List<QueryCFeeTransaction>> _getCfeeTransactions() {
+        return cfeeTransactions;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransactionEvents")
+    private Optional<List<QueryTransactionEvents>> _getTransactionEvents() {
+        return transactionEvents;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PendingFeeAmount")
+    private Optional<Double> _getPendingFeeAmount() {
+        return pendingFeeAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RiskFlagged")
+    private Optional<Boolean> _getRiskFlagged() {
+        return riskFlagged;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RiskFlaggedOn")
+    private Optional<OffsetDateTime> _getRiskFlaggedOn() {
+        return riskFlaggedOn;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RiskStatus")
+    private Optional<String> _getRiskStatus() {
+        return riskStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RiskReason")
+    private Optional<String> _getRiskReason() {
+        return riskReason;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RiskAction")
+    private Optional<String> _getRiskAction() {
+        return riskAction;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RiskActionCode")
+    private Optional<Integer> _getRiskActionCode() {
+        return riskActionCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("DeviceId")
+    private Optional<String> _getDeviceId() {
+        return deviceId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AchSecCode")
+    private Optional<String> _getAchSecCode() {
+        return achSecCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AchHolderType")
+    private Optional<AchHolderType> _getAchHolderType() {
+        return achHolderType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("IpAddress")
+    private Optional<String> _getIpAddress() {
+        return ipAddress;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("IsSameDayACH")
+    private Optional<Boolean> _getIsSameDayAch() {
+        return isSameDayAch;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("WalletType")
+    private Optional<String> _getWalletType() {
         return walletType;
     }
 
@@ -1178,6 +1811,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder transferDetailId(Nullable<Integer> transferDetailId) {
+            if (transferDetailId.isNull()) {
+                this.transferDetailId = null;
+            } else if (transferDetailId.isEmpty()) {
+                this.transferDetailId = Optional.empty();
+            } else {
+                this.transferDetailId = Optional.of(transferDetailId.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The ID of the transfer this detail belongs to</p>
          */
@@ -1189,6 +1833,17 @@ public final class TransferDetailRecord {
 
         public Builder transferId(Integer transferId) {
             this.transferId = Optional.ofNullable(transferId);
+            return this;
+        }
+
+        public Builder transferId(Nullable<Integer> transferId) {
+            if (transferId.isNull()) {
+                this.transferId = null;
+            } else if (transferId.isEmpty()) {
+                this.transferId = Optional.empty();
+            } else {
+                this.transferId = Optional.of(transferId.get());
+            }
             return this;
         }
 
@@ -1206,6 +1861,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder transactionId(Nullable<String> transactionId) {
+            if (transactionId.isNull()) {
+                this.transactionId = null;
+            } else if (transactionId.isEmpty()) {
+                this.transactionId = Optional.empty();
+            } else {
+                this.transactionId = Optional.of(transactionId.get());
+            }
+            return this;
+        }
+
         /**
          * <p>External transaction reference number</p>
          */
@@ -1217,6 +1883,17 @@ public final class TransferDetailRecord {
 
         public Builder transactionNumber(String transactionNumber) {
             this.transactionNumber = Optional.ofNullable(transactionNumber);
+            return this;
+        }
+
+        public Builder transactionNumber(Nullable<String> transactionNumber) {
+            if (transactionNumber.isNull()) {
+                this.transactionNumber = null;
+            } else if (transactionNumber.isEmpty()) {
+                this.transactionNumber = Optional.empty();
+            } else {
+                this.transactionNumber = Optional.of(transactionNumber.get());
+            }
             return this;
         }
 
@@ -1234,6 +1911,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder type(Nullable<String> type) {
+            if (type.isNull()) {
+                this.type = null;
+            } else if (type.isEmpty()) {
+                this.type = Optional.empty();
+            } else {
+                this.type = Optional.of(type.get());
+            }
+            return this;
+        }
+
         /**
          * <p>A field used to categorize the transaction details. Values include: auth, decline, refund, adj, cb, split</p>
          */
@@ -1245,6 +1933,17 @@ public final class TransferDetailRecord {
 
         public Builder category(String category) {
             this.category = Optional.ofNullable(category);
+            return this;
+        }
+
+        public Builder category(Nullable<String> category) {
+            if (category.isNull()) {
+                this.category = null;
+            } else if (category.isEmpty()) {
+                this.category = Optional.empty();
+            } else {
+                this.category = Optional.of(category.get());
+            }
             return this;
         }
 
@@ -1262,6 +1961,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder grossAmount(Nullable<Double> grossAmount) {
+            if (grossAmount.isNull()) {
+                this.grossAmount = null;
+            } else if (grossAmount.isEmpty()) {
+                this.grossAmount = Optional.empty();
+            } else {
+                this.grossAmount = Optional.of(grossAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Chargeback amount deducted from transaction</p>
          */
@@ -1273,6 +1983,17 @@ public final class TransferDetailRecord {
 
         public Builder chargeBackAmount(Double chargeBackAmount) {
             this.chargeBackAmount = Optional.ofNullable(chargeBackAmount);
+            return this;
+        }
+
+        public Builder chargeBackAmount(Nullable<Double> chargeBackAmount) {
+            if (chargeBackAmount.isNull()) {
+                this.chargeBackAmount = null;
+            } else if (chargeBackAmount.isEmpty()) {
+                this.chargeBackAmount = Optional.empty();
+            } else {
+                this.chargeBackAmount = Optional.of(chargeBackAmount.get());
+            }
             return this;
         }
 
@@ -1290,6 +2011,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder returnedAmount(Nullable<Double> returnedAmount) {
+            if (returnedAmount.isNull()) {
+                this.returnedAmount = null;
+            } else if (returnedAmount.isEmpty()) {
+                this.returnedAmount = Optional.empty();
+            } else {
+                this.returnedAmount = Optional.of(returnedAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Refund amount deducted from transaction</p>
          */
@@ -1301,6 +2033,17 @@ public final class TransferDetailRecord {
 
         public Builder refundAmount(Double refundAmount) {
             this.refundAmount = Optional.ofNullable(refundAmount);
+            return this;
+        }
+
+        public Builder refundAmount(Nullable<Double> refundAmount) {
+            if (refundAmount.isNull()) {
+                this.refundAmount = null;
+            } else if (refundAmount.isEmpty()) {
+                this.refundAmount = Optional.empty();
+            } else {
+                this.refundAmount = Optional.of(refundAmount.get());
+            }
             return this;
         }
 
@@ -1318,6 +2061,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder holdAmount(Nullable<Double> holdAmount) {
+            if (holdAmount.isNull()) {
+                this.holdAmount = null;
+            } else if (holdAmount.isEmpty()) {
+                this.holdAmount = Optional.empty();
+            } else {
+                this.holdAmount = Optional.of(holdAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Previously held funds that have been released after a risk review</p>
          */
@@ -1329,6 +2083,17 @@ public final class TransferDetailRecord {
 
         public Builder releasedAmount(Double releasedAmount) {
             this.releasedAmount = Optional.ofNullable(releasedAmount);
+            return this;
+        }
+
+        public Builder releasedAmount(Nullable<Double> releasedAmount) {
+            if (releasedAmount.isNull()) {
+                this.releasedAmount = null;
+            } else if (releasedAmount.isEmpty()) {
+                this.releasedAmount = Optional.empty();
+            } else {
+                this.releasedAmount = Optional.of(releasedAmount.get());
+            }
             return this;
         }
 
@@ -1346,6 +2111,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder billingFeesAmount(Nullable<Double> billingFeesAmount) {
+            if (billingFeesAmount.isNull()) {
+                this.billingFeesAmount = null;
+            } else if (billingFeesAmount.isEmpty()) {
+                this.billingFeesAmount = Optional.empty();
+            } else {
+                this.billingFeesAmount = Optional.of(billingFeesAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Payments captured in the batch cycle that are deposited separately. For example,  checks or cash payments recorded in the batch but not deposited via Payabli,  or card brands making a direct transfer in certain situations.</p>
          */
@@ -1357,6 +2133,17 @@ public final class TransferDetailRecord {
 
         public Builder thirdPartyPaidAmount(Double thirdPartyPaidAmount) {
             this.thirdPartyPaidAmount = Optional.ofNullable(thirdPartyPaidAmount);
+            return this;
+        }
+
+        public Builder thirdPartyPaidAmount(Nullable<Double> thirdPartyPaidAmount) {
+            if (thirdPartyPaidAmount.isNull()) {
+                this.thirdPartyPaidAmount = null;
+            } else if (thirdPartyPaidAmount.isEmpty()) {
+                this.thirdPartyPaidAmount = Optional.empty();
+            } else {
+                this.thirdPartyPaidAmount = Optional.of(thirdPartyPaidAmount.get());
+            }
             return this;
         }
 
@@ -1374,6 +2161,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder adjustmentsAmount(Nullable<Double> adjustmentsAmount) {
+            if (adjustmentsAmount.isNull()) {
+                this.adjustmentsAmount = null;
+            } else if (adjustmentsAmount.isEmpty()) {
+                this.adjustmentsAmount = Optional.empty();
+            } else {
+                this.adjustmentsAmount = Optional.of(adjustmentsAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The net amount after all deductions</p>
          */
@@ -1385,6 +2183,17 @@ public final class TransferDetailRecord {
 
         public Builder netTransferAmount(Double netTransferAmount) {
             this.netTransferAmount = Optional.ofNullable(netTransferAmount);
+            return this;
+        }
+
+        public Builder netTransferAmount(Nullable<Double> netTransferAmount) {
+            if (netTransferAmount.isNull()) {
+                this.netTransferAmount = null;
+            } else if (netTransferAmount.isEmpty()) {
+                this.netTransferAmount = Optional.empty();
+            } else {
+                this.netTransferAmount = Optional.of(netTransferAmount.get());
+            }
             return this;
         }
 
@@ -1402,6 +2211,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder splitFundingAmount(Nullable<Double> splitFundingAmount) {
+            if (splitFundingAmount.isNull()) {
+                this.splitFundingAmount = null;
+            } else if (splitFundingAmount.isEmpty()) {
+                this.splitFundingAmount = Optional.empty();
+            } else {
+                this.splitFundingAmount = Optional.of(splitFundingAmount.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "billingFeesDetails", nulls = Nulls.SKIP)
         public Builder billingFeesDetails(Optional<List<BillingFeeDetail>> billingFeesDetails) {
             this.billingFeesDetails = billingFeesDetails;
@@ -1410,6 +2230,17 @@ public final class TransferDetailRecord {
 
         public Builder billingFeesDetails(List<BillingFeeDetail> billingFeesDetails) {
             this.billingFeesDetails = Optional.ofNullable(billingFeesDetails);
+            return this;
+        }
+
+        public Builder billingFeesDetails(Nullable<List<BillingFeeDetail>> billingFeesDetails) {
+            if (billingFeesDetails.isNull()) {
+                this.billingFeesDetails = null;
+            } else if (billingFeesDetails.isEmpty()) {
+                this.billingFeesDetails = Optional.empty();
+            } else {
+                this.billingFeesDetails = Optional.of(billingFeesDetails.get());
+            }
             return this;
         }
 
@@ -1424,6 +2255,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder parentOrgName(Nullable<String> parentOrgName) {
+            if (parentOrgName.isNull()) {
+                this.parentOrgName = null;
+            } else if (parentOrgName.isEmpty()) {
+                this.parentOrgName = Optional.empty();
+            } else {
+                this.parentOrgName = Optional.of(parentOrgName.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
         public Builder paypointDbaname(Optional<String> paypointDbaname) {
             this.paypointDbaname = paypointDbaname;
@@ -1435,6 +2277,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder paypointDbaname(Nullable<String> paypointDbaname) {
+            if (paypointDbaname.isNull()) {
+                this.paypointDbaname = null;
+            } else if (paypointDbaname.isEmpty()) {
+                this.paypointDbaname = Optional.empty();
+            } else {
+                this.paypointDbaname = Optional.of(paypointDbaname.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
         public Builder paypointLegalname(Optional<String> paypointLegalname) {
             this.paypointLegalname = paypointLegalname;
@@ -1443,6 +2296,17 @@ public final class TransferDetailRecord {
 
         public Builder paypointLegalname(String paypointLegalname) {
             this.paypointLegalname = Optional.ofNullable(paypointLegalname);
+            return this;
+        }
+
+        public Builder paypointLegalname(Nullable<String> paypointLegalname) {
+            if (paypointLegalname.isNull()) {
+                this.paypointLegalname = null;
+            } else if (paypointLegalname.isEmpty()) {
+                this.paypointLegalname = Optional.empty();
+            } else {
+                this.paypointLegalname = Optional.of(paypointLegalname.get());
+            }
             return this;
         }
 
@@ -1460,6 +2324,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder paypointEntryname(Nullable<String> paypointEntryname) {
+            if (paypointEntryname.isNull()) {
+                this.paypointEntryname = null;
+            } else if (paypointEntryname.isEmpty()) {
+                this.paypointEntryname = Optional.empty();
+            } else {
+                this.paypointEntryname = Optional.of(paypointEntryname.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The transaction ID for the payment</p>
          */
@@ -1471,6 +2346,17 @@ public final class TransferDetailRecord {
 
         public Builder paymentTransId(String paymentTransId) {
             this.paymentTransId = Optional.ofNullable(paymentTransId);
+            return this;
+        }
+
+        public Builder paymentTransId(Nullable<String> paymentTransId) {
+            if (paymentTransId.isNull()) {
+                this.paymentTransId = null;
+            } else if (paymentTransId.isEmpty()) {
+                this.paymentTransId = Optional.empty();
+            } else {
+                this.paymentTransId = Optional.of(paymentTransId.get());
+            }
             return this;
         }
 
@@ -1488,6 +2374,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder connectorName(Nullable<String> connectorName) {
+            if (connectorName.isNull()) {
+                this.connectorName = null;
+            } else if (connectorName.isEmpty()) {
+                this.connectorName = Optional.empty();
+            } else {
+                this.connectorName = Optional.of(connectorName.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "ExternalProcessorInformation", nulls = Nulls.SKIP)
         public Builder externalProcessorInformation(Optional<String> externalProcessorInformation) {
             this.externalProcessorInformation = externalProcessorInformation;
@@ -1496,6 +2393,17 @@ public final class TransferDetailRecord {
 
         public Builder externalProcessorInformation(String externalProcessorInformation) {
             this.externalProcessorInformation = Optional.ofNullable(externalProcessorInformation);
+            return this;
+        }
+
+        public Builder externalProcessorInformation(Nullable<String> externalProcessorInformation) {
+            if (externalProcessorInformation.isNull()) {
+                this.externalProcessorInformation = null;
+            } else if (externalProcessorInformation.isEmpty()) {
+                this.externalProcessorInformation = Optional.empty();
+            } else {
+                this.externalProcessorInformation = Optional.of(externalProcessorInformation.get());
+            }
             return this;
         }
 
@@ -1513,6 +2421,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder gatewayTransId(Nullable<String> gatewayTransId) {
+            if (gatewayTransId.isNull()) {
+                this.gatewayTransId = null;
+            } else if (gatewayTransId.isEmpty()) {
+                this.gatewayTransId = Optional.empty();
+            } else {
+                this.gatewayTransId = Optional.of(gatewayTransId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "OrderId", nulls = Nulls.SKIP)
         public Builder orderId(Optional<String> orderId) {
             this.orderId = orderId;
@@ -1521,6 +2440,17 @@ public final class TransferDetailRecord {
 
         public Builder orderId(String orderId) {
             this.orderId = Optional.ofNullable(orderId);
+            return this;
+        }
+
+        public Builder orderId(Nullable<String> orderId) {
+            if (orderId.isNull()) {
+                this.orderId = null;
+            } else if (orderId.isEmpty()) {
+                this.orderId = Optional.empty();
+            } else {
+                this.orderId = Optional.of(orderId.get());
+            }
             return this;
         }
 
@@ -1538,6 +2468,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder method(Nullable<String> method) {
+            if (method.isNull()) {
+                this.method = null;
+            } else if (method.isEmpty()) {
+                this.method = Optional.empty();
+            } else {
+                this.method = Optional.of(method.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "BatchNumber", nulls = Nulls.SKIP)
         public Builder batchNumber(Optional<String> batchNumber) {
             this.batchNumber = batchNumber;
@@ -1546,6 +2487,17 @@ public final class TransferDetailRecord {
 
         public Builder batchNumber(String batchNumber) {
             this.batchNumber = Optional.ofNullable(batchNumber);
+            return this;
+        }
+
+        public Builder batchNumber(Nullable<String> batchNumber) {
+            if (batchNumber.isNull()) {
+                this.batchNumber = null;
+            } else if (batchNumber.isEmpty()) {
+                this.batchNumber = Optional.empty();
+            } else {
+                this.batchNumber = Optional.of(batchNumber.get());
+            }
             return this;
         }
 
@@ -1563,6 +2515,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder batchAmount(Nullable<Double> batchAmount) {
+            if (batchAmount.isNull()) {
+                this.batchAmount = null;
+            } else if (batchAmount.isEmpty()) {
+                this.batchAmount = Optional.empty();
+            } else {
+                this.batchAmount = Optional.of(batchAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Unique ID for customer linked to the transaction</p>
          */
@@ -1577,6 +2540,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder payorId(Nullable<Long> payorId) {
+            if (payorId.isNull()) {
+                this.payorId = null;
+            } else if (payorId.isEmpty()) {
+                this.payorId = Optional.empty();
+            } else {
+                this.payorId = Optional.of(payorId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "PaymentData", nulls = Nulls.SKIP)
         public Builder paymentData(Optional<QueryPaymentData> paymentData) {
             this.paymentData = paymentData;
@@ -1585,6 +2559,17 @@ public final class TransferDetailRecord {
 
         public Builder paymentData(QueryPaymentData paymentData) {
             this.paymentData = Optional.ofNullable(paymentData);
+            return this;
+        }
+
+        public Builder paymentData(Nullable<QueryPaymentData> paymentData) {
+            if (paymentData.isNull()) {
+                this.paymentData = null;
+            } else if (paymentData.isEmpty()) {
+                this.paymentData = Optional.empty();
+            } else {
+                this.paymentData = Optional.of(paymentData.get());
+            }
             return this;
         }
 
@@ -1604,6 +2589,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder transStatus(Nullable<Integer> transStatus) {
+            if (transStatus.isNull()) {
+                this.transStatus = null;
+            } else if (transStatus.isEmpty()) {
+                this.transStatus = Optional.empty();
+            } else {
+                this.transStatus = Optional.of(transStatus.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
         public Builder paypointId(Optional<Long> paypointId) {
             this.paypointId = paypointId;
@@ -1612,6 +2608,17 @@ public final class TransferDetailRecord {
 
         public Builder paypointId(Long paypointId) {
             this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
+        public Builder paypointId(Nullable<Long> paypointId) {
+            if (paypointId.isNull()) {
+                this.paypointId = null;
+            } else if (paypointId.isEmpty()) {
+                this.paypointId = Optional.empty();
+            } else {
+                this.paypointId = Optional.of(paypointId.get());
+            }
             return this;
         }
 
@@ -1629,6 +2636,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder totalAmount(Nullable<Double> totalAmount) {
+            if (totalAmount.isNull()) {
+                this.totalAmount = null;
+            } else if (totalAmount.isEmpty()) {
+                this.totalAmount = Optional.empty();
+            } else {
+                this.totalAmount = Optional.of(totalAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Net amount paid</p>
          */
@@ -1643,6 +2661,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder netAmount(Nullable<Double> netAmount) {
+            if (netAmount.isNull()) {
+                this.netAmount = null;
+            } else if (netAmount.isEmpty()) {
+                this.netAmount = Optional.empty();
+            } else {
+                this.netAmount = Optional.of(netAmount.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
         public Builder feeAmount(Optional<Double> feeAmount) {
             this.feeAmount = feeAmount;
@@ -1651,6 +2680,17 @@ public final class TransferDetailRecord {
 
         public Builder feeAmount(Double feeAmount) {
             this.feeAmount = Optional.ofNullable(feeAmount);
+            return this;
+        }
+
+        public Builder feeAmount(Nullable<Double> feeAmount) {
+            if (feeAmount.isNull()) {
+                this.feeAmount = null;
+            } else if (feeAmount.isEmpty()) {
+                this.feeAmount = Optional.empty();
+            } else {
+                this.feeAmount = Optional.of(feeAmount.get());
+            }
             return this;
         }
 
@@ -1668,6 +2708,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder settlementStatus(Nullable<Integer> settlementStatus) {
+            if (settlementStatus.isNull()) {
+                this.settlementStatus = null;
+            } else if (settlementStatus.isEmpty()) {
+                this.settlementStatus = Optional.empty();
+            } else {
+                this.settlementStatus = Optional.of(settlementStatus.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "Operation", nulls = Nulls.SKIP)
         public Builder operation(Optional<String> operation) {
             this.operation = operation;
@@ -1676,6 +2727,17 @@ public final class TransferDetailRecord {
 
         public Builder operation(String operation) {
             this.operation = Optional.ofNullable(operation);
+            return this;
+        }
+
+        public Builder operation(Nullable<String> operation) {
+            if (operation.isNull()) {
+                this.operation = null;
+            } else if (operation.isEmpty()) {
+                this.operation = Optional.empty();
+            } else {
+                this.operation = Optional.of(operation.get());
+            }
             return this;
         }
 
@@ -1690,6 +2752,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder responseData(Nullable<QueryResponseData> responseData) {
+            if (responseData.isNull()) {
+                this.responseData = null;
+            } else if (responseData.isEmpty()) {
+                this.responseData = Optional.empty();
+            } else {
+                this.responseData = Optional.of(responseData.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "Source", nulls = Nulls.SKIP)
         public Builder source(Optional<String> source) {
             this.source = source;
@@ -1698,6 +2771,17 @@ public final class TransferDetailRecord {
 
         public Builder source(String source) {
             this.source = Optional.ofNullable(source);
+            return this;
+        }
+
+        public Builder source(Nullable<String> source) {
+            if (source.isNull()) {
+                this.source = null;
+            } else if (source.isEmpty()) {
+                this.source = Optional.empty();
+            } else {
+                this.source = Optional.of(source.get());
+            }
             return this;
         }
 
@@ -1715,6 +2799,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder scheduleReference(Nullable<Integer> scheduleReference) {
+            if (scheduleReference.isNull()) {
+                this.scheduleReference = null;
+            } else if (scheduleReference.isEmpty()) {
+                this.scheduleReference = Optional.empty();
+            } else {
+                this.scheduleReference = Optional.of(scheduleReference.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "OrgId", nulls = Nulls.SKIP)
         public Builder orgId(Optional<Long> orgId) {
             this.orgId = orgId;
@@ -1723,6 +2818,17 @@ public final class TransferDetailRecord {
 
         public Builder orgId(Long orgId) {
             this.orgId = Optional.ofNullable(orgId);
+            return this;
+        }
+
+        public Builder orgId(Nullable<Long> orgId) {
+            if (orgId.isNull()) {
+                this.orgId = null;
+            } else if (orgId.isEmpty()) {
+                this.orgId = Optional.empty();
+            } else {
+                this.orgId = Optional.of(orgId.get());
+            }
             return this;
         }
 
@@ -1737,6 +2843,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder refundId(Nullable<Long> refundId) {
+            if (refundId.isNull()) {
+                this.refundId = null;
+            } else if (refundId.isEmpty()) {
+                this.refundId = Optional.empty();
+            } else {
+                this.refundId = Optional.of(refundId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "ReturnedId", nulls = Nulls.SKIP)
         public Builder returnedId(Optional<Long> returnedId) {
             this.returnedId = returnedId;
@@ -1745,6 +2862,17 @@ public final class TransferDetailRecord {
 
         public Builder returnedId(Long returnedId) {
             this.returnedId = Optional.ofNullable(returnedId);
+            return this;
+        }
+
+        public Builder returnedId(Nullable<Long> returnedId) {
+            if (returnedId.isNull()) {
+                this.returnedId = null;
+            } else if (returnedId.isEmpty()) {
+                this.returnedId = Optional.empty();
+            } else {
+                this.returnedId = Optional.of(returnedId.get());
+            }
             return this;
         }
 
@@ -1759,6 +2887,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder chargebackId(Nullable<Long> chargebackId) {
+            if (chargebackId.isNull()) {
+                this.chargebackId = null;
+            } else if (chargebackId.isEmpty()) {
+                this.chargebackId = Optional.empty();
+            } else {
+                this.chargebackId = Optional.of(chargebackId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "RetrievalId", nulls = Nulls.SKIP)
         public Builder retrievalId(Optional<Long> retrievalId) {
             this.retrievalId = retrievalId;
@@ -1767,6 +2906,17 @@ public final class TransferDetailRecord {
 
         public Builder retrievalId(Long retrievalId) {
             this.retrievalId = Optional.ofNullable(retrievalId);
+            return this;
+        }
+
+        public Builder retrievalId(Nullable<Long> retrievalId) {
+            if (retrievalId.isNull()) {
+                this.retrievalId = null;
+            } else if (retrievalId.isEmpty()) {
+                this.retrievalId = Optional.empty();
+            } else {
+                this.retrievalId = Optional.of(retrievalId.get());
+            }
             return this;
         }
 
@@ -1784,6 +2934,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder transAdditionalData(Nullable<Object> transAdditionalData) {
+            if (transAdditionalData.isNull()) {
+                this.transAdditionalData = null;
+            } else if (transAdditionalData.isEmpty()) {
+                this.transAdditionalData = Optional.empty();
+            } else {
+                this.transAdditionalData = Optional.of(transAdditionalData.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Associated invoice data</p>
          */
@@ -1798,6 +2959,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder invoiceData(Nullable<BillData> invoiceData) {
+            if (invoiceData.isNull()) {
+                this.invoiceData = null;
+            } else if (invoiceData.isEmpty()) {
+                this.invoiceData = Optional.empty();
+            } else {
+                this.invoiceData = Optional.of(invoiceData.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
         public Builder entrypageId(Optional<Long> entrypageId) {
             this.entrypageId = entrypageId;
@@ -1809,6 +2981,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder entrypageId(Nullable<Long> entrypageId) {
+            if (entrypageId.isNull()) {
+                this.entrypageId = null;
+            } else if (entrypageId.isEmpty()) {
+                this.entrypageId = Optional.empty();
+            } else {
+                this.entrypageId = Optional.of(entrypageId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
         public Builder externalPaypointId(Optional<String> externalPaypointId) {
             this.externalPaypointId = externalPaypointId;
@@ -1817,6 +3000,17 @@ public final class TransferDetailRecord {
 
         public Builder externalPaypointId(String externalPaypointId) {
             this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        public Builder externalPaypointId(Nullable<String> externalPaypointId) {
+            if (externalPaypointId.isNull()) {
+                this.externalPaypointId = null;
+            } else if (externalPaypointId.isEmpty()) {
+                this.externalPaypointId = Optional.empty();
+            } else {
+                this.externalPaypointId = Optional.of(externalPaypointId.get());
+            }
             return this;
         }
 
@@ -1834,6 +3028,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder isValidatedAch(Nullable<Boolean> isValidatedAch) {
+            if (isValidatedAch.isNull()) {
+                this.isValidatedAch = null;
+            } else if (isValidatedAch.isEmpty()) {
+                this.isValidatedAch = Optional.empty();
+            } else {
+                this.isValidatedAch = Optional.of(isValidatedAch.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Transaction date and time, in UTC</p>
          */
@@ -1848,6 +3053,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder transactionTime(Nullable<OffsetDateTime> transactionTime) {
+            if (transactionTime.isNull()) {
+                this.transactionTime = null;
+            } else if (transactionTime.isEmpty()) {
+                this.transactionTime = Optional.empty();
+            } else {
+                this.transactionTime = Optional.of(transactionTime.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "Customer", nulls = Nulls.SKIP)
         public Builder customer(Optional<QueryTransactionPayorData> customer) {
             this.customer = customer;
@@ -1856,6 +3072,17 @@ public final class TransferDetailRecord {
 
         public Builder customer(QueryTransactionPayorData customer) {
             this.customer = Optional.ofNullable(customer);
+            return this;
+        }
+
+        public Builder customer(Nullable<QueryTransactionPayorData> customer) {
+            if (customer.isNull()) {
+                this.customer = null;
+            } else if (customer.isEmpty()) {
+                this.customer = Optional.empty();
+            } else {
+                this.customer = Optional.of(customer.get());
+            }
             return this;
         }
 
@@ -1870,6 +3097,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder splitFundingInstructions(Nullable<List<SplitFundingContent>> splitFundingInstructions) {
+            if (splitFundingInstructions.isNull()) {
+                this.splitFundingInstructions = null;
+            } else if (splitFundingInstructions.isEmpty()) {
+                this.splitFundingInstructions = Optional.empty();
+            } else {
+                this.splitFundingInstructions = Optional.of(splitFundingInstructions.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "CfeeTransactions", nulls = Nulls.SKIP)
         public Builder cfeeTransactions(Optional<List<QueryCFeeTransaction>> cfeeTransactions) {
             this.cfeeTransactions = cfeeTransactions;
@@ -1878,6 +3116,17 @@ public final class TransferDetailRecord {
 
         public Builder cfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions) {
             this.cfeeTransactions = Optional.ofNullable(cfeeTransactions);
+            return this;
+        }
+
+        public Builder cfeeTransactions(Nullable<List<QueryCFeeTransaction>> cfeeTransactions) {
+            if (cfeeTransactions.isNull()) {
+                this.cfeeTransactions = null;
+            } else if (cfeeTransactions.isEmpty()) {
+                this.cfeeTransactions = Optional.empty();
+            } else {
+                this.cfeeTransactions = Optional.of(cfeeTransactions.get());
+            }
             return this;
         }
 
@@ -1892,6 +3141,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder transactionEvents(Nullable<List<QueryTransactionEvents>> transactionEvents) {
+            if (transactionEvents.isNull()) {
+                this.transactionEvents = null;
+            } else if (transactionEvents.isEmpty()) {
+                this.transactionEvents = Optional.empty();
+            } else {
+                this.transactionEvents = Optional.of(transactionEvents.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "PendingFeeAmount", nulls = Nulls.SKIP)
         public Builder pendingFeeAmount(Optional<Double> pendingFeeAmount) {
             this.pendingFeeAmount = pendingFeeAmount;
@@ -1900,6 +3160,17 @@ public final class TransferDetailRecord {
 
         public Builder pendingFeeAmount(Double pendingFeeAmount) {
             this.pendingFeeAmount = Optional.ofNullable(pendingFeeAmount);
+            return this;
+        }
+
+        public Builder pendingFeeAmount(Nullable<Double> pendingFeeAmount) {
+            if (pendingFeeAmount.isNull()) {
+                this.pendingFeeAmount = null;
+            } else if (pendingFeeAmount.isEmpty()) {
+                this.pendingFeeAmount = Optional.empty();
+            } else {
+                this.pendingFeeAmount = Optional.of(pendingFeeAmount.get());
+            }
             return this;
         }
 
@@ -1914,6 +3185,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder riskFlagged(Nullable<Boolean> riskFlagged) {
+            if (riskFlagged.isNull()) {
+                this.riskFlagged = null;
+            } else if (riskFlagged.isEmpty()) {
+                this.riskFlagged = Optional.empty();
+            } else {
+                this.riskFlagged = Optional.of(riskFlagged.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "RiskFlaggedOn", nulls = Nulls.SKIP)
         public Builder riskFlaggedOn(Optional<OffsetDateTime> riskFlaggedOn) {
             this.riskFlaggedOn = riskFlaggedOn;
@@ -1922,6 +3204,17 @@ public final class TransferDetailRecord {
 
         public Builder riskFlaggedOn(OffsetDateTime riskFlaggedOn) {
             this.riskFlaggedOn = Optional.ofNullable(riskFlaggedOn);
+            return this;
+        }
+
+        public Builder riskFlaggedOn(Nullable<OffsetDateTime> riskFlaggedOn) {
+            if (riskFlaggedOn.isNull()) {
+                this.riskFlaggedOn = null;
+            } else if (riskFlaggedOn.isEmpty()) {
+                this.riskFlaggedOn = Optional.empty();
+            } else {
+                this.riskFlaggedOn = Optional.of(riskFlaggedOn.get());
+            }
             return this;
         }
 
@@ -1936,6 +3229,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder riskStatus(Nullable<String> riskStatus) {
+            if (riskStatus.isNull()) {
+                this.riskStatus = null;
+            } else if (riskStatus.isEmpty()) {
+                this.riskStatus = Optional.empty();
+            } else {
+                this.riskStatus = Optional.of(riskStatus.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "RiskReason", nulls = Nulls.SKIP)
         public Builder riskReason(Optional<String> riskReason) {
             this.riskReason = riskReason;
@@ -1944,6 +3248,17 @@ public final class TransferDetailRecord {
 
         public Builder riskReason(String riskReason) {
             this.riskReason = Optional.ofNullable(riskReason);
+            return this;
+        }
+
+        public Builder riskReason(Nullable<String> riskReason) {
+            if (riskReason.isNull()) {
+                this.riskReason = null;
+            } else if (riskReason.isEmpty()) {
+                this.riskReason = Optional.empty();
+            } else {
+                this.riskReason = Optional.of(riskReason.get());
+            }
             return this;
         }
 
@@ -1958,6 +3273,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder riskAction(Nullable<String> riskAction) {
+            if (riskAction.isNull()) {
+                this.riskAction = null;
+            } else if (riskAction.isEmpty()) {
+                this.riskAction = Optional.empty();
+            } else {
+                this.riskAction = Optional.of(riskAction.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "RiskActionCode", nulls = Nulls.SKIP)
         public Builder riskActionCode(Optional<Integer> riskActionCode) {
             this.riskActionCode = riskActionCode;
@@ -1966,6 +3292,17 @@ public final class TransferDetailRecord {
 
         public Builder riskActionCode(Integer riskActionCode) {
             this.riskActionCode = Optional.ofNullable(riskActionCode);
+            return this;
+        }
+
+        public Builder riskActionCode(Nullable<Integer> riskActionCode) {
+            if (riskActionCode.isNull()) {
+                this.riskActionCode = null;
+            } else if (riskActionCode.isEmpty()) {
+                this.riskActionCode = Optional.empty();
+            } else {
+                this.riskActionCode = Optional.of(riskActionCode.get());
+            }
             return this;
         }
 
@@ -1980,6 +3317,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder deviceId(Nullable<String> deviceId) {
+            if (deviceId.isNull()) {
+                this.deviceId = null;
+            } else if (deviceId.isEmpty()) {
+                this.deviceId = Optional.empty();
+            } else {
+                this.deviceId = Optional.of(deviceId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "AchSecCode", nulls = Nulls.SKIP)
         public Builder achSecCode(Optional<String> achSecCode) {
             this.achSecCode = achSecCode;
@@ -1988,6 +3336,17 @@ public final class TransferDetailRecord {
 
         public Builder achSecCode(String achSecCode) {
             this.achSecCode = Optional.ofNullable(achSecCode);
+            return this;
+        }
+
+        public Builder achSecCode(Nullable<String> achSecCode) {
+            if (achSecCode.isNull()) {
+                this.achSecCode = null;
+            } else if (achSecCode.isEmpty()) {
+                this.achSecCode = Optional.empty();
+            } else {
+                this.achSecCode = Optional.of(achSecCode.get());
+            }
             return this;
         }
 
@@ -2002,6 +3361,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder achHolderType(Nullable<AchHolderType> achHolderType) {
+            if (achHolderType.isNull()) {
+                this.achHolderType = null;
+            } else if (achHolderType.isEmpty()) {
+                this.achHolderType = Optional.empty();
+            } else {
+                this.achHolderType = Optional.of(achHolderType.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "IpAddress", nulls = Nulls.SKIP)
         public Builder ipAddress(Optional<String> ipAddress) {
             this.ipAddress = ipAddress;
@@ -2010,6 +3380,17 @@ public final class TransferDetailRecord {
 
         public Builder ipAddress(String ipAddress) {
             this.ipAddress = Optional.ofNullable(ipAddress);
+            return this;
+        }
+
+        public Builder ipAddress(Nullable<String> ipAddress) {
+            if (ipAddress.isNull()) {
+                this.ipAddress = null;
+            } else if (ipAddress.isEmpty()) {
+                this.ipAddress = Optional.empty();
+            } else {
+                this.ipAddress = Optional.of(ipAddress.get());
+            }
             return this;
         }
 
@@ -2027,6 +3408,17 @@ public final class TransferDetailRecord {
             return this;
         }
 
+        public Builder isSameDayAch(Nullable<Boolean> isSameDayAch) {
+            if (isSameDayAch.isNull()) {
+                this.isSameDayAch = null;
+            } else if (isSameDayAch.isEmpty()) {
+                this.isSameDayAch = Optional.empty();
+            } else {
+                this.isSameDayAch = Optional.of(isSameDayAch.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Type of wallet used for the transaction (if applicable)</p>
          */
@@ -2038,6 +3430,17 @@ public final class TransferDetailRecord {
 
         public Builder walletType(String walletType) {
             this.walletType = Optional.ofNullable(walletType);
+            return this;
+        }
+
+        public Builder walletType(Nullable<String> walletType) {
+            if (walletType.isNull()) {
+                this.walletType = null;
+            } else if (walletType.isEmpty()) {
+                this.walletType = Optional.empty();
+            } else {
+                this.walletType = Optional.of(walletType.get());
+            }
             return this;
         }
 

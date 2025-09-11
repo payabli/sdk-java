@@ -49,9 +49,6 @@ public final class ResponseChargeBack {
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
-     */
     @JsonProperty("idempotencyKey")
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
@@ -148,9 +145,6 @@ public final class ResponseChargeBack {
             return this;
         }
 
-        /**
-         * <p>A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.</p>
-         */
         @JsonSetter(value = "idempotencyKey", nulls = Nulls.SKIP)
         public Builder idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;

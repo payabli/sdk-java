@@ -272,8 +272,11 @@ public final class BatchDetailResponseRecord {
         return method;
     }
 
-    @JsonProperty("WalletType")
+    @JsonIgnore
     public Optional<String> getWalletType() {
+        if (walletType == null) {
+            return Optional.empty();
+        }
         return walletType;
     }
 
@@ -350,8 +353,11 @@ public final class BatchDetailResponseRecord {
         return category;
     }
 
-    @JsonProperty("Source")
+    @JsonIgnore
     public Optional<String> getSource() {
+        if (source == null) {
+            return Optional.empty();
+        }
         return source;
     }
 
@@ -365,8 +371,11 @@ public final class BatchDetailResponseRecord {
         return transactionTime;
     }
 
-    @JsonProperty("Customer")
+    @JsonIgnore
     public Optional<QueryTransactionPayorData> getCustomer() {
+        if (customer == null) {
+            return Optional.empty();
+        }
         return customer;
     }
 
@@ -410,8 +419,11 @@ public final class BatchDetailResponseRecord {
         return paypointLegalname;
     }
 
-    @JsonProperty("ResponseData")
+    @JsonIgnore
     public Optional<QueryResponseData> getResponseData() {
+        if (responseData == null) {
+            return Optional.empty();
+        }
         return responseData;
     }
 
@@ -435,8 +447,11 @@ public final class BatchDetailResponseRecord {
         return paypointEntryname;
     }
 
-    @JsonProperty("DeviceId")
+    @JsonIgnore
     public Optional<String> getDeviceId() {
+        if (deviceId == null) {
+            return Optional.empty();
+        }
         return deviceId;
     }
 
@@ -520,8 +535,11 @@ public final class BatchDetailResponseRecord {
         return cfeeTransactions;
     }
 
-    @JsonProperty("invoiceData")
+    @JsonIgnore
     public Optional<BillData> getInvoiceData() {
+        if (invoiceData == null) {
+            return Optional.empty();
+        }
         return invoiceData;
     }
 
@@ -541,9 +559,45 @@ public final class BatchDetailResponseRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("WalletType")
+    private Optional<String> _getWalletType() {
+        return walletType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("PaymentData")
     private Optional<QueryPaymentData> _getPaymentData() {
         return paymentData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Source")
+    private Optional<String> _getSource() {
+        return source;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Customer")
+    private Optional<QueryTransactionPayorData> _getCustomer() {
+        return customer;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ResponseData")
+    private Optional<QueryResponseData> _getResponseData() {
+        return responseData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("DeviceId")
+    private Optional<String> _getDeviceId() {
+        return deviceId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceData")
+    private Optional<BillData> _getInvoiceData() {
+        return invoiceData;
     }
 
     @java.lang.Override
@@ -865,6 +919,8 @@ public final class BatchDetailResponseRecord {
 
         _FinalStage walletType(String walletType);
 
+        _FinalStage walletType(Nullable<String> walletType);
+
         _FinalStage paymentData(Optional<QueryPaymentData> paymentData);
 
         _FinalStage paymentData(QueryPaymentData paymentData);
@@ -879,17 +935,25 @@ public final class BatchDetailResponseRecord {
 
         _FinalStage source(String source);
 
+        _FinalStage source(Nullable<String> source);
+
         _FinalStage customer(Optional<QueryTransactionPayorData> customer);
 
         _FinalStage customer(QueryTransactionPayorData customer);
+
+        _FinalStage customer(Nullable<QueryTransactionPayorData> customer);
 
         _FinalStage responseData(Optional<QueryResponseData> responseData);
 
         _FinalStage responseData(QueryResponseData responseData);
 
+        _FinalStage responseData(Nullable<QueryResponseData> responseData);
+
         _FinalStage deviceId(Optional<String> deviceId);
 
         _FinalStage deviceId(String deviceId);
+
+        _FinalStage deviceId(Nullable<String> deviceId);
 
         _FinalStage pendingFeeAmount(Optional<Double> pendingFeeAmount);
 
@@ -908,6 +972,8 @@ public final class BatchDetailResponseRecord {
         _FinalStage invoiceData(Optional<BillData> invoiceData);
 
         _FinalStage invoiceData(BillData invoiceData);
+
+        _FinalStage invoiceData(Nullable<BillData> invoiceData);
 
         _FinalStage transactionEvents(List<QueryTransactionEvents> transactionEvents);
 
@@ -1462,6 +1528,18 @@ public final class BatchDetailResponseRecord {
         }
 
         @java.lang.Override
+        public _FinalStage invoiceData(Nullable<BillData> invoiceData) {
+            if (invoiceData.isNull()) {
+                this.invoiceData = null;
+            } else if (invoiceData.isEmpty()) {
+                this.invoiceData = Optional.empty();
+            } else {
+                this.invoiceData = Optional.of(invoiceData.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage invoiceData(BillData invoiceData) {
             this.invoiceData = Optional.ofNullable(invoiceData);
             return this;
@@ -1523,6 +1601,18 @@ public final class BatchDetailResponseRecord {
         }
 
         @java.lang.Override
+        public _FinalStage deviceId(Nullable<String> deviceId) {
+            if (deviceId.isNull()) {
+                this.deviceId = null;
+            } else if (deviceId.isEmpty()) {
+                this.deviceId = Optional.empty();
+            } else {
+                this.deviceId = Optional.of(deviceId.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage deviceId(String deviceId) {
             this.deviceId = Optional.ofNullable(deviceId);
             return this;
@@ -1532,6 +1622,18 @@ public final class BatchDetailResponseRecord {
         @JsonSetter(value = "DeviceId", nulls = Nulls.SKIP)
         public _FinalStage deviceId(Optional<String> deviceId) {
             this.deviceId = deviceId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage responseData(Nullable<QueryResponseData> responseData) {
+            if (responseData.isNull()) {
+                this.responseData = null;
+            } else if (responseData.isEmpty()) {
+                this.responseData = Optional.empty();
+            } else {
+                this.responseData = Optional.of(responseData.get());
+            }
             return this;
         }
 
@@ -1549,6 +1651,18 @@ public final class BatchDetailResponseRecord {
         }
 
         @java.lang.Override
+        public _FinalStage customer(Nullable<QueryTransactionPayorData> customer) {
+            if (customer.isNull()) {
+                this.customer = null;
+            } else if (customer.isEmpty()) {
+                this.customer = Optional.empty();
+            } else {
+                this.customer = Optional.of(customer.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage customer(QueryTransactionPayorData customer) {
             this.customer = Optional.ofNullable(customer);
             return this;
@@ -1558,6 +1672,18 @@ public final class BatchDetailResponseRecord {
         @JsonSetter(value = "Customer", nulls = Nulls.SKIP)
         public _FinalStage customer(Optional<QueryTransactionPayorData> customer) {
             this.customer = customer;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage source(Nullable<String> source) {
+            if (source.isNull()) {
+                this.source = null;
+            } else if (source.isEmpty()) {
+                this.source = Optional.empty();
+            } else {
+                this.source = Optional.of(source.get());
+            }
             return this;
         }
 
@@ -1609,6 +1735,18 @@ public final class BatchDetailResponseRecord {
         @JsonSetter(value = "PaymentData", nulls = Nulls.SKIP)
         public _FinalStage paymentData(Optional<QueryPaymentData> paymentData) {
             this.paymentData = paymentData;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage walletType(Nullable<String> walletType) {
+            if (walletType.isNull()) {
+                this.walletType = null;
+            } else if (walletType.isEmpty()) {
+                this.walletType = Optional.empty();
+            } else {
+                this.walletType = Optional.of(walletType.get());
+            }
             return this;
         }
 

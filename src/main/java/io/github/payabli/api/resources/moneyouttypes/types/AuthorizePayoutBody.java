@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.types.VendorPaymentMethod;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +31,7 @@ public final class AuthorizePayoutBody {
 
     private final Optional<String> orderDescription;
 
-    private final VendorPaymentMethod paymentMethod;
+    private final AuthorizePaymentMethod paymentMethod;
 
     private final RequestOutAuthorizePaymentDetails paymentDetails;
 
@@ -53,7 +52,7 @@ public final class AuthorizePayoutBody {
             Optional<String> source,
             Optional<String> orderId,
             Optional<String> orderDescription,
-            VendorPaymentMethod paymentMethod,
+            AuthorizePaymentMethod paymentMethod,
             RequestOutAuthorizePaymentDetails paymentDetails,
             RequestOutAuthorizeVendorData vendorData,
             List<RequestOutAuthorizeInvoiceData> invoiceData,
@@ -96,7 +95,7 @@ public final class AuthorizePayoutBody {
     }
 
     @JsonProperty("paymentMethod")
-    public VendorPaymentMethod getPaymentMethod() {
+    public AuthorizePaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
@@ -110,11 +109,6 @@ public final class AuthorizePayoutBody {
 
     /**
      * @return Object containing vendor data.
-     * &lt;Note&gt;
-     * When creating a new vendor in a payout authorization, the system first checks <code>billingData</code> for the vendor's billing information.
-     * If <code>billingData</code> is empty, it falls back to the <code>paymentMethod</code> object information.
-     * For existing vendors, <code>paymentMethod</code> is ignored unless a <code>storedMethodId</code> is provided.
-     * &lt;/Note&gt;
      */
     @JsonProperty("vendorData")
     public RequestOutAuthorizeVendorData getVendorData() {
@@ -201,7 +195,7 @@ public final class AuthorizePayoutBody {
     }
 
     public interface PaymentMethodStage {
-        PaymentDetailsStage paymentMethod(@NotNull VendorPaymentMethod paymentMethod);
+        PaymentDetailsStage paymentMethod(@NotNull AuthorizePaymentMethod paymentMethod);
     }
 
     public interface PaymentDetailsStage {
@@ -213,12 +207,7 @@ public final class AuthorizePayoutBody {
 
     public interface VendorDataStage {
         /**
-         * <p>Object containing vendor data.
-         * &lt;Note&gt;
-         * When creating a new vendor in a payout authorization, the system first checks <code>billingData</code> for the vendor's billing information.
-         * If <code>billingData</code> is empty, it falls back to the <code>paymentMethod</code> object information.
-         * For existing vendors, <code>paymentMethod</code> is ignored unless a <code>storedMethodId</code> is provided.
-         * &lt;/Note&gt;</p>
+         * <p>Object containing vendor data.</p>
          */
         _FinalStage vendorData(@NotNull RequestOutAuthorizeVendorData vendorData);
     }
@@ -265,7 +254,7 @@ public final class AuthorizePayoutBody {
             implements EntryPointStage, PaymentMethodStage, PaymentDetailsStage, VendorDataStage, _FinalStage {
         private String entryPoint;
 
-        private VendorPaymentMethod paymentMethod;
+        private AuthorizePaymentMethod paymentMethod;
 
         private RequestOutAuthorizePaymentDetails paymentDetails;
 
@@ -315,7 +304,7 @@ public final class AuthorizePayoutBody {
 
         @java.lang.Override
         @JsonSetter("paymentMethod")
-        public PaymentDetailsStage paymentMethod(@NotNull VendorPaymentMethod paymentMethod) {
+        public PaymentDetailsStage paymentMethod(@NotNull AuthorizePaymentMethod paymentMethod) {
             this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
             return this;
         }
@@ -333,18 +322,8 @@ public final class AuthorizePayoutBody {
         }
 
         /**
-         * <p>Object containing vendor data.
-         * &lt;Note&gt;
-         * When creating a new vendor in a payout authorization, the system first checks <code>billingData</code> for the vendor's billing information.
-         * If <code>billingData</code> is empty, it falls back to the <code>paymentMethod</code> object information.
-         * For existing vendors, <code>paymentMethod</code> is ignored unless a <code>storedMethodId</code> is provided.
-         * &lt;/Note&gt;</p>
-         * <p>Object containing vendor data.
-         * &lt;Note&gt;
-         * When creating a new vendor in a payout authorization, the system first checks <code>billingData</code> for the vendor's billing information.
-         * If <code>billingData</code> is empty, it falls back to the <code>paymentMethod</code> object information.
-         * For existing vendors, <code>paymentMethod</code> is ignored unless a <code>storedMethodId</code> is provided.
-         * &lt;/Note&gt;</p>
+         * <p>Object containing vendor data.</p>
+         * <p>Object containing vendor data.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

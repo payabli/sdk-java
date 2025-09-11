@@ -113,9 +113,6 @@ public final class AddOrganizationRequest {
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
-     */
     @JsonProperty("idempotencyKey")
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
@@ -301,9 +298,6 @@ public final class AddOrganizationRequest {
     public interface _FinalStage {
         AddOrganizationRequest build();
 
-        /**
-         * <p>A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.</p>
-         */
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
@@ -674,19 +668,12 @@ public final class AddOrganizationRequest {
             return this;
         }
 
-        /**
-         * <p>A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
         public _FinalStage idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = Optional.ofNullable(idempotencyKey);
             return this;
         }
 
-        /**
-         * <p>A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.</p>
-         */
         @java.lang.Override
         @JsonSetter(value = "idempotencyKey", nulls = Nulls.SKIP)
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {

@@ -5,12 +5,15 @@ package io.github.payabli.api.resources.querytypes.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,8 +115,17 @@ public final class BatchDetailResponseSummary {
         return pageSize;
     }
 
-    @JsonProperty("pageidentifier")
+    @JsonIgnore
     public Optional<String> getPageidentifier() {
+        if (pageidentifier == null) {
+            return Optional.empty();
+        }
+        return pageidentifier;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageidentifier")
+    private Optional<String> _getPageidentifier() {
         return pageidentifier;
     }
 
@@ -209,6 +221,8 @@ public final class BatchDetailResponseSummary {
         _FinalStage pageidentifier(Optional<String> pageidentifier);
 
         _FinalStage pageidentifier(String pageidentifier);
+
+        _FinalStage pageidentifier(Nullable<String> pageidentifier);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -323,6 +337,18 @@ public final class BatchDetailResponseSummary {
         @JsonSetter("pageSize")
         public _FinalStage pageSize(int pageSize) {
             this.pageSize = pageSize;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage pageidentifier(Nullable<String> pageidentifier) {
+            if (pageidentifier.isNull()) {
+                this.pageidentifier = null;
+            } else if (pageidentifier.isEmpty()) {
+                this.pageidentifier = Optional.empty();
+            } else {
+                this.pageidentifier = Optional.of(pageidentifier.get());
+            }
             return this;
         }
 

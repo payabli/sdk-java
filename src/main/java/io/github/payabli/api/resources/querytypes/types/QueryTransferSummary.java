@@ -5,12 +5,15 @@ package io.github.payabli.api.resources.querytypes.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +40,8 @@ public final class QueryTransferSummary {
     private final Optional<Double> totalNetAmountTransfer;
 
     private final Optional<Double> serviceFees;
+
+    private final Optional<Double> netBatchAmount;
 
     private final Optional<Double> transferAmount;
 
@@ -68,6 +73,7 @@ public final class QueryTransferSummary {
             Optional<Double> thirdPartyPaid,
             Optional<Double> totalNetAmountTransfer,
             Optional<Double> serviceFees,
+            Optional<Double> netBatchAmount,
             Optional<Double> transferAmount,
             Optional<Double> refunds,
             Optional<Double> heldAmount,
@@ -87,6 +93,7 @@ public final class QueryTransferSummary {
         this.thirdPartyPaid = thirdPartyPaid;
         this.totalNetAmountTransfer = totalNetAmountTransfer;
         this.serviceFees = serviceFees;
+        this.netBatchAmount = netBatchAmount;
         this.transferAmount = transferAmount;
         this.refunds = refunds;
         this.heldAmount = heldAmount;
@@ -102,144 +109,324 @@ public final class QueryTransferSummary {
     /**
      * @return ACH returns deducted from the batch.
      */
-    @JsonProperty("achReturns")
+    @JsonIgnore
     public Optional<Double> getAchReturns() {
+        if (achReturns == null) {
+            return Optional.empty();
+        }
         return achReturns;
     }
 
     /**
      * @return Corrections applied to Billing &amp; Fees charges.
      */
-    @JsonProperty("adjustments")
+    @JsonIgnore
     public Optional<Double> getAdjustments() {
+        if (adjustments == null) {
+            return Optional.empty();
+        }
         return adjustments;
     }
 
     /**
      * @return Charges applied for transactions and services.
      */
-    @JsonProperty("billingFees")
+    @JsonIgnore
     public Optional<Double> getBillingFees() {
+        if (billingFees == null) {
+            return Optional.empty();
+        }
         return billingFees;
     }
 
     /**
      * @return Chargebacks deducted from batch.
      */
-    @JsonProperty("chargebacks")
+    @JsonIgnore
     public Optional<Double> getChargebacks() {
+        if (chargebacks == null) {
+            return Optional.empty();
+        }
         return chargebacks;
     }
 
     /**
      * @return The gross batch amount before deductions.
      */
-    @JsonProperty("grossTransferAmount")
+    @JsonIgnore
     public Optional<Double> getGrossTransferAmount() {
+        if (grossTransferAmount == null) {
+            return Optional.empty();
+        }
         return grossTransferAmount;
     }
 
     /**
      * @return Previously held funds that have been released after a risk review.
      */
-    @JsonProperty("releaseAmount")
+    @JsonIgnore
     public Optional<Double> getReleaseAmount() {
+        if (releaseAmount == null) {
+            return Optional.empty();
+        }
         return releaseAmount;
     }
 
     /**
      * @return Payments captured in the batch cycle that are deposited separately. For example,  checks or cash payments recorded in the batch but not deposited via Payabli,  or card brands making a direct transfer in certain situations.
      */
-    @JsonProperty("thirdPartyPaid")
+    @JsonIgnore
     public Optional<Double> getThirdPartyPaid() {
+        if (thirdPartyPaid == null) {
+            return Optional.empty();
+        }
         return thirdPartyPaid;
     }
 
     /**
      * @return The gross batch amount minus service fees.
      */
-    @JsonProperty("totalNetAmountTransfer")
+    @JsonIgnore
     public Optional<Double> getTotalNetAmountTransfer() {
+        if (totalNetAmountTransfer == null) {
+            return Optional.empty();
+        }
         return totalNetAmountTransfer;
     }
 
     /**
      * @return Service fees are any pass-through fees charged to the customer at the time of payment.  These aren't transferred to the merchant when the batch is transferred and funded.
      */
-    @JsonProperty("serviceFees")
+    @JsonIgnore
     public Optional<Double> getServiceFees() {
+        if (serviceFees == null) {
+            return Optional.empty();
+        }
         return serviceFees;
+    }
+
+    /**
+     * @return The net batch amount is the gross batch amount minus any returns, refunds,
+     * billing and fees items, chargebacks, adjustments, and third party payments.
+     */
+    @JsonIgnore
+    public Optional<Double> getNetBatchAmount() {
+        if (netBatchAmount == null) {
+            return Optional.empty();
+        }
+        return netBatchAmount;
     }
 
     /**
      * @return The transfer amount is the net batch amount plus or minus any returns, refunds,  billing and fees items, chargebacks, adjustments, and third party payments.  This is the amount from the batch that is transferred to the merchant bank account.
      */
-    @JsonProperty("transferAmount")
+    @JsonIgnore
     public Optional<Double> getTransferAmount() {
+        if (transferAmount == null) {
+            return Optional.empty();
+        }
         return transferAmount;
     }
 
     /**
      * @return Refunds deducted from batch.
      */
-    @JsonProperty("refunds")
+    @JsonIgnore
     public Optional<Double> getRefunds() {
+        if (refunds == null) {
+            return Optional.empty();
+        }
         return refunds;
     }
 
     /**
      * @return Funds being held for fraud or risk concerns.
      */
-    @JsonProperty("heldAmount")
+    @JsonIgnore
     public Optional<Double> getHeldAmount() {
+        if (heldAmount == null) {
+            return Optional.empty();
+        }
         return heldAmount;
     }
 
     /**
      * @return Number of records in the response.
      */
-    @JsonProperty("totalRecords")
+    @JsonIgnore
     public Optional<Integer> getTotalRecords() {
+        if (totalRecords == null) {
+            return Optional.empty();
+        }
         return totalRecords;
     }
 
     /**
      * @return The total sum of the transfers in the response.
      */
-    @JsonProperty("totalAmount")
+    @JsonIgnore
     public Optional<Double> getTotalAmount() {
+        if (totalAmount == null) {
+            return Optional.empty();
+        }
         return totalAmount;
     }
 
     /**
      * @return The total sum of the transfers in the response.
      */
-    @JsonProperty("totalNetAmount")
+    @JsonIgnore
     public Optional<Double> getTotalNetAmount() {
+        if (totalNetAmount == null) {
+            return Optional.empty();
+        }
         return totalNetAmount;
     }
 
     /**
      * @return Number of pages in the response.
      */
-    @JsonProperty("totalPages")
+    @JsonIgnore
     public Optional<Integer> getTotalPages() {
+        if (totalPages == null) {
+            return Optional.empty();
+        }
         return totalPages;
     }
 
     /**
      * @return Number of records per page.
      */
-    @JsonProperty("pageSize")
+    @JsonIgnore
     public Optional<Integer> getPageSize() {
+        if (pageSize == null) {
+            return Optional.empty();
+        }
         return pageSize;
     }
 
     /**
      * @return Auxiliary validation used internally by payment pages and components.
      */
-    @JsonProperty("pageidentifier")
+    @JsonIgnore
     public Optional<String> getPageidentifier() {
+        if (pageidentifier == null) {
+            return Optional.empty();
+        }
+        return pageidentifier;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("achReturns")
+    private Optional<Double> _getAchReturns() {
+        return achReturns;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("adjustments")
+    private Optional<Double> _getAdjustments() {
+        return adjustments;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingFees")
+    private Optional<Double> _getBillingFees() {
+        return billingFees;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("chargebacks")
+    private Optional<Double> _getChargebacks() {
+        return chargebacks;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("grossTransferAmount")
+    private Optional<Double> _getGrossTransferAmount() {
+        return grossTransferAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("releaseAmount")
+    private Optional<Double> _getReleaseAmount() {
+        return releaseAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("thirdPartyPaid")
+    private Optional<Double> _getThirdPartyPaid() {
+        return thirdPartyPaid;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("totalNetAmountTransfer")
+    private Optional<Double> _getTotalNetAmountTransfer() {
+        return totalNetAmountTransfer;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("serviceFees")
+    private Optional<Double> _getServiceFees() {
+        return serviceFees;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("netBatchAmount")
+    private Optional<Double> _getNetBatchAmount() {
+        return netBatchAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transferAmount")
+    private Optional<Double> _getTransferAmount() {
+        return transferAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("refunds")
+    private Optional<Double> _getRefunds() {
+        return refunds;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("heldAmount")
+    private Optional<Double> _getHeldAmount() {
+        return heldAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("totalRecords")
+    private Optional<Integer> _getTotalRecords() {
+        return totalRecords;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("totalAmount")
+    private Optional<Double> _getTotalAmount() {
+        return totalAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("totalNetAmount")
+    private Optional<Double> _getTotalNetAmount() {
+        return totalNetAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("totalPages")
+    private Optional<Integer> _getTotalPages() {
+        return totalPages;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageSize")
+    private Optional<Integer> _getPageSize() {
+        return pageSize;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageidentifier")
+    private Optional<String> _getPageidentifier() {
         return pageidentifier;
     }
 
@@ -264,6 +451,7 @@ public final class QueryTransferSummary {
                 && thirdPartyPaid.equals(other.thirdPartyPaid)
                 && totalNetAmountTransfer.equals(other.totalNetAmountTransfer)
                 && serviceFees.equals(other.serviceFees)
+                && netBatchAmount.equals(other.netBatchAmount)
                 && transferAmount.equals(other.transferAmount)
                 && refunds.equals(other.refunds)
                 && heldAmount.equals(other.heldAmount)
@@ -287,6 +475,7 @@ public final class QueryTransferSummary {
                 this.thirdPartyPaid,
                 this.totalNetAmountTransfer,
                 this.serviceFees,
+                this.netBatchAmount,
                 this.transferAmount,
                 this.refunds,
                 this.heldAmount,
@@ -327,6 +516,8 @@ public final class QueryTransferSummary {
 
         private Optional<Double> serviceFees = Optional.empty();
 
+        private Optional<Double> netBatchAmount = Optional.empty();
+
         private Optional<Double> transferAmount = Optional.empty();
 
         private Optional<Double> refunds = Optional.empty();
@@ -360,6 +551,7 @@ public final class QueryTransferSummary {
             thirdPartyPaid(other.getThirdPartyPaid());
             totalNetAmountTransfer(other.getTotalNetAmountTransfer());
             serviceFees(other.getServiceFees());
+            netBatchAmount(other.getNetBatchAmount());
             transferAmount(other.getTransferAmount());
             refunds(other.getRefunds());
             heldAmount(other.getHeldAmount());
@@ -386,6 +578,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder achReturns(Nullable<Double> achReturns) {
+            if (achReturns.isNull()) {
+                this.achReturns = null;
+            } else if (achReturns.isEmpty()) {
+                this.achReturns = Optional.empty();
+            } else {
+                this.achReturns = Optional.of(achReturns.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Corrections applied to Billing &amp; Fees charges.</p>
          */
@@ -397,6 +600,17 @@ public final class QueryTransferSummary {
 
         public Builder adjustments(Double adjustments) {
             this.adjustments = Optional.ofNullable(adjustments);
+            return this;
+        }
+
+        public Builder adjustments(Nullable<Double> adjustments) {
+            if (adjustments.isNull()) {
+                this.adjustments = null;
+            } else if (adjustments.isEmpty()) {
+                this.adjustments = Optional.empty();
+            } else {
+                this.adjustments = Optional.of(adjustments.get());
+            }
             return this;
         }
 
@@ -414,6 +628,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder billingFees(Nullable<Double> billingFees) {
+            if (billingFees.isNull()) {
+                this.billingFees = null;
+            } else if (billingFees.isEmpty()) {
+                this.billingFees = Optional.empty();
+            } else {
+                this.billingFees = Optional.of(billingFees.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Chargebacks deducted from batch.</p>
          */
@@ -425,6 +650,17 @@ public final class QueryTransferSummary {
 
         public Builder chargebacks(Double chargebacks) {
             this.chargebacks = Optional.ofNullable(chargebacks);
+            return this;
+        }
+
+        public Builder chargebacks(Nullable<Double> chargebacks) {
+            if (chargebacks.isNull()) {
+                this.chargebacks = null;
+            } else if (chargebacks.isEmpty()) {
+                this.chargebacks = Optional.empty();
+            } else {
+                this.chargebacks = Optional.of(chargebacks.get());
+            }
             return this;
         }
 
@@ -442,6 +678,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder grossTransferAmount(Nullable<Double> grossTransferAmount) {
+            if (grossTransferAmount.isNull()) {
+                this.grossTransferAmount = null;
+            } else if (grossTransferAmount.isEmpty()) {
+                this.grossTransferAmount = Optional.empty();
+            } else {
+                this.grossTransferAmount = Optional.of(grossTransferAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Previously held funds that have been released after a risk review.</p>
          */
@@ -453,6 +700,17 @@ public final class QueryTransferSummary {
 
         public Builder releaseAmount(Double releaseAmount) {
             this.releaseAmount = Optional.ofNullable(releaseAmount);
+            return this;
+        }
+
+        public Builder releaseAmount(Nullable<Double> releaseAmount) {
+            if (releaseAmount.isNull()) {
+                this.releaseAmount = null;
+            } else if (releaseAmount.isEmpty()) {
+                this.releaseAmount = Optional.empty();
+            } else {
+                this.releaseAmount = Optional.of(releaseAmount.get());
+            }
             return this;
         }
 
@@ -470,6 +728,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder thirdPartyPaid(Nullable<Double> thirdPartyPaid) {
+            if (thirdPartyPaid.isNull()) {
+                this.thirdPartyPaid = null;
+            } else if (thirdPartyPaid.isEmpty()) {
+                this.thirdPartyPaid = Optional.empty();
+            } else {
+                this.thirdPartyPaid = Optional.of(thirdPartyPaid.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The gross batch amount minus service fees.</p>
          */
@@ -481,6 +750,17 @@ public final class QueryTransferSummary {
 
         public Builder totalNetAmountTransfer(Double totalNetAmountTransfer) {
             this.totalNetAmountTransfer = Optional.ofNullable(totalNetAmountTransfer);
+            return this;
+        }
+
+        public Builder totalNetAmountTransfer(Nullable<Double> totalNetAmountTransfer) {
+            if (totalNetAmountTransfer.isNull()) {
+                this.totalNetAmountTransfer = null;
+            } else if (totalNetAmountTransfer.isEmpty()) {
+                this.totalNetAmountTransfer = Optional.empty();
+            } else {
+                this.totalNetAmountTransfer = Optional.of(totalNetAmountTransfer.get());
+            }
             return this;
         }
 
@@ -498,6 +778,43 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder serviceFees(Nullable<Double> serviceFees) {
+            if (serviceFees.isNull()) {
+                this.serviceFees = null;
+            } else if (serviceFees.isEmpty()) {
+                this.serviceFees = Optional.empty();
+            } else {
+                this.serviceFees = Optional.of(serviceFees.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The net batch amount is the gross batch amount minus any returns, refunds,
+         * billing and fees items, chargebacks, adjustments, and third party payments.</p>
+         */
+        @JsonSetter(value = "netBatchAmount", nulls = Nulls.SKIP)
+        public Builder netBatchAmount(Optional<Double> netBatchAmount) {
+            this.netBatchAmount = netBatchAmount;
+            return this;
+        }
+
+        public Builder netBatchAmount(Double netBatchAmount) {
+            this.netBatchAmount = Optional.ofNullable(netBatchAmount);
+            return this;
+        }
+
+        public Builder netBatchAmount(Nullable<Double> netBatchAmount) {
+            if (netBatchAmount.isNull()) {
+                this.netBatchAmount = null;
+            } else if (netBatchAmount.isEmpty()) {
+                this.netBatchAmount = Optional.empty();
+            } else {
+                this.netBatchAmount = Optional.of(netBatchAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The transfer amount is the net batch amount plus or minus any returns, refunds,  billing and fees items, chargebacks, adjustments, and third party payments.  This is the amount from the batch that is transferred to the merchant bank account.</p>
          */
@@ -509,6 +826,17 @@ public final class QueryTransferSummary {
 
         public Builder transferAmount(Double transferAmount) {
             this.transferAmount = Optional.ofNullable(transferAmount);
+            return this;
+        }
+
+        public Builder transferAmount(Nullable<Double> transferAmount) {
+            if (transferAmount.isNull()) {
+                this.transferAmount = null;
+            } else if (transferAmount.isEmpty()) {
+                this.transferAmount = Optional.empty();
+            } else {
+                this.transferAmount = Optional.of(transferAmount.get());
+            }
             return this;
         }
 
@@ -526,6 +854,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder refunds(Nullable<Double> refunds) {
+            if (refunds.isNull()) {
+                this.refunds = null;
+            } else if (refunds.isEmpty()) {
+                this.refunds = Optional.empty();
+            } else {
+                this.refunds = Optional.of(refunds.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Funds being held for fraud or risk concerns.</p>
          */
@@ -537,6 +876,17 @@ public final class QueryTransferSummary {
 
         public Builder heldAmount(Double heldAmount) {
             this.heldAmount = Optional.ofNullable(heldAmount);
+            return this;
+        }
+
+        public Builder heldAmount(Nullable<Double> heldAmount) {
+            if (heldAmount.isNull()) {
+                this.heldAmount = null;
+            } else if (heldAmount.isEmpty()) {
+                this.heldAmount = Optional.empty();
+            } else {
+                this.heldAmount = Optional.of(heldAmount.get());
+            }
             return this;
         }
 
@@ -554,6 +904,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder totalRecords(Nullable<Integer> totalRecords) {
+            if (totalRecords.isNull()) {
+                this.totalRecords = null;
+            } else if (totalRecords.isEmpty()) {
+                this.totalRecords = Optional.empty();
+            } else {
+                this.totalRecords = Optional.of(totalRecords.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The total sum of the transfers in the response.</p>
          */
@@ -565,6 +926,17 @@ public final class QueryTransferSummary {
 
         public Builder totalAmount(Double totalAmount) {
             this.totalAmount = Optional.ofNullable(totalAmount);
+            return this;
+        }
+
+        public Builder totalAmount(Nullable<Double> totalAmount) {
+            if (totalAmount.isNull()) {
+                this.totalAmount = null;
+            } else if (totalAmount.isEmpty()) {
+                this.totalAmount = Optional.empty();
+            } else {
+                this.totalAmount = Optional.of(totalAmount.get());
+            }
             return this;
         }
 
@@ -582,6 +954,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder totalNetAmount(Nullable<Double> totalNetAmount) {
+            if (totalNetAmount.isNull()) {
+                this.totalNetAmount = null;
+            } else if (totalNetAmount.isEmpty()) {
+                this.totalNetAmount = Optional.empty();
+            } else {
+                this.totalNetAmount = Optional.of(totalNetAmount.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Number of pages in the response.</p>
          */
@@ -593,6 +976,17 @@ public final class QueryTransferSummary {
 
         public Builder totalPages(Integer totalPages) {
             this.totalPages = Optional.ofNullable(totalPages);
+            return this;
+        }
+
+        public Builder totalPages(Nullable<Integer> totalPages) {
+            if (totalPages.isNull()) {
+                this.totalPages = null;
+            } else if (totalPages.isEmpty()) {
+                this.totalPages = Optional.empty();
+            } else {
+                this.totalPages = Optional.of(totalPages.get());
+            }
             return this;
         }
 
@@ -610,6 +1004,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder pageSize(Nullable<Integer> pageSize) {
+            if (pageSize.isNull()) {
+                this.pageSize = null;
+            } else if (pageSize.isEmpty()) {
+                this.pageSize = Optional.empty();
+            } else {
+                this.pageSize = Optional.of(pageSize.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Auxiliary validation used internally by payment pages and components.</p>
          */
@@ -624,6 +1029,17 @@ public final class QueryTransferSummary {
             return this;
         }
 
+        public Builder pageidentifier(Nullable<String> pageidentifier) {
+            if (pageidentifier.isNull()) {
+                this.pageidentifier = null;
+            } else if (pageidentifier.isEmpty()) {
+                this.pageidentifier = Optional.empty();
+            } else {
+                this.pageidentifier = Optional.of(pageidentifier.get());
+            }
+            return this;
+        }
+
         public QueryTransferSummary build() {
             return new QueryTransferSummary(
                     achReturns,
@@ -635,6 +1051,7 @@ public final class QueryTransferSummary {
                     thirdPartyPaid,
                     totalNetAmountTransfer,
                     serviceFees,
+                    netBatchAmount,
                     transferAmount,
                     refunds,
                     heldAmount,

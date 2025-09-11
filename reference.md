@@ -2016,7 +2016,7 @@ client.chargeBacks().addResponse(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` — A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. 
+**idempotencyKey:** `Optional<String>` 
     
 </dd>
 </dl>
@@ -10731,7 +10731,7 @@ client.moneyOut().authorizeOut(
                         .build()
                 )
                 .paymentMethod(
-                    VendorPaymentMethod
+                    AuthorizePaymentMethod
                         .builder()
                         .method("managed")
                         .build()
@@ -11809,7 +11809,7 @@ client.organization().addOrganization(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` — A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. 
+**idempotencyKey:** `Optional<String>` 
     
 </dd>
 </dl>
@@ -18836,6 +18836,9 @@ List of field names accepted:
   - `bankAccountNumber` (ct, nct, ne, eq)
   - `bankRoutingNumber` (ct, nct, ne, eq)
   - `batchCurrency` (in, nin, ne, eq)
+  - `parentOrgName` (ct, nct, ne, eq)
+  - `parentOrgId` (ct, nct, ne, eq)
+  - `externalPaypointID` (ct, nct)
     
 </dd>
 </dl>

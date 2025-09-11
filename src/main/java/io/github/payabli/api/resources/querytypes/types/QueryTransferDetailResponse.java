@@ -12,24 +12,25 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QueryTransferDetailResponse.Builder.class)
 public final class QueryTransferDetailResponse {
-    private final Optional<List<TransferDetailRecord>> records;
+    private final List<TransferDetailRecord> records;
 
-    private final Optional<QueryTransferSummary> summary;
+    private final QueryTransferSummary summary;
 
     private final Map<String, Object> additionalProperties;
 
     private QueryTransferDetailResponse(
-            Optional<List<TransferDetailRecord>> records,
-            Optional<QueryTransferSummary> summary,
+            List<TransferDetailRecord> records,
+            QueryTransferSummary summary,
             Map<String, Object> additionalProperties) {
         this.records = records;
         this.summary = summary;
@@ -40,7 +41,7 @@ public final class QueryTransferDetailResponse {
      * @return List of transfer detail records
      */
     @JsonProperty("Records")
-    public Optional<List<TransferDetailRecord>> getRecords() {
+    public List<TransferDetailRecord> getRecords() {
         return records;
     }
 
@@ -48,7 +49,7 @@ public final class QueryTransferDetailResponse {
      * @return Summary of the transfer details query
      */
     @JsonProperty("Summary")
-    public Optional<QueryTransferSummary> getSummary() {
+    public QueryTransferSummary getSummary() {
         return summary;
     }
 
@@ -77,21 +78,44 @@ public final class QueryTransferDetailResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static SummaryStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<List<TransferDetailRecord>> records = Optional.empty();
+    public interface SummaryStage {
+        /**
+         * <p>Summary of the transfer details query</p>
+         */
+        _FinalStage summary(@NotNull QueryTransferSummary summary);
 
-        private Optional<QueryTransferSummary> summary = Optional.empty();
+        Builder from(QueryTransferDetailResponse other);
+    }
+
+    public interface _FinalStage {
+        QueryTransferDetailResponse build();
+
+        /**
+         * <p>List of transfer detail records</p>
+         */
+        _FinalStage records(List<TransferDetailRecord> records);
+
+        _FinalStage addRecords(TransferDetailRecord records);
+
+        _FinalStage addAllRecords(List<TransferDetailRecord> records);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements SummaryStage, _FinalStage {
+        private QueryTransferSummary summary;
+
+        private List<TransferDetailRecord> records = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(QueryTransferDetailResponse other) {
             records(other.getRecords());
             summary(other.getSummary());
@@ -99,33 +123,51 @@ public final class QueryTransferDetailResponse {
         }
 
         /**
-         * <p>List of transfer detail records</p>
+         * <p>Summary of the transfer details query</p>
+         * <p>Summary of the transfer details query</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "Records", nulls = Nulls.SKIP)
-        public Builder records(Optional<List<TransferDetailRecord>> records) {
-            this.records = records;
-            return this;
-        }
-
-        public Builder records(List<TransferDetailRecord> records) {
-            this.records = Optional.ofNullable(records);
+        @java.lang.Override
+        @JsonSetter("Summary")
+        public _FinalStage summary(@NotNull QueryTransferSummary summary) {
+            this.summary = Objects.requireNonNull(summary, "summary must not be null");
             return this;
         }
 
         /**
-         * <p>Summary of the transfer details query</p>
+         * <p>List of transfer detail records</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
-        public Builder summary(Optional<QueryTransferSummary> summary) {
-            this.summary = summary;
+        @java.lang.Override
+        public _FinalStage addAllRecords(List<TransferDetailRecord> records) {
+            if (records != null) {
+                this.records.addAll(records);
+            }
             return this;
         }
 
-        public Builder summary(QueryTransferSummary summary) {
-            this.summary = Optional.ofNullable(summary);
+        /**
+         * <p>List of transfer detail records</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addRecords(TransferDetailRecord records) {
+            this.records.add(records);
             return this;
         }
 
+        /**
+         * <p>List of transfer detail records</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "Records", nulls = Nulls.SKIP)
+        public _FinalStage records(List<TransferDetailRecord> records) {
+            this.records.clear();
+            this.records.addAll(records);
+            return this;
+        }
+
+        @java.lang.Override
         public QueryTransferDetailResponse build() {
             return new QueryTransferDetailResponse(records, summary, additionalProperties);
         }

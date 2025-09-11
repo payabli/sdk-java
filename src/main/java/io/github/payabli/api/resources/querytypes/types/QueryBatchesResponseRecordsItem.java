@@ -396,34 +396,49 @@ public final class QueryBatchesResponseRecordsItem {
     /**
      * @return The payment method used.
      */
-    @JsonProperty("Method")
+    @JsonIgnore
     public Optional<String> getMethod() {
+        if (method == null) {
+            return Optional.empty();
+        }
         return method;
     }
 
-    @JsonProperty("ExpectedDepositDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getExpectedDepositDate() {
+        if (expectedDepositDate == null) {
+            return Optional.empty();
+        }
         return expectedDepositDate;
     }
 
-    @JsonProperty("DepositDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getDepositDate() {
+        if (depositDate == null) {
+            return Optional.empty();
+        }
         return depositDate;
     }
 
     /**
      * @return The batch transfer date.
      */
-    @JsonProperty("TransferDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getTransferDate() {
+        if (transferDate == null) {
+            return Optional.empty();
+        }
         return transferDate;
     }
 
     /**
      * @return Transfer details for the batch.
      */
-    @JsonProperty("Transfer")
+    @JsonIgnore
     public Optional<QueryBatchesTransfer> getTransfer() {
+        if (transfer == null) {
+            return Optional.empty();
+        }
         return transfer;
     }
 
@@ -545,6 +560,36 @@ public final class QueryBatchesResponseRecordsItem {
     @JsonProperty("BatchType")
     private Optional<Integer> _getBatchType() {
         return batchType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Method")
+    private Optional<String> _getMethod() {
+        return method;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ExpectedDepositDate")
+    private Optional<OffsetDateTime> _getExpectedDepositDate() {
+        return expectedDepositDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("DepositDate")
+    private Optional<OffsetDateTime> _getDepositDate() {
+        return depositDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransferDate")
+    private Optional<OffsetDateTime> _getTransferDate() {
+        return transferDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Transfer")
+    private Optional<QueryBatchesTransfer> _getTransfer() {
+        return transfer;
     }
 
     @java.lang.Override
@@ -835,13 +880,19 @@ public final class QueryBatchesResponseRecordsItem {
 
         _FinalStage method(String method);
 
+        _FinalStage method(Nullable<String> method);
+
         _FinalStage expectedDepositDate(Optional<OffsetDateTime> expectedDepositDate);
 
         _FinalStage expectedDepositDate(OffsetDateTime expectedDepositDate);
 
+        _FinalStage expectedDepositDate(Nullable<OffsetDateTime> expectedDepositDate);
+
         _FinalStage depositDate(Optional<OffsetDateTime> depositDate);
 
         _FinalStage depositDate(OffsetDateTime depositDate);
+
+        _FinalStage depositDate(Nullable<OffsetDateTime> depositDate);
 
         /**
          * <p>The batch transfer date.</p>
@@ -850,12 +901,16 @@ public final class QueryBatchesResponseRecordsItem {
 
         _FinalStage transferDate(OffsetDateTime transferDate);
 
+        _FinalStage transferDate(Nullable<OffsetDateTime> transferDate);
+
         /**
          * <p>Transfer details for the batch.</p>
          */
         _FinalStage transfer(Optional<QueryBatchesTransfer> transfer);
 
         _FinalStage transfer(QueryBatchesTransfer transfer);
+
+        _FinalStage transfer(Nullable<QueryBatchesTransfer> transfer);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -1026,6 +1081,22 @@ public final class QueryBatchesResponseRecordsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage transfer(Nullable<QueryBatchesTransfer> transfer) {
+            if (transfer.isNull()) {
+                this.transfer = null;
+            } else if (transfer.isEmpty()) {
+                this.transfer = Optional.empty();
+            } else {
+                this.transfer = Optional.of(transfer.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Transfer details for the batch.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage transfer(QueryBatchesTransfer transfer) {
             this.transfer = Optional.ofNullable(transfer);
             return this;
@@ -1038,6 +1109,22 @@ public final class QueryBatchesResponseRecordsItem {
         @JsonSetter(value = "Transfer", nulls = Nulls.SKIP)
         public _FinalStage transfer(Optional<QueryBatchesTransfer> transfer) {
             this.transfer = transfer;
+            return this;
+        }
+
+        /**
+         * <p>The batch transfer date.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transferDate(Nullable<OffsetDateTime> transferDate) {
+            if (transferDate.isNull()) {
+                this.transferDate = null;
+            } else if (transferDate.isEmpty()) {
+                this.transferDate = Optional.empty();
+            } else {
+                this.transferDate = Optional.of(transferDate.get());
+            }
             return this;
         }
 
@@ -1062,6 +1149,18 @@ public final class QueryBatchesResponseRecordsItem {
         }
 
         @java.lang.Override
+        public _FinalStage depositDate(Nullable<OffsetDateTime> depositDate) {
+            if (depositDate.isNull()) {
+                this.depositDate = null;
+            } else if (depositDate.isEmpty()) {
+                this.depositDate = Optional.empty();
+            } else {
+                this.depositDate = Optional.of(depositDate.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage depositDate(OffsetDateTime depositDate) {
             this.depositDate = Optional.ofNullable(depositDate);
             return this;
@@ -1075,6 +1174,18 @@ public final class QueryBatchesResponseRecordsItem {
         }
 
         @java.lang.Override
+        public _FinalStage expectedDepositDate(Nullable<OffsetDateTime> expectedDepositDate) {
+            if (expectedDepositDate.isNull()) {
+                this.expectedDepositDate = null;
+            } else if (expectedDepositDate.isEmpty()) {
+                this.expectedDepositDate = Optional.empty();
+            } else {
+                this.expectedDepositDate = Optional.of(expectedDepositDate.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage expectedDepositDate(OffsetDateTime expectedDepositDate) {
             this.expectedDepositDate = Optional.ofNullable(expectedDepositDate);
             return this;
@@ -1084,6 +1195,22 @@ public final class QueryBatchesResponseRecordsItem {
         @JsonSetter(value = "ExpectedDepositDate", nulls = Nulls.SKIP)
         public _FinalStage expectedDepositDate(Optional<OffsetDateTime> expectedDepositDate) {
             this.expectedDepositDate = expectedDepositDate;
+            return this;
+        }
+
+        /**
+         * <p>The payment method used.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage method(Nullable<String> method) {
+            if (method.isNull()) {
+                this.method = null;
+            } else if (method.isEmpty()) {
+                this.method = Optional.empty();
+            } else {
+                this.method = Optional.of(method.get());
+            }
             return this;
         }
 

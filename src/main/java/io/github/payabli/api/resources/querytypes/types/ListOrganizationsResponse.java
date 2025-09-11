@@ -14,37 +14,36 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.types.OrganizationQueryRecord;
 import io.github.payabli.api.types.QuerySummary;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListOrganizationsResponse.Builder.class)
 public final class ListOrganizationsResponse {
-    private final Optional<List<OrganizationQueryRecord>> records;
+    private final List<OrganizationQueryRecord> records;
 
-    private final Optional<QuerySummary> summary;
+    private final QuerySummary summary;
 
     private final Map<String, Object> additionalProperties;
 
     private ListOrganizationsResponse(
-            Optional<List<OrganizationQueryRecord>> records,
-            Optional<QuerySummary> summary,
-            Map<String, Object> additionalProperties) {
+            List<OrganizationQueryRecord> records, QuerySummary summary, Map<String, Object> additionalProperties) {
         this.records = records;
         this.summary = summary;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("Records")
-    public Optional<List<OrganizationQueryRecord>> getRecords() {
+    public List<OrganizationQueryRecord> getRecords() {
         return records;
     }
 
     @JsonProperty("Summary")
-    public Optional<QuerySummary> getSummary() {
+    public QuerySummary getSummary() {
         return summary;
     }
 
@@ -73,49 +72,74 @@ public final class ListOrganizationsResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static SummaryStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<List<OrganizationQueryRecord>> records = Optional.empty();
+    public interface SummaryStage {
+        _FinalStage summary(@NotNull QuerySummary summary);
 
-        private Optional<QuerySummary> summary = Optional.empty();
+        Builder from(ListOrganizationsResponse other);
+    }
+
+    public interface _FinalStage {
+        ListOrganizationsResponse build();
+
+        _FinalStage records(List<OrganizationQueryRecord> records);
+
+        _FinalStage addRecords(OrganizationQueryRecord records);
+
+        _FinalStage addAllRecords(List<OrganizationQueryRecord> records);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements SummaryStage, _FinalStage {
+        private QuerySummary summary;
+
+        private List<OrganizationQueryRecord> records = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(ListOrganizationsResponse other) {
             records(other.getRecords());
             summary(other.getSummary());
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter("Summary")
+        public _FinalStage summary(@NotNull QuerySummary summary) {
+            this.summary = Objects.requireNonNull(summary, "summary must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addAllRecords(List<OrganizationQueryRecord> records) {
+            if (records != null) {
+                this.records.addAll(records);
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addRecords(OrganizationQueryRecord records) {
+            this.records.add(records);
+            return this;
+        }
+
+        @java.lang.Override
         @JsonSetter(value = "Records", nulls = Nulls.SKIP)
-        public Builder records(Optional<List<OrganizationQueryRecord>> records) {
-            this.records = records;
+        public _FinalStage records(List<OrganizationQueryRecord> records) {
+            this.records.clear();
+            this.records.addAll(records);
             return this;
         }
 
-        public Builder records(List<OrganizationQueryRecord> records) {
-            this.records = Optional.ofNullable(records);
-            return this;
-        }
-
-        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
-        public Builder summary(Optional<QuerySummary> summary) {
-            this.summary = summary;
-            return this;
-        }
-
-        public Builder summary(QuerySummary summary) {
-            this.summary = Optional.ofNullable(summary);
-            return this;
-        }
-
+        @java.lang.Override
         public ListOrganizationsResponse build() {
             return new ListOrganizationsResponse(records, summary, additionalProperties);
         }

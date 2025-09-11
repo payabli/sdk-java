@@ -97,6 +97,9 @@ public final class ListTransfersRequest {
      * <li><code>bankAccountNumber</code> (ct, nct, ne, eq)</li>
      * <li><code>bankRoutingNumber</code> (ct, nct, ne, eq)</li>
      * <li><code>batchCurrency</code> (in, nin, ne, eq)</li>
+     * <li><code>parentOrgName</code> (ct, nct, ne, eq)</li>
+     * <li><code>parentOrgId</code> (ct, nct, ne, eq)</li>
+     * <li><code>externalPaypointID</code> (ct, nct)</li>
      * </ul>
      */
     @JsonProperty("parameters")
@@ -238,6 +241,9 @@ public final class ListTransfersRequest {
          * <li><code>bankAccountNumber</code> (ct, nct, ne, eq)</li>
          * <li><code>bankRoutingNumber</code> (ct, nct, ne, eq)</li>
          * <li><code>batchCurrency</code> (in, nin, ne, eq)</li>
+         * <li><code>parentOrgName</code> (ct, nct, ne, eq)</li>
+         * <li><code>parentOrgId</code> (ct, nct, ne, eq)</li>
+         * <li><code>externalPaypointID</code> (ct, nct)</li>
          * </ul>
          */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
