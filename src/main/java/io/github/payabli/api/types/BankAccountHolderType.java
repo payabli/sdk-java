@@ -3,22 +3,82 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum BankAccountHolderType {
-    PERSONAL("Personal"),
+public final class BankAccountHolderType {
+    public static final BankAccountHolderType BUSINESS = new BankAccountHolderType(Value.BUSINESS, "Business");
 
-    BUSINESS("Business");
+    public static final BankAccountHolderType PERSONAL = new BankAccountHolderType(Value.PERSONAL, "Personal");
 
-    private final String value;
+    private final Value value;
 
-    BankAccountHolderType(String value) {
+    private final String string;
+
+    BankAccountHolderType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof BankAccountHolderType
+                        && this.string.equals(((BankAccountHolderType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BUSINESS:
+                return visitor.visitBusiness();
+            case PERSONAL:
+                return visitor.visitPersonal();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static BankAccountHolderType valueOf(String value) {
+        switch (value) {
+            case "Business":
+                return BUSINESS;
+            case "Personal":
+                return PERSONAL;
+            default:
+                return new BankAccountHolderType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        PERSONAL,
+
+        BUSINESS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitPersonal();
+
+        T visitBusiness();
+
+        T visitUnknown(String unknownType);
     }
 }

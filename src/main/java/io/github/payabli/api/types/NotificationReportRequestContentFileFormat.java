@@ -3,24 +3,95 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationReportRequestContentFileFormat {
-    JSON("json"),
+public final class NotificationReportRequestContentFileFormat {
+    public static final NotificationReportRequestContentFileFormat CSV =
+            new NotificationReportRequestContentFileFormat(Value.CSV, "csv");
 
-    CSV("csv"),
+    public static final NotificationReportRequestContentFileFormat XLSX =
+            new NotificationReportRequestContentFileFormat(Value.XLSX, "xlsx");
 
-    XLSX("xlsx");
+    public static final NotificationReportRequestContentFileFormat JSON =
+            new NotificationReportRequestContentFileFormat(Value.JSON, "json");
 
-    private final String value;
+    private final Value value;
 
-    NotificationReportRequestContentFileFormat(String value) {
+    private final String string;
+
+    NotificationReportRequestContentFileFormat(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationReportRequestContentFileFormat
+                        && this.string.equals(((NotificationReportRequestContentFileFormat) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CSV:
+                return visitor.visitCsv();
+            case XLSX:
+                return visitor.visitXlsx();
+            case JSON:
+                return visitor.visitJson();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationReportRequestContentFileFormat valueOf(String value) {
+        switch (value) {
+            case "csv":
+                return CSV;
+            case "xlsx":
+                return XLSX;
+            case "json":
+                return JSON;
+            default:
+                return new NotificationReportRequestContentFileFormat(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        JSON,
+
+        CSV,
+
+        XLSX,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitJson();
+
+        T visitCsv();
+
+        T visitXlsx();
+
+        T visitUnknown(String unknownType);
     }
 }

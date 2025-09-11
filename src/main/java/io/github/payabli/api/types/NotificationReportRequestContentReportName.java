@@ -3,26 +3,106 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationReportRequestContentReportName {
-    TRANSACTION("Transaction"),
+public final class NotificationReportRequestContentReportName {
+    public static final NotificationReportRequestContentReportName SETTLEMENT =
+            new NotificationReportRequestContentReportName(Value.SETTLEMENT, "Settlement");
 
-    SETTLEMENT("Settlement"),
+    public static final NotificationReportRequestContentReportName BOARDING =
+            new NotificationReportRequestContentReportName(Value.BOARDING, "Boarding");
 
-    BOARDING("Boarding"),
+    public static final NotificationReportRequestContentReportName RETURNED =
+            new NotificationReportRequestContentReportName(Value.RETURNED, "Returned");
 
-    RETURNED("Returned");
+    public static final NotificationReportRequestContentReportName TRANSACTION =
+            new NotificationReportRequestContentReportName(Value.TRANSACTION, "Transaction");
 
-    private final String value;
+    private final Value value;
 
-    NotificationReportRequestContentReportName(String value) {
+    private final String string;
+
+    NotificationReportRequestContentReportName(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationReportRequestContentReportName
+                        && this.string.equals(((NotificationReportRequestContentReportName) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case SETTLEMENT:
+                return visitor.visitSettlement();
+            case BOARDING:
+                return visitor.visitBoarding();
+            case RETURNED:
+                return visitor.visitReturned();
+            case TRANSACTION:
+                return visitor.visitTransaction();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationReportRequestContentReportName valueOf(String value) {
+        switch (value) {
+            case "Settlement":
+                return SETTLEMENT;
+            case "Boarding":
+                return BOARDING;
+            case "Returned":
+                return RETURNED;
+            case "Transaction":
+                return TRANSACTION;
+            default:
+                return new NotificationReportRequestContentReportName(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        TRANSACTION,
+
+        SETTLEMENT,
+
+        BOARDING,
+
+        RETURNED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitTransaction();
+
+        T visitSettlement();
+
+        T visitBoarding();
+
+        T visitReturned();
+
+        T visitUnknown(String unknownType);
     }
 }

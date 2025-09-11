@@ -40,7 +40,7 @@ client.bill().addBill(
                 .dueDate("2024-07-01")
                 .comments("Deposit for materials")
                 .billItems(
-                    new ArrayList<BillItem>(
+                    Optional.of(
                         Arrays.asList(
                             BillItem
                                 .builder()
@@ -53,8 +53,8 @@ client.bill().addBill(
                                 .itemQty(1)
                                 .itemMode(0)
                                 .itemCategories(
-                                    new ArrayList<Optional<String>>(
-                                        Arrays.asList("deposits")
+                                    Optional.of(
+                                        Arrays.asList(Optional.of("deposits"))
                                     )
                                 )
                                 .itemTotalAmount(123)
@@ -77,7 +77,7 @@ client.bill().addBill(
                 .terms("NET30")
                 .status(-99)
                 .attachments(
-                    new ArrayList<FileContent>(
+                    Optional.of(
                         Arrays.asList(
                             FileContent
                                 .builder()
@@ -814,9 +814,7 @@ Modify the list of users the bill is sent to for approval.
 ```java
 client.bill().modifyApprovalBill(
     285,
-    new ArrayList<String>(
-        Arrays.asList("string")
-    )
+    Arrays.asList("string")
 );
 ```
 </dd>
@@ -884,9 +882,7 @@ client.bill().sendToApprovalBill(
     SendToApprovalBillRequest
         .builder()
         .body(
-            new ArrayList<String>(
-                Arrays.asList("string")
-            )
+            Arrays.asList("string")
         )
         .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
         .build()
@@ -1116,7 +1112,7 @@ client.boarding().addApplication(
             .btype(OwnType.LIMITED_LIABILITY_COMPANY)
             .bzip("33000")
             .contacts(
-                new ArrayList<ApplicationDataPayInContactsItem>(
+                Optional.of(
                     Arrays.asList(
                         ApplicationDataPayInContactsItem
                             .builder()
@@ -1145,7 +1141,7 @@ client.boarding().addApplication(
             .mzip("37615")
             .orgId(123L)
             .ownership(
-                new ArrayList<ApplicationDataPayInOwnershipItem>(
+                Optional.of(
                     Arrays.asList(
                         ApplicationDataPayInOwnershipItem
                             .builder()
@@ -2578,9 +2574,7 @@ client.customer().addCustomer(
                 .country("US")
                 .email("irene@canizalesconcrete.com")
                 .identifierFields(
-                    new ArrayList<Optional<String>>(
-                        Arrays.asList("email")
-                    )
+                    Arrays.asList(Optional.of("email"))
                 )
                 .timeZone(-5)
                 .build()
@@ -8113,7 +8107,7 @@ client.invoice().addInvoice(
                     BillData
                         .builder()
                         .items(
-                            new ArrayList<BillItem>(
+                            Optional.of(
                                 Arrays.asList(
                                     BillItem
                                         .builder()
@@ -8362,7 +8356,7 @@ client.invoice().editInvoice(
                     BillData
                         .builder()
                         .items(
-                            new ArrayList<BillItem>(
+                            Optional.of(
                                 Arrays.asList(
                                     BillItem
                                         .builder()
@@ -10277,7 +10271,7 @@ client.moneyIn().refundWithInstructions(
             RefundDetail
                 .builder()
                 .splitRefunding(
-                    new ArrayList<SplitFundingRefundContent>(
+                    Optional.of(
                         Arrays.asList(
                             SplitFundingRefundContent
                                 .builder()
@@ -10715,13 +10709,11 @@ client.moneyOut().authorizeOut(
                 .builder()
                 .entryPoint("48acde49")
                 .invoiceData(
-                    new ArrayList<RequestOutAuthorizeInvoiceData>(
-                        Arrays.asList(
-                            RequestOutAuthorizeInvoiceData
-                                .builder()
-                                .billId(54323L)
-                                .build()
-                        )
+                    Arrays.asList(
+                        RequestOutAuthorizeInvoiceData
+                            .builder()
+                            .billId(54323L)
+                            .build()
                     )
                 )
                 .paymentDetails(
@@ -10833,9 +10825,7 @@ Cancels an array of payout transactions.
 
 ```java
 client.moneyOut().cancelAllOut(
-    new ArrayList<String>(
-        Arrays.asList("2-29", "2-28", "2-27")
-    )
+    Arrays.asList("2-29", "2-28", "2-27")
 );
 ```
 </dd>
@@ -10948,9 +10938,7 @@ client.moneyOut().captureAllOut(
     CaptureAllOutRequest
         .builder()
         .body(
-            new ArrayList<String>(
-                Arrays.asList("2-29", "2-28", "2-27")
-            )
+            Arrays.asList("2-29", "2-28", "2-27")
         )
         .build()
 );
@@ -11760,7 +11748,7 @@ client.organization().addOrganization(
                 .build()
         )
         .contacts(
-            new ArrayList<Contacts>(
+            Optional.of(
                 Arrays.asList(
                     Contacts
                         .builder()
@@ -12059,7 +12047,7 @@ client.organization().editOrganization(
     OrganizationData
         .builder()
         .contacts(
-            new ArrayList<Contacts>(
+            Optional.of(
                 Arrays.asList(
                     Contacts
                         .builder()
@@ -12627,7 +12615,7 @@ client.paymentLink().addPayLinkFromInvoice(
                         .builder()
                         .enabled(true)
                         .fields(
-                            new ArrayList<PayorFields>(
+                            Optional.of(
                                 Arrays.asList(
                                     PayorFields
                                         .builder()
@@ -12851,7 +12839,7 @@ client.paymentLink().addPayLinkFromBill(
                         .builder()
                         .enabled(true)
                         .fields(
-                            new ArrayList<PayorFields>(
+                            Optional.of(
                                 Arrays.asList(
                                     PayorFields
                                         .builder()
@@ -13534,7 +13522,7 @@ client.paymentLink().addPayLinkFromBillLotNumber(
                         .builder()
                         .enabled(true)
                         .fields(
-                            new ArrayList<PayorFields>(
+                            Optional.of(
                                 Arrays.asList(
                                     PayorFields
                                         .builder()
@@ -14602,7 +14590,7 @@ client.paypoint().migrate(
                 .builder()
                 .notificationUrl("https://webhook-test.yoursie.com")
                 .webHeaderParameters(
-                    new ArrayList<WebHeaderParameter>(
+                    Optional.of(
                         Arrays.asList(
                             WebHeaderParameter
                                 .builder()
@@ -22140,7 +22128,7 @@ client.vendor().addVendor(
         .mcc("7777")
         .locationCode("MIA123")
         .contacts(
-            new ArrayList<Contacts>(
+            Optional.of(
                 Arrays.asList(
                     Contacts
                         .builder()

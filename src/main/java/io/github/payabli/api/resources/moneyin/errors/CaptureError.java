@@ -14,12 +14,12 @@ public final class CaptureError extends PayabliApiApiException {
     private final PayabliApiResponseError400 body;
 
     public CaptureError(PayabliApiResponseError400 body) {
-        super("CaptureError", 423, body);
+        super("CaptureError", 400, body);
         this.body = body;
     }
 
     public CaptureError(PayabliApiResponseError400 body, Response rawResponse) {
-        super("CaptureError", 423, body, rawResponse);
+        super("CaptureError", 400, body, rawResponse);
         this.body = body;
     }
 

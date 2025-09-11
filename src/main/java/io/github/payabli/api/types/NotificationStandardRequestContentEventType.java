@@ -3,184 +3,984 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationStandardRequestContentEventType {
-    APPROVED_PAYMENT("ApprovedPayment"),
+public final class NotificationStandardRequestContentEventType {
+    public static final NotificationStandardRequestContentEventType BILL_PROCESSING =
+            new NotificationStandardRequestContentEventType(Value.BILL_PROCESSING, "BillProcessing");
 
-    AUTHORIZED_PAYMENT("AuthorizedPayment"),
+    public static final NotificationStandardRequestContentEventType IMPORT_FILE_PROCESSED =
+            new NotificationStandardRequestContentEventType(Value.IMPORT_FILE_PROCESSED, "importFileProcessed");
 
-    DECLINED_PAYMENT("DeclinedPayment"),
+    public static final NotificationStandardRequestContentEventType CREATED_APPLICATION =
+            new NotificationStandardRequestContentEventType(Value.CREATED_APPLICATION, "CreatedApplication");
 
-    ORIGINATED_PAYMENT("OriginatedPayment"),
+    public static final NotificationStandardRequestContentEventType BATCH_NOT_CLOSED =
+            new NotificationStandardRequestContentEventType(Value.BATCH_NOT_CLOSED, "BatchNotClosed");
 
-    SETTLED_PAYMENT("SettledPayment"),
+    public static final NotificationStandardRequestContentEventType APPROVED_APPLICATION =
+            new NotificationStandardRequestContentEventType(Value.APPROVED_APPLICATION, "ApprovedApplication");
 
-    SUBSCRIPTION_CREATED("SubscriptionCreated"),
+    public static final NotificationStandardRequestContentEventType SUBSCRIPTION_CREATED =
+            new NotificationStandardRequestContentEventType(Value.SUBSCRIPTION_CREATED, "SubscriptionCreated");
 
-    SUBSCRIPTION_UPDATED("SubscriptionUpdated"),
+    public static final NotificationStandardRequestContentEventType REFUNDED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.REFUNDED_PAYMENT, "RefundedPayment");
 
-    SUBSCRIPTION_CANCELED("SubscriptionCanceled"),
+    public static final NotificationStandardRequestContentEventType RECEIVED_CHARGE_BACK =
+            new NotificationStandardRequestContentEventType(Value.RECEIVED_CHARGE_BACK, "ReceivedChargeBack");
 
-    SUBSCRIPTION_COMPLETED("SubscriptionCompleted"),
+    public static final NotificationStandardRequestContentEventType RECEIVED_ACH_RETURN =
+            new NotificationStandardRequestContentEventType(Value.RECEIVED_ACH_RETURN, "ReceivedAchReturn");
 
-    FUNDED_PAYMENT("FundedPayment"),
+    public static final NotificationStandardRequestContentEventType DECLINED_APPLICATION =
+            new NotificationStandardRequestContentEventType(Value.DECLINED_APPLICATION, "DeclinedApplication");
 
-    VOIDED_PAYMENT("VoidedPayment"),
+    public static final NotificationStandardRequestContentEventType IMPORT_FILE_ERROR =
+            new NotificationStandardRequestContentEventType(Value.IMPORT_FILE_ERROR, "importFileError");
 
-    REFUNDED_PAYMENT("RefundedPayment"),
+    public static final NotificationStandardRequestContentEventType BILL_CANCELED =
+            new NotificationStandardRequestContentEventType(Value.BILL_CANCELED, "BillCanceled");
 
-    HOLD_TRANSACTION("HoldTransaction"),
+    public static final NotificationStandardRequestContentEventType TRANSACTION_NOT_FOUND =
+            new NotificationStandardRequestContentEventType(Value.TRANSACTION_NOT_FOUND, "TransactionNotFound");
 
-    RELEASED_TRANSACTION("ReleasedTransaction"),
+    public static final NotificationStandardRequestContentEventType PAYPOINT_MOVED =
+            new NotificationStandardRequestContentEventType(Value.PAYPOINT_MOVED, "PaypointMoved");
 
-    HOLD_BATCH("HoldBatch"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_RESOLVED =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_RESOLVED, "TransferResolved");
 
-    RELEASED_BATCH("ReleasedBatch"),
+    public static final NotificationStandardRequestContentEventType AUTHORIZED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.AUTHORIZED_PAYMENT, "AuthorizedPayment");
 
-    TRANSFER_ADJUSTED("TransferAdjusted"),
+    public static final NotificationStandardRequestContentEventType SUBSCRIPTION_CANCELED =
+            new NotificationStandardRequestContentEventType(Value.SUBSCRIPTION_CANCELED, "SubscriptionCanceled");
 
-    TRANSFER_DISABLED_CREDIT_FUND("TransferDisabledCreditFund"),
+    public static final NotificationStandardRequestContentEventType PAYOUT_SUBSCRIPTION_CANCELED =
+            new NotificationStandardRequestContentEventType(
+                    Value.PAYOUT_SUBSCRIPTION_CANCELED, "PayoutSubscriptionCanceled");
 
-    TRANSFER_DISABLED_DEBIT_FUND("TransferDisabledDebitFund"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_NOT_AVAILABLE_BALANCE =
+            new NotificationStandardRequestContentEventType(
+                    Value.TRANSFER_NOT_AVAILABLE_BALANCE, "TransferNotAvailableBalance");
 
-    TRANSFER_NOT_AVAILABLE_BALANCE("TransferNotAvailableBalance"),
+    public static final NotificationStandardRequestContentEventType CHARGEBACK_UPDATED =
+            new NotificationStandardRequestContentEventType(Value.CHARGEBACK_UPDATED, "ChargebackUpdated");
 
-    TRANSFER_READYFOR_RETRY("TransferReadyforRetry"),
+    public static final NotificationStandardRequestContentEventType EXPORT_FILE_SENT =
+            new NotificationStandardRequestContentEventType(Value.EXPORT_FILE_SENT, "exportFileSent");
 
-    TRANSFER_RESOLVED("TransferResolved"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_ADJUSTED =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_ADJUSTED, "TransferAdjusted");
 
-    TRANSFER_RETURN("TransferReturn"),
+    public static final NotificationStandardRequestContentEventType INVOICE_CREATED =
+            new NotificationStandardRequestContentEventType(Value.INVOICE_CREATED, "InvoiceCreated");
 
-    TRANSFER_SUCCESS("TransferSuccess"),
+    public static final NotificationStandardRequestContentEventType INVOICE_PAID =
+            new NotificationStandardRequestContentEventType(Value.INVOICE_PAID, "InvoicePaid");
 
-    TRANSFER_SUSPENDED("TransferSuspended"),
+    public static final NotificationStandardRequestContentEventType SYSTEM_ALERT =
+            new NotificationStandardRequestContentEventType(Value.SYSTEM_ALERT, "SystemAlert");
 
-    TRANSFER_ERROR("TransferError"),
+    public static final NotificationStandardRequestContentEventType RELEASED_TRANSACTION =
+            new NotificationStandardRequestContentEventType(Value.RELEASED_TRANSACTION, "ReleasedTransaction");
 
-    SEND_RECEIPT("SendReceipt"),
+    public static final NotificationStandardRequestContentEventType PAYOUT_SUBSCRIPTION_UPDATED =
+            new NotificationStandardRequestContentEventType(
+                    Value.PAYOUT_SUBSCRIPTION_UPDATED, "PayoutSubscriptionUpdated");
 
-    RECOVERED_TRANSACTION("RecoveredTransaction"),
+    public static final NotificationStandardRequestContentEventType ACTIVATED_MERCHANT =
+            new NotificationStandardRequestContentEventType(Value.ACTIVATED_MERCHANT, "ActivatedMerchant");
 
-    CREATED_APPLICATION("CreatedApplication"),
+    public static final NotificationStandardRequestContentEventType CARD_EXPIRED =
+            new NotificationStandardRequestContentEventType(Value.CARD_EXPIRED, "CardExpired");
 
-    APPROVED_APPLICATION("ApprovedApplication"),
+    public static final NotificationStandardRequestContentEventType FAILED_EMAIL_NOTIFICATION =
+            new NotificationStandardRequestContentEventType(Value.FAILED_EMAIL_NOTIFICATION, "FailedEmailNotification");
 
-    FAILED_BOARDING_APPLICATION("FailedBoardingApplication"),
+    public static final NotificationStandardRequestContentEventType CARD_CREATED =
+            new NotificationStandardRequestContentEventType(Value.CARD_CREATED, "CardCreated");
 
-    SUBMITTED_APPLICATION("SubmittedApplication"),
+    public static final NotificationStandardRequestContentEventType PAY_OUT_PAID =
+            new NotificationStandardRequestContentEventType(Value.PAY_OUT_PAID, "PayOutPaid");
 
-    ACTIVATED_MERCHANT("ActivatedMerchant"),
+    public static final NotificationStandardRequestContentEventType HOLDING_APPLICATION =
+            new NotificationStandardRequestContentEventType(Value.HOLDING_APPLICATION, "HoldingApplication");
 
-    RECEIVED_CHARGE_BACK("ReceivedChargeBack"),
+    public static final NotificationStandardRequestContentEventType UPDATED_MERCHANT =
+            new NotificationStandardRequestContentEventType(Value.UPDATED_MERCHANT, "UpdatedMerchant");
 
-    CHARGEBACK_UPDATED("ChargebackUpdated"),
+    public static final NotificationStandardRequestContentEventType ORIGINATED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.ORIGINATED_PAYMENT, "OriginatedPayment");
 
-    RECEIVED_RETRIEVAL("ReceivedRetrieval"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_SUCCESS =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_SUCCESS, "TransferSuccess");
 
-    RETRIEVAL_UPDATED("RetrievalUpdated"),
+    public static final NotificationStandardRequestContentEventType RETRIEVAL_UPDATED =
+            new NotificationStandardRequestContentEventType(Value.RETRIEVAL_UPDATED, "RetrievalUpdated");
 
-    RECEIVED_ACH_RETURN("ReceivedAchReturn"),
+    public static final NotificationStandardRequestContentEventType PAY_OUT_RETURNED =
+            new NotificationStandardRequestContentEventType(Value.PAY_OUT_RETURNED, "PayOutReturned");
 
-    HOLDING_APPLICATION("HoldingApplication"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_SUSPENDED =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_SUSPENDED, "TransferSuspended");
 
-    DECLINED_APPLICATION("DeclinedApplication"),
+    public static final NotificationStandardRequestContentEventType FAILED_SMS_NOTIFICATION =
+            new NotificationStandardRequestContentEventType(Value.FAILED_SMS_NOTIFICATION, "FailedSMSNotification");
 
-    BOARDING_APPLICATION("BoardingApplication"),
+    public static final NotificationStandardRequestContentEventType PAYOUT_SUBSCRIPTION_REMINDER =
+            new NotificationStandardRequestContentEventType(
+                    Value.PAYOUT_SUBSCRIPTION_REMINDER, "PayoutSubscriptionReminder");
 
-    PAYPOINT_MOVED("PaypointMoved"),
+    public static final NotificationStandardRequestContentEventType FAILED_WEB_NOTIFICATION =
+            new NotificationStandardRequestContentEventType(Value.FAILED_WEB_NOTIFICATION, "FailedWebNotification");
 
-    FRAUD_ALERT("FraudAlert"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_RETURN =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_RETURN, "TransferReturn");
 
-    INVOICE_SENT("InvoiceSent"),
+    public static final NotificationStandardRequestContentEventType PAY_OUT_CANCELED =
+            new NotificationStandardRequestContentEventType(Value.PAY_OUT_CANCELED, "PayOutCanceled");
 
-    INVOICE_PAID("InvoicePaid"),
+    public static final NotificationStandardRequestContentEventType BILL_PAID =
+            new NotificationStandardRequestContentEventType(Value.BILL_PAID, "BillPaid");
 
-    INVOICE_CREATED("InvoiceCreated"),
+    public static final NotificationStandardRequestContentEventType PAYOUT_SUBSCRIPTION_CREATED =
+            new NotificationStandardRequestContentEventType(
+                    Value.PAYOUT_SUBSCRIPTION_CREATED, "PayoutSubscriptionCreated");
 
-    BILL_PAID("BillPaid"),
+    public static final NotificationStandardRequestContentEventType RELEASED_BATCH =
+            new NotificationStandardRequestContentEventType(Value.RELEASED_BATCH, "ReleasedBatch");
 
-    BILL_APPROVED("BillApproved"),
+    public static final NotificationStandardRequestContentEventType SEND_RECEIPT =
+            new NotificationStandardRequestContentEventType(Value.SEND_RECEIPT, "SendReceipt");
 
-    BILL_DIS_APPROVED("BillDisApproved"),
+    public static final NotificationStandardRequestContentEventType FRAUD_ALERT =
+            new NotificationStandardRequestContentEventType(Value.FRAUD_ALERT, "FraudAlert");
 
-    BILL_CANCELED("BillCanceled"),
+    public static final NotificationStandardRequestContentEventType CARD_EXPIRING =
+            new NotificationStandardRequestContentEventType(Value.CARD_EXPIRING, "CardExpiring");
 
-    BILL_PROCESSING("BillProcessing"),
+    public static final NotificationStandardRequestContentEventType BATCH_CLOSED =
+            new NotificationStandardRequestContentEventType(Value.BATCH_CLOSED, "BatchClosed");
 
-    CARD_CREATED("CardCreated"),
+    public static final NotificationStandardRequestContentEventType FUNDED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.FUNDED_PAYMENT, "FundedPayment");
 
-    CARD_ACTIVATED("CardActivated"),
+    public static final NotificationStandardRequestContentEventType RECOVERED_TRANSACTION =
+            new NotificationStandardRequestContentEventType(Value.RECOVERED_TRANSACTION, "RecoveredTransaction");
 
-    CARD_DEACTIVATED("CardDeactivated"),
+    public static final NotificationStandardRequestContentEventType CARD_LIMIT_UPDATED =
+            new NotificationStandardRequestContentEventType(Value.CARD_LIMIT_UPDATED, "CardLimitUpdated");
 
-    CARD_EXPIRED("CardExpired"),
+    public static final NotificationStandardRequestContentEventType SETTLED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.SETTLED_PAYMENT, "SettledPayment");
 
-    CARD_EXPIRING("CardExpiring"),
+    public static final NotificationStandardRequestContentEventType USER_PASSWORD_EXPIRED =
+            new NotificationStandardRequestContentEventType(Value.USER_PASSWORD_EXPIRED, "UserPasswordExpired");
 
-    CARD_LIMIT_UPDATED("CardLimitUpdated"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_READYFOR_RETRY =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_READYFOR_RETRY, "TransferReadyforRetry");
 
-    BATCH_CLOSED("BatchClosed"),
+    public static final NotificationStandardRequestContentEventType IMPORT_FILE_RECEIVED =
+            new NotificationStandardRequestContentEventType(Value.IMPORT_FILE_RECEIVED, "importFileReceived");
 
-    BATCH_NOT_CLOSED("BatchNotClosed"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_ERROR =
+            new NotificationStandardRequestContentEventType(Value.TRANSFER_ERROR, "TransferError");
 
-    PAY_OUT_FUNDED("PayOutFunded"),
+    public static final NotificationStandardRequestContentEventType HOLD_BATCH =
+            new NotificationStandardRequestContentEventType(Value.HOLD_BATCH, "HoldBatch");
 
-    PAY_OUT_PROCESSED("PayOutProcessed"),
+    public static final NotificationStandardRequestContentEventType CARD_ACTIVATED =
+            new NotificationStandardRequestContentEventType(Value.CARD_ACTIVATED, "CardActivated");
 
-    PAY_OUT_CANCELED("PayOutCanceled"),
+    public static final NotificationStandardRequestContentEventType DECLINED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.DECLINED_PAYMENT, "DeclinedPayment");
 
-    PAY_OUT_PAID("PayOutPaid"),
+    public static final NotificationStandardRequestContentEventType BOARDING_APPLICATION =
+            new NotificationStandardRequestContentEventType(Value.BOARDING_APPLICATION, "BoardingApplication");
 
-    PAY_OUT_RETURNED("PayOutReturned"),
+    public static final NotificationStandardRequestContentEventType EXPORT_FILE_ERROR =
+            new NotificationStandardRequestContentEventType(Value.EXPORT_FILE_ERROR, "exportFileError");
 
-    PAYOUT_SUBSCRIPTION_CREATED("PayoutSubscriptionCreated"),
+    public static final NotificationStandardRequestContentEventType USER_PASSWORD_EXPIRING =
+            new NotificationStandardRequestContentEventType(Value.USER_PASSWORD_EXPIRING, "UserPasswordExpiring");
 
-    PAYOUT_SUBSCRIPTION_UPDATED("PayoutSubscriptionUpdated"),
+    public static final NotificationStandardRequestContentEventType PAY_OUT_FUNDED =
+            new NotificationStandardRequestContentEventType(Value.PAY_OUT_FUNDED, "PayOutFunded");
 
-    PAYOUT_SUBSCRIPTION_CANCELED("PayoutSubscriptionCanceled"),
+    public static final NotificationStandardRequestContentEventType SUBSCRIPTION_UPDATED =
+            new NotificationStandardRequestContentEventType(Value.SUBSCRIPTION_UPDATED, "SubscriptionUpdated");
 
-    PAYOUT_SUBSCRIPTION_COMPLETED("PayoutSubscriptionCompleted"),
+    public static final NotificationStandardRequestContentEventType REPORT =
+            new NotificationStandardRequestContentEventType(Value.REPORT, "Report");
 
-    PAYOUT_SUBSCRIPTION_REMINDER("PayoutSubscriptionReminder"),
+    public static final NotificationStandardRequestContentEventType CARD_DEACTIVATED =
+            new NotificationStandardRequestContentEventType(Value.CARD_DEACTIVATED, "CardDeactivated");
 
-    IMPORT_FILE_RECEIVED("importFileReceived"),
+    public static final NotificationStandardRequestContentEventType VOIDED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.VOIDED_PAYMENT, "VoidedPayment");
 
-    IMPORT_FILE_PROCESSED("importFileProcessed"),
+    public static final NotificationStandardRequestContentEventType HOLD_TRANSACTION =
+            new NotificationStandardRequestContentEventType(Value.HOLD_TRANSACTION, "HoldTransaction");
 
-    IMPORT_FILE_ERROR("importFileError"),
+    public static final NotificationStandardRequestContentEventType BILL_DIS_APPROVED =
+            new NotificationStandardRequestContentEventType(Value.BILL_DIS_APPROVED, "BillDisApproved");
 
-    EXPORT_FILE_SENT("exportFileSent"),
+    public static final NotificationStandardRequestContentEventType SUBSCRIPTION_COMPLETED =
+            new NotificationStandardRequestContentEventType(Value.SUBSCRIPTION_COMPLETED, "SubscriptionCompleted");
 
-    EXPORT_FILE_ERROR("exportFileError"),
+    public static final NotificationStandardRequestContentEventType INVOICE_SENT =
+            new NotificationStandardRequestContentEventType(Value.INVOICE_SENT, "InvoiceSent");
 
-    UPDATED_MERCHANT("UpdatedMerchant"),
+    public static final NotificationStandardRequestContentEventType BILL_APPROVED =
+            new NotificationStandardRequestContentEventType(Value.BILL_APPROVED, "BillApproved");
 
-    REPORT("Report"),
+    public static final NotificationStandardRequestContentEventType PAY_OUT_PROCESSED =
+            new NotificationStandardRequestContentEventType(Value.PAY_OUT_PROCESSED, "PayOutProcessed");
 
-    FAILED_EMAIL_NOTIFICATION("FailedEmailNotification"),
+    public static final NotificationStandardRequestContentEventType SUBMITTED_APPLICATION =
+            new NotificationStandardRequestContentEventType(Value.SUBMITTED_APPLICATION, "SubmittedApplication");
 
-    FAILED_WEB_NOTIFICATION("FailedWebNotification"),
+    public static final NotificationStandardRequestContentEventType APPROVED_PAYMENT =
+            new NotificationStandardRequestContentEventType(Value.APPROVED_PAYMENT, "ApprovedPayment");
 
-    FAILED_SMS_NOTIFICATION("FailedSMSNotification"),
+    public static final NotificationStandardRequestContentEventType RECEIVED_RETRIEVAL =
+            new NotificationStandardRequestContentEventType(Value.RECEIVED_RETRIEVAL, "ReceivedRetrieval");
 
-    USER_PASSWORD_EXPIRING("UserPasswordExpiring"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_DISABLED_CREDIT_FUND =
+            new NotificationStandardRequestContentEventType(
+                    Value.TRANSFER_DISABLED_CREDIT_FUND, "TransferDisabledCreditFund");
 
-    USER_PASSWORD_EXPIRED("UserPasswordExpired"),
+    public static final NotificationStandardRequestContentEventType PAYOUT_SUBSCRIPTION_COMPLETED =
+            new NotificationStandardRequestContentEventType(
+                    Value.PAYOUT_SUBSCRIPTION_COMPLETED, "PayoutSubscriptionCompleted");
 
-    TRANSACTION_NOT_FOUND("TransactionNotFound"),
+    public static final NotificationStandardRequestContentEventType TRANSFER_DISABLED_DEBIT_FUND =
+            new NotificationStandardRequestContentEventType(
+                    Value.TRANSFER_DISABLED_DEBIT_FUND, "TransferDisabledDebitFund");
 
-    SYSTEM_ALERT("SystemAlert");
+    public static final NotificationStandardRequestContentEventType FAILED_BOARDING_APPLICATION =
+            new NotificationStandardRequestContentEventType(
+                    Value.FAILED_BOARDING_APPLICATION, "FailedBoardingApplication");
 
-    private final String value;
+    private final Value value;
 
-    NotificationStandardRequestContentEventType(String value) {
+    private final String string;
+
+    NotificationStandardRequestContentEventType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationStandardRequestContentEventType
+                        && this.string.equals(((NotificationStandardRequestContentEventType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BILL_PROCESSING:
+                return visitor.visitBillProcessing();
+            case IMPORT_FILE_PROCESSED:
+                return visitor.visitImportFileProcessed();
+            case CREATED_APPLICATION:
+                return visitor.visitCreatedApplication();
+            case BATCH_NOT_CLOSED:
+                return visitor.visitBatchNotClosed();
+            case APPROVED_APPLICATION:
+                return visitor.visitApprovedApplication();
+            case SUBSCRIPTION_CREATED:
+                return visitor.visitSubscriptionCreated();
+            case REFUNDED_PAYMENT:
+                return visitor.visitRefundedPayment();
+            case RECEIVED_CHARGE_BACK:
+                return visitor.visitReceivedChargeBack();
+            case RECEIVED_ACH_RETURN:
+                return visitor.visitReceivedAchReturn();
+            case DECLINED_APPLICATION:
+                return visitor.visitDeclinedApplication();
+            case IMPORT_FILE_ERROR:
+                return visitor.visitImportFileError();
+            case BILL_CANCELED:
+                return visitor.visitBillCanceled();
+            case TRANSACTION_NOT_FOUND:
+                return visitor.visitTransactionNotFound();
+            case PAYPOINT_MOVED:
+                return visitor.visitPaypointMoved();
+            case TRANSFER_RESOLVED:
+                return visitor.visitTransferResolved();
+            case AUTHORIZED_PAYMENT:
+                return visitor.visitAuthorizedPayment();
+            case SUBSCRIPTION_CANCELED:
+                return visitor.visitSubscriptionCanceled();
+            case PAYOUT_SUBSCRIPTION_CANCELED:
+                return visitor.visitPayoutSubscriptionCanceled();
+            case TRANSFER_NOT_AVAILABLE_BALANCE:
+                return visitor.visitTransferNotAvailableBalance();
+            case CHARGEBACK_UPDATED:
+                return visitor.visitChargebackUpdated();
+            case EXPORT_FILE_SENT:
+                return visitor.visitExportFileSent();
+            case TRANSFER_ADJUSTED:
+                return visitor.visitTransferAdjusted();
+            case INVOICE_CREATED:
+                return visitor.visitInvoiceCreated();
+            case INVOICE_PAID:
+                return visitor.visitInvoicePaid();
+            case SYSTEM_ALERT:
+                return visitor.visitSystemAlert();
+            case RELEASED_TRANSACTION:
+                return visitor.visitReleasedTransaction();
+            case PAYOUT_SUBSCRIPTION_UPDATED:
+                return visitor.visitPayoutSubscriptionUpdated();
+            case ACTIVATED_MERCHANT:
+                return visitor.visitActivatedMerchant();
+            case CARD_EXPIRED:
+                return visitor.visitCardExpired();
+            case FAILED_EMAIL_NOTIFICATION:
+                return visitor.visitFailedEmailNotification();
+            case CARD_CREATED:
+                return visitor.visitCardCreated();
+            case PAY_OUT_PAID:
+                return visitor.visitPayOutPaid();
+            case HOLDING_APPLICATION:
+                return visitor.visitHoldingApplication();
+            case UPDATED_MERCHANT:
+                return visitor.visitUpdatedMerchant();
+            case ORIGINATED_PAYMENT:
+                return visitor.visitOriginatedPayment();
+            case TRANSFER_SUCCESS:
+                return visitor.visitTransferSuccess();
+            case RETRIEVAL_UPDATED:
+                return visitor.visitRetrievalUpdated();
+            case PAY_OUT_RETURNED:
+                return visitor.visitPayOutReturned();
+            case TRANSFER_SUSPENDED:
+                return visitor.visitTransferSuspended();
+            case FAILED_SMS_NOTIFICATION:
+                return visitor.visitFailedSmsNotification();
+            case PAYOUT_SUBSCRIPTION_REMINDER:
+                return visitor.visitPayoutSubscriptionReminder();
+            case FAILED_WEB_NOTIFICATION:
+                return visitor.visitFailedWebNotification();
+            case TRANSFER_RETURN:
+                return visitor.visitTransferReturn();
+            case PAY_OUT_CANCELED:
+                return visitor.visitPayOutCanceled();
+            case BILL_PAID:
+                return visitor.visitBillPaid();
+            case PAYOUT_SUBSCRIPTION_CREATED:
+                return visitor.visitPayoutSubscriptionCreated();
+            case RELEASED_BATCH:
+                return visitor.visitReleasedBatch();
+            case SEND_RECEIPT:
+                return visitor.visitSendReceipt();
+            case FRAUD_ALERT:
+                return visitor.visitFraudAlert();
+            case CARD_EXPIRING:
+                return visitor.visitCardExpiring();
+            case BATCH_CLOSED:
+                return visitor.visitBatchClosed();
+            case FUNDED_PAYMENT:
+                return visitor.visitFundedPayment();
+            case RECOVERED_TRANSACTION:
+                return visitor.visitRecoveredTransaction();
+            case CARD_LIMIT_UPDATED:
+                return visitor.visitCardLimitUpdated();
+            case SETTLED_PAYMENT:
+                return visitor.visitSettledPayment();
+            case USER_PASSWORD_EXPIRED:
+                return visitor.visitUserPasswordExpired();
+            case TRANSFER_READYFOR_RETRY:
+                return visitor.visitTransferReadyforRetry();
+            case IMPORT_FILE_RECEIVED:
+                return visitor.visitImportFileReceived();
+            case TRANSFER_ERROR:
+                return visitor.visitTransferError();
+            case HOLD_BATCH:
+                return visitor.visitHoldBatch();
+            case CARD_ACTIVATED:
+                return visitor.visitCardActivated();
+            case DECLINED_PAYMENT:
+                return visitor.visitDeclinedPayment();
+            case BOARDING_APPLICATION:
+                return visitor.visitBoardingApplication();
+            case EXPORT_FILE_ERROR:
+                return visitor.visitExportFileError();
+            case USER_PASSWORD_EXPIRING:
+                return visitor.visitUserPasswordExpiring();
+            case PAY_OUT_FUNDED:
+                return visitor.visitPayOutFunded();
+            case SUBSCRIPTION_UPDATED:
+                return visitor.visitSubscriptionUpdated();
+            case REPORT:
+                return visitor.visitReport();
+            case CARD_DEACTIVATED:
+                return visitor.visitCardDeactivated();
+            case VOIDED_PAYMENT:
+                return visitor.visitVoidedPayment();
+            case HOLD_TRANSACTION:
+                return visitor.visitHoldTransaction();
+            case BILL_DIS_APPROVED:
+                return visitor.visitBillDisApproved();
+            case SUBSCRIPTION_COMPLETED:
+                return visitor.visitSubscriptionCompleted();
+            case INVOICE_SENT:
+                return visitor.visitInvoiceSent();
+            case BILL_APPROVED:
+                return visitor.visitBillApproved();
+            case PAY_OUT_PROCESSED:
+                return visitor.visitPayOutProcessed();
+            case SUBMITTED_APPLICATION:
+                return visitor.visitSubmittedApplication();
+            case APPROVED_PAYMENT:
+                return visitor.visitApprovedPayment();
+            case RECEIVED_RETRIEVAL:
+                return visitor.visitReceivedRetrieval();
+            case TRANSFER_DISABLED_CREDIT_FUND:
+                return visitor.visitTransferDisabledCreditFund();
+            case PAYOUT_SUBSCRIPTION_COMPLETED:
+                return visitor.visitPayoutSubscriptionCompleted();
+            case TRANSFER_DISABLED_DEBIT_FUND:
+                return visitor.visitTransferDisabledDebitFund();
+            case FAILED_BOARDING_APPLICATION:
+                return visitor.visitFailedBoardingApplication();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationStandardRequestContentEventType valueOf(String value) {
+        switch (value) {
+            case "BillProcessing":
+                return BILL_PROCESSING;
+            case "importFileProcessed":
+                return IMPORT_FILE_PROCESSED;
+            case "CreatedApplication":
+                return CREATED_APPLICATION;
+            case "BatchNotClosed":
+                return BATCH_NOT_CLOSED;
+            case "ApprovedApplication":
+                return APPROVED_APPLICATION;
+            case "SubscriptionCreated":
+                return SUBSCRIPTION_CREATED;
+            case "RefundedPayment":
+                return REFUNDED_PAYMENT;
+            case "ReceivedChargeBack":
+                return RECEIVED_CHARGE_BACK;
+            case "ReceivedAchReturn":
+                return RECEIVED_ACH_RETURN;
+            case "DeclinedApplication":
+                return DECLINED_APPLICATION;
+            case "importFileError":
+                return IMPORT_FILE_ERROR;
+            case "BillCanceled":
+                return BILL_CANCELED;
+            case "TransactionNotFound":
+                return TRANSACTION_NOT_FOUND;
+            case "PaypointMoved":
+                return PAYPOINT_MOVED;
+            case "TransferResolved":
+                return TRANSFER_RESOLVED;
+            case "AuthorizedPayment":
+                return AUTHORIZED_PAYMENT;
+            case "SubscriptionCanceled":
+                return SUBSCRIPTION_CANCELED;
+            case "PayoutSubscriptionCanceled":
+                return PAYOUT_SUBSCRIPTION_CANCELED;
+            case "TransferNotAvailableBalance":
+                return TRANSFER_NOT_AVAILABLE_BALANCE;
+            case "ChargebackUpdated":
+                return CHARGEBACK_UPDATED;
+            case "exportFileSent":
+                return EXPORT_FILE_SENT;
+            case "TransferAdjusted":
+                return TRANSFER_ADJUSTED;
+            case "InvoiceCreated":
+                return INVOICE_CREATED;
+            case "InvoicePaid":
+                return INVOICE_PAID;
+            case "SystemAlert":
+                return SYSTEM_ALERT;
+            case "ReleasedTransaction":
+                return RELEASED_TRANSACTION;
+            case "PayoutSubscriptionUpdated":
+                return PAYOUT_SUBSCRIPTION_UPDATED;
+            case "ActivatedMerchant":
+                return ACTIVATED_MERCHANT;
+            case "CardExpired":
+                return CARD_EXPIRED;
+            case "FailedEmailNotification":
+                return FAILED_EMAIL_NOTIFICATION;
+            case "CardCreated":
+                return CARD_CREATED;
+            case "PayOutPaid":
+                return PAY_OUT_PAID;
+            case "HoldingApplication":
+                return HOLDING_APPLICATION;
+            case "UpdatedMerchant":
+                return UPDATED_MERCHANT;
+            case "OriginatedPayment":
+                return ORIGINATED_PAYMENT;
+            case "TransferSuccess":
+                return TRANSFER_SUCCESS;
+            case "RetrievalUpdated":
+                return RETRIEVAL_UPDATED;
+            case "PayOutReturned":
+                return PAY_OUT_RETURNED;
+            case "TransferSuspended":
+                return TRANSFER_SUSPENDED;
+            case "FailedSMSNotification":
+                return FAILED_SMS_NOTIFICATION;
+            case "PayoutSubscriptionReminder":
+                return PAYOUT_SUBSCRIPTION_REMINDER;
+            case "FailedWebNotification":
+                return FAILED_WEB_NOTIFICATION;
+            case "TransferReturn":
+                return TRANSFER_RETURN;
+            case "PayOutCanceled":
+                return PAY_OUT_CANCELED;
+            case "BillPaid":
+                return BILL_PAID;
+            case "PayoutSubscriptionCreated":
+                return PAYOUT_SUBSCRIPTION_CREATED;
+            case "ReleasedBatch":
+                return RELEASED_BATCH;
+            case "SendReceipt":
+                return SEND_RECEIPT;
+            case "FraudAlert":
+                return FRAUD_ALERT;
+            case "CardExpiring":
+                return CARD_EXPIRING;
+            case "BatchClosed":
+                return BATCH_CLOSED;
+            case "FundedPayment":
+                return FUNDED_PAYMENT;
+            case "RecoveredTransaction":
+                return RECOVERED_TRANSACTION;
+            case "CardLimitUpdated":
+                return CARD_LIMIT_UPDATED;
+            case "SettledPayment":
+                return SETTLED_PAYMENT;
+            case "UserPasswordExpired":
+                return USER_PASSWORD_EXPIRED;
+            case "TransferReadyforRetry":
+                return TRANSFER_READYFOR_RETRY;
+            case "importFileReceived":
+                return IMPORT_FILE_RECEIVED;
+            case "TransferError":
+                return TRANSFER_ERROR;
+            case "HoldBatch":
+                return HOLD_BATCH;
+            case "CardActivated":
+                return CARD_ACTIVATED;
+            case "DeclinedPayment":
+                return DECLINED_PAYMENT;
+            case "BoardingApplication":
+                return BOARDING_APPLICATION;
+            case "exportFileError":
+                return EXPORT_FILE_ERROR;
+            case "UserPasswordExpiring":
+                return USER_PASSWORD_EXPIRING;
+            case "PayOutFunded":
+                return PAY_OUT_FUNDED;
+            case "SubscriptionUpdated":
+                return SUBSCRIPTION_UPDATED;
+            case "Report":
+                return REPORT;
+            case "CardDeactivated":
+                return CARD_DEACTIVATED;
+            case "VoidedPayment":
+                return VOIDED_PAYMENT;
+            case "HoldTransaction":
+                return HOLD_TRANSACTION;
+            case "BillDisApproved":
+                return BILL_DIS_APPROVED;
+            case "SubscriptionCompleted":
+                return SUBSCRIPTION_COMPLETED;
+            case "InvoiceSent":
+                return INVOICE_SENT;
+            case "BillApproved":
+                return BILL_APPROVED;
+            case "PayOutProcessed":
+                return PAY_OUT_PROCESSED;
+            case "SubmittedApplication":
+                return SUBMITTED_APPLICATION;
+            case "ApprovedPayment":
+                return APPROVED_PAYMENT;
+            case "ReceivedRetrieval":
+                return RECEIVED_RETRIEVAL;
+            case "TransferDisabledCreditFund":
+                return TRANSFER_DISABLED_CREDIT_FUND;
+            case "PayoutSubscriptionCompleted":
+                return PAYOUT_SUBSCRIPTION_COMPLETED;
+            case "TransferDisabledDebitFund":
+                return TRANSFER_DISABLED_DEBIT_FUND;
+            case "FailedBoardingApplication":
+                return FAILED_BOARDING_APPLICATION;
+            default:
+                return new NotificationStandardRequestContentEventType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        APPROVED_PAYMENT,
+
+        AUTHORIZED_PAYMENT,
+
+        DECLINED_PAYMENT,
+
+        ORIGINATED_PAYMENT,
+
+        SETTLED_PAYMENT,
+
+        SUBSCRIPTION_CREATED,
+
+        SUBSCRIPTION_UPDATED,
+
+        SUBSCRIPTION_CANCELED,
+
+        SUBSCRIPTION_COMPLETED,
+
+        FUNDED_PAYMENT,
+
+        VOIDED_PAYMENT,
+
+        REFUNDED_PAYMENT,
+
+        HOLD_TRANSACTION,
+
+        RELEASED_TRANSACTION,
+
+        HOLD_BATCH,
+
+        RELEASED_BATCH,
+
+        TRANSFER_ADJUSTED,
+
+        TRANSFER_DISABLED_CREDIT_FUND,
+
+        TRANSFER_DISABLED_DEBIT_FUND,
+
+        TRANSFER_NOT_AVAILABLE_BALANCE,
+
+        TRANSFER_READYFOR_RETRY,
+
+        TRANSFER_RESOLVED,
+
+        TRANSFER_RETURN,
+
+        TRANSFER_SUCCESS,
+
+        TRANSFER_SUSPENDED,
+
+        TRANSFER_ERROR,
+
+        SEND_RECEIPT,
+
+        RECOVERED_TRANSACTION,
+
+        CREATED_APPLICATION,
+
+        APPROVED_APPLICATION,
+
+        FAILED_BOARDING_APPLICATION,
+
+        SUBMITTED_APPLICATION,
+
+        ACTIVATED_MERCHANT,
+
+        RECEIVED_CHARGE_BACK,
+
+        CHARGEBACK_UPDATED,
+
+        RECEIVED_RETRIEVAL,
+
+        RETRIEVAL_UPDATED,
+
+        RECEIVED_ACH_RETURN,
+
+        HOLDING_APPLICATION,
+
+        DECLINED_APPLICATION,
+
+        BOARDING_APPLICATION,
+
+        PAYPOINT_MOVED,
+
+        FRAUD_ALERT,
+
+        INVOICE_SENT,
+
+        INVOICE_PAID,
+
+        INVOICE_CREATED,
+
+        BILL_PAID,
+
+        BILL_APPROVED,
+
+        BILL_DIS_APPROVED,
+
+        BILL_CANCELED,
+
+        BILL_PROCESSING,
+
+        CARD_CREATED,
+
+        CARD_ACTIVATED,
+
+        CARD_DEACTIVATED,
+
+        CARD_EXPIRED,
+
+        CARD_EXPIRING,
+
+        CARD_LIMIT_UPDATED,
+
+        BATCH_CLOSED,
+
+        BATCH_NOT_CLOSED,
+
+        PAY_OUT_FUNDED,
+
+        PAY_OUT_PROCESSED,
+
+        PAY_OUT_CANCELED,
+
+        PAY_OUT_PAID,
+
+        PAY_OUT_RETURNED,
+
+        PAYOUT_SUBSCRIPTION_CREATED,
+
+        PAYOUT_SUBSCRIPTION_UPDATED,
+
+        PAYOUT_SUBSCRIPTION_CANCELED,
+
+        PAYOUT_SUBSCRIPTION_COMPLETED,
+
+        PAYOUT_SUBSCRIPTION_REMINDER,
+
+        IMPORT_FILE_RECEIVED,
+
+        IMPORT_FILE_PROCESSED,
+
+        IMPORT_FILE_ERROR,
+
+        EXPORT_FILE_SENT,
+
+        EXPORT_FILE_ERROR,
+
+        UPDATED_MERCHANT,
+
+        REPORT,
+
+        FAILED_EMAIL_NOTIFICATION,
+
+        FAILED_WEB_NOTIFICATION,
+
+        FAILED_SMS_NOTIFICATION,
+
+        USER_PASSWORD_EXPIRING,
+
+        USER_PASSWORD_EXPIRED,
+
+        TRANSACTION_NOT_FOUND,
+
+        SYSTEM_ALERT,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitApprovedPayment();
+
+        T visitAuthorizedPayment();
+
+        T visitDeclinedPayment();
+
+        T visitOriginatedPayment();
+
+        T visitSettledPayment();
+
+        T visitSubscriptionCreated();
+
+        T visitSubscriptionUpdated();
+
+        T visitSubscriptionCanceled();
+
+        T visitSubscriptionCompleted();
+
+        T visitFundedPayment();
+
+        T visitVoidedPayment();
+
+        T visitRefundedPayment();
+
+        T visitHoldTransaction();
+
+        T visitReleasedTransaction();
+
+        T visitHoldBatch();
+
+        T visitReleasedBatch();
+
+        T visitTransferAdjusted();
+
+        T visitTransferDisabledCreditFund();
+
+        T visitTransferDisabledDebitFund();
+
+        T visitTransferNotAvailableBalance();
+
+        T visitTransferReadyforRetry();
+
+        T visitTransferResolved();
+
+        T visitTransferReturn();
+
+        T visitTransferSuccess();
+
+        T visitTransferSuspended();
+
+        T visitTransferError();
+
+        T visitSendReceipt();
+
+        T visitRecoveredTransaction();
+
+        T visitCreatedApplication();
+
+        T visitApprovedApplication();
+
+        T visitFailedBoardingApplication();
+
+        T visitSubmittedApplication();
+
+        T visitActivatedMerchant();
+
+        T visitReceivedChargeBack();
+
+        T visitChargebackUpdated();
+
+        T visitReceivedRetrieval();
+
+        T visitRetrievalUpdated();
+
+        T visitReceivedAchReturn();
+
+        T visitHoldingApplication();
+
+        T visitDeclinedApplication();
+
+        T visitBoardingApplication();
+
+        T visitPaypointMoved();
+
+        T visitFraudAlert();
+
+        T visitInvoiceSent();
+
+        T visitInvoicePaid();
+
+        T visitInvoiceCreated();
+
+        T visitBillPaid();
+
+        T visitBillApproved();
+
+        T visitBillDisApproved();
+
+        T visitBillCanceled();
+
+        T visitBillProcessing();
+
+        T visitCardCreated();
+
+        T visitCardActivated();
+
+        T visitCardDeactivated();
+
+        T visitCardExpired();
+
+        T visitCardExpiring();
+
+        T visitCardLimitUpdated();
+
+        T visitBatchClosed();
+
+        T visitBatchNotClosed();
+
+        T visitPayOutFunded();
+
+        T visitPayOutProcessed();
+
+        T visitPayOutCanceled();
+
+        T visitPayOutPaid();
+
+        T visitPayOutReturned();
+
+        T visitPayoutSubscriptionCreated();
+
+        T visitPayoutSubscriptionUpdated();
+
+        T visitPayoutSubscriptionCanceled();
+
+        T visitPayoutSubscriptionCompleted();
+
+        T visitPayoutSubscriptionReminder();
+
+        T visitImportFileReceived();
+
+        T visitImportFileProcessed();
+
+        T visitImportFileError();
+
+        T visitExportFileSent();
+
+        T visitExportFileError();
+
+        T visitUpdatedMerchant();
+
+        T visitReport();
+
+        T visitFailedEmailNotification();
+
+        T visitFailedWebNotification();
+
+        T visitFailedSmsNotification();
+
+        T visitUserPasswordExpiring();
+
+        T visitUserPasswordExpired();
+
+        T visitTransactionNotFound();
+
+        T visitSystemAlert();
+
+        T visitUnknown(String unknownType);
     }
 }

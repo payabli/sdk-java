@@ -3,22 +3,80 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TypeAccount {
-    CHECKING("Checking"),
+public final class TypeAccount {
+    public static final TypeAccount CHECKING = new TypeAccount(Value.CHECKING, "Checking");
 
-    SAVINGS("Savings");
+    public static final TypeAccount SAVINGS = new TypeAccount(Value.SAVINGS, "Savings");
 
-    private final String value;
+    private final Value value;
 
-    TypeAccount(String value) {
+    private final String string;
+
+    TypeAccount(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof TypeAccount && this.string.equals(((TypeAccount) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CHECKING:
+                return visitor.visitChecking();
+            case SAVINGS:
+                return visitor.visitSavings();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static TypeAccount valueOf(String value) {
+        switch (value) {
+            case "Checking":
+                return CHECKING;
+            case "Savings":
+                return SAVINGS;
+            default:
+                return new TypeAccount(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CHECKING,
+
+        SAVINGS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitChecking();
+
+        T visitSavings();
+
+        T visitUnknown(String unknownType);
     }
 }

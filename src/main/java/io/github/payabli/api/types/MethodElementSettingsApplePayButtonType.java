@@ -3,44 +3,205 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum MethodElementSettingsApplePayButtonType {
-    PLAIN("plain"),
+public final class MethodElementSettingsApplePayButtonType {
+    public static final MethodElementSettingsApplePayButtonType CONTRIBUTE =
+            new MethodElementSettingsApplePayButtonType(Value.CONTRIBUTE, "contribute");
 
-    BUY("buy"),
+    public static final MethodElementSettingsApplePayButtonType CHECK_OUT =
+            new MethodElementSettingsApplePayButtonType(Value.CHECK_OUT, "check-out");
 
-    DONATE("donate"),
+    public static final MethodElementSettingsApplePayButtonType BUY =
+            new MethodElementSettingsApplePayButtonType(Value.BUY, "buy");
 
-    CHECK_OUT("check-out"),
+    public static final MethodElementSettingsApplePayButtonType ORDER =
+            new MethodElementSettingsApplePayButtonType(Value.ORDER, "order");
 
-    BOOK("book"),
+    public static final MethodElementSettingsApplePayButtonType PLAIN =
+            new MethodElementSettingsApplePayButtonType(Value.PLAIN, "plain");
 
-    CONTINUE("continue"),
+    public static final MethodElementSettingsApplePayButtonType RENT =
+            new MethodElementSettingsApplePayButtonType(Value.RENT, "rent");
 
-    TOP_UP("top-up"),
+    public static final MethodElementSettingsApplePayButtonType TOP_UP =
+            new MethodElementSettingsApplePayButtonType(Value.TOP_UP, "top-up");
 
-    ORDER("order"),
+    public static final MethodElementSettingsApplePayButtonType SUPPORT =
+            new MethodElementSettingsApplePayButtonType(Value.SUPPORT, "support");
 
-    RENT("rent"),
+    public static final MethodElementSettingsApplePayButtonType DONATE =
+            new MethodElementSettingsApplePayButtonType(Value.DONATE, "donate");
 
-    SUPPORT("support"),
+    public static final MethodElementSettingsApplePayButtonType TIP =
+            new MethodElementSettingsApplePayButtonType(Value.TIP, "tip");
 
-    CONTRIBUTE("contribute"),
+    public static final MethodElementSettingsApplePayButtonType PAY =
+            new MethodElementSettingsApplePayButtonType(Value.PAY, "pay");
 
-    TIP("tip"),
+    public static final MethodElementSettingsApplePayButtonType BOOK =
+            new MethodElementSettingsApplePayButtonType(Value.BOOK, "book");
 
-    PAY("pay");
+    public static final MethodElementSettingsApplePayButtonType CONTINUE =
+            new MethodElementSettingsApplePayButtonType(Value.CONTINUE, "continue");
 
-    private final String value;
+    private final Value value;
 
-    MethodElementSettingsApplePayButtonType(String value) {
+    private final String string;
+
+    MethodElementSettingsApplePayButtonType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof MethodElementSettingsApplePayButtonType
+                        && this.string.equals(((MethodElementSettingsApplePayButtonType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CONTRIBUTE:
+                return visitor.visitContribute();
+            case CHECK_OUT:
+                return visitor.visitCheckOut();
+            case BUY:
+                return visitor.visitBuy();
+            case ORDER:
+                return visitor.visitOrder();
+            case PLAIN:
+                return visitor.visitPlain();
+            case RENT:
+                return visitor.visitRent();
+            case TOP_UP:
+                return visitor.visitTopUp();
+            case SUPPORT:
+                return visitor.visitSupport();
+            case DONATE:
+                return visitor.visitDonate();
+            case TIP:
+                return visitor.visitTip();
+            case PAY:
+                return visitor.visitPay();
+            case BOOK:
+                return visitor.visitBook();
+            case CONTINUE:
+                return visitor.visitContinue();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static MethodElementSettingsApplePayButtonType valueOf(String value) {
+        switch (value) {
+            case "contribute":
+                return CONTRIBUTE;
+            case "check-out":
+                return CHECK_OUT;
+            case "buy":
+                return BUY;
+            case "order":
+                return ORDER;
+            case "plain":
+                return PLAIN;
+            case "rent":
+                return RENT;
+            case "top-up":
+                return TOP_UP;
+            case "support":
+                return SUPPORT;
+            case "donate":
+                return DONATE;
+            case "tip":
+                return TIP;
+            case "pay":
+                return PAY;
+            case "book":
+                return BOOK;
+            case "continue":
+                return CONTINUE;
+            default:
+                return new MethodElementSettingsApplePayButtonType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        PLAIN,
+
+        BUY,
+
+        DONATE,
+
+        CHECK_OUT,
+
+        BOOK,
+
+        CONTINUE,
+
+        TOP_UP,
+
+        ORDER,
+
+        RENT,
+
+        SUPPORT,
+
+        CONTRIBUTE,
+
+        TIP,
+
+        PAY,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitPlain();
+
+        T visitBuy();
+
+        T visitDonate();
+
+        T visitCheckOut();
+
+        T visitBook();
+
+        T visitContinue();
+
+        T visitTopUp();
+
+        T visitOrder();
+
+        T visitRent();
+
+        T visitSupport();
+
+        T visitContribute();
+
+        T visitTip();
+
+        T visitPay();
+
+        T visitUnknown(String unknownType);
     }
 }

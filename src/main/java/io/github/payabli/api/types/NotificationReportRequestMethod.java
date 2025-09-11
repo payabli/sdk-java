@@ -3,22 +3,84 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationReportRequestMethod {
-    REPORT_EMAIL("report-email"),
+public final class NotificationReportRequestMethod {
+    public static final NotificationReportRequestMethod REPORT_EMAIL =
+            new NotificationReportRequestMethod(Value.REPORT_EMAIL, "report-email");
 
-    REPORT_WEB("report-web");
+    public static final NotificationReportRequestMethod REPORT_WEB =
+            new NotificationReportRequestMethod(Value.REPORT_WEB, "report-web");
 
-    private final String value;
+    private final Value value;
 
-    NotificationReportRequestMethod(String value) {
+    private final String string;
+
+    NotificationReportRequestMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationReportRequestMethod
+                        && this.string.equals(((NotificationReportRequestMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case REPORT_EMAIL:
+                return visitor.visitReportEmail();
+            case REPORT_WEB:
+                return visitor.visitReportWeb();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationReportRequestMethod valueOf(String value) {
+        switch (value) {
+            case "report-email":
+                return REPORT_EMAIL;
+            case "report-web":
+                return REPORT_WEB;
+            default:
+                return new NotificationReportRequestMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        REPORT_EMAIL,
+
+        REPORT_WEB,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitReportEmail();
+
+        T visitReportWeb();
+
+        T visitUnknown(String unknownType);
     }
 }

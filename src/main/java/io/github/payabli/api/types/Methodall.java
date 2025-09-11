@@ -3,28 +3,110 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Methodall {
-    CARD("card"),
+public final class Methodall {
+    public static final Methodall CHECK = new Methodall(Value.CHECK, "check");
 
-    ACH("ach"),
+    public static final Methodall ACH = new Methodall(Value.ACH, "ach");
 
-    CLOUD("cloud"),
+    public static final Methodall CARD = new Methodall(Value.CARD, "card");
 
-    CHECK("check"),
+    public static final Methodall CASH = new Methodall(Value.CASH, "cash");
 
-    CASH("cash");
+    public static final Methodall CLOUD = new Methodall(Value.CLOUD, "cloud");
 
-    private final String value;
+    private final Value value;
 
-    Methodall(String value) {
+    private final String string;
+
+    Methodall(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Methodall && this.string.equals(((Methodall) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CHECK:
+                return visitor.visitCheck();
+            case ACH:
+                return visitor.visitAch();
+            case CARD:
+                return visitor.visitCard();
+            case CASH:
+                return visitor.visitCash();
+            case CLOUD:
+                return visitor.visitCloud();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Methodall valueOf(String value) {
+        switch (value) {
+            case "check":
+                return CHECK;
+            case "ach":
+                return ACH;
+            case "card":
+                return CARD;
+            case "cash":
+                return CASH;
+            case "cloud":
+                return CLOUD;
+            default:
+                return new Methodall(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CARD,
+
+        ACH,
+
+        CLOUD,
+
+        CHECK,
+
+        CASH,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitCard();
+
+        T visitAch();
+
+        T visitCloud();
+
+        T visitCheck();
+
+        T visitCash();
+
+        T visitUnknown(String unknownType);
     }
 }

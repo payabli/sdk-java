@@ -3,26 +3,104 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum VendorDataResponsePaymentMethod {
-    VCARD("vcard"),
+public final class VendorDataResponsePaymentMethod {
+    public static final VendorDataResponsePaymentMethod CHECK =
+            new VendorDataResponsePaymentMethod(Value.CHECK, "check");
 
-    ACH("ach"),
+    public static final VendorDataResponsePaymentMethod VCARD =
+            new VendorDataResponsePaymentMethod(Value.VCARD, "vcard");
 
-    CHECK("check"),
+    public static final VendorDataResponsePaymentMethod ACH = new VendorDataResponsePaymentMethod(Value.ACH, "ach");
 
-    CARD("card");
+    public static final VendorDataResponsePaymentMethod CARD = new VendorDataResponsePaymentMethod(Value.CARD, "card");
 
-    private final String value;
+    private final Value value;
 
-    VendorDataResponsePaymentMethod(String value) {
+    private final String string;
+
+    VendorDataResponsePaymentMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof VendorDataResponsePaymentMethod
+                        && this.string.equals(((VendorDataResponsePaymentMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CHECK:
+                return visitor.visitCheck();
+            case VCARD:
+                return visitor.visitVcard();
+            case ACH:
+                return visitor.visitAch();
+            case CARD:
+                return visitor.visitCard();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static VendorDataResponsePaymentMethod valueOf(String value) {
+        switch (value) {
+            case "check":
+                return CHECK;
+            case "vcard":
+                return VCARD;
+            case "ach":
+                return ACH;
+            case "card":
+                return CARD;
+            default:
+                return new VendorDataResponsePaymentMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        VCARD,
+
+        ACH,
+
+        CHECK,
+
+        CARD,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitVcard();
+
+        T visitAch();
+
+        T visitCheck();
+
+        T visitCard();
+
+        T visitUnknown(String unknownType);
     }
 }

@@ -3,22 +3,81 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Whencharged {
-    WHEN_SERVICE_PROVIDED("When Service Provided"),
+public final class Whencharged {
+    public static final Whencharged IN_ADVANCE = new Whencharged(Value.IN_ADVANCE, "In Advance");
 
-    IN_ADVANCE("In Advance");
+    public static final Whencharged WHEN_SERVICE_PROVIDED =
+            new Whencharged(Value.WHEN_SERVICE_PROVIDED, "When Service Provided");
 
-    private final String value;
+    private final Value value;
 
-    Whencharged(String value) {
+    private final String string;
+
+    Whencharged(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Whencharged && this.string.equals(((Whencharged) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case IN_ADVANCE:
+                return visitor.visitInAdvance();
+            case WHEN_SERVICE_PROVIDED:
+                return visitor.visitWhenServiceProvided();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Whencharged valueOf(String value) {
+        switch (value) {
+            case "In Advance":
+                return IN_ADVANCE;
+            case "When Service Provided":
+                return WHEN_SERVICE_PROVIDED;
+            default:
+                return new Whencharged(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        WHEN_SERVICE_PROVIDED,
+
+        IN_ADVANCE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitWhenServiceProvided();
+
+        T visitInAdvance();
+
+        T visitUnknown(String unknownType);
     }
 }

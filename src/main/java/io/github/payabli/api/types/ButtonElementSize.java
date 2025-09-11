@@ -3,24 +3,91 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ButtonElementSize {
-    SM("sm"),
+public final class ButtonElementSize {
+    public static final ButtonElementSize MD = new ButtonElementSize(Value.MD, "md");
 
-    MD("md"),
+    public static final ButtonElementSize SM = new ButtonElementSize(Value.SM, "sm");
 
-    LG("lg");
+    public static final ButtonElementSize LG = new ButtonElementSize(Value.LG, "lg");
 
-    private final String value;
+    private final Value value;
 
-    ButtonElementSize(String value) {
+    private final String string;
+
+    ButtonElementSize(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ButtonElementSize && this.string.equals(((ButtonElementSize) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case MD:
+                return visitor.visitMd();
+            case SM:
+                return visitor.visitSm();
+            case LG:
+                return visitor.visitLg();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ButtonElementSize valueOf(String value) {
+        switch (value) {
+            case "md":
+                return MD;
+            case "sm":
+                return SM;
+            case "lg":
+                return LG;
+            default:
+                return new ButtonElementSize(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        SM,
+
+        MD,
+
+        LG,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitSm();
+
+        T visitMd();
+
+        T visitLg();
+
+        T visitUnknown(String unknownType);
     }
 }

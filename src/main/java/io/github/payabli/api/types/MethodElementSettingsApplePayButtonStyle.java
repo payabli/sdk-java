@@ -3,24 +3,95 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum MethodElementSettingsApplePayButtonStyle {
-    BLACK("black"),
+public final class MethodElementSettingsApplePayButtonStyle {
+    public static final MethodElementSettingsApplePayButtonStyle WHITE =
+            new MethodElementSettingsApplePayButtonStyle(Value.WHITE, "white");
 
-    WHITE_OUTLINE("white-outline"),
+    public static final MethodElementSettingsApplePayButtonStyle BLACK =
+            new MethodElementSettingsApplePayButtonStyle(Value.BLACK, "black");
 
-    WHITE("white");
+    public static final MethodElementSettingsApplePayButtonStyle WHITE_OUTLINE =
+            new MethodElementSettingsApplePayButtonStyle(Value.WHITE_OUTLINE, "white-outline");
 
-    private final String value;
+    private final Value value;
 
-    MethodElementSettingsApplePayButtonStyle(String value) {
+    private final String string;
+
+    MethodElementSettingsApplePayButtonStyle(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof MethodElementSettingsApplePayButtonStyle
+                        && this.string.equals(((MethodElementSettingsApplePayButtonStyle) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case WHITE:
+                return visitor.visitWhite();
+            case BLACK:
+                return visitor.visitBlack();
+            case WHITE_OUTLINE:
+                return visitor.visitWhiteOutline();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static MethodElementSettingsApplePayButtonStyle valueOf(String value) {
+        switch (value) {
+            case "white":
+                return WHITE;
+            case "black":
+                return BLACK;
+            case "white-outline":
+                return WHITE_OUTLINE;
+            default:
+                return new MethodElementSettingsApplePayButtonStyle(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        BLACK,
+
+        WHITE_OUTLINE,
+
+        WHITE,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitBlack();
+
+        T visitWhiteOutline();
+
+        T visitWhite();
+
+        T visitUnknown(String unknownType);
     }
 }

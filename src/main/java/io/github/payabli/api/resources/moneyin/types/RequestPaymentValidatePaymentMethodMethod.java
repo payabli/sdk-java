@@ -3,22 +3,84 @@
  */
 package io.github.payabli.api.resources.moneyin.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum RequestPaymentValidatePaymentMethodMethod {
-    CARD("card"),
+public final class RequestPaymentValidatePaymentMethodMethod {
+    public static final RequestPaymentValidatePaymentMethodMethod CARD =
+            new RequestPaymentValidatePaymentMethodMethod(Value.CARD, "card");
 
-    CLOUD("cloud");
+    public static final RequestPaymentValidatePaymentMethodMethod CLOUD =
+            new RequestPaymentValidatePaymentMethodMethod(Value.CLOUD, "cloud");
 
-    private final String value;
+    private final Value value;
 
-    RequestPaymentValidatePaymentMethodMethod(String value) {
+    private final String string;
+
+    RequestPaymentValidatePaymentMethodMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof RequestPaymentValidatePaymentMethodMethod
+                        && this.string.equals(((RequestPaymentValidatePaymentMethodMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CARD:
+                return visitor.visitCard();
+            case CLOUD:
+                return visitor.visitCloud();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static RequestPaymentValidatePaymentMethodMethod valueOf(String value) {
+        switch (value) {
+            case "card":
+                return CARD;
+            case "cloud":
+                return CLOUD;
+            default:
+                return new RequestPaymentValidatePaymentMethodMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CARD,
+
+        CLOUD,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitCard();
+
+        T visitCloud();
+
+        T visitUnknown(String unknownType);
     }
 }

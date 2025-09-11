@@ -3,26 +3,106 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationContentReportName {
-    TRANSACTION("Transaction"),
+public final class NotificationContentReportName {
+    public static final NotificationContentReportName SETTLEMENT =
+            new NotificationContentReportName(Value.SETTLEMENT, "Settlement");
 
-    SETTLEMENT("Settlement"),
+    public static final NotificationContentReportName BOARDING =
+            new NotificationContentReportName(Value.BOARDING, "Boarding");
 
-    BOARDING("Boarding"),
+    public static final NotificationContentReportName RETURNED =
+            new NotificationContentReportName(Value.RETURNED, "Returned");
 
-    RETURNED("Returned");
+    public static final NotificationContentReportName TRANSACTION =
+            new NotificationContentReportName(Value.TRANSACTION, "Transaction");
 
-    private final String value;
+    private final Value value;
 
-    NotificationContentReportName(String value) {
+    private final String string;
+
+    NotificationContentReportName(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationContentReportName
+                        && this.string.equals(((NotificationContentReportName) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case SETTLEMENT:
+                return visitor.visitSettlement();
+            case BOARDING:
+                return visitor.visitBoarding();
+            case RETURNED:
+                return visitor.visitReturned();
+            case TRANSACTION:
+                return visitor.visitTransaction();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationContentReportName valueOf(String value) {
+        switch (value) {
+            case "Settlement":
+                return SETTLEMENT;
+            case "Boarding":
+                return BOARDING;
+            case "Returned":
+                return RETURNED;
+            case "Transaction":
+                return TRANSACTION;
+            default:
+                return new NotificationContentReportName(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        TRANSACTION,
+
+        SETTLEMENT,
+
+        BOARDING,
+
+        RETURNED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitTransaction();
+
+        T visitSettlement();
+
+        T visitBoarding();
+
+        T visitReturned();
+
+        T visitUnknown(String unknownType);
     }
 }

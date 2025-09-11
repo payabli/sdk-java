@@ -3,22 +3,84 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationStandardRequestFrequency {
-    ONE_TIME("one-time"),
+public final class NotificationStandardRequestFrequency {
+    public static final NotificationStandardRequestFrequency ONE_TIME =
+            new NotificationStandardRequestFrequency(Value.ONE_TIME, "one-time");
 
-    UNTILCANCELLED("untilcancelled");
+    public static final NotificationStandardRequestFrequency UNTILCANCELLED =
+            new NotificationStandardRequestFrequency(Value.UNTILCANCELLED, "untilcancelled");
 
-    private final String value;
+    private final Value value;
 
-    NotificationStandardRequestFrequency(String value) {
+    private final String string;
+
+    NotificationStandardRequestFrequency(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationStandardRequestFrequency
+                        && this.string.equals(((NotificationStandardRequestFrequency) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case ONE_TIME:
+                return visitor.visitOneTime();
+            case UNTILCANCELLED:
+                return visitor.visitUntilcancelled();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationStandardRequestFrequency valueOf(String value) {
+        switch (value) {
+            case "one-time":
+                return ONE_TIME;
+            case "untilcancelled":
+                return UNTILCANCELLED;
+            default:
+                return new NotificationStandardRequestFrequency(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ONE_TIME,
+
+        UNTILCANCELLED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitOneTime();
+
+        T visitUntilcancelled();
+
+        T visitUnknown(String unknownType);
     }
 }

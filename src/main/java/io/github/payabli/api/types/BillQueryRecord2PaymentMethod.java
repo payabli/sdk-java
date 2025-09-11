@@ -3,28 +3,113 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum BillQueryRecord2PaymentMethod {
-    VCARD("vcard"),
+public final class BillQueryRecord2PaymentMethod {
+    public static final BillQueryRecord2PaymentMethod CHECK = new BillQueryRecord2PaymentMethod(Value.CHECK, "check");
 
-    ACH("ach"),
+    public static final BillQueryRecord2PaymentMethod MANAGED =
+            new BillQueryRecord2PaymentMethod(Value.MANAGED, "managed");
 
-    CHECK("check"),
+    public static final BillQueryRecord2PaymentMethod VCARD = new BillQueryRecord2PaymentMethod(Value.VCARD, "vcard");
 
-    CARD("card"),
+    public static final BillQueryRecord2PaymentMethod ACH = new BillQueryRecord2PaymentMethod(Value.ACH, "ach");
 
-    MANAGED("managed");
+    public static final BillQueryRecord2PaymentMethod CARD = new BillQueryRecord2PaymentMethod(Value.CARD, "card");
 
-    private final String value;
+    private final Value value;
 
-    BillQueryRecord2PaymentMethod(String value) {
+    private final String string;
+
+    BillQueryRecord2PaymentMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof BillQueryRecord2PaymentMethod
+                        && this.string.equals(((BillQueryRecord2PaymentMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CHECK:
+                return visitor.visitCheck();
+            case MANAGED:
+                return visitor.visitManaged();
+            case VCARD:
+                return visitor.visitVcard();
+            case ACH:
+                return visitor.visitAch();
+            case CARD:
+                return visitor.visitCard();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static BillQueryRecord2PaymentMethod valueOf(String value) {
+        switch (value) {
+            case "check":
+                return CHECK;
+            case "managed":
+                return MANAGED;
+            case "vcard":
+                return VCARD;
+            case "ach":
+                return ACH;
+            case "card":
+                return CARD;
+            default:
+                return new BillQueryRecord2PaymentMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        VCARD,
+
+        ACH,
+
+        CHECK,
+
+        CARD,
+
+        MANAGED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitVcard();
+
+        T visitAch();
+
+        T visitCheck();
+
+        T visitCard();
+
+        T visitManaged();
+
+        T visitUnknown(String unknownType);
     }
 }

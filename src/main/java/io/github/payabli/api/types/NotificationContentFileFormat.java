@@ -3,24 +3,92 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationContentFileFormat {
-    JSON("json"),
+public final class NotificationContentFileFormat {
+    public static final NotificationContentFileFormat CSV = new NotificationContentFileFormat(Value.CSV, "csv");
 
-    CSV("csv"),
+    public static final NotificationContentFileFormat XLSX = new NotificationContentFileFormat(Value.XLSX, "xlsx");
 
-    XLSX("xlsx");
+    public static final NotificationContentFileFormat JSON = new NotificationContentFileFormat(Value.JSON, "json");
 
-    private final String value;
+    private final Value value;
 
-    NotificationContentFileFormat(String value) {
+    private final String string;
+
+    NotificationContentFileFormat(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationContentFileFormat
+                        && this.string.equals(((NotificationContentFileFormat) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CSV:
+                return visitor.visitCsv();
+            case XLSX:
+                return visitor.visitXlsx();
+            case JSON:
+                return visitor.visitJson();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationContentFileFormat valueOf(String value) {
+        switch (value) {
+            case "csv":
+                return CSV;
+            case "xlsx":
+                return XLSX;
+            case "json":
+                return JSON;
+            default:
+                return new NotificationContentFileFormat(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        JSON,
+
+        CSV,
+
+        XLSX,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitJson();
+
+        T visitCsv();
+
+        T visitXlsx();
+
+        T visitUnknown(String unknownType);
     }
 }

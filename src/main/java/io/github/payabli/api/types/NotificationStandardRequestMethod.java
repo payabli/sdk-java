@@ -3,24 +3,93 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationStandardRequestMethod {
-    EMAIL("email"),
+public final class NotificationStandardRequestMethod {
+    public static final NotificationStandardRequestMethod EMAIL =
+            new NotificationStandardRequestMethod(Value.EMAIL, "email");
 
-    SMS("sms"),
+    public static final NotificationStandardRequestMethod WEB = new NotificationStandardRequestMethod(Value.WEB, "web");
 
-    WEB("web");
+    public static final NotificationStandardRequestMethod SMS = new NotificationStandardRequestMethod(Value.SMS, "sms");
 
-    private final String value;
+    private final Value value;
 
-    NotificationStandardRequestMethod(String value) {
+    private final String string;
+
+    NotificationStandardRequestMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationStandardRequestMethod
+                        && this.string.equals(((NotificationStandardRequestMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case EMAIL:
+                return visitor.visitEmail();
+            case WEB:
+                return visitor.visitWeb();
+            case SMS:
+                return visitor.visitSms();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationStandardRequestMethod valueOf(String value) {
+        switch (value) {
+            case "email":
+                return EMAIL;
+            case "web":
+                return WEB;
+            case "sms":
+                return SMS;
+            default:
+                return new NotificationStandardRequestMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        EMAIL,
+
+        SMS,
+
+        WEB,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitEmail();
+
+        T visitSms();
+
+        T visitWeb();
+
+        T visitUnknown(String unknownType);
     }
 }

@@ -3,34 +3,141 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum FileContentFtype {
-    PDF("pdf"),
+public final class FileContentFtype {
+    public static final FileContentFtype JPG = new FileContentFtype(Value.JPG, "jpg");
 
-    DOC("doc"),
+    public static final FileContentFtype DOC = new FileContentFtype(Value.DOC, "doc");
 
-    DOCX("docx"),
+    public static final FileContentFtype JPEG = new FileContentFtype(Value.JPEG, "jpeg");
 
-    JPG("jpg"),
+    public static final FileContentFtype PNG = new FileContentFtype(Value.PNG, "png");
 
-    JPEG("jpeg"),
+    public static final FileContentFtype PDF = new FileContentFtype(Value.PDF, "pdf");
 
-    PNG("png"),
+    public static final FileContentFtype GIF = new FileContentFtype(Value.GIF, "gif");
 
-    GIF("gif"),
+    public static final FileContentFtype DOCX = new FileContentFtype(Value.DOCX, "docx");
 
-    TXT("txt");
+    public static final FileContentFtype TXT = new FileContentFtype(Value.TXT, "txt");
 
-    private final String value;
+    private final Value value;
 
-    FileContentFtype(String value) {
+    private final String string;
+
+    FileContentFtype(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof FileContentFtype && this.string.equals(((FileContentFtype) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case JPG:
+                return visitor.visitJpg();
+            case DOC:
+                return visitor.visitDoc();
+            case JPEG:
+                return visitor.visitJpeg();
+            case PNG:
+                return visitor.visitPng();
+            case PDF:
+                return visitor.visitPdf();
+            case GIF:
+                return visitor.visitGif();
+            case DOCX:
+                return visitor.visitDocx();
+            case TXT:
+                return visitor.visitTxt();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static FileContentFtype valueOf(String value) {
+        switch (value) {
+            case "jpg":
+                return JPG;
+            case "doc":
+                return DOC;
+            case "jpeg":
+                return JPEG;
+            case "png":
+                return PNG;
+            case "pdf":
+                return PDF;
+            case "gif":
+                return GIF;
+            case "docx":
+                return DOCX;
+            case "txt":
+                return TXT;
+            default:
+                return new FileContentFtype(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        PDF,
+
+        DOC,
+
+        DOCX,
+
+        JPG,
+
+        JPEG,
+
+        PNG,
+
+        GIF,
+
+        TXT,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitPdf();
+
+        T visitDoc();
+
+        T visitDocx();
+
+        T visitJpg();
+
+        T visitJpeg();
+
+        T visitPng();
+
+        T visitGif();
+
+        T visitTxt();
+
+        T visitUnknown(String unknownType);
     }
 }

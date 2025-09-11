@@ -3,26 +3,101 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Whendelivered {
-    ZERO_7_DAYS("0-7 Days"),
+public final class Whendelivered {
+    public static final Whendelivered FIFTEEN_30_DAYS = new Whendelivered(Value.FIFTEEN_30_DAYS, "15-30 Days");
 
-    EIGHT_14_DAYS("8-14 Days"),
+    public static final Whendelivered EIGHT_14_DAYS = new Whendelivered(Value.EIGHT_14_DAYS, "8-14 Days");
 
-    FIFTEEN_30_DAYS("15-30 Days"),
+    public static final Whendelivered ZERO_7_DAYS = new Whendelivered(Value.ZERO_7_DAYS, "0-7 Days");
 
-    OVER_30_DAYS("Over 30 Days");
+    public static final Whendelivered OVER_30_DAYS = new Whendelivered(Value.OVER_30_DAYS, "Over 30 Days");
 
-    private final String value;
+    private final Value value;
 
-    Whendelivered(String value) {
+    private final String string;
+
+    Whendelivered(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof Whendelivered && this.string.equals(((Whendelivered) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case FIFTEEN_30_DAYS:
+                return visitor.visitFifteen30Days();
+            case EIGHT_14_DAYS:
+                return visitor.visitEight14Days();
+            case ZERO_7_DAYS:
+                return visitor.visitZero7Days();
+            case OVER_30_DAYS:
+                return visitor.visitOver30Days();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Whendelivered valueOf(String value) {
+        switch (value) {
+            case "15-30 Days":
+                return FIFTEEN_30_DAYS;
+            case "8-14 Days":
+                return EIGHT_14_DAYS;
+            case "0-7 Days":
+                return ZERO_7_DAYS;
+            case "Over 30 Days":
+                return OVER_30_DAYS;
+            default:
+                return new Whendelivered(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ZERO_7_DAYS,
+
+        EIGHT_14_DAYS,
+
+        FIFTEEN_30_DAYS,
+
+        OVER_30_DAYS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitZero7Days();
+
+        T visitEight14Days();
+
+        T visitFifteen30Days();
+
+        T visitOver30Days();
+
+        T visitUnknown(String unknownType);
     }
 }

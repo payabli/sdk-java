@@ -3,22 +3,80 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ExportFormat {
-    CSV("csv"),
+public final class ExportFormat {
+    public static final ExportFormat XLSX = new ExportFormat(Value.XLSX, "xlsx");
 
-    XLSX("xlsx");
+    public static final ExportFormat CSV = new ExportFormat(Value.CSV, "csv");
 
-    private final String value;
+    private final Value value;
 
-    ExportFormat(String value) {
+    private final String string;
+
+    ExportFormat(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof ExportFormat && this.string.equals(((ExportFormat) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case XLSX:
+                return visitor.visitXlsx();
+            case CSV:
+                return visitor.visitCsv();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ExportFormat valueOf(String value) {
+        switch (value) {
+            case "xlsx":
+                return XLSX;
+            case "csv":
+                return CSV;
+            default:
+                return new ExportFormat(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CSV,
+
+        XLSX,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitCsv();
+
+        T visitXlsx();
+
+        T visitUnknown(String unknownType);
     }
 }

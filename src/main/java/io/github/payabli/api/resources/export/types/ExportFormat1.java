@@ -3,22 +3,81 @@
  */
 package io.github.payabli.api.resources.export.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ExportFormat1 {
-    CSV("csv"),
+public final class ExportFormat1 {
+    public static final ExportFormat1 CSV = new ExportFormat1(Value.CSV, "csv");
 
-    XLSX("xlsx");
+    public static final ExportFormat1 XLSX = new ExportFormat1(Value.XLSX, "xlsx");
 
-    private final String value;
+    private final Value value;
 
-    ExportFormat1(String value) {
+    private final String string;
+
+    ExportFormat1(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof ExportFormat1 && this.string.equals(((ExportFormat1) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case CSV:
+                return visitor.visitCsv();
+            case XLSX:
+                return visitor.visitXlsx();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static ExportFormat1 valueOf(String value) {
+        switch (value) {
+            case "csv":
+                return CSV;
+            case "xlsx":
+                return XLSX;
+            default:
+                return new ExportFormat1(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CSV,
+
+        XLSX,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitCsv();
+
+        T visitXlsx();
+
+        T visitUnknown(String unknownType);
     }
 }

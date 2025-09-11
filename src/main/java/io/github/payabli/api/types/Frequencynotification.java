@@ -3,36 +3,154 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Frequencynotification {
-    ONE_TIME("one-time"),
+public final class Frequencynotification {
+    public static final Frequencynotification BIWEEKLY = new Frequencynotification(Value.BIWEEKLY, "biweekly");
 
-    DAILY("daily"),
+    public static final Frequencynotification ONE_TIME = new Frequencynotification(Value.ONE_TIME, "one-time");
 
-    WEEKLY("weekly"),
+    public static final Frequencynotification QUARTERLY = new Frequencynotification(Value.QUARTERLY, "quarterly");
 
-    BIWEEKLY("biweekly"),
+    public static final Frequencynotification UNTILCANCELLED =
+            new Frequencynotification(Value.UNTILCANCELLED, "untilcancelled");
 
-    MONTHLY("monthly"),
+    public static final Frequencynotification MONTHLY = new Frequencynotification(Value.MONTHLY, "monthly");
 
-    QUARTERLY("quarterly"),
+    public static final Frequencynotification SEMIANNUALLY =
+            new Frequencynotification(Value.SEMIANNUALLY, "semiannually");
 
-    SEMIANNUALLY("semiannually"),
+    public static final Frequencynotification ANNUALLY = new Frequencynotification(Value.ANNUALLY, "annually");
 
-    ANNUALLY("annually"),
+    public static final Frequencynotification DAILY = new Frequencynotification(Value.DAILY, "daily");
 
-    UNTILCANCELLED("untilcancelled");
+    public static final Frequencynotification WEEKLY = new Frequencynotification(Value.WEEKLY, "weekly");
 
-    private final String value;
+    private final Value value;
 
-    Frequencynotification(String value) {
+    private final String string;
+
+    Frequencynotification(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof Frequencynotification
+                        && this.string.equals(((Frequencynotification) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BIWEEKLY:
+                return visitor.visitBiweekly();
+            case ONE_TIME:
+                return visitor.visitOneTime();
+            case QUARTERLY:
+                return visitor.visitQuarterly();
+            case UNTILCANCELLED:
+                return visitor.visitUntilcancelled();
+            case MONTHLY:
+                return visitor.visitMonthly();
+            case SEMIANNUALLY:
+                return visitor.visitSemiannually();
+            case ANNUALLY:
+                return visitor.visitAnnually();
+            case DAILY:
+                return visitor.visitDaily();
+            case WEEKLY:
+                return visitor.visitWeekly();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Frequencynotification valueOf(String value) {
+        switch (value) {
+            case "biweekly":
+                return BIWEEKLY;
+            case "one-time":
+                return ONE_TIME;
+            case "quarterly":
+                return QUARTERLY;
+            case "untilcancelled":
+                return UNTILCANCELLED;
+            case "monthly":
+                return MONTHLY;
+            case "semiannually":
+                return SEMIANNUALLY;
+            case "annually":
+                return ANNUALLY;
+            case "daily":
+                return DAILY;
+            case "weekly":
+                return WEEKLY;
+            default:
+                return new Frequencynotification(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ONE_TIME,
+
+        DAILY,
+
+        WEEKLY,
+
+        BIWEEKLY,
+
+        MONTHLY,
+
+        QUARTERLY,
+
+        SEMIANNUALLY,
+
+        ANNUALLY,
+
+        UNTILCANCELLED,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitOneTime();
+
+        T visitDaily();
+
+        T visitWeekly();
+
+        T visitBiweekly();
+
+        T visitMonthly();
+
+        T visitQuarterly();
+
+        T visitSemiannually();
+
+        T visitAnnually();
+
+        T visitUntilcancelled();
+
+        T visitUnknown(String unknownType);
     }
 }

@@ -3,34 +3,141 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum OwnType {
-    LIMITED_LIABILITY_COMPANY("Limited Liability Company"),
+public final class OwnType {
+    public static final OwnType PARTNERSHIP = new OwnType(Value.PARTNERSHIP, "Partnership");
 
-    NON_PROFIT_ORG("Non-Profit Org"),
+    public static final OwnType TAX_EXEMPT = new OwnType(Value.TAX_EXEMPT, "Tax Exempt");
 
-    PARTNERSHIP("Partnership"),
+    public static final OwnType SOLE_PROPRIETOR = new OwnType(Value.SOLE_PROPRIETOR, "Sole Proprietor");
 
-    PRIVATE_CORP("Private Corp"),
+    public static final OwnType GOVERNMENT = new OwnType(Value.GOVERNMENT, "Government");
 
-    PUBLIC_CORP("Public Corp"),
+    public static final OwnType PUBLIC_CORP = new OwnType(Value.PUBLIC_CORP, "Public Corp");
 
-    TAX_EXEMPT("Tax Exempt"),
+    public static final OwnType NON_PROFIT_ORG = new OwnType(Value.NON_PROFIT_ORG, "Non-Profit Org");
 
-    GOVERNMENT("Government"),
+    public static final OwnType PRIVATE_CORP = new OwnType(Value.PRIVATE_CORP, "Private Corp");
 
-    SOLE_PROPRIETOR("Sole Proprietor");
+    public static final OwnType LIMITED_LIABILITY_COMPANY =
+            new OwnType(Value.LIMITED_LIABILITY_COMPANY, "Limited Liability Company");
 
-    private final String value;
+    private final Value value;
 
-    OwnType(String value) {
+    private final String string;
+
+    OwnType(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof OwnType && this.string.equals(((OwnType) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case PARTNERSHIP:
+                return visitor.visitPartnership();
+            case TAX_EXEMPT:
+                return visitor.visitTaxExempt();
+            case SOLE_PROPRIETOR:
+                return visitor.visitSoleProprietor();
+            case GOVERNMENT:
+                return visitor.visitGovernment();
+            case PUBLIC_CORP:
+                return visitor.visitPublicCorp();
+            case NON_PROFIT_ORG:
+                return visitor.visitNonProfitOrg();
+            case PRIVATE_CORP:
+                return visitor.visitPrivateCorp();
+            case LIMITED_LIABILITY_COMPANY:
+                return visitor.visitLimitedLiabilityCompany();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static OwnType valueOf(String value) {
+        switch (value) {
+            case "Partnership":
+                return PARTNERSHIP;
+            case "Tax Exempt":
+                return TAX_EXEMPT;
+            case "Sole Proprietor":
+                return SOLE_PROPRIETOR;
+            case "Government":
+                return GOVERNMENT;
+            case "Public Corp":
+                return PUBLIC_CORP;
+            case "Non-Profit Org":
+                return NON_PROFIT_ORG;
+            case "Private Corp":
+                return PRIVATE_CORP;
+            case "Limited Liability Company":
+                return LIMITED_LIABILITY_COMPANY;
+            default:
+                return new OwnType(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        LIMITED_LIABILITY_COMPANY,
+
+        NON_PROFIT_ORG,
+
+        PARTNERSHIP,
+
+        PRIVATE_CORP,
+
+        PUBLIC_CORP,
+
+        TAX_EXEMPT,
+
+        GOVERNMENT,
+
+        SOLE_PROPRIETOR,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitLimitedLiabilityCompany();
+
+        T visitNonProfitOrg();
+
+        T visitPartnership();
+
+        T visitPrivateCorp();
+
+        T visitPublicCorp();
+
+        T visitTaxExempt();
+
+        T visitGovernment();
+
+        T visitSoleProprietor();
+
+        T visitUnknown(String unknownType);
     }
 }

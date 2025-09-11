@@ -3,34 +3,150 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NotificationReportRequestFrequency {
-    ONE_TIME("one-time"),
+public final class NotificationReportRequestFrequency {
+    public static final NotificationReportRequestFrequency BIWEEKLY =
+            new NotificationReportRequestFrequency(Value.BIWEEKLY, "biweekly");
 
-    DAILY("daily"),
+    public static final NotificationReportRequestFrequency ONE_TIME =
+            new NotificationReportRequestFrequency(Value.ONE_TIME, "one-time");
 
-    WEEKLY("weekly"),
+    public static final NotificationReportRequestFrequency QUARTERLY =
+            new NotificationReportRequestFrequency(Value.QUARTERLY, "quarterly");
 
-    BIWEEKLY("biweekly"),
+    public static final NotificationReportRequestFrequency MONTHLY =
+            new NotificationReportRequestFrequency(Value.MONTHLY, "monthly");
 
-    MONTHLY("monthly"),
+    public static final NotificationReportRequestFrequency SEMIANNUALLY =
+            new NotificationReportRequestFrequency(Value.SEMIANNUALLY, "semiannually");
 
-    QUARTERLY("quarterly"),
+    public static final NotificationReportRequestFrequency ANNUALLY =
+            new NotificationReportRequestFrequency(Value.ANNUALLY, "annually");
 
-    SEMIANNUALLY("semiannually"),
+    public static final NotificationReportRequestFrequency DAILY =
+            new NotificationReportRequestFrequency(Value.DAILY, "daily");
 
-    ANNUALLY("annually");
+    public static final NotificationReportRequestFrequency WEEKLY =
+            new NotificationReportRequestFrequency(Value.WEEKLY, "weekly");
 
-    private final String value;
+    private final Value value;
 
-    NotificationReportRequestFrequency(String value) {
+    private final String string;
+
+    NotificationReportRequestFrequency(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof NotificationReportRequestFrequency
+                        && this.string.equals(((NotificationReportRequestFrequency) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BIWEEKLY:
+                return visitor.visitBiweekly();
+            case ONE_TIME:
+                return visitor.visitOneTime();
+            case QUARTERLY:
+                return visitor.visitQuarterly();
+            case MONTHLY:
+                return visitor.visitMonthly();
+            case SEMIANNUALLY:
+                return visitor.visitSemiannually();
+            case ANNUALLY:
+                return visitor.visitAnnually();
+            case DAILY:
+                return visitor.visitDaily();
+            case WEEKLY:
+                return visitor.visitWeekly();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static NotificationReportRequestFrequency valueOf(String value) {
+        switch (value) {
+            case "biweekly":
+                return BIWEEKLY;
+            case "one-time":
+                return ONE_TIME;
+            case "quarterly":
+                return QUARTERLY;
+            case "monthly":
+                return MONTHLY;
+            case "semiannually":
+                return SEMIANNUALLY;
+            case "annually":
+                return ANNUALLY;
+            case "daily":
+                return DAILY;
+            case "weekly":
+                return WEEKLY;
+            default:
+                return new NotificationReportRequestFrequency(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ONE_TIME,
+
+        DAILY,
+
+        WEEKLY,
+
+        BIWEEKLY,
+
+        MONTHLY,
+
+        QUARTERLY,
+
+        SEMIANNUALLY,
+
+        ANNUALLY,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitOneTime();
+
+        T visitDaily();
+
+        T visitWeekly();
+
+        T visitBiweekly();
+
+        T visitMonthly();
+
+        T visitQuarterly();
+
+        T visitSemiannually();
+
+        T visitAnnually();
+
+        T visitUnknown(String unknownType);
     }
 }

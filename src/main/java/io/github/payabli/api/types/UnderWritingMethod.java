@@ -3,24 +3,91 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum UnderWritingMethod {
-    AUTOMATIC("automatic"),
+public final class UnderWritingMethod {
+    public static final UnderWritingMethod BYPASS = new UnderWritingMethod(Value.BYPASS, "bypass");
 
-    MANUAL("manual"),
+    public static final UnderWritingMethod MANUAL = new UnderWritingMethod(Value.MANUAL, "manual");
 
-    BYPASS("bypass");
+    public static final UnderWritingMethod AUTOMATIC = new UnderWritingMethod(Value.AUTOMATIC, "automatic");
 
-    private final String value;
+    private final Value value;
 
-    UnderWritingMethod(String value) {
+    private final String string;
+
+    UnderWritingMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof UnderWritingMethod && this.string.equals(((UnderWritingMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case BYPASS:
+                return visitor.visitBypass();
+            case MANUAL:
+                return visitor.visitManual();
+            case AUTOMATIC:
+                return visitor.visitAutomatic();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static UnderWritingMethod valueOf(String value) {
+        switch (value) {
+            case "bypass":
+                return BYPASS;
+            case "manual":
+                return MANUAL;
+            case "automatic":
+                return AUTOMATIC;
+            default:
+                return new UnderWritingMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        AUTOMATIC,
+
+        MANUAL,
+
+        BYPASS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitAutomatic();
+
+        T visitManual();
+
+        T visitBypass();
+
+        T visitUnknown(String unknownType);
     }
 }

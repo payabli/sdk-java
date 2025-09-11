@@ -3,60 +3,271 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum BillDataPaymentTerms {
-    PIA("PIA"),
+public final class BillDataPaymentTerms {
+    public static final BillDataPaymentTerms UR = new BillDataPaymentTerms(Value.UR, "UR");
 
-    CIA("CIA"),
+    public static final BillDataPaymentTerms TWENTY_MFI = new BillDataPaymentTerms(Value.TWENTY_MFI, "20MFI");
 
-    UR("UR"),
+    public static final BillDataPaymentTerms TEN_UF = new BillDataPaymentTerms(Value.TEN_UF, "10UF");
 
-    NET_10("NET10"),
+    public static final BillDataPaymentTerms FIFTY_UF = new BillDataPaymentTerms(Value.FIFTY_UF, "50UF");
 
-    NET_20("NET20"),
+    public static final BillDataPaymentTerms NET_20 = new BillDataPaymentTerms(Value.NET_20, "NET20");
 
-    NET_30("NET30"),
+    public static final BillDataPaymentTerms NET_45 = new BillDataPaymentTerms(Value.NET_45, "NET45");
 
-    NET_45("NET45"),
+    public static final BillDataPaymentTerms EOM = new BillDataPaymentTerms(Value.EOM, "EOM");
 
-    NET_60("NET60"),
+    public static final BillDataPaymentTerms NET_60 = new BillDataPaymentTerms(Value.NET_60, "NET60");
 
-    NET_90("NET90"),
+    public static final BillDataPaymentTerms TEN_MFI = new BillDataPaymentTerms(Value.TEN_MFI, "10MFI");
 
-    EOM("EOM"),
+    public static final BillDataPaymentTerms NET_10 = new BillDataPaymentTerms(Value.NET_10, "NET10");
 
-    MFI("MFI"),
+    public static final BillDataPaymentTerms TWO_10_NET_30 = new BillDataPaymentTerms(Value.TWO_10_NET_30, "2/10NET30");
 
-    FIVE_MFI("5MFI"),
+    public static final BillDataPaymentTerms PIA = new BillDataPaymentTerms(Value.PIA, "PIA");
 
-    TEN_MFI("10MFI"),
+    public static final BillDataPaymentTerms FIVE_MFI = new BillDataPaymentTerms(Value.FIVE_MFI, "5MFI");
 
-    FIFTEEN_MFI("15MFI"),
+    public static final BillDataPaymentTerms CIA = new BillDataPaymentTerms(Value.CIA, "CIA");
 
-    TWENTY_MFI("20MFI"),
+    public static final BillDataPaymentTerms NET_90 = new BillDataPaymentTerms(Value.NET_90, "NET90");
 
-    TWO_10_NET_30("2/10NET30"),
+    public static final BillDataPaymentTerms TWENTY_FIVE_UF = new BillDataPaymentTerms(Value.TWENTY_FIVE_UF, "25UF");
 
-    UF("UF"),
+    public static final BillDataPaymentTerms MFI = new BillDataPaymentTerms(Value.MFI, "MFI");
 
-    TEN_UF("10UF"),
+    public static final BillDataPaymentTerms TWENTY_UF = new BillDataPaymentTerms(Value.TWENTY_UF, "20UF");
 
-    TWENTY_UF("20UF"),
+    public static final BillDataPaymentTerms FIFTEEN_MFI = new BillDataPaymentTerms(Value.FIFTEEN_MFI, "15MFI");
 
-    TWENTY_FIVE_UF("25UF"),
+    public static final BillDataPaymentTerms NET_30 = new BillDataPaymentTerms(Value.NET_30, "NET30");
 
-    FIFTY_UF("50UF");
+    public static final BillDataPaymentTerms UF = new BillDataPaymentTerms(Value.UF, "UF");
 
-    private final String value;
+    private final Value value;
 
-    BillDataPaymentTerms(String value) {
+    private final String string;
+
+    BillDataPaymentTerms(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof BillDataPaymentTerms && this.string.equals(((BillDataPaymentTerms) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case UR:
+                return visitor.visitUr();
+            case TWENTY_MFI:
+                return visitor.visitTwentyMfi();
+            case TEN_UF:
+                return visitor.visitTenUf();
+            case FIFTY_UF:
+                return visitor.visitFiftyUf();
+            case NET_20:
+                return visitor.visitNet20();
+            case NET_45:
+                return visitor.visitNet45();
+            case EOM:
+                return visitor.visitEom();
+            case NET_60:
+                return visitor.visitNet60();
+            case TEN_MFI:
+                return visitor.visitTenMfi();
+            case NET_10:
+                return visitor.visitNet10();
+            case TWO_10_NET_30:
+                return visitor.visitTwo10Net30();
+            case PIA:
+                return visitor.visitPia();
+            case FIVE_MFI:
+                return visitor.visitFiveMfi();
+            case CIA:
+                return visitor.visitCia();
+            case NET_90:
+                return visitor.visitNet90();
+            case TWENTY_FIVE_UF:
+                return visitor.visitTwentyFiveUf();
+            case MFI:
+                return visitor.visitMfi();
+            case TWENTY_UF:
+                return visitor.visitTwentyUf();
+            case FIFTEEN_MFI:
+                return visitor.visitFifteenMfi();
+            case NET_30:
+                return visitor.visitNet30();
+            case UF:
+                return visitor.visitUf();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static BillDataPaymentTerms valueOf(String value) {
+        switch (value) {
+            case "UR":
+                return UR;
+            case "20MFI":
+                return TWENTY_MFI;
+            case "10UF":
+                return TEN_UF;
+            case "50UF":
+                return FIFTY_UF;
+            case "NET20":
+                return NET_20;
+            case "NET45":
+                return NET_45;
+            case "EOM":
+                return EOM;
+            case "NET60":
+                return NET_60;
+            case "10MFI":
+                return TEN_MFI;
+            case "NET10":
+                return NET_10;
+            case "2/10NET30":
+                return TWO_10_NET_30;
+            case "PIA":
+                return PIA;
+            case "5MFI":
+                return FIVE_MFI;
+            case "CIA":
+                return CIA;
+            case "NET90":
+                return NET_90;
+            case "25UF":
+                return TWENTY_FIVE_UF;
+            case "MFI":
+                return MFI;
+            case "20UF":
+                return TWENTY_UF;
+            case "15MFI":
+                return FIFTEEN_MFI;
+            case "NET30":
+                return NET_30;
+            case "UF":
+                return UF;
+            default:
+                return new BillDataPaymentTerms(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        PIA,
+
+        CIA,
+
+        UR,
+
+        NET_10,
+
+        NET_20,
+
+        NET_30,
+
+        NET_45,
+
+        NET_60,
+
+        NET_90,
+
+        EOM,
+
+        MFI,
+
+        FIVE_MFI,
+
+        TEN_MFI,
+
+        FIFTEEN_MFI,
+
+        TWENTY_MFI,
+
+        TWO_10_NET_30,
+
+        UF,
+
+        TEN_UF,
+
+        TWENTY_UF,
+
+        TWENTY_FIVE_UF,
+
+        FIFTY_UF,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitPia();
+
+        T visitCia();
+
+        T visitUr();
+
+        T visitNet10();
+
+        T visitNet20();
+
+        T visitNet30();
+
+        T visitNet45();
+
+        T visitNet60();
+
+        T visitNet90();
+
+        T visitEom();
+
+        T visitMfi();
+
+        T visitFiveMfi();
+
+        T visitTenMfi();
+
+        T visitFifteenMfi();
+
+        T visitTwentyMfi();
+
+        T visitTwo10Net30();
+
+        T visitUf();
+
+        T visitTenUf();
+
+        T visitTwentyUf();
+
+        T visitTwentyFiveUf();
+
+        T visitFiftyUf();
+
+        T visitUnknown(String unknownType);
     }
 }

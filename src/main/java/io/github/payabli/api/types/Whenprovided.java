@@ -3,24 +3,92 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Whenprovided {
-    THIRTY_DAYS_OR_LESS("30 Days or Less"),
+public final class Whenprovided {
+    public static final Whenprovided SIXTY_DAYS = new Whenprovided(Value.SIXTY_DAYS, "60+ Days");
 
-    THIRTY_ONE_TO_60_DAYS("31 to 60 Days"),
+    public static final Whenprovided THIRTY_DAYS_OR_LESS =
+            new Whenprovided(Value.THIRTY_DAYS_OR_LESS, "30 Days or Less");
 
-    SIXTY_DAYS("60+ Days");
+    public static final Whenprovided THIRTY_ONE_TO_60_DAYS =
+            new Whenprovided(Value.THIRTY_ONE_TO_60_DAYS, "31 to 60 Days");
 
-    private final String value;
+    private final Value value;
 
-    Whenprovided(String value) {
+    private final String string;
+
+    Whenprovided(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Whenprovided && this.string.equals(((Whenprovided) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case SIXTY_DAYS:
+                return visitor.visitSixtyDays();
+            case THIRTY_DAYS_OR_LESS:
+                return visitor.visitThirtyDaysOrLess();
+            case THIRTY_ONE_TO_60_DAYS:
+                return visitor.visitThirtyOneTo60Days();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Whenprovided valueOf(String value) {
+        switch (value) {
+            case "60+ Days":
+                return SIXTY_DAYS;
+            case "30 Days or Less":
+                return THIRTY_DAYS_OR_LESS;
+            case "31 to 60 Days":
+                return THIRTY_ONE_TO_60_DAYS;
+            default:
+                return new Whenprovided(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        THIRTY_DAYS_OR_LESS,
+
+        THIRTY_ONE_TO_60_DAYS,
+
+        SIXTY_DAYS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitThirtyDaysOrLess();
+
+        T visitThirtyOneTo60Days();
+
+        T visitSixtyDays();
+
+        T visitUnknown(String unknownType);
     }
 }

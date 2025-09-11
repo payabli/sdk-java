@@ -3,32 +3,130 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Frequency {
-    ONE_TIME("one-time"),
+public final class Frequency {
+    public static final Frequency ONE_TIME = new Frequency(Value.ONE_TIME, "one-time");
 
-    WEEKLY("weekly"),
+    public static final Frequency EVERY_2_WEEKS = new Frequency(Value.EVERY_2_WEEKS, "every2weeks");
 
-    EVERY_2_WEEKS("every2weeks"),
+    public static final Frequency MONTHLY = new Frequency(Value.MONTHLY, "monthly");
 
-    EVERY_6_MONTHS("every6months"),
+    public static final Frequency ANNUALLY = new Frequency(Value.ANNUALLY, "annually");
 
-    MONTHLY("monthly"),
+    public static final Frequency EVERY_6_MONTHS = new Frequency(Value.EVERY_6_MONTHS, "every6months");
 
-    EVERY_3_MONTHS("every3months"),
+    public static final Frequency EVERY_3_MONTHS = new Frequency(Value.EVERY_3_MONTHS, "every3months");
 
-    ANNUALLY("annually");
+    public static final Frequency WEEKLY = new Frequency(Value.WEEKLY, "weekly");
 
-    private final String value;
+    private final Value value;
 
-    Frequency(String value) {
+    private final String string;
+
+    Frequency(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Frequency && this.string.equals(((Frequency) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case ONE_TIME:
+                return visitor.visitOneTime();
+            case EVERY_2_WEEKS:
+                return visitor.visitEvery2Weeks();
+            case MONTHLY:
+                return visitor.visitMonthly();
+            case ANNUALLY:
+                return visitor.visitAnnually();
+            case EVERY_6_MONTHS:
+                return visitor.visitEvery6Months();
+            case EVERY_3_MONTHS:
+                return visitor.visitEvery3Months();
+            case WEEKLY:
+                return visitor.visitWeekly();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Frequency valueOf(String value) {
+        switch (value) {
+            case "one-time":
+                return ONE_TIME;
+            case "every2weeks":
+                return EVERY_2_WEEKS;
+            case "monthly":
+                return MONTHLY;
+            case "annually":
+                return ANNUALLY;
+            case "every6months":
+                return EVERY_6_MONTHS;
+            case "every3months":
+                return EVERY_3_MONTHS;
+            case "weekly":
+                return WEEKLY;
+            default:
+                return new Frequency(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        ONE_TIME,
+
+        WEEKLY,
+
+        EVERY_2_WEEKS,
+
+        EVERY_6_MONTHS,
+
+        MONTHLY,
+
+        EVERY_3_MONTHS,
+
+        ANNUALLY,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitOneTime();
+
+        T visitWeekly();
+
+        T visitEvery2Weeks();
+
+        T visitEvery6Months();
+
+        T visitMonthly();
+
+        T visitEvery3Months();
+
+        T visitAnnually();
+
+        T visitUnknown(String unknownType);
     }
 }

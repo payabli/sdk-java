@@ -3,26 +3,102 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Whenrefunded {
-    EXCHANGE_ONLY("Exchange Only"),
+public final class Whenrefunded {
+    public static final Whenrefunded THIRTY_DAYS_OR_LESS =
+            new Whenrefunded(Value.THIRTY_DAYS_OR_LESS, "30 Days or Less");
 
-    NO_REFUND_OR_EXCHANGE("No Refund or Exchange"),
+    public static final Whenrefunded NO_REFUND_OR_EXCHANGE =
+            new Whenrefunded(Value.NO_REFUND_OR_EXCHANGE, "No Refund or Exchange");
 
-    MORE_THAN_30_DAYS("More than 30 days"),
+    public static final Whenrefunded EXCHANGE_ONLY = new Whenrefunded(Value.EXCHANGE_ONLY, "Exchange Only");
 
-    THIRTY_DAYS_OR_LESS("30 Days or Less");
+    public static final Whenrefunded MORE_THAN_30_DAYS = new Whenrefunded(Value.MORE_THAN_30_DAYS, "More than 30 days");
 
-    private final String value;
+    private final Value value;
 
-    Whenrefunded(String value) {
+    private final String string;
+
+    Whenrefunded(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other) || (other instanceof Whenrefunded && this.string.equals(((Whenrefunded) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case THIRTY_DAYS_OR_LESS:
+                return visitor.visitThirtyDaysOrLess();
+            case NO_REFUND_OR_EXCHANGE:
+                return visitor.visitNoRefundOrExchange();
+            case EXCHANGE_ONLY:
+                return visitor.visitExchangeOnly();
+            case MORE_THAN_30_DAYS:
+                return visitor.visitMoreThan30Days();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Whenrefunded valueOf(String value) {
+        switch (value) {
+            case "30 Days or Less":
+                return THIRTY_DAYS_OR_LESS;
+            case "No Refund or Exchange":
+                return NO_REFUND_OR_EXCHANGE;
+            case "Exchange Only":
+                return EXCHANGE_ONLY;
+            case "More than 30 days":
+                return MORE_THAN_30_DAYS;
+            default:
+                return new Whenrefunded(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        EXCHANGE_ONLY,
+
+        NO_REFUND_OR_EXCHANGE,
+
+        MORE_THAN_30_DAYS,
+
+        THIRTY_DAYS_OR_LESS,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitExchangeOnly();
+
+        T visitNoRefundOrExchange();
+
+        T visitMoreThan30Days();
+
+        T visitThirtyDaysOrLess();
+
+        T visitUnknown(String unknownType);
     }
 }

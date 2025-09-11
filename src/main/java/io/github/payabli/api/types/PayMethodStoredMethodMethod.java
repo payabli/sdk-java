@@ -3,22 +3,82 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PayMethodStoredMethodMethod {
-    CARD("card"),
+public final class PayMethodStoredMethodMethod {
+    public static final PayMethodStoredMethodMethod ACH = new PayMethodStoredMethodMethod(Value.ACH, "ach");
 
-    ACH("ach");
+    public static final PayMethodStoredMethodMethod CARD = new PayMethodStoredMethodMethod(Value.CARD, "card");
 
-    private final String value;
+    private final Value value;
 
-    PayMethodStoredMethodMethod(String value) {
+    private final String string;
+
+    PayMethodStoredMethodMethod(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof PayMethodStoredMethodMethod
+                        && this.string.equals(((PayMethodStoredMethodMethod) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case ACH:
+                return visitor.visitAch();
+            case CARD:
+                return visitor.visitCard();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static PayMethodStoredMethodMethod valueOf(String value) {
+        switch (value) {
+            case "ach":
+                return ACH;
+            case "card":
+                return CARD;
+            default:
+                return new PayMethodStoredMethodMethod(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        CARD,
+
+        ACH,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitCard();
+
+        T visitAch();
+
+        T visitUnknown(String unknownType);
     }
 }

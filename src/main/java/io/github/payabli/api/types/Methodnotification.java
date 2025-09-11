@@ -3,28 +3,111 @@
  */
 package io.github.payabli.api.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Methodnotification {
-    EMAIL("email"),
+public final class Methodnotification {
+    public static final Methodnotification EMAIL = new Methodnotification(Value.EMAIL, "email");
 
-    SMS("sms"),
+    public static final Methodnotification WEB = new Methodnotification(Value.WEB, "web");
 
-    WEB("web"),
+    public static final Methodnotification SMS = new Methodnotification(Value.SMS, "sms");
 
-    REPORT_EMAIL("report-email"),
+    public static final Methodnotification REPORT_EMAIL = new Methodnotification(Value.REPORT_EMAIL, "report-email");
 
-    REPORT_WEB("report-web");
+    public static final Methodnotification REPORT_WEB = new Methodnotification(Value.REPORT_WEB, "report-web");
 
-    private final String value;
+    private final Value value;
 
-    Methodnotification(String value) {
+    private final String string;
+
+    Methodnotification(Value value, String string) {
         this.value = value;
+        this.string = string;
     }
 
-    @JsonValue
+    public Value getEnumValue() {
+        return value;
+    }
+
     @java.lang.Override
+    @JsonValue
     public String toString() {
-        return this.value;
+        return this.string;
+    }
+
+    @java.lang.Override
+    public boolean equals(Object other) {
+        return (this == other)
+                || (other instanceof Methodnotification && this.string.equals(((Methodnotification) other).string));
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return this.string.hashCode();
+    }
+
+    public <T> T visit(Visitor<T> visitor) {
+        switch (value) {
+            case EMAIL:
+                return visitor.visitEmail();
+            case WEB:
+                return visitor.visitWeb();
+            case SMS:
+                return visitor.visitSms();
+            case REPORT_EMAIL:
+                return visitor.visitReportEmail();
+            case REPORT_WEB:
+                return visitor.visitReportWeb();
+            case UNKNOWN:
+            default:
+                return visitor.visitUnknown(string);
+        }
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static Methodnotification valueOf(String value) {
+        switch (value) {
+            case "email":
+                return EMAIL;
+            case "web":
+                return WEB;
+            case "sms":
+                return SMS;
+            case "report-email":
+                return REPORT_EMAIL;
+            case "report-web":
+                return REPORT_WEB;
+            default:
+                return new Methodnotification(Value.UNKNOWN, value);
+        }
+    }
+
+    public enum Value {
+        EMAIL,
+
+        SMS,
+
+        WEB,
+
+        REPORT_EMAIL,
+
+        REPORT_WEB,
+
+        UNKNOWN
+    }
+
+    public interface Visitor<T> {
+        T visitEmail();
+
+        T visitSms();
+
+        T visitWeb();
+
+        T visitReportEmail();
+
+        T visitReportWeb();
+
+        T visitUnknown(String unknownType);
     }
 }
