@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponse00Responsedatanonobject.Builder.class)
@@ -28,7 +29,7 @@ public final class PayabliApiResponse00Responsedatanonobject {
 
     private final Optional<Boolean> isSuccess;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Optional<Responsedatanonobject> responseData;
 
@@ -39,7 +40,7 @@ public final class PayabliApiResponse00Responsedatanonobject {
             Optional<String> pageIdentifier,
             Optional<Long> roomId,
             Optional<Boolean> isSuccess,
-            Optional<String> responseText,
+            String responseText,
             Optional<Responsedatanonobject> responseData,
             Map<String, Object> additionalProperties) {
         this.responseCode = responseCode;
@@ -75,7 +76,7 @@ public final class PayabliApiResponse00Responsedatanonobject {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -121,29 +122,63 @@ public final class PayabliApiResponse00Responsedatanonobject {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+
+        Builder from(PayabliApiResponse00Responsedatanonobject other);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponse00Responsedatanonobject build();
+
+        _FinalStage responseCode(Optional<Integer> responseCode);
+
+        _FinalStage responseCode(Integer responseCode);
+
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        /**
+         * <p>Describes the room ID. Only in use on Boarding endpoints, returns <code>0</code> when not applicable.</p>
+         */
+        _FinalStage roomId(Optional<Long> roomId);
+
+        _FinalStage roomId(Long roomId);
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage responseData(Optional<Responsedatanonobject> responseData);
+
+        _FinalStage responseData(Responsedatanonobject responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Integer> responseCode = Optional.empty();
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
-        private Optional<String> pageIdentifier = Optional.empty();
-
-        private Optional<Long> roomId = Optional.empty();
+        private Optional<Responsedatanonobject> responseData = Optional.empty();
 
         private Optional<Boolean> isSuccess = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<Long> roomId = Optional.empty();
 
-        private Optional<Responsedatanonobject> responseData = Optional.empty();
+        private Optional<String> pageIdentifier = Optional.empty();
+
+        private Optional<Integer> responseCode = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponse00Responsedatanonobject other) {
             responseCode(other.getResponseCode());
             pageIdentifier(other.getPageIdentifier());
@@ -154,75 +189,86 @@ public final class PayabliApiResponse00Responsedatanonobject {
             return this;
         }
 
-        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
-        public Builder responseCode(Optional<Integer> responseCode) {
-            this.responseCode = responseCode;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder responseCode(Integer responseCode) {
-            this.responseCode = Optional.ofNullable(responseCode);
+        @java.lang.Override
+        public _FinalStage responseData(Responsedatanonobject responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
+        @java.lang.Override
+        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
+        public _FinalStage responseData(Optional<Responsedatanonobject> responseData) {
+            this.responseData = responseData;
             return this;
         }
 
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        /**
+         * <p>Describes the room ID. Only in use on Boarding endpoints, returns <code>0</code> when not applicable.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage roomId(Long roomId) {
+            this.roomId = Optional.ofNullable(roomId);
             return this;
         }
 
         /**
          * <p>Describes the room ID. Only in use on Boarding endpoints, returns <code>0</code> when not applicable.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "roomId", nulls = Nulls.SKIP)
-        public Builder roomId(Optional<Long> roomId) {
+        public _FinalStage roomId(Optional<Long> roomId) {
             this.roomId = roomId;
             return this;
         }
 
-        public Builder roomId(Long roomId) {
-            this.roomId = Optional.ofNullable(roomId);
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        public _FinalStage responseCode(Integer responseCode) {
+            this.responseCode = Optional.ofNullable(responseCode);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
+        public _FinalStage responseCode(Optional<Integer> responseCode) {
+            this.responseCode = responseCode;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
-        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<Responsedatanonobject> responseData) {
-            this.responseData = responseData;
-            return this;
-        }
-
-        public Builder responseData(Responsedatanonobject responseData) {
-            this.responseData = Optional.ofNullable(responseData);
-            return this;
-        }
-
+        @java.lang.Override
         public PayabliApiResponse00Responsedatanonobject build() {
             return new PayabliApiResponse00Responsedatanonobject(
                     responseCode, pageIdentifier, roomId, isSuccess, responseText, responseData, additionalProperties);

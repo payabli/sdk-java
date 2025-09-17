@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +38,31 @@ public final class TransferMessageProperties {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("originalTransferStatus")
+    @JsonIgnore
     public Optional<String> getOriginalTransferStatus() {
+        if (originalTransferStatus == null) {
+            return Optional.empty();
+        }
         return originalTransferStatus;
     }
 
-    @JsonProperty("currentTransferStatus")
+    @JsonIgnore
     public Optional<String> getCurrentTransferStatus() {
+        if (currentTransferStatus == null) {
+            return Optional.empty();
+        }
+        return currentTransferStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("originalTransferStatus")
+    private Optional<String> _getOriginalTransferStatus() {
+        return originalTransferStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("currentTransferStatus")
+    private Optional<String> _getCurrentTransferStatus() {
         return currentTransferStatus;
     }
 
@@ -103,6 +124,17 @@ public final class TransferMessageProperties {
             return this;
         }
 
+        public Builder originalTransferStatus(Nullable<String> originalTransferStatus) {
+            if (originalTransferStatus.isNull()) {
+                this.originalTransferStatus = null;
+            } else if (originalTransferStatus.isEmpty()) {
+                this.originalTransferStatus = Optional.empty();
+            } else {
+                this.originalTransferStatus = Optional.of(originalTransferStatus.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "currentTransferStatus", nulls = Nulls.SKIP)
         public Builder currentTransferStatus(Optional<String> currentTransferStatus) {
             this.currentTransferStatus = currentTransferStatus;
@@ -111,6 +143,17 @@ public final class TransferMessageProperties {
 
         public Builder currentTransferStatus(String currentTransferStatus) {
             this.currentTransferStatus = Optional.ofNullable(currentTransferStatus);
+            return this;
+        }
+
+        public Builder currentTransferStatus(Nullable<String> currentTransferStatus) {
+            if (currentTransferStatus.isNull()) {
+                this.currentTransferStatus = null;
+            } else if (currentTransferStatus.isEmpty()) {
+                this.currentTransferStatus = Optional.empty();
+            } else {
+                this.currentTransferStatus = Optional.of(currentTransferStatus.get());
+            }
             return this;
         }
 

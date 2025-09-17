@@ -72,6 +72,8 @@ public final class VCardGetResponse {
 
     private final Optional<String> externalPaypointId;
 
+    private final Optional<Integer> paypointId;
+
     private final Map<String, Object> additionalProperties;
 
     private VCardGetResponse(
@@ -101,6 +103,7 @@ public final class VCardGetResponse {
             Optional<String> paypointLegalname,
             Optional<String> paypointEntryname,
             Optional<String> externalPaypointId,
+            Optional<Integer> paypointId,
             Map<String, Object> additionalProperties) {
         this.vcardSent = vcardSent;
         this.cardToken = cardToken;
@@ -128,6 +131,7 @@ public final class VCardGetResponse {
         this.paypointLegalname = paypointLegalname;
         this.paypointEntryname = paypointEntryname;
         this.externalPaypointId = externalPaypointId;
+        this.paypointId = paypointId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -336,6 +340,14 @@ public final class VCardGetResponse {
         return externalPaypointId;
     }
 
+    /**
+     * @return The unique identifier for the paypoint.
+     */
+    @JsonProperty("paypointId")
+    public Optional<Integer> getPaypointId() {
+        return paypointId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -373,7 +385,8 @@ public final class VCardGetResponse {
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointLegalname.equals(other.paypointLegalname)
                 && paypointEntryname.equals(other.paypointEntryname)
-                && externalPaypointId.equals(other.externalPaypointId);
+                && externalPaypointId.equals(other.externalPaypointId)
+                && paypointId.equals(other.paypointId);
     }
 
     @java.lang.Override
@@ -404,7 +417,8 @@ public final class VCardGetResponse {
                 this.paypointDbaname,
                 this.paypointLegalname,
                 this.paypointEntryname,
-                this.externalPaypointId);
+                this.externalPaypointId,
+                this.paypointId);
     }
 
     @java.lang.Override
@@ -470,6 +484,8 @@ public final class VCardGetResponse {
 
         private Optional<String> externalPaypointId = Optional.empty();
 
+        private Optional<Integer> paypointId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -502,6 +518,7 @@ public final class VCardGetResponse {
             paypointLegalname(other.getPaypointLegalname());
             paypointEntryname(other.getPaypointEntryname());
             externalPaypointId(other.getExternalPaypointId());
+            paypointId(other.getPaypointId());
             return this;
         }
 
@@ -866,6 +883,20 @@ public final class VCardGetResponse {
             return this;
         }
 
+        /**
+         * <p>The unique identifier for the paypoint.</p>
+         */
+        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
+        public Builder paypointId(Optional<Integer> paypointId) {
+            this.paypointId = paypointId;
+            return this;
+        }
+
+        public Builder paypointId(Integer paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
         public VCardGetResponse build() {
             return new VCardGetResponse(
                     vcardSent,
@@ -894,6 +925,7 @@ public final class VCardGetResponse {
                     paypointLegalname,
                     paypointEntryname,
                     externalPaypointId,
+                    paypointId,
                     additionalProperties);
         }
     }

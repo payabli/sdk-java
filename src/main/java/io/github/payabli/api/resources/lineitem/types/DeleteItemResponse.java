@@ -9,37 +9,35 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DeleteItemResponse.Builder.class)
 public final class DeleteItemResponse {
-    private final Optional<Boolean> isSuccess;
+    private final boolean isSuccess;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
-    private DeleteItemResponse(
-            Optional<Boolean> isSuccess, Optional<String> responseText, Map<String, Object> additionalProperties) {
+    private DeleteItemResponse(boolean isSuccess, String responseText, Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseText = responseText;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("isSuccess")
-    public Optional<Boolean> getIsSuccess() {
+    public boolean getIsSuccess() {
         return isSuccess;
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -55,7 +53,7 @@ public final class DeleteItemResponse {
     }
 
     private boolean equalTo(DeleteItemResponse other) {
-        return isSuccess.equals(other.isSuccess) && responseText.equals(other.responseText);
+        return isSuccess == other.isSuccess && responseText.equals(other.responseText);
     }
 
     @java.lang.Override
@@ -68,49 +66,57 @@ public final class DeleteItemResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IsSuccessStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public interface IsSuccessStage {
+        ResponseTextStage isSuccess(boolean isSuccess);
 
-        private Optional<String> responseText = Optional.empty();
+        Builder from(DeleteItemResponse other);
+    }
+
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+    }
+
+    public interface _FinalStage {
+        DeleteItemResponse build();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements IsSuccessStage, ResponseTextStage, _FinalStage {
+        private boolean isSuccess;
+
+        private String responseText;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(DeleteItemResponse other) {
             isSuccess(other.getIsSuccess());
             responseText(other.getResponseText());
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
+        @java.lang.Override
+        @JsonSetter("isSuccess")
+        public ResponseTextStage isSuccess(boolean isSuccess) {
             this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
-            return this;
-        }
-
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
+        @java.lang.Override
         public DeleteItemResponse build() {
             return new DeleteItemResponse(isSuccess, responseText, additionalProperties);
         }

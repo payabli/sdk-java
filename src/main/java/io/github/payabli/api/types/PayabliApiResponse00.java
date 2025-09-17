@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponse00.Builder.class)
@@ -28,7 +29,7 @@ public final class PayabliApiResponse00 {
 
     private final Optional<Map<String, Object>> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
@@ -37,7 +38,7 @@ public final class PayabliApiResponse00 {
             Optional<String> pageIdentifier,
             Optional<Integer> responseCode,
             Optional<Map<String, Object>> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.pageIdentifier = pageIdentifier;
@@ -68,7 +69,7 @@ public final class PayabliApiResponse00 {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -102,27 +103,54 @@ public final class PayabliApiResponse00 {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+
+        Builder from(PayabliApiResponse00 other);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponse00 build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        _FinalStage responseCode(Optional<Integer> responseCode);
+
+        _FinalStage responseCode(Integer responseCode);
+
+        _FinalStage responseData(Optional<Map<String, Object>> responseData);
+
+        _FinalStage responseData(Map<String, Object> responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
-
-        private Optional<String> pageIdentifier = Optional.empty();
-
-        private Optional<Integer> responseCode = Optional.empty();
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<Map<String, Object>> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<Integer> responseCode = Optional.empty();
+
+        private Optional<String> pageIdentifier = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponse00 other) {
             isSuccess(other.getIsSuccess());
             pageIdentifier(other.getPageIdentifier());
@@ -132,61 +160,66 @@ public final class PayabliApiResponse00 {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
-            return this;
-        }
-
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
-            return this;
-        }
-
-        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
-        public Builder responseCode(Optional<Integer> responseCode) {
-            this.responseCode = responseCode;
-            return this;
-        }
-
-        public Builder responseCode(Integer responseCode) {
-            this.responseCode = Optional.ofNullable(responseCode);
-            return this;
-        }
-
-        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<Map<String, Object>> responseData) {
-            this.responseData = responseData;
-            return this;
-        }
-
-        public Builder responseData(Map<String, Object> responseData) {
+        @java.lang.Override
+        public _FinalStage responseData(Map<String, Object> responseData) {
             this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
+        public _FinalStage responseData(Optional<Map<String, Object>> responseData) {
+            this.responseData = responseData;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        @java.lang.Override
+        public _FinalStage responseCode(Integer responseCode) {
+            this.responseCode = Optional.ofNullable(responseCode);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
+        public _FinalStage responseCode(Optional<Integer> responseCode) {
+            this.responseCode = responseCode;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public PayabliApiResponse00 build() {
             return new PayabliApiResponse00(
                     isSuccess, pageIdentifier, responseCode, responseData, responseText, additionalProperties);

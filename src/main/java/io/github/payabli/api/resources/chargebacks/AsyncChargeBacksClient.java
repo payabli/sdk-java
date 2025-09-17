@@ -7,7 +7,7 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.chargebacks.requests.ResponseChargeBack;
 import io.github.payabli.api.resources.chargebacks.types.AddResponseResponse;
-import io.github.payabli.api.types.ChargebackQueryRecords;
+import io.github.payabli.api.resources.chargebacks.types.ChargebackQueryRecords;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncChargeBacksClient {

@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface IPayabliApiResponseGeneric2Part {
     Optional<Boolean> getIsSuccess();
 
-    Optional<String> getResponseText();
+    String getResponseText();
 }

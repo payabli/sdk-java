@@ -17,13 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SetApprovedBillResponse.Builder.class)
 public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric2Part {
     private final Optional<Boolean> isSuccess;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Optional<Integer> responseData;
 
@@ -31,7 +32,7 @@ public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric
 
     private SetApprovedBillResponse(
             Optional<Boolean> isSuccess,
-            Optional<String> responseText,
+            String responseText,
             Optional<Integer> responseData,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
@@ -48,7 +49,7 @@ public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric
 
     @JsonProperty("responseText")
     @java.lang.Override
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -87,23 +88,45 @@ public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
 
-        private Optional<String> responseText = Optional.empty();
+        Builder from(SetApprovedBillResponse other);
+    }
+
+    public interface _FinalStage {
+        SetApprovedBillResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the bill identifier. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
+         */
+        _FinalStage responseData(Optional<Integer> responseData);
+
+        _FinalStage responseData(Integer responseData);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<Integer> responseData = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(SetApprovedBillResponse other) {
             isSuccess(other.getIsSuccess());
             responseText(other.getResponseText());
@@ -111,42 +134,47 @@ public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
-            return this;
-        }
-
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the bill identifier. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(Integer responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         /**
          * <p>If <code>isSuccess</code> = true, this contains the bill identifier. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<Integer> responseData) {
+        public _FinalStage responseData(Optional<Integer> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(Integer responseData) {
-            this.responseData = Optional.ofNullable(responseData);
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public SetApprovedBillResponse build() {
             return new SetApprovedBillResponse(isSuccess, responseText, responseData, additionalProperties);
         }

@@ -19,6 +19,7 @@ import io.github.payabli.api.resources.lineitem.LineItemClient;
 import io.github.payabli.api.resources.moneyin.MoneyInClient;
 import io.github.payabli.api.resources.moneyout.MoneyOutClient;
 import io.github.payabli.api.resources.notification.NotificationClient;
+import io.github.payabli.api.resources.notificationlogs.NotificationlogsClient;
 import io.github.payabli.api.resources.ocr.OcrClient;
 import io.github.payabli.api.resources.organization.OrganizationClient;
 import io.github.payabli.api.resources.paymentlink.PaymentLinkClient;
@@ -65,6 +66,8 @@ public class PayabliApiClient {
 
     protected final Supplier<NotificationClient> notificationClient;
 
+    protected final Supplier<NotificationlogsClient> notificationlogsClient;
+
     protected final Supplier<OcrClient> ocrClient;
 
     protected final Supplier<OrganizationClient> organizationClient;
@@ -107,6 +110,7 @@ public class PayabliApiClient {
         this.moneyInClient = Suppliers.memoize(() -> new MoneyInClient(clientOptions));
         this.moneyOutClient = Suppliers.memoize(() -> new MoneyOutClient(clientOptions));
         this.notificationClient = Suppliers.memoize(() -> new NotificationClient(clientOptions));
+        this.notificationlogsClient = Suppliers.memoize(() -> new NotificationlogsClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
         this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
         this.paymentLinkClient = Suppliers.memoize(() -> new PaymentLinkClient(clientOptions));
@@ -176,6 +180,10 @@ public class PayabliApiClient {
 
     public NotificationClient notification() {
         return this.notificationClient.get();
+    }
+
+    public NotificationlogsClient notificationlogs() {
+        return this.notificationlogsClient.get();
     }
 
     public OcrClient ocr() {

@@ -16,13 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AddSubscriptionResponse.Builder.class)
 public final class AddSubscriptionResponse {
     private final Optional<Long> customerId;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Optional<Boolean> isSuccess;
 
@@ -32,7 +33,7 @@ public final class AddSubscriptionResponse {
 
     private AddSubscriptionResponse(
             Optional<Long> customerId,
-            Optional<String> responseText,
+            String responseText,
             Optional<Boolean> isSuccess,
             int responseData,
             Map<String, Object> additionalProperties) {
@@ -49,7 +50,7 @@ public final class AddSubscriptionResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -94,8 +95,14 @@ public final class AddSubscriptionResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static ResponseDataStage builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
+    }
+
+    public interface ResponseTextStage {
+        ResponseDataStage responseText(@NotNull String responseText);
+
+        Builder from(AddSubscriptionResponse other);
     }
 
     public interface ResponseDataStage {
@@ -103,8 +110,6 @@ public final class AddSubscriptionResponse {
          * <p>The identifier of the newly created subscription.</p>
          */
         _FinalStage responseData(int responseData);
-
-        Builder from(AddSubscriptionResponse other);
     }
 
     public interface _FinalStage {
@@ -114,22 +119,18 @@ public final class AddSubscriptionResponse {
 
         _FinalStage customerId(Long customerId);
 
-        _FinalStage responseText(Optional<String> responseText);
-
-        _FinalStage responseText(String responseText);
-
         _FinalStage isSuccess(Optional<Boolean> isSuccess);
 
         _FinalStage isSuccess(Boolean isSuccess);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ResponseDataStage, _FinalStage {
+    public static final class Builder implements ResponseTextStage, ResponseDataStage, _FinalStage {
+        private String responseText;
+
         private int responseData;
 
         private Optional<Boolean> isSuccess = Optional.empty();
-
-        private Optional<String> responseText = Optional.empty();
 
         private Optional<Long> customerId = Optional.empty();
 
@@ -144,6 +145,13 @@ public final class AddSubscriptionResponse {
             responseText(other.getResponseText());
             isSuccess(other.getIsSuccess());
             responseData(other.getResponseData());
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public ResponseDataStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
@@ -169,19 +177,6 @@ public final class AddSubscriptionResponse {
         @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
         public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
             this.isSuccess = isSuccess;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public _FinalStage responseText(Optional<String> responseText) {
-            this.responseText = responseText;
             return this;
         }
 

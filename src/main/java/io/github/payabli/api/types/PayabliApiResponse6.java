@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponse6.Builder.class)
@@ -26,7 +27,7 @@ public final class PayabliApiResponse6 {
 
     private final Optional<Responsedatanonobject> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
@@ -34,7 +35,7 @@ public final class PayabliApiResponse6 {
             Optional<Boolean> isSuccess,
             Optional<String> pageIdentifier,
             Optional<Responsedatanonobject> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.pageIdentifier = pageIdentifier;
@@ -62,7 +63,7 @@ public final class PayabliApiResponse6 {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -94,25 +95,51 @@ public final class PayabliApiResponse6 {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
 
-        private Optional<String> pageIdentifier = Optional.empty();
+        Builder from(PayabliApiResponse6 other);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponse6 build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         */
+        _FinalStage responseData(Optional<Responsedatanonobject> responseData);
+
+        _FinalStage responseData(Responsedatanonobject responseData);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<Responsedatanonobject> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<String> pageIdentifier = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponse6 other) {
             isSuccess(other.getIsSuccess());
             pageIdentifier(other.getPageIdentifier());
@@ -121,53 +148,60 @@ public final class PayabliApiResponse6 {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
-            return this;
-        }
-
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(Responsedatanonobject responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         /**
          * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<Responsedatanonobject> responseData) {
+        public _FinalStage responseData(Optional<Responsedatanonobject> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(Responsedatanonobject responseData) {
-            this.responseData = Optional.ofNullable(responseData);
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public PayabliApiResponse6 build() {
             return new PayabliApiResponse6(isSuccess, pageIdentifier, responseData, responseText, additionalProperties);
         }

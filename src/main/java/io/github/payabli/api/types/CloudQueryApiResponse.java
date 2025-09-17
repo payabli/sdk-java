@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CloudQueryApiResponse.Builder.class)
@@ -25,14 +26,14 @@ public final class CloudQueryApiResponse {
 
     private final Optional<List<PoiDevice>> responseList;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private CloudQueryApiResponse(
             Optional<Boolean> isSuccess,
             Optional<List<PoiDevice>> responseList,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseList = responseList;
@@ -54,7 +55,7 @@ public final class CloudQueryApiResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -85,23 +86,45 @@ public final class CloudQueryApiResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+
+        Builder from(CloudQueryApiResponse other);
+    }
+
+    public interface _FinalStage {
+        CloudQueryApiResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        /**
+         * <p>List of devices and history of registration.</p>
+         */
+        _FinalStage responseList(Optional<List<PoiDevice>> responseList);
+
+        _FinalStage responseList(List<PoiDevice> responseList);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<List<PoiDevice>> responseList = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(CloudQueryApiResponse other) {
             isSuccess(other.getIsSuccess());
             responseList(other.getResponseList());
@@ -109,42 +132,47 @@ public final class CloudQueryApiResponse {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        /**
+         * <p>List of devices and history of registration.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseList(List<PoiDevice> responseList) {
+            this.responseList = Optional.ofNullable(responseList);
             return this;
         }
 
         /**
          * <p>List of devices and history of registration.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseList", nulls = Nulls.SKIP)
-        public Builder responseList(Optional<List<PoiDevice>> responseList) {
+        public _FinalStage responseList(Optional<List<PoiDevice>> responseList) {
             this.responseList = responseList;
             return this;
         }
 
-        public Builder responseList(List<PoiDevice> responseList) {
-            this.responseList = Optional.ofNullable(responseList);
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
+        @java.lang.Override
         public CloudQueryApiResponse build() {
             return new CloudQueryApiResponse(isSuccess, responseList, responseText, additionalProperties);
         }

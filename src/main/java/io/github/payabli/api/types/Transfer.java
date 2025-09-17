@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +50,8 @@ public final class Transfer {
     private final Optional<String> parentOrgName;
 
     private final Optional<Integer> parentOrgId;
+
+    private final Optional<String> parentOrgEntryName;
 
     private final Optional<String> parentOrgLogo;
 
@@ -98,6 +103,7 @@ public final class Transfer {
             Optional<String> paypointLogo,
             Optional<String> parentOrgName,
             Optional<Integer> parentOrgId,
+            Optional<String> parentOrgEntryName,
             Optional<String> parentOrgLogo,
             Optional<String> externalPaypointId,
             Optional<TransferBankAccount> bankAccount,
@@ -129,6 +135,7 @@ public final class Transfer {
         this.paypointLogo = paypointLogo;
         this.parentOrgName = parentOrgName;
         this.parentOrgId = parentOrgId;
+        this.parentOrgEntryName = parentOrgEntryName;
         this.parentOrgLogo = parentOrgLogo;
         this.externalPaypointId = externalPaypointId;
         this.bankAccount = bankAccount;
@@ -170,16 +177,22 @@ public final class Transfer {
     /**
      * @return The currency of the batch, either USD or CAD.
      */
-    @JsonProperty("batchCurrency")
+    @JsonIgnore
     public Optional<String> getBatchCurrency() {
+        if (batchCurrency == null) {
+            return Optional.empty();
+        }
         return batchCurrency;
     }
 
     /**
      * @return Number of records in the batch.
      */
-    @JsonProperty("batchRecords")
+    @JsonIgnore
     public Optional<Integer> getBatchRecords() {
+        if (batchRecords == null) {
+            return Optional.empty();
+        }
         return batchRecords;
     }
 
@@ -197,74 +210,112 @@ public final class Transfer {
     }
 
     /**
-     * @return The paypoint entry name.
+     * @return The paypoint entryname.
      */
-    @JsonProperty("paypointEntryName")
+    @JsonIgnore
     public Optional<String> getPaypointEntryName() {
+        if (paypointEntryName == null) {
+            return Optional.empty();
+        }
         return paypointEntryName;
     }
 
     /**
      * @return The paypoint legal name.
      */
-    @JsonProperty("paypointLegalName")
+    @JsonIgnore
     public Optional<String> getPaypointLegalName() {
+        if (paypointLegalName == null) {
+            return Optional.empty();
+        }
         return paypointLegalName;
     }
 
     /**
      * @return The paypoint DBA name.
      */
-    @JsonProperty("paypointDbaName")
+    @JsonIgnore
     public Optional<String> getPaypointDbaName() {
+        if (paypointDbaName == null) {
+            return Optional.empty();
+        }
         return paypointDbaName;
     }
 
     /**
      * @return The paypoint logo URL.
      */
-    @JsonProperty("paypointLogo")
+    @JsonIgnore
     public Optional<String> getPaypointLogo() {
+        if (paypointLogo == null) {
+            return Optional.empty();
+        }
         return paypointLogo;
     }
 
     /**
      * @return The parent organization name.
      */
-    @JsonProperty("parentOrgName")
+    @JsonIgnore
     public Optional<String> getParentOrgName() {
+        if (parentOrgName == null) {
+            return Optional.empty();
+        }
         return parentOrgName;
     }
 
     /**
      * @return The parent organization ID.
      */
-    @JsonProperty("parentOrgId")
+    @JsonIgnore
     public Optional<Integer> getParentOrgId() {
+        if (parentOrgId == null) {
+            return Optional.empty();
+        }
         return parentOrgId;
+    }
+
+    /**
+     * @return The parent organization entryname.
+     */
+    @JsonIgnore
+    public Optional<String> getParentOrgEntryName() {
+        if (parentOrgEntryName == null) {
+            return Optional.empty();
+        }
+        return parentOrgEntryName;
     }
 
     /**
      * @return The parent organization logo URL.
      */
-    @JsonProperty("parentOrgLogo")
+    @JsonIgnore
     public Optional<String> getParentOrgLogo() {
+        if (parentOrgLogo == null) {
+            return Optional.empty();
+        }
         return parentOrgLogo;
     }
 
     /**
      * @return The external paypoint ID.
      */
-    @JsonProperty("externalPaypointId")
+    @JsonIgnore
     public Optional<String> getExternalPaypointId() {
+        if (externalPaypointId == null) {
+            return Optional.empty();
+        }
         return externalPaypointId;
     }
 
     /**
      * @return Bank account information for the transfer.
      */
-    @JsonProperty("bankAccount")
+    @JsonIgnore
     public Optional<TransferBankAccount> getBankAccount() {
+        if (bankAccount == null) {
+            return Optional.empty();
+        }
         return bankAccount;
     }
 
@@ -367,16 +418,106 @@ public final class Transfer {
     /**
      * @return List of events associated with the transfer.
      */
-    @JsonProperty("eventsData")
+    @JsonIgnore
     public Optional<List<GeneralEvents>> getEventsData() {
+        if (eventsData == null) {
+            return Optional.empty();
+        }
         return eventsData;
     }
 
     /**
      * @return List of messages related to the transfer.
      */
-    @JsonProperty("messages")
+    @JsonIgnore
     public Optional<List<TransferMessage>> getMessages() {
+        if (messages == null) {
+            return Optional.empty();
+        }
+        return messages;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("batchCurrency")
+    private Optional<String> _getBatchCurrency() {
+        return batchCurrency;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("batchRecords")
+    private Optional<Integer> _getBatchRecords() {
+        return batchRecords;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paypointEntryName")
+    private Optional<String> _getPaypointEntryName() {
+        return paypointEntryName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paypointLegalName")
+    private Optional<String> _getPaypointLegalName() {
+        return paypointLegalName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paypointDbaName")
+    private Optional<String> _getPaypointDbaName() {
+        return paypointDbaName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paypointLogo")
+    private Optional<String> _getPaypointLogo() {
+        return paypointLogo;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("parentOrgName")
+    private Optional<String> _getParentOrgName() {
+        return parentOrgName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("parentOrgId")
+    private Optional<Integer> _getParentOrgId() {
+        return parentOrgId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("parentOrgEntryName")
+    private Optional<String> _getParentOrgEntryName() {
+        return parentOrgEntryName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("parentOrgLogo")
+    private Optional<String> _getParentOrgLogo() {
+        return parentOrgLogo;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("externalPaypointID")
+    private Optional<String> _getExternalPaypointId() {
+        return externalPaypointId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("bankAccount")
+    private Optional<TransferBankAccount> _getBankAccount() {
+        return bankAccount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("eventsData")
+    private Optional<List<GeneralEvents>> _getEventsData() {
+        return eventsData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("messages")
+    private Optional<List<TransferMessage>> _getMessages() {
         return messages;
     }
 
@@ -405,6 +546,7 @@ public final class Transfer {
                 && paypointLogo.equals(other.paypointLogo)
                 && parentOrgName.equals(other.parentOrgName)
                 && parentOrgId.equals(other.parentOrgId)
+                && parentOrgEntryName.equals(other.parentOrgEntryName)
                 && parentOrgLogo.equals(other.parentOrgLogo)
                 && externalPaypointId.equals(other.externalPaypointId)
                 && bankAccount.equals(other.bankAccount)
@@ -440,6 +582,7 @@ public final class Transfer {
                 this.paypointLogo,
                 this.parentOrgName,
                 this.parentOrgId,
+                this.parentOrgEntryName,
                 this.parentOrgLogo,
                 this.externalPaypointId,
                 this.bankAccount,
@@ -590,6 +733,8 @@ public final class Transfer {
 
         _FinalStage batchCurrency(String batchCurrency);
 
+        _FinalStage batchCurrency(Nullable<String> batchCurrency);
+
         /**
          * <p>Number of records in the batch.</p>
          */
@@ -597,12 +742,16 @@ public final class Transfer {
 
         _FinalStage batchRecords(Integer batchRecords);
 
+        _FinalStage batchRecords(Nullable<Integer> batchRecords);
+
         /**
-         * <p>The paypoint entry name.</p>
+         * <p>The paypoint entryname.</p>
          */
         _FinalStage paypointEntryName(Optional<String> paypointEntryName);
 
         _FinalStage paypointEntryName(String paypointEntryName);
+
+        _FinalStage paypointEntryName(Nullable<String> paypointEntryName);
 
         /**
          * <p>The paypoint legal name.</p>
@@ -611,12 +760,16 @@ public final class Transfer {
 
         _FinalStage paypointLegalName(String paypointLegalName);
 
+        _FinalStage paypointLegalName(Nullable<String> paypointLegalName);
+
         /**
          * <p>The paypoint DBA name.</p>
          */
         _FinalStage paypointDbaName(Optional<String> paypointDbaName);
 
         _FinalStage paypointDbaName(String paypointDbaName);
+
+        _FinalStage paypointDbaName(Nullable<String> paypointDbaName);
 
         /**
          * <p>The paypoint logo URL.</p>
@@ -625,12 +778,16 @@ public final class Transfer {
 
         _FinalStage paypointLogo(String paypointLogo);
 
+        _FinalStage paypointLogo(Nullable<String> paypointLogo);
+
         /**
          * <p>The parent organization name.</p>
          */
         _FinalStage parentOrgName(Optional<String> parentOrgName);
 
         _FinalStage parentOrgName(String parentOrgName);
+
+        _FinalStage parentOrgName(Nullable<String> parentOrgName);
 
         /**
          * <p>The parent organization ID.</p>
@@ -639,12 +796,25 @@ public final class Transfer {
 
         _FinalStage parentOrgId(Integer parentOrgId);
 
+        _FinalStage parentOrgId(Nullable<Integer> parentOrgId);
+
+        /**
+         * <p>The parent organization entryname.</p>
+         */
+        _FinalStage parentOrgEntryName(Optional<String> parentOrgEntryName);
+
+        _FinalStage parentOrgEntryName(String parentOrgEntryName);
+
+        _FinalStage parentOrgEntryName(Nullable<String> parentOrgEntryName);
+
         /**
          * <p>The parent organization logo URL.</p>
          */
         _FinalStage parentOrgLogo(Optional<String> parentOrgLogo);
 
         _FinalStage parentOrgLogo(String parentOrgLogo);
+
+        _FinalStage parentOrgLogo(Nullable<String> parentOrgLogo);
 
         /**
          * <p>The external paypoint ID.</p>
@@ -653,12 +823,16 @@ public final class Transfer {
 
         _FinalStage externalPaypointId(String externalPaypointId);
 
+        _FinalStage externalPaypointId(Nullable<String> externalPaypointId);
+
         /**
          * <p>Bank account information for the transfer.</p>
          */
         _FinalStage bankAccount(Optional<TransferBankAccount> bankAccount);
 
         _FinalStage bankAccount(TransferBankAccount bankAccount);
+
+        _FinalStage bankAccount(Nullable<TransferBankAccount> bankAccount);
 
         /**
          * <p>List of events associated with the transfer.</p>
@@ -667,12 +841,16 @@ public final class Transfer {
 
         _FinalStage eventsData(List<GeneralEvents> eventsData);
 
+        _FinalStage eventsData(Nullable<List<GeneralEvents>> eventsData);
+
         /**
          * <p>List of messages related to the transfer.</p>
          */
         _FinalStage messages(Optional<List<TransferMessage>> messages);
 
         _FinalStage messages(List<TransferMessage> messages);
+
+        _FinalStage messages(Nullable<List<TransferMessage>> messages);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -739,6 +917,8 @@ public final class Transfer {
 
         private Optional<String> parentOrgLogo = Optional.empty();
 
+        private Optional<String> parentOrgEntryName = Optional.empty();
+
         private Optional<Integer> parentOrgId = Optional.empty();
 
         private Optional<String> parentOrgName = Optional.empty();
@@ -775,6 +955,7 @@ public final class Transfer {
             paypointLogo(other.getPaypointLogo());
             parentOrgName(other.getParentOrgName());
             parentOrgId(other.getParentOrgId());
+            parentOrgEntryName(other.getParentOrgEntryName());
             parentOrgLogo(other.getParentOrgLogo());
             externalPaypointId(other.getExternalPaypointId());
             bankAccount(other.getBankAccount());
@@ -989,6 +1170,22 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage messages(Nullable<List<TransferMessage>> messages) {
+            if (messages.isNull()) {
+                this.messages = null;
+            } else if (messages.isEmpty()) {
+                this.messages = Optional.empty();
+            } else {
+                this.messages = Optional.of(messages.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>List of messages related to the transfer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage messages(List<TransferMessage> messages) {
             this.messages = Optional.ofNullable(messages);
             return this;
@@ -1001,6 +1198,22 @@ public final class Transfer {
         @JsonSetter(value = "messages", nulls = Nulls.SKIP)
         public _FinalStage messages(Optional<List<TransferMessage>> messages) {
             this.messages = messages;
+            return this;
+        }
+
+        /**
+         * <p>List of events associated with the transfer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage eventsData(Nullable<List<GeneralEvents>> eventsData) {
+            if (eventsData.isNull()) {
+                this.eventsData = null;
+            } else if (eventsData.isEmpty()) {
+                this.eventsData = Optional.empty();
+            } else {
+                this.eventsData = Optional.of(eventsData.get());
+            }
             return this;
         }
 
@@ -1029,6 +1242,22 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage bankAccount(Nullable<TransferBankAccount> bankAccount) {
+            if (bankAccount.isNull()) {
+                this.bankAccount = null;
+            } else if (bankAccount.isEmpty()) {
+                this.bankAccount = Optional.empty();
+            } else {
+                this.bankAccount = Optional.of(bankAccount.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Bank account information for the transfer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage bankAccount(TransferBankAccount bankAccount) {
             this.bankAccount = Optional.ofNullable(bankAccount);
             return this;
@@ -1049,6 +1278,22 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage externalPaypointId(Nullable<String> externalPaypointId) {
+            if (externalPaypointId.isNull()) {
+                this.externalPaypointId = null;
+            } else if (externalPaypointId.isEmpty()) {
+                this.externalPaypointId = Optional.empty();
+            } else {
+                this.externalPaypointId = Optional.of(externalPaypointId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The external paypoint ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage externalPaypointId(String externalPaypointId) {
             this.externalPaypointId = Optional.ofNullable(externalPaypointId);
             return this;
@@ -1058,9 +1303,25 @@ public final class Transfer {
          * <p>The external paypoint ID.</p>
          */
         @java.lang.Override
-        @JsonSetter(value = "externalPaypointId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
         public _FinalStage externalPaypointId(Optional<String> externalPaypointId) {
             this.externalPaypointId = externalPaypointId;
+            return this;
+        }
+
+        /**
+         * <p>The parent organization logo URL.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parentOrgLogo(Nullable<String> parentOrgLogo) {
+            if (parentOrgLogo.isNull()) {
+                this.parentOrgLogo = null;
+            } else if (parentOrgLogo.isEmpty()) {
+                this.parentOrgLogo = Optional.empty();
+            } else {
+                this.parentOrgLogo = Optional.of(parentOrgLogo.get());
+            }
             return this;
         }
 
@@ -1081,6 +1342,58 @@ public final class Transfer {
         @JsonSetter(value = "parentOrgLogo", nulls = Nulls.SKIP)
         public _FinalStage parentOrgLogo(Optional<String> parentOrgLogo) {
             this.parentOrgLogo = parentOrgLogo;
+            return this;
+        }
+
+        /**
+         * <p>The parent organization entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parentOrgEntryName(Nullable<String> parentOrgEntryName) {
+            if (parentOrgEntryName.isNull()) {
+                this.parentOrgEntryName = null;
+            } else if (parentOrgEntryName.isEmpty()) {
+                this.parentOrgEntryName = Optional.empty();
+            } else {
+                this.parentOrgEntryName = Optional.of(parentOrgEntryName.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The parent organization entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parentOrgEntryName(String parentOrgEntryName) {
+            this.parentOrgEntryName = Optional.ofNullable(parentOrgEntryName);
+            return this;
+        }
+
+        /**
+         * <p>The parent organization entryname.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "parentOrgEntryName", nulls = Nulls.SKIP)
+        public _FinalStage parentOrgEntryName(Optional<String> parentOrgEntryName) {
+            this.parentOrgEntryName = parentOrgEntryName;
+            return this;
+        }
+
+        /**
+         * <p>The parent organization ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parentOrgId(Nullable<Integer> parentOrgId) {
+            if (parentOrgId.isNull()) {
+                this.parentOrgId = null;
+            } else if (parentOrgId.isEmpty()) {
+                this.parentOrgId = Optional.empty();
+            } else {
+                this.parentOrgId = Optional.of(parentOrgId.get());
+            }
             return this;
         }
 
@@ -1109,6 +1422,22 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage parentOrgName(Nullable<String> parentOrgName) {
+            if (parentOrgName.isNull()) {
+                this.parentOrgName = null;
+            } else if (parentOrgName.isEmpty()) {
+                this.parentOrgName = Optional.empty();
+            } else {
+                this.parentOrgName = Optional.of(parentOrgName.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The parent organization name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage parentOrgName(String parentOrgName) {
             this.parentOrgName = Optional.ofNullable(parentOrgName);
             return this;
@@ -1121,6 +1450,22 @@ public final class Transfer {
         @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
         public _FinalStage parentOrgName(Optional<String> parentOrgName) {
             this.parentOrgName = parentOrgName;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint logo URL.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLogo(Nullable<String> paypointLogo) {
+            if (paypointLogo.isNull()) {
+                this.paypointLogo = null;
+            } else if (paypointLogo.isEmpty()) {
+                this.paypointLogo = Optional.empty();
+            } else {
+                this.paypointLogo = Optional.of(paypointLogo.get());
+            }
             return this;
         }
 
@@ -1149,6 +1494,22 @@ public final class Transfer {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage paypointDbaName(Nullable<String> paypointDbaName) {
+            if (paypointDbaName.isNull()) {
+                this.paypointDbaName = null;
+            } else if (paypointDbaName.isEmpty()) {
+                this.paypointDbaName = Optional.empty();
+            } else {
+                this.paypointDbaName = Optional.of(paypointDbaName.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The paypoint DBA name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage paypointDbaName(String paypointDbaName) {
             this.paypointDbaName = Optional.ofNullable(paypointDbaName);
             return this;
@@ -1161,6 +1522,22 @@ public final class Transfer {
         @JsonSetter(value = "paypointDbaName", nulls = Nulls.SKIP)
         public _FinalStage paypointDbaName(Optional<String> paypointDbaName) {
             this.paypointDbaName = paypointDbaName;
+            return this;
+        }
+
+        /**
+         * <p>The paypoint legal name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLegalName(Nullable<String> paypointLegalName) {
+            if (paypointLegalName.isNull()) {
+                this.paypointLegalName = null;
+            } else if (paypointLegalName.isEmpty()) {
+                this.paypointLegalName = Optional.empty();
+            } else {
+                this.paypointLegalName = Optional.of(paypointLegalName.get());
+            }
             return this;
         }
 
@@ -1185,7 +1562,23 @@ public final class Transfer {
         }
 
         /**
-         * <p>The paypoint entry name.</p>
+         * <p>The paypoint entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointEntryName(Nullable<String> paypointEntryName) {
+            if (paypointEntryName.isNull()) {
+                this.paypointEntryName = null;
+            } else if (paypointEntryName.isEmpty()) {
+                this.paypointEntryName = Optional.empty();
+            } else {
+                this.paypointEntryName = Optional.of(paypointEntryName.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The paypoint entryname.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1195,12 +1588,28 @@ public final class Transfer {
         }
 
         /**
-         * <p>The paypoint entry name.</p>
+         * <p>The paypoint entryname.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "paypointEntryName", nulls = Nulls.SKIP)
         public _FinalStage paypointEntryName(Optional<String> paypointEntryName) {
             this.paypointEntryName = paypointEntryName;
+            return this;
+        }
+
+        /**
+         * <p>Number of records in the batch.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchRecords(Nullable<Integer> batchRecords) {
+            if (batchRecords.isNull()) {
+                this.batchRecords = null;
+            } else if (batchRecords.isEmpty()) {
+                this.batchRecords = Optional.empty();
+            } else {
+                this.batchRecords = Optional.of(batchRecords.get());
+            }
             return this;
         }
 
@@ -1221,6 +1630,22 @@ public final class Transfer {
         @JsonSetter(value = "batchRecords", nulls = Nulls.SKIP)
         public _FinalStage batchRecords(Optional<Integer> batchRecords) {
             this.batchRecords = batchRecords;
+            return this;
+        }
+
+        /**
+         * <p>The currency of the batch, either USD or CAD.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchCurrency(Nullable<String> batchCurrency) {
+            if (batchCurrency.isNull()) {
+                this.batchCurrency = null;
+            } else if (batchCurrency.isEmpty()) {
+                this.batchCurrency = Optional.empty();
+            } else {
+                this.batchCurrency = Optional.of(batchCurrency.get());
+            }
             return this;
         }
 
@@ -1260,6 +1685,7 @@ public final class Transfer {
                     paypointLogo,
                     parentOrgName,
                     parentOrgId,
+                    parentOrgEntryName,
                     parentOrgLogo,
                     externalPaypointId,
                     bankAccount,

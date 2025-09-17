@@ -17,7 +17,7 @@ import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.chargebacks.requests.ResponseChargeBack;
 import io.github.payabli.api.resources.chargebacks.types.AddResponseResponse;
-import io.github.payabli.api.types.ChargebackQueryRecords;
+import io.github.payabli.api.resources.chargebacks.types.ChargebackQueryRecords;
 import io.github.payabli.api.types.PayabliApiResponse;
 import java.io.IOException;
 import java.util.HashMap;

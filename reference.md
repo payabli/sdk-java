@@ -11593,6 +11593,266 @@ client.notification().getReportFile(1000000L);
 </dl>
 </details>
 
+## Notificationlogs
+<details><summary><code>client.notificationlogs.searchNotificationLogs(request) -> List&lt;NotificationLog&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search notification logs with filtering and pagination.
+  - Start date and end date cannot be more than 30 days apart
+  - Either `orgId` or `paypointId` must be provided
+
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().searchNotificationLogs(
+    SearchNotificationLogsRequest
+        .builder()
+        .body(
+            NotificationLogSearchRequest
+                .builder()
+                .startDate(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
+                .endDate(OffsetDateTime.parse("2024-01-31T23:59:59Z"))
+                .orgId(12345L)
+                .notificationEvent("ActivatedMerchant")
+                .succeeded(true)
+                .build()
+        )
+        .pageSize(20)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**pageSize:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**skip:** `Optional<Integer>` — The number of records to skip before starting to collect the result set. 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `NotificationLogSearchRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notificationlogs.getNotificationLog(uuid) -> NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get detailed information for a specific notification log entry.
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The notification log entry.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notificationlogs.retryNotificationLog(uuid) -> NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending a specific notification.
+
+**Permissions:** notifications_create
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().retryNotificationLog(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — Unique id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notificationlogs.bulkRetryNotificationLogs(request)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending multiple notifications (maximum 50 IDs).
+This is an async process, so use the search endpoint again to check the notification status.
+
+This endpoint requires the `notifications_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().bulkRetryNotificationLogs(
+    Arrays.asList(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"), UUID.fromString("550e8400-e29b-41d4-a716-446655440001"), UUID.fromString("550e8400-e29b-41d4-a716-446655440002"))
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `List<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Ocr
 <details><summary><code>client.ocr.ocrDocumentForm(typeResult, request) -> PayabliApiResponseOcr</code></summary>
 <dl>
@@ -19673,9 +19933,7 @@ List of field names accepted:
   - `cardToken` (ct, nct, eq, ne)  
   - `lastFour` (ct, nct, eq, ne)  
   - `expirationDate` (ct, nct, eq, ne)  
-  - `mcc` (ct, nct, eq, ne)  
   - `payoutId` (ct, nct, eq, ne, in, nin)  
-  - `customerId` (ct, nct, eq, ne, in, nin)  
   - `vendorId` (ct, nct, eq, ne, in, nin)  
   - `miscData1` (ct, nct, eq, ne)  
   - `miscData2` (ct, nct, eq, ne)  
@@ -19824,9 +20082,7 @@ List of field names accepted:
   - `cardToken` (ct, nct, eq, ne)  
   - `lastFour` (ct, nct, eq, ne)  
   - `expirationDate` (ct, nct, eq, ne)  
-  - `mcc` (ct, nct, eq, ne)  
   - `payoutId` (ct, nct, eq, ne, in, nin)  
-  - `customerId` (ct, nct, eq, ne, in, nin)  
   - `vendorId` (ct, nct, eq, ne, in, nin)  
   - `miscData1` (ct, nct, eq, ne)  
   - `miscData2` (ct, nct, eq, ne)  

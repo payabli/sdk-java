@@ -16,22 +16,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MigratePaypointResponse.Builder.class)
 public final class MigratePaypointResponse {
-    private final Optional<Boolean> isSuccess;
+    private final boolean isSuccess;
 
     private final Optional<Integer> responseCode;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private MigratePaypointResponse(
-            Optional<Boolean> isSuccess,
+            boolean isSuccess,
             Optional<Integer> responseCode,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseCode = responseCode;
@@ -40,7 +41,7 @@ public final class MigratePaypointResponse {
     }
 
     @JsonProperty("isSuccess")
-    public Optional<Boolean> getIsSuccess() {
+    public boolean getIsSuccess() {
         return isSuccess;
     }
 
@@ -50,7 +51,7 @@ public final class MigratePaypointResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -66,7 +67,7 @@ public final class MigratePaypointResponse {
     }
 
     private boolean equalTo(MigratePaypointResponse other) {
-        return isSuccess.equals(other.isSuccess)
+        return isSuccess == other.isSuccess
                 && responseCode.equals(other.responseCode)
                 && responseText.equals(other.responseText);
     }
@@ -81,23 +82,42 @@ public final class MigratePaypointResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IsSuccessStage builder() {
         return new Builder();
     }
 
+    public interface IsSuccessStage {
+        ResponseTextStage isSuccess(boolean isSuccess);
+
+        Builder from(MigratePaypointResponse other);
+    }
+
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+    }
+
+    public interface _FinalStage {
+        MigratePaypointResponse build();
+
+        _FinalStage responseCode(Optional<Integer> responseCode);
+
+        _FinalStage responseCode(Integer responseCode);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements IsSuccessStage, ResponseTextStage, _FinalStage {
+        private boolean isSuccess;
+
+        private String responseText;
 
         private Optional<Integer> responseCode = Optional.empty();
-
-        private Optional<String> responseText = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(MigratePaypointResponse other) {
             isSuccess(other.getIsSuccess());
             responseCode(other.getResponseCode());
@@ -105,39 +125,34 @@ public final class MigratePaypointResponse {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
+        @java.lang.Override
+        @JsonSetter("isSuccess")
+        public ResponseTextStage isSuccess(boolean isSuccess) {
             this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
-        public Builder responseCode(Optional<Integer> responseCode) {
-            this.responseCode = responseCode;
-            return this;
-        }
-
-        public Builder responseCode(Integer responseCode) {
+        @java.lang.Override
+        public _FinalStage responseCode(Integer responseCode) {
             this.responseCode = Optional.ofNullable(responseCode);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
+        public _FinalStage responseCode(Optional<Integer> responseCode) {
+            this.responseCode = responseCode;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
+        @java.lang.Override
         public MigratePaypointResponse build() {
             return new MigratePaypointResponse(isSuccess, responseCode, responseText, additionalProperties);
         }

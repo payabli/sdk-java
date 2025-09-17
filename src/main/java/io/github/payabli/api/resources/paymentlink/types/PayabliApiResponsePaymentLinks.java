@@ -16,22 +16,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponsePaymentLinks.Builder.class)
 public final class PayabliApiResponsePaymentLinks {
-    private final Optional<Boolean> isSuccess;
+    private final boolean isSuccess;
 
     private final Optional<String> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private PayabliApiResponsePaymentLinks(
-            Optional<Boolean> isSuccess,
+            boolean isSuccess,
             Optional<String> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseData = responseData;
@@ -40,7 +41,7 @@ public final class PayabliApiResponsePaymentLinks {
     }
 
     @JsonProperty("isSuccess")
-    public Optional<Boolean> getIsSuccess() {
+    public boolean getIsSuccess() {
         return isSuccess;
     }
 
@@ -53,7 +54,7 @@ public final class PayabliApiResponsePaymentLinks {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -69,7 +70,7 @@ public final class PayabliApiResponsePaymentLinks {
     }
 
     private boolean equalTo(PayabliApiResponsePaymentLinks other) {
-        return isSuccess.equals(other.isSuccess)
+        return isSuccess == other.isSuccess
                 && responseData.equals(other.responseData)
                 && responseText.equals(other.responseText);
     }
@@ -84,23 +85,45 @@ public final class PayabliApiResponsePaymentLinks {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IsSuccessStage builder() {
         return new Builder();
     }
 
+    public interface IsSuccessStage {
+        ResponseTextStage isSuccess(boolean isSuccess);
+
+        Builder from(PayabliApiResponsePaymentLinks other);
+    }
+
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponsePaymentLinks build();
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the payment link identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         */
+        _FinalStage responseData(Optional<String> responseData);
+
+        _FinalStage responseData(String responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements IsSuccessStage, ResponseTextStage, _FinalStage {
+        private boolean isSuccess;
+
+        private String responseText;
 
         private Optional<String> responseData = Optional.empty();
-
-        private Optional<String> responseText = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponsePaymentLinks other) {
             isSuccess(other.getIsSuccess());
             responseData(other.getResponseData());
@@ -108,42 +131,41 @@ public final class PayabliApiResponsePaymentLinks {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
+        @java.lang.Override
+        @JsonSetter("isSuccess")
+        public ResponseTextStage isSuccess(boolean isSuccess) {
             this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
+            return this;
+        }
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the payment link identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(String responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         /**
          * <p>If <code>isSuccess</code> = true, this contains the payment link identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<String> responseData) {
+        public _FinalStage responseData(Optional<String> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(String responseData) {
-            this.responseData = Optional.ofNullable(responseData);
-            return this;
-        }
-
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
-            return this;
-        }
-
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
+        @java.lang.Override
         public PayabliApiResponsePaymentLinks build() {
             return new PayabliApiResponsePaymentLinks(isSuccess, responseData, responseText, additionalProperties);
         }

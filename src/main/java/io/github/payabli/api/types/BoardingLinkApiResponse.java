@@ -16,18 +16,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BoardingLinkApiResponse.Builder.class)
 public final class BoardingLinkApiResponse {
     private final Optional<String> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private BoardingLinkApiResponse(
-            Optional<String> responseData, Optional<String> responseText, Map<String, Object> additionalProperties) {
+            Optional<String> responseData, String responseText, Map<String, Object> additionalProperties) {
         this.responseData = responseData;
         this.responseText = responseText;
         this.additionalProperties = additionalProperties;
@@ -43,7 +44,7 @@ public final class BoardingLinkApiResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -72,24 +73,61 @@ public final class BoardingLinkApiResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> responseData = Optional.empty();
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
 
-        private Optional<String> responseText = Optional.empty();
+        Builder from(BoardingLinkApiResponse other);
+    }
+
+    public interface _FinalStage {
+        BoardingLinkApiResponse build();
+
+        /**
+         * <p>Reference name for boarding link (if responseText = Success) or
+         * List of empty fields separated by comma (if responseText = Fail)</p>
+         */
+        _FinalStage responseData(Optional<String> responseData);
+
+        _FinalStage responseData(String responseData);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
+
+        private Optional<String> responseData = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(BoardingLinkApiResponse other) {
             responseData(other.getResponseData());
             responseText(other.getResponseText());
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Reference name for boarding link (if responseText = Success) or
+         * List of empty fields separated by comma (if responseText = Fail)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(String responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
@@ -97,28 +135,14 @@ public final class BoardingLinkApiResponse {
          * <p>Reference name for boarding link (if responseText = Success) or
          * List of empty fields separated by comma (if responseText = Fail)</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<String> responseData) {
+        public _FinalStage responseData(Optional<String> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(String responseData) {
-            this.responseData = Optional.ofNullable(responseData);
-            return this;
-        }
-
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
-            return this;
-        }
-
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
+        @java.lang.Override
         public BoardingLinkApiResponse build() {
             return new BoardingLinkApiResponse(responseData, responseText, additionalProperties);
         }

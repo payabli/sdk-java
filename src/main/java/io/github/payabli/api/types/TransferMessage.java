@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,43 +62,115 @@ public final class TransferMessage {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("Id")
+    @JsonIgnore
     public Optional<Integer> getId() {
+        if (id == null) {
+            return Optional.empty();
+        }
         return id;
     }
 
-    @JsonProperty("RoomId")
+    @JsonIgnore
     public Optional<Integer> getRoomId() {
+        if (roomId == null) {
+            return Optional.empty();
+        }
         return roomId;
     }
 
-    @JsonProperty("UserId")
+    @JsonIgnore
     public Optional<Integer> getUserId() {
+        if (userId == null) {
+            return Optional.empty();
+        }
         return userId;
     }
 
-    @JsonProperty("UserName")
+    @JsonIgnore
     public Optional<String> getUserName() {
+        if (userName == null) {
+            return Optional.empty();
+        }
         return userName;
     }
 
-    @JsonProperty("Content")
+    @JsonIgnore
     public Optional<String> getContent() {
+        if (content == null) {
+            return Optional.empty();
+        }
         return content;
     }
 
-    @JsonProperty("CreatedAt")
+    @JsonIgnore
     public Optional<String> getCreatedAt() {
+        if (createdAt == null) {
+            return Optional.empty();
+        }
         return createdAt;
     }
 
-    @JsonProperty("MessageType")
+    @JsonIgnore
     public Optional<Integer> getMessageType() {
+        if (messageType == null) {
+            return Optional.empty();
+        }
         return messageType;
     }
 
-    @JsonProperty("MessageProperties")
+    @JsonIgnore
     public Optional<TransferMessageProperties> getMessageProperties() {
+        if (messageProperties == null) {
+            return Optional.empty();
+        }
+        return messageProperties;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Id")
+    private Optional<Integer> _getId() {
+        return id;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("RoomId")
+    private Optional<Integer> _getRoomId() {
+        return roomId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("UserId")
+    private Optional<Integer> _getUserId() {
+        return userId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("UserName")
+    private Optional<String> _getUserName() {
+        return userName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Content")
+    private Optional<String> _getContent() {
+        return content;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("CreatedAt")
+    private Optional<String> _getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("MessageType")
+    private Optional<Integer> _getMessageType() {
+        return messageType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("MessageProperties")
+    private Optional<TransferMessageProperties> _getMessageProperties() {
         return messageProperties;
     }
 
@@ -189,6 +264,17 @@ public final class TransferMessage {
             return this;
         }
 
+        public Builder id(Nullable<Integer> id) {
+            if (id.isNull()) {
+                this.id = null;
+            } else if (id.isEmpty()) {
+                this.id = Optional.empty();
+            } else {
+                this.id = Optional.of(id.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "RoomId", nulls = Nulls.SKIP)
         public Builder roomId(Optional<Integer> roomId) {
             this.roomId = roomId;
@@ -197,6 +283,17 @@ public final class TransferMessage {
 
         public Builder roomId(Integer roomId) {
             this.roomId = Optional.ofNullable(roomId);
+            return this;
+        }
+
+        public Builder roomId(Nullable<Integer> roomId) {
+            if (roomId.isNull()) {
+                this.roomId = null;
+            } else if (roomId.isEmpty()) {
+                this.roomId = Optional.empty();
+            } else {
+                this.roomId = Optional.of(roomId.get());
+            }
             return this;
         }
 
@@ -211,6 +308,17 @@ public final class TransferMessage {
             return this;
         }
 
+        public Builder userId(Nullable<Integer> userId) {
+            if (userId.isNull()) {
+                this.userId = null;
+            } else if (userId.isEmpty()) {
+                this.userId = Optional.empty();
+            } else {
+                this.userId = Optional.of(userId.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "UserName", nulls = Nulls.SKIP)
         public Builder userName(Optional<String> userName) {
             this.userName = userName;
@@ -219,6 +327,17 @@ public final class TransferMessage {
 
         public Builder userName(String userName) {
             this.userName = Optional.ofNullable(userName);
+            return this;
+        }
+
+        public Builder userName(Nullable<String> userName) {
+            if (userName.isNull()) {
+                this.userName = null;
+            } else if (userName.isEmpty()) {
+                this.userName = Optional.empty();
+            } else {
+                this.userName = Optional.of(userName.get());
+            }
             return this;
         }
 
@@ -233,6 +352,17 @@ public final class TransferMessage {
             return this;
         }
 
+        public Builder content(Nullable<String> content) {
+            if (content.isNull()) {
+                this.content = null;
+            } else if (content.isEmpty()) {
+                this.content = Optional.empty();
+            } else {
+                this.content = Optional.of(content.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "CreatedAt", nulls = Nulls.SKIP)
         public Builder createdAt(Optional<String> createdAt) {
             this.createdAt = createdAt;
@@ -241,6 +371,17 @@ public final class TransferMessage {
 
         public Builder createdAt(String createdAt) {
             this.createdAt = Optional.ofNullable(createdAt);
+            return this;
+        }
+
+        public Builder createdAt(Nullable<String> createdAt) {
+            if (createdAt.isNull()) {
+                this.createdAt = null;
+            } else if (createdAt.isEmpty()) {
+                this.createdAt = Optional.empty();
+            } else {
+                this.createdAt = Optional.of(createdAt.get());
+            }
             return this;
         }
 
@@ -255,6 +396,17 @@ public final class TransferMessage {
             return this;
         }
 
+        public Builder messageType(Nullable<Integer> messageType) {
+            if (messageType.isNull()) {
+                this.messageType = null;
+            } else if (messageType.isEmpty()) {
+                this.messageType = Optional.empty();
+            } else {
+                this.messageType = Optional.of(messageType.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "MessageProperties", nulls = Nulls.SKIP)
         public Builder messageProperties(Optional<TransferMessageProperties> messageProperties) {
             this.messageProperties = messageProperties;
@@ -263,6 +415,17 @@ public final class TransferMessage {
 
         public Builder messageProperties(TransferMessageProperties messageProperties) {
             this.messageProperties = Optional.ofNullable(messageProperties);
+            return this;
+        }
+
+        public Builder messageProperties(Nullable<TransferMessageProperties> messageProperties) {
+            if (messageProperties.isNull()) {
+                this.messageProperties = null;
+            } else if (messageProperties.isEmpty()) {
+                this.messageProperties = Optional.empty();
+            } else {
+                this.messageProperties = Optional.of(messageProperties.get());
+            }
             return this;
         }
 

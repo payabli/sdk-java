@@ -73,6 +73,8 @@ public final class VCardRecord {
 
     private final Optional<String> externalPaypointId;
 
+    private final Optional<Integer> paypointId;
+
     private final Map<String, Object> additionalProperties;
 
     private VCardRecord(
@@ -102,6 +104,7 @@ public final class VCardRecord {
             Optional<String> paypointLegalname,
             Optional<String> paypointEntryname,
             Optional<String> externalPaypointId,
+            Optional<Integer> paypointId,
             Map<String, Object> additionalProperties) {
         this.vcardSent = vcardSent;
         this.cardToken = cardToken;
@@ -129,6 +132,7 @@ public final class VCardRecord {
         this.paypointLegalname = paypointLegalname;
         this.paypointEntryname = paypointEntryname;
         this.externalPaypointId = externalPaypointId;
+        this.paypointId = paypointId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -301,6 +305,14 @@ public final class VCardRecord {
         return externalPaypointId;
     }
 
+    /**
+     * @return The paypoint's unique identifier.
+     */
+    @JsonProperty("paypointId")
+    public Optional<Integer> getPaypointId() {
+        return paypointId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -338,7 +350,8 @@ public final class VCardRecord {
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointLegalname.equals(other.paypointLegalname)
                 && paypointEntryname.equals(other.paypointEntryname)
-                && externalPaypointId.equals(other.externalPaypointId);
+                && externalPaypointId.equals(other.externalPaypointId)
+                && paypointId.equals(other.paypointId);
     }
 
     @java.lang.Override
@@ -369,7 +382,8 @@ public final class VCardRecord {
                 this.paypointDbaname,
                 this.paypointLegalname,
                 this.paypointEntryname,
-                this.externalPaypointId);
+                this.externalPaypointId,
+                this.paypointId);
     }
 
     @java.lang.Override
@@ -435,6 +449,8 @@ public final class VCardRecord {
 
         private Optional<String> externalPaypointId = Optional.empty();
 
+        private Optional<Integer> paypointId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -467,6 +483,7 @@ public final class VCardRecord {
             paypointLegalname(other.getPaypointLegalname());
             paypointEntryname(other.getPaypointEntryname());
             externalPaypointId(other.getExternalPaypointId());
+            paypointId(other.getPaypointId());
             return this;
         }
 
@@ -795,6 +812,20 @@ public final class VCardRecord {
             return this;
         }
 
+        /**
+         * <p>The paypoint's unique identifier.</p>
+         */
+        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
+        public Builder paypointId(Optional<Integer> paypointId) {
+            this.paypointId = paypointId;
+            return this;
+        }
+
+        public Builder paypointId(Integer paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
         public VCardRecord build() {
             return new VCardRecord(
                     vcardSent,
@@ -823,6 +854,7 @@ public final class VCardRecord {
                     paypointLegalname,
                     paypointEntryname,
                     externalPaypointId,
+                    paypointId,
                     additionalProperties);
         }
     }

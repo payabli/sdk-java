@@ -86,9 +86,7 @@ public final class ListVcardsOrgRequest {
      * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
      * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
      * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
-     * <li><code>mcc</code> (ct, nct, eq, ne)</li>
      * <li><code>payoutId</code> (ct, nct, eq, ne, in, nin)</li>
-     * <li><code>customerId</code> (ct, nct, eq, ne, in, nin)</li>
      * <li><code>vendorId</code> (ct, nct, eq, ne, in, nin)</li>
      * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
      * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
@@ -243,9 +241,7 @@ public final class ListVcardsOrgRequest {
          * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
          * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
          * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
-         * <li><code>mcc</code> (ct, nct, eq, ne)</li>
          * <li><code>payoutId</code> (ct, nct, eq, ne, in, nin)</li>
-         * <li><code>customerId</code> (ct, nct, eq, ne, in, nin)</li>
          * <li><code>vendorId</code> (ct, nct, eq, ne, in, nin)</li>
          * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
          * <li><code>miscData2</code> (ct, nct, eq, ne)</li>

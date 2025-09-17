@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponseUserMfa.Builder.class)
@@ -28,7 +29,7 @@ public final class PayabliApiResponseUserMfa {
 
     private final Optional<Responsedatanonobject> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
@@ -37,7 +38,7 @@ public final class PayabliApiResponseUserMfa {
             Optional<Boolean> isSuccess,
             Optional<Integer> remaining,
             Optional<Responsedatanonobject> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.inactiveTokenTime = inactiveTokenTime;
         this.isSuccess = isSuccess;
@@ -68,7 +69,7 @@ public final class PayabliApiResponseUserMfa {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -102,27 +103,54 @@ public final class PayabliApiResponseUserMfa {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+
+        Builder from(PayabliApiResponseUserMfa other);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponseUserMfa build();
+
+        _FinalStage inactiveTokenTime(Optional<Integer> inactiveTokenTime);
+
+        _FinalStage inactiveTokenTime(Integer inactiveTokenTime);
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage remaining(Optional<Integer> remaining);
+
+        _FinalStage remaining(Integer remaining);
+
+        _FinalStage responseData(Optional<Responsedatanonobject> responseData);
+
+        _FinalStage responseData(Responsedatanonobject responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Integer> inactiveTokenTime = Optional.empty();
-
-        private Optional<Boolean> isSuccess = Optional.empty();
-
-        private Optional<Integer> remaining = Optional.empty();
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<Responsedatanonobject> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<Integer> remaining = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
+
+        private Optional<Integer> inactiveTokenTime = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponseUserMfa other) {
             inactiveTokenTime(other.getInactiveTokenTime());
             isSuccess(other.getIsSuccess());
@@ -132,61 +160,66 @@ public final class PayabliApiResponseUserMfa {
             return this;
         }
 
-        @JsonSetter(value = "inactiveTokenTime", nulls = Nulls.SKIP)
-        public Builder inactiveTokenTime(Optional<Integer> inactiveTokenTime) {
-            this.inactiveTokenTime = inactiveTokenTime;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder inactiveTokenTime(Integer inactiveTokenTime) {
-            this.inactiveTokenTime = Optional.ofNullable(inactiveTokenTime);
-            return this;
-        }
-
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
-            return this;
-        }
-
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "remaining", nulls = Nulls.SKIP)
-        public Builder remaining(Optional<Integer> remaining) {
-            this.remaining = remaining;
-            return this;
-        }
-
-        public Builder remaining(Integer remaining) {
-            this.remaining = Optional.ofNullable(remaining);
-            return this;
-        }
-
-        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<Responsedatanonobject> responseData) {
-            this.responseData = responseData;
-            return this;
-        }
-
-        public Builder responseData(Responsedatanonobject responseData) {
+        @java.lang.Override
+        public _FinalStage responseData(Responsedatanonobject responseData) {
             this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
+        public _FinalStage responseData(Optional<Responsedatanonobject> responseData) {
+            this.responseData = responseData;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        @java.lang.Override
+        public _FinalStage remaining(Integer remaining) {
+            this.remaining = Optional.ofNullable(remaining);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "remaining", nulls = Nulls.SKIP)
+        public _FinalStage remaining(Optional<Integer> remaining) {
+            this.remaining = remaining;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage inactiveTokenTime(Integer inactiveTokenTime) {
+            this.inactiveTokenTime = Optional.ofNullable(inactiveTokenTime);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "inactiveTokenTime", nulls = Nulls.SKIP)
+        public _FinalStage inactiveTokenTime(Optional<Integer> inactiveTokenTime) {
+            this.inactiveTokenTime = inactiveTokenTime;
+            return this;
+        }
+
+        @java.lang.Override
         public PayabliApiResponseUserMfa build() {
             return new PayabliApiResponseUserMfa(
                     inactiveTokenTime, isSuccess, remaining, responseData, responseText, additionalProperties);

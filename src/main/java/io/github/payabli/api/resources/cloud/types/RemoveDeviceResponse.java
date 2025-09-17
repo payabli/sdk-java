@@ -17,13 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RemoveDeviceResponse.Builder.class)
 public final class RemoveDeviceResponse implements IPayabliApiResponseGeneric2Part {
     private final Optional<Boolean> isSuccess;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Optional<String> pageIdentifier;
 
@@ -33,7 +34,7 @@ public final class RemoveDeviceResponse implements IPayabliApiResponseGeneric2Pa
 
     private RemoveDeviceResponse(
             Optional<Boolean> isSuccess,
-            Optional<String> responseText,
+            String responseText,
             Optional<String> pageIdentifier,
             Optional<String> responseData,
             Map<String, Object> additionalProperties) {
@@ -52,7 +53,7 @@ public final class RemoveDeviceResponse implements IPayabliApiResponseGeneric2Pa
 
     @JsonProperty("responseText")
     @java.lang.Override
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -98,25 +99,52 @@ public final class RemoveDeviceResponse implements IPayabliApiResponseGeneric2Pa
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
 
-        private Optional<String> responseText = Optional.empty();
+        Builder from(RemoveDeviceResponse other);
+    }
+
+    public interface _FinalStage {
+        RemoveDeviceResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the device identifier.
+         * If <code>isSuccess</code> = false, this contains the reason for the error.</p>
+         */
+        _FinalStage responseData(Optional<String> responseData);
+
+        _FinalStage responseData(String responseData);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
+
+        private Optional<String> responseData = Optional.empty();
 
         private Optional<String> pageIdentifier = Optional.empty();
 
-        private Optional<String> responseData = Optional.empty();
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(RemoveDeviceResponse other) {
             isSuccess(other.getIsSuccess());
             responseText(other.getResponseText());
@@ -125,36 +153,21 @@ public final class RemoveDeviceResponse implements IPayabliApiResponseGeneric2Pa
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
-            return this;
-        }
-
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
-            return this;
-        }
-
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the device identifier.
+         * If <code>isSuccess</code> = false, this contains the reason for the error.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(String responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
@@ -162,17 +175,40 @@ public final class RemoveDeviceResponse implements IPayabliApiResponseGeneric2Pa
          * <p>If <code>isSuccess</code> = true, this contains the device identifier.
          * If <code>isSuccess</code> = false, this contains the reason for the error.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<String> responseData) {
+        public _FinalStage responseData(Optional<String> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(String responseData) {
-            this.responseData = Optional.ofNullable(responseData);
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public RemoveDeviceResponse build() {
             return new RemoveDeviceResponse(
                     isSuccess, responseText, pageIdentifier, responseData, additionalProperties);

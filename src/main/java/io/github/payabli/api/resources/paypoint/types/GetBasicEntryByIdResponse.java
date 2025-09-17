@@ -17,11 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetBasicEntryByIdResponse.Builder.class)
 public final class GetBasicEntryByIdResponse {
-    private final Optional<Boolean> isSuccess;
+    private final boolean isSuccess;
 
     private final Optional<String> pageIdentifier;
 
@@ -29,16 +30,16 @@ public final class GetBasicEntryByIdResponse {
 
     private final Optional<PaypointEntryConfig> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private GetBasicEntryByIdResponse(
-            Optional<Boolean> isSuccess,
+            boolean isSuccess,
             Optional<String> pageIdentifier,
             Optional<Integer> responseCode,
             Optional<PaypointEntryConfig> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.pageIdentifier = pageIdentifier;
@@ -49,7 +50,7 @@ public final class GetBasicEntryByIdResponse {
     }
 
     @JsonProperty("isSuccess")
-    public Optional<Boolean> getIsSuccess() {
+    public boolean getIsSuccess() {
         return isSuccess;
     }
 
@@ -69,7 +70,7 @@ public final class GetBasicEntryByIdResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -85,7 +86,7 @@ public final class GetBasicEntryByIdResponse {
     }
 
     private boolean equalTo(GetBasicEntryByIdResponse other) {
-        return isSuccess.equals(other.isSuccess)
+        return isSuccess == other.isSuccess
                 && pageIdentifier.equals(other.pageIdentifier)
                 && responseCode.equals(other.responseCode)
                 && responseData.equals(other.responseData)
@@ -103,27 +104,54 @@ public final class GetBasicEntryByIdResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IsSuccessStage builder() {
         return new Builder();
     }
 
+    public interface IsSuccessStage {
+        ResponseTextStage isSuccess(boolean isSuccess);
+
+        Builder from(GetBasicEntryByIdResponse other);
+    }
+
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+    }
+
+    public interface _FinalStage {
+        GetBasicEntryByIdResponse build();
+
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        _FinalStage responseCode(Optional<Integer> responseCode);
+
+        _FinalStage responseCode(Integer responseCode);
+
+        _FinalStage responseData(Optional<PaypointEntryConfig> responseData);
+
+        _FinalStage responseData(PaypointEntryConfig responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements IsSuccessStage, ResponseTextStage, _FinalStage {
+        private boolean isSuccess;
 
-        private Optional<String> pageIdentifier = Optional.empty();
-
-        private Optional<Integer> responseCode = Optional.empty();
+        private String responseText;
 
         private Optional<PaypointEntryConfig> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<Integer> responseCode = Optional.empty();
+
+        private Optional<String> pageIdentifier = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(GetBasicEntryByIdResponse other) {
             isSuccess(other.getIsSuccess());
             pageIdentifier(other.getPageIdentifier());
@@ -133,61 +161,60 @@ public final class GetBasicEntryByIdResponse {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
+        @java.lang.Override
+        @JsonSetter("isSuccess")
+        public ResponseTextStage isSuccess(boolean isSuccess) {
             this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
-            return this;
-        }
-
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
-            return this;
-        }
-
-        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
-        public Builder responseCode(Optional<Integer> responseCode) {
-            this.responseCode = responseCode;
-            return this;
-        }
-
-        public Builder responseCode(Integer responseCode) {
-            this.responseCode = Optional.ofNullable(responseCode);
-            return this;
-        }
-
-        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<PaypointEntryConfig> responseData) {
-            this.responseData = responseData;
-            return this;
-        }
-
-        public Builder responseData(PaypointEntryConfig responseData) {
+        @java.lang.Override
+        public _FinalStage responseData(PaypointEntryConfig responseData) {
             this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
+        public _FinalStage responseData(Optional<PaypointEntryConfig> responseData) {
+            this.responseData = responseData;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        @java.lang.Override
+        public _FinalStage responseCode(Integer responseCode) {
+            this.responseCode = Optional.ofNullable(responseCode);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
+        public _FinalStage responseCode(Optional<Integer> responseCode) {
+            this.responseCode = responseCode;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
+            return this;
+        }
+
+        @java.lang.Override
         public GetBasicEntryByIdResponse build() {
             return new GetBasicEntryByIdResponse(
                     isSuccess, pageIdentifier, responseCode, responseData, responseText, additionalProperties);

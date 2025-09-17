@@ -16,18 +16,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AuthResetUserResponse.Builder.class)
 public final class AuthResetUserResponse {
     private final Optional<Boolean> isSuccess;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private AuthResetUserResponse(
-            Optional<Boolean> isSuccess, Optional<String> responseText, Map<String, Object> additionalProperties) {
+            Optional<Boolean> isSuccess, String responseText, Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseText = responseText;
         this.additionalProperties = additionalProperties;
@@ -39,7 +40,7 @@ public final class AuthResetUserResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -68,49 +69,63 @@ public final class AuthResetUserResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
 
-        private Optional<String> responseText = Optional.empty();
+        Builder from(AuthResetUserResponse other);
+    }
+
+    public interface _FinalStage {
+        AuthResetUserResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(AuthResetUserResponse other) {
             isSuccess(other.getIsSuccess());
             responseText(other.getResponseText());
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
             this.isSuccess = Optional.ofNullable(isSuccess);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
+        @java.lang.Override
         public AuthResetUserResponse build() {
             return new AuthResetUserResponse(isSuccess, responseText, additionalProperties);
         }

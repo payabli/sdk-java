@@ -16,24 +16,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponseOcr.Builder.class)
 public final class PayabliApiResponseOcr {
-    private final Optional<Boolean> isSuccess;
+    private final boolean isSuccess;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
-    private final Optional<Integer> responseCode;
+    private final int responseCode;
 
     private final Optional<OcrResponseData> responseData;
 
     private final Map<String, Object> additionalProperties;
 
     private PayabliApiResponseOcr(
-            Optional<Boolean> isSuccess,
-            Optional<String> responseText,
-            Optional<Integer> responseCode,
+            boolean isSuccess,
+            String responseText,
+            int responseCode,
             Optional<OcrResponseData> responseData,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
@@ -44,17 +45,17 @@ public final class PayabliApiResponseOcr {
     }
 
     @JsonProperty("isSuccess")
-    public Optional<Boolean> getIsSuccess() {
+    public boolean getIsSuccess() {
         return isSuccess;
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
     @JsonProperty("responseCode")
-    public Optional<Integer> getResponseCode() {
+    public int getResponseCode() {
         return responseCode;
     }
 
@@ -78,9 +79,9 @@ public final class PayabliApiResponseOcr {
     }
 
     private boolean equalTo(PayabliApiResponseOcr other) {
-        return isSuccess.equals(other.isSuccess)
+        return isSuccess == other.isSuccess
                 && responseText.equals(other.responseText)
-                && responseCode.equals(other.responseCode)
+                && responseCode == other.responseCode
                 && responseData.equals(other.responseData);
     }
 
@@ -94,17 +95,42 @@ public final class PayabliApiResponseOcr {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static IsSuccessStage builder() {
         return new Builder();
     }
 
+    public interface IsSuccessStage {
+        ResponseTextStage isSuccess(boolean isSuccess);
+
+        Builder from(PayabliApiResponseOcr other);
+    }
+
+    public interface ResponseTextStage {
+        ResponseCodeStage responseText(@NotNull String responseText);
+    }
+
+    public interface ResponseCodeStage {
+        _FinalStage responseCode(int responseCode);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponseOcr build();
+
+        /**
+         * <p>Details of the OCR processing result</p>
+         */
+        _FinalStage responseData(Optional<OcrResponseData> responseData);
+
+        _FinalStage responseData(OcrResponseData responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements IsSuccessStage, ResponseTextStage, ResponseCodeStage, _FinalStage {
+        private boolean isSuccess;
 
-        private Optional<String> responseText = Optional.empty();
+        private String responseText;
 
-        private Optional<Integer> responseCode = Optional.empty();
+        private int responseCode;
 
         private Optional<OcrResponseData> responseData = Optional.empty();
 
@@ -113,6 +139,7 @@ public final class PayabliApiResponseOcr {
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponseOcr other) {
             isSuccess(other.getIsSuccess());
             responseText(other.getResponseText());
@@ -121,53 +148,48 @@ public final class PayabliApiResponseOcr {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
+        @java.lang.Override
+        @JsonSetter("isSuccess")
+        public ResponseTextStage isSuccess(boolean isSuccess) {
             this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public ResponseCodeStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
-            return this;
-        }
-
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
-        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
-        public Builder responseCode(Optional<Integer> responseCode) {
+        @java.lang.Override
+        @JsonSetter("responseCode")
+        public _FinalStage responseCode(int responseCode) {
             this.responseCode = responseCode;
             return this;
         }
 
-        public Builder responseCode(Integer responseCode) {
-            this.responseCode = Optional.ofNullable(responseCode);
+        /**
+         * <p>Details of the OCR processing result</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(OcrResponseData responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         /**
          * <p>Details of the OCR processing result</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<OcrResponseData> responseData) {
+        public _FinalStage responseData(Optional<OcrResponseData> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(OcrResponseData responseData) {
-            this.responseData = Optional.ofNullable(responseData);
-            return this;
-        }
-
+        @java.lang.Override
         public PayabliApiResponseOcr build() {
             return new PayabliApiResponseOcr(isSuccess, responseText, responseCode, responseData, additionalProperties);
         }

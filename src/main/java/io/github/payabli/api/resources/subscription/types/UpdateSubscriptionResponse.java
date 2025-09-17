@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UpdateSubscriptionResponse.Builder.class)
@@ -24,7 +25,7 @@ public final class UpdateSubscriptionResponse {
 
     private final Optional<String> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Optional<Long> customerId;
 
@@ -33,7 +34,7 @@ public final class UpdateSubscriptionResponse {
     private UpdateSubscriptionResponse(
             Optional<Boolean> isSuccess,
             Optional<String> responseData,
-            Optional<String> responseText,
+            String responseText,
             Optional<Long> customerId,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
@@ -58,7 +59,7 @@ public final class UpdateSubscriptionResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -95,25 +96,52 @@ public final class UpdateSubscriptionResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+
+        Builder from(UpdateSubscriptionResponse other);
+    }
+
+    public interface _FinalStage {
+        UpdateSubscriptionResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the identifier of the subscription, and sometimes extra information, depending on what was updated.</p>
+         * <p>If <code>isSuccess</code> = false, this contains the reason for the failure.</p>
+         */
+        _FinalStage responseData(Optional<String> responseData);
+
+        _FinalStage responseData(String responseData);
+
+        _FinalStage customerId(Optional<Long> customerId);
+
+        _FinalStage customerId(Long customerId);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
+
+        private Optional<Long> customerId = Optional.empty();
 
         private Optional<String> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
-
-        private Optional<Long> customerId = Optional.empty();
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(UpdateSubscriptionResponse other) {
             isSuccess(other.getIsSuccess());
             responseData(other.getResponseData());
@@ -122,14 +150,34 @@ public final class UpdateSubscriptionResponse {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
+        @java.lang.Override
+        public _FinalStage customerId(Long customerId) {
+            this.customerId = Optional.ofNullable(customerId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
+        public _FinalStage customerId(Optional<Long> customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        /**
+         * <p>If <code>isSuccess</code> = true, this contains the identifier of the subscription, and sometimes extra information, depending on what was updated.</p>
+         * <p>If <code>isSuccess</code> = false, this contains the reason for the failure.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(String responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
@@ -137,39 +185,27 @@ public final class UpdateSubscriptionResponse {
          * <p>If <code>isSuccess</code> = true, this contains the identifier of the subscription, and sometimes extra information, depending on what was updated.</p>
          * <p>If <code>isSuccess</code> = false, this contains the reason for the failure.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<String> responseData) {
+        public _FinalStage responseData(Optional<String> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(String responseData) {
-            this.responseData = Optional.ofNullable(responseData);
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
-            return this;
-        }
-
-        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
-        public Builder customerId(Optional<Long> customerId) {
-            this.customerId = customerId;
-            return this;
-        }
-
-        public Builder customerId(Long customerId) {
-            this.customerId = Optional.ofNullable(customerId);
-            return this;
-        }
-
+        @java.lang.Override
         public UpdateSubscriptionResponse build() {
             return new UpdateSubscriptionResponse(
                     isSuccess, responseData, responseText, customerId, additionalProperties);

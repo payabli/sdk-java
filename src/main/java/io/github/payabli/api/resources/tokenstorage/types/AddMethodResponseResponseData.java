@@ -20,38 +20,56 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AddMethodResponseResponseData.Builder.class)
 public final class AddMethodResponseResponseData {
-    private final Optional<Long> customerId;
-
-    private final Optional<String> methodReferenceId;
-
     private final Optional<String> referenceId;
 
     private final Optional<Integer> resultCode;
 
     private final Optional<String> resultText;
 
+    private final Optional<Long> customerId;
+
+    private final Optional<String> methodReferenceId;
+
     private final Map<String, Object> additionalProperties;
 
     private AddMethodResponseResponseData(
-            Optional<Long> customerId,
-            Optional<String> methodReferenceId,
             Optional<String> referenceId,
             Optional<Integer> resultCode,
             Optional<String> resultText,
+            Optional<Long> customerId,
+            Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
-        this.customerId = customerId;
-        this.methodReferenceId = methodReferenceId;
         this.referenceId = referenceId;
         this.resultCode = resultCode;
         this.resultText = resultText;
+        this.customerId = customerId;
+        this.methodReferenceId = methodReferenceId;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Stored method identifier in Payabli platform. This ID is used to manage the stored method.
+     */
+    @JsonProperty("referenceId")
+    public Optional<String> getReferenceId() {
+        return referenceId;
+    }
+
+    @JsonProperty("resultCode")
+    public Optional<Integer> getResultCode() {
+        return resultCode;
+    }
+
+    @JsonProperty("resultText")
+    public Optional<String> getResultText() {
+        return resultText;
     }
 
     /**
      * @return Internal unique ID of customer owner of the stored method.
      * <p>Returns <code>0</code> if the method wasn't assigned to an existing customer or no customer was created.&quot;</p>
      */
-    @JsonProperty("CustomerId")
+    @JsonProperty("customerId")
     public Optional<Long> getCustomerId() {
         return customerId;
     }
@@ -59,24 +77,6 @@ public final class AddMethodResponseResponseData {
     @JsonProperty("methodReferenceId")
     public Optional<String> getMethodReferenceId() {
         return methodReferenceId;
-    }
-
-    /**
-     * @return Stored method identifier in Payabli platform. This ID is used to manage the stored method.
-     */
-    @JsonProperty("ReferenceId")
-    public Optional<String> getReferenceId() {
-        return referenceId;
-    }
-
-    @JsonProperty("ResultCode")
-    public Optional<Integer> getResultCode() {
-        return resultCode;
-    }
-
-    @JsonProperty("ResultText")
-    public Optional<String> getResultText() {
-        return resultText;
     }
 
     @java.lang.Override
@@ -91,17 +91,17 @@ public final class AddMethodResponseResponseData {
     }
 
     private boolean equalTo(AddMethodResponseResponseData other) {
-        return customerId.equals(other.customerId)
-                && methodReferenceId.equals(other.methodReferenceId)
-                && referenceId.equals(other.referenceId)
+        return referenceId.equals(other.referenceId)
                 && resultCode.equals(other.resultCode)
-                && resultText.equals(other.resultText);
+                && resultText.equals(other.resultText)
+                && customerId.equals(other.customerId)
+                && methodReferenceId.equals(other.methodReferenceId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.customerId, this.methodReferenceId, this.referenceId, this.resultCode, this.resultText);
+                this.referenceId, this.resultCode, this.resultText, this.customerId, this.methodReferenceId);
     }
 
     @java.lang.Override
@@ -115,15 +115,15 @@ public final class AddMethodResponseResponseData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Long> customerId = Optional.empty();
-
-        private Optional<String> methodReferenceId = Optional.empty();
-
         private Optional<String> referenceId = Optional.empty();
 
         private Optional<Integer> resultCode = Optional.empty();
 
         private Optional<String> resultText = Optional.empty();
+
+        private Optional<Long> customerId = Optional.empty();
+
+        private Optional<String> methodReferenceId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -131,11 +131,47 @@ public final class AddMethodResponseResponseData {
         private Builder() {}
 
         public Builder from(AddMethodResponseResponseData other) {
-            customerId(other.getCustomerId());
-            methodReferenceId(other.getMethodReferenceId());
             referenceId(other.getReferenceId());
             resultCode(other.getResultCode());
             resultText(other.getResultText());
+            customerId(other.getCustomerId());
+            methodReferenceId(other.getMethodReferenceId());
+            return this;
+        }
+
+        /**
+         * <p>Stored method identifier in Payabli platform. This ID is used to manage the stored method.</p>
+         */
+        @JsonSetter(value = "referenceId", nulls = Nulls.SKIP)
+        public Builder referenceId(Optional<String> referenceId) {
+            this.referenceId = referenceId;
+            return this;
+        }
+
+        public Builder referenceId(String referenceId) {
+            this.referenceId = Optional.ofNullable(referenceId);
+            return this;
+        }
+
+        @JsonSetter(value = "resultCode", nulls = Nulls.SKIP)
+        public Builder resultCode(Optional<Integer> resultCode) {
+            this.resultCode = resultCode;
+            return this;
+        }
+
+        public Builder resultCode(Integer resultCode) {
+            this.resultCode = Optional.ofNullable(resultCode);
+            return this;
+        }
+
+        @JsonSetter(value = "resultText", nulls = Nulls.SKIP)
+        public Builder resultText(Optional<String> resultText) {
+            this.resultText = resultText;
+            return this;
+        }
+
+        public Builder resultText(String resultText) {
+            this.resultText = Optional.ofNullable(resultText);
             return this;
         }
 
@@ -143,7 +179,7 @@ public final class AddMethodResponseResponseData {
          * <p>Internal unique ID of customer owner of the stored method.</p>
          * <p>Returns <code>0</code> if the method wasn't assigned to an existing customer or no customer was created.&quot;</p>
          */
-        @JsonSetter(value = "CustomerId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
         public Builder customerId(Optional<Long> customerId) {
             this.customerId = customerId;
             return this;
@@ -165,45 +201,9 @@ public final class AddMethodResponseResponseData {
             return this;
         }
 
-        /**
-         * <p>Stored method identifier in Payabli platform. This ID is used to manage the stored method.</p>
-         */
-        @JsonSetter(value = "ReferenceId", nulls = Nulls.SKIP)
-        public Builder referenceId(Optional<String> referenceId) {
-            this.referenceId = referenceId;
-            return this;
-        }
-
-        public Builder referenceId(String referenceId) {
-            this.referenceId = Optional.ofNullable(referenceId);
-            return this;
-        }
-
-        @JsonSetter(value = "ResultCode", nulls = Nulls.SKIP)
-        public Builder resultCode(Optional<Integer> resultCode) {
-            this.resultCode = resultCode;
-            return this;
-        }
-
-        public Builder resultCode(Integer resultCode) {
-            this.resultCode = Optional.ofNullable(resultCode);
-            return this;
-        }
-
-        @JsonSetter(value = "ResultText", nulls = Nulls.SKIP)
-        public Builder resultText(Optional<String> resultText) {
-            this.resultText = resultText;
-            return this;
-        }
-
-        public Builder resultText(String resultText) {
-            this.resultText = Optional.ofNullable(resultText);
-            return this;
-        }
-
         public AddMethodResponseResponseData build() {
             return new AddMethodResponseResponseData(
-                    customerId, methodReferenceId, referenceId, resultCode, resultText, additionalProperties);
+                    referenceId, resultCode, resultText, customerId, methodReferenceId, additionalProperties);
         }
     }
 }

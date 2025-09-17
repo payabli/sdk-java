@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodDomainGeneralResponse.Builder.class)
@@ -26,7 +27,7 @@ public final class PaymentMethodDomainGeneralResponse {
 
     private final Optional<PaymentMethodDomainApiResponse> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
@@ -34,7 +35,7 @@ public final class PaymentMethodDomainGeneralResponse {
             Optional<Boolean> isSuccess,
             Optional<String> pageidentifier,
             Optional<PaymentMethodDomainApiResponse> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.pageidentifier = pageidentifier;
@@ -59,7 +60,7 @@ public final class PaymentMethodDomainGeneralResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -92,25 +93,48 @@ public final class PaymentMethodDomainGeneralResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
 
-        private Optional<String> pageidentifier = Optional.empty();
+        Builder from(PaymentMethodDomainGeneralResponse other);
+    }
+
+    public interface _FinalStage {
+        PaymentMethodDomainGeneralResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage pageidentifier(Optional<String> pageidentifier);
+
+        _FinalStage pageidentifier(String pageidentifier);
+
+        _FinalStage responseData(Optional<PaymentMethodDomainApiResponse> responseData);
+
+        _FinalStage responseData(PaymentMethodDomainApiResponse responseData);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<PaymentMethodDomainApiResponse> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<String> pageidentifier = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PaymentMethodDomainGeneralResponse other) {
             isSuccess(other.getIsSuccess());
             pageidentifier(other.getPageidentifier());
@@ -119,50 +143,53 @@ public final class PaymentMethodDomainGeneralResponse {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "pageidentifier", nulls = Nulls.SKIP)
-        public Builder pageidentifier(Optional<String> pageidentifier) {
-            this.pageidentifier = pageidentifier;
-            return this;
-        }
-
-        public Builder pageidentifier(String pageidentifier) {
-            this.pageidentifier = Optional.ofNullable(pageidentifier);
-            return this;
-        }
-
-        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<PaymentMethodDomainApiResponse> responseData) {
-            this.responseData = responseData;
-            return this;
-        }
-
-        public Builder responseData(PaymentMethodDomainApiResponse responseData) {
+        @java.lang.Override
+        public _FinalStage responseData(PaymentMethodDomainApiResponse responseData) {
             this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
+        public _FinalStage responseData(Optional<PaymentMethodDomainApiResponse> responseData) {
+            this.responseData = responseData;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        @java.lang.Override
+        public _FinalStage pageidentifier(String pageidentifier) {
+            this.pageidentifier = Optional.ofNullable(pageidentifier);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "pageidentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageidentifier(Optional<String> pageidentifier) {
+            this.pageidentifier = pageidentifier;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public PaymentMethodDomainGeneralResponse build() {
             return new PaymentMethodDomainGeneralResponse(
                     isSuccess, pageidentifier, responseData, responseText, additionalProperties);

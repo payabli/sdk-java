@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliApiResponseMfaBasic.Builder.class)
@@ -30,7 +31,7 @@ public final class PayabliApiResponseMfaBasic {
 
     private final Optional<String> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
@@ -40,7 +41,7 @@ public final class PayabliApiResponseMfaBasic {
             Optional<String> mfaMode,
             Optional<String> mfaValidationCode,
             Optional<String> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.mfa = mfa;
@@ -83,7 +84,7 @@ public final class PayabliApiResponseMfaBasic {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -118,29 +119,66 @@ public final class PayabliApiResponseMfaBasic {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseTextStage builder() {
         return new Builder();
     }
 
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+
+        Builder from(PayabliApiResponseMfaBasic other);
+    }
+
+    public interface _FinalStage {
+        PayabliApiResponseMfaBasic build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage mfa(Optional<Boolean> mfa);
+
+        _FinalStage mfa(Boolean mfa);
+
+        /**
+         * <p>The mode of multi-factor authentication used.</p>
+         */
+        _FinalStage mfaMode(Optional<String> mfaMode);
+
+        _FinalStage mfaMode(String mfaMode);
+
+        _FinalStage mfaValidationCode(Optional<String> mfaValidationCode);
+
+        _FinalStage mfaValidationCode(String mfaValidationCode);
+
+        /**
+         * <p>Data returned by the response, masked for security.</p>
+         */
+        _FinalStage responseData(Optional<String> responseData);
+
+        _FinalStage responseData(String responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
-
-        private Optional<Boolean> mfa = Optional.empty();
-
-        private Optional<String> mfaMode = Optional.empty();
-
-        private Optional<String> mfaValidationCode = Optional.empty();
+    public static final class Builder implements ResponseTextStage, _FinalStage {
+        private String responseText;
 
         private Optional<String> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<String> mfaValidationCode = Optional.empty();
+
+        private Optional<String> mfaMode = Optional.empty();
+
+        private Optional<Boolean> mfa = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayabliApiResponseMfaBasic other) {
             isSuccess(other.getIsSuccess());
             mfa(other.getMfa());
@@ -151,78 +189,93 @@ public final class PayabliApiResponseMfaBasic {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
-            return this;
-        }
-
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "mfa", nulls = Nulls.SKIP)
-        public Builder mfa(Optional<Boolean> mfa) {
-            this.mfa = mfa;
-            return this;
-        }
-
-        public Builder mfa(Boolean mfa) {
-            this.mfa = Optional.ofNullable(mfa);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
             return this;
         }
 
         /**
-         * <p>The mode of multi-factor authentication used.</p>
+         * <p>Data returned by the response, masked for security.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "mfaMode", nulls = Nulls.SKIP)
-        public Builder mfaMode(Optional<String> mfaMode) {
-            this.mfaMode = mfaMode;
-            return this;
-        }
-
-        public Builder mfaMode(String mfaMode) {
-            this.mfaMode = Optional.ofNullable(mfaMode);
-            return this;
-        }
-
-        @JsonSetter(value = "mfaValidationCode", nulls = Nulls.SKIP)
-        public Builder mfaValidationCode(Optional<String> mfaValidationCode) {
-            this.mfaValidationCode = mfaValidationCode;
-            return this;
-        }
-
-        public Builder mfaValidationCode(String mfaValidationCode) {
-            this.mfaValidationCode = Optional.ofNullable(mfaValidationCode);
+        @java.lang.Override
+        public _FinalStage responseData(String responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         /**
          * <p>Data returned by the response, masked for security.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<String> responseData) {
+        public _FinalStage responseData(Optional<String> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(String responseData) {
-            this.responseData = Optional.ofNullable(responseData);
+        @java.lang.Override
+        public _FinalStage mfaValidationCode(String mfaValidationCode) {
+            this.mfaValidationCode = Optional.ofNullable(mfaValidationCode);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "mfaValidationCode", nulls = Nulls.SKIP)
+        public _FinalStage mfaValidationCode(Optional<String> mfaValidationCode) {
+            this.mfaValidationCode = mfaValidationCode;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        /**
+         * <p>The mode of multi-factor authentication used.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage mfaMode(String mfaMode) {
+            this.mfaMode = Optional.ofNullable(mfaMode);
             return this;
         }
 
+        /**
+         * <p>The mode of multi-factor authentication used.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "mfaMode", nulls = Nulls.SKIP)
+        public _FinalStage mfaMode(Optional<String> mfaMode) {
+            this.mfaMode = mfaMode;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage mfa(Boolean mfa) {
+            this.mfa = Optional.ofNullable(mfa);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "mfa", nulls = Nulls.SKIP)
+        public _FinalStage mfa(Optional<Boolean> mfa) {
+            this.mfa = mfa;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public PayabliApiResponseMfaBasic build() {
             return new PayabliApiResponseMfaBasic(
                     isSuccess, mfa, mfaMode, mfaValidationCode, responseData, responseText, additionalProperties);

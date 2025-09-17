@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EditOrganizationResponse.Builder.class)
@@ -25,20 +26,20 @@ public final class EditOrganizationResponse {
 
     private final Optional<String> pageIdentifier;
 
-    private final Optional<Integer> responseCode;
+    private final int responseCode;
 
     private final Optional<Responsedatanonobject> responseData;
 
-    private final Optional<String> responseText;
+    private final String responseText;
 
     private final Map<String, Object> additionalProperties;
 
     private EditOrganizationResponse(
             Optional<Boolean> isSuccess,
             Optional<String> pageIdentifier,
-            Optional<Integer> responseCode,
+            int responseCode,
             Optional<Responsedatanonobject> responseData,
-            Optional<String> responseText,
+            String responseText,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.pageIdentifier = pageIdentifier;
@@ -59,7 +60,7 @@ public final class EditOrganizationResponse {
     }
 
     @JsonProperty("responseCode")
-    public Optional<Integer> getResponseCode() {
+    public int getResponseCode() {
         return responseCode;
     }
 
@@ -72,7 +73,7 @@ public final class EditOrganizationResponse {
     }
 
     @JsonProperty("responseText")
-    public Optional<String> getResponseText() {
+    public String getResponseText() {
         return responseText;
     }
 
@@ -90,7 +91,7 @@ public final class EditOrganizationResponse {
     private boolean equalTo(EditOrganizationResponse other) {
         return isSuccess.equals(other.isSuccess)
                 && pageIdentifier.equals(other.pageIdentifier)
-                && responseCode.equals(other.responseCode)
+                && responseCode == other.responseCode
                 && responseData.equals(other.responseData)
                 && responseText.equals(other.responseText);
     }
@@ -106,27 +107,57 @@ public final class EditOrganizationResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseCodeStage builder() {
         return new Builder();
     }
 
+    public interface ResponseCodeStage {
+        ResponseTextStage responseCode(int responseCode);
+
+        Builder from(EditOrganizationResponse other);
+    }
+
+    public interface ResponseTextStage {
+        _FinalStage responseText(@NotNull String responseText);
+    }
+
+    public interface _FinalStage {
+        EditOrganizationResponse build();
+
+        _FinalStage isSuccess(Optional<Boolean> isSuccess);
+
+        _FinalStage isSuccess(Boolean isSuccess);
+
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        /**
+         * <p>Returns the organization ID.</p>
+         */
+        _FinalStage responseData(Optional<Responsedatanonobject> responseData);
+
+        _FinalStage responseData(Responsedatanonobject responseData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> isSuccess = Optional.empty();
+    public static final class Builder implements ResponseCodeStage, ResponseTextStage, _FinalStage {
+        private int responseCode;
 
-        private Optional<String> pageIdentifier = Optional.empty();
-
-        private Optional<Integer> responseCode = Optional.empty();
+        private String responseText;
 
         private Optional<Responsedatanonobject> responseData = Optional.empty();
 
-        private Optional<String> responseText = Optional.empty();
+        private Optional<String> pageIdentifier = Optional.empty();
+
+        private Optional<Boolean> isSuccess = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(EditOrganizationResponse other) {
             isSuccess(other.getIsSuccess());
             pageIdentifier(other.getPageIdentifier());
@@ -136,64 +167,67 @@ public final class EditOrganizationResponse {
             return this;
         }
 
-        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
-        public Builder isSuccess(Optional<Boolean> isSuccess) {
-            this.isSuccess = isSuccess;
-            return this;
-        }
-
-        public Builder isSuccess(Boolean isSuccess) {
-            this.isSuccess = Optional.ofNullable(isSuccess);
-            return this;
-        }
-
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
-            return this;
-        }
-
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
-            return this;
-        }
-
-        @JsonSetter(value = "responseCode", nulls = Nulls.SKIP)
-        public Builder responseCode(Optional<Integer> responseCode) {
+        @java.lang.Override
+        @JsonSetter("responseCode")
+        public ResponseTextStage responseCode(int responseCode) {
             this.responseCode = responseCode;
             return this;
         }
 
-        public Builder responseCode(Integer responseCode) {
-            this.responseCode = Optional.ofNullable(responseCode);
+        @java.lang.Override
+        @JsonSetter("responseText")
+        public _FinalStage responseText(@NotNull String responseText) {
+            this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Returns the organization ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage responseData(Responsedatanonobject responseData) {
+            this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         /**
          * <p>Returns the organization ID.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<Responsedatanonobject> responseData) {
+        public _FinalStage responseData(Optional<Responsedatanonobject> responseData) {
             this.responseData = responseData;
             return this;
         }
 
-        public Builder responseData(Responsedatanonobject responseData) {
-            this.responseData = Optional.ofNullable(responseData);
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
             return this;
         }
 
-        @JsonSetter(value = "responseText", nulls = Nulls.SKIP)
-        public Builder responseText(Optional<String> responseText) {
-            this.responseText = responseText;
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
             return this;
         }
 
-        public Builder responseText(String responseText) {
-            this.responseText = Optional.ofNullable(responseText);
+        @java.lang.Override
+        public _FinalStage isSuccess(Boolean isSuccess) {
+            this.isSuccess = Optional.ofNullable(isSuccess);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)
+        public _FinalStage isSuccess(Optional<Boolean> isSuccess) {
+            this.isSuccess = isSuccess;
+            return this;
+        }
+
+        @java.lang.Override
         public EditOrganizationResponse build() {
             return new EditOrganizationResponse(
                     isSuccess, pageIdentifier, responseCode, responseData, responseText, additionalProperties);
