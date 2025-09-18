@@ -18,6 +18,7 @@ import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
 import io.github.payabli.api.types.PayMethodCredit;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentMethod;
+import io.github.payabli.api.types.PayorDataRequest;
 
 public class Example {
     public static void main(String[] args) {
@@ -35,19 +36,32 @@ public class Example {
                         .paymentDetails(
                             PaymentDetail
                                 .builder()
-                                .totalAmount(1.1)
+                                .totalAmount(100)
+                                .serviceFee(0)
                                 .build()
                         )
                         .paymentMethod(
                             PaymentMethod.ofPayMethodCredit(
                                 PayMethodCredit
                                     .builder()
-                                    .cardexp("alpha")
-                                    .cardnumber("cardnumber")
+                                    .cardexp("02/27")
+                                    .cardnumber("4111111111111111")
                                     .method("card")
+                                    .cardcvv("999")
+                                    .cardHolder("John Cassian")
+                                    .cardzip("12345")
+                                    .initiator("payor")
                                     .build()
                             )
                         )
+                        .customerData(
+                            PayorDataRequest
+                                .builder()
+                                .customerId(4440L)
+                                .build()
+                        )
+                        .entryPoint("f743aed24a")
+                        .ipaddress("255.255.255.255")
                         .build()
                 )
                 .build()
@@ -218,7 +232,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.298</version>
+  <version>0.0.299</version>
 </dependency>
 ```
 
