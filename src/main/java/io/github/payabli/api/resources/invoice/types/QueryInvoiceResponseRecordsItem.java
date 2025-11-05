@@ -1657,7 +1657,9 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "items", nulls = Nulls.SKIP)
         public _FinalStage items(List<BillItem> items) {
             this.items.clear();
-            this.items.addAll(items);
+            if (items != null) {
+                this.items.addAll(items);
+            }
             return this;
         }
 

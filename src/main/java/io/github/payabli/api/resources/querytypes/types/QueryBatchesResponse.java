@@ -136,7 +136,9 @@ public final class QueryBatchesResponse {
         @JsonSetter(value = "Records", nulls = Nulls.SKIP)
         public _FinalStage records(List<QueryBatchesResponseRecordsItem> records) {
             this.records.clear();
-            this.records.addAll(records);
+            if (records != null) {
+                this.records.addAll(records);
+            }
             return this;
         }
 

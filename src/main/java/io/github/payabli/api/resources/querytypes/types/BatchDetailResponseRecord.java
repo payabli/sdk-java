@@ -1523,7 +1523,9 @@ public final class BatchDetailResponseRecord {
         @JsonSetter(value = "TransactionEvents", nulls = Nulls.SKIP)
         public _FinalStage transactionEvents(List<QueryTransactionEvents> transactionEvents) {
             this.transactionEvents.clear();
-            this.transactionEvents.addAll(transactionEvents);
+            if (transactionEvents != null) {
+                this.transactionEvents.addAll(transactionEvents);
+            }
             return this;
         }
 
@@ -1570,7 +1572,9 @@ public final class BatchDetailResponseRecord {
         @JsonSetter(value = "CfeeTransactions", nulls = Nulls.SKIP)
         public _FinalStage cfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions) {
             this.cfeeTransactions.clear();
-            this.cfeeTransactions.addAll(cfeeTransactions);
+            if (cfeeTransactions != null) {
+                this.cfeeTransactions.addAll(cfeeTransactions);
+            }
             return this;
         }
 

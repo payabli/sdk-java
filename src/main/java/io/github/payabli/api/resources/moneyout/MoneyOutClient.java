@@ -78,14 +78,14 @@ public class MoneyOutClient {
     }
 
     /**
-     * Captures an array of authorized payout transactions for settlement.
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
      */
     public CaptureAllOutResponse captureAllOut(CaptureAllOutRequest request) {
         return this.rawClient.captureAllOut(request).body();
     }
 
     /**
-     * Captures an array of authorized payout transactions for settlement.
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
      */
     public CaptureAllOutResponse captureAllOut(CaptureAllOutRequest request, RequestOptions requestOptions) {
         return this.rawClient.captureAllOut(request, requestOptions).body();

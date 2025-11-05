@@ -69,9 +69,9 @@ public class RawNotificationlogsClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "PageSize", request.getPageSize().get(), false);
         }
-        if (request.getSkip().isPresent()) {
+        if (request.getPage().isPresent()) {
             QueryStringMapper.addQueryParameter(
-                    httpUrl, "Skip", request.getSkip().get(), false);
+                    httpUrl, "Page", request.getPage().get(), false);
         }
         RequestBody body;
         try {
@@ -93,13 +93,13 @@ public class RawNotificationlogsClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), new TypeReference<List<NotificationLog>>() {}),
+                                responseBodyString, new TypeReference<List<NotificationLog>>() {}),
                         response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -119,11 +119,9 @@ public class RawNotificationlogsClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -160,12 +158,11 @@ public class RawNotificationlogsClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), NotificationLogDetail.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -185,11 +182,9 @@ public class RawNotificationlogsClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -228,12 +223,11 @@ public class RawNotificationlogsClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), NotificationLogDetail.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -253,11 +247,9 @@ public class RawNotificationlogsClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -326,11 +318,9 @@ public class RawNotificationlogsClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }

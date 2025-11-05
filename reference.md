@@ -44,7 +44,7 @@ client.bill().addBill(
                         Arrays.asList(
                             BillItem
                                 .builder()
-                                .itemCost(5)
+                                .itemCost(5.0)
                                 .itemProductCode("M-DEPOSIT")
                                 .itemProductName("Materials deposit")
                                 .itemDescription("Deposit for materials")
@@ -57,8 +57,8 @@ client.bill().addBill(
                                         Arrays.asList(Optional.of("deposits"))
                                     )
                                 )
-                                .itemTotalAmount(123)
-                                .itemTaxAmount(7)
+                                .itemTotalAmount(123.0)
+                                .itemTaxAmount(7.0)
                                 .itemTaxRate(0.075)
                                 .build()
                         )
@@ -1042,7 +1042,7 @@ Creates a boarding application in an organization. This endpoint requires an app
 
 ```java
 client.boarding().addApplication(
-    AddApplicationRequest.ofApplicationDataPayIn(
+    AddApplicationRequest.of(
         ApplicationDataPayIn
             .builder()
             .services(
@@ -1096,10 +1096,10 @@ client.boarding().addApplication(
             .whenDelivered(Whendelivered.OVER_30_DAYS)
             .whenProvided(Whenprovided.THIRTY_DAYS_OR_LESS)
             .whenRefunded(Whenrefunded.THIRTY_DAYS_OR_LESS)
-            .annualRevenue(1000)
+            .annualRevenue(1000.0)
             .averageBillSize("500")
             .averageMonthlyBill("5650")
-            .avgmonthly(1000)
+            .avgmonthly(1000.0)
             .baddress("123 Walnut Street")
             .baddress1("Suite 103")
             .bcity("New Vegas")
@@ -1128,7 +1128,7 @@ client.boarding().addApplication(
             .dbaName("Sunshine Gutters")
             .ein("123456789")
             .faxnumber("1234567890")
-            .highticketamt(1000)
+            .highticketamt(1000.0)
             .legalName("Sunshine Services, LLC")
             .license("2222222FFG")
             .licstate("CA")
@@ -1170,7 +1170,7 @@ client.boarding().addApplication(
             .startdate("01/01/1990")
             .taxFillName("Sunshine LLC")
             .templateId(22L)
-            .ticketamt(1000)
+            .ticketamt(1000.0)
             .website("www.example.com")
             .build()
     )
@@ -1467,7 +1467,7 @@ Get details for a boarding link using the boarding template ID. This endpoint re
 <dd>
 
 ```java
-client.boarding().getByTemplateIdLinkApplication(80);
+client.boarding().getByTemplateIdLinkApplication(80.0);
 ```
 </dd>
 </dl>
@@ -1482,7 +1482,7 @@ client.boarding().getByTemplateIdLinkApplication(80);
 <dl>
 <dd>
 
-**templateId:** `Float` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -2004,7 +2004,7 @@ client.chargeBacks().addResponse(
 <dl>
 <dd>
 
-**id:** `Integer` — ID of the chargeback or return record.
+**id:** `Long` — ID of the chargeback or return record.
     
 </dd>
 </dl>
@@ -2098,7 +2098,7 @@ client.chargeBacks().getChargeback(1000000L);
 <dl>
 <dd>
 
-**id:** `Integer` — ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
+**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
     
 </dd>
 </dl>
@@ -2146,7 +2146,7 @@ client.chargeBacks().getChargebackAttachment("fileName", 1000000L);
 <dl>
 <dd>
 
-**id:** `Integer` — The ID of chargeback or return record.
+**id:** `Long` — The ID of chargeback or return record.
     
 </dd>
 </dl>
@@ -7094,7 +7094,7 @@ client.export().exportTransferDetails(
 <dl>
 <dd>
 
-**transferId:** `Integer` — Transfer identifier.
+**transferId:** `Long` — Transfer identifier.
     
 </dd>
 </dl>
@@ -8111,7 +8111,7 @@ client.invoice().addInvoice(
                                 Arrays.asList(
                                     BillItem
                                         .builder()
-                                        .itemCost(100)
+                                        .itemCost(100.0)
                                         .itemProductName("Adventure Consult")
                                         .itemDescription("Consultation for Georgian tours")
                                         .itemQty(1)
@@ -8132,7 +8132,7 @@ client.invoice().addInvoice(
                         .invoiceStatus(1)
                         .frequency(Frequency.ONE_TIME)
                         .invoiceAmount(982.37)
-                        .discount(10)
+                        .discount(10.0)
                         .invoiceNumber("INV-3")
                         .build()
                 )
@@ -9535,12 +9535,12 @@ client.moneyIn().authorize(
                 .paymentDetails(
                     PaymentDetail
                         .builder()
-                        .totalAmount(100)
-                        .serviceFee(0)
+                        .totalAmount(100.0)
+                        .serviceFee(0.0)
                         .build()
                 )
                 .paymentMethod(
-                    PaymentMethod.ofPayMethodCredit(
+                    PaymentMethod.of(
                         PayMethodCredit
                             .builder()
                             .cardexp("02/27")
@@ -9639,7 +9639,7 @@ transaction](/api-reference/moneyin/authorize-a-transaction) to complete the tra
 <dd>
 
 ```java
-client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0);
+client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
 ```
 </dd>
 </dl>
@@ -9654,7 +9654,7 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0);
 <dl>
 <dd>
 
-**amount:** `Float` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
+**amount:** `Double` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
     
 </dd>
 </dl>
@@ -9710,8 +9710,8 @@ client.moneyIn().captureAuth(
         .paymentDetails(
             CapturePaymentDetails
                 .builder()
-                .totalAmount(105)
-                .serviceFee(5)
+                .totalAmount(105.0)
+                .serviceFee(5.0)
                 .build()
         )
         .build()
@@ -9792,8 +9792,8 @@ client.moneyIn().credit(
         .paymentDetails(
             PaymentDetailCredit
                 .builder()
-                .totalAmount(1)
-                .serviceFee(0)
+                .totalAmount(1.0)
+                .serviceFee(0.0)
                 .build()
         )
         .paymentMethod(
@@ -9916,7 +9916,7 @@ client.moneyIn().credit(
 </dl>
 </details>
 
-<details><summary><code>client.moneyIn.details(transId) -> TransactionQueryRecords</code></summary>
+<details><summary><code>client.moneyIn.details(transId) -> TransactionQueryRecordsCustomer</code></summary>
 <dl>
 <dd>
 
@@ -10006,12 +10006,12 @@ client.moneyIn().getpaid(
                 .paymentDetails(
                     PaymentDetail
                         .builder()
-                        .totalAmount(100)
-                        .serviceFee(0)
+                        .totalAmount(100.0)
+                        .serviceFee(0.0)
                         .build()
                 )
                 .paymentMethod(
-                    PaymentMethod.ofPayMethodCredit(
+                    PaymentMethod.of(
                         PayMethodCredit
                             .builder()
                             .cardexp("02/27")
@@ -10059,6 +10059,14 @@ client.moneyIn().getpaid(
 <dd>
 
 **forceCustomerCreation:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeDetails:** `Optional<Boolean>` — When `true`, transactionDetails object is returned in the response. See a full example of the `transactionDetails` object in the [Transaction integration guide](/developers/developer-guides/money-in-transaction-add#includedetailstrue-response).
     
 </dd>
 </dl>
@@ -10121,7 +10129,7 @@ A reversal either refunds or voids a transaction independent of the transaction'
 <dd>
 
 ```java
-client.moneyIn().reverse(0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+client.moneyIn().reverse(0.0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 ```
 </dd>
 </dl>
@@ -10136,7 +10144,7 @@ client.moneyIn().reverse(0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 <dl>
 <dd>
 
-**amount:** `Float` 
+**amount:** `Double` 
 
 
 Amount to reverse from original transaction, minus any service fees charged on the original transaction.
@@ -10190,7 +10198,7 @@ Refund a transaction that has settled and send money back to the account holder.
 <dd>
 
 ```java
-client.moneyIn().refund(0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+client.moneyIn().refund(0.0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 ```
 </dd>
 </dl>
@@ -10205,12 +10213,12 @@ client.moneyIn().refund(0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 <dl>
 <dd>
 
-**amount:** `Float` 
+**amount:** `Double` 
 
 
 Amount to refund from original transaction, minus any service fees charged on the original transaction. 
 
-The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90. 
+The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.
 
 An amount equal to zero will refund the total amount authorized minus any service fee.
     
@@ -10266,7 +10274,7 @@ client.moneyIn().refundWithInstructions(
         .idempotencyKey("8A29FC40-CA47-1067-B31D-00DD010662DB")
         .source("api")
         .orderDescription("Materials deposit")
-        .amount(100)
+        .amount(100.0)
         .refundDetails(
             RefundDetail
                 .builder()
@@ -10278,14 +10286,14 @@ client.moneyIn().refundWithInstructions(
                                 .originationEntryPoint("7f1a381696")
                                 .accountId("187-342")
                                 .description("Refunding undelivered materials")
-                                .amount(60)
+                                .amount(60.0)
                                 .build(),
                             SplitFundingRefundContent
                                 .builder()
                                 .originationEntryPoint("7f1a381696")
                                 .accountId("187-343")
                                 .description("Refunding deposit for undelivered materials")
-                                .amount(40)
+                                .amount(40.0)
                                 .build()
                         )
                     )
@@ -10324,7 +10332,7 @@ client.moneyIn().refundWithInstructions(
 <dl>
 <dd>
 
-**amount:** `Optional<Float>` 
+**amount:** `Optional<Double>` 
 
 
 Amount to refund from original transaction, minus any service fees charged on the original transaction. 
@@ -10719,7 +10727,7 @@ client.moneyOut().authorizeOut(
                 .paymentDetails(
                     RequestOutAuthorizePaymentDetails
                         .builder()
-                        .totalAmount(47)
+                        .totalAmount(47.0)
                         .build()
                 )
                 .paymentMethod(
@@ -10919,7 +10927,7 @@ client.moneyOut().cancelOut("129-219");
 <dl>
 <dd>
 
-Captures an array of authorized payout transactions for settlement.
+Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
 </dd>
 </dl>
 </dd>
@@ -11306,7 +11314,7 @@ Create a new notification or autogenerated report.
 
 ```java
 client.notification().addNotification(
-    AddNotificationRequest.ofNotificationStandardRequest(
+    AddNotificationRequest.of(
         NotificationStandardRequest
             .builder()
             .frequency(NotificationStandardRequestFrequency.UNTILCANCELLED)
@@ -11487,7 +11495,7 @@ Update a notification or autogenerated report.
 ```java
 client.notification().updateNotification(
     "1717",
-    UpdateNotificationRequest.ofNotificationStandardRequest(
+    UpdateNotificationRequest.of(
         NotificationStandardRequest
             .builder()
             .frequency(NotificationStandardRequestFrequency.UNTILCANCELLED)
@@ -11581,7 +11589,7 @@ client.notification().getReportFile(1000000L);
 <dl>
 <dd>
 
-**id:** `Integer` — Report ID
+**id:** `Long` — Report ID
     
 </dd>
 </dl>
@@ -11663,7 +11671,7 @@ client.notificationlogs().searchNotificationLogs(
 <dl>
 <dd>
 
-**skip:** `Optional<Integer>` — The number of records to skip before starting to collect the result set. 
+**page:** `Optional<Integer>` — The page number to retrieve. Defaults to 1 if not provided.
     
 </dd>
 </dl>
@@ -11726,7 +11734,7 @@ client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4
 <dl>
 <dd>
 
-**uuid:** `String` — The notification log entry.
+**uuid:** `UUID` — The notification log entry.
     
 </dd>
 </dl>
@@ -11782,7 +11790,7 @@ client.notificationlogs().retryNotificationLog(UUID.fromString("550e8400-e29b-41
 <dl>
 <dd>
 
-**uuid:** `String` — Unique id
+**uuid:** `UUID` — Unique id
     
 </dd>
 </dl>
@@ -11841,7 +11849,7 @@ client.notificationlogs().bulkRetryNotificationLogs(
 <dl>
 <dd>
 
-**request:** `List<String>` 
+**request:** `List<UUID>` 
     
 </dd>
 </dl>
@@ -12161,7 +12169,7 @@ client.organization().addOrganization(
 <dl>
 <dd>
 
-**orgParentId:** `Optional<Integer>` 
+**orgParentId:** `Optional<Long>` 
     
 </dd>
 </dl>
@@ -12450,7 +12458,7 @@ client.organization().editOrganization(
 <dl>
 <dd>
 
-**orgParentId:** `Optional<Integer>` 
+**orgParentId:** `Optional<Long>` 
     
 </dd>
 </dl>
@@ -13977,7 +13985,7 @@ client.paymentMethodDomain().addPaymentMethodDomain(
 <dl>
 <dd>
 
-**entityId:** `Optional<Integer>` 
+**entityId:** `Optional<Long>` 
     
 </dd>
 </dl>
@@ -14207,7 +14215,7 @@ client.paymentMethodDomain().listPaymentMethodDomains(
 <dl>
 <dd>
 
-**entityId:** `Optional<Integer>` 
+**entityId:** `Optional<Long>` 
 
 Identifier for the organization or paypoint. 
 - For organization, provide the organization ID - For paypoint, provide the paypoint ID
@@ -18588,7 +18596,8 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `deviceId` (ct, nct, in, nin, eq, ne)
 - `AchSecCode` ( ct, nct, in, nin, eq, ne)
 - `AchHolderType` (ct, nct, in, nin, eq, and ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data - 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data
+- 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data
 
 **List of comparison operators accepted:**
 - `eq` or empty => equal
@@ -19155,7 +19164,7 @@ client.query().listTransfersOrg(
 <dl>
 <dd>
 
-**orgId:** `Integer` 
+**orgId:** `Long` 
     
 </dd>
 </dl>
@@ -20179,7 +20188,7 @@ client.statistic().basicStats(
 <dl>
 <dd>
 
-**entryId:** `Integer` — Identifier in Payabli for the entity.
+**entryId:** `Long` — Identifier in Payabli for the entity.
     
 </dd>
 </dl>
@@ -20439,7 +20448,7 @@ client.statistic().subStats(
 <dl>
 <dd>
 
-**entryId:** `Integer` — Identifier in Payabli for the entity.
+**entryId:** `Long` — Identifier in Payabli for the entity.
     
 </dd>
 </dl>
@@ -20693,12 +20702,12 @@ client.subscription().newSubscription(
                 .paymentDetails(
                     PaymentDetail
                         .builder()
-                        .totalAmount(100)
-                        .serviceFee(0)
+                        .totalAmount(100.0)
+                        .serviceFee(0.0)
                         .build()
                 )
                 .paymentMethod(
-                    RequestSchedulePaymentMethod.ofPayMethodCredit(
+                    RequestSchedulePaymentMethod.of(
                         PayMethodCredit
                             .builder()
                             .cardexp("02/25")
@@ -20905,73 +20914,6 @@ client.subscription().updateSubscription(
 </details>
 
 ## Templates
-<details><summary><code>client.templates.addTemplate(orgId, request) -> PayabliApiResponseTemplateId</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a boarding template in an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.templates().addTemplate(
-    123,
-    TemplateData
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `TemplateData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.templates.deleteTemplate(templateId) -> PayabliApiResponseTemplateId</code></summary>
 <dl>
 <dd>
@@ -20999,7 +20941,7 @@ Deletes a template by ID.
 <dd>
 
 ```java
-client.templates().deleteTemplate(80);
+client.templates().deleteTemplate(80.0);
 ```
 </dd>
 </dl>
@@ -21014,7 +20956,7 @@ client.templates().deleteTemplate(80);
 <dl>
 <dd>
 
-**templateId:** `Float` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -21053,7 +20995,7 @@ Generates a boarding link from a boarding template.
 <dd>
 
 ```java
-client.templates().getlinkTemplate(true, 80);
+client.templates().getlinkTemplate(true, 80.0);
 ```
 </dd>
 </dl>
@@ -21076,7 +21018,7 @@ client.templates().getlinkTemplate(true, 80);
 <dl>
 <dd>
 
-**templateId:** `Float` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -21115,7 +21057,7 @@ Retrieves a boarding template's details by ID.
 <dd>
 
 ```java
-client.templates().getTemplate(80);
+client.templates().getTemplate(80.0);
 ```
 </dd>
 </dl>
@@ -21130,7 +21072,7 @@ client.templates().getTemplate(80);
 <dl>
 <dd>
 
-**templateId:** `Float` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -21281,73 +21223,6 @@ Example: title(ct)=hoa return all records with title containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.templates.updateTemplate(templateId, request) -> PayabliApiResponseTemplateId</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a boarding template by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.templates().updateTemplate(
-    80,
-    TemplateData
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `Float` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `TemplateData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## TokenStorage
 <details><summary><code>client.tokenStorage.addMethod(request) -> AddMethodResponse</code></summary>
 <dl>
@@ -21391,7 +21266,7 @@ client.tokenStorage().addMethod(
                 .entryPoint("f743aed24a")
                 .fallbackAuth(true)
                 .paymentMethod(
-                    RequestTokenStoragePaymentMethod.ofTokenizeCard(
+                    RequestTokenStoragePaymentMethod.of(
                         TokenizeCard
                             .builder()
                             .cardexp("02/25")
@@ -21657,7 +21532,7 @@ client.tokenStorage().updateMethod(
                 .entryPoint("f743aed24a")
                 .fallbackAuth(true)
                 .paymentMethod(
-                    RequestTokenStoragePaymentMethod.ofTokenizeCard(
+                    RequestTokenStoragePaymentMethod.of(
                         TokenizeCard
                             .builder()
                             .cardexp("02/25")
@@ -21932,7 +21807,7 @@ client.user().authUser(
 <dl>
 <dd>
 
-**userId:** `Optional<Integer>` 
+**userId:** `Optional<Long>` 
     
 </dd>
 </dl>
@@ -22024,7 +21899,7 @@ client.user().deleteUser(1000000L);
 <dl>
 <dd>
 
-**userId:** `Integer` — The Payabli-generated `userId` value.
+**userId:** `Long` — The Payabli-generated `userId` value.
     
 </dd>
 </dl>
@@ -22069,7 +21944,7 @@ client.user().editMfaUser(
 <dl>
 <dd>
 
-**userId:** `Integer` — User Identifier
+**userId:** `Long` — User Identifier
     
 </dd>
 </dl>
@@ -22122,7 +21997,7 @@ client.user().editUser(
 <dl>
 <dd>
 
-**userId:** `Integer` — User Identifier
+**userId:** `Long` — User Identifier
     
 </dd>
 </dl>
@@ -22176,7 +22051,7 @@ client.user().getUser(
 <dl>
 <dd>
 
-**userId:** `Integer` — The Payabli-generated `userId` value.
+**userId:** `Long` — The Payabli-generated `userId` value.
     
 </dd>
 </dl>
@@ -22699,7 +22574,7 @@ client.wallet().configureApplePayOrganization(
 <dl>
 <dd>
 
-**orgId:** `Optional<Integer>` 
+**orgId:** `Optional<Long>` 
     
 </dd>
 </dl>
@@ -22844,7 +22719,7 @@ client.wallet().configureGooglePayOrganization(
 <dl>
 <dd>
 
-**orgId:** `Optional<Integer>` 
+**orgId:** `Optional<Long>` 
     
 </dd>
 </dl>

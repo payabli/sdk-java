@@ -8,7 +8,6 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.templates.requests.ListTemplatesRequest;
 import io.github.payabli.api.types.BoardingLinkApiResponse;
 import io.github.payabli.api.types.PayabliApiResponseTemplateId;
-import io.github.payabli.api.types.TemplateData;
 import io.github.payabli.api.types.TemplateQueryRecord;
 import io.github.payabli.api.types.TemplateQueryResponse;
 
@@ -27,27 +26,6 @@ public class TemplatesClient {
      */
     public RawTemplatesClient withRawResponse() {
         return this.rawClient;
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public PayabliApiResponseTemplateId addTemplate(int orgId) {
-        return this.rawClient.addTemplate(orgId).body();
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public PayabliApiResponseTemplateId addTemplate(int orgId, TemplateData request) {
-        return this.rawClient.addTemplate(orgId, request).body();
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public PayabliApiResponseTemplateId addTemplate(int orgId, TemplateData request, RequestOptions requestOptions) {
-        return this.rawClient.addTemplate(orgId, request, requestOptions).body();
     }
 
     /**
@@ -114,29 +92,5 @@ public class TemplatesClient {
      */
     public TemplateQueryResponse listTemplates(int orgId, ListTemplatesRequest request, RequestOptions requestOptions) {
         return this.rawClient.listTemplates(orgId, request, requestOptions).body();
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public PayabliApiResponseTemplateId updateTemplate(double templateId) {
-        return this.rawClient.updateTemplate(templateId).body();
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public PayabliApiResponseTemplateId updateTemplate(double templateId, TemplateData request) {
-        return this.rawClient.updateTemplate(templateId, request).body();
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public PayabliApiResponseTemplateId updateTemplate(
-            double templateId, TemplateData request, RequestOptions requestOptions) {
-        return this.rawClient
-                .updateTemplate(templateId, request, requestOptions)
-                .body();
     }
 }

@@ -1152,7 +1152,9 @@ public final class ChargebackQueryRecords {
         @JsonSetter(value = "messages", nulls = Nulls.SKIP)
         public _FinalStage messages(List<ChargebackMessage> messages) {
             this.messages.clear();
-            this.messages.addAll(messages);
+            if (messages != null) {
+                this.messages.addAll(messages);
+            }
             return this;
         }
 
@@ -1211,7 +1213,9 @@ public final class ChargebackQueryRecords {
         @JsonSetter(value = "Responses", nulls = Nulls.SKIP)
         public _FinalStage responses(List<ChargeBackResponse> responses) {
             this.responses.clear();
-            this.responses.addAll(responses);
+            if (responses != null) {
+                this.responses.addAll(responses);
+            }
             return this;
         }
 

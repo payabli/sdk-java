@@ -23,7 +23,7 @@ import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
-import io.github.payabli.api.types.TransactionQueryRecords;
+import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncMoneyInClient {
@@ -117,14 +117,14 @@ public class AsyncMoneyInClient {
     /**
      * Retrieve a processed transaction's details.
      */
-    public CompletableFuture<TransactionQueryRecords> details(String transId) {
+    public CompletableFuture<TransactionQueryRecordsCustomer> details(String transId) {
         return this.rawClient.details(transId).thenApply(response -> response.body());
     }
 
     /**
      * Retrieve a processed transaction's details.
      */
-    public CompletableFuture<TransactionQueryRecords> details(String transId, RequestOptions requestOptions) {
+    public CompletableFuture<TransactionQueryRecordsCustomer> details(String transId, RequestOptions requestOptions) {
         return this.rawClient.details(transId, requestOptions).thenApply(response -> response.body());
     }
 

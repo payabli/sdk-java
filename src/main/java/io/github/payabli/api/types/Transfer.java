@@ -83,6 +83,8 @@ public final class Transfer {
 
     private final double netTransferAmount;
 
+    private final Optional<Double> splitAmount;
+
     private final Optional<List<GeneralEvents>> eventsData;
 
     private final Optional<List<TransferMessage>> messages;
@@ -119,6 +121,7 @@ public final class Transfer {
             double thirdPartyPaidAmount,
             double adjustmentsAmount,
             double netTransferAmount,
+            Optional<Double> splitAmount,
             Optional<List<GeneralEvents>> eventsData,
             Optional<List<TransferMessage>> messages,
             Map<String, Object> additionalProperties) {
@@ -151,6 +154,7 @@ public final class Transfer {
         this.thirdPartyPaidAmount = thirdPartyPaidAmount;
         this.adjustmentsAmount = adjustmentsAmount;
         this.netTransferAmount = netTransferAmount;
+        this.splitAmount = splitAmount;
         this.eventsData = eventsData;
         this.messages = messages;
         this.additionalProperties = additionalProperties;
@@ -416,6 +420,17 @@ public final class Transfer {
     }
 
     /**
+     * @return The sum of each splitFundingAmount of each record in the transfer.
+     */
+    @JsonIgnore
+    public Optional<Double> getSplitAmount() {
+        if (splitAmount == null) {
+            return Optional.empty();
+        }
+        return splitAmount;
+    }
+
+    /**
      * @return List of events associated with the transfer.
      */
     @JsonIgnore
@@ -510,6 +525,12 @@ public final class Transfer {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("splitAmount")
+    private Optional<Double> _getSplitAmount() {
+        return splitAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("eventsData")
     private Optional<List<GeneralEvents>> _getEventsData() {
         return eventsData;
@@ -562,6 +583,7 @@ public final class Transfer {
                 && thirdPartyPaidAmount == other.thirdPartyPaidAmount
                 && adjustmentsAmount == other.adjustmentsAmount
                 && netTransferAmount == other.netTransferAmount
+                && splitAmount.equals(other.splitAmount)
                 && eventsData.equals(other.eventsData)
                 && messages.equals(other.messages);
     }
@@ -598,6 +620,7 @@ public final class Transfer {
                 this.thirdPartyPaidAmount,
                 this.adjustmentsAmount,
                 this.netTransferAmount,
+                this.splitAmount,
                 this.eventsData,
                 this.messages);
     }
@@ -835,6 +858,15 @@ public final class Transfer {
         _FinalStage bankAccount(Nullable<TransferBankAccount> bankAccount);
 
         /**
+         * <p>The sum of each splitFundingAmount of each record in the transfer.</p>
+         */
+        _FinalStage splitAmount(Optional<Double> splitAmount);
+
+        _FinalStage splitAmount(Double splitAmount);
+
+        _FinalStage splitAmount(Nullable<Double> splitAmount);
+
+        /**
          * <p>List of events associated with the transfer.</p>
          */
         _FinalStage eventsData(Optional<List<GeneralEvents>> eventsData);
@@ -911,6 +943,8 @@ public final class Transfer {
 
         private Optional<List<GeneralEvents>> eventsData = Optional.empty();
 
+        private Optional<Double> splitAmount = Optional.empty();
+
         private Optional<TransferBankAccount> bankAccount = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
@@ -971,6 +1005,7 @@ public final class Transfer {
             thirdPartyPaidAmount(other.getThirdPartyPaidAmount());
             adjustmentsAmount(other.getAdjustmentsAmount());
             netTransferAmount(other.getNetTransferAmount());
+            splitAmount(other.getSplitAmount());
             eventsData(other.getEventsData());
             messages(other.getMessages());
             return this;
@@ -1234,6 +1269,42 @@ public final class Transfer {
         @JsonSetter(value = "eventsData", nulls = Nulls.SKIP)
         public _FinalStage eventsData(Optional<List<GeneralEvents>> eventsData) {
             this.eventsData = eventsData;
+            return this;
+        }
+
+        /**
+         * <p>The sum of each splitFundingAmount of each record in the transfer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage splitAmount(Nullable<Double> splitAmount) {
+            if (splitAmount.isNull()) {
+                this.splitAmount = null;
+            } else if (splitAmount.isEmpty()) {
+                this.splitAmount = Optional.empty();
+            } else {
+                this.splitAmount = Optional.of(splitAmount.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The sum of each splitFundingAmount of each record in the transfer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage splitAmount(Double splitAmount) {
+            this.splitAmount = Optional.ofNullable(splitAmount);
+            return this;
+        }
+
+        /**
+         * <p>The sum of each splitFundingAmount of each record in the transfer.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "splitAmount", nulls = Nulls.SKIP)
+        public _FinalStage splitAmount(Optional<Double> splitAmount) {
+            this.splitAmount = splitAmount;
             return this;
         }
 
@@ -1701,6 +1772,7 @@ public final class Transfer {
                     thirdPartyPaidAmount,
                     adjustmentsAmount,
                     netTransferAmount,
+                    splitAmount,
                     eventsData,
                     messages,
                     additionalProperties);

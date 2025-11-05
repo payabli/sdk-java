@@ -489,7 +489,9 @@ public final class BillingDataResponse {
         @JsonSetter(value = "services", nulls = Nulls.SKIP)
         public _FinalStage services(List<Object> services) {
             this.services.clear();
-            this.services.addAll(services);
+            if (services != null) {
+                this.services.addAll(services);
+            }
             return this;
         }
 

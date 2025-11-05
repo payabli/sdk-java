@@ -401,7 +401,9 @@ public final class AuthorizePayoutBody {
         @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
         public _FinalStage invoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData) {
             this.invoiceData.clear();
-            this.invoiceData.addAll(invoiceData);
+            if (invoiceData != null) {
+                this.invoiceData.addAll(invoiceData);
+            }
             return this;
         }
 

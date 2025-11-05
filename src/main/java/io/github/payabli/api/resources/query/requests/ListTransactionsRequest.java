@@ -132,7 +132,8 @@ public final class ListTransactionsRequest {
      * <li><code>deviceId</code> (ct, nct, in, nin, eq, ne)</li>
      * <li><code>AchSecCode</code> ( ct, nct, in, nin, eq, ne)</li>
      * <li><code>AchHolderType</code> (ct, nct, in, nin, eq, and ne)</li>
-     * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name related to customer data - 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data</li>
+     * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name related to customer data</li>
+     * <li>'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data</li>
      * </ul>
      * <p><strong>List of comparison operators accepted:</strong></p>
      * <ul>
@@ -322,7 +323,8 @@ public final class ListTransactionsRequest {
          * <li><code>deviceId</code> (ct, nct, in, nin, eq, ne)</li>
          * <li><code>AchSecCode</code> ( ct, nct, in, nin, eq, ne)</li>
          * <li><code>AchHolderType</code> (ct, nct, in, nin, eq, and ne)</li>
-         * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name related to customer data - 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data</li>
+         * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name related to customer data</li>
+         * <li>'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data</li>
          * </ul>
          * <p><strong>List of comparison operators accepted:</strong></p>
          * <ul>

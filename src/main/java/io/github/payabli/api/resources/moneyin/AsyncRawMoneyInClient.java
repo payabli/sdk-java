@@ -34,10 +34,8 @@ import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
-import io.github.payabli.api.types.TransactionQueryRecords;
+import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -108,13 +106,12 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), AuthResponse.class),
-                                response));
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthResponse.class), response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -142,11 +139,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -202,13 +197,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CaptureResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaptureResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -236,11 +231,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -298,13 +291,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CaptureResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaptureResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -332,11 +325,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -375,32 +366,10 @@ public class AsyncRawMoneyInClient {
                     request.getForceCustomerCreation().get(),
                     false);
         }
-        Map<String, Object> properties = new HashMap<>();
-        if (request.getAccountId().isPresent()) {
-            properties.put("accountId", request.getAccountId());
-        }
-        properties.put("customerData", request.getCustomerData());
-        if (request.getEntrypoint().isPresent()) {
-            properties.put("entrypoint", request.getEntrypoint());
-        }
-        if (request.getOrderDescription().isPresent()) {
-            properties.put("orderDescription", request.getOrderDescription());
-        }
-        if (request.getOrderId().isPresent()) {
-            properties.put("orderId", request.getOrderId());
-        }
-        properties.put("paymentDetails", request.getPaymentDetails());
-        properties.put("paymentMethod", request.getPaymentMethod());
-        if (request.getSource().isPresent()) {
-            properties.put("source", request.getSource());
-        }
-        if (request.getSubdomain().isPresent()) {
-            properties.put("subdomain", request.getSubdomain());
-        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -424,13 +393,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponse0.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse0.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -458,11 +427,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -480,14 +447,14 @@ public class AsyncRawMoneyInClient {
     /**
      * Retrieve a processed transaction's details.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecords>> details(String transId) {
+    public CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecordsCustomer>> details(String transId) {
         return details(transId, null);
     }
 
     /**
      * Retrieve a processed transaction's details.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecords>> details(
+    public CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecordsCustomer>> details(
             String transId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -504,19 +471,19 @@ public class AsyncRawMoneyInClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecords>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecordsCustomer>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), TransactionQueryRecords.class),
+                                        responseBodyString, TransactionQueryRecordsCustomer.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -544,11 +511,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -589,6 +554,10 @@ public class AsyncRawMoneyInClient {
                     request.getForceCustomerCreation().get(),
                     false);
         }
+        if (request.getIncludeDetails().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "includeDetails", request.getIncludeDetails().get(), false);
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -620,14 +589,14 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), PayabliApiResponseGetPaid.class),
+                                        responseBodyString, PayabliApiResponseGetPaid.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -655,11 +624,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -707,13 +674,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ReverseResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ReverseResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -741,11 +708,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -793,13 +758,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), RefundResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RefundResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -827,11 +792,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -872,29 +835,10 @@ public class AsyncRawMoneyInClient {
                 .addPathSegments("MoneyIn/refund")
                 .addPathSegment(transId)
                 .build();
-        Map<String, Object> properties = new HashMap<>();
-        if (request.getAmount().isPresent()) {
-            properties.put("amount", request.getAmount());
-        }
-        if (request.getIpaddress().isPresent()) {
-            properties.put("ipaddress", request.getIpaddress());
-        }
-        if (request.getOrderDescription().isPresent()) {
-            properties.put("orderDescription", request.getOrderDescription());
-        }
-        if (request.getOrderId().isPresent()) {
-            properties.put("orderId", request.getOrderId());
-        }
-        if (request.getRefundDetails().isPresent()) {
-            properties.put("refundDetails", request.getRefundDetails());
-        }
-        if (request.getSource().isPresent()) {
-            properties.put("source", request.getSource());
-        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -918,14 +862,14 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBody.string(), RefundWithInstructionsResponse.class),
+                                        responseBodyString, RefundWithInstructionsResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -953,11 +897,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -1004,13 +946,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -1038,11 +980,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -1100,13 +1040,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ReceiptResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ReceiptResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -1134,11 +1074,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -1169,22 +1107,10 @@ public class AsyncRawMoneyInClient {
                 .newBuilder()
                 .addPathSegments("MoneyIn/validate")
                 .build();
-        Map<String, Object> properties = new HashMap<>();
-        if (request.getAccountId().isPresent()) {
-            properties.put("accountId", request.getAccountId());
-        }
-        properties.put("entryPoint", request.getEntryPoint());
-        if (request.getOrderDescription().isPresent()) {
-            properties.put("orderDescription", request.getOrderDescription());
-        }
-        if (request.getOrderId().isPresent()) {
-            properties.put("orderId", request.getOrderId());
-        }
-        properties.put("paymentMethod", request.getPaymentMethod());
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -1208,13 +1134,13 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ValidateResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ValidateResponse.class),
                                 response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -1242,11 +1168,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
@@ -1293,13 +1217,12 @@ public class AsyncRawMoneyInClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), VoidResponse.class),
-                                response));
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VoidResponse.class), response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     try {
                         switch (response.code()) {
                             case 400:
@@ -1327,11 +1250,9 @@ public class AsyncRawMoneyInClient {
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
                     }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                            response));
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (IOException e) {
                     future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));

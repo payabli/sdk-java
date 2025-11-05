@@ -233,7 +233,9 @@ public final class PayabliApiResponsePaylinks {
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
         public _FinalStage responseData(Map<String, Object> responseData) {
             this.responseData.clear();
-            this.responseData.putAll(responseData);
+            if (responseData != null) {
+                this.responseData.putAll(responseData);
+            }
             return this;
         }
 

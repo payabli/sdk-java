@@ -47,7 +47,7 @@ java {
 
 group = 'io.github.payabli'
 
-version = '0.0.300'
+version = '0.0.301'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
@@ -78,12 +78,12 @@ publishing {
         maven(MavenPublication) {
             groupId = 'io.github.payabli'
             artifactId = 'sdk-java'
-            version = '0.0.300'
+            version = '0.0.301'
             from components.java
             pom {
-                name = 'payabli'
-                description = 'The official SDK of payabli'
-                url = 'https://buildwithfern.com'
+                name = 'Payabli Docs Team'
+                description = 'Official Payabli SDK for Java'
+                url = 'https://docs.payabli.com/developers/developer-guides/sdk-java-guide'
                 licenses {
                     license {
                         name = 'The MIT License (MIT)'
@@ -92,8 +92,8 @@ publishing {
                 }
                 developers {
                     developer {
-                        name = 'payabli'
-                        email = 'developers@payabli.com'
+                        name = 'Payabli Docs Team'
+                        email = 'docs@payabli.com'
                     }
                 }
                 scm {

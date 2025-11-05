@@ -23,7 +23,7 @@ import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
-import io.github.payabli.api.types.TransactionQueryRecords;
+import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
 
 public class MoneyInClient {
     protected final ClientOptions clientOptions;
@@ -115,14 +115,14 @@ public class MoneyInClient {
     /**
      * Retrieve a processed transaction's details.
      */
-    public TransactionQueryRecords details(String transId) {
+    public TransactionQueryRecordsCustomer details(String transId) {
         return this.rawClient.details(transId).body();
     }
 
     /**
      * Retrieve a processed transaction's details.
      */
-    public TransactionQueryRecords details(String transId, RequestOptions requestOptions) {
+    public TransactionQueryRecordsCustomer details(String transId, RequestOptions requestOptions) {
         return this.rawClient.details(transId, requestOptions).body();
     }
 

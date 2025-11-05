@@ -333,6 +333,16 @@ public final class BillDetailResponse {
 
     /**
      * @return Internal status of transaction.
+     * <p>Payout statuses, also known as money out transaction statuses, appear in PartnerHub and PayHub, and the API, and describe where a payout transaction is in its lifecycle.</p>
+     * <p>| Status | Key | Description | Events |
+     * |--------|-----|-------------|---------|
+     * | <strong>Authorized</strong> | 11 | A payout is authorized. These are queued payouts, and nothing happens with them until they're captured. | Authorized |
+     * | <strong>Captured</strong> | 1 | A payout is captured and is now part of the batch for payout. | Captured |
+     * | <strong>Canceled</strong> | 0 | An authorized payout has been canceled. A captured payout can be canceled before batch close at 5 PM ET. | Cancelled |
+     * | <strong>Processing</strong> | 2 | A payout is being processed. | Waiting funds, Funded, Pending (payment type is pending), Generating check |
+     * | <strong>Processed</strong> | 3 | A payment method is defined for the vendor, and the payout has been sent to the recipient. | Open (vCard issued, ACH sent, check generated but not yet cashed), Processed (Payment Type is no longer pending), Reissued, Returned, Errored |
+     * | <strong>OnHold</strong> | 4 | A payout has been placed on hold and requires review before proceeding. | OnHold |
+     * | <strong>Paid</strong> | 5 | A payout has been paid and the recipient has redeemed the funds. | Paid (check cleared, vCard used, ACH settled) |</p>
      */
     @JsonProperty("Status")
     public Optional<Integer> getStatus() {
@@ -945,6 +955,16 @@ public final class BillDetailResponse {
 
         /**
          * <p>Internal status of transaction.</p>
+         * <p>Payout statuses, also known as money out transaction statuses, appear in PartnerHub and PayHub, and the API, and describe where a payout transaction is in its lifecycle.</p>
+         * <p>| Status | Key | Description | Events |
+         * |--------|-----|-------------|---------|
+         * | <strong>Authorized</strong> | 11 | A payout is authorized. These are queued payouts, and nothing happens with them until they're captured. | Authorized |
+         * | <strong>Captured</strong> | 1 | A payout is captured and is now part of the batch for payout. | Captured |
+         * | <strong>Canceled</strong> | 0 | An authorized payout has been canceled. A captured payout can be canceled before batch close at 5 PM ET. | Cancelled |
+         * | <strong>Processing</strong> | 2 | A payout is being processed. | Waiting funds, Funded, Pending (payment type is pending), Generating check |
+         * | <strong>Processed</strong> | 3 | A payment method is defined for the vendor, and the payout has been sent to the recipient. | Open (vCard issued, ACH sent, check generated but not yet cashed), Processed (Payment Type is no longer pending), Reissued, Returned, Errored |
+         * | <strong>OnHold</strong> | 4 | A payout has been placed on hold and requires review before proceeding. | OnHold |
+         * | <strong>Paid</strong> | 5 | A payout has been paid and the recipient has redeemed the funds. | Paid (check cleared, vCard used, ACH settled) |</p>
          */
         @JsonSetter(value = "Status", nulls = Nulls.SKIP)
         public Builder status(Optional<Integer> status) {

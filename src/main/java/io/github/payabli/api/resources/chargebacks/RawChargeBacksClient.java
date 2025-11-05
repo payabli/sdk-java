@@ -20,8 +20,6 @@ import io.github.payabli.api.resources.chargebacks.types.AddResponseResponse;
 import io.github.payabli.api.resources.chargebacks.types.ChargebackQueryRecords;
 import io.github.payabli.api.types.PayabliApiResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -61,23 +59,10 @@ public class RawChargeBacksClient {
                 .addPathSegments("ChargeBacks/response")
                 .addPathSegment(Long.toString(id))
                 .build();
-        Map<String, Object> properties = new HashMap<>();
-        if (request.getAttachments().isPresent()) {
-            properties.put("attachments", request.getAttachments());
-        }
-        if (request.getContactEmail().isPresent()) {
-            properties.put("contactEmail", request.getContactEmail());
-        }
-        if (request.getContactName().isPresent()) {
-            properties.put("contactName", request.getContactName());
-        }
-        if (request.getNotes().isPresent()) {
-            properties.put("notes", request.getNotes());
-        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -98,12 +83,11 @@ public class RawChargeBacksClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), AddResponseResponse.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddResponseResponse.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -123,11 +107,9 @@ public class RawChargeBacksClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -161,12 +143,12 @@ public class RawChargeBacksClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ChargebackQueryRecords.class),
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ChargebackQueryRecords.class),
                         response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -186,11 +168,9 @@ public class RawChargeBacksClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -220,10 +200,10 @@ public class RawChargeBacksClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(responseBody.string(), response);
-            }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(responseBodyString, response);
+            }
             try {
                 switch (response.code()) {
                     case 400:
@@ -243,11 +223,9 @@ public class RawChargeBacksClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }

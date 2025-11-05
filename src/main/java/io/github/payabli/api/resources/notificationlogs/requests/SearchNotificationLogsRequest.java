@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public final class SearchNotificationLogsRequest {
     private final Optional<Integer> pageSize;
 
-    private final Optional<Integer> skip;
+    private final Optional<Integer> page;
 
     private final NotificationLogSearchRequest body;
 
@@ -32,11 +32,11 @@ public final class SearchNotificationLogsRequest {
 
     private SearchNotificationLogsRequest(
             Optional<Integer> pageSize,
-            Optional<Integer> skip,
+            Optional<Integer> page,
             NotificationLogSearchRequest body,
             Map<String, Object> additionalProperties) {
         this.pageSize = pageSize;
-        this.skip = skip;
+        this.page = page;
         this.body = body;
         this.additionalProperties = additionalProperties;
     }
@@ -47,11 +47,11 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return The number of records to skip before starting to collect the result set.
+     * @return The page number to retrieve. Defaults to 1 if not provided.
      */
-    @JsonProperty("Skip")
-    public Optional<Integer> getSkip() {
-        return skip;
+    @JsonProperty("Page")
+    public Optional<Integer> getPage() {
+        return page;
     }
 
     @JsonProperty("body")
@@ -71,12 +71,12 @@ public final class SearchNotificationLogsRequest {
     }
 
     private boolean equalTo(SearchNotificationLogsRequest other) {
-        return pageSize.equals(other.pageSize) && skip.equals(other.skip) && body.equals(other.body);
+        return pageSize.equals(other.pageSize) && page.equals(other.page) && body.equals(other.body);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.pageSize, this.skip, this.body);
+        return Objects.hash(this.pageSize, this.page, this.body);
     }
 
     @java.lang.Override
@@ -102,18 +102,18 @@ public final class SearchNotificationLogsRequest {
         _FinalStage pageSize(Integer pageSize);
 
         /**
-         * <p>The number of records to skip before starting to collect the result set.</p>
+         * <p>The page number to retrieve. Defaults to 1 if not provided.</p>
          */
-        _FinalStage skip(Optional<Integer> skip);
+        _FinalStage page(Optional<Integer> page);
 
-        _FinalStage skip(Integer skip);
+        _FinalStage page(Integer page);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements BodyStage, _FinalStage {
         private NotificationLogSearchRequest body;
 
-        private Optional<Integer> skip = Optional.empty();
+        private Optional<Integer> page = Optional.empty();
 
         private Optional<Integer> pageSize = Optional.empty();
 
@@ -125,7 +125,7 @@ public final class SearchNotificationLogsRequest {
         @java.lang.Override
         public Builder from(SearchNotificationLogsRequest other) {
             pageSize(other.getPageSize());
-            skip(other.getSkip());
+            page(other.getPage());
             body(other.getBody());
             return this;
         }
@@ -138,22 +138,22 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The number of records to skip before starting to collect the result set.</p>
+         * <p>The page number to retrieve. Defaults to 1 if not provided.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage skip(Integer skip) {
-            this.skip = Optional.ofNullable(skip);
+        public _FinalStage page(Integer page) {
+            this.page = Optional.ofNullable(page);
             return this;
         }
 
         /**
-         * <p>The number of records to skip before starting to collect the result set.</p>
+         * <p>The page number to retrieve. Defaults to 1 if not provided.</p>
          */
         @java.lang.Override
-        @JsonSetter(value = "Skip", nulls = Nulls.SKIP)
-        public _FinalStage skip(Optional<Integer> skip) {
-            this.skip = skip;
+        @JsonSetter(value = "Page", nulls = Nulls.SKIP)
+        public _FinalStage page(Optional<Integer> page) {
+            this.page = page;
             return this;
         }
 
@@ -172,7 +172,7 @@ public final class SearchNotificationLogsRequest {
 
         @java.lang.Override
         public SearchNotificationLogsRequest build() {
-            return new SearchNotificationLogsRequest(pageSize, skip, body, additionalProperties);
+            return new SearchNotificationLogsRequest(pageSize, page, body, additionalProperties);
         }
     }
 }

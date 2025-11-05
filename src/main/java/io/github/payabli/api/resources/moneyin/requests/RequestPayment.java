@@ -30,6 +30,8 @@ public final class RequestPayment {
 
     private final Optional<Boolean> forceCustomerCreation;
 
+    private final Optional<Boolean> includeDetails;
+
     private final TransRequestBody body;
 
     private final Map<String, Object> additionalProperties;
@@ -39,12 +41,14 @@ public final class RequestPayment {
             Optional<String> validationCode,
             Optional<Boolean> achValidation,
             Optional<Boolean> forceCustomerCreation,
+            Optional<Boolean> includeDetails,
             TransRequestBody body,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.validationCode = validationCode;
         this.achValidation = achValidation;
         this.forceCustomerCreation = forceCustomerCreation;
+        this.includeDetails = includeDetails;
         this.body = body;
         this.additionalProperties = additionalProperties;
     }
@@ -72,6 +76,14 @@ public final class RequestPayment {
         return forceCustomerCreation;
     }
 
+    /**
+     * @return When <code>true</code>, transactionDetails object is returned in the response. See a full example of the <code>transactionDetails</code> object in the <a href="/developers/developer-guides/money-in-transaction-add#includedetailstrue-response">Transaction integration guide</a>.
+     */
+    @JsonProperty("includeDetails")
+    public Optional<Boolean> getIncludeDetails() {
+        return includeDetails;
+    }
+
     @JsonProperty("body")
     public TransRequestBody getBody() {
         return body;
@@ -93,13 +105,19 @@ public final class RequestPayment {
                 && validationCode.equals(other.validationCode)
                 && achValidation.equals(other.achValidation)
                 && forceCustomerCreation.equals(other.forceCustomerCreation)
+                && includeDetails.equals(other.includeDetails)
                 && body.equals(other.body);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.idempotencyKey, this.validationCode, this.achValidation, this.forceCustomerCreation, this.body);
+                this.idempotencyKey,
+                this.validationCode,
+                this.achValidation,
+                this.forceCustomerCreation,
+                this.includeDetails,
+                this.body);
     }
 
     @java.lang.Override
@@ -138,11 +156,20 @@ public final class RequestPayment {
         _FinalStage forceCustomerCreation(Optional<Boolean> forceCustomerCreation);
 
         _FinalStage forceCustomerCreation(Boolean forceCustomerCreation);
+
+        /**
+         * <p>When <code>true</code>, transactionDetails object is returned in the response. See a full example of the <code>transactionDetails</code> object in the <a href="/developers/developer-guides/money-in-transaction-add#includedetailstrue-response">Transaction integration guide</a>.</p>
+         */
+        _FinalStage includeDetails(Optional<Boolean> includeDetails);
+
+        _FinalStage includeDetails(Boolean includeDetails);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements BodyStage, _FinalStage {
         private TransRequestBody body;
+
+        private Optional<Boolean> includeDetails = Optional.empty();
 
         private Optional<Boolean> forceCustomerCreation = Optional.empty();
 
@@ -163,6 +190,7 @@ public final class RequestPayment {
             validationCode(other.getValidationCode());
             achValidation(other.getAchValidation());
             forceCustomerCreation(other.getForceCustomerCreation());
+            includeDetails(other.getIncludeDetails());
             body(other.getBody());
             return this;
         }
@@ -171,6 +199,26 @@ public final class RequestPayment {
         @JsonSetter("body")
         public _FinalStage body(@NotNull TransRequestBody body) {
             this.body = Objects.requireNonNull(body, "body must not be null");
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, transactionDetails object is returned in the response. See a full example of the <code>transactionDetails</code> object in the <a href="/developers/developer-guides/money-in-transaction-add#includedetailstrue-response">Transaction integration guide</a>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage includeDetails(Boolean includeDetails) {
+            this.includeDetails = Optional.ofNullable(includeDetails);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, transactionDetails object is returned in the response. See a full example of the <code>transactionDetails</code> object in the <a href="/developers/developer-guides/money-in-transaction-add#includedetailstrue-response">Transaction integration guide</a>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "includeDetails", nulls = Nulls.SKIP)
+        public _FinalStage includeDetails(Optional<Boolean> includeDetails) {
+            this.includeDetails = includeDetails;
             return this;
         }
 
@@ -236,7 +284,13 @@ public final class RequestPayment {
         @java.lang.Override
         public RequestPayment build() {
             return new RequestPayment(
-                    idempotencyKey, validationCode, achValidation, forceCustomerCreation, body, additionalProperties);
+                    idempotencyKey,
+                    validationCode,
+                    achValidation,
+                    forceCustomerCreation,
+                    includeDetails,
+                    body,
+                    additionalProperties);
         }
     }
 }

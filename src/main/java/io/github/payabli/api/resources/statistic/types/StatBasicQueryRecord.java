@@ -25,13 +25,24 @@ public final class StatBasicQueryRecord {
 
     private final double inTransactionsVolume;
 
+    private final int inWalletTransactions;
+
+    private final double inWalletVolume;
+
     private final Map<String, Object> additionalProperties;
 
     private StatBasicQueryRecord(
-            String statX, int inTransactions, double inTransactionsVolume, Map<String, Object> additionalProperties) {
+            String statX,
+            int inTransactions,
+            double inTransactionsVolume,
+            int inWalletTransactions,
+            double inWalletVolume,
+            Map<String, Object> additionalProperties) {
         this.statX = statX;
         this.inTransactions = inTransactions;
         this.inTransactionsVolume = inTransactionsVolume;
+        this.inWalletTransactions = inWalletTransactions;
+        this.inWalletVolume = inWalletVolume;
         this.additionalProperties = additionalProperties;
     }
 
@@ -59,6 +70,22 @@ public final class StatBasicQueryRecord {
         return inTransactionsVolume;
     }
 
+    /**
+     * @return Number of incoming wallet transactions
+     */
+    @JsonProperty("inWalletTransactions")
+    public int getInWalletTransactions() {
+        return inWalletTransactions;
+    }
+
+    /**
+     * @return Volume of incoming wallet transactions
+     */
+    @JsonProperty("inWalletVolume")
+    public double getInWalletVolume() {
+        return inWalletVolume;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -73,12 +100,19 @@ public final class StatBasicQueryRecord {
     private boolean equalTo(StatBasicQueryRecord other) {
         return statX.equals(other.statX)
                 && inTransactions == other.inTransactions
-                && inTransactionsVolume == other.inTransactionsVolume;
+                && inTransactionsVolume == other.inTransactionsVolume
+                && inWalletTransactions == other.inWalletTransactions
+                && inWalletVolume == other.inWalletVolume;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.statX, this.inTransactions, this.inTransactionsVolume);
+        return Objects.hash(
+                this.statX,
+                this.inTransactions,
+                this.inTransactionsVolume,
+                this.inWalletTransactions,
+                this.inWalletVolume);
     }
 
     @java.lang.Override
@@ -110,7 +144,21 @@ public final class StatBasicQueryRecord {
         /**
          * <p>Volume of incoming transactions</p>
          */
-        _FinalStage inTransactionsVolume(double inTransactionsVolume);
+        InWalletTransactionsStage inTransactionsVolume(double inTransactionsVolume);
+    }
+
+    public interface InWalletTransactionsStage {
+        /**
+         * <p>Number of incoming wallet transactions</p>
+         */
+        InWalletVolumeStage inWalletTransactions(int inWalletTransactions);
+    }
+
+    public interface InWalletVolumeStage {
+        /**
+         * <p>Volume of incoming wallet transactions</p>
+         */
+        _FinalStage inWalletVolume(double inWalletVolume);
     }
 
     public interface _FinalStage {
@@ -119,12 +167,21 @@ public final class StatBasicQueryRecord {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements StatXStage, InTransactionsStage, InTransactionsVolumeStage, _FinalStage {
+            implements StatXStage,
+                    InTransactionsStage,
+                    InTransactionsVolumeStage,
+                    InWalletTransactionsStage,
+                    InWalletVolumeStage,
+                    _FinalStage {
         private String statX;
 
         private int inTransactions;
 
         private double inTransactionsVolume;
+
+        private int inWalletTransactions;
+
+        private double inWalletVolume;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -136,6 +193,8 @@ public final class StatBasicQueryRecord {
             statX(other.getStatX());
             inTransactions(other.getInTransactions());
             inTransactionsVolume(other.getInTransactionsVolume());
+            inWalletTransactions(other.getInWalletTransactions());
+            inWalletVolume(other.getInWalletVolume());
             return this;
         }
 
@@ -170,14 +229,44 @@ public final class StatBasicQueryRecord {
          */
         @java.lang.Override
         @JsonSetter("inTransactionsVolume")
-        public _FinalStage inTransactionsVolume(double inTransactionsVolume) {
+        public InWalletTransactionsStage inTransactionsVolume(double inTransactionsVolume) {
             this.inTransactionsVolume = inTransactionsVolume;
+            return this;
+        }
+
+        /**
+         * <p>Number of incoming wallet transactions</p>
+         * <p>Number of incoming wallet transactions</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("inWalletTransactions")
+        public InWalletVolumeStage inWalletTransactions(int inWalletTransactions) {
+            this.inWalletTransactions = inWalletTransactions;
+            return this;
+        }
+
+        /**
+         * <p>Volume of incoming wallet transactions</p>
+         * <p>Volume of incoming wallet transactions</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("inWalletVolume")
+        public _FinalStage inWalletVolume(double inWalletVolume) {
+            this.inWalletVolume = inWalletVolume;
             return this;
         }
 
         @java.lang.Override
         public StatBasicQueryRecord build() {
-            return new StatBasicQueryRecord(statX, inTransactions, inTransactionsVolume, additionalProperties);
+            return new StatBasicQueryRecord(
+                    statX,
+                    inTransactions,
+                    inTransactionsVolume,
+                    inWalletTransactions,
+                    inWalletVolume,
+                    additionalProperties);
         }
     }
 }

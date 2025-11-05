@@ -8,7 +8,6 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.templates.requests.ListTemplatesRequest;
 import io.github.payabli.api.types.BoardingLinkApiResponse;
 import io.github.payabli.api.types.PayabliApiResponseTemplateId;
-import io.github.payabli.api.types.TemplateData;
 import io.github.payabli.api.types.TemplateQueryRecord;
 import io.github.payabli.api.types.TemplateQueryResponse;
 import java.util.concurrent.CompletableFuture;
@@ -28,28 +27,6 @@ public class AsyncTemplatesClient {
      */
     public AsyncRawTemplatesClient withRawResponse() {
         return this.rawClient;
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public CompletableFuture<PayabliApiResponseTemplateId> addTemplate(int orgId) {
-        return this.rawClient.addTemplate(orgId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public CompletableFuture<PayabliApiResponseTemplateId> addTemplate(int orgId, TemplateData request) {
-        return this.rawClient.addTemplate(orgId, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public CompletableFuture<PayabliApiResponseTemplateId> addTemplate(
-            int orgId, TemplateData request, RequestOptions requestOptions) {
-        return this.rawClient.addTemplate(orgId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -118,29 +95,5 @@ public class AsyncTemplatesClient {
     public CompletableFuture<TemplateQueryResponse> listTemplates(
             int orgId, ListTemplatesRequest request, RequestOptions requestOptions) {
         return this.rawClient.listTemplates(orgId, request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public CompletableFuture<PayabliApiResponseTemplateId> updateTemplate(double templateId) {
-        return this.rawClient.updateTemplate(templateId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public CompletableFuture<PayabliApiResponseTemplateId> updateTemplate(double templateId, TemplateData request) {
-        return this.rawClient.updateTemplate(templateId, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public CompletableFuture<PayabliApiResponseTemplateId> updateTemplate(
-            double templateId, TemplateData request, RequestOptions requestOptions) {
-        return this.rawClient
-                .updateTemplate(templateId, request, requestOptions)
-                .thenApply(response -> response.body());
     }
 }

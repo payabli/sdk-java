@@ -111,7 +111,9 @@ public final class CaptureAllOutRequest {
         @JsonSetter(value = "body", nulls = Nulls.SKIP)
         public Builder body(List<String> body) {
             this.body.clear();
-            this.body.addAll(body);
+            if (body != null) {
+                this.body.addAll(body);
+            }
             return this;
         }
 

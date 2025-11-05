@@ -137,7 +137,9 @@ public final class ListPaymentMethodDomainsResponse {
         @JsonSetter(value = "records", nulls = Nulls.SKIP)
         public _FinalStage records(List<PaymentMethodDomainApiResponse> records) {
             this.records.clear();
-            this.records.addAll(records);
+            if (records != null) {
+                this.records.addAll(records);
+            }
             return this;
         }
 

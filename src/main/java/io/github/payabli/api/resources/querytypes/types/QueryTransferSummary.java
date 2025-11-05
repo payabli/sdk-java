@@ -39,6 +39,8 @@ public final class QueryTransferSummary {
 
     private final Optional<Double> totalNetAmountTransfer;
 
+    private final Optional<Double> splitAmount;
+
     private final Optional<Double> serviceFees;
 
     private final Optional<Double> netBatchAmount;
@@ -72,6 +74,7 @@ public final class QueryTransferSummary {
             Optional<Double> releaseAmount,
             Optional<Double> thirdPartyPaid,
             Optional<Double> totalNetAmountTransfer,
+            Optional<Double> splitAmount,
             Optional<Double> serviceFees,
             Optional<Double> netBatchAmount,
             Optional<Double> transferAmount,
@@ -92,6 +95,7 @@ public final class QueryTransferSummary {
         this.releaseAmount = releaseAmount;
         this.thirdPartyPaid = thirdPartyPaid;
         this.totalNetAmountTransfer = totalNetAmountTransfer;
+        this.splitAmount = splitAmount;
         this.serviceFees = serviceFees;
         this.netBatchAmount = netBatchAmount;
         this.transferAmount = transferAmount;
@@ -192,6 +196,17 @@ public final class QueryTransferSummary {
             return Optional.empty();
         }
         return totalNetAmountTransfer;
+    }
+
+    /**
+     * @return The sum of each splitFundingAmount of each record in the transfer.
+     */
+    @JsonIgnore
+    public Optional<Double> getSplitAmount() {
+        if (splitAmount == null) {
+            return Optional.empty();
+        }
+        return splitAmount;
     }
 
     /**
@@ -365,6 +380,12 @@ public final class QueryTransferSummary {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("splitAmount")
+    private Optional<Double> _getSplitAmount() {
+        return splitAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("serviceFees")
     private Optional<Double> _getServiceFees() {
         return serviceFees;
@@ -450,6 +471,7 @@ public final class QueryTransferSummary {
                 && releaseAmount.equals(other.releaseAmount)
                 && thirdPartyPaid.equals(other.thirdPartyPaid)
                 && totalNetAmountTransfer.equals(other.totalNetAmountTransfer)
+                && splitAmount.equals(other.splitAmount)
                 && serviceFees.equals(other.serviceFees)
                 && netBatchAmount.equals(other.netBatchAmount)
                 && transferAmount.equals(other.transferAmount)
@@ -474,6 +496,7 @@ public final class QueryTransferSummary {
                 this.releaseAmount,
                 this.thirdPartyPaid,
                 this.totalNetAmountTransfer,
+                this.splitAmount,
                 this.serviceFees,
                 this.netBatchAmount,
                 this.transferAmount,
@@ -514,6 +537,8 @@ public final class QueryTransferSummary {
 
         private Optional<Double> totalNetAmountTransfer = Optional.empty();
 
+        private Optional<Double> splitAmount = Optional.empty();
+
         private Optional<Double> serviceFees = Optional.empty();
 
         private Optional<Double> netBatchAmount = Optional.empty();
@@ -550,6 +575,7 @@ public final class QueryTransferSummary {
             releaseAmount(other.getReleaseAmount());
             thirdPartyPaid(other.getThirdPartyPaid());
             totalNetAmountTransfer(other.getTotalNetAmountTransfer());
+            splitAmount(other.getSplitAmount());
             serviceFees(other.getServiceFees());
             netBatchAmount(other.getNetBatchAmount());
             transferAmount(other.getTransferAmount());
@@ -760,6 +786,31 @@ public final class QueryTransferSummary {
                 this.totalNetAmountTransfer = Optional.empty();
             } else {
                 this.totalNetAmountTransfer = Optional.of(totalNetAmountTransfer.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The sum of each splitFundingAmount of each record in the transfer.</p>
+         */
+        @JsonSetter(value = "splitAmount", nulls = Nulls.SKIP)
+        public Builder splitAmount(Optional<Double> splitAmount) {
+            this.splitAmount = splitAmount;
+            return this;
+        }
+
+        public Builder splitAmount(Double splitAmount) {
+            this.splitAmount = Optional.ofNullable(splitAmount);
+            return this;
+        }
+
+        public Builder splitAmount(Nullable<Double> splitAmount) {
+            if (splitAmount.isNull()) {
+                this.splitAmount = null;
+            } else if (splitAmount.isEmpty()) {
+                this.splitAmount = Optional.empty();
+            } else {
+                this.splitAmount = Optional.of(splitAmount.get());
             }
             return this;
         }
@@ -1050,6 +1101,7 @@ public final class QueryTransferSummary {
                     releaseAmount,
                     thirdPartyPaid,
                     totalNetAmountTransfer,
+                    splitAmount,
                     serviceFees,
                     netBatchAmount,
                     transferAmount,

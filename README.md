@@ -36,32 +36,45 @@ public class Example {
                         .paymentDetails(
                             PaymentDetail
                                 .builder()
-                                .totalAmount(100)
-                                .serviceFee(0)
+                                .totalAmount(1000.0)
+                                .serviceFee(0.0)
                                 .build()
                         )
                         .paymentMethod(
-                            PaymentMethod.ofPayMethodCredit(
+                            PaymentMethod.of(
                                 PayMethodCredit
                                     .builder()
-                                    .cardexp("02/27")
+                                    .cardexp("02/25")
                                     .cardnumber("4111111111111111")
                                     .method("card")
-                                    .cardcvv("999")
+                                    .cardcvv("123")
                                     .cardHolder("John Cassian")
                                     .cardzip("12345")
                                     .initiator("payor")
+                                    .saveIfSuccess(true)
                                     .build()
                             )
                         )
                         .customerData(
                             PayorDataRequest
                                 .builder()
-                                .customerId(4440L)
+                                .billingAddress1("123 Walnut Street")
+                                .billingCity("Johnson City")
+                                .billingCountry("US")
+                                .billingEmail("john@email.com")
+                                .billingPhone("1234567890")
+                                .billingState("Johnson City")
+                                .billingZip("37615")
+                                .customerNumber("3456-7645A")
+                                .firstName("John")
+                                .lastName("Cassian")
                                 .build()
                         )
                         .entryPoint("f743aed24a")
                         .ipaddress("255.255.255.255")
+                        .orderDescription("New customer package")
+                        .orderId("982-102")
+                        .source("web")
                         .build()
                 )
                 .build()
@@ -104,9 +117,9 @@ When the API returns a non-success status code (4xx or 5xx response), an API exc
 ```java
 import io.github.payabli.api.core.PayabliApiApiException;
 
-try {
+try{
     client.moneyIn().getpaid(...);
-} catch (PayabliApiApiException e) {
+} catch (PayabliApiApiException e){
     // Do something with the API exception...
 }
 ```
@@ -115,7 +128,7 @@ try {
 
 ### Custom Client
 
-This SDK is built to work with any instance of `OkHttpClient`. By default, if no client is provided, the SDK will construct one. 
+This SDK is built to work with any instance of `OkHttpClient`. By default, if no client is provided, the SDK will construct one.
 However, you can pass your own client like so:
 
 ```java
@@ -134,7 +147,9 @@ PayabliApiClient client = PayabliApiClient
 
 The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
 as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
-retry limit (default: 2).
+retry limit (default: 2). Before defaulting to exponential backoff, the SDK will first attempt to respect
+the `Retry-After` header (as either in seconds or as an HTTP date), and then the `X-RateLimit-Reset` header
+(as a Unix timestamp in epoch seconds); failing both of those, it will fall back to exponential backoff.
 
 A request is deemed retryable when any of the following HTTP status codes is returned:
 
@@ -203,6 +218,19 @@ client.moneyIn().getpaid(
 );
 ```
 
+### Access Raw Response Data
+
+The SDK provides access to raw response data, including headers, through the `withRawResponse()` method.
+The `withRawResponse()` method returns a raw client that wraps all responses with `body()` and `headers()` methods.
+(A normal client's `response` is identical to a raw client's `response.body()`.)
+
+```java
+GetpaidHttpResponse response = client.moneyIn().withRawResponse().getpaid(...);
+
+System.out.println(response.body());
+System.out.println(response.headers().get("X-My-Header"));
+```
+
 ## Contributing
 
 While we value open-source contributions to this SDK, this library is generated programmatically.
@@ -236,7 +264,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.300</version>
+  <version>0.0.301</version>
 </dependency>
 ```
 

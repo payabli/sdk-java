@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetPaidResponseData.Builder.class)
 public final class GetPaidResponseData {
+    private final Optional<TransactionDetailRecord> transactionDetails;
+
     private final Optional<String> authCode;
 
     private final String referenceId;
@@ -40,6 +42,7 @@ public final class GetPaidResponseData {
     private final Map<String, Object> additionalProperties;
 
     private GetPaidResponseData(
+            Optional<TransactionDetailRecord> transactionDetails,
             Optional<String> authCode,
             String referenceId,
             int resultCode,
@@ -49,6 +52,7 @@ public final class GetPaidResponseData {
             long customerId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
+        this.transactionDetails = transactionDetails;
         this.authCode = authCode;
         this.referenceId = referenceId;
         this.resultCode = resultCode;
@@ -58,6 +62,14 @@ public final class GetPaidResponseData {
         this.customerId = customerId;
         this.methodReferenceId = methodReferenceId;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Details of the transaction. Present only if <code>includeDetails</code> query parameter is set to <code>true</code> in the request.
+     */
+    @JsonProperty("transactionDetails")
+    public Optional<TransactionDetailRecord> getTransactionDetails() {
+        return transactionDetails;
     }
 
     @JsonProperty("authCode")
@@ -112,7 +124,8 @@ public final class GetPaidResponseData {
     }
 
     private boolean equalTo(GetPaidResponseData other) {
-        return authCode.equals(other.authCode)
+        return transactionDetails.equals(other.transactionDetails)
+                && authCode.equals(other.authCode)
                 && referenceId.equals(other.referenceId)
                 && resultCode == other.resultCode
                 && resultText.equals(other.resultText)
@@ -125,6 +138,7 @@ public final class GetPaidResponseData {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.transactionDetails,
                 this.authCode,
                 this.referenceId,
                 this.resultCode,
@@ -173,6 +187,13 @@ public final class GetPaidResponseData {
     public interface _FinalStage {
         GetPaidResponseData build();
 
+        /**
+         * <p>Details of the transaction. Present only if <code>includeDetails</code> query parameter is set to <code>true</code> in the request.</p>
+         */
+        _FinalStage transactionDetails(Optional<TransactionDetailRecord> transactionDetails);
+
+        _FinalStage transactionDetails(TransactionDetailRecord transactionDetails);
+
         _FinalStage authCode(Optional<String> authCode);
 
         _FinalStage authCode(String authCode);
@@ -207,6 +228,8 @@ public final class GetPaidResponseData {
 
         private Optional<String> authCode = Optional.empty();
 
+        private Optional<TransactionDetailRecord> transactionDetails = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -214,6 +237,7 @@ public final class GetPaidResponseData {
 
         @java.lang.Override
         public Builder from(GetPaidResponseData other) {
+            transactionDetails(other.getTransactionDetails());
             authCode(other.getAuthCode());
             referenceId(other.getReferenceId());
             resultCode(other.getResultCode());
@@ -293,9 +317,30 @@ public final class GetPaidResponseData {
             return this;
         }
 
+        /**
+         * <p>Details of the transaction. Present only if <code>includeDetails</code> query parameter is set to <code>true</code> in the request.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactionDetails(TransactionDetailRecord transactionDetails) {
+            this.transactionDetails = Optional.ofNullable(transactionDetails);
+            return this;
+        }
+
+        /**
+         * <p>Details of the transaction. Present only if <code>includeDetails</code> query parameter is set to <code>true</code> in the request.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "transactionDetails", nulls = Nulls.SKIP)
+        public _FinalStage transactionDetails(Optional<TransactionDetailRecord> transactionDetails) {
+            this.transactionDetails = transactionDetails;
+            return this;
+        }
+
         @java.lang.Override
         public GetPaidResponseData build() {
             return new GetPaidResponseData(
+                    transactionDetails,
                     authCode,
                     referenceId,
                     resultCode,

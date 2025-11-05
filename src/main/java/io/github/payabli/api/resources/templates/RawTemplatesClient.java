@@ -5,7 +5,6 @@ package io.github.payabli.api.resources.templates;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
-import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.core.PayabliApiApiException;
 import io.github.payabli.api.core.PayabliApiException;
@@ -20,7 +19,6 @@ import io.github.payabli.api.resources.templates.requests.ListTemplatesRequest;
 import io.github.payabli.api.types.BoardingLinkApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponseTemplateId;
-import io.github.payabli.api.types.TemplateData;
 import io.github.payabli.api.types.TemplateQueryRecord;
 import io.github.payabli.api.types.TemplateQueryResponse;
 import java.io.IOException;
@@ -28,7 +26,6 @@ import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -37,85 +34,6 @@ public class RawTemplatesClient {
 
     public RawTemplatesClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> addTemplate(int orgId) {
-        return addTemplate(orgId, TemplateData.builder().build());
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> addTemplate(int orgId, TemplateData request) {
-        return addTemplate(orgId, request, null);
-    }
-
-    /**
-     * Creates a boarding template in an organization.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> addTemplate(
-            int orgId, TemplateData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Templates")
-                .addPathSegment(Integer.toString(orgId))
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseTemplateId.class),
-                        response);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
     }
 
     /**
@@ -147,12 +65,12 @@ public class RawTemplatesClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseTemplateId.class),
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseTemplateId.class),
                         response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -172,11 +90,9 @@ public class RawTemplatesClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -212,12 +128,12 @@ public class RawTemplatesClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BoardingLinkApiResponse.class),
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkApiResponse.class),
                         response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -237,11 +153,9 @@ public class RawTemplatesClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -275,12 +189,11 @@ public class RawTemplatesClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), TemplateQueryRecord.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TemplateQueryRecord.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -300,11 +213,9 @@ public class RawTemplatesClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }
@@ -361,12 +272,11 @@ public class RawTemplatesClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), TemplateQueryResponse.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TemplateQueryResponse.class), response);
             }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
                 switch (response.code()) {
                     case 400:
@@ -386,91 +296,9 @@ public class RawTemplatesClient {
             } catch (JsonProcessingException ignored) {
                 // unable to map error response, throwing generic error
             }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> updateTemplate(double templateId) {
-        return updateTemplate(templateId, TemplateData.builder().build());
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> updateTemplate(
-            double templateId, TemplateData request) {
-        return updateTemplate(templateId, request, null);
-    }
-
-    /**
-     * Updates a boarding template by ID.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> updateTemplate(
-            double templateId, TemplateData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Templates")
-                .addPathSegment(Double.toString(templateId))
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PayabliApiResponseTemplateId.class),
-                        response);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                    response);
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (IOException e) {
             throw new PayabliApiException("Network error executing HTTP request", e);
         }

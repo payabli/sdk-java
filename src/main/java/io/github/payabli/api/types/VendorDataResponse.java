@@ -1493,7 +1493,9 @@ public final class VendorDataResponse {
         @JsonSetter(value = "StoredMethods", nulls = Nulls.SKIP)
         public _FinalStage storedMethods(List<VendorResponseStoredMethod> storedMethods) {
             this.storedMethods.clear();
-            this.storedMethods.addAll(storedMethods);
+            if (storedMethods != null) {
+                this.storedMethods.addAll(storedMethods);
+            }
             return this;
         }
 
@@ -1515,7 +1517,9 @@ public final class VendorDataResponse {
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
         public _FinalStage additionalData(Map<String, String> additionalData) {
             this.additionalData.clear();
-            this.additionalData.putAll(additionalData);
+            if (additionalData != null) {
+                this.additionalData.putAll(additionalData);
+            }
             return this;
         }
 
@@ -1588,7 +1592,9 @@ public final class VendorDataResponse {
         @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
         public _FinalStage contacts(List<ContactsResponse> contacts) {
             this.contacts.clear();
-            this.contacts.addAll(contacts);
+            if (contacts != null) {
+                this.contacts.addAll(contacts);
+            }
             return this;
         }
 
