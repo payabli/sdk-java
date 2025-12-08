@@ -148,15 +148,15 @@ public class AsyncRawCloudClient {
      * Retrieve the registration history for a device.
      */
     public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> historyDevice(
-            String deviceId, String entry) {
-        return historyDevice(deviceId, entry, null);
+            String entry, String deviceId) {
+        return historyDevice(entry, deviceId, null);
     }
 
     /**
      * Retrieve the registration history for a device.
      */
     public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> historyDevice(
-            String deviceId, String entry, RequestOptions requestOptions) {
+            String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/history")
@@ -326,15 +326,15 @@ public class AsyncRawCloudClient {
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> removeDevice(String deviceId, String entry) {
-        return removeDevice(deviceId, entry, null);
+    public CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> removeDevice(String entry, String deviceId) {
+        return removeDevice(entry, deviceId, null);
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> removeDevice(
-            String deviceId, String entry, RequestOptions requestOptions) {
+            String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/register")

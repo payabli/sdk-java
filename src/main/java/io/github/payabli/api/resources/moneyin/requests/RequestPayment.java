@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.moneyin.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,7 +54,7 @@ public final class RequestPayment {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("idempotencyKey")
+    @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
     }
@@ -61,7 +62,7 @@ public final class RequestPayment {
     /**
      * @return Value obtained from user when an API generated CAPTCHA is used in payment page
      */
-    @JsonProperty("validationCode")
+    @JsonIgnore
     public Optional<String> getValidationCode() {
         return validationCode;
     }
@@ -262,7 +263,6 @@ public final class RequestPayment {
          * <p>Value obtained from user when an API generated CAPTCHA is used in payment page</p>
          */
         @java.lang.Override
-        @JsonSetter(value = "validationCode", nulls = Nulls.SKIP)
         public _FinalStage validationCode(Optional<String> validationCode) {
             this.validationCode = validationCode;
             return this;
@@ -275,7 +275,6 @@ public final class RequestPayment {
         }
 
         @java.lang.Override
-        @JsonSetter(value = "idempotencyKey", nulls = Nulls.SKIP)
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
             return this;

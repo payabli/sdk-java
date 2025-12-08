@@ -58,25 +58,25 @@ public class AsyncBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public CompletableFuture<BillResponse> deleteAttachedFromBill(String filename, int idBill) {
-        return this.rawClient.deleteAttachedFromBill(filename, idBill).thenApply(response -> response.body());
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename).thenApply(response -> response.body());
     }
 
     /**
      * Delete a file attached to a bill.
      */
     public CompletableFuture<BillResponse> deleteAttachedFromBill(
-            String filename, int idBill, DeleteAttachedFromBillRequest request) {
-        return this.rawClient.deleteAttachedFromBill(filename, idBill, request).thenApply(response -> response.body());
+            int idBill, String filename, DeleteAttachedFromBillRequest request) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename, request).thenApply(response -> response.body());
     }
 
     /**
      * Delete a file attached to a bill.
      */
     public CompletableFuture<BillResponse> deleteAttachedFromBill(
-            String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
+            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .deleteAttachedFromBill(filename, idBill, request, requestOptions)
+                .deleteAttachedFromBill(idBill, filename, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 
@@ -119,25 +119,25 @@ public class AsyncBillClient {
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public CompletableFuture<FileContent> getAttachedFromBill(String filename, int idBill) {
-        return this.rawClient.getAttachedFromBill(filename, idBill).thenApply(response -> response.body());
+    public CompletableFuture<FileContent> getAttachedFromBill(int idBill, String filename) {
+        return this.rawClient.getAttachedFromBill(idBill, filename).thenApply(response -> response.body());
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
     public CompletableFuture<FileContent> getAttachedFromBill(
-            String filename, int idBill, GetAttachedFromBillRequest request) {
-        return this.rawClient.getAttachedFromBill(filename, idBill, request).thenApply(response -> response.body());
+            int idBill, String filename, GetAttachedFromBillRequest request) {
+        return this.rawClient.getAttachedFromBill(idBill, filename, request).thenApply(response -> response.body());
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
     public CompletableFuture<FileContent> getAttachedFromBill(
-            String filename, int idBill, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
+            int idBill, String filename, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .getAttachedFromBill(filename, idBill, request, requestOptions)
+                .getAttachedFromBill(idBill, filename, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 
@@ -236,25 +236,25 @@ public class AsyncBillClient {
     /**
      * Approve or disapprove a bill by ID.
      */
-    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(String approved, int idBill) {
-        return this.rawClient.setApprovedBill(approved, idBill).thenApply(response -> response.body());
+    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
+        return this.rawClient.setApprovedBill(idBill, approved).thenApply(response -> response.body());
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
     public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
-            String approved, int idBill, SetApprovedBillRequest request) {
-        return this.rawClient.setApprovedBill(approved, idBill, request).thenApply(response -> response.body());
+            int idBill, String approved, SetApprovedBillRequest request) {
+        return this.rawClient.setApprovedBill(idBill, approved, request).thenApply(response -> response.body());
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
     public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
-            String approved, int idBill, SetApprovedBillRequest request, RequestOptions requestOptions) {
+            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .setApprovedBill(approved, idBill, request, requestOptions)
+                .setApprovedBill(idBill, approved, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 }

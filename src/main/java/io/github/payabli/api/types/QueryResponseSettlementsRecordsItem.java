@@ -339,7 +339,7 @@ public final class QueryResponseSettlementsRecordsItem {
     }
 
     /**
-     * @return
+     * @return The date and time when the transaction was settled. This field is null when the transaction's <code>SettlementStatus</code> is -1, -5, or -6 (Exception, Held, or Released).
      */
     @JsonProperty("SettlementDate")
     public Optional<OffsetDateTime> getSettlementDate() {
@@ -930,6 +930,9 @@ public final class QueryResponseSettlementsRecordsItem {
             return this;
         }
 
+        /**
+         * <p>The date and time when the transaction was settled. This field is null when the transaction's <code>SettlementStatus</code> is -1, -5, or -6 (Exception, Held, or Released).</p>
+         */
         @JsonSetter(value = "SettlementDate", nulls = Nulls.SKIP)
         public Builder settlementDate(Optional<OffsetDateTime> settlementDate) {
             this.settlementDate = settlementDate;

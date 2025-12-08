@@ -54,16 +54,16 @@ public class AsyncCloudClient {
     /**
      * Retrieve the registration history for a device.
      */
-    public CompletableFuture<CloudQueryApiResponse> historyDevice(String deviceId, String entry) {
-        return this.rawClient.historyDevice(deviceId, entry).thenApply(response -> response.body());
+    public CompletableFuture<CloudQueryApiResponse> historyDevice(String entry, String deviceId) {
+        return this.rawClient.historyDevice(entry, deviceId).thenApply(response -> response.body());
     }
 
     /**
      * Retrieve the registration history for a device.
      */
     public CompletableFuture<CloudQueryApiResponse> historyDevice(
-            String deviceId, String entry, RequestOptions requestOptions) {
-        return this.rawClient.historyDevice(deviceId, entry, requestOptions).thenApply(response -> response.body());
+            String entry, String deviceId, RequestOptions requestOptions) {
+        return this.rawClient.historyDevice(entry, deviceId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -91,15 +91,15 @@ public class AsyncCloudClient {
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public CompletableFuture<RemoveDeviceResponse> removeDevice(String deviceId, String entry) {
-        return this.rawClient.removeDevice(deviceId, entry).thenApply(response -> response.body());
+    public CompletableFuture<RemoveDeviceResponse> removeDevice(String entry, String deviceId) {
+        return this.rawClient.removeDevice(entry, deviceId).thenApply(response -> response.body());
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
     public CompletableFuture<RemoveDeviceResponse> removeDevice(
-            String deviceId, String entry, RequestOptions requestOptions) {
-        return this.rawClient.removeDevice(deviceId, entry, requestOptions).thenApply(response -> response.body());
+            String entry, String deviceId, RequestOptions requestOptions) {
+        return this.rawClient.removeDevice(entry, deviceId, requestOptions).thenApply(response -> response.body());
     }
 }

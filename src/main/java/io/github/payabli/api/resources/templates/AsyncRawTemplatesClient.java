@@ -128,15 +128,15 @@ public class AsyncRawTemplatesClient {
      * Generates a boarding link from a boarding template.
      */
     public CompletableFuture<PayabliApiHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
-            boolean ignoreEmpty, double templateId) {
-        return getlinkTemplate(ignoreEmpty, templateId, null);
+            double templateId, boolean ignoreEmpty) {
+        return getlinkTemplate(templateId, ignoreEmpty, null);
     }
 
     /**
      * Generates a boarding link from a boarding template.
      */
     public CompletableFuture<PayabliApiHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
-            boolean ignoreEmpty, double templateId, RequestOptions requestOptions) {
+            double templateId, boolean ignoreEmpty, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Templates/getlink")

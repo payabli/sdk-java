@@ -106,6 +106,7 @@ public final class ListTransactionsRequest {
      * <li><code>settlementStatus</code> (in, nin, eq, ne)</li>
      * <li><code>batchNumber</code> (nct, ct)</li>
      * <li><code>invoiceNumber</code> (ct, nct)</li>
+     * <li><code>ipAddress</code> (eq, ne)</li>
      * <li><code>authCode</code> (ct, nct)</li>
      * <li><code>orderDescription</code> (ct, nct)</li>
      * <li><code>payaccountLastfour</code> (nct, ct)</li>
@@ -297,6 +298,7 @@ public final class ListTransactionsRequest {
          * <li><code>settlementStatus</code> (in, nin, eq, ne)</li>
          * <li><code>batchNumber</code> (nct, ct)</li>
          * <li><code>invoiceNumber</code> (ct, nct)</li>
+         * <li><code>ipAddress</code> (eq, ne)</li>
          * <li><code>authCode</code> (ct, nct)</li>
          * <li><code>orderDescription</code> (ct, nct)</li>
          * <li><code>payaccountLastfour</code> (nct, ct)</li>

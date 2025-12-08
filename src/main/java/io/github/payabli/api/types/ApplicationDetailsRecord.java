@@ -90,7 +90,7 @@ public final class ApplicationDetailsRecord {
 
     private final Optional<String> licenseState;
 
-    private final Optional<FileContent> logo;
+    private final Optional<String> logo;
 
     private final Optional<String> mAddress1;
 
@@ -181,7 +181,7 @@ public final class ApplicationDetailsRecord {
             Optional<String> legalName,
             Optional<String> license,
             Optional<String> licenseState,
-            Optional<FileContent> logo,
+            Optional<String> logo,
             Optional<String> mAddress1,
             Optional<String> mAddress2,
             Optional<String> mccid,
@@ -450,10 +450,10 @@ public final class ApplicationDetailsRecord {
     }
 
     /**
-     * @return Object containing logo file.
+     * @return A URL pointing to a logo file.
      */
     @JsonProperty("logo")
-    public Optional<FileContent> getLogo() {
+    public Optional<String> getLogo() {
         return logo;
     }
 
@@ -807,7 +807,7 @@ public final class ApplicationDetailsRecord {
 
         private Optional<String> licenseState = Optional.empty();
 
-        private Optional<FileContent> logo = Optional.empty();
+        private Optional<String> logo = Optional.empty();
 
         private Optional<String> mAddress1 = Optional.empty();
 
@@ -1312,15 +1312,15 @@ public final class ApplicationDetailsRecord {
         }
 
         /**
-         * <p>Object containing logo file.</p>
+         * <p>A URL pointing to a logo file.</p>
          */
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
-        public Builder logo(Optional<FileContent> logo) {
+        public Builder logo(Optional<String> logo) {
             this.logo = logo;
             return this;
         }
 
-        public Builder logo(FileContent logo) {
+        public Builder logo(String logo) {
             this.logo = Optional.ofNullable(logo);
             return this;
         }

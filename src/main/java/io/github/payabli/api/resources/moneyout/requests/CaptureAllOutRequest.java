@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.moneyout.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,7 +36,7 @@ public final class CaptureAllOutRequest {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("idempotencyKey")
+    @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
     }
@@ -94,7 +95,6 @@ public final class CaptureAllOutRequest {
             return this;
         }
 
-        @JsonSetter(value = "idempotencyKey", nulls = Nulls.SKIP)
         public Builder idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
             return this;

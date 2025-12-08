@@ -66,15 +66,29 @@ public class MoneyOutClient {
     /**
      * Cancel a payout transaction by ID.
      */
-    public PayabliApiResponse0000 cancelOut(String referenceId) {
-        return this.rawClient.cancelOut(referenceId).body();
+    public PayabliApiResponse0000 cancelOutGet(String referenceId) {
+        return this.rawClient.cancelOutGet(referenceId).body();
     }
 
     /**
      * Cancel a payout transaction by ID.
      */
-    public PayabliApiResponse0000 cancelOut(String referenceId, RequestOptions requestOptions) {
-        return this.rawClient.cancelOut(referenceId, requestOptions).body();
+    public PayabliApiResponse0000 cancelOutGet(String referenceId, RequestOptions requestOptions) {
+        return this.rawClient.cancelOutGet(referenceId, requestOptions).body();
+    }
+
+    /**
+     * Cancel a payout transaction by ID.
+     */
+    public PayabliApiResponse0000 cancelOutDelete(String referenceId) {
+        return this.rawClient.cancelOutDelete(referenceId).body();
+    }
+
+    /**
+     * Cancel a payout transaction by ID.
+     */
+    public PayabliApiResponse0000 cancelOutDelete(String referenceId, RequestOptions requestOptions) {
+        return this.rawClient.cancelOutDelete(referenceId, requestOptions).body();
     }
 
     /**

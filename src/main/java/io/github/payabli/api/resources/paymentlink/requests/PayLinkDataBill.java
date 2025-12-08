@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.paymentlink.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,7 +46,7 @@ public final class PayLinkDataBill {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("idempotencyKey")
+    @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
     }
@@ -209,7 +210,6 @@ public final class PayLinkDataBill {
         }
 
         @java.lang.Override
-        @JsonSetter(value = "idempotencyKey", nulls = Nulls.SKIP)
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
             return this;

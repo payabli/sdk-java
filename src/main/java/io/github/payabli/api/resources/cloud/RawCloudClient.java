@@ -121,15 +121,15 @@ public class RawCloudClient {
     /**
      * Retrieve the registration history for a device.
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> historyDevice(String deviceId, String entry) {
-        return historyDevice(deviceId, entry, null);
+    public PayabliApiHttpResponse<CloudQueryApiResponse> historyDevice(String entry, String deviceId) {
+        return historyDevice(entry, deviceId, null);
     }
 
     /**
      * Retrieve the registration history for a device.
      */
     public PayabliApiHttpResponse<CloudQueryApiResponse> historyDevice(
-            String deviceId, String entry, RequestOptions requestOptions) {
+            String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/history")
@@ -254,15 +254,15 @@ public class RawCloudClient {
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public PayabliApiHttpResponse<RemoveDeviceResponse> removeDevice(String deviceId, String entry) {
-        return removeDevice(deviceId, entry, null);
+    public PayabliApiHttpResponse<RemoveDeviceResponse> removeDevice(String entry, String deviceId) {
+        return removeDevice(entry, deviceId, null);
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
     public PayabliApiHttpResponse<RemoveDeviceResponse> removeDevice(
-            String deviceId, String entry, RequestOptions requestOptions) {
+            String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/register")

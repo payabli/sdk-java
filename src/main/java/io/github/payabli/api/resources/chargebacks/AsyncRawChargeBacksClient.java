@@ -225,12 +225,18 @@ public class AsyncRawChargeBacksClient {
         return future;
     }
 
-    public CompletableFuture<PayabliApiHttpResponse<String>> getChargebackAttachment(String fileName, long id) {
-        return getChargebackAttachment(fileName, id, null);
+    /**
+     * Retrieves a chargeback attachment file by its file name.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<String>> getChargebackAttachment(long id, String fileName) {
+        return getChargebackAttachment(id, fileName, null);
     }
 
+    /**
+     * Retrieves a chargeback attachment file by its file name.
+     */
     public CompletableFuture<PayabliApiHttpResponse<String>> getChargebackAttachment(
-            String fileName, long id, RequestOptions requestOptions) {
+            long id, String fileName, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("ChargeBacks/getChargebackAttachments")

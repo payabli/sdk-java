@@ -28,6 +28,8 @@ public final class RequestOutAuthorizePaymentDetails {
 
     private final Optional<Double> totalAmount;
 
+    private final Optional<Boolean> unbundled;
+
     private final Map<String, Object> additionalProperties;
 
     private RequestOutAuthorizePaymentDetails(
@@ -35,11 +37,13 @@ public final class RequestOutAuthorizePaymentDetails {
             Optional<String> currency,
             Optional<Double> serviceFee,
             Optional<Double> totalAmount,
+            Optional<Boolean> unbundled,
             Map<String, Object> additionalProperties) {
         this.checkNumber = checkNumber;
         this.currency = currency;
         this.serviceFee = serviceFee;
         this.totalAmount = totalAmount;
+        this.unbundled = unbundled;
         this.additionalProperties = additionalProperties;
     }
 
@@ -49,7 +53,7 @@ public final class RequestOutAuthorizePaymentDetails {
     }
 
     /**
-     * @return Currency code ISO-4217. If not code is provided the currency in the paypoint setting is taken. Default is <strong>USD</strong>.
+     * @return Currency code ISO-4217. If no code is provided, then the currency in the paypoint setting is used. Default is <strong>USD</strong>.
      */
     @JsonProperty("currency")
     public Optional<String> getCurrency() {
@@ -72,6 +76,14 @@ public final class RequestOutAuthorizePaymentDetails {
         return totalAmount;
     }
 
+    /**
+     * @return Indicates whether the payout should be bundled into a single transaction or processed separately. If set to <code>true</code>, each bill will be processed as a separate payout. If <code>false</code> or not provided, then multiple bills will be paid with a single payout.
+     */
+    @JsonProperty("unbundled")
+    public Optional<Boolean> getUnbundled() {
+        return unbundled;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -87,12 +99,13 @@ public final class RequestOutAuthorizePaymentDetails {
         return checkNumber.equals(other.checkNumber)
                 && currency.equals(other.currency)
                 && serviceFee.equals(other.serviceFee)
-                && totalAmount.equals(other.totalAmount);
+                && totalAmount.equals(other.totalAmount)
+                && unbundled.equals(other.unbundled);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.checkNumber, this.currency, this.serviceFee, this.totalAmount);
+        return Objects.hash(this.checkNumber, this.currency, this.serviceFee, this.totalAmount, this.unbundled);
     }
 
     @java.lang.Override
@@ -114,6 +127,8 @@ public final class RequestOutAuthorizePaymentDetails {
 
         private Optional<Double> totalAmount = Optional.empty();
 
+        private Optional<Boolean> unbundled = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -124,6 +139,7 @@ public final class RequestOutAuthorizePaymentDetails {
             currency(other.getCurrency());
             serviceFee(other.getServiceFee());
             totalAmount(other.getTotalAmount());
+            unbundled(other.getUnbundled());
             return this;
         }
 
@@ -139,7 +155,7 @@ public final class RequestOutAuthorizePaymentDetails {
         }
 
         /**
-         * <p>Currency code ISO-4217. If not code is provided the currency in the paypoint setting is taken. Default is <strong>USD</strong>.</p>
+         * <p>Currency code ISO-4217. If no code is provided, then the currency in the paypoint setting is used. Default is <strong>USD</strong>.</p>
          */
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public Builder currency(Optional<String> currency) {
@@ -180,9 +196,23 @@ public final class RequestOutAuthorizePaymentDetails {
             return this;
         }
 
+        /**
+         * <p>Indicates whether the payout should be bundled into a single transaction or processed separately. If set to <code>true</code>, each bill will be processed as a separate payout. If <code>false</code> or not provided, then multiple bills will be paid with a single payout.</p>
+         */
+        @JsonSetter(value = "unbundled", nulls = Nulls.SKIP)
+        public Builder unbundled(Optional<Boolean> unbundled) {
+            this.unbundled = unbundled;
+            return this;
+        }
+
+        public Builder unbundled(Boolean unbundled) {
+            this.unbundled = Optional.ofNullable(unbundled);
+            return this;
+        }
+
         public RequestOutAuthorizePaymentDetails build() {
             return new RequestOutAuthorizePaymentDetails(
-                    checkNumber, currency, serviceFee, totalAmount, additionalProperties);
+                    checkNumber, currency, serviceFee, totalAmount, unbundled, additionalProperties);
         }
     }
 }

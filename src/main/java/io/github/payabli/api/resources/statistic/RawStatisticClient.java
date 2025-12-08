@@ -20,6 +20,7 @@ import io.github.payabli.api.resources.statistic.requests.BasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.CustomerBasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.SubStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.VendorBasicStatsRequest;
+import io.github.payabli.api.resources.statistic.types.StatBasicExtendedQueryRecord;
 import io.github.payabli.api.resources.statistic.types.StatBasicQueryRecord;
 import io.github.payabli.api.resources.statistic.types.StatisticsVendorQueryRecord;
 import io.github.payabli.api.resources.statistic.types.SubscriptionStatsQueryRecord;
@@ -43,28 +44,28 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> basicStats(
-            long entryId, String freq, int level, String mode) {
+    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+            String mode, String freq, int level, long entryId) {
         return basicStats(
-                entryId, freq, level, mode, BasicStatsRequest.builder().build());
+                mode, freq, level, entryId, BasicStatsRequest.builder().build());
     }
 
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> basicStats(
-            long entryId, String freq, int level, String mode, BasicStatsRequest request) {
-        return basicStats(entryId, freq, level, mode, request, null);
+    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+            String mode, String freq, int level, long entryId, BasicStatsRequest request) {
+        return basicStats(mode, freq, level, entryId, request, null);
     }
 
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> basicStats(
-            long entryId,
+    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+            String mode,
             String freq,
             int level,
-            String mode,
+            long entryId,
             BasicStatsRequest request,
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -102,7 +103,7 @@ public class RawStatisticClient {
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
-                                responseBodyString, new TypeReference<List<StatBasicQueryRecord>>() {}),
+                                responseBodyString, new TypeReference<List<StatBasicExtendedQueryRecord>>() {}),
                         response);
             }
             try {
@@ -136,26 +137,26 @@ public class RawStatisticClient {
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
     public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
-            int customerId, String freq, String mode) {
+            String mode, String freq, int customerId) {
         return customerBasicStats(
-                customerId, freq, mode, CustomerBasicStatsRequest.builder().build());
+                mode, freq, customerId, CustomerBasicStatsRequest.builder().build());
     }
 
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
     public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
-            int customerId, String freq, String mode, CustomerBasicStatsRequest request) {
-        return customerBasicStats(customerId, freq, mode, request, null);
+            String mode, String freq, int customerId, CustomerBasicStatsRequest request) {
+        return customerBasicStats(mode, freq, customerId, request, null);
     }
 
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
     public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
-            int customerId,
-            String freq,
             String mode,
+            String freq,
+            int customerId,
             CustomerBasicStatsRequest request,
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -217,23 +218,23 @@ public class RawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(long entryId, String interval, int level) {
-        return subStats(entryId, interval, level, SubStatsRequest.builder().build());
+    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(String interval, int level, long entryId) {
+        return subStats(interval, level, entryId, SubStatsRequest.builder().build());
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
     public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
-            long entryId, String interval, int level, SubStatsRequest request) {
-        return subStats(entryId, interval, level, request, null);
+            String interval, int level, long entryId, SubStatsRequest request) {
+        return subStats(interval, level, entryId, request, null);
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
     public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
-            long entryId, String interval, int level, SubStatsRequest request, RequestOptions requestOptions) {
+            String interval, int level, long entryId, SubStatsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Statistic/subscriptions")
@@ -294,24 +295,24 @@ public class RawStatisticClient {
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
     public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
-            String freq, int idVendor, String mode) {
+            String mode, String freq, int idVendor) {
         return vendorBasicStats(
-                freq, idVendor, mode, VendorBasicStatsRequest.builder().build());
+                mode, freq, idVendor, VendorBasicStatsRequest.builder().build());
     }
 
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
     public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
-            String freq, int idVendor, String mode, VendorBasicStatsRequest request) {
-        return vendorBasicStats(freq, idVendor, mode, request, null);
+            String mode, String freq, int idVendor, VendorBasicStatsRequest request) {
+        return vendorBasicStats(mode, freq, idVendor, request, null);
     }
 
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
     public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
-            String freq, int idVendor, String mode, VendorBasicStatsRequest request, RequestOptions requestOptions) {
+            String mode, String freq, int idVendor, VendorBasicStatsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Statistic/vendorbasic")

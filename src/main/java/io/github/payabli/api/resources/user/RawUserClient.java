@@ -49,14 +49,23 @@ public class RawUserClient {
         this.clientOptions = clientOptions;
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public PayabliApiHttpResponse<AddUserResponse> addUser() {
         return addUser(UserData.builder().build());
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public PayabliApiHttpResponse<AddUserResponse> addUser(UserData request) {
         return addUser(request, null);
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public PayabliApiHttpResponse<AddUserResponse> addUser(UserData request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -114,10 +123,16 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseUserMfa> authRefreshUser() {
         return authRefreshUser(null);
     }
 
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseUserMfa> authRefreshUser(RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -168,14 +183,23 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser() {
         return authResetUser(UserAuthResetRequest.builder().build());
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser(UserAuthResetRequest request) {
         return authResetUser(request, null);
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser(
             UserAuthResetRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -311,14 +335,23 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser() {
         return changePswUser(UserAuthPswResetRequest.builder().build());
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser(UserAuthPswResetRequest request) {
         return changePswUser(request, null);
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser(
             UserAuthPswResetRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -377,10 +410,16 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
     public PayabliApiHttpResponse<DeleteUserResponse> deleteUser(long userId) {
         return deleteUser(userId, null);
     }
 
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
     public PayabliApiHttpResponse<DeleteUserResponse> deleteUser(long userId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -431,14 +470,23 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(long userId) {
         return editMfaUser(userId, MfaData.builder().build());
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(long userId, MfaData request) {
         return editMfaUser(userId, request, null);
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(
             long userId, MfaData request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -498,14 +546,23 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponse> editUser(long userId) {
         return editUser(userId, UserData.builder().build());
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponse> editUser(long userId, UserData request) {
         return editUser(userId, request, null);
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponse> editUser(
             long userId, UserData request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -565,14 +622,23 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public PayabliApiHttpResponse<UserQueryRecord> getUser(long userId) {
         return getUser(userId, GetUserRequest.builder().build());
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public PayabliApiHttpResponse<UserQueryRecord> getUser(long userId, GetUserRequest request) {
         return getUser(userId, request, null);
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public PayabliApiHttpResponse<UserQueryRecord> getUser(
             long userId, GetUserRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -631,10 +697,16 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to log a user out from the system.
+     */
     public PayabliApiHttpResponse<LogoutUserResponse> logoutUser() {
         return logoutUser(null);
     }
 
+    /**
+     * Use this endpoint to log a user out from the system.
+     */
     public PayabliApiHttpResponse<LogoutUserResponse> logoutUser(RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -684,13 +756,19 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Resends the MFA code to the user via the selected MFA mode (email or SMS).
+     */
     public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> resendMfaCode(
-            String entry, int entryType, String usrname) {
-        return resendMfaCode(entry, entryType, usrname, null);
+            String usrname, String entry, int entryType) {
+        return resendMfaCode(usrname, entry, entryType, null);
     }
 
+    /**
+     * Resends the MFA code to the user via the selected MFA mode (email or SMS).
+     */
     public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> resendMfaCode(
-            String entry, int entryType, String usrname, RequestOptions requestOptions) {
+            String usrname, String entry, int entryType, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User/resendmfa")
@@ -743,14 +821,23 @@ public class RawUserClient {
         }
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser() {
         return validateMfaUser(MfaValidationData.builder().build());
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(MfaValidationData request) {
         return validateMfaUser(request, null);
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(
             MfaValidationData request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())

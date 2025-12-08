@@ -52,15 +52,15 @@ public class CloudClient {
     /**
      * Retrieve the registration history for a device.
      */
-    public CloudQueryApiResponse historyDevice(String deviceId, String entry) {
-        return this.rawClient.historyDevice(deviceId, entry).body();
+    public CloudQueryApiResponse historyDevice(String entry, String deviceId) {
+        return this.rawClient.historyDevice(entry, deviceId).body();
     }
 
     /**
      * Retrieve the registration history for a device.
      */
-    public CloudQueryApiResponse historyDevice(String deviceId, String entry, RequestOptions requestOptions) {
-        return this.rawClient.historyDevice(deviceId, entry, requestOptions).body();
+    public CloudQueryApiResponse historyDevice(String entry, String deviceId, RequestOptions requestOptions) {
+        return this.rawClient.historyDevice(entry, deviceId, requestOptions).body();
     }
 
     /**
@@ -87,14 +87,14 @@ public class CloudClient {
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public RemoveDeviceResponse removeDevice(String deviceId, String entry) {
-        return this.rawClient.removeDevice(deviceId, entry).body();
+    public RemoveDeviceResponse removeDevice(String entry, String deviceId) {
+        return this.rawClient.removeDevice(entry, deviceId).body();
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public RemoveDeviceResponse removeDevice(String deviceId, String entry, RequestOptions requestOptions) {
-        return this.rawClient.removeDevice(deviceId, entry, requestOptions).body();
+    public RemoveDeviceResponse removeDevice(String entry, String deviceId, RequestOptions requestOptions) {
+        return this.rawClient.removeDevice(entry, deviceId, requestOptions).body();
     }
 }

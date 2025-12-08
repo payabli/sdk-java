@@ -41,34 +41,58 @@ public class AsyncUserClient {
         return this.rawClient;
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public CompletableFuture<AddUserResponse> addUser() {
         return this.rawClient.addUser().thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public CompletableFuture<AddUserResponse> addUser(UserData request) {
         return this.rawClient.addUser(request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public CompletableFuture<AddUserResponse> addUser(UserData request, RequestOptions requestOptions) {
         return this.rawClient.addUser(request, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
     public CompletableFuture<PayabliApiResponseUserMfa> authRefreshUser() {
         return this.rawClient.authRefreshUser().thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
     public CompletableFuture<PayabliApiResponseUserMfa> authRefreshUser(RequestOptions requestOptions) {
         return this.rawClient.authRefreshUser(requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public CompletableFuture<AuthResetUserResponse> authResetUser() {
         return this.rawClient.authResetUser().thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public CompletableFuture<AuthResetUserResponse> authResetUser(UserAuthResetRequest request) {
         return this.rawClient.authResetUser(request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public CompletableFuture<AuthResetUserResponse> authResetUser(
             UserAuthResetRequest request, RequestOptions requestOptions) {
         return this.rawClient.authResetUser(request, requestOptions).thenApply(response -> response.body());
@@ -96,93 +120,156 @@ public class AsyncUserClient {
         return this.rawClient.authUser(provider, request, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public CompletableFuture<ChangePswUserResponse> changePswUser() {
         return this.rawClient.changePswUser().thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public CompletableFuture<ChangePswUserResponse> changePswUser(UserAuthPswResetRequest request) {
         return this.rawClient.changePswUser(request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public CompletableFuture<ChangePswUserResponse> changePswUser(
             UserAuthPswResetRequest request, RequestOptions requestOptions) {
         return this.rawClient.changePswUser(request, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
     public CompletableFuture<DeleteUserResponse> deleteUser(long userId) {
         return this.rawClient.deleteUser(userId).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
     public CompletableFuture<DeleteUserResponse> deleteUser(long userId, RequestOptions requestOptions) {
         return this.rawClient.deleteUser(userId, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public CompletableFuture<EditMfaUserResponse> editMfaUser(long userId) {
         return this.rawClient.editMfaUser(userId).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public CompletableFuture<EditMfaUserResponse> editMfaUser(long userId, MfaData request) {
         return this.rawClient.editMfaUser(userId, request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public CompletableFuture<EditMfaUserResponse> editMfaUser(
             long userId, MfaData request, RequestOptions requestOptions) {
         return this.rawClient.editMfaUser(userId, request, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public CompletableFuture<PayabliApiResponse> editUser(long userId) {
         return this.rawClient.editUser(userId).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public CompletableFuture<PayabliApiResponse> editUser(long userId, UserData request) {
         return this.rawClient.editUser(userId, request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public CompletableFuture<PayabliApiResponse> editUser(
             long userId, UserData request, RequestOptions requestOptions) {
         return this.rawClient.editUser(userId, request, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public CompletableFuture<UserQueryRecord> getUser(long userId) {
         return this.rawClient.getUser(userId).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public CompletableFuture<UserQueryRecord> getUser(long userId, GetUserRequest request) {
         return this.rawClient.getUser(userId, request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public CompletableFuture<UserQueryRecord> getUser(
             long userId, GetUserRequest request, RequestOptions requestOptions) {
         return this.rawClient.getUser(userId, request, requestOptions).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to log a user out from the system.
+     */
     public CompletableFuture<LogoutUserResponse> logoutUser() {
         return this.rawClient.logoutUser().thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to log a user out from the system.
+     */
     public CompletableFuture<LogoutUserResponse> logoutUser(RequestOptions requestOptions) {
         return this.rawClient.logoutUser(requestOptions).thenApply(response -> response.body());
     }
 
-    public CompletableFuture<PayabliApiResponseMfaBasic> resendMfaCode(String entry, int entryType, String usrname) {
-        return this.rawClient.resendMfaCode(entry, entryType, usrname).thenApply(response -> response.body());
+    /**
+     * Resends the MFA code to the user via the selected MFA mode (email or SMS).
+     */
+    public CompletableFuture<PayabliApiResponseMfaBasic> resendMfaCode(String usrname, String entry, int entryType) {
+        return this.rawClient.resendMfaCode(usrname, entry, entryType).thenApply(response -> response.body());
     }
 
+    /**
+     * Resends the MFA code to the user via the selected MFA mode (email or SMS).
+     */
     public CompletableFuture<PayabliApiResponseMfaBasic> resendMfaCode(
-            String entry, int entryType, String usrname, RequestOptions requestOptions) {
+            String usrname, String entry, int entryType, RequestOptions requestOptions) {
         return this.rawClient
-                .resendMfaCode(entry, entryType, usrname, requestOptions)
+                .resendMfaCode(usrname, entry, entryType, requestOptions)
                 .thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public CompletableFuture<PayabliApiResponseUserMfa> validateMfaUser() {
         return this.rawClient.validateMfaUser().thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public CompletableFuture<PayabliApiResponseUserMfa> validateMfaUser(MfaValidationData request) {
         return this.rawClient.validateMfaUser(request).thenApply(response -> response.body());
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public CompletableFuture<PayabliApiResponseUserMfa> validateMfaUser(
             MfaValidationData request, RequestOptions requestOptions) {
         return this.rawClient.validateMfaUser(request, requestOptions).thenApply(response -> response.body());

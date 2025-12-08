@@ -65,8 +65,8 @@ public class MoneyInClient {
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public CaptureResponse capture(double amount, String transId) {
-        return this.rawClient.capture(amount, transId).body();
+    public CaptureResponse capture(String transId, double amount) {
+        return this.rawClient.capture(transId, amount).body();
     }
 
     /**
@@ -76,8 +76,8 @@ public class MoneyInClient {
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public CaptureResponse capture(double amount, String transId, RequestOptions requestOptions) {
-        return this.rawClient.capture(amount, transId, requestOptions).body();
+    public CaptureResponse capture(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.capture(transId, amount, requestOptions).body();
     }
 
     /**
@@ -143,29 +143,29 @@ public class MoneyInClient {
     /**
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
      */
-    public ReverseResponse reverse(double amount, String transId) {
-        return this.rawClient.reverse(amount, transId).body();
+    public ReverseResponse reverse(String transId, double amount) {
+        return this.rawClient.reverse(transId, amount).body();
     }
 
     /**
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
      */
-    public ReverseResponse reverse(double amount, String transId, RequestOptions requestOptions) {
-        return this.rawClient.reverse(amount, transId, requestOptions).body();
+    public ReverseResponse reverse(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.reverse(transId, amount, requestOptions).body();
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public RefundResponse refund(double amount, String transId) {
-        return this.rawClient.refund(amount, transId).body();
+    public RefundResponse refund(String transId, double amount) {
+        return this.rawClient.refund(transId, amount).body();
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public RefundResponse refund(double amount, String transId, RequestOptions requestOptions) {
-        return this.rawClient.refund(amount, transId, requestOptions).body();
+    public RefundResponse refund(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.refund(transId, amount, requestOptions).body();
     }
 
     /**

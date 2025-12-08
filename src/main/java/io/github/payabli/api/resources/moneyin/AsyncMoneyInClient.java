@@ -66,8 +66,8 @@ public class AsyncMoneyInClient {
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public CompletableFuture<CaptureResponse> capture(double amount, String transId) {
-        return this.rawClient.capture(amount, transId).thenApply(response -> response.body());
+    public CompletableFuture<CaptureResponse> capture(String transId, double amount) {
+        return this.rawClient.capture(transId, amount).thenApply(response -> response.body());
     }
 
     /**
@@ -77,8 +77,8 @@ public class AsyncMoneyInClient {
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public CompletableFuture<CaptureResponse> capture(double amount, String transId, RequestOptions requestOptions) {
-        return this.rawClient.capture(amount, transId, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<CaptureResponse> capture(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.capture(transId, amount, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -145,29 +145,29 @@ public class AsyncMoneyInClient {
     /**
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
      */
-    public CompletableFuture<ReverseResponse> reverse(double amount, String transId) {
-        return this.rawClient.reverse(amount, transId).thenApply(response -> response.body());
+    public CompletableFuture<ReverseResponse> reverse(String transId, double amount) {
+        return this.rawClient.reverse(transId, amount).thenApply(response -> response.body());
     }
 
     /**
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
      */
-    public CompletableFuture<ReverseResponse> reverse(double amount, String transId, RequestOptions requestOptions) {
-        return this.rawClient.reverse(amount, transId, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<ReverseResponse> reverse(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.reverse(transId, amount, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public CompletableFuture<RefundResponse> refund(double amount, String transId) {
-        return this.rawClient.refund(amount, transId).thenApply(response -> response.body());
+    public CompletableFuture<RefundResponse> refund(String transId, double amount) {
+        return this.rawClient.refund(transId, amount).thenApply(response -> response.body());
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public CompletableFuture<RefundResponse> refund(double amount, String transId, RequestOptions requestOptions) {
-        return this.rawClient.refund(amount, transId, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<RefundResponse> refund(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.refund(transId, amount, requestOptions).thenApply(response -> response.body());
     }
 
     /**

@@ -10,6 +10,8 @@ import io.github.payabli.api.resources.import_.requests.ImportCustomerRequest;
 import io.github.payabli.api.resources.import_.requests.ImportVendorRequest;
 import io.github.payabli.api.types.PayabliApiResponseImport;
 import java.io.File;
+import java.io.InputStream;
+import okhttp3.MediaType;
 
 public class ImportClient {
     protected final ClientOptions clientOptions;
@@ -43,6 +45,29 @@ public class ImportClient {
         return this.rawClient.importBills(entry, file, request, requestOptions).body();
     }
 
+    public PayabliApiResponseImport importBills(String entry, InputStream stream, String filename) {
+        return this.rawClient.importBills(entry, stream, filename).body();
+    }
+
+    public PayabliApiResponseImport importBills(
+            String entry, InputStream stream, String filename, MediaType mediaType) {
+        return this.rawClient.importBills(entry, stream, filename, mediaType).body();
+    }
+
+    public PayabliApiResponseImport importBills(
+            String entry, InputStream stream, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .importBills(entry, stream, filename, requestOptions)
+                .body();
+    }
+
+    public PayabliApiResponseImport importBills(
+            String entry, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
+        return this.rawClient
+                .importBills(entry, stream, filename, mediaType, requestOptions)
+                .body();
+    }
+
     /**
      * Import a list of customers from a CSV file. See the <a href="/developers/developer-guides/entities-customers#import-customers">Import Guide</a> for more help and example files.
      */
@@ -73,5 +98,28 @@ public class ImportClient {
     public PayabliApiResponseImport importVendor(
             String entry, File file, ImportVendorRequest request, RequestOptions requestOptions) {
         return this.rawClient.importVendor(entry, file, request, requestOptions).body();
+    }
+
+    public PayabliApiResponseImport importVendor(String entry, InputStream stream, String filename) {
+        return this.rawClient.importVendor(entry, stream, filename).body();
+    }
+
+    public PayabliApiResponseImport importVendor(
+            String entry, InputStream stream, String filename, MediaType mediaType) {
+        return this.rawClient.importVendor(entry, stream, filename, mediaType).body();
+    }
+
+    public PayabliApiResponseImport importVendor(
+            String entry, InputStream stream, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .importVendor(entry, stream, filename, requestOptions)
+                .body();
+    }
+
+    public PayabliApiResponseImport importVendor(
+            String entry, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
+        return this.rawClient
+                .importVendor(entry, stream, filename, mediaType, requestOptions)
+                .body();
     }
 }

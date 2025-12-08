@@ -131,15 +131,15 @@ public class RawInvoiceClient {
      * Deletes an invoice that's attached to a file.
      */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
-            String filename, int idInvoice) {
-        return deleteAttachedFromInvoice(filename, idInvoice, null);
+            int idInvoice, String filename) {
+        return deleteAttachedFromInvoice(idInvoice, filename, null);
     }
 
     /**
      * Deletes an invoice that's attached to a file.
      */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
-            String filename, int idInvoice, RequestOptions requestOptions) {
+            int idInvoice, String filename, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice/attachedFileFromInvoice")
@@ -332,24 +332,24 @@ public class RawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(String filename, int idInvoice) {
+    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
         return getAttachedFileFromInvoice(
-                filename, idInvoice, GetAttachedFileFromInvoiceRequest.builder().build());
+                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
     }
 
     /**
      * Retrieves a file attached to an invoice.
      */
     public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
-            String filename, int idInvoice, GetAttachedFileFromInvoiceRequest request) {
-        return getAttachedFileFromInvoice(filename, idInvoice, request, null);
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
+        return getAttachedFileFromInvoice(idInvoice, filename, request, null);
     }
 
     /**
      * Retrieves a file attached to an invoice.
      */
     public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
-            String filename, int idInvoice, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice/attachedFileFromInvoice")

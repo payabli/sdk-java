@@ -10,7 +10,9 @@ import io.github.payabli.api.resources.import_.requests.ImportCustomerRequest;
 import io.github.payabli.api.resources.import_.requests.ImportVendorRequest;
 import io.github.payabli.api.types.PayabliApiResponseImport;
 import java.io.File;
+import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
+import okhttp3.MediaType;
 
 public class AsyncImportClient {
     protected final ClientOptions clientOptions;
@@ -45,6 +47,29 @@ public class AsyncImportClient {
         return this.rawClient.importBills(entry, file, request, requestOptions).thenApply(response -> response.body());
     }
 
+    public CompletableFuture<PayabliApiResponseImport> importBills(String entry, InputStream stream, String filename) {
+        return this.rawClient.importBills(entry, stream, filename).thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importBills(
+            String entry, InputStream stream, String filename, MediaType mediaType) {
+        return this.rawClient.importBills(entry, stream, filename, mediaType).thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importBills(
+            String entry, InputStream stream, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .importBills(entry, stream, filename, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importBills(
+            String entry, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
+        return this.rawClient
+                .importBills(entry, stream, filename, mediaType, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
     /**
      * Import a list of customers from a CSV file. See the <a href="/developers/developer-guides/entities-customers#import-customers">Import Guide</a> for more help and example files.
      */
@@ -77,5 +102,28 @@ public class AsyncImportClient {
     public CompletableFuture<PayabliApiResponseImport> importVendor(
             String entry, File file, ImportVendorRequest request, RequestOptions requestOptions) {
         return this.rawClient.importVendor(entry, file, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importVendor(String entry, InputStream stream, String filename) {
+        return this.rawClient.importVendor(entry, stream, filename).thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importVendor(
+            String entry, InputStream stream, String filename, MediaType mediaType) {
+        return this.rawClient.importVendor(entry, stream, filename, mediaType).thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importVendor(
+            String entry, InputStream stream, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .importVendor(entry, stream, filename, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    public CompletableFuture<PayabliApiResponseImport> importVendor(
+            String entry, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
+        return this.rawClient
+                .importVendor(entry, stream, filename, mediaType, requestOptions)
+                .thenApply(response -> response.body());
     }
 }

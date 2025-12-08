@@ -5,11 +5,11 @@ package io.github.payabli.api.resources.lineitem.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.types.LineItem;
@@ -37,7 +37,7 @@ public final class AddItemRequest {
     /**
      * @return A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
      */
-    @JsonProperty("idempotencyKey")
+    @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
     }
@@ -132,7 +132,6 @@ public final class AddItemRequest {
          * <p>A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.</p>
          */
         @java.lang.Override
-        @JsonSetter(value = "idempotencyKey", nulls = Nulls.SKIP)
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
             return this;

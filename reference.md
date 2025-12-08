@@ -34,59 +34,59 @@ client.bill().addBill(
         .body(
             BillOutData
                 .builder()
-                .billNumber("ABC-123")
-                .netAmount(3762.87)
+                .accountingField1("MyInternalId")
+                .attachments(
+                    Optional.of(
+                        Arrays.asList(
+                            FileContent
+                                .builder()
+                                .filename("my-doc.pdf")
+                                .ftype(FileContentFtype.PDF)
+                                .furl("https://mysite.com/my-doc.pdf")
+                                .build()
+                        )
+                    )
+                )
                 .billDate("2024-07-01")
-                .dueDate("2024-07-01")
-                .comments("Deposit for materials")
                 .billItems(
                     Optional.of(
                         Arrays.asList(
                             BillItem
                                 .builder()
                                 .itemCost(5.0)
-                                .itemProductCode("M-DEPOSIT")
-                                .itemProductName("Materials deposit")
-                                .itemDescription("Deposit for materials")
-                                .itemCommodityCode("010")
-                                .itemUnitOfMeasure("SqFt")
-                                .itemQty(1)
-                                .itemMode(0)
                                 .itemCategories(
                                     Optional.of(
                                         Arrays.asList(Optional.of("deposits"))
                                     )
                                 )
-                                .itemTotalAmount(123.0)
+                                .itemCommodityCode("010")
+                                .itemDescription("Deposit for materials")
+                                .itemMode(0)
+                                .itemProductCode("M-DEPOSIT")
+                                .itemProductName("Materials deposit")
+                                .itemQty(1)
                                 .itemTaxAmount(7.0)
                                 .itemTaxRate(0.075)
+                                .itemTotalAmount(123.0)
+                                .itemUnitOfMeasure("SqFt")
                                 .build()
                         )
                     )
                 )
+                .billNumber("ABC-123")
+                .comments("Deposit for materials")
+                .dueDate("2024-07-01")
+                .endDate("2024-07-01")
+                .frequency(Frequency.MONTHLY)
                 .mode(0)
-                .accountingField1("MyInternalId")
+                .netAmount(3762.87)
+                .status(-99)
+                .terms("NET30")
                 .vendor(
                     VendorData
                         .builder()
                         .vendorNumber("1234-A")
                         .build()
-                )
-                .endDate("2024-07-01")
-                .frequency(Frequency.MONTHLY)
-                .terms("NET30")
-                .status(-99)
-                .attachments(
-                    Optional.of(
-                        Arrays.asList(
-                            FileContent
-                                .builder()
-                                .ftype(FileContentFtype.PDF)
-                                .filename("my-doc.pdf")
-                                .furl("https://mysite.com/my-doc.pdf")
-                                .build()
-                        )
-                    )
                 )
                 .build()
         )
@@ -134,7 +134,7 @@ client.bill().addBill(
 </dl>
 </details>
 
-<details><summary><code>client.bill.deleteAttachedFromBill(filename, idBill) -> BillResponse</code></summary>
+<details><summary><code>client.bill.deleteAttachedFromBill(idBill, filename) -> BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -162,8 +162,8 @@ Delete a file attached to a bill.
 
 ```java
 client.bill().deleteAttachedFromBill(
-    "0_Bill.pdf",
     285,
+    "0_Bill.pdf",
     DeleteAttachedFromBillRequest
         .builder()
         .build()
@@ -178,6 +178,14 @@ client.bill().deleteAttachedFromBill(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -200,14 +208,6 @@ request to `/api/Invoice/{idInvoice}`. Here, the filename is
     ]
   }
   ```
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -312,8 +312,8 @@ client.bill().editBill(
     285,
     BillOutData
         .builder()
-        .netAmount(3762.87)
         .billDate("2025-07-01")
+        .netAmount(3762.87)
         .build()
 );
 ```
@@ -350,7 +350,7 @@ client.bill().editBill(
 </dl>
 </details>
 
-<details><summary><code>client.bill.getAttachedFromBill(filename, idBill) -> FileContent</code></summary>
+<details><summary><code>client.bill.getAttachedFromBill(idBill, filename) -> FileContent</code></summary>
 <dl>
 <dd>
 
@@ -378,8 +378,8 @@ Retrieves a file attached to a bill, either as a binary file or as a Base64-enco
 
 ```java
 client.bill().getAttachedFromBill(
-    "0_Bill.pdf",
     285,
+    "0_Bill.pdf",
     GetAttachedFromBillRequest
         .builder()
         .returnObject(true)
@@ -399,6 +399,14 @@ client.bill().getAttachedFromBill(
 <dl>
 <dd>
 
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **filename:** `String` 
 
 The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
@@ -412,14 +420,6 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
     }
   ]
 }
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -937,7 +937,7 @@ client.bill().sendToApprovalBill(
 </dl>
 </details>
 
-<details><summary><code>client.bill.setApprovedBill(approved, idBill) -> SetApprovedBillResponse</code></summary>
+<details><summary><code>client.bill.setApprovedBill(idBill, approved) -> SetApprovedBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -965,8 +965,8 @@ Approve or disapprove a bill by ID.
 
 ```java
 client.bill().setApprovedBill(
-    "true",
     285,
+    "true",
     SetApprovedBillRequest
         .builder()
         .build()
@@ -985,7 +985,7 @@ client.bill().setApprovedBill(
 <dl>
 <dd>
 
-**approved:** `String` — String representing the approved status. Accepted values: 'true' or 'false'.
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -993,7 +993,7 @@ client.bill().setApprovedBill(
 <dl>
 <dd>
 
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+**approved:** `String` — String representing the approved status. Accepted values: 'true' or 'false'.
     
 </dd>
 </dl>
@@ -1074,22 +1074,22 @@ client.boarding().addApplication(
             .signer(
                 SignerDataRequest
                     .builder()
+                    .name("John Smith")
+                    .ssn("123456789")
+                    .dob("01/01/1976")
+                    .phone("555888111")
+                    .email("test@email.com")
                     .address("33 North St")
                     .address1("STE 900")
                     .city("Bristol")
                     .country("US")
-                    .dob("01/01/1976")
-                    .email("test@email.com")
-                    .name("John Smith")
-                    .phone("555888111")
-                    .ssn("123456789")
                     .state("TN")
                     .zip("55555")
-                    .pciAttestation(true)
                     .signedDocumentReference("https://example.com/signed-document.pdf")
+                    .pciAttestation(true)
                     .attestationDate("04/20/2025")
-                    .signDate("04/20/2025")
                     .additionalData("{\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"session\":\"fifji4-fiu443-fn4843\",\"timeWithCompany\":\"6 Years\"}")
+                    .signDate("04/20/2025")
                     .build()
             )
             .whenCharged(Whencharged.WHEN_SERVICE_PROVIDED)
@@ -1145,20 +1145,20 @@ client.boarding().addApplication(
                     Arrays.asList(
                         ApplicationDataPayInOwnershipItem
                             .builder()
+                            .ownername("John Smith")
+                            .ownertitle("CEO")
+                            .ownerpercent(100)
+                            .ownerssn("123456789")
+                            .ownerdob("01/01/1990")
+                            .ownerphone1("555888111")
+                            .ownerphone2("555888111")
+                            .owneremail("test@email.com")
+                            .ownerdriver("CA6677778")
                             .oaddress("33 North St")
                             .ocity("Any City")
                             .ocountry("US")
                             .odriverstate("CA")
                             .ostate("CA")
-                            .ownerdob("01/01/1990")
-                            .ownerdriver("CA6677778")
-                            .owneremail("test@email.com")
-                            .ownername("John Smith")
-                            .ownerpercent(100)
-                            .ownerphone1("555888111")
-                            .ownerphone2("555888111")
-                            .ownerssn("123456789")
-                            .ownertitle("CEO")
                             .ozip("55555")
                             .build()
                     )
@@ -2110,9 +2110,23 @@ client.chargeBacks().getChargeback(1000000L);
 </dl>
 </details>
 
-<details><summary><code>client.chargeBacks.getChargebackAttachment(fileName, id) -> String</code></summary>
+<details><summary><code>client.chargeBacks.getChargebackAttachment(id, fileName) -> String</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a chargeback attachment file by its file name.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2123,7 +2137,7 @@ client.chargeBacks().getChargeback(1000000L);
 <dd>
 
 ```java
-client.chargeBacks().getChargebackAttachment("fileName", 1000000L);
+client.chargeBacks().getChargebackAttachment(1000000L, "fileName");
 ```
 </dd>
 </dl>
@@ -2138,7 +2152,7 @@ client.chargeBacks().getChargebackAttachment("fileName", 1000000L);
 <dl>
 <dd>
 
-**fileName:** `String` — The chargeback attachment's file name.
+**id:** `Long` — The ID of chargeback or return record.
     
 </dd>
 </dl>
@@ -2146,7 +2160,7 @@ client.chargeBacks().getChargebackAttachment("fileName", 1000000L);
 <dl>
 <dd>
 
-**id:** `Long` — The ID of chargeback or return record.
+**fileName:** `String` — The chargeback attachment's file name.
     
 </dd>
 </dl>
@@ -2277,8 +2291,8 @@ client.cloud().addDevice(
     "8cfec329267",
     DeviceEntry
         .builder()
-        .registrationCode("YS7DS5")
         .description("Front Desk POS")
+        .registrationCode("YS7DS5")
         .build()
 );
 ```
@@ -2337,7 +2351,7 @@ The device registration code or serial number, depending on the model.
 </dl>
 </details>
 
-<details><summary><code>client.cloud.historyDevice(deviceId, entry) -> CloudQueryApiResponse</code></summary>
+<details><summary><code>client.cloud.historyDevice(entry, deviceId) -> CloudQueryApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -2364,7 +2378,7 @@ Retrieve the registration history for a device.
 <dd>
 
 ```java
-client.cloud().historyDevice("WXGDWB", "8cfec329267");
+client.cloud().historyDevice("8cfec329267", "WXGDWB");
 ```
 </dd>
 </dl>
@@ -2379,7 +2393,7 @@ client.cloud().historyDevice("WXGDWB", "8cfec329267");
 <dl>
 <dd>
 
-**deviceId:** `String` — ID of the cloud device. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2387,7 +2401,7 @@ client.cloud().historyDevice("WXGDWB", "8cfec329267");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**deviceId:** `String` — ID of the cloud device. 
     
 </dd>
 </dl>
@@ -2466,7 +2480,7 @@ client.cloud().listDevice(
 </dl>
 </details>
 
-<details><summary><code>client.cloud.removeDevice(deviceId, entry) -> RemoveDeviceResponse</code></summary>
+<details><summary><code>client.cloud.removeDevice(entry, deviceId) -> RemoveDeviceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2493,7 +2507,7 @@ Remove a cloud device from an entrypoint.
 <dd>
 
 ```java
-client.cloud().removeDevice("6c361c7d-674c-44cc-b790-382b75d1xxx", "8cfec329267");
+client.cloud().removeDevice("8cfec329267", "6c361c7d-674c-44cc-b790-382b75d1xxx");
 ```
 </dd>
 </dl>
@@ -2508,7 +2522,7 @@ client.cloud().removeDevice("6c361c7d-674c-44cc-b790-382b75d1xxx", "8cfec329267"
 <dl>
 <dd>
 
-**deviceId:** `String` — ID of the cloud device. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2516,7 +2530,7 @@ client.cloud().removeDevice("6c361c7d-674c-44cc-b790-382b75d1xxx", "8cfec329267"
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**deviceId:** `String` — ID of the cloud device. 
     
 </dd>
 </dl>
@@ -2567,16 +2581,16 @@ client.customer().addCustomer(
                 .customerNumber("12356ACB")
                 .firstname("Irene")
                 .lastname("Canizales")
+                .email("irene@canizalesconcrete.com")
                 .address1("123 Bishop's Trail")
                 .city("Mountain City")
                 .state("TN")
                 .zip("37612")
                 .country("US")
-                .email("irene@canizalesconcrete.com")
+                .timeZone(-5)
                 .identifierFields(
                     Arrays.asList(Optional.of("email"))
                 )
-                .timeZone(-5)
                 .build()
         )
         .build()
@@ -3094,9 +3108,23 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchDetails(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchDetails(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3108,8 +3136,8 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 
 ```java
 client.export().exportBatchDetails(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportBatchDetailsRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -3131,7 +3159,7 @@ client.export().exportBatchDetails(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3139,7 +3167,7 @@ client.export().exportBatchDetails(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3250,6 +3278,20 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 <details><summary><code>client.export.exportBatchDetailsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3400,7 +3442,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatches(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatches(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3428,8 +3470,8 @@ Export a list of batches for an entrypoint. Use filters to limit results.
 
 ```java
 client.export().exportBatches(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportBatchesRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -3451,7 +3493,7 @@ client.export().exportBatches(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3459,7 +3501,7 @@ client.export().exportBatches(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3712,7 +3754,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchesOut(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchesOut(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3740,8 +3782,8 @@ Export a list of money out batches for a paypoint. Use filters to limit results.
 
 ```java
 client.export().exportBatchesOut(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportBatchesOutRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -3763,7 +3805,7 @@ client.export().exportBatchesOut(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3771,7 +3813,7 @@ client.export().exportBatchesOut(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3986,7 +4028,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBills(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBills(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4014,8 +4056,8 @@ Export a list of bills for an entrypoint. Use filters to limit results.
 
 ```java
 client.export().exportBills(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportBillsRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -4037,7 +4079,7 @@ client.export().exportBills(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4045,7 +4087,7 @@ client.export().exportBills(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4296,7 +4338,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.export.exportChargebacks(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportChargebacks(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4324,8 +4366,8 @@ Export a list of chargebacks and ACH returns for an entrypoint. Use filters to l
 
 ```java
 client.export().exportChargebacks(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportChargebacksRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -4347,7 +4389,7 @@ client.export().exportChargebacks(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4355,7 +4397,7 @@ client.export().exportChargebacks(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4648,7 +4690,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportCustomers(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportCustomers(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4676,8 +4718,8 @@ Export a list of customers for an entrypoint. Use filters to limit results.
 
 ```java
 client.export().exportCustomers(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportCustomersRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -4699,7 +4741,7 @@ client.export().exportCustomers(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4707,7 +4749,7 @@ client.export().exportCustomers(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4986,7 +5028,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.export.exportInvoices(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportInvoices(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5014,8 +5056,8 @@ Export list of invoices for an entrypoint. Use filters to limit results.
 
 ```java
 client.export().exportInvoices(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportInvoicesRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -5037,7 +5079,7 @@ client.export().exportInvoices(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5045,7 +5087,7 @@ client.export().exportInvoices(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5498,7 +5540,7 @@ Example: name(ct)=hoa  return all records where name contains "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.export.exportPayout(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportPayout(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5526,8 +5568,8 @@ Export a list of payouts and their statuses for an entrypoint. Use filters to li
 
 ```java
 client.export().exportPayout(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportPayoutRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -5549,7 +5591,7 @@ client.export().exportPayout(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5557,7 +5599,7 @@ client.export().exportPayout(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5959,7 +6001,7 @@ Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.export.exportSettlements(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportSettlements(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5987,8 +6029,8 @@ Export a list of settled transactions for an entrypoint. Use filters to limit re
 
 ```java
 client.export().exportSettlements(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportSettlementsRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -6010,7 +6052,7 @@ client.export().exportSettlements(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6018,7 +6060,7 @@ client.export().exportSettlements(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6309,7 +6351,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.export.exportSubscriptions(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportSubscriptions(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6337,8 +6379,8 @@ Export a list of subscriptions for an entrypoint. Use filters to limit results.
 
 ```java
 client.export().exportSubscriptions(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportSubscriptionsRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -6360,7 +6402,7 @@ client.export().exportSubscriptions(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6368,7 +6410,7 @@ client.export().exportSubscriptions(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6663,7 +6705,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportTransactions(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportTransactions(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6691,8 +6733,8 @@ Export a list of transactions for an entrypoint in a file in XLXS or CSV format.
 
 ```java
 client.export().exportTransactions(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportTransactionsRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -6714,7 +6756,7 @@ client.export().exportTransactions(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6722,7 +6764,7 @@ client.export().exportTransactions(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7025,7 +7067,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportTransferDetails(entry, format, transferId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportTransferDetails(format, entry, transferId) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7053,8 +7095,8 @@ Export a list of transfer details for an entrypoint. Use filters to limit result
 
 ```java
 client.export().exportTransferDetails(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     1000000L,
     ExportTransferDetailsRequest
         .builder()
@@ -7078,7 +7120,7 @@ client.export().exportTransferDetails(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7086,7 +7128,7 @@ client.export().exportTransferDetails(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7334,7 +7376,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.export.exportVendors(entry, format) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportVendors(format, entry) -> Map&lt;String, Object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7362,8 +7404,8 @@ Export a list of vendors for an entrypoint. Use filters to limit results.
 
 ```java
 client.export().exportVendors(
-    "8cfec329267",
     ExportFormat1.CSV,
+    "8cfec329267",
     ExportVendorsRequest
         .builder()
         .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
@@ -7385,7 +7427,7 @@ client.export().exportVendors(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7393,7 +7435,7 @@ client.export().exportVendors(
 <dl>
 <dd>
 
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -8098,42 +8140,42 @@ client.invoice().addInvoice(
                 .customerData(
                     PayorDataRequest
                         .builder()
+                        .customerNumber("3")
                         .firstName("Tamara")
                         .lastName("Bagratoni")
-                        .customerNumber("3")
                         .build()
                 )
                 .invoiceData(
                     BillData
                         .builder()
+                        .discount(10.0)
+                        .frequency(Frequency.ONE_TIME)
+                        .invoiceAmount(982.37)
+                        .invoiceDate("2025-10-19")
+                        .invoiceNumber("INV-3")
+                        .invoiceStatus(1)
+                        .invoiceType(0)
                         .items(
                             Optional.of(
                                 Arrays.asList(
                                     BillItem
                                         .builder()
                                         .itemCost(100.0)
-                                        .itemProductName("Adventure Consult")
                                         .itemDescription("Consultation for Georgian tours")
-                                        .itemQty(1)
                                         .itemMode(1)
+                                        .itemProductName("Adventure Consult")
+                                        .itemQty(1)
                                         .build(),
                                     BillItem
                                         .builder()
                                         .itemCost(882.37)
-                                        .itemProductName("Deposit ")
                                         .itemDescription("Deposit for trip planning")
+                                        .itemProductName("Deposit ")
                                         .itemQty(1)
                                         .build()
                                 )
                             )
                         )
-                        .invoiceDate("2025-10-19")
-                        .invoiceType(0)
-                        .invoiceStatus(1)
-                        .frequency(Frequency.ONE_TIME)
-                        .invoiceAmount(982.37)
-                        .discount(10.0)
-                        .invoiceNumber("INV-3")
                         .build()
                 )
                 .build()
@@ -8190,7 +8232,7 @@ client.invoice().addInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.invoice.deleteAttachedFromInvoice(filename, idInvoice) -> InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.invoice.deleteAttachedFromInvoice(idInvoice, filename) -> InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -8217,7 +8259,7 @@ Deletes an invoice that's attached to a file.
 <dd>
 
 ```java
-client.invoice().deleteAttachedFromInvoice("0_Bill.pdf", 23548884);
+client.invoice().deleteAttachedFromInvoice(23548884, "0_Bill.pdf");
 ```
 </dd>
 </dl>
@@ -8228,6 +8270,14 @@ client.invoice().deleteAttachedFromInvoice("0_Bill.pdf", 23548884);
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**idInvoice:** `Integer` — Invoice ID
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -8245,14 +8295,6 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
     }
   ]
 }
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
     
 </dd>
 </dl>
@@ -8355,22 +8397,22 @@ client.invoice().editInvoice(
                 .invoiceData(
                     BillData
                         .builder()
+                        .invoiceAmount(982.37)
+                        .invoiceDate("2025-10-19")
+                        .invoiceNumber("INV-6")
                         .items(
                             Optional.of(
                                 Arrays.asList(
                                     BillItem
                                         .builder()
                                         .itemCost(882.37)
-                                        .itemProductName("Deposit")
                                         .itemDescription("Deposit for trip planning")
+                                        .itemProductName("Deposit")
                                         .itemQty(1)
                                         .build()
                                 )
                             )
                         )
-                        .invoiceDate("2025-10-19")
-                        .invoiceAmount(982.37)
-                        .invoiceNumber("INV-6")
                         .build()
                 )
                 .build()
@@ -8419,7 +8461,7 @@ client.invoice().editInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.invoice.getAttachedFileFromInvoice(filename, idInvoice) -> FileContent</code></summary>
+<details><summary><code>client.invoice.getAttachedFileFromInvoice(idInvoice, filename) -> FileContent</code></summary>
 <dl>
 <dd>
 
@@ -8447,8 +8489,8 @@ Retrieves a file attached to an invoice.
 
 ```java
 client.invoice().getAttachedFileFromInvoice(
-    "filename",
     1,
+    "filename",
     GetAttachedFileFromInvoiceRequest
         .builder()
         .build()
@@ -8463,6 +8505,14 @@ client.invoice().getAttachedFileFromInvoice(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**idInvoice:** `Integer` — Invoice ID
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -8482,14 +8532,6 @@ The filename in Payabli. Filename is `zipName` in the response to a request to `
     ]
   }
   ```
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
     
 </dd>
 </dl>
@@ -9117,12 +9159,12 @@ client.lineItem().addItem(
                 .builder()
                 .itemCost(12.45)
                 .itemQty(1)
+                .itemCommodityCode("010")
+                .itemDescription("Deposit for materials")
+                .itemMode(0)
                 .itemProductCode("M-DEPOSIT")
                 .itemProductName("Materials deposit")
-                .itemDescription("Deposit for materials")
-                .itemCommodityCode("010")
                 .itemUnitOfMeasure("SqFt")
-                .itemMode(0)
                 .build()
         )
         .build()
@@ -9607,7 +9649,7 @@ client.moneyIn().authorize(
 </dl>
 </details>
 
-<details><summary><code>client.moneyIn.capture(amount, transId) -> CaptureResponse</code></summary>
+<details><summary><code>client.moneyIn.capture(transId, amount) -> CaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -9654,7 +9696,7 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
 <dl>
 <dd>
 
-**amount:** `Double` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -9662,7 +9704,7 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
 <dl>
 <dd>
 
-**transId:** `String` — ReferenceId for the transaction (PaymentId).
+**amount:** `Double` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
     
 </dd>
 </dl>
@@ -9799,7 +9841,6 @@ client.moneyIn().credit(
         .paymentMethod(
             RequestCreditPaymentMethod
                 .builder()
-                .method("ach")
                 .achAccount("88354454")
                 .achAccountType(Achaccounttype.CHECKING)
                 .achHolder("John Smith")
@@ -10102,7 +10143,7 @@ client.moneyIn().getpaid(
 </dl>
 </details>
 
-<details><summary><code>client.moneyIn.reverse(amount, transId) -> ReverseResponse</code></summary>
+<details><summary><code>client.moneyIn.reverse(transId, amount) -> ReverseResponse</code></summary>
 <dl>
 <dd>
 
@@ -10129,7 +10170,7 @@ A reversal either refunds or voids a transaction independent of the transaction'
 <dd>
 
 ```java
-client.moneyIn().reverse(0.0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+client.moneyIn().reverse("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
 ```
 </dd>
 </dl>
@@ -10140,6 +10181,14 @@ client.moneyIn().reverse(0.0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -10155,14 +10204,6 @@ An amount equal to zero will refunds the total amount authorized minus any servi
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**transId:** `String` — ReferenceId for the transaction (PaymentId).
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -10171,7 +10212,7 @@ An amount equal to zero will refunds the total amount authorized minus any servi
 </dl>
 </details>
 
-<details><summary><code>client.moneyIn.refund(amount, transId) -> RefundResponse</code></summary>
+<details><summary><code>client.moneyIn.refund(transId, amount) -> RefundResponse</code></summary>
 <dl>
 <dd>
 
@@ -10198,7 +10239,7 @@ Refund a transaction that has settled and send money back to the account holder.
 <dd>
 
 ```java
-client.moneyIn().refund(0.0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+client.moneyIn().refund("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
 ```
 </dd>
 </dl>
@@ -10213,6 +10254,14 @@ client.moneyIn().refund(0.0, "10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 <dl>
 <dd>
 
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **amount:** `Double` 
 
 
@@ -10221,14 +10270,6 @@ Amount to refund from original transaction, minus any service fees charged on th
 The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.
 
 An amount equal to zero will refund the total amount authorized minus any service fee.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transId:** `String` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -10272,9 +10313,8 @@ client.moneyIn().refundWithInstructions(
     RequestRefund
         .builder()
         .idempotencyKey("8A29FC40-CA47-1067-B31D-00DD010662DB")
-        .source("api")
-        .orderDescription("Materials deposit")
         .amount(100.0)
+        .orderDescription("Materials deposit")
         .refundDetails(
             RefundDetail
                 .builder()
@@ -10283,23 +10323,24 @@ client.moneyIn().refundWithInstructions(
                         Arrays.asList(
                             SplitFundingRefundContent
                                 .builder()
-                                .originationEntryPoint("7f1a381696")
                                 .accountId("187-342")
-                                .description("Refunding undelivered materials")
                                 .amount(60.0)
+                                .description("Refunding undelivered materials")
+                                .originationEntryPoint("7f1a381696")
                                 .build(),
                             SplitFundingRefundContent
                                 .builder()
-                                .originationEntryPoint("7f1a381696")
                                 .accountId("187-343")
-                                .description("Refunding deposit for undelivered materials")
                                 .amount(40.0)
+                                .description("Refunding deposit for undelivered materials")
+                                .originationEntryPoint("7f1a381696")
                                 .build()
                         )
                     )
                 )
                 .build()
         )
+        .source("api")
         .build()
 );
 ```
@@ -10716,24 +10757,17 @@ client.moneyOut().authorizeOut(
             AuthorizePayoutBody
                 .builder()
                 .entryPoint("48acde49")
-                .invoiceData(
-                    Arrays.asList(
-                        RequestOutAuthorizeInvoiceData
-                            .builder()
-                            .billId(54323L)
-                            .build()
-                    )
+                .paymentMethod(
+                    AuthorizePaymentMethod
+                        .builder()
+                        .method("managed")
+                        .build()
                 )
                 .paymentDetails(
                     RequestOutAuthorizePaymentDetails
                         .builder()
                         .totalAmount(47.0)
-                        .build()
-                )
-                .paymentMethod(
-                    AuthorizePaymentMethod
-                        .builder()
-                        .method("managed")
+                        .unbundled(false)
                         .build()
                 )
                 .vendorData(
@@ -10743,6 +10777,14 @@ client.moneyOut().authorizeOut(
                         .build()
                 )
                 .orderDescription("Window Painting")
+                .invoiceData(
+                    Arrays.asList(
+                        RequestOutAuthorizeInvoiceData
+                            .builder()
+                            .billId(54323L)
+                            .build()
+                    )
+                )
                 .build()
         )
         .build()
@@ -10861,7 +10903,7 @@ client.moneyOut().cancelAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.moneyOut.cancelOut(referenceId) -> PayabliApiResponse0000</code></summary>
+<details><summary><code>client.moneyOut.cancelOutGet(referenceId) -> PayabliApiResponse0000</code></summary>
 <dl>
 <dd>
 
@@ -10888,7 +10930,61 @@ Cancel a payout transaction by ID.
 <dd>
 
 ```java
-client.moneyOut().cancelOut("129-219");
+client.moneyOut().cancelOutGet("129-219");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `String` — The ID for the payout transaction. 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.cancelOutDelete(referenceId) -> PayabliApiResponse0000</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a payout transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().cancelOutDelete("129-219");
 ```
 </dd>
 </dl>
@@ -11641,9 +11737,9 @@ client.notificationlogs().searchNotificationLogs(
                 .builder()
                 .startDate(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
                 .endDate(OffsetDateTime.parse("2024-01-31T23:59:59Z"))
-                .orgId(12345L)
                 .notificationEvent("ActivatedMerchant")
                 .succeeded(true)
+                .orgId(12345L)
                 .build()
         )
         .pageSize(20)
@@ -11866,6 +11962,20 @@ client.notificationlogs().bulkRetryNotificationLogs(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -11918,6 +12028,20 @@ client.ocr().ocrDocumentForm(
 <details><summary><code>client.ocr.ocrDocumentJson(typeResult, request) -> PayabliApiResponseOcr</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -13930,9 +14054,6 @@ Add a payment method domain to an organization or paypoint.
 client.paymentMethodDomain().addPaymentMethodDomain(
     AddPaymentMethodDomainRequest
         .builder()
-        .domainName("checkout.example.com")
-        .entityId(109L)
-        .entityType("paypoint")
         .applePay(
             AddPaymentMethodDomainRequestApplePay
                 .builder()
@@ -13945,6 +14066,9 @@ client.paymentMethodDomain().addPaymentMethodDomain(
                 .isEnabled(true)
                 .build()
         )
+        .domainName("checkout.example.com")
+        .entityId(109L)
+        .entityType("paypoint")
         .build()
 );
 ```
@@ -17338,6 +17462,7 @@ List of field names accepted:
   - `lotNumber` (ct, nct)
   - `customerVendorAccount` (ct, nct, eq, ne)
   - `batchId` (eq, ne)
+  - `AchTraceNumber` (eq, ne)
   - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`. 
 
   List of comparison accepted - enclosed between parentheses:
@@ -17518,6 +17643,7 @@ List of field names accepted:
   - `lotNumber` (ct, nct)
   - `customerVendorAccount` (ct, nct, eq, ne)
   - `batchId` (eq, ne)
+  - `AchTraceNumber` (eq, ne)
   - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`.
 
   List of comparison accepted - enclosed between parentheses:
@@ -18570,6 +18696,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `settlementStatus` (in, nin, eq, ne)
 - `batchNumber` (nct, ct)
 - `invoiceNumber` (ct, nct)
+- `ipAddress` (eq, ne)
 - `authCode` (ct, nct)
 - `orderDescription` (ct, nct)
 - `payaccountLastfour` (nct, ct)
@@ -20136,7 +20263,7 @@ List of comparison accepted - enclosed between parentheses:
 </details>
 
 ## Statistic
-<details><summary><code>client.statistic.basicStats(entryId, freq, level, mode) -> List&lt;StatBasicQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.basicStats(mode, freq, level, entryId) -> List&lt;StatBasicExtendedQueryRecord&gt;</code></summary>
 <dl>
 <dd>
 
@@ -20164,14 +20291,14 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 
 ```java
 client.statistic().basicStats(
-    1000000L,
+    "ytd",
     "m",
     1,
-    "ytd",
+    1000000L,
     BasicStatsRequest
         .builder()
-        .endDate("2023-05-23")
-        .startDate("2023-03-23")
+        .endDate("2025-11-01")
+        .startDate("2025-11-30")
         .build()
 );
 ```
@@ -20188,7 +20315,23 @@ client.statistic().basicStats(
 <dl>
 <dd>
 
-**entryId:** `Long` — Identifier in Payabli for the entity.
+**mode:** `String` 
+
+Mode for the request. Allowed values:
+
+- `custom` - Allows you to set a custom date range
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+  
     
 </dd>
 </dl>
@@ -20225,23 +20368,7 @@ The entry level for the request:
 <dl>
 <dd>
 
-**mode:** `String` 
-
-Mode for the request. Allowed values:
-
-- `custom` - Allows you to set a custom date range
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
-  
+**entryId:** `Long` — Identifier in Payabli for the entity.
     
 </dd>
 </dl>
@@ -20291,7 +20418,7 @@ Valid formats:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.customerBasicStats(customerId, freq, mode) -> List&lt;SubscriptionStatsQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&lt;SubscriptionStatsQueryRecord&gt;</code></summary>
 <dl>
 <dd>
 
@@ -20319,9 +20446,9 @@ Retrieves the basic statistics for a customer for a specific time period, groupe
 
 ```java
 client.statistic().customerBasicStats(
-    998,
-    "m",
     "ytd",
+    "m",
+    998,
     CustomerBasicStatsRequest
         .builder()
         .build()
@@ -20336,31 +20463,6 @@ client.statistic().customerBasicStats(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**freq:** `String` 
-
-Frequency to group series. Allowed values:
-
-- `m` - monthly
-- `w` - weekly
-- `d` - daily
-- `h` - hourly
-
-For example, `w` groups the results by week.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -20387,6 +20489,31 @@ Mode for request. Allowed values:
 <dl>
 <dd>
 
+**freq:** `String` 
+
+Frequency to group series. Allowed values:
+
+- `m` - monthly
+- `w` - weekly
+- `d` - daily
+- `h` - hourly
+
+For example, `w` groups the results by week.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
     
 </dd>
@@ -20399,7 +20526,7 @@ Mode for request. Allowed values:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.subStats(entryId, interval, level) -> List&lt;StatBasicQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&lt;StatBasicQueryRecord&gt;</code></summary>
 <dl>
 <dd>
 
@@ -20427,9 +20554,9 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 
 ```java
 client.statistic().subStats(
-    1000000L,
     "30",
     1,
+    1000000L,
     SubStatsRequest
         .builder()
         .build()
@@ -20444,14 +20571,6 @@ client.statistic().subStats(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**entryId:** `Long` — Identifier in Payabli for the entity.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -20484,6 +20603,14 @@ The entry level for the request:
 <dl>
 <dd>
 
+**entryId:** `Long` — Identifier in Payabli for the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
     
 </dd>
@@ -20496,7 +20623,7 @@ The entry level for the request:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.vendorBasicStats(freq, idVendor, mode) -> List&lt;StatisticsVendorQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.vendorBasicStats(mode, freq, idVendor) -> List&lt;StatisticsVendorQueryRecord&gt;</code></summary>
 <dl>
 <dd>
 
@@ -20524,9 +20651,9 @@ Retrieve the basic statistics about a vendor for a given time period, grouped by
 
 ```java
 client.statistic().vendorBasicStats(
+    "ytd",
     "m",
     1,
-    "ytd",
     VendorBasicStatsRequest
         .builder()
         .build()
@@ -20541,6 +20668,28 @@ client.statistic().vendorBasicStats(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**mode:** `String` 
+
+Mode for request. Allowed values:
+
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -20563,28 +20712,6 @@ For example, `w` groups the results by week.
 <dd>
 
 **idVendor:** `Integer` — Vendor ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mode:** `String` 
-
-Mode for request. Allowed values:
-
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
     
 </dd>
 </dl>
@@ -20968,7 +21095,7 @@ client.templates().deleteTemplate(80.0);
 </dl>
 </details>
 
-<details><summary><code>client.templates.getlinkTemplate(ignoreEmpty, templateId) -> BoardingLinkApiResponse</code></summary>
+<details><summary><code>client.templates.getlinkTemplate(templateId, ignoreEmpty) -> BoardingLinkApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -20995,7 +21122,7 @@ Generates a boarding link from a boarding template.
 <dd>
 
 ```java
-client.templates().getlinkTemplate(true, 80.0);
+client.templates().getlinkTemplate(80.0, true);
 ```
 </dd>
 </dl>
@@ -21010,7 +21137,7 @@ client.templates().getlinkTemplate(true, 80.0);
 <dl>
 <dd>
 
-**ignoreEmpty:** `Boolean` — Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
+**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -21018,7 +21145,7 @@ client.templates().getlinkTemplate(true, 80.0);
 <dl>
 <dd>
 
-**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**ignoreEmpty:** `Boolean` — Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
     
 </dd>
 </dl>
@@ -21269,10 +21396,10 @@ client.tokenStorage().addMethod(
                     RequestTokenStoragePaymentMethod.of(
                         TokenizeCard
                             .builder()
+                            .method("card")
                             .cardexp("02/25")
                             .cardHolder("John Doe")
                             .cardnumber("4111111111111111")
-                            .method("card")
                             .cardcvv("123")
                             .cardzip("12345")
                             .build()
@@ -21535,10 +21662,10 @@ client.tokenStorage().updateMethod(
                     RequestTokenStoragePaymentMethod.of(
                         TokenizeCard
                             .builder()
+                            .method("card")
                             .cardexp("02/25")
                             .cardHolder("John Doe")
                             .cardnumber("4111111111111111")
-                            .method("card")
                             .cardcvv("123")
                             .cardzip("12345")
                             .build()
@@ -21595,6 +21722,20 @@ client.tokenStorage().updateMethod(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to add a new user to an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -21639,6 +21780,20 @@ client.user().addUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to refresh the authentication token for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -21663,6 +21818,20 @@ client.user().authRefreshUser();
 <details><summary><code>client.user.authResetUser(request) -> AuthResetUserResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to initiate a password reset for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -21831,6 +22000,20 @@ client.user().authUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to change the password for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -21875,6 +22058,20 @@ client.user().changePswUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to delete a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -21914,6 +22111,20 @@ client.user().deleteUser(1000000L);
 <details><summary><code>client.user.editMfaUser(userId, request) -> EditMfaUserResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -21968,6 +22179,20 @@ client.user().editMfaUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to modify the details of a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -22020,6 +22245,20 @@ client.user().editUser(
 <details><summary><code>client.user.getUser(userId) -> UserQueryRecord</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to retrieve information about a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -22083,6 +22322,20 @@ client.user().getUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to log a user out from the system.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -22104,9 +22357,23 @@ client.user().logoutUser();
 </dl>
 </details>
 
-<details><summary><code>client.user.resendMfaCode(entry, entryType, usrname) -> PayabliApiResponseMfaBasic</code></summary>
+<details><summary><code>client.user.resendMfaCode(usrname, entry, entryType) -> PayabliApiResponseMfaBasic</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Resends the MFA code to the user via the selected MFA mode (email or SMS).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -22117,7 +22384,7 @@ client.user().logoutUser();
 <dd>
 
 ```java
-client.user().resendMfaCode("Entry", 1, "usrname");
+client.user().resendMfaCode("usrname", "Entry", 1);
 ```
 </dd>
 </dl>
@@ -22128,6 +22395,14 @@ client.user().resendMfaCode("Entry", 1, "usrname");
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**usrname:** `String` —  
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -22144,14 +22419,6 @@ client.user().resendMfaCode("Entry", 1, "usrname");
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**usrname:** `String` —  
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -22163,6 +22430,20 @@ client.user().resendMfaCode("Entry", 1, "usrname");
 <details><summary><code>client.user.validateMfaUser(request) -> PayabliApiResponseUserMfa</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -22245,57 +22526,57 @@ client.vendor().addVendor(
     VendorData
         .builder()
         .vendorNumber("1234")
-        .name1("Herman's Coatings and Masonry")
-        .name2("<string>")
-        .ein("12-3456789")
-        .phone("5555555555")
-        .email("example@email.com")
         .address1("123 Ocean Drive")
         .address2("Suite 400")
+        .billingData(
+            BillingData
+                .builder()
+                .accountNumber("123123123")
+                .bankAccountFunction(0)
+                .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                .bankName("Country Bank")
+                .id(123)
+                .routingAccount("123123123")
+                .typeAccount(TypeAccount.CHECKING)
+                .build()
+        )
         .city("Miami")
-        .state("FL")
-        .zip("33139")
-        .country("US")
-        .mcc("7777")
-        .locationCode("MIA123")
         .contacts(
             Optional.of(
                 Arrays.asList(
                     Contacts
                         .builder()
-                        .contactName("Herman Martinez")
                         .contactEmail("example@email.com")
-                        .contactTitle("Owner")
+                        .contactName("Herman Martinez")
                         .contactPhone("3055550000")
+                        .contactTitle("Owner")
                         .build()
                 )
             )
         )
-        .billingData(
-            BillingData
-                .builder()
-                .id(123)
-                .bankName("Country Bank")
-                .routingAccount("123123123")
-                .accountNumber("123123123")
-                .typeAccount(TypeAccount.CHECKING)
-                .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
-                .bankAccountHolderType(BankAccountHolderType.BUSINESS)
-                .bankAccountFunction(0)
-                .build()
-        )
+        .country("US")
+        .customerVendorAccount("A-37622")
+        .ein("12-3456789")
+        .email("example@email.com")
+        .internalReferenceId(123L)
+        .locationCode("MIA123")
+        .mcc("7777")
+        .name1("Herman's Coatings and Masonry")
+        .name2("<string>")
+        .payeeName1("<string>")
+        .payeeName2("<string>")
         .paymentMethod("managed")
-        .vendorStatus(1)
+        .phone("5555555555")
         .remitAddress1("123 Walnut Street")
         .remitAddress2("Suite 900")
         .remitCity("Miami")
+        .remitCountry("US")
         .remitState("FL")
         .remitZip("31113")
-        .remitCountry("US")
-        .payeeName1("<string>")
-        .payeeName2("<string>")
-        .customerVendorAccount("A-37622")
-        .internalReferenceId(123L)
+        .state("FL")
+        .vendorStatus(1)
+        .zip("33139")
         .build()
 );
 ```

@@ -55,17 +55,17 @@ public class AsyncInvoiceClient {
     /**
      * Deletes an invoice that's attached to a file.
      */
-    public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(String filename, int idInvoice) {
-        return this.rawClient.deleteAttachedFromInvoice(filename, idInvoice).thenApply(response -> response.body());
+    public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(int idInvoice, String filename) {
+        return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).thenApply(response -> response.body());
     }
 
     /**
      * Deletes an invoice that's attached to a file.
      */
     public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
-            String filename, int idInvoice, RequestOptions requestOptions) {
+            int idInvoice, String filename, RequestOptions requestOptions) {
         return this.rawClient
-                .deleteAttachedFromInvoice(filename, idInvoice, requestOptions)
+                .deleteAttachedFromInvoice(idInvoice, filename, requestOptions)
                 .thenApply(response -> response.body());
     }
 
@@ -101,17 +101,17 @@ public class AsyncInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public CompletableFuture<FileContent> getAttachedFileFromInvoice(String filename, int idInvoice) {
-        return this.rawClient.getAttachedFileFromInvoice(filename, idInvoice).thenApply(response -> response.body());
+    public CompletableFuture<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
+        return this.rawClient.getAttachedFileFromInvoice(idInvoice, filename).thenApply(response -> response.body());
     }
 
     /**
      * Retrieves a file attached to an invoice.
      */
     public CompletableFuture<FileContent> getAttachedFileFromInvoice(
-            String filename, int idInvoice, GetAttachedFileFromInvoiceRequest request) {
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
         return this.rawClient
-                .getAttachedFileFromInvoice(filename, idInvoice, request)
+                .getAttachedFileFromInvoice(idInvoice, filename, request)
                 .thenApply(response -> response.body());
     }
 
@@ -119,9 +119,9 @@ public class AsyncInvoiceClient {
      * Retrieves a file attached to an invoice.
      */
     public CompletableFuture<FileContent> getAttachedFileFromInvoice(
-            String filename, int idInvoice, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .getAttachedFileFromInvoice(filename, idInvoice, request, requestOptions)
+                .getAttachedFileFromInvoice(idInvoice, filename, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 

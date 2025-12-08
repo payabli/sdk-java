@@ -1,0 +1,10 @@
+{
+  "cliVersion": "3.4.3",
+  "generatorName": "fernapi/fern-java-sdk",
+  "generatorVersion": "3.23.2",
+  "generatorConfig": {
+    "publish-to": "central",
+    "package-prefix": "io.github.payabli.api",
+    "enable-wire-tests": true
+  }
+}

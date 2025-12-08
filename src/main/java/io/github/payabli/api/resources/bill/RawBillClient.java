@@ -125,24 +125,24 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(String filename, int idBill) {
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
         return deleteAttachedFromBill(
-                filename, idBill, DeleteAttachedFromBillRequest.builder().build());
+                idBill, filename, DeleteAttachedFromBillRequest.builder().build());
     }
 
     /**
      * Delete a file attached to a bill.
      */
     public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
-            String filename, int idBill, DeleteAttachedFromBillRequest request) {
-        return deleteAttachedFromBill(filename, idBill, request, null);
+            int idBill, String filename, DeleteAttachedFromBillRequest request) {
+        return deleteAttachedFromBill(idBill, filename, request, null);
     }
 
     /**
      * Delete a file attached to a bill.
      */
     public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
-            String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
+            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill/attachedFileFromBill")
@@ -335,24 +335,24 @@ public class RawBillClient {
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(String filename, int idBill) {
+    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(int idBill, String filename) {
         return getAttachedFromBill(
-                filename, idBill, GetAttachedFromBillRequest.builder().build());
+                idBill, filename, GetAttachedFromBillRequest.builder().build());
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
     public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
-            String filename, int idBill, GetAttachedFromBillRequest request) {
-        return getAttachedFromBill(filename, idBill, request, null);
+            int idBill, String filename, GetAttachedFromBillRequest request) {
+        return getAttachedFromBill(idBill, filename, request, null);
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
     public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
-            String filename, int idBill, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
+            int idBill, String filename, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill/attachedFileFromBill")
@@ -789,24 +789,24 @@ public class RawBillClient {
     /**
      * Approve or disapprove a bill by ID.
      */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(String approved, int idBill) {
+    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
         return setApprovedBill(
-                approved, idBill, SetApprovedBillRequest.builder().build());
+                idBill, approved, SetApprovedBillRequest.builder().build());
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
     public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
-            String approved, int idBill, SetApprovedBillRequest request) {
-        return setApprovedBill(approved, idBill, request, null);
+            int idBill, String approved, SetApprovedBillRequest request) {
+        return setApprovedBill(idBill, approved, request, null);
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
     public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
-            String approved, int idBill, SetApprovedBillRequest request, RequestOptions requestOptions) {
+            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill/approval")

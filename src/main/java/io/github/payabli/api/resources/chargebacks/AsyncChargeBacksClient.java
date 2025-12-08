@@ -63,13 +63,19 @@ public class AsyncChargeBacksClient {
         return this.rawClient.getChargeback(id, requestOptions).thenApply(response -> response.body());
     }
 
-    public CompletableFuture<String> getChargebackAttachment(String fileName, long id) {
-        return this.rawClient.getChargebackAttachment(fileName, id).thenApply(response -> response.body());
+    /**
+     * Retrieves a chargeback attachment file by its file name.
+     */
+    public CompletableFuture<String> getChargebackAttachment(long id, String fileName) {
+        return this.rawClient.getChargebackAttachment(id, fileName).thenApply(response -> response.body());
     }
 
-    public CompletableFuture<String> getChargebackAttachment(String fileName, long id, RequestOptions requestOptions) {
+    /**
+     * Retrieves a chargeback attachment file by its file name.
+     */
+    public CompletableFuture<String> getChargebackAttachment(long id, String fileName, RequestOptions requestOptions) {
         return this.rawClient
-                .getChargebackAttachment(fileName, id, requestOptions)
+                .getChargebackAttachment(id, fileName, requestOptions)
                 .thenApply(response -> response.body());
     }
 }

@@ -45,17 +45,17 @@ public class TemplatesClient {
     /**
      * Generates a boarding link from a boarding template.
      */
-    public BoardingLinkApiResponse getlinkTemplate(boolean ignoreEmpty, double templateId) {
-        return this.rawClient.getlinkTemplate(ignoreEmpty, templateId).body();
+    public BoardingLinkApiResponse getlinkTemplate(double templateId, boolean ignoreEmpty) {
+        return this.rawClient.getlinkTemplate(templateId, ignoreEmpty).body();
     }
 
     /**
      * Generates a boarding link from a boarding template.
      */
     public BoardingLinkApiResponse getlinkTemplate(
-            boolean ignoreEmpty, double templateId, RequestOptions requestOptions) {
+            double templateId, boolean ignoreEmpty, RequestOptions requestOptions) {
         return this.rawClient
-                .getlinkTemplate(ignoreEmpty, templateId, requestOptions)
+                .getlinkTemplate(templateId, ignoreEmpty, requestOptions)
                 .body();
     }
 

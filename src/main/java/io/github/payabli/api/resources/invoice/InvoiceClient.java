@@ -54,17 +54,17 @@ public class InvoiceClient {
     /**
      * Deletes an invoice that's attached to a file.
      */
-    public InvoiceResponseWithoutData deleteAttachedFromInvoice(String filename, int idInvoice) {
-        return this.rawClient.deleteAttachedFromInvoice(filename, idInvoice).body();
+    public InvoiceResponseWithoutData deleteAttachedFromInvoice(int idInvoice, String filename) {
+        return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).body();
     }
 
     /**
      * Deletes an invoice that's attached to a file.
      */
     public InvoiceResponseWithoutData deleteAttachedFromInvoice(
-            String filename, int idInvoice, RequestOptions requestOptions) {
+            int idInvoice, String filename, RequestOptions requestOptions) {
         return this.rawClient
-                .deleteAttachedFromInvoice(filename, idInvoice, requestOptions)
+                .deleteAttachedFromInvoice(idInvoice, filename, requestOptions)
                 .body();
     }
 
@@ -100,17 +100,17 @@ public class InvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public FileContent getAttachedFileFromInvoice(String filename, int idInvoice) {
-        return this.rawClient.getAttachedFileFromInvoice(filename, idInvoice).body();
+    public FileContent getAttachedFileFromInvoice(int idInvoice, String filename) {
+        return this.rawClient.getAttachedFileFromInvoice(idInvoice, filename).body();
     }
 
     /**
      * Retrieves a file attached to an invoice.
      */
     public FileContent getAttachedFileFromInvoice(
-            String filename, int idInvoice, GetAttachedFileFromInvoiceRequest request) {
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
         return this.rawClient
-                .getAttachedFileFromInvoice(filename, idInvoice, request)
+                .getAttachedFileFromInvoice(idInvoice, filename, request)
                 .body();
     }
 
@@ -118,9 +118,9 @@ public class InvoiceClient {
      * Retrieves a file attached to an invoice.
      */
     public FileContent getAttachedFileFromInvoice(
-            String filename, int idInvoice, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .getAttachedFileFromInvoice(filename, idInvoice, request, requestOptions)
+                .getAttachedFileFromInvoice(idInvoice, filename, request, requestOptions)
                 .body();
     }
 

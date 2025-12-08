@@ -67,15 +67,30 @@ public class AsyncMoneyOutClient {
     /**
      * Cancel a payout transaction by ID.
      */
-    public CompletableFuture<PayabliApiResponse0000> cancelOut(String referenceId) {
-        return this.rawClient.cancelOut(referenceId).thenApply(response -> response.body());
+    public CompletableFuture<PayabliApiResponse0000> cancelOutGet(String referenceId) {
+        return this.rawClient.cancelOutGet(referenceId).thenApply(response -> response.body());
     }
 
     /**
      * Cancel a payout transaction by ID.
      */
-    public CompletableFuture<PayabliApiResponse0000> cancelOut(String referenceId, RequestOptions requestOptions) {
-        return this.rawClient.cancelOut(referenceId, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<PayabliApiResponse0000> cancelOutGet(String referenceId, RequestOptions requestOptions) {
+        return this.rawClient.cancelOutGet(referenceId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Cancel a payout transaction by ID.
+     */
+    public CompletableFuture<PayabliApiResponse0000> cancelOutDelete(String referenceId) {
+        return this.rawClient.cancelOutDelete(referenceId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Cancel a payout transaction by ID.
+     */
+    public CompletableFuture<PayabliApiResponse0000> cancelOutDelete(
+            String referenceId, RequestOptions requestOptions) {
+        return this.rawClient.cancelOutDelete(referenceId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

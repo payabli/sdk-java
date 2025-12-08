@@ -40,34 +40,58 @@ public class UserClient {
         return this.rawClient;
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public AddUserResponse addUser() {
         return this.rawClient.addUser().body();
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public AddUserResponse addUser(UserData request) {
         return this.rawClient.addUser(request).body();
     }
 
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public AddUserResponse addUser(UserData request, RequestOptions requestOptions) {
         return this.rawClient.addUser(request, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
     public PayabliApiResponseUserMfa authRefreshUser() {
         return this.rawClient.authRefreshUser().body();
     }
 
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
     public PayabliApiResponseUserMfa authRefreshUser(RequestOptions requestOptions) {
         return this.rawClient.authRefreshUser(requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public AuthResetUserResponse authResetUser() {
         return this.rawClient.authResetUser().body();
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public AuthResetUserResponse authResetUser(UserAuthResetRequest request) {
         return this.rawClient.authResetUser(request).body();
     }
 
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public AuthResetUserResponse authResetUser(UserAuthResetRequest request, RequestOptions requestOptions) {
         return this.rawClient.authResetUser(request, requestOptions).body();
     }
@@ -94,89 +118,152 @@ public class UserClient {
         return this.rawClient.authUser(provider, request, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public ChangePswUserResponse changePswUser() {
         return this.rawClient.changePswUser().body();
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public ChangePswUserResponse changePswUser(UserAuthPswResetRequest request) {
         return this.rawClient.changePswUser(request).body();
     }
 
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
     public ChangePswUserResponse changePswUser(UserAuthPswResetRequest request, RequestOptions requestOptions) {
         return this.rawClient.changePswUser(request, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
     public DeleteUserResponse deleteUser(long userId) {
         return this.rawClient.deleteUser(userId).body();
     }
 
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
     public DeleteUserResponse deleteUser(long userId, RequestOptions requestOptions) {
         return this.rawClient.deleteUser(userId, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public EditMfaUserResponse editMfaUser(long userId) {
         return this.rawClient.editMfaUser(userId).body();
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public EditMfaUserResponse editMfaUser(long userId, MfaData request) {
         return this.rawClient.editMfaUser(userId, request).body();
     }
 
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public EditMfaUserResponse editMfaUser(long userId, MfaData request, RequestOptions requestOptions) {
         return this.rawClient.editMfaUser(userId, request, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiResponse editUser(long userId) {
         return this.rawClient.editUser(userId).body();
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiResponse editUser(long userId, UserData request) {
         return this.rawClient.editUser(userId, request).body();
     }
 
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiResponse editUser(long userId, UserData request, RequestOptions requestOptions) {
         return this.rawClient.editUser(userId, request, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public UserQueryRecord getUser(long userId) {
         return this.rawClient.getUser(userId).body();
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public UserQueryRecord getUser(long userId, GetUserRequest request) {
         return this.rawClient.getUser(userId, request).body();
     }
 
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public UserQueryRecord getUser(long userId, GetUserRequest request, RequestOptions requestOptions) {
         return this.rawClient.getUser(userId, request, requestOptions).body();
     }
 
+    /**
+     * Use this endpoint to log a user out from the system.
+     */
     public LogoutUserResponse logoutUser() {
         return this.rawClient.logoutUser().body();
     }
 
+    /**
+     * Use this endpoint to log a user out from the system.
+     */
     public LogoutUserResponse logoutUser(RequestOptions requestOptions) {
         return this.rawClient.logoutUser(requestOptions).body();
     }
 
-    public PayabliApiResponseMfaBasic resendMfaCode(String entry, int entryType, String usrname) {
-        return this.rawClient.resendMfaCode(entry, entryType, usrname).body();
+    /**
+     * Resends the MFA code to the user via the selected MFA mode (email or SMS).
+     */
+    public PayabliApiResponseMfaBasic resendMfaCode(String usrname, String entry, int entryType) {
+        return this.rawClient.resendMfaCode(usrname, entry, entryType).body();
     }
 
+    /**
+     * Resends the MFA code to the user via the selected MFA mode (email or SMS).
+     */
     public PayabliApiResponseMfaBasic resendMfaCode(
-            String entry, int entryType, String usrname, RequestOptions requestOptions) {
+            String usrname, String entry, int entryType, RequestOptions requestOptions) {
         return this.rawClient
-                .resendMfaCode(entry, entryType, usrname, requestOptions)
+                .resendMfaCode(usrname, entry, entryType, requestOptions)
                 .body();
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public PayabliApiResponseUserMfa validateMfaUser() {
         return this.rawClient.validateMfaUser().body();
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public PayabliApiResponseUserMfa validateMfaUser(MfaValidationData request) {
         return this.rawClient.validateMfaUser(request).body();
     }
 
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
     public PayabliApiResponseUserMfa validateMfaUser(MfaValidationData request, RequestOptions requestOptions) {
         return this.rawClient.validateMfaUser(request, requestOptions).body();
     }

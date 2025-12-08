@@ -119,6 +119,7 @@ public final class ListPayoutRequest {
      * <li><code>lotNumber</code> (ct, nct)</li>
      * <li><code>customerVendorAccount</code> (ct, nct, eq, ne)</li>
      * <li><code>batchId</code> (eq, ne)</li>
+     * <li><code>AchTraceNumber</code> (eq, ne)</li>
      * <li><code>payoutProgram</code>(eq, ne) the options are <code>managed</code> or <code>odp</code>. For example, <code>payoutProgram(eq)=managed</code> returns all records with a <code>payoutProgram</code> equal to <code>managed</code>.</li>
      * </ul>
      * <p>List of comparison accepted - enclosed between parentheses:</p>
@@ -304,6 +305,7 @@ public final class ListPayoutRequest {
          * <li><code>lotNumber</code> (ct, nct)</li>
          * <li><code>customerVendorAccount</code> (ct, nct, eq, ne)</li>
          * <li><code>batchId</code> (eq, ne)</li>
+         * <li><code>AchTraceNumber</code> (eq, ne)</li>
          * <li><code>payoutProgram</code>(eq, ne) the options are <code>managed</code> or <code>odp</code>. For example, <code>payoutProgram(eq)=managed</code> returns all records with a <code>payoutProgram</code> equal to <code>managed</code>.</li>
          * </ul>
          * <p>List of comparison accepted - enclosed between parentheses:</p>

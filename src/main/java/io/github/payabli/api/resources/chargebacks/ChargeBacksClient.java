@@ -61,13 +61,19 @@ public class ChargeBacksClient {
         return this.rawClient.getChargeback(id, requestOptions).body();
     }
 
-    public String getChargebackAttachment(String fileName, long id) {
-        return this.rawClient.getChargebackAttachment(fileName, id).body();
+    /**
+     * Retrieves a chargeback attachment file by its file name.
+     */
+    public String getChargebackAttachment(long id, String fileName) {
+        return this.rawClient.getChargebackAttachment(id, fileName).body();
     }
 
-    public String getChargebackAttachment(String fileName, long id, RequestOptions requestOptions) {
+    /**
+     * Retrieves a chargeback attachment file by its file name.
+     */
+    public String getChargebackAttachment(long id, String fileName, RequestOptions requestOptions) {
         return this.rawClient
-                .getChargebackAttachment(fileName, id, requestOptions)
+                .getChargebackAttachment(id, fileName, requestOptions)
                 .body();
     }
 }

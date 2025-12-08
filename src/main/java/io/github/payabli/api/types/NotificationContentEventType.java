@@ -79,6 +79,9 @@ public final class NotificationContentEventType {
     public static final NotificationContentEventType PAYOUT_SUBSCRIPTION_UPDATED =
             new NotificationContentEventType(Value.PAYOUT_SUBSCRIPTION_UPDATED, "PayoutSubscriptionUpdated");
 
+    public static final NotificationContentEventType UNDER_WRITING_APPLICATION =
+            new NotificationContentEventType(Value.UNDER_WRITING_APPLICATION, "UnderWritingApplication");
+
     public static final NotificationContentEventType ACTIVATED_MERCHANT =
             new NotificationContentEventType(Value.ACTIVATED_MERCHANT, "ActivatedMerchant");
 
@@ -321,6 +324,8 @@ public final class NotificationContentEventType {
                 return visitor.visitReleasedTransaction();
             case PAYOUT_SUBSCRIPTION_UPDATED:
                 return visitor.visitPayoutSubscriptionUpdated();
+            case UNDER_WRITING_APPLICATION:
+                return visitor.visitUnderWritingApplication();
             case ACTIVATED_MERCHANT:
                 return visitor.visitActivatedMerchant();
             case CARD_EXPIRED:
@@ -486,6 +491,8 @@ public final class NotificationContentEventType {
                 return RELEASED_TRANSACTION;
             case "PayoutSubscriptionUpdated":
                 return PAYOUT_SUBSCRIPTION_UPDATED;
+            case "UnderWritingApplication":
+                return UNDER_WRITING_APPLICATION;
             case "ActivatedMerchant":
                 return ACTIVATED_MERCHANT;
             case "CardExpired":
@@ -658,6 +665,8 @@ public final class NotificationContentEventType {
 
         SUBMITTED_APPLICATION,
 
+        UNDER_WRITING_APPLICATION,
+
         ACTIVATED_MERCHANT,
 
         RECEIVED_CHARGE_BACK,
@@ -817,6 +826,8 @@ public final class NotificationContentEventType {
         T visitFailedBoardingApplication();
 
         T visitSubmittedApplication();
+
+        T visitUnderWritingApplication();
 
         T visitActivatedMerchant();
 

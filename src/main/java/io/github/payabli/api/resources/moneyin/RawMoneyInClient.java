@@ -138,8 +138,8 @@ public class RawMoneyInClient {
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public PayabliApiHttpResponse<CaptureResponse> capture(double amount, String transId) {
-        return capture(amount, transId, null);
+    public PayabliApiHttpResponse<CaptureResponse> capture(String transId, double amount) {
+        return capture(transId, amount, null);
     }
 
     /**
@@ -150,7 +150,7 @@ public class RawMoneyInClient {
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public PayabliApiHttpResponse<CaptureResponse> capture(
-            double amount, String transId, RequestOptions requestOptions) {
+            String transId, double amount, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/capture")
@@ -507,15 +507,15 @@ public class RawMoneyInClient {
     /**
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
      */
-    public PayabliApiHttpResponse<ReverseResponse> reverse(double amount, String transId) {
-        return reverse(amount, transId, null);
+    public PayabliApiHttpResponse<ReverseResponse> reverse(String transId, double amount) {
+        return reverse(transId, amount, null);
     }
 
     /**
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
      */
     public PayabliApiHttpResponse<ReverseResponse> reverse(
-            double amount, String transId, RequestOptions requestOptions) {
+            String transId, double amount, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/reverse")
@@ -569,14 +569,14 @@ public class RawMoneyInClient {
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public PayabliApiHttpResponse<RefundResponse> refund(double amount, String transId) {
-        return refund(amount, transId, null);
+    public PayabliApiHttpResponse<RefundResponse> refund(String transId, double amount) {
+        return refund(transId, amount, null);
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public PayabliApiHttpResponse<RefundResponse> refund(double amount, String transId, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<RefundResponse> refund(String transId, double amount, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/refund")

@@ -9,6 +9,7 @@ import io.github.payabli.api.resources.statistic.requests.BasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.CustomerBasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.SubStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.VendorBasicStatsRequest;
+import io.github.payabli.api.resources.statistic.types.StatBasicExtendedQueryRecord;
 import io.github.payabli.api.resources.statistic.types.StatBasicQueryRecord;
 import io.github.payabli.api.resources.statistic.types.StatisticsVendorQueryRecord;
 import io.github.payabli.api.resources.statistic.types.SubscriptionStatsQueryRecord;
@@ -34,47 +35,47 @@ public class StatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public List<StatBasicQueryRecord> basicStats(long entryId, String freq, int level, String mode) {
-        return this.rawClient.basicStats(entryId, freq, level, mode).body();
+    public List<StatBasicExtendedQueryRecord> basicStats(String mode, String freq, int level, long entryId) {
+        return this.rawClient.basicStats(mode, freq, level, entryId).body();
     }
 
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public List<StatBasicQueryRecord> basicStats(
-            long entryId, String freq, int level, String mode, BasicStatsRequest request) {
-        return this.rawClient.basicStats(entryId, freq, level, mode, request).body();
+    public List<StatBasicExtendedQueryRecord> basicStats(
+            String mode, String freq, int level, long entryId, BasicStatsRequest request) {
+        return this.rawClient.basicStats(mode, freq, level, entryId, request).body();
     }
 
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public List<StatBasicQueryRecord> basicStats(
-            long entryId,
+    public List<StatBasicExtendedQueryRecord> basicStats(
+            String mode,
             String freq,
             int level,
-            String mode,
+            long entryId,
             BasicStatsRequest request,
             RequestOptions requestOptions) {
         return this.rawClient
-                .basicStats(entryId, freq, level, mode, request, requestOptions)
+                .basicStats(mode, freq, level, entryId, request, requestOptions)
                 .body();
     }
 
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public List<SubscriptionStatsQueryRecord> customerBasicStats(int customerId, String freq, String mode) {
-        return this.rawClient.customerBasicStats(customerId, freq, mode).body();
+    public List<SubscriptionStatsQueryRecord> customerBasicStats(String mode, String freq, int customerId) {
+        return this.rawClient.customerBasicStats(mode, freq, customerId).body();
     }
 
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
     public List<SubscriptionStatsQueryRecord> customerBasicStats(
-            int customerId, String freq, String mode, CustomerBasicStatsRequest request) {
+            String mode, String freq, int customerId, CustomerBasicStatsRequest request) {
         return this.rawClient
-                .customerBasicStats(customerId, freq, mode, request)
+                .customerBasicStats(mode, freq, customerId, request)
                 .body();
     }
 
@@ -82,62 +83,62 @@ public class StatisticClient {
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
     public List<SubscriptionStatsQueryRecord> customerBasicStats(
-            int customerId,
-            String freq,
             String mode,
+            String freq,
+            int customerId,
             CustomerBasicStatsRequest request,
             RequestOptions requestOptions) {
         return this.rawClient
-                .customerBasicStats(customerId, freq, mode, request, requestOptions)
+                .customerBasicStats(mode, freq, customerId, request, requestOptions)
                 .body();
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public List<StatBasicQueryRecord> subStats(long entryId, String interval, int level) {
-        return this.rawClient.subStats(entryId, interval, level).body();
+    public List<StatBasicQueryRecord> subStats(String interval, int level, long entryId) {
+        return this.rawClient.subStats(interval, level, entryId).body();
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public List<StatBasicQueryRecord> subStats(long entryId, String interval, int level, SubStatsRequest request) {
-        return this.rawClient.subStats(entryId, interval, level, request).body();
+    public List<StatBasicQueryRecord> subStats(String interval, int level, long entryId, SubStatsRequest request) {
+        return this.rawClient.subStats(interval, level, entryId, request).body();
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
     public List<StatBasicQueryRecord> subStats(
-            long entryId, String interval, int level, SubStatsRequest request, RequestOptions requestOptions) {
+            String interval, int level, long entryId, SubStatsRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .subStats(entryId, interval, level, request, requestOptions)
+                .subStats(interval, level, entryId, request, requestOptions)
                 .body();
     }
 
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public List<StatisticsVendorQueryRecord> vendorBasicStats(String freq, int idVendor, String mode) {
-        return this.rawClient.vendorBasicStats(freq, idVendor, mode).body();
+    public List<StatisticsVendorQueryRecord> vendorBasicStats(String mode, String freq, int idVendor) {
+        return this.rawClient.vendorBasicStats(mode, freq, idVendor).body();
     }
 
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
     public List<StatisticsVendorQueryRecord> vendorBasicStats(
-            String freq, int idVendor, String mode, VendorBasicStatsRequest request) {
-        return this.rawClient.vendorBasicStats(freq, idVendor, mode, request).body();
+            String mode, String freq, int idVendor, VendorBasicStatsRequest request) {
+        return this.rawClient.vendorBasicStats(mode, freq, idVendor, request).body();
     }
 
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
     public List<StatisticsVendorQueryRecord> vendorBasicStats(
-            String freq, int idVendor, String mode, VendorBasicStatsRequest request, RequestOptions requestOptions) {
+            String mode, String freq, int idVendor, VendorBasicStatsRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .vendorBasicStats(freq, idVendor, mode, request, requestOptions)
+                .vendorBasicStats(mode, freq, idVendor, request, requestOptions)
                 .body();
     }
 }

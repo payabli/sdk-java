@@ -56,24 +56,24 @@ public class BillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public BillResponse deleteAttachedFromBill(String filename, int idBill) {
-        return this.rawClient.deleteAttachedFromBill(filename, idBill).body();
+    public BillResponse deleteAttachedFromBill(int idBill, String filename) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename).body();
     }
 
     /**
      * Delete a file attached to a bill.
      */
-    public BillResponse deleteAttachedFromBill(String filename, int idBill, DeleteAttachedFromBillRequest request) {
-        return this.rawClient.deleteAttachedFromBill(filename, idBill, request).body();
+    public BillResponse deleteAttachedFromBill(int idBill, String filename, DeleteAttachedFromBillRequest request) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename, request).body();
     }
 
     /**
      * Delete a file attached to a bill.
      */
     public BillResponse deleteAttachedFromBill(
-            String filename, int idBill, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
+            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .deleteAttachedFromBill(filename, idBill, request, requestOptions)
+                .deleteAttachedFromBill(idBill, filename, request, requestOptions)
                 .body();
     }
 
@@ -115,24 +115,24 @@ public class BillClient {
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public FileContent getAttachedFromBill(String filename, int idBill) {
-        return this.rawClient.getAttachedFromBill(filename, idBill).body();
+    public FileContent getAttachedFromBill(int idBill, String filename) {
+        return this.rawClient.getAttachedFromBill(idBill, filename).body();
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public FileContent getAttachedFromBill(String filename, int idBill, GetAttachedFromBillRequest request) {
-        return this.rawClient.getAttachedFromBill(filename, idBill, request).body();
+    public FileContent getAttachedFromBill(int idBill, String filename, GetAttachedFromBillRequest request) {
+        return this.rawClient.getAttachedFromBill(idBill, filename, request).body();
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
     public FileContent getAttachedFromBill(
-            String filename, int idBill, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
+            int idBill, String filename, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .getAttachedFromBill(filename, idBill, request, requestOptions)
+                .getAttachedFromBill(idBill, filename, request, requestOptions)
                 .body();
     }
 
@@ -229,24 +229,24 @@ public class BillClient {
     /**
      * Approve or disapprove a bill by ID.
      */
-    public SetApprovedBillResponse setApprovedBill(String approved, int idBill) {
-        return this.rawClient.setApprovedBill(approved, idBill).body();
+    public SetApprovedBillResponse setApprovedBill(int idBill, String approved) {
+        return this.rawClient.setApprovedBill(idBill, approved).body();
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
-    public SetApprovedBillResponse setApprovedBill(String approved, int idBill, SetApprovedBillRequest request) {
-        return this.rawClient.setApprovedBill(approved, idBill, request).body();
+    public SetApprovedBillResponse setApprovedBill(int idBill, String approved, SetApprovedBillRequest request) {
+        return this.rawClient.setApprovedBill(idBill, approved, request).body();
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
     public SetApprovedBillResponse setApprovedBill(
-            String approved, int idBill, SetApprovedBillRequest request, RequestOptions requestOptions) {
+            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .setApprovedBill(approved, idBill, request, requestOptions)
+                .setApprovedBill(idBill, approved, request, requestOptions)
                 .body();
     }
 }

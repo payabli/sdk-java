@@ -5,6 +5,23 @@
 
 The Payabli Java library provides convenient access to the Payabli APIs from Java.
 
+## Table of Contents
+
+- [Usage](#usage)
+- [Environments](#environments)
+- [Base Url](#base-url)
+- [Exception Handling](#exception-handling)
+- [Advanced](#advanced)
+  - [Custom Client](#custom-client)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Custom Headers](#custom-headers)
+  - [Access Raw Response Data](#access-raw-response-data)
+- [Contributing](#contributing)
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Reference](#reference)
+
 ## Usage
 
 Instantiate and use the client with the following:
@@ -264,7 +281,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.301</version>
+  <version>0.0.302</version>
 </dependency>
 ```
 
