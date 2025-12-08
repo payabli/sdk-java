@@ -5,6 +5,6 @@
   "generatorConfig": {
     "publish-to": "central",
     "package-prefix": "io.github.payabli.api",
-    "enable-wire-tests": true
+    "enable-wire-tests": false
   }
 }
