@@ -24,7 +24,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayorDataResponse.Builder.class)
 public final class PayorDataResponse {
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> billingAddress1;
 
@@ -71,7 +71,7 @@ public final class PayorDataResponse {
     private final Map<String, Object> additionalProperties;
 
     private PayorDataResponse(
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> billingAddress1,
             Optional<String> billingAddress2,
             Optional<String> billingCity,
@@ -120,7 +120,7 @@ public final class PayorDataResponse {
     }
 
     @JsonIgnore
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         if (additionalData == null) {
             return Optional.empty();
         }
@@ -312,7 +312,7 @@ public final class PayorDataResponse {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("AdditionalData")
-    private Optional<Map<String, Optional<Map<String, Object>>>> _getAdditionalData() {
+    private Optional<Map<String, String>> _getAdditionalData() {
         return additionalData;
     }
 
@@ -516,7 +516,7 @@ public final class PayorDataResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> billingAddress1 = Optional.empty();
 
@@ -592,17 +592,17 @@ public final class PayorDataResponse {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
-        public Builder additionalData(Nullable<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Nullable<Map<String, String>> additionalData) {
             if (additionalData.isNull()) {
                 this.additionalData = null;
             } else if (additionalData.isEmpty()) {

@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Frequency {
-    public static final Frequency ONE_TIME = new Frequency(Value.ONE_TIME, "one-time");
-
     public static final Frequency EVERY_2_WEEKS = new Frequency(Value.EVERY_2_WEEKS, "every2weeks");
+
+    public static final Frequency ONE_TIME = new Frequency(Value.ONE_TIME, "onetime");
 
     public static final Frequency MONTHLY = new Frequency(Value.MONTHLY, "monthly");
 
@@ -52,10 +52,10 @@ public final class Frequency {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case ONE_TIME:
-                return visitor.visitOneTime();
             case EVERY_2_WEEKS:
                 return visitor.visitEvery2Weeks();
+            case ONE_TIME:
+                return visitor.visitOneTime();
             case MONTHLY:
                 return visitor.visitMonthly();
             case ANNUALLY:
@@ -75,10 +75,10 @@ public final class Frequency {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Frequency valueOf(String value) {
         switch (value) {
-            case "one-time":
-                return ONE_TIME;
             case "every2weeks":
                 return EVERY_2_WEEKS;
+            case "onetime":
+                return ONE_TIME;
             case "monthly":
                 return MONTHLY;
             case "annually":

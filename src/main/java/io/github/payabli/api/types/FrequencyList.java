@@ -30,7 +30,7 @@ public final class FrequencyList {
 
     private final Optional<Boolean> monthly;
 
-    private final Optional<Boolean> oneTime;
+    private final Optional<Boolean> onetime;
 
     private final Optional<Boolean> weekly;
 
@@ -42,7 +42,7 @@ public final class FrequencyList {
             Optional<Boolean> every3Months,
             Optional<Boolean> every6Months,
             Optional<Boolean> monthly,
-            Optional<Boolean> oneTime,
+            Optional<Boolean> onetime,
             Optional<Boolean> weekly,
             Map<String, Object> additionalProperties) {
         this.annually = annually;
@@ -50,7 +50,7 @@ public final class FrequencyList {
         this.every3Months = every3Months;
         this.every6Months = every6Months;
         this.monthly = monthly;
-        this.oneTime = oneTime;
+        this.onetime = onetime;
         this.weekly = weekly;
         this.additionalProperties = additionalProperties;
     }
@@ -98,9 +98,9 @@ public final class FrequencyList {
     /**
      * @return Enable or disable frequency
      */
-    @JsonProperty("one-time")
-    public Optional<Boolean> getOneTime() {
-        return oneTime;
+    @JsonProperty("onetime")
+    public Optional<Boolean> getOnetime() {
+        return onetime;
     }
 
     /**
@@ -128,7 +128,7 @@ public final class FrequencyList {
                 && every3Months.equals(other.every3Months)
                 && every6Months.equals(other.every6Months)
                 && monthly.equals(other.monthly)
-                && oneTime.equals(other.oneTime)
+                && onetime.equals(other.onetime)
                 && weekly.equals(other.weekly);
     }
 
@@ -140,7 +140,7 @@ public final class FrequencyList {
                 this.every3Months,
                 this.every6Months,
                 this.monthly,
-                this.oneTime,
+                this.onetime,
                 this.weekly);
     }
 
@@ -165,7 +165,7 @@ public final class FrequencyList {
 
         private Optional<Boolean> monthly = Optional.empty();
 
-        private Optional<Boolean> oneTime = Optional.empty();
+        private Optional<Boolean> onetime = Optional.empty();
 
         private Optional<Boolean> weekly = Optional.empty();
 
@@ -180,7 +180,7 @@ public final class FrequencyList {
             every3Months(other.getEvery3Months());
             every6Months(other.getEvery6Months());
             monthly(other.getMonthly());
-            oneTime(other.getOneTime());
+            onetime(other.getOnetime());
             weekly(other.getWeekly());
             return this;
         }
@@ -258,14 +258,14 @@ public final class FrequencyList {
         /**
          * <p>Enable or disable frequency</p>
          */
-        @JsonSetter(value = "one-time", nulls = Nulls.SKIP)
-        public Builder oneTime(Optional<Boolean> oneTime) {
-            this.oneTime = oneTime;
+        @JsonSetter(value = "onetime", nulls = Nulls.SKIP)
+        public Builder onetime(Optional<Boolean> onetime) {
+            this.onetime = onetime;
             return this;
         }
 
-        public Builder oneTime(Boolean oneTime) {
-            this.oneTime = Optional.ofNullable(oneTime);
+        public Builder onetime(Boolean onetime) {
+            this.onetime = Optional.ofNullable(onetime);
             return this;
         }
 
@@ -285,7 +285,7 @@ public final class FrequencyList {
 
         public FrequencyList build() {
             return new FrequencyList(
-                    annually, every2Weeks, every3Months, every6Months, monthly, oneTime, weekly, additionalProperties);
+                    annually, every2Weeks, every3Months, every6Months, monthly, onetime, weekly, additionalProperties);
         }
     }
 }
