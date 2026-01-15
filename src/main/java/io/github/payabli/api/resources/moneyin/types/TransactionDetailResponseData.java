@@ -24,6 +24,10 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionDetailResponseData.Builder.class)
 public final class TransactionDetailResponseData {
+    private final Optional<String> resultCode;
+
+    private final Optional<String> resultCodeText;
+
     private final Optional<String> response;
 
     private final String responsetext;
@@ -55,6 +59,8 @@ public final class TransactionDetailResponseData {
     private final Map<String, Object> additionalProperties;
 
     private TransactionDetailResponseData(
+            Optional<String> resultCode,
+            Optional<String> resultCodeText,
             Optional<String> response,
             String responsetext,
             Optional<String> authcode,
@@ -70,6 +76,8 @@ public final class TransactionDetailResponseData {
             Optional<String> customerVaultId,
             Optional<String> emvAuthResponseData,
             Map<String, Object> additionalProperties) {
+        this.resultCode = resultCode;
+        this.resultCodeText = resultCodeText;
         this.response = response;
         this.responsetext = responsetext;
         this.authcode = authcode;
@@ -85,6 +93,22 @@ public final class TransactionDetailResponseData {
         this.customerVaultId = customerVaultId;
         this.emvAuthResponseData = emvAuthResponseData;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.
+     */
+    @JsonProperty("resultCode")
+    public Optional<String> getResultCode() {
+        return resultCode;
+    }
+
+    /**
+     * @return Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.
+     */
+    @JsonProperty("resultCodeText")
+    public Optional<String> getResultCodeText() {
+        return resultCodeText;
     }
 
     @JsonIgnore
@@ -259,7 +283,9 @@ public final class TransactionDetailResponseData {
     }
 
     private boolean equalTo(TransactionDetailResponseData other) {
-        return response.equals(other.response)
+        return resultCode.equals(other.resultCode)
+                && resultCodeText.equals(other.resultCodeText)
+                && response.equals(other.response)
                 && responsetext.equals(other.responsetext)
                 && authcode.equals(other.authcode)
                 && transactionid.equals(other.transactionid)
@@ -278,6 +304,8 @@ public final class TransactionDetailResponseData {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.resultCode,
+                this.resultCodeText,
                 this.response,
                 this.responsetext,
                 this.authcode,
@@ -323,6 +351,20 @@ public final class TransactionDetailResponseData {
 
     public interface _FinalStage {
         TransactionDetailResponseData build();
+
+        /**
+         * <p>Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         */
+        _FinalStage resultCode(Optional<String> resultCode);
+
+        _FinalStage resultCode(String resultCode);
+
+        /**
+         * <p>Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         */
+        _FinalStage resultCodeText(Optional<String> resultCodeText);
+
+        _FinalStage resultCodeText(String resultCodeText);
 
         _FinalStage response(Optional<String> response);
 
@@ -416,6 +458,10 @@ public final class TransactionDetailResponseData {
 
         private Optional<String> response = Optional.empty();
 
+        private Optional<String> resultCodeText = Optional.empty();
+
+        private Optional<String> resultCode = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -423,6 +469,8 @@ public final class TransactionDetailResponseData {
 
         @java.lang.Override
         public Builder from(TransactionDetailResponseData other) {
+            resultCode(other.getResultCode());
+            resultCodeText(other.getResultCodeText());
             response(other.getResponse());
             responsetext(other.getResponsetext());
             authcode(other.getAuthcode());
@@ -718,9 +766,51 @@ public final class TransactionDetailResponseData {
             return this;
         }
 
+        /**
+         * <p>Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage resultCodeText(String resultCodeText) {
+            this.resultCodeText = Optional.ofNullable(resultCodeText);
+            return this;
+        }
+
+        /**
+         * <p>Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "resultCodeText", nulls = Nulls.SKIP)
+        public _FinalStage resultCodeText(Optional<String> resultCodeText) {
+            this.resultCodeText = resultCodeText;
+            return this;
+        }
+
+        /**
+         * <p>Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage resultCode(String resultCode) {
+            this.resultCode = Optional.ofNullable(resultCode);
+            return this;
+        }
+
+        /**
+         * <p>Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "resultCode", nulls = Nulls.SKIP)
+        public _FinalStage resultCode(Optional<String> resultCode) {
+            this.resultCode = resultCode;
+            return this;
+        }
+
         @java.lang.Override
         public TransactionDetailResponseData build() {
             return new TransactionDetailResponseData(
+                    resultCode,
+                    resultCodeText,
                     response,
                     responsetext,
                     authcode,

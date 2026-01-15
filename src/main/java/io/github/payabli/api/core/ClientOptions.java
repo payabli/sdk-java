@@ -35,10 +35,10 @@ public final class ClientOptions {
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "io.github.payabli:sdk-java/0.0.304");
+                put("User-Agent", "io.github.payabli:sdk-java/0.0.305");
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.payabli.fern:api-sdk");
-                put("X-Fern-SDK-Version", "0.0.304");
+                put("X-Fern-SDK-Version", "0.0.305");
             }
         });
         this.headerSuppliers = headerSuppliers;

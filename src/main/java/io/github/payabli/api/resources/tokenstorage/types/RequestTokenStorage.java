@@ -33,6 +33,8 @@ public final class RequestTokenStorage {
 
     private final Optional<RequestTokenStoragePaymentMethod> paymentMethod;
 
+    private final Optional<VendorDataRequest> vendorData;
+
     private final Optional<String> source;
 
     private final Optional<String> subdomain;
@@ -46,6 +48,7 @@ public final class RequestTokenStorage {
             Optional<Integer> fallbackAuthAmount,
             Optional<String> methodDescription,
             Optional<RequestTokenStoragePaymentMethod> paymentMethod,
+            Optional<VendorDataRequest> vendorData,
             Optional<String> source,
             Optional<String> subdomain,
             Map<String, Object> additionalProperties) {
@@ -55,6 +58,7 @@ public final class RequestTokenStorage {
         this.fallbackAuthAmount = fallbackAuthAmount;
         this.methodDescription = methodDescription;
         this.paymentMethod = paymentMethod;
+        this.vendorData = vendorData;
         this.source = source;
         this.subdomain = subdomain;
         this.additionalProperties = additionalProperties;
@@ -108,6 +112,11 @@ public final class RequestTokenStorage {
         return paymentMethod;
     }
 
+    @JsonProperty("vendorData")
+    public Optional<VendorDataRequest> getVendorData() {
+        return vendorData;
+    }
+
     /**
      * @return Custom identifier to indicate the source for the request
      */
@@ -139,6 +148,7 @@ public final class RequestTokenStorage {
                 && fallbackAuthAmount.equals(other.fallbackAuthAmount)
                 && methodDescription.equals(other.methodDescription)
                 && paymentMethod.equals(other.paymentMethod)
+                && vendorData.equals(other.vendorData)
                 && source.equals(other.source)
                 && subdomain.equals(other.subdomain);
     }
@@ -152,6 +162,7 @@ public final class RequestTokenStorage {
                 this.fallbackAuthAmount,
                 this.methodDescription,
                 this.paymentMethod,
+                this.vendorData,
                 this.source,
                 this.subdomain);
     }
@@ -179,6 +190,8 @@ public final class RequestTokenStorage {
 
         private Optional<RequestTokenStoragePaymentMethod> paymentMethod = Optional.empty();
 
+        private Optional<VendorDataRequest> vendorData = Optional.empty();
+
         private Optional<String> source = Optional.empty();
 
         private Optional<String> subdomain = Optional.empty();
@@ -195,6 +208,7 @@ public final class RequestTokenStorage {
             fallbackAuthAmount(other.getFallbackAuthAmount());
             methodDescription(other.getMethodDescription());
             paymentMethod(other.getPaymentMethod());
+            vendorData(other.getVendorData());
             source(other.getSource());
             subdomain(other.getSubdomain());
             return this;
@@ -284,6 +298,17 @@ public final class RequestTokenStorage {
             return this;
         }
 
+        @JsonSetter(value = "vendorData", nulls = Nulls.SKIP)
+        public Builder vendorData(Optional<VendorDataRequest> vendorData) {
+            this.vendorData = vendorData;
+            return this;
+        }
+
+        public Builder vendorData(VendorDataRequest vendorData) {
+            this.vendorData = Optional.ofNullable(vendorData);
+            return this;
+        }
+
         /**
          * <p>Custom identifier to indicate the source for the request</p>
          */
@@ -317,6 +342,7 @@ public final class RequestTokenStorage {
                     fallbackAuthAmount,
                     methodDescription,
                     paymentMethod,
+                    vendorData,
                     source,
                     subdomain,
                     additionalProperties);

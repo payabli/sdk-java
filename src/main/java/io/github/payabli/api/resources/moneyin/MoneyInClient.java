@@ -8,6 +8,8 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.moneyin.requests.RequestCredit;
 import io.github.payabli.api.resources.moneyin.requests.RequestPayment;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentAuthorize;
+import io.github.payabli.api.resources.moneyin.requests.RequestPaymentAuthorizeV2;
+import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentValidate;
 import io.github.payabli.api.resources.moneyin.requests.RequestRefund;
 import io.github.payabli.api.resources.moneyin.requests.SendReceipt2TransRequest;
@@ -21,6 +23,7 @@ import io.github.payabli.api.resources.moneyin.types.RefundWithInstructionsRespo
 import io.github.payabli.api.resources.moneyin.types.ReverseResponse;
 import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
+import io.github.payabli.api.resources.v2moneyintypes.types.V2TransactionResponseWrapper;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
 import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
@@ -44,7 +47,10 @@ public class MoneyInClient {
 
     /**
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
      */
     public AuthResponse authorize(RequestPaymentAuthorize request) {
         return this.rawClient.authorize(request).body();
@@ -52,7 +58,10 @@ public class MoneyInClient {
 
     /**
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
      */
     public AuthResponse authorize(RequestPaymentAuthorize request, RequestOptions requestOptions) {
         return this.rawClient.authorize(request, requestOptions).body();
@@ -83,6 +92,9 @@ public class MoneyInClient {
     /**
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     * <p>&lt;Tip&gt;
+     * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;</p>
      */
     public CaptureResponse captureAuth(String transId, CaptureRequest request) {
         return this.rawClient.captureAuth(transId, request).body();
@@ -91,6 +103,9 @@ public class MoneyInClient {
     /**
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     * <p>&lt;Tip&gt;
+     * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;</p>
      */
     public CaptureResponse captureAuth(String transId, CaptureRequest request, RequestOptions requestOptions) {
         return this.rawClient.captureAuth(transId, request, requestOptions).body();
@@ -128,6 +143,9 @@ public class MoneyInClient {
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public PayabliApiResponseGetPaid getpaid(RequestPayment request) {
         return this.rawClient.getpaid(request).body();
@@ -135,6 +153,9 @@ public class MoneyInClient {
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public PayabliApiResponseGetPaid getpaid(RequestPayment request, RequestOptions requestOptions) {
         return this.rawClient.getpaid(request, requestOptions).body();
@@ -156,6 +177,9 @@ public class MoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public RefundResponse refund(String transId, double amount) {
         return this.rawClient.refund(transId, amount).body();
@@ -163,6 +187,9 @@ public class MoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public RefundResponse refund(String transId, double amount, RequestOptions requestOptions) {
         return this.rawClient.refund(transId, amount, requestOptions).body();
@@ -246,6 +273,9 @@ public class MoneyInClient {
 
     /**
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public VoidResponse void_(String transId) {
         return this.rawClient.void_(transId).body();
@@ -253,8 +283,102 @@ public class MoneyInClient {
 
     /**
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public VoidResponse void_(String transId, RequestOptions requestOptions) {
         return this.rawClient.void_(transId, requestOptions).body();
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public V2TransactionResponseWrapper getpaidv2(RequestPaymentV2 request) {
+        return this.rawClient.getpaidv2(request).body();
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public V2TransactionResponseWrapper getpaidv2(RequestPaymentV2 request, RequestOptions requestOptions) {
+        return this.rawClient.getpaidv2(request, requestOptions).body();
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public V2TransactionResponseWrapper authorizev2(RequestPaymentAuthorizeV2 request) {
+        return this.rawClient.authorizev2(request).body();
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public V2TransactionResponseWrapper authorizev2(RequestPaymentAuthorizeV2 request, RequestOptions requestOptions) {
+        return this.rawClient.authorizev2(request, requestOptions).body();
+    }
+
+    /**
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public V2TransactionResponseWrapper capturev2(String transId, CaptureRequest request) {
+        return this.rawClient.capturev2(transId, request).body();
+    }
+
+    /**
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public V2TransactionResponseWrapper capturev2(
+            String transId, CaptureRequest request, RequestOptions requestOptions) {
+        return this.rawClient.capturev2(transId, request, requestOptions).body();
+    }
+
+    /**
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public V2TransactionResponseWrapper refundv2(String transId) {
+        return this.rawClient.refundv2(transId).body();
+    }
+
+    /**
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public V2TransactionResponseWrapper refundv2(String transId, RequestOptions requestOptions) {
+        return this.rawClient.refundv2(transId, requestOptions).body();
+    }
+
+    /**
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public V2TransactionResponseWrapper refundv2Amount(String transId, double amount) {
+        return this.rawClient.refundv2Amount(transId, amount).body();
+    }
+
+    /**
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public V2TransactionResponseWrapper refundv2Amount(String transId, double amount, RequestOptions requestOptions) {
+        return this.rawClient.refundv2Amount(transId, amount, requestOptions).body();
+    }
+
+    /**
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public V2TransactionResponseWrapper voidv2(String transId) {
+        return this.rawClient.voidv2(transId).body();
+    }
+
+    /**
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public V2TransactionResponseWrapper voidv2(String transId, RequestOptions requestOptions) {
+        return this.rawClient.voidv2(transId, requestOptions).body();
     }
 }

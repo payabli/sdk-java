@@ -19,6 +19,8 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.moneyin.requests.RequestCredit;
 import io.github.payabli.api.resources.moneyin.requests.RequestPayment;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentAuthorize;
+import io.github.payabli.api.resources.moneyin.requests.RequestPaymentAuthorizeV2;
+import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentValidate;
 import io.github.payabli.api.resources.moneyin.requests.RequestRefund;
 import io.github.payabli.api.resources.moneyin.requests.SendReceipt2TransRequest;
@@ -32,6 +34,19 @@ import io.github.payabli.api.resources.moneyin.types.RefundWithInstructionsRespo
 import io.github.payabli.api.resources.moneyin.types.ReverseResponse;
 import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
+import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestAuthResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestCaptureResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestRefundResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestVoidResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedAuthResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedCaptureResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedRefundResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedVoidResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.errors.InternalServerResponseErrorV2;
+import io.github.payabli.api.resources.v2moneyintypes.types.V2BadRequestError;
+import io.github.payabli.api.resources.v2moneyintypes.types.V2DeclinedTransactionResponseWrapper;
+import io.github.payabli.api.resources.v2moneyintypes.types.V2InternalServerError;
+import io.github.payabli.api.resources.v2moneyintypes.types.V2TransactionResponseWrapper;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
 import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
@@ -57,7 +72,10 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(RequestPaymentAuthorize request) {
         return authorize(request, null);
@@ -65,7 +83,10 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(
             RequestPaymentAuthorize request, RequestOptions requestOptions) {
@@ -251,6 +272,9 @@ public class AsyncRawMoneyInClient {
     /**
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     * <p>&lt;Tip&gt;
+     * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> captureAuth(
             String transId, CaptureRequest request) {
@@ -260,6 +284,9 @@ public class AsyncRawMoneyInClient {
     /**
      * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
+     * <p>&lt;Tip&gt;
+     * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> captureAuth(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
@@ -530,6 +557,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(RequestPayment request) {
         return getpaid(request, null);
@@ -537,6 +567,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(
             RequestPayment request, RequestOptions requestOptions) {
@@ -727,6 +760,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundResponse>> refund(String transId, double amount) {
         return refund(transId, amount, null);
@@ -734,6 +770,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundResponse>> refund(
             String transId, double amount, RequestOptions requestOptions) {
@@ -1187,6 +1226,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<VoidResponse>> void_(String transId) {
         return void_(transId, null);
@@ -1194,6 +1236,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<VoidResponse>> void_(
             String transId, RequestOptions requestOptions) {
@@ -1244,6 +1289,582 @@ public class AsyncRawMoneyInClient {
                                 future.completeExceptionally(new ServiceUnavailableError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> getpaidv2(RequestPaymentV2 request) {
+        return getpaidv2(request, null);
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> getpaidv2(
+            RequestPaymentV2 request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/MoneyIn/getpaid");
+        if (request.getAchValidation().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "achValidation", request.getAchValidation().get(), false);
+        }
+        if (request.getForceCustomerCreation().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "forceCustomerCreation",
+                    request.getForceCustomerCreation().get(),
+                    false);
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        if (request.getIdempotencyKey().isPresent()) {
+            _requestBuilder.addHeader(
+                    "idempotencyKey", request.getIdempotencyKey().get());
+        }
+        if (request.getValidationCode().isPresent()) {
+            _requestBuilder.addHeader(
+                    "validationCode", request.getValidationCode().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, V2TransactionResponseWrapper.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestAuthResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2BadRequestError.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 402:
+                                future.completeExceptionally(new DeclinedAuthResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2DeclinedTransactionResponseWrapper.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2InternalServerError.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> authorizev2(
+            RequestPaymentAuthorizeV2 request) {
+        return authorizev2(request, null);
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> authorizev2(
+            RequestPaymentAuthorizeV2 request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/MoneyIn/authorize");
+        if (request.getForceCustomerCreation().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "forceCustomerCreation",
+                    request.getForceCustomerCreation().get(),
+                    false);
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        if (request.getIdempotencyKey().isPresent()) {
+            _requestBuilder.addHeader(
+                    "idempotencyKey", request.getIdempotencyKey().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, V2TransactionResponseWrapper.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestAuthResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2BadRequestError.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 402:
+                                future.completeExceptionally(new DeclinedAuthResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2DeclinedTransactionResponseWrapper.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2InternalServerError.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> capturev2(
+            String transId, CaptureRequest request) {
+        return capturev2(transId, request, null);
+    }
+
+    /**
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> capturev2(
+            String transId, CaptureRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/MoneyIn/capture")
+                .addPathSegment(transId)
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, V2TransactionResponseWrapper.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestCaptureResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2BadRequestError.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 402:
+                                future.completeExceptionally(new DeclinedCaptureResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2DeclinedTransactionResponseWrapper.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2InternalServerError.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(String transId) {
+        return refundv2(transId, null);
+    }
+
+    /**
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(
+            String transId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/MoneyIn/refund")
+                .addPathSegment(transId)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, V2TransactionResponseWrapper.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestRefundResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2BadRequestError.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 402:
+                                future.completeExceptionally(new DeclinedRefundResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2DeclinedTransactionResponseWrapper.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2InternalServerError.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
+            String transId, double amount) {
+        return refundv2Amount(transId, amount, null);
+    }
+
+    /**
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
+            String transId, double amount, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/MoneyIn/refund")
+                .addPathSegment(transId)
+                .addPathSegment(Double.toString(amount))
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, V2TransactionResponseWrapper.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestRefundResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2BadRequestError.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 402:
+                                future.completeExceptionally(new DeclinedRefundResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2DeclinedTransactionResponseWrapper.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2InternalServerError.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> voidv2(String transId) {
+        return voidv2(transId, null);
+    }
+
+    /**
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> voidv2(
+            String transId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("v2/MoneyIn/void")
+                .addPathSegment(transId)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, V2TransactionResponseWrapper.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestVoidResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2BadRequestError.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 402:
+                                future.completeExceptionally(new DeclinedVoidResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2DeclinedTransactionResponseWrapper.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerResponseErrorV2(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, V2InternalServerError.class),
                                         response));
                                 return;
                         }

@@ -34,6 +34,8 @@ public final class GetMethodResponseResponseData {
 
     private final Optional<BinData> binData;
 
+    private final Optional<OffsetDateTime> cardUpdatedOn;
+
     private final Optional<List<GetMethodResponseResponseDataCustomersItem>> customers;
 
     private final Optional<String> descriptor;
@@ -43,6 +45,8 @@ public final class GetMethodResponseResponseData {
     private final Optional<String> holderName;
 
     private final Optional<String> idPmethod;
+
+    private final Optional<Boolean> isValidatedAch;
 
     private final Optional<OffsetDateTime> lastUpdated;
 
@@ -54,6 +58,8 @@ public final class GetMethodResponseResponseData {
 
     private final Optional<String> postalCode;
 
+    private final Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors;
+
     private final Map<String, Object> additionalProperties;
 
     private GetMethodResponseResponseData(
@@ -62,32 +68,38 @@ public final class GetMethodResponseResponseData {
             Optional<String> achSecCode,
             Optional<String> bin,
             Optional<BinData> binData,
+            Optional<OffsetDateTime> cardUpdatedOn,
             Optional<List<GetMethodResponseResponseDataCustomersItem>> customers,
             Optional<String> descriptor,
             Optional<String> expDate,
             Optional<String> holderName,
             Optional<String> idPmethod,
+            Optional<Boolean> isValidatedAch,
             Optional<OffsetDateTime> lastUpdated,
             Optional<String> maskedAccount,
             Optional<String> method,
             Optional<String> methodType,
             Optional<String> postalCode,
+            Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors,
             Map<String, Object> additionalProperties) {
         this.aba = aba;
         this.achHolderType = achHolderType;
         this.achSecCode = achSecCode;
         this.bin = bin;
         this.binData = binData;
+        this.cardUpdatedOn = cardUpdatedOn;
         this.customers = customers;
         this.descriptor = descriptor;
         this.expDate = expDate;
         this.holderName = holderName;
         this.idPmethod = idPmethod;
+        this.isValidatedAch = isValidatedAch;
         this.lastUpdated = lastUpdated;
         this.maskedAccount = maskedAccount;
         this.method = method;
         this.methodType = methodType;
         this.postalCode = postalCode;
+        this.vendors = vendors;
         this.additionalProperties = additionalProperties;
     }
 
@@ -122,6 +134,14 @@ public final class GetMethodResponseResponseData {
         return binData;
     }
 
+    /**
+     * @return Timestamp for when card was last updated
+     */
+    @JsonProperty("cardUpdatedOn")
+    public Optional<OffsetDateTime> getCardUpdatedOn() {
+        return cardUpdatedOn;
+    }
+
     @JsonProperty("customers")
     public Optional<List<GetMethodResponseResponseDataCustomersItem>> getCustomers() {
         return customers;
@@ -154,6 +174,14 @@ public final class GetMethodResponseResponseData {
     @JsonProperty("idPmethod")
     public Optional<String> getIdPmethod() {
         return idPmethod;
+    }
+
+    /**
+     * @return Whether the ACH account has been validated
+     */
+    @JsonProperty("isValidatedACH")
+    public Optional<Boolean> getIsValidatedAch() {
+        return isValidatedAch;
     }
 
     /**
@@ -193,6 +221,11 @@ public final class GetMethodResponseResponseData {
         return postalCode;
     }
 
+    @JsonProperty("vendors")
+    public Optional<List<GetMethodResponseResponseDataVendorsItem>> getVendors() {
+        return vendors;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -210,16 +243,19 @@ public final class GetMethodResponseResponseData {
                 && achSecCode.equals(other.achSecCode)
                 && bin.equals(other.bin)
                 && binData.equals(other.binData)
+                && cardUpdatedOn.equals(other.cardUpdatedOn)
                 && customers.equals(other.customers)
                 && descriptor.equals(other.descriptor)
                 && expDate.equals(other.expDate)
                 && holderName.equals(other.holderName)
                 && idPmethod.equals(other.idPmethod)
+                && isValidatedAch.equals(other.isValidatedAch)
                 && lastUpdated.equals(other.lastUpdated)
                 && maskedAccount.equals(other.maskedAccount)
                 && method.equals(other.method)
                 && methodType.equals(other.methodType)
-                && postalCode.equals(other.postalCode);
+                && postalCode.equals(other.postalCode)
+                && vendors.equals(other.vendors);
     }
 
     @java.lang.Override
@@ -230,16 +266,19 @@ public final class GetMethodResponseResponseData {
                 this.achSecCode,
                 this.bin,
                 this.binData,
+                this.cardUpdatedOn,
                 this.customers,
                 this.descriptor,
                 this.expDate,
                 this.holderName,
                 this.idPmethod,
+                this.isValidatedAch,
                 this.lastUpdated,
                 this.maskedAccount,
                 this.method,
                 this.methodType,
-                this.postalCode);
+                this.postalCode,
+                this.vendors);
     }
 
     @java.lang.Override
@@ -263,6 +302,8 @@ public final class GetMethodResponseResponseData {
 
         private Optional<BinData> binData = Optional.empty();
 
+        private Optional<OffsetDateTime> cardUpdatedOn = Optional.empty();
+
         private Optional<List<GetMethodResponseResponseDataCustomersItem>> customers = Optional.empty();
 
         private Optional<String> descriptor = Optional.empty();
@@ -273,6 +314,8 @@ public final class GetMethodResponseResponseData {
 
         private Optional<String> idPmethod = Optional.empty();
 
+        private Optional<Boolean> isValidatedAch = Optional.empty();
+
         private Optional<OffsetDateTime> lastUpdated = Optional.empty();
 
         private Optional<String> maskedAccount = Optional.empty();
@@ -282,6 +325,8 @@ public final class GetMethodResponseResponseData {
         private Optional<String> methodType = Optional.empty();
 
         private Optional<String> postalCode = Optional.empty();
+
+        private Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -294,16 +339,19 @@ public final class GetMethodResponseResponseData {
             achSecCode(other.getAchSecCode());
             bin(other.getBin());
             binData(other.getBinData());
+            cardUpdatedOn(other.getCardUpdatedOn());
             customers(other.getCustomers());
             descriptor(other.getDescriptor());
             expDate(other.getExpDate());
             holderName(other.getHolderName());
             idPmethod(other.getIdPmethod());
+            isValidatedAch(other.getIsValidatedAch());
             lastUpdated(other.getLastUpdated());
             maskedAccount(other.getMaskedAccount());
             method(other.getMethod());
             methodType(other.getMethodType());
             postalCode(other.getPostalCode());
+            vendors(other.getVendors());
             return this;
         }
 
@@ -368,6 +416,20 @@ public final class GetMethodResponseResponseData {
             return this;
         }
 
+        /**
+         * <p>Timestamp for when card was last updated</p>
+         */
+        @JsonSetter(value = "cardUpdatedOn", nulls = Nulls.SKIP)
+        public Builder cardUpdatedOn(Optional<OffsetDateTime> cardUpdatedOn) {
+            this.cardUpdatedOn = cardUpdatedOn;
+            return this;
+        }
+
+        public Builder cardUpdatedOn(OffsetDateTime cardUpdatedOn) {
+            this.cardUpdatedOn = Optional.ofNullable(cardUpdatedOn);
+            return this;
+        }
+
         @JsonSetter(value = "customers", nulls = Nulls.SKIP)
         public Builder customers(Optional<List<GetMethodResponseResponseDataCustomersItem>> customers) {
             this.customers = customers;
@@ -429,6 +491,20 @@ public final class GetMethodResponseResponseData {
 
         public Builder idPmethod(String idPmethod) {
             this.idPmethod = Optional.ofNullable(idPmethod);
+            return this;
+        }
+
+        /**
+         * <p>Whether the ACH account has been validated</p>
+         */
+        @JsonSetter(value = "isValidatedACH", nulls = Nulls.SKIP)
+        public Builder isValidatedAch(Optional<Boolean> isValidatedAch) {
+            this.isValidatedAch = isValidatedAch;
+            return this;
+        }
+
+        public Builder isValidatedAch(Boolean isValidatedAch) {
+            this.isValidatedAch = Optional.ofNullable(isValidatedAch);
             return this;
         }
 
@@ -499,6 +575,17 @@ public final class GetMethodResponseResponseData {
             return this;
         }
 
+        @JsonSetter(value = "vendors", nulls = Nulls.SKIP)
+        public Builder vendors(Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors) {
+            this.vendors = vendors;
+            return this;
+        }
+
+        public Builder vendors(List<GetMethodResponseResponseDataVendorsItem> vendors) {
+            this.vendors = Optional.ofNullable(vendors);
+            return this;
+        }
+
         public GetMethodResponseResponseData build() {
             return new GetMethodResponseResponseData(
                     aba,
@@ -506,16 +593,19 @@ public final class GetMethodResponseResponseData {
                     achSecCode,
                     bin,
                     binData,
+                    cardUpdatedOn,
                     customers,
                     descriptor,
                     expDate,
                     holderName,
                     idPmethod,
+                    isValidatedAch,
                     lastUpdated,
                     maskedAccount,
                     method,
                     methodType,
                     postalCode,
+                    vendors,
                     additionalProperties);
         }
     }

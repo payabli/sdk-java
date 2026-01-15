@@ -102,6 +102,8 @@ public final class ApplicationDataManaged {
 
     private final Optional<String> repOffice;
 
+    private final Optional<String> onCreate;
+
     private final Map<String, Object> additionalProperties;
 
     private ApplicationDataManaged(
@@ -145,6 +147,7 @@ public final class ApplicationDataManaged {
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
+            Optional<String> onCreate,
             Map<String, Object> additionalProperties) {
         this.annualRevenue = annualRevenue;
         this.attachments = attachments;
@@ -186,6 +189,7 @@ public final class ApplicationDataManaged {
         this.repCode = repCode;
         this.repName = repName;
         this.repOffice = repOffice;
+        this.onCreate = onCreate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -407,6 +411,11 @@ public final class ApplicationDataManaged {
         return repOffice;
     }
 
+    @JsonProperty("onCreate")
+    public Optional<String> getOnCreate() {
+        return onCreate;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -458,7 +467,8 @@ public final class ApplicationDataManaged {
                 && website.equals(other.website)
                 && repCode.equals(other.repCode)
                 && repName.equals(other.repName)
-                && repOffice.equals(other.repOffice);
+                && repOffice.equals(other.repOffice)
+                && onCreate.equals(other.onCreate);
     }
 
     @java.lang.Override
@@ -503,7 +513,8 @@ public final class ApplicationDataManaged {
                 this.website,
                 this.repCode,
                 this.repName,
-                this.repOffice);
+                this.repOffice,
+                this.onCreate);
     }
 
     @java.lang.Override
@@ -697,11 +708,17 @@ public final class ApplicationDataManaged {
         _FinalStage repOffice(Optional<String> repOffice);
 
         _FinalStage repOffice(String repOffice);
+
+        _FinalStage onCreate(Optional<String> onCreate);
+
+        _FinalStage onCreate(String onCreate);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements SignerStage, _FinalStage {
         private SignerDataRequest signer;
+
+        private Optional<String> onCreate = Optional.empty();
 
         private Optional<String> repOffice = Optional.empty();
 
@@ -828,6 +845,7 @@ public final class ApplicationDataManaged {
             repCode(other.getRepCode());
             repName(other.getRepName());
             repOffice(other.getRepOffice());
+            onCreate(other.getOnCreate());
             return this;
         }
 
@@ -835,6 +853,19 @@ public final class ApplicationDataManaged {
         @JsonSetter("signer")
         public _FinalStage signer(@NotNull SignerDataRequest signer) {
             this.signer = Objects.requireNonNull(signer, "signer must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage onCreate(String onCreate) {
+            this.onCreate = Optional.ofNullable(onCreate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "onCreate", nulls = Nulls.SKIP)
+        public _FinalStage onCreate(Optional<String> onCreate) {
+            this.onCreate = onCreate;
             return this;
         }
 
@@ -1430,6 +1461,7 @@ public final class ApplicationDataManaged {
                     repCode,
                     repName,
                     repOffice,
+                    onCreate,
                     additionalProperties);
         }
     }

@@ -131,6 +131,8 @@ public final class ApplicationData {
 
     private final Optional<String> repOffice;
 
+    private final Optional<String> onCreate;
+
     private final Map<String, Object> additionalProperties;
 
     private ApplicationData(
@@ -189,6 +191,7 @@ public final class ApplicationData {
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
+            Optional<String> onCreate,
             Map<String, Object> additionalProperties) {
         this.services = services;
         this.annualRevenue = annualRevenue;
@@ -245,6 +248,7 @@ public final class ApplicationData {
         this.repCode = repCode;
         this.repName = repName;
         this.repOffice = repOffice;
+        this.onCreate = onCreate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -526,6 +530,11 @@ public final class ApplicationData {
         return repOffice;
     }
 
+    @JsonProperty("onCreate")
+    public Optional<String> getOnCreate() {
+        return onCreate;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -592,7 +601,8 @@ public final class ApplicationData {
                 && whenRefunded.equals(other.whenRefunded)
                 && repCode.equals(other.repCode)
                 && repName.equals(other.repName)
-                && repOffice.equals(other.repOffice);
+                && repOffice.equals(other.repOffice)
+                && onCreate.equals(other.onCreate);
     }
 
     @java.lang.Override
@@ -652,7 +662,8 @@ public final class ApplicationData {
                 this.whenRefunded,
                 this.repCode,
                 this.repName,
-                this.repOffice);
+                this.repOffice,
+                this.onCreate);
     }
 
     @java.lang.Override
@@ -776,6 +787,8 @@ public final class ApplicationData {
 
         private Optional<String> repOffice = Optional.empty();
 
+        private Optional<String> onCreate = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -837,6 +850,7 @@ public final class ApplicationData {
             repCode(other.getRepCode());
             repName(other.getRepName());
             repOffice(other.getRepOffice());
+            onCreate(other.getOnCreate());
             return this;
         }
 
@@ -1448,6 +1462,17 @@ public final class ApplicationData {
             return this;
         }
 
+        @JsonSetter(value = "onCreate", nulls = Nulls.SKIP)
+        public Builder onCreate(Optional<String> onCreate) {
+            this.onCreate = onCreate;
+            return this;
+        }
+
+        public Builder onCreate(String onCreate) {
+            this.onCreate = Optional.ofNullable(onCreate);
+            return this;
+        }
+
         public ApplicationData build() {
             return new ApplicationData(
                     services,
@@ -1505,6 +1530,7 @@ public final class ApplicationData {
                     repCode,
                     repName,
                     repOffice,
+                    onCreate,
                     additionalProperties);
         }
     }

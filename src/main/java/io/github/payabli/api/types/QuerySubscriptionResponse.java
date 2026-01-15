@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,14 +21,14 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QuerySubscriptionResponse.Builder.class)
 public final class QuerySubscriptionResponse {
-    private final Optional<SubscriptionQueryRecords> records;
+    private final Optional<List<SubscriptionQueryRecords>> records;
 
     private final Optional<QuerySummary> summary;
 
     private final Map<String, Object> additionalProperties;
 
     private QuerySubscriptionResponse(
-            Optional<SubscriptionQueryRecords> records,
+            Optional<List<SubscriptionQueryRecords>> records,
             Optional<QuerySummary> summary,
             Map<String, Object> additionalProperties) {
         this.records = records;
@@ -36,7 +37,7 @@ public final class QuerySubscriptionResponse {
     }
 
     @JsonProperty("Records")
-    public Optional<SubscriptionQueryRecords> getRecords() {
+    public Optional<List<SubscriptionQueryRecords>> getRecords() {
         return records;
     }
 
@@ -76,7 +77,7 @@ public final class QuerySubscriptionResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<SubscriptionQueryRecords> records = Optional.empty();
+        private Optional<List<SubscriptionQueryRecords>> records = Optional.empty();
 
         private Optional<QuerySummary> summary = Optional.empty();
 
@@ -92,12 +93,12 @@ public final class QuerySubscriptionResponse {
         }
 
         @JsonSetter(value = "Records", nulls = Nulls.SKIP)
-        public Builder records(Optional<SubscriptionQueryRecords> records) {
+        public Builder records(Optional<List<SubscriptionQueryRecords>> records) {
             this.records = records;
             return this;
         }
 
-        public Builder records(SubscriptionQueryRecords records) {
+        public Builder records(List<SubscriptionQueryRecords> records) {
             this.records = Optional.ofNullable(records);
             return this;
         }

@@ -2952,7 +2952,7 @@ client.customer().updateCustomer(
 </details>
 
 ## Export
-<details><summary><code>client.export.exportApplications(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportApplications(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3108,7 +3108,7 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchDetails(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchDetails(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3275,7 +3275,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchDetailsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchDetailsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3442,7 +3442,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatches(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatches(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3599,7 +3599,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchesOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchesOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3754,7 +3754,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchesOut(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchesOut(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -3891,7 +3891,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBatchesOutOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBatchesOutOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4028,7 +4028,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBills(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBills(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4183,7 +4183,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.export.exportBillsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportBillsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4338,7 +4338,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.export.exportChargebacks(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportChargebacks(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4514,7 +4514,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportChargebacksOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportChargebacksOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4690,7 +4690,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportCustomers(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportCustomers(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -4859,7 +4859,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.export.exportCustomersOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportCustomersOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -5028,7 +5028,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.export.exportInvoices(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportInvoices(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -5207,7 +5207,7 @@ Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater tha
 </dl>
 </details>
 
-<details><summary><code>client.export.exportInvoicesOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportInvoicesOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -5386,7 +5386,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.export.exportOrganizations(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportOrganizations(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -5540,7 +5540,7 @@ Example: name(ct)=hoa  return all records where name contains "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.export.exportPayout(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportPayout(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -5693,7 +5693,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.export.exportPayoutOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportPayoutOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -5846,7 +5846,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.export.exportPaypoints(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportPaypoints(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -6001,7 +6001,7 @@ Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.export.exportSettlements(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportSettlements(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -6176,7 +6176,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.export.exportSettlementsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportSettlementsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -6351,7 +6351,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.export.exportSubscriptions(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportSubscriptions(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -6528,7 +6528,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportSubscriptionsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportSubscriptionsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -6705,7 +6705,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportTransactions(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportTransactions(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -6886,7 +6886,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportTransactionsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportTransactionsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -7067,7 +7067,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportTransferDetails(format, entry, transferId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportTransferDetails(format, entry, transferId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -7230,7 +7230,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.export.exportTransfers(entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportTransfers(entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -7376,7 +7376,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.export.exportVendors(format, entry) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportVendors(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -7535,7 +7535,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.export.exportVendorsOrg(format, orgId) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.export.exportVendorsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -9070,7 +9070,7 @@ client.invoice().sendInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.invoice.getInvoicePdf(idInvoice) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.invoice.getInvoicePdf(idInvoice) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -9554,8 +9554,10 @@ client.lineItem().updateItem(
 <dd>
 
 Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until [captured](/api-reference/moneyin/capture-an-authorized-transaction).
-
-**Note**: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+<Tip>
+  Consider migrating to the [v2 Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction) to take advantage of unified response codes and improved response consistency.
+</Tip>
 </dd>
 </dl>
 </dd>
@@ -9733,6 +9735,10 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
 Capture an [authorized transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account. 
 
 You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
+
+<Tip>
+Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
+</Tip>
 </dd>
 </dl>
 </dd>
@@ -10026,6 +10032,10 @@ client.moneyIn().details("45-as456777hhhhhhhhhh77777777-324");
 <dd>
 
 Make a single transaction. This method authorizes and captures a payment in one step.
+
+  <Tip>
+  Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+  </Tip>
 </dd>
 </dl>
 </dd>
@@ -10227,6 +10237,10 @@ An amount equal to zero will refunds the total amount authorized minus any servi
 <dd>
 
 Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+
+  <Tip>
+  Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
+  </Tip>
 </dd>
 </dl>
 </dd>
@@ -10683,6 +10697,10 @@ client.moneyIn().validate(
 <dd>
 
 Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+
+  <Tip>
+  Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
+  </Tip>
 </dd>
 </dl>
 </dd>
@@ -10698,6 +10716,488 @@ Cancel a transaction that hasn't been settled yet. Voiding non-captured authoriz
 
 ```java
 client.moneyIn().void_("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.getpaidv2(request) -> V2TransactionResponseWrapper</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the `api/MoneyIn/getpaid` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().getpaidv2(
+    RequestPaymentV2
+        .builder()
+        .body(
+            TransRequestBody
+                .builder()
+                .paymentDetails(
+                    PaymentDetail
+                        .builder()
+                        .totalAmount(100.0)
+                        .serviceFee(0.0)
+                        .build()
+                )
+                .paymentMethod(
+                    PaymentMethod.of(
+                        PayMethodCredit
+                            .builder()
+                            .cardexp("02/27")
+                            .cardnumber("4111111111111111")
+                            .method("card")
+                            .cardcvv("999")
+                            .cardHolder("John Cassian")
+                            .cardzip("12345")
+                            .initiator("payor")
+                            .build()
+                    )
+                )
+                .customerData(
+                    PayorDataRequest
+                        .builder()
+                        .customerId(4440L)
+                        .build()
+                )
+                .entryPoint("f743aed24a")
+                .ipaddress("255.255.255.255")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**achValidation:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**forceCustomerCreation:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**validationCode:** `Optional<String>` — Value obtained from user when an API generated CAPTCHA is used in payment page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TransRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.authorizev2(request) -> V2TransactionResponseWrapper</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the `api/MoneyIn/authorize` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+
+**Note**: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().authorizev2(
+    RequestPaymentAuthorizeV2
+        .builder()
+        .body(
+            TransRequestBody
+                .builder()
+                .paymentDetails(
+                    PaymentDetail
+                        .builder()
+                        .totalAmount(100.0)
+                        .serviceFee(0.0)
+                        .build()
+                )
+                .paymentMethod(
+                    PaymentMethod.of(
+                        PayMethodCredit
+                            .builder()
+                            .cardexp("02/27")
+                            .cardnumber("4111111111111111")
+                            .method("card")
+                            .cardcvv("999")
+                            .cardHolder("John Cassian")
+                            .cardzip("12345")
+                            .initiator("payor")
+                            .build()
+                    )
+                )
+                .customerData(
+                    PayorDataRequest
+                        .builder()
+                        .customerId(4440L)
+                        .build()
+                )
+                .entryPoint("f743aed24a")
+                .ipaddress("255.255.255.255")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**forceCustomerCreation:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TransRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.capturev2(transId, request) -> V2TransactionResponseWrapper</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the `api/MoneyIn/capture/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().capturev2(
+    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    CaptureRequest
+        .builder()
+        .paymentDetails(
+            CapturePaymentDetails
+                .builder()
+                .totalAmount(105.0)
+                .serviceFee(5.0)
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CaptureRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.refundv2(transId) -> V2TransactionResponseWrapper</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see [Partially refund a transaction](developers/api-reference/moneyinV2/partial-refund-a-settled-transaction).
+
+This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().refundv2("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.refundv2Amount(transId, amount) -> V2TransactionResponseWrapper</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Refund a transaction that has settled and send money back to the account holder. If `amount` is omitted or set to 0, performs a full refund. When a non-zero `amount` is provided, this endpoint performs a partial refund.
+
+This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().refundv2Amount("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `Double` — Amount to refund from original transaction, minus any service fees charged on the original transaction. If omitted or set to 0, performs a full refund.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyIn.voidv2(transId) -> V2TransactionResponseWrapper</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the `api/MoneyIn/void/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyIn().voidv2("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 ```
 </dd>
 </dl>
@@ -11645,7 +12145,7 @@ client.notification().updateNotification(
 </dl>
 </details>
 
-<details><summary><code>client.notification.getReportFile(id) -> Map&lt;String, Object&gt;</code></summary>
+<details><summary><code>client.notification.getReportFile(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -11700,7 +12200,7 @@ client.notification().getReportFile(1000000L);
 </details>
 
 ## Notificationlogs
-<details><summary><code>client.notificationlogs.searchNotificationLogs(request) -> List&lt;NotificationLog&gt;</code></summary>
+<details><summary><code>client.notificationlogs.searchNotificationLogs(request) -> List&amp;lt;NotificationLog&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -20265,7 +20765,7 @@ List of comparison accepted - enclosed between parentheses:
 </details>
 
 ## Statistic
-<details><summary><code>client.statistic.basicStats(mode, freq, level, entryId) -> List&lt;StatBasicExtendedQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.basicStats(mode, freq, level, entryId) -> List&amp;lt;StatBasicExtendedQueryRecord&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -20420,7 +20920,7 @@ Valid formats:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&lt;SubscriptionStatsQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&amp;lt;SubscriptionStatsQueryRecord&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -20528,7 +21028,7 @@ For example, `w` groups the results by week.
 </dl>
 </details>
 
-<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&lt;StatBasicQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&amp;lt;StatBasicQueryRecord&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -20625,7 +21125,7 @@ The entry level for the request:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.vendorBasicStats(mode, freq, idVendor) -> List&lt;StatisticsVendorQueryRecord&gt;</code></summary>
+<details><summary><code>client.statistic.vendorBasicStats(mode, freq, idVendor) -> List&amp;lt;StatisticsVendorQueryRecord&amp;gt;</code></summary>
 <dl>
 <dd>
 

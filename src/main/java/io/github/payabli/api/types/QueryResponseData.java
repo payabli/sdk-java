@@ -42,6 +42,10 @@ public final class QueryResponseData {
 
     private final Optional<String> responsetext;
 
+    private final Optional<String> resultCode;
+
+    private final Optional<String> resultCodeText;
+
     private final Optional<String> transactionid;
 
     private final Optional<String> type;
@@ -60,6 +64,8 @@ public final class QueryResponseData {
             Optional<String> responseCode,
             Optional<String> responseCodeText,
             Optional<String> responsetext,
+            Optional<String> resultCode,
+            Optional<String> resultCodeText,
             Optional<String> transactionid,
             Optional<String> type,
             Map<String, Object> additionalProperties) {
@@ -74,6 +80,8 @@ public final class QueryResponseData {
         this.responseCode = responseCode;
         this.responseCodeText = responseCodeText;
         this.responsetext = responsetext;
+        this.resultCode = resultCode;
+        this.resultCodeText = resultCodeText;
         this.transactionid = transactionid;
         this.type = type;
         this.additionalProperties = additionalProperties;
@@ -84,41 +92,26 @@ public final class QueryResponseData {
         return authcode;
     }
 
-    /**
-     * @return Text code describing the result for address validation (applies only for card transactions).
-     */
     @JsonProperty("avsresponse")
     public Optional<String> getAvsresponse() {
         return avsresponse;
     }
 
-    /**
-     * @return Text code describing the result for address validation (applies only for card transactions).
-     */
     @JsonProperty("avsresponse_text")
     public Optional<String> getAvsresponseText() {
         return avsresponseText;
     }
 
-    /**
-     * @return Text code describing the result for CVV validation (applies only for card transactions).
-     */
     @JsonProperty("cvvresponse")
     public Optional<String> getCvvresponse() {
         return cvvresponse;
     }
 
-    /**
-     * @return Text code describing the result for CVV validation (applies only for card transactions).
-     */
     @JsonProperty("cvvresponse_text")
     public Optional<String> getCvvresponseText() {
         return cvvresponseText;
     }
 
-    /**
-     * @return EMV authorization response data, applicable for card transactions.
-     */
     @JsonProperty("emv_auth_response_data")
     public Optional<String> getEmvAuthResponseData() {
         return emvAuthResponseData;
@@ -161,6 +154,16 @@ public final class QueryResponseData {
         return responsetext;
     }
 
+    @JsonProperty("resultCode")
+    public Optional<String> getResultCode() {
+        return resultCode;
+    }
+
+    @JsonProperty("resultCodeText")
+    public Optional<String> getResultCodeText() {
+        return resultCodeText;
+    }
+
     /**
      * @return The transaction identifier in Payabli.
      */
@@ -200,6 +203,8 @@ public final class QueryResponseData {
                 && responseCode.equals(other.responseCode)
                 && responseCodeText.equals(other.responseCodeText)
                 && responsetext.equals(other.responsetext)
+                && resultCode.equals(other.resultCode)
+                && resultCodeText.equals(other.resultCodeText)
                 && transactionid.equals(other.transactionid)
                 && type.equals(other.type);
     }
@@ -218,6 +223,8 @@ public final class QueryResponseData {
                 this.responseCode,
                 this.responseCodeText,
                 this.responsetext,
+                this.resultCode,
+                this.resultCodeText,
                 this.transactionid,
                 this.type);
     }
@@ -255,6 +262,10 @@ public final class QueryResponseData {
 
         private Optional<String> responsetext = Optional.empty();
 
+        private Optional<String> resultCode = Optional.empty();
+
+        private Optional<String> resultCodeText = Optional.empty();
+
         private Optional<String> transactionid = Optional.empty();
 
         private Optional<String> type = Optional.empty();
@@ -276,6 +287,8 @@ public final class QueryResponseData {
             responseCode(other.getResponseCode());
             responseCodeText(other.getResponseCodeText());
             responsetext(other.getResponsetext());
+            resultCode(other.getResultCode());
+            resultCodeText(other.getResultCodeText());
             transactionid(other.getTransactionid());
             type(other.getType());
             return this;
@@ -292,9 +305,6 @@ public final class QueryResponseData {
             return this;
         }
 
-        /**
-         * <p>Text code describing the result for address validation (applies only for card transactions).</p>
-         */
         @JsonSetter(value = "avsresponse", nulls = Nulls.SKIP)
         public Builder avsresponse(Optional<String> avsresponse) {
             this.avsresponse = avsresponse;
@@ -306,9 +316,6 @@ public final class QueryResponseData {
             return this;
         }
 
-        /**
-         * <p>Text code describing the result for address validation (applies only for card transactions).</p>
-         */
         @JsonSetter(value = "avsresponse_text", nulls = Nulls.SKIP)
         public Builder avsresponseText(Optional<String> avsresponseText) {
             this.avsresponseText = avsresponseText;
@@ -320,9 +327,6 @@ public final class QueryResponseData {
             return this;
         }
 
-        /**
-         * <p>Text code describing the result for CVV validation (applies only for card transactions).</p>
-         */
         @JsonSetter(value = "cvvresponse", nulls = Nulls.SKIP)
         public Builder cvvresponse(Optional<String> cvvresponse) {
             this.cvvresponse = cvvresponse;
@@ -334,9 +338,6 @@ public final class QueryResponseData {
             return this;
         }
 
-        /**
-         * <p>Text code describing the result for CVV validation (applies only for card transactions).</p>
-         */
         @JsonSetter(value = "cvvresponse_text", nulls = Nulls.SKIP)
         public Builder cvvresponseText(Optional<String> cvvresponseText) {
             this.cvvresponseText = cvvresponseText;
@@ -348,9 +349,6 @@ public final class QueryResponseData {
             return this;
         }
 
-        /**
-         * <p>EMV authorization response data, applicable for card transactions.</p>
-         */
         @JsonSetter(value = "emv_auth_response_data", nulls = Nulls.SKIP)
         public Builder emvAuthResponseData(Optional<String> emvAuthResponseData) {
             this.emvAuthResponseData = emvAuthResponseData;
@@ -429,6 +427,28 @@ public final class QueryResponseData {
             return this;
         }
 
+        @JsonSetter(value = "resultCode", nulls = Nulls.SKIP)
+        public Builder resultCode(Optional<String> resultCode) {
+            this.resultCode = resultCode;
+            return this;
+        }
+
+        public Builder resultCode(String resultCode) {
+            this.resultCode = Optional.ofNullable(resultCode);
+            return this;
+        }
+
+        @JsonSetter(value = "resultCodeText", nulls = Nulls.SKIP)
+        public Builder resultCodeText(Optional<String> resultCodeText) {
+            this.resultCodeText = resultCodeText;
+            return this;
+        }
+
+        public Builder resultCodeText(String resultCodeText) {
+            this.resultCodeText = Optional.ofNullable(resultCodeText);
+            return this;
+        }
+
         /**
          * <p>The transaction identifier in Payabli.</p>
          */
@@ -470,6 +490,8 @@ public final class QueryResponseData {
                     responseCode,
                     responseCodeText,
                     responsetext,
+                    resultCode,
+                    resultCodeText,
                     transactionid,
                     type,
                     additionalProperties);

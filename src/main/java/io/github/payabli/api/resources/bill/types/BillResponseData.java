@@ -237,6 +237,9 @@ public final class BillResponseData {
         return dueDate;
     }
 
+    /**
+     * @return Comments associated with the bill. For managed payables, the character limit is 200. For on demand payouts, the characters limit is 250.
+     */
     @JsonProperty("Comments")
     public Optional<String> getComments() {
         return comments;
@@ -739,6 +742,9 @@ public final class BillResponseData {
             return this;
         }
 
+        /**
+         * <p>Comments associated with the bill. For managed payables, the character limit is 200. For on demand payouts, the characters limit is 250.</p>
+         */
         @JsonSetter(value = "Comments", nulls = Nulls.SKIP)
         public Builder comments(Optional<String> comments) {
             this.comments = comments;

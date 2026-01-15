@@ -134,6 +134,8 @@ public final class ApplicationDataPayIn {
 
     private final Optional<String> repOffice;
 
+    private final Optional<String> onCreate;
+
     private final Map<String, Object> additionalProperties;
 
     private ApplicationDataPayIn(
@@ -193,6 +195,7 @@ public final class ApplicationDataPayIn {
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
+            Optional<String> onCreate,
             Map<String, Object> additionalProperties) {
         this.services = services;
         this.annualRevenue = annualRevenue;
@@ -250,6 +253,7 @@ public final class ApplicationDataPayIn {
         this.repCode = repCode;
         this.repName = repName;
         this.repOffice = repOffice;
+        this.onCreate = onCreate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -563,6 +567,11 @@ public final class ApplicationDataPayIn {
         return repOffice;
     }
 
+    @JsonProperty("onCreate")
+    public Optional<String> getOnCreate() {
+        return onCreate;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -630,7 +639,8 @@ public final class ApplicationDataPayIn {
                 && additionalData.equals(other.additionalData)
                 && repCode.equals(other.repCode)
                 && repName.equals(other.repName)
-                && repOffice.equals(other.repOffice);
+                && repOffice.equals(other.repOffice)
+                && onCreate.equals(other.onCreate);
     }
 
     @java.lang.Override
@@ -691,7 +701,8 @@ public final class ApplicationDataPayIn {
                 this.additionalData,
                 this.repCode,
                 this.repName,
-                this.repOffice);
+                this.repOffice,
+                this.onCreate);
     }
 
     @java.lang.Override
@@ -961,6 +972,10 @@ public final class ApplicationDataPayIn {
         _FinalStage repOffice(Optional<String> repOffice);
 
         _FinalStage repOffice(String repOffice);
+
+        _FinalStage onCreate(Optional<String> onCreate);
+
+        _FinalStage onCreate(String onCreate);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -992,6 +1007,8 @@ public final class ApplicationDataPayIn {
         private Whenprovided whenProvided;
 
         private Whenrefunded whenRefunded;
+
+        private Optional<String> onCreate = Optional.empty();
 
         private Optional<String> repOffice = Optional.empty();
 
@@ -1150,6 +1167,7 @@ public final class ApplicationDataPayIn {
             repCode(other.getRepCode());
             repName(other.getRepName());
             repOffice(other.getRepOffice());
+            onCreate(other.getOnCreate());
             return this;
         }
 
@@ -1223,6 +1241,19 @@ public final class ApplicationDataPayIn {
         @JsonSetter("whenRefunded")
         public _FinalStage whenRefunded(@NotNull Whenrefunded whenRefunded) {
             this.whenRefunded = Objects.requireNonNull(whenRefunded, "whenRefunded must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage onCreate(String onCreate) {
+            this.onCreate = Optional.ofNullable(onCreate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "onCreate", nulls = Nulls.SKIP)
+        public _FinalStage onCreate(Optional<String> onCreate) {
+            this.onCreate = onCreate;
             return this;
         }
 
@@ -1952,6 +1983,7 @@ public final class ApplicationDataPayIn {
                     repCode,
                     repName,
                     repOffice,
+                    onCreate,
                     additionalProperties);
         }
     }

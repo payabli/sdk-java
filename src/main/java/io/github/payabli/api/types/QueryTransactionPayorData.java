@@ -63,7 +63,7 @@ public final class QueryTransactionPayorData {
 
     private final Optional<Integer> customerStatus;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Map<String, Object> additionalProperties;
 
@@ -89,7 +89,7 @@ public final class QueryTransactionPayorData {
             Optional<String> shippingCountry,
             Optional<Long> customerId,
             Optional<Integer> customerStatus,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Map<String, Object> additionalProperties) {
         this.identifiers = identifiers;
         this.firstName = firstName;
@@ -258,7 +258,7 @@ public final class QueryTransactionPayorData {
     }
 
     @JsonProperty("AdditionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -378,7 +378,7 @@ public final class QueryTransactionPayorData {
 
         private Optional<Integer> customerStatus = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -679,12 +679,12 @@ public final class QueryTransactionPayorData {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
