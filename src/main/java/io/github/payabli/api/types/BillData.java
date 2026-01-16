@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BillData.Builder.class)
 public final class BillData {
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<List<FileContent>> attachments;
 
@@ -88,7 +88,7 @@ public final class BillData {
     private final Map<String, Object> additionalProperties;
 
     private BillData(
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<List<FileContent>> attachments,
             Optional<String> company,
             Optional<Double> discount,
@@ -157,7 +157,7 @@ public final class BillData {
     }
 
     @JsonProperty("AdditionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -446,7 +446,7 @@ public final class BillData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<List<FileContent>> attachments = Optional.empty();
 
@@ -552,12 +552,12 @@ public final class BillData {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
