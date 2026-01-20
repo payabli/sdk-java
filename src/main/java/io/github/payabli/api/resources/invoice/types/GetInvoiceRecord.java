@@ -123,7 +123,7 @@ public final class GetInvoiceRecord {
 
     private final String parentOrgName;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final DocumentsRef documentsRef;
 
@@ -177,7 +177,7 @@ public final class GetInvoiceRecord {
             String paypointDbaname,
             String paypointEntryname,
             String parentOrgName,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             DocumentsRef documentsRef,
             Optional<String> externalPaypointId,
             Map<String, Object> additionalProperties) {
@@ -473,7 +473,7 @@ public final class GetInvoiceRecord {
     }
 
     @JsonProperty("AdditionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -827,9 +827,9 @@ public final class GetInvoiceRecord {
 
         _FinalStage billEvents(List<GeneralEvents> billEvents);
 
-        _FinalStage additionalData(Optional<String> additionalData);
+        _FinalStage additionalData(Optional<Map<String, String>> additionalData);
 
-        _FinalStage additionalData(String additionalData);
+        _FinalStage additionalData(Map<String, String> additionalData);
 
         _FinalStage externalPaypointId(Optional<String> externalPaypointId);
 
@@ -931,7 +931,7 @@ public final class GetInvoiceRecord {
 
         private Optional<String> externalPaypointId = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<List<GeneralEvents>> billEvents = Optional.empty();
 
@@ -1248,14 +1248,14 @@ public final class GetInvoiceRecord {
         }
 
         @java.lang.Override
-        public _FinalStage additionalData(String additionalData) {
+        public _FinalStage additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public _FinalStage additionalData(Optional<String> additionalData) {
+        public _FinalStage additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
