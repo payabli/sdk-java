@@ -44,6 +44,23 @@ public class HostedPaymentPagesClient {
      * Creates a new payment page for a paypoint.
      * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
      */
+    public PayabliApiResponse00Responsedatanonobject newPage(String entry, PayabliPages body) {
+        return this.rawClient.newPage(entry, body).body();
+    }
+
+    /**
+     * Creates a new payment page for a paypoint.
+     * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+     */
+    public PayabliApiResponse00Responsedatanonobject newPage(
+            String entry, PayabliPages body, RequestOptions requestOptions) {
+        return this.rawClient.newPage(entry, body, requestOptions).body();
+    }
+
+    /**
+     * Creates a new payment page for a paypoint.
+     * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+     */
     public PayabliApiResponse00Responsedatanonobject newPage(String entry, NewPageRequest request) {
         return this.rawClient.newPage(entry, request).body();
     }
@@ -62,6 +79,14 @@ public class HostedPaymentPagesClient {
      */
     public PayabliApiResponse00Responsedatanonobject savePage(String entry, String subdomain) {
         return this.rawClient.savePage(entry, subdomain).body();
+    }
+
+    /**
+     * Updates a payment page in a paypoint.
+     */
+    public PayabliApiResponse00Responsedatanonobject savePage(
+            String entry, String subdomain, RequestOptions requestOptions) {
+        return this.rawClient.savePage(entry, subdomain, requestOptions).body();
     }
 
     /**

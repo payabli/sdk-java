@@ -89,6 +89,13 @@ public class BoardingClient {
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
+    public ApplicationQueryRecord getApplicationByAuth(String xId, RequestOptions requestOptions) {
+        return this.rawClient.getApplicationByAuth(xId, requestOptions).body();
+    }
+
+    /**
+     * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
+     */
     public ApplicationQueryRecord getApplicationByAuth(String xId, RequestAppByAuth request) {
         return this.rawClient.getApplicationByAuth(xId, request).body();
     }
@@ -143,6 +150,15 @@ public class BoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
+    public PayabliApiResponse00 getExternalApplication(int appId, String mail2, RequestOptions requestOptions) {
+        return this.rawClient
+                .getExternalApplication(appId, mail2, requestOptions)
+                .body();
+    }
+
+    /**
+     * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
+     */
     public PayabliApiResponse00 getExternalApplication(int appId, String mail2, GetExternalApplicationRequest request) {
         return this.rawClient.getExternalApplication(appId, mail2, request).body();
     }
@@ -183,6 +199,13 @@ public class BoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public QueryBoardingAppsListResponse listApplications(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listApplications(orgId, requestOptions).body();
+    }
+
+    /**
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public QueryBoardingAppsListResponse listApplications(int orgId, ListApplicationsRequest request) {
         return this.rawClient.listApplications(orgId, request).body();
     }
@@ -205,6 +228,13 @@ public class BoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
+    public QueryBoardingLinksResponse listBoardingLinks(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listBoardingLinks(orgId, requestOptions).body();
+    }
+
+    /**
+     * Return a list of boarding links for an organization. Use filters to limit results.
+     */
     public QueryBoardingLinksResponse listBoardingLinks(int orgId, ListBoardingLinksRequest request) {
         return this.rawClient.listBoardingLinks(orgId, request).body();
     }
@@ -222,6 +252,13 @@ public class BoardingClient {
      */
     public PayabliApiResponse00Responsedatanonobject updateApplication(int appId) {
         return this.rawClient.updateApplication(appId).body();
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, RequestOptions requestOptions) {
+        return this.rawClient.updateApplication(appId, requestOptions).body();
     }
 
     /**

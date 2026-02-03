@@ -40,6 +40,13 @@ public class WalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli organization
      */
+    public ConfigureApplePayOrganizationApiResponse configureApplePayOrganization(RequestOptions requestOptions) {
+        return this.rawClient.configureApplePayOrganization(requestOptions).body();
+    }
+
+    /**
+     * Configure and activate Apple Pay for a Payabli organization
+     */
     public ConfigureApplePayOrganizationApiResponse configureApplePayOrganization(
             ConfigureOrganizationRequestApplePay request) {
         return this.rawClient.configureApplePayOrganization(request).body();
@@ -60,6 +67,13 @@ public class WalletClient {
      */
     public ConfigureApplePaypointApiResponse configureApplePayPaypoint() {
         return this.rawClient.configureApplePayPaypoint().body();
+    }
+
+    /**
+     * Configure and activate Apple Pay for a Payabli paypoint
+     */
+    public ConfigureApplePaypointApiResponse configureApplePayPaypoint(RequestOptions requestOptions) {
+        return this.rawClient.configureApplePayPaypoint(requestOptions).body();
     }
 
     /**
@@ -87,6 +101,13 @@ public class WalletClient {
     /**
      * Configure and activate Google Pay for a Payabli organization
      */
+    public ConfigureApplePayOrganizationApiResponse configureGooglePayOrganization(RequestOptions requestOptions) {
+        return this.rawClient.configureGooglePayOrganization(requestOptions).body();
+    }
+
+    /**
+     * Configure and activate Google Pay for a Payabli organization
+     */
     public ConfigureApplePayOrganizationApiResponse configureGooglePayOrganization(
             ConfigureOrganizationRequestGooglePay request) {
         return this.rawClient.configureGooglePayOrganization(request).body();
@@ -107,6 +128,13 @@ public class WalletClient {
      */
     public ConfigureGooglePaypointApiResponse configureGooglePayPaypoint() {
         return this.rawClient.configureGooglePayPaypoint().body();
+    }
+
+    /**
+     * Configure and activate Google Pay for a Payabli paypoint
+     */
+    public ConfigureGooglePaypointApiResponse configureGooglePayPaypoint(RequestOptions requestOptions) {
+        return this.rawClient.configureGooglePayPaypoint(requestOptions).body();
     }
 
     /**

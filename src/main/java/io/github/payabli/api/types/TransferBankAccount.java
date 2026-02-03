@@ -23,11 +23,15 @@ public final class TransferBankAccount {
 
     private final String routingNumber;
 
+    private final String bankName;
+
     private final Map<String, Object> additionalProperties;
 
-    private TransferBankAccount(String accountNumber, String routingNumber, Map<String, Object> additionalProperties) {
+    private TransferBankAccount(
+            String accountNumber, String routingNumber, String bankName, Map<String, Object> additionalProperties) {
         this.accountNumber = accountNumber;
         this.routingNumber = routingNumber;
+        this.bankName = bankName;
         this.additionalProperties = additionalProperties;
     }
 
@@ -39,6 +43,11 @@ public final class TransferBankAccount {
     @JsonProperty("routingNumber")
     public String getRoutingNumber() {
         return routingNumber;
+    }
+
+    @JsonProperty("bankName")
+    public String getBankName() {
+        return bankName;
     }
 
     @java.lang.Override
@@ -53,12 +62,14 @@ public final class TransferBankAccount {
     }
 
     private boolean equalTo(TransferBankAccount other) {
-        return accountNumber.equals(other.accountNumber) && routingNumber.equals(other.routingNumber);
+        return accountNumber.equals(other.accountNumber)
+                && routingNumber.equals(other.routingNumber)
+                && bankName.equals(other.bankName);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.accountNumber, this.routingNumber);
+        return Objects.hash(this.accountNumber, this.routingNumber, this.bankName);
     }
 
     @java.lang.Override
@@ -77,7 +88,11 @@ public final class TransferBankAccount {
     }
 
     public interface RoutingNumberStage {
-        _FinalStage routingNumber(@NotNull String routingNumber);
+        BankNameStage routingNumber(@NotNull String routingNumber);
+    }
+
+    public interface BankNameStage {
+        _FinalStage bankName(@NotNull String bankName);
     }
 
     public interface _FinalStage {
@@ -85,10 +100,12 @@ public final class TransferBankAccount {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements AccountNumberStage, RoutingNumberStage, _FinalStage {
+    public static final class Builder implements AccountNumberStage, RoutingNumberStage, BankNameStage, _FinalStage {
         private String accountNumber;
 
         private String routingNumber;
+
+        private String bankName;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -99,6 +116,7 @@ public final class TransferBankAccount {
         public Builder from(TransferBankAccount other) {
             accountNumber(other.getAccountNumber());
             routingNumber(other.getRoutingNumber());
+            bankName(other.getBankName());
             return this;
         }
 
@@ -111,14 +129,21 @@ public final class TransferBankAccount {
 
         @java.lang.Override
         @JsonSetter("routingNumber")
-        public _FinalStage routingNumber(@NotNull String routingNumber) {
+        public BankNameStage routingNumber(@NotNull String routingNumber) {
             this.routingNumber = Objects.requireNonNull(routingNumber, "routingNumber must not be null");
             return this;
         }
 
         @java.lang.Override
+        @JsonSetter("bankName")
+        public _FinalStage bankName(@NotNull String bankName) {
+            this.bankName = Objects.requireNonNull(bankName, "bankName must not be null");
+            return this;
+        }
+
+        @java.lang.Override
         public TransferBankAccount build() {
-            return new TransferBankAccount(accountNumber, routingNumber, additionalProperties);
+            return new TransferBankAccount(accountNumber, routingNumber, bankName, additionalProperties);
         }
     }
 }

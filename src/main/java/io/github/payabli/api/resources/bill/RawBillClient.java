@@ -52,6 +52,20 @@ public class RawBillClient {
     /**
      * Creates a bill in an entrypoint.
      */
+    public PayabliApiHttpResponse<BillResponse> addBill(String entry, BillOutData body) {
+        return addBill(entry, AddBillRequest.builder().body(body).build());
+    }
+
+    /**
+     * Creates a bill in an entrypoint.
+     */
+    public PayabliApiHttpResponse<BillResponse> addBill(String entry, BillOutData body, RequestOptions requestOptions) {
+        return addBill(entry, AddBillRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Creates a bill in an entrypoint.
+     */
     public PayabliApiHttpResponse<BillResponse> addBill(String entry, AddBillRequest request) {
         return addBill(entry, request, null);
     }
@@ -61,11 +75,15 @@ public class RawBillClient {
      */
     public PayabliApiHttpResponse<BillResponse> addBill(
             String entry, AddBillRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill/single")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -74,7 +92,7 @@ public class RawBillClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -134,6 +152,15 @@ public class RawBillClient {
      * Delete a file attached to a bill.
      */
     public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, RequestOptions requestOptions) {
+        return deleteAttachedFromBill(
+                idBill, filename, DeleteAttachedFromBillRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
             int idBill, String filename, DeleteAttachedFromBillRequest request) {
         return deleteAttachedFromBill(idBill, filename, request, null);
     }
@@ -151,6 +178,11 @@ public class RawBillClient {
         if (request.getReturnObject().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "returnObject", request.getReturnObject().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -207,13 +239,17 @@ public class RawBillClient {
      * Deletes a bill by ID.
      */
     public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
-                .addPathSegment(Integer.toString(idBill))
-                .build();
+                .addPathSegment(Integer.toString(idBill));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -266,6 +302,13 @@ public class RawBillClient {
     /**
      * Updates a bill by ID.
      */
+    public PayabliApiHttpResponse<EditBillResponse> editBill(int idBill, RequestOptions requestOptions) {
+        return editBill(idBill, BillOutData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a bill by ID.
+     */
     public PayabliApiHttpResponse<EditBillResponse> editBill(int idBill, BillOutData request) {
         return editBill(idBill, request, null);
     }
@@ -275,11 +318,15 @@ public class RawBillClient {
      */
     public PayabliApiHttpResponse<EditBillResponse> editBill(
             int idBill, BillOutData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
-                .addPathSegment(Integer.toString(idBill))
-                .build();
+                .addPathSegment(Integer.toString(idBill));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -288,7 +335,7 @@ public class RawBillClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -344,6 +391,15 @@ public class RawBillClient {
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
     public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
+            int idBill, String filename, RequestOptions requestOptions) {
+        return getAttachedFromBill(
+                idBill, filename, GetAttachedFromBillRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
+     */
+    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
             int idBill, String filename, GetAttachedFromBillRequest request) {
         return getAttachedFromBill(idBill, filename, request, null);
     }
@@ -361,6 +417,11 @@ public class RawBillClient {
         if (request.getReturnObject().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "returnObject", request.getReturnObject().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -417,13 +478,17 @@ public class RawBillClient {
      * Retrieves a bill by ID from an entrypoint.
      */
     public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
-                .addPathSegment(Integer.toString(idBill))
-                .build();
+                .addPathSegment(Integer.toString(idBill));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -476,6 +541,13 @@ public class RawBillClient {
     /**
      * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry, RequestOptions requestOptions) {
+        return listBills(entry, ListBillsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry, ListBillsRequest request) {
         return listBills(entry, request, null);
     }
@@ -508,6 +580,11 @@ public class RawBillClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -563,6 +640,13 @@ public class RawBillClient {
     /**
      * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId, RequestOptions requestOptions) {
+        return listBillsOrg(orgId, ListBillsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId, ListBillsOrgRequest request) {
         return listBillsOrg(orgId, request, null);
     }
@@ -595,6 +679,11 @@ public class RawBillClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -652,11 +741,15 @@ public class RawBillClient {
      */
     public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(
             int idBill, List<String> request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill/approval")
-                .addPathSegment(Integer.toString(idBill))
-                .build();
+                .addPathSegment(Integer.toString(idBill));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -665,7 +758,7 @@ public class RawBillClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -713,6 +806,23 @@ public class RawBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
+        return sendToApprovalBill(
+                idBill, SendToApprovalBillRequest.builder().body(body).build());
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
+            int idBill, List<String> body, RequestOptions requestOptions) {
+        return sendToApprovalBill(
+                idBill, SendToApprovalBillRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
     public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
         return sendToApprovalBill(idBill, request, null);
     }
@@ -729,6 +839,11 @@ public class RawBillClient {
         if (request.getAutocreateUser().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "autocreateUser", request.getAutocreateUser().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -798,6 +913,15 @@ public class RawBillClient {
      * Approve or disapprove a bill by ID.
      */
     public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, RequestOptions requestOptions) {
+        return setApprovedBill(
+                idBill, approved, SetApprovedBillRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
             int idBill, String approved, SetApprovedBillRequest request) {
         return setApprovedBill(idBill, approved, request, null);
     }
@@ -815,6 +939,11 @@ public class RawBillClient {
         if (request.getEmail().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "email", request.getEmail().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

@@ -50,6 +50,13 @@ public class UserClient {
     /**
      * Use this endpoint to add a new user to an organization.
      */
+    public AddUserResponse addUser(RequestOptions requestOptions) {
+        return this.rawClient.addUser(requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public AddUserResponse addUser(UserData request) {
         return this.rawClient.addUser(request).body();
     }
@@ -85,6 +92,13 @@ public class UserClient {
     /**
      * Use this endpoint to initiate a password reset for a user within an organization.
      */
+    public AuthResetUserResponse authResetUser(RequestOptions requestOptions) {
+        return this.rawClient.authResetUser(requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
     public AuthResetUserResponse authResetUser(UserAuthResetRequest request) {
         return this.rawClient.authResetUser(request).body();
     }
@@ -101,6 +115,13 @@ public class UserClient {
      */
     public PayabliApiResponseMfaBasic authUser(String provider) {
         return this.rawClient.authUser(provider).body();
+    }
+
+    /**
+     * This endpoint requires an application API token.
+     */
+    public PayabliApiResponseMfaBasic authUser(String provider, RequestOptions requestOptions) {
+        return this.rawClient.authUser(provider, requestOptions).body();
     }
 
     /**
@@ -123,6 +144,13 @@ public class UserClient {
      */
     public ChangePswUserResponse changePswUser() {
         return this.rawClient.changePswUser().body();
+    }
+
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
+    public ChangePswUserResponse changePswUser(RequestOptions requestOptions) {
+        return this.rawClient.changePswUser(requestOptions).body();
     }
 
     /**
@@ -163,6 +191,13 @@ public class UserClient {
     /**
      * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
      */
+    public EditMfaUserResponse editMfaUser(long userId, RequestOptions requestOptions) {
+        return this.rawClient.editMfaUser(userId, requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public EditMfaUserResponse editMfaUser(long userId, MfaData request) {
         return this.rawClient.editMfaUser(userId, request).body();
     }
@@ -184,6 +219,13 @@ public class UserClient {
     /**
      * Use this endpoint to modify the details of a specific user within an organization.
      */
+    public PayabliApiResponse editUser(long userId, RequestOptions requestOptions) {
+        return this.rawClient.editUser(userId, requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public PayabliApiResponse editUser(long userId, UserData request) {
         return this.rawClient.editUser(userId, request).body();
     }
@@ -200,6 +242,13 @@ public class UserClient {
      */
     public UserQueryRecord getUser(long userId) {
         return this.rawClient.getUser(userId).body();
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public UserQueryRecord getUser(long userId, RequestOptions requestOptions) {
+        return this.rawClient.getUser(userId, requestOptions).body();
     }
 
     /**
@@ -252,6 +301,13 @@ public class UserClient {
      */
     public PayabliApiResponseUserMfa validateMfaUser() {
         return this.rawClient.validateMfaUser().body();
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public PayabliApiResponseUserMfa validateMfaUser(RequestOptions requestOptions) {
+        return this.rawClient.validateMfaUser(requestOptions).body();
     }
 
     /**

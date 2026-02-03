@@ -20,6 +20,7 @@ import io.github.payabli.api.resources.subscription.requests.RequestSchedule;
 import io.github.payabli.api.resources.subscription.requests.RequestUpdateSchedule;
 import io.github.payabli.api.resources.subscription.types.AddSubscriptionResponse;
 import io.github.payabli.api.resources.subscription.types.RemoveSubscriptionResponse;
+import io.github.payabli.api.resources.subscription.types.SubscriptionRequestBody;
 import io.github.payabli.api.resources.subscription.types.UpdateSubscriptionResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.SubscriptionQueryRecords;
@@ -55,13 +56,17 @@ public class AsyncRawSubscriptionClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<SubscriptionQueryRecords>> getSubscription(
             int subId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Subscription")
-                .addPathSegment(Integer.toString(subId))
-                .build();
+                .addPathSegment(Integer.toString(subId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -129,6 +134,22 @@ public class AsyncRawSubscriptionClient {
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency.
      */
+    public CompletableFuture<PayabliApiHttpResponse<AddSubscriptionResponse>> newSubscription(
+            SubscriptionRequestBody body) {
+        return newSubscription(RequestSchedule.builder().body(body).build());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AddSubscriptionResponse>> newSubscription(
+            SubscriptionRequestBody body, RequestOptions requestOptions) {
+        return newSubscription(RequestSchedule.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency.
+     */
     public CompletableFuture<PayabliApiHttpResponse<AddSubscriptionResponse>> newSubscription(RequestSchedule request) {
         return newSubscription(request, null);
     }
@@ -147,6 +168,11 @@ public class AsyncRawSubscriptionClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -238,13 +264,17 @@ public class AsyncRawSubscriptionClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<RemoveSubscriptionResponse>> removeSubscription(
             int subId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Subscription")
-                .addPathSegment(Integer.toString(subId))
-                .build();
+                .addPathSegment(Integer.toString(subId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -321,6 +351,14 @@ public class AsyncRawSubscriptionClient {
      * Updates a subscription's details.
      */
     public CompletableFuture<PayabliApiHttpResponse<UpdateSubscriptionResponse>> updateSubscription(
+            int subId, RequestOptions requestOptions) {
+        return updateSubscription(subId, RequestUpdateSchedule.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a subscription's details.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<UpdateSubscriptionResponse>> updateSubscription(
             int subId, RequestUpdateSchedule request) {
         return updateSubscription(subId, request, null);
     }
@@ -330,11 +368,15 @@ public class AsyncRawSubscriptionClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<UpdateSubscriptionResponse>> updateSubscription(
             int subId, RequestUpdateSchedule request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Subscription")
-                .addPathSegment(Integer.toString(subId))
-                .build();
+                .addPathSegment(Integer.toString(subId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -343,7 +385,7 @@ public class AsyncRawSubscriptionClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

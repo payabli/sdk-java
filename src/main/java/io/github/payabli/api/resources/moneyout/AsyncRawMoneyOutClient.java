@@ -21,6 +21,7 @@ import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
+import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
 import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
 import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
@@ -46,6 +47,23 @@ public class AsyncRawMoneyOutClient {
 
     public AsyncRawMoneyOutClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(AuthorizePayoutBody body) {
+        return authorizeOut(
+                MoneyOutTypesRequestOutAuthorize.builder().body(body).build());
+    }
+
+    /**
+     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(
+            AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return authorizeOut(
+                MoneyOutTypesRequestOutAuthorize.builder().body(body).build(), requestOptions);
     }
 
     /**
@@ -81,6 +99,11 @@ public class AsyncRawMoneyOutClient {
                     "forceVendorCreation",
                     request.getForceVendorCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -173,10 +196,14 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureAllOutResponse>> cancelAllOut(
             List<String> request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("MoneyOut/cancelAll")
-                .build();
+                .addPathSegments("MoneyOut/cancelAll");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -185,7 +212,7 @@ public class AsyncRawMoneyOutClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -263,13 +290,17 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse0000>> cancelOutGet(
             String referenceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/cancel")
-                .addPathSegment(referenceId)
-                .build();
+                .addPathSegment(referenceId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -346,13 +377,17 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse0000>> cancelOutDelete(
             String referenceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/cancel")
-                .addPathSegment(referenceId)
-                .build();
+                .addPathSegment(referenceId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -420,6 +455,21 @@ public class AsyncRawMoneyOutClient {
     /**
      * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
      */
+    public CompletableFuture<PayabliApiHttpResponse<CaptureAllOutResponse>> captureAllOut(List<String> body) {
+        return captureAllOut(CaptureAllOutRequest.builder().body(body).build());
+    }
+
+    /**
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<CaptureAllOutResponse>> captureAllOut(
+            List<String> body, RequestOptions requestOptions) {
+        return captureAllOut(CaptureAllOutRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+     */
     public CompletableFuture<PayabliApiHttpResponse<CaptureAllOutResponse>> captureAllOut(
             CaptureAllOutRequest request) {
         return captureAllOut(request, null);
@@ -430,10 +480,14 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureAllOutResponse>> captureAllOut(
             CaptureAllOutRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("MoneyOut/captureAll")
-                .build();
+                .addPathSegments("MoneyOut/captureAll");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -442,7 +496,7 @@ public class AsyncRawMoneyOutClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -523,6 +577,14 @@ public class AsyncRawMoneyOutClient {
      * Captures a single authorized payout transaction by ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
+            String referenceId, RequestOptions requestOptions) {
+        return captureOut(referenceId, CaptureOutRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Captures a single authorized payout transaction by ID.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, CaptureOutRequest request) {
         return captureOut(referenceId, request, null);
     }
@@ -532,13 +594,17 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, CaptureOutRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/capture")
-                .addPathSegment(referenceId)
-                .build();
+                .addPathSegment(referenceId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
@@ -620,13 +686,17 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<BillDetailResponse>> payoutDetails(
             String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/details")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -703,13 +773,17 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<VCardGetResponse>> vCardGet(
             String cardToken, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/vcard")
-                .addPathSegment(cardToken)
-                .build();
+                .addPathSegment(cardToken);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -786,10 +860,14 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<OperationResult>> sendVCardLink(
             SendVCardLinkRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("vcard/send-card-link")
-                .build();
+                .addPathSegments("vcard/send-card-link");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -798,7 +876,7 @@ public class AsyncRawMoneyOutClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -880,13 +958,17 @@ public class AsyncRawMoneyOutClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<String>> getCheckImage(
             String assetName, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/checkimage")
-                .addPathSegment(assetName)
-                .build();
+                .addPathSegment(assetName);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

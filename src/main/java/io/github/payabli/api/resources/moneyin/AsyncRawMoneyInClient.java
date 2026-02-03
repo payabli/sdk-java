@@ -32,6 +32,7 @@ import io.github.payabli.api.resources.moneyin.types.ReceiptResponse;
 import io.github.payabli.api.resources.moneyin.types.RefundResponse;
 import io.github.payabli.api.resources.moneyin.types.RefundWithInstructionsResponse;
 import io.github.payabli.api.resources.moneyin.types.ReverseResponse;
+import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
 import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
 import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestAuthResponseErrorV2;
@@ -71,7 +72,30 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(TransRequestBody body) {
+        return authorize(RequestPaymentAuthorize.builder().body(body).build());
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(
+            TransRequestBody body, RequestOptions requestOptions) {
+        return authorize(RequestPaymentAuthorize.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
      * &lt;Tip&gt;
      * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
@@ -82,7 +106,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
      * &lt;Tip&gt;
      * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
@@ -99,6 +123,11 @@ public class AsyncRawMoneyInClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -179,9 +208,9 @@ public class AsyncRawMoneyInClient {
 
     /**
      * <p>&lt;Warning&gt;
-     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
      * &lt;/Warning&gt;</p>
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> capture(String transId, double amount) {
@@ -190,21 +219,25 @@ public class AsyncRawMoneyInClient {
 
     /**
      * <p>&lt;Warning&gt;
-     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
      * &lt;/Warning&gt;</p>
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> capture(
             String transId, double amount, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/capture")
                 .addPathSegment(transId)
-                .addPathSegment(Double.toString(amount))
-                .build();
+                .addPathSegment(Double.toString(amount));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -270,7 +303,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
      * <p>&lt;Tip&gt;
      * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
@@ -282,7 +315,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
      * <p>&lt;Tip&gt;
      * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
@@ -290,11 +323,15 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> captureAuth(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/capture")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -303,7 +340,7 @@ public class AsyncRawMoneyInClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -392,6 +429,11 @@ public class AsyncRawMoneyInClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -483,13 +525,17 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<TransactionQueryRecordsCustomer>> details(
             String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/details")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -561,6 +607,27 @@ public class AsyncRawMoneyInClient {
      *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
      *   &lt;/Tip&gt;</p>
      */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(TransRequestBody body) {
+        return getpaid(RequestPayment.builder().body(body).build());
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(
+            TransRequestBody body, RequestOptions requestOptions) {
+        return getpaid(RequestPayment.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
+     */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(RequestPayment request) {
         return getpaid(request, null);
     }
@@ -590,6 +657,11 @@ public class AsyncRawMoneyInClient {
         if (request.getIncludeDetails().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "includeDetails", request.getIncludeDetails().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -686,14 +758,18 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ReverseResponse>> reverse(
             String transId, double amount, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/reverse")
                 .addPathSegment(transId)
-                .addPathSegment(Double.toString(amount))
-                .build();
+                .addPathSegment(Double.toString(amount));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -776,14 +852,18 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundResponse>> refund(
             String transId, double amount, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/refund")
                 .addPathSegment(transId)
-                .addPathSegment(Double.toString(amount))
-                .build();
+                .addPathSegment(Double.toString(amount));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -860,6 +940,14 @@ public class AsyncRawMoneyInClient {
      * Refunds a settled transaction with split instructions.
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
+            String transId, RequestOptions requestOptions) {
+        return refundWithInstructions(transId, RequestRefund.builder().build(), requestOptions);
+    }
+
+    /**
+     * Refunds a settled transaction with split instructions.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
             String transId, RequestRefund request) {
         return refundWithInstructions(transId, request, null);
     }
@@ -869,11 +957,15 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
             String transId, RequestRefund request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/refund")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -882,7 +974,7 @@ public class AsyncRawMoneyInClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -965,13 +1057,17 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> reverseCredit(
             String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/reverseCredit")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -1047,6 +1143,14 @@ public class AsyncRawMoneyInClient {
      * Send a payment receipt for a transaction.
      */
     public CompletableFuture<PayabliApiHttpResponse<ReceiptResponse>> sendReceipt2Trans(
+            String transId, RequestOptions requestOptions) {
+        return sendReceipt2Trans(transId, SendReceipt2TransRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Send a payment receipt for a transaction.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ReceiptResponse>> sendReceipt2Trans(
             String transId, SendReceipt2TransRequest request) {
         return sendReceipt2Trans(transId, request, null);
     }
@@ -1063,6 +1167,11 @@ public class AsyncRawMoneyInClient {
         if (request.getEmail().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "email", request.getEmail().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1142,10 +1251,14 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ValidateResponse>> validate(
             RequestPaymentValidate request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("MoneyIn/validate")
-                .build();
+                .addPathSegments("MoneyIn/validate");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -1154,7 +1267,7 @@ public class AsyncRawMoneyInClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -1242,13 +1355,17 @@ public class AsyncRawMoneyInClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<VoidResponse>> void_(
             String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/void")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -1313,14 +1430,29 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> getpaidv2(TransRequestBody body) {
+        return getpaidv2(RequestPaymentV2.builder().body(body).build());
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> getpaidv2(
+            TransRequestBody body, RequestOptions requestOptions) {
+        return getpaidv2(RequestPaymentV2.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> getpaidv2(RequestPaymentV2 request) {
         return getpaidv2(request, null);
     }
 
     /**
-     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> getpaidv2(
             RequestPaymentV2 request, RequestOptions requestOptions) {
@@ -1337,6 +1469,11 @@ public class AsyncRawMoneyInClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -1424,7 +1561,24 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> authorizev2(TransRequestBody body) {
+        return authorizev2(RequestPaymentAuthorizeV2.builder().body(body).build());
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> authorizev2(
+            TransRequestBody body, RequestOptions requestOptions) {
+        return authorizev2(RequestPaymentAuthorizeV2.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> authorizev2(
@@ -1433,7 +1587,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> authorizev2(
@@ -1447,6 +1601,11 @@ public class AsyncRawMoneyInClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -1530,7 +1689,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> capturev2(
             String transId, CaptureRequest request) {
@@ -1538,15 +1697,19 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> capturev2(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/capture")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -1555,7 +1718,7 @@ public class AsyncRawMoneyInClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -1626,7 +1789,7 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(String transId) {
         return refundv2(transId, null);
@@ -1634,17 +1797,21 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(
             String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/refund")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -1714,7 +1881,7 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
             String transId, double amount) {
@@ -1723,18 +1890,22 @@ public class AsyncRawMoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
             String transId, double amount, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/refund")
                 .addPathSegment(transId)
-                .addPathSegment(Double.toString(amount))
-                .build();
+                .addPathSegment(Double.toString(amount));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -1803,24 +1974,28 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> voidv2(String transId) {
         return voidv2(transId, null);
     }
 
     /**
-     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> voidv2(
             String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/void")
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

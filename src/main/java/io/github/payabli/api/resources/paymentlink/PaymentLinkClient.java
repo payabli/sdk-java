@@ -13,6 +13,7 @@ import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromId
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
 import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
 import io.github.payabli.api.types.PushPayLinkRequest;
 
 public class PaymentLinkClient {
@@ -35,6 +36,23 @@ public class PaymentLinkClient {
     /**
      * Generates a payment link for an invoice from the invoice ID.
      */
+    public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(int idInvoice, PaymentPageRequestBody body) {
+        return this.rawClient.addPayLinkFromInvoice(idInvoice, body).body();
+    }
+
+    /**
+     * Generates a payment link for an invoice from the invoice ID.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(
+            int idInvoice, PaymentPageRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient
+                .addPayLinkFromInvoice(idInvoice, body, requestOptions)
+                .body();
+    }
+
+    /**
+     * Generates a payment link for an invoice from the invoice ID.
+     */
     public PayabliApiResponsePaymentLinks addPayLinkFromInvoice(int idInvoice, PayLinkDataInvoice request) {
         return this.rawClient.addPayLinkFromInvoice(idInvoice, request).body();
     }
@@ -47,6 +65,21 @@ public class PaymentLinkClient {
         return this.rawClient
                 .addPayLinkFromInvoice(idInvoice, request, requestOptions)
                 .body();
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromBill(int billId, PaymentPageRequestBody body) {
+        return this.rawClient.addPayLinkFromBill(billId, body).body();
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public PayabliApiResponsePaymentLinks addPayLinkFromBill(
+            int billId, PaymentPageRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.addPayLinkFromBill(billId, body, requestOptions).body();
     }
 
     /**
@@ -121,6 +154,13 @@ public class PaymentLinkClient {
     /**
      * Refresh a payment link's content after an update.
      */
+    public PayabliApiResponsePaymentLinks refreshPayLinkFromId(String payLinkId, RequestOptions requestOptions) {
+        return this.rawClient.refreshPayLinkFromId(payLinkId, requestOptions).body();
+    }
+
+    /**
+     * Refresh a payment link's content after an update.
+     */
     public PayabliApiResponsePaymentLinks refreshPayLinkFromId(String payLinkId, RefreshPayLinkFromIdRequest request) {
         return this.rawClient.refreshPayLinkFromId(payLinkId, request).body();
     }
@@ -145,6 +185,13 @@ public class PaymentLinkClient {
     /**
      * Sends a payment link to the specified email addresses.
      */
+    public PayabliApiResponsePaymentLinks sendPayLinkFromId(String payLinkId, RequestOptions requestOptions) {
+        return this.rawClient.sendPayLinkFromId(payLinkId, requestOptions).body();
+    }
+
+    /**
+     * Sends a payment link to the specified email addresses.
+     */
     public PayabliApiResponsePaymentLinks sendPayLinkFromId(String payLinkId, SendPayLinkFromIdRequest request) {
         return this.rawClient.sendPayLinkFromId(payLinkId, request).body();
     }
@@ -164,6 +211,13 @@ public class PaymentLinkClient {
      */
     public PayabliApiResponsePaymentLinks updatePayLinkFromId(String payLinkId) {
         return this.rawClient.updatePayLinkFromId(payLinkId).body();
+    }
+
+    /**
+     * Updates a payment link's details.
+     */
+    public PayabliApiResponsePaymentLinks updatePayLinkFromId(String payLinkId, RequestOptions requestOptions) {
+        return this.rawClient.updatePayLinkFromId(payLinkId, requestOptions).body();
     }
 
     /**

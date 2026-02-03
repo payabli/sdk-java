@@ -13,6 +13,7 @@ import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromId
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
 import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
 import io.github.payabli.api.types.PushPayLinkRequest;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,6 +38,24 @@ public class AsyncPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+            int idInvoice, PaymentPageRequestBody body) {
+        return this.rawClient.addPayLinkFromInvoice(idInvoice, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a payment link for an invoice from the invoice ID.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+            int idInvoice, PaymentPageRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient
+                .addPayLinkFromInvoice(idInvoice, body, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a payment link for an invoice from the invoice ID.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
             int idInvoice, PayLinkDataInvoice request) {
         return this.rawClient.addPayLinkFromInvoice(idInvoice, request).thenApply(response -> response.body());
     }
@@ -49,6 +68,22 @@ public class AsyncPaymentLinkClient {
         return this.rawClient
                 .addPayLinkFromInvoice(idInvoice, request, requestOptions)
                 .thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+            int billId, PaymentPageRequestBody body) {
+        return this.rawClient.addPayLinkFromBill(billId, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+            int billId, PaymentPageRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.addPayLinkFromBill(billId, body, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -127,6 +162,14 @@ public class AsyncPaymentLinkClient {
      * Refresh a payment link's content after an update.
      */
     public CompletableFuture<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
+            String payLinkId, RequestOptions requestOptions) {
+        return this.rawClient.refreshPayLinkFromId(payLinkId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Refresh a payment link's content after an update.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
             String payLinkId, RefreshPayLinkFromIdRequest request) {
         return this.rawClient.refreshPayLinkFromId(payLinkId, request).thenApply(response -> response.body());
     }
@@ -152,6 +195,14 @@ public class AsyncPaymentLinkClient {
      * Sends a payment link to the specified email addresses.
      */
     public CompletableFuture<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
+            String payLinkId, RequestOptions requestOptions) {
+        return this.rawClient.sendPayLinkFromId(payLinkId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Sends a payment link to the specified email addresses.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
             String payLinkId, SendPayLinkFromIdRequest request) {
         return this.rawClient.sendPayLinkFromId(payLinkId, request).thenApply(response -> response.body());
     }
@@ -171,6 +222,14 @@ public class AsyncPaymentLinkClient {
      */
     public CompletableFuture<PayabliApiResponsePaymentLinks> updatePayLinkFromId(String payLinkId) {
         return this.rawClient.updatePayLinkFromId(payLinkId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a payment link's details.
+     */
+    public CompletableFuture<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
+            String payLinkId, RequestOptions requestOptions) {
+        return this.rawClient.updatePayLinkFromId(payLinkId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

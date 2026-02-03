@@ -96,7 +96,7 @@ public final class TransactionDetailResponseData {
     }
 
     /**
-     * @return Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.
+     * @return Unified result code for the transaction. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.
      */
     @JsonProperty("resultCode")
     public Optional<String> getResultCode() {
@@ -104,7 +104,7 @@ public final class TransactionDetailResponseData {
     }
 
     /**
-     * @return Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.
+     * @return Description of the result code. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.
      */
     @JsonProperty("resultCodeText")
     public Optional<String> getResultCodeText() {
@@ -353,14 +353,14 @@ public final class TransactionDetailResponseData {
         TransactionDetailResponseData build();
 
         /**
-         * <p>Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * <p>Unified result code for the transaction. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          */
         _FinalStage resultCode(Optional<String> resultCode);
 
         _FinalStage resultCode(String resultCode);
 
         /**
-         * <p>Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * <p>Description of the result code. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          */
         _FinalStage resultCodeText(Optional<String> resultCodeText);
 
@@ -767,7 +767,7 @@ public final class TransactionDetailResponseData {
         }
 
         /**
-         * <p>Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * <p>Description of the result code. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -777,7 +777,7 @@ public final class TransactionDetailResponseData {
         }
 
         /**
-         * <p>Description of the result code. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * <p>Description of the result code. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "resultCodeText", nulls = Nulls.SKIP)
@@ -787,7 +787,7 @@ public final class TransactionDetailResponseData {
         }
 
         /**
-         * <p>Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * <p>Unified result code for the transaction. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -797,7 +797,7 @@ public final class TransactionDetailResponseData {
         }
 
         /**
-         * <p>Unified result code for the transaction. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes</a> for more information.</p>
+         * <p>Unified result code for the transaction. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "resultCode", nulls = Nulls.SKIP)

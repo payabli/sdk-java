@@ -36,6 +36,13 @@ public class ChargeBacksClient {
     /**
      * Add a response to a chargeback or ACH return.
      */
+    public AddResponseResponse addResponse(long id, RequestOptions requestOptions) {
+        return this.rawClient.addResponse(id, requestOptions).body();
+    }
+
+    /**
+     * Add a response to a chargeback or ACH return.
+     */
     public AddResponseResponse addResponse(long id, ResponseChargeBack request) {
         return this.rawClient.addResponse(id, request).body();
     }

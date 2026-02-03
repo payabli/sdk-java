@@ -10,6 +10,7 @@ import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
+import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
 import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
 import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
@@ -33,6 +34,21 @@ public class AsyncMoneyOutClient {
      */
     public AsyncRawMoneyOutClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     */
+    public CompletableFuture<AuthCapturePayoutResponse> authorizeOut(AuthorizePayoutBody body) {
+        return this.rawClient.authorizeOut(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     */
+    public CompletableFuture<AuthCapturePayoutResponse> authorizeOut(
+            AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return this.rawClient.authorizeOut(body, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -96,6 +112,20 @@ public class AsyncMoneyOutClient {
     /**
      * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
      */
+    public CompletableFuture<CaptureAllOutResponse> captureAllOut(List<String> body) {
+        return this.rawClient.captureAllOut(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+     */
+    public CompletableFuture<CaptureAllOutResponse> captureAllOut(List<String> body, RequestOptions requestOptions) {
+        return this.rawClient.captureAllOut(body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+     */
     public CompletableFuture<CaptureAllOutResponse> captureAllOut(CaptureAllOutRequest request) {
         return this.rawClient.captureAllOut(request).thenApply(response -> response.body());
     }
@@ -113,6 +143,13 @@ public class AsyncMoneyOutClient {
      */
     public CompletableFuture<AuthCapturePayoutResponse> captureOut(String referenceId) {
         return this.rawClient.captureOut(referenceId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Captures a single authorized payout transaction by ID.
+     */
+    public CompletableFuture<AuthCapturePayoutResponse> captureOut(String referenceId, RequestOptions requestOptions) {
+        return this.rawClient.captureOut(referenceId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

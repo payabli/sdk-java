@@ -55,13 +55,17 @@ public class RawPaypointClient {
      * Gets the basic details for a paypoint.
      */
     public PayabliApiHttpResponse<GetBasicEntryResponse> getBasicEntry(String entry, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/basic")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -116,13 +120,17 @@ public class RawPaypointClient {
      */
     public PayabliApiHttpResponse<GetBasicEntryByIdResponse> getBasicEntryById(
             String idPaypoint, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/basicById")
-                .addPathSegment(idPaypoint)
-                .build();
+                .addPathSegment(idPaypoint);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -176,6 +184,13 @@ public class RawPaypointClient {
     /**
      * Gets the details for a single paypoint.
      */
+    public PayabliApiHttpResponse<GetEntryConfigResponse> getEntryConfig(String entry, RequestOptions requestOptions) {
+        return getEntryConfig(entry, GetEntryConfigRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Gets the details for a single paypoint.
+     */
     public PayabliApiHttpResponse<GetEntryConfigResponse> getEntryConfig(String entry, GetEntryConfigRequest request) {
         return getEntryConfig(entry, request, null);
     }
@@ -192,6 +207,11 @@ public class RawPaypointClient {
         if (request.getEntrypages().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "entrypages", request.getEntrypages().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -249,14 +269,18 @@ public class RawPaypointClient {
      * Gets the details for single payment page for a paypoint.
      */
     public PayabliApiHttpResponse<PayabliPages> getPage(String entry, String subdomain, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
                 .addPathSegment(entry)
-                .addPathSegment(subdomain)
-                .build();
+                .addPathSegment(subdomain);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -311,14 +335,18 @@ public class RawPaypointClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponseGeneric2Part> removePage(
             String entry, String subdomain, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
                 .addPathSegment(entry)
-                .addPathSegment(subdomain)
-                .build();
+                .addPathSegment(subdomain);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -373,6 +401,14 @@ public class RawPaypointClient {
      * Updates a paypoint logo.
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
+            String entry, RequestOptions requestOptions) {
+        return saveLogo(entry, FileContent.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
             String entry, FileContent request) {
         return saveLogo(entry, request, null);
     }
@@ -382,11 +418,15 @@ public class RawPaypointClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
             String entry, FileContent request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/logo")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -395,7 +435,7 @@ public class RawPaypointClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -452,13 +492,17 @@ public class RawPaypointClient {
      * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public PayabliApiHttpResponse<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/settings")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -513,10 +557,14 @@ public class RawPaypointClient {
      */
     public PayabliApiHttpResponse<MigratePaypointResponse> migrate(
             PaypointMoveRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Paypoint/migrate")
-                .build();
+                .addPathSegments("Paypoint/migrate");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -525,7 +573,7 @@ public class RawPaypointClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

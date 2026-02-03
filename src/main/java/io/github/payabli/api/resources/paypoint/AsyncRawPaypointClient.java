@@ -60,13 +60,17 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<GetBasicEntryResponse>> getBasicEntry(
             String entry, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/basic")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -143,13 +147,17 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<GetBasicEntryByIdResponse>> getBasicEntryById(
             String idPaypoint, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/basicById")
-                .addPathSegment(idPaypoint)
-                .build();
+                .addPathSegment(idPaypoint);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -226,6 +234,14 @@ public class AsyncRawPaypointClient {
      * Gets the details for a single paypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<GetEntryConfigResponse>> getEntryConfig(
+            String entry, RequestOptions requestOptions) {
+        return getEntryConfig(entry, GetEntryConfigRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Gets the details for a single paypoint.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<GetEntryConfigResponse>> getEntryConfig(
             String entry, GetEntryConfigRequest request) {
         return getEntryConfig(entry, request, null);
     }
@@ -242,6 +258,11 @@ public class AsyncRawPaypointClient {
         if (request.getEntrypages().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "entrypages", request.getEntrypages().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -321,14 +342,18 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliPages>> getPage(
             String entry, String subdomain, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
                 .addPathSegment(entry)
-                .addPathSegment(subdomain)
-                .build();
+                .addPathSegment(subdomain);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -405,14 +430,18 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGeneric2Part>> removePage(
             String entry, String subdomain, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
                 .addPathSegment(entry)
-                .addPathSegment(subdomain)
-                .build();
+                .addPathSegment(subdomain);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -489,6 +518,14 @@ public class AsyncRawPaypointClient {
      * Updates a paypoint logo.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> saveLogo(
+            String entry, RequestOptions requestOptions) {
+        return saveLogo(entry, FileContent.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> saveLogo(
             String entry, FileContent request) {
         return saveLogo(entry, request, null);
     }
@@ -498,11 +535,15 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> saveLogo(
             String entry, FileContent request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/logo")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -511,7 +552,7 @@ public class AsyncRawPaypointClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -591,13 +632,17 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<SettingsQueryRecord>> settingsPage(
             String entry, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/settings")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -674,10 +719,14 @@ public class AsyncRawPaypointClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<MigratePaypointResponse>> migrate(
             PaypointMoveRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Paypoint/migrate")
-                .build();
+                .addPathSegments("Paypoint/migrate");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -686,7 +735,7 @@ public class AsyncRawPaypointClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

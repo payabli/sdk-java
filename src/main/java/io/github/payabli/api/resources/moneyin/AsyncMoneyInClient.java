@@ -21,6 +21,7 @@ import io.github.payabli.api.resources.moneyin.types.ReceiptResponse;
 import io.github.payabli.api.resources.moneyin.types.RefundResponse;
 import io.github.payabli.api.resources.moneyin.types.RefundWithInstructionsResponse;
 import io.github.payabli.api.resources.moneyin.types.ReverseResponse;
+import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
 import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
 import io.github.payabli.api.resources.moneyin.types.VoidResponse;
 import io.github.payabli.api.resources.v2moneyintypes.types.V2TransactionResponseWrapper;
@@ -47,7 +48,29 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
+     */
+    public CompletableFuture<AuthResponse> authorize(TransRequestBody body) {
+        return this.rawClient.authorize(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+     * &lt;Tip&gt;
+     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
+     * &lt;/Tip&gt;
+     */
+    public CompletableFuture<AuthResponse> authorize(TransRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.authorize(body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
      * &lt;Tip&gt;
      * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
@@ -58,7 +81,7 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
      * &lt;Tip&gt;
      * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
@@ -70,9 +93,9 @@ public class AsyncMoneyInClient {
 
     /**
      * <p>&lt;Warning&gt;
-     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
      * &lt;/Warning&gt;</p>
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public CompletableFuture<CaptureResponse> capture(String transId, double amount) {
@@ -81,9 +104,9 @@ public class AsyncMoneyInClient {
 
     /**
      * <p>&lt;Warning&gt;
-     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
      * &lt;/Warning&gt;</p>
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
     public CompletableFuture<CaptureResponse> capture(String transId, double amount, RequestOptions requestOptions) {
@@ -91,7 +114,7 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
      * <p>&lt;Tip&gt;
      * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
@@ -102,7 +125,7 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Capture an <a href="/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
+     * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
      * <p>&lt;Tip&gt;
      * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
@@ -141,6 +164,26 @@ public class AsyncMoneyInClient {
      */
     public CompletableFuture<TransactionQueryRecordsCustomer> details(String transId, RequestOptions requestOptions) {
         return this.rawClient.details(transId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
+     */
+    public CompletableFuture<PayabliApiResponseGetPaid> getpaid(TransRequestBody body) {
+        return this.rawClient.getpaid(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step.
+     * <p>  &lt;Tip&gt;
+     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
+     *   &lt;/Tip&gt;</p>
+     */
+    public CompletableFuture<PayabliApiResponseGetPaid> getpaid(TransRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.getpaid(body, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -208,6 +251,14 @@ public class AsyncMoneyInClient {
      * Refunds a settled transaction with split instructions.
      */
     public CompletableFuture<RefundWithInstructionsResponse> refundWithInstructions(
+            String transId, RequestOptions requestOptions) {
+        return this.rawClient.refundWithInstructions(transId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Refunds a settled transaction with split instructions.
+     */
+    public CompletableFuture<RefundWithInstructionsResponse> refundWithInstructions(
             String transId, RequestRefund request) {
         return this.rawClient.refundWithInstructions(transId, request).thenApply(response -> response.body());
     }
@@ -241,6 +292,13 @@ public class AsyncMoneyInClient {
      */
     public CompletableFuture<ReceiptResponse> sendReceipt2Trans(String transId) {
         return this.rawClient.sendReceipt2Trans(transId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Send a payment receipt for a transaction.
+     */
+    public CompletableFuture<ReceiptResponse> sendReceipt2Trans(String transId, RequestOptions requestOptions) {
+        return this.rawClient.sendReceipt2Trans(transId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -295,14 +353,29 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<V2TransactionResponseWrapper> getpaidv2(TransRequestBody body) {
+        return this.rawClient.getpaidv2(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     */
+    public CompletableFuture<V2TransactionResponseWrapper> getpaidv2(
+            TransRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.getpaidv2(body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<V2TransactionResponseWrapper> getpaidv2(RequestPaymentV2 request) {
         return this.rawClient.getpaidv2(request).thenApply(response -> response.body());
     }
 
     /**
-     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<V2TransactionResponseWrapper> getpaidv2(
             RequestPaymentV2 request, RequestOptions requestOptions) {
@@ -310,7 +383,24 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public CompletableFuture<V2TransactionResponseWrapper> authorizev2(TransRequestBody body) {
+        return this.rawClient.authorizev2(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
+     * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
+     */
+    public CompletableFuture<V2TransactionResponseWrapper> authorizev2(
+            TransRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.authorizev2(body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> authorizev2(RequestPaymentAuthorizeV2 request) {
@@ -318,7 +408,7 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> authorizev2(
@@ -327,14 +417,14 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<V2TransactionResponseWrapper> capturev2(String transId, CaptureRequest request) {
         return this.rawClient.capturev2(transId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<V2TransactionResponseWrapper> capturev2(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
@@ -343,7 +433,7 @@ public class AsyncMoneyInClient {
 
     /**
      * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2(String transId) {
         return this.rawClient.refundv2(transId).thenApply(response -> response.body());
@@ -351,7 +441,7 @@ public class AsyncMoneyInClient {
 
     /**
      * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2(String transId, RequestOptions requestOptions) {
         return this.rawClient.refundv2(transId, requestOptions).thenApply(response -> response.body());
@@ -359,7 +449,7 @@ public class AsyncMoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2Amount(String transId, double amount) {
         return this.rawClient.refundv2Amount(transId, amount).thenApply(response -> response.body());
@@ -367,7 +457,7 @@ public class AsyncMoneyInClient {
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
-     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2Amount(
             String transId, double amount, RequestOptions requestOptions) {
@@ -375,14 +465,14 @@ public class AsyncMoneyInClient {
     }
 
     /**
-     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<V2TransactionResponseWrapper> voidv2(String transId) {
         return this.rawClient.voidv2(transId).thenApply(response -> response.body());
     }
 
     /**
-     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     public CompletableFuture<V2TransactionResponseWrapper> voidv2(String transId, RequestOptions requestOptions) {
         return this.rawClient.voidv2(transId, requestOptions).thenApply(response -> response.body());

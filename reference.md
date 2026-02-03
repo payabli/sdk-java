@@ -106,7 +106,7 @@ client.bill().addBill(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -543,7 +543,7 @@ client.bill().listBills(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2309,7 +2309,7 @@ client.cloud().addDevice(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2393,7 +2393,7 @@ client.cloud().historyDevice("8cfec329267", "WXGDWB");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2460,7 +2460,7 @@ client.cloud().listDevice(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2522,7 +2522,7 @@ client.cloud().removeDevice("8cfec329267", "6c361c7d-674c-44cc-b790-382b75d1xxx"
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3167,7 +3167,7 @@ client.export().exportBatchDetails(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3501,7 +3501,7 @@ client.export().exportBatches(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3813,7 +3813,7 @@ client.export().exportBatchesOut(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4087,7 +4087,7 @@ client.export().exportBills(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4397,7 +4397,7 @@ client.export().exportChargebacks(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4749,7 +4749,7 @@ client.export().exportCustomers(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5087,7 +5087,7 @@ client.export().exportInvoices(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5599,7 +5599,7 @@ client.export().exportPayout(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6060,7 +6060,7 @@ client.export().exportSettlements(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6410,7 +6410,7 @@ client.export().exportSubscriptions(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6764,7 +6764,7 @@ client.export().exportTransactions(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7128,7 +7128,7 @@ client.export().exportTransferDetails(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7281,7 +7281,7 @@ client.export().exportTransfers(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7435,7 +7435,7 @@ client.export().exportVendors(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7737,7 +7737,7 @@ client.hostedPaymentPages().loadPage("8cfec329267", "pay-your-fees-1");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7812,7 +7812,7 @@ client.hostedPaymentPages().newPage(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7888,7 +7888,7 @@ client.hostedPaymentPages().savePage(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7964,7 +7964,7 @@ client.import_().importBills(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -8198,7 +8198,7 @@ client.invoice().addInvoice(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -8649,7 +8649,7 @@ client.invoice().getInvoiceNumber("8cfec329267");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -8711,7 +8711,7 @@ client.invoice().listInvoices(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -9185,7 +9185,7 @@ client.lineItem().addItem(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -9371,7 +9371,7 @@ client.lineItem().listLineItems(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -9553,7 +9553,7 @@ client.lineItem().updateItem(
 <dl>
 <dd>
 
-Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until [captured](/api-reference/moneyin/capture-an-authorized-transaction).
+Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until [captured](/developers/api-reference/moneyin/capture-an-authorized-transaction).
 Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
 <Tip>
   Consider migrating to the [v2 Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction) to take advantage of unified response codes and improved response consistency.
@@ -9666,11 +9666,11 @@ client.moneyIn().authorize(
 <dd>
 
 <Warning>
-  This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+  This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
 </Warning>
   
   Capture an [authorized
-transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
+transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 </dd>
 </dl>
 </dd>
@@ -9732,7 +9732,7 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
 <dl>
 <dd>
 
-Capture an [authorized transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account. 
+Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account. 
 
 You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
 
@@ -10754,7 +10754,7 @@ client.moneyIn().void_("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 <dl>
 <dd>
 
-Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the `api/MoneyIn/getpaid` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the `api/MoneyIn/getpaid` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 </dd>
 </dl>
 </dd>
@@ -10878,7 +10878,7 @@ client.moneyIn().getpaidv2(
 <dl>
 <dd>
 
-Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the `api/MoneyIn/authorize` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the `api/MoneyIn/authorize` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 
 **Note**: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
 </dd>
@@ -10988,7 +10988,7 @@ client.moneyIn().authorizev2(
 <dl>
 <dd>
 
-Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the `api/MoneyIn/capture/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the `api/MoneyIn/capture/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 </dd>
 </dl>
 </dd>
@@ -11064,7 +11064,7 @@ client.moneyIn().capturev2(
 
 Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see [Partially refund a transaction](developers/api-reference/moneyinV2/partial-refund-a-settled-transaction).
 
-This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 </dd>
 </dl>
 </dd>
@@ -11120,7 +11120,7 @@ client.moneyIn().refundv2("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 
 Refund a transaction that has settled and send money back to the account holder. If `amount` is omitted or set to 0, performs a full refund. When a non-zero `amount` is provided, this endpoint performs a partial refund.
 
-This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 </dd>
 </dl>
 </dd>
@@ -11182,7 +11182,7 @@ client.moneyIn().refundv2Amount("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
 <dl>
 <dd>
 
-Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the `api/MoneyIn/void/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the `api/MoneyIn/void/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 </dd>
 </dl>
 </dd>
@@ -13186,7 +13186,7 @@ client.organization().getBasicOrganization("8cfec329267");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15069,7 +15069,7 @@ client.paypoint().getBasicEntry("8cfec329267");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15182,7 +15182,7 @@ client.paypoint().getEntryConfig(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15244,7 +15244,7 @@ client.paypoint().getPage("8cfec329267", "pay-your-fees-1");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15306,7 +15306,7 @@ client.paypoint().removePage("8cfec329267", "pay-your-fees-1");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15373,7 +15373,7 @@ client.paypoint().saveLogo(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15435,7 +15435,7 @@ client.paypoint().settingsPage("8cfec329267");
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15538,7 +15538,7 @@ client.paypoint().migrate(
 <dd>
 
 Retrieve a list of batches and their details, including settled and
-unsettled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. 
+unsettled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 </dd>
 </dl>
 </dd>
@@ -16177,7 +16177,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `limitRecord`: max number of records for query (default="20", "0" or negative value for all)
 - `fromRecord`: initial record in query
 
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00      
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
     
 </dd>
 </dl>
@@ -19044,7 +19044,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `ct` => contains
 - `nct` => not contains
 - `in` => inside array
-- `nin` => not inside array      
+- `nin` => not inside array
     
 </dd>
 </dl>
@@ -19238,7 +19238,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `ct` => contains
 - `nct` => not contains
 - `in` => inside array
-- `nin` => not inside array      
+- `nin` => not inside array
     
 </dd>
 </dl>
@@ -19439,7 +19439,6 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `nct` => not contains
 - `in` => inside array
 - `nin` => not inside array
-  
     
 </dd>
 </dl>
@@ -19587,7 +19586,6 @@ for more information.
   - `category` (eq, ne, ct, nct)
   - `type` (eq, ne, in, nin)
   - `method` (eq, ne, in, nin)
-  
     
 </dd>
 </dl>
@@ -19878,6 +19876,380 @@ List of field names accepted:
 </dl>
 </details>
 
+<details><summary><code>client.query.listTransfersOutOrg(orgId) -> TransferOutQueryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a list of outbound transfers for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listTransfersOutOrg(
+    77,
+    ListTransfersOutOrgRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+List of field names accepted:
+
+  - `transferDate` (gt, ge, lt, le, eq, ne)
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+  - `processor` (ne, eq, ct, nct)
+  - `transferStatus` (ne, eq, in, nin)
+  - `transferId` (ne, eq, in, nin)
+  - `paypointLegalName` (ne, eq, ct, nct)
+  - `paypointDbaName` (ne, eq, ct, nct)
+  - `batchNumber` (ne, eq, ct, nct)
+  - `batchId` (ne, eq, in, nin)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.query.listTransfersOutPaypoint(entry) -> TransferOutQueryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listTransfersOutPaypoint(
+    "47cade237",
+    ListTransfersOutPaypointRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+List of field names accepted:
+
+  - `transferDate` (gt, ge, lt, le, eq, ne)
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+  - `processor` (ne, eq, ct, nct)
+  - `transferStatus` (ne, eq, in, nin)
+  - `transferId` (ne, eq, in, nin)
+  - `paypointLegalName` (ne, eq, ct, nct)
+  - `paypointDbaName` (ne, eq, ct, nct)
+  - `batchNumber` (ne, eq, ct, nct)
+  - `batchId` (ne, eq, in, nin)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.query.listTransferDetailsOut(entry, transferId) -> TransferOutDetailQueryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve details for a specific outbound transfer. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listTransferDetailsOut(
+    "47ace2b25",
+    4521,
+    ListTransferDetailsOutRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transferId:** `Integer` — The numeric identifier for the transfer, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+List of field names accepted:
+
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+  - `transactionId` (eq, ne, in, nin)
+  - `category` (eq, ne, ct, nct)
+  - `type` (eq, ne, in, nin)
+  - `method` (eq, ne, in, nin)
+  - `walletType` (eq, ne, in, nin)
+  - `splitFundingAmount` (gt, ge, lt, le, eq, ne)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.query.listUsersOrg(orgId) -> QueryUserResponse</code></summary>
 <dl>
 <dd>
@@ -20065,7 +20437,7 @@ client.query().listUsersPaypoint(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -20202,7 +20574,7 @@ client.query().listVendors(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>

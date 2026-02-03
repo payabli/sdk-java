@@ -21,6 +21,7 @@ import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
 import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
+import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
 import java.io.IOException;
@@ -72,6 +73,11 @@ public class RawTokenStorageClient {
         if (request.getTemporary().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "temporary", request.getTemporary().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -139,6 +145,13 @@ public class RawTokenStorageClient {
     /**
      * Retrieves details for a saved payment method.
      */
+    public PayabliApiHttpResponse<GetMethodResponse> getMethod(String methodId, RequestOptions requestOptions) {
+        return getMethod(methodId, GetMethodRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves details for a saved payment method.
+     */
     public PayabliApiHttpResponse<GetMethodResponse> getMethod(String methodId, GetMethodRequest request) {
         return getMethod(methodId, request, null);
     }
@@ -162,6 +175,11 @@ public class RawTokenStorageClient {
         if (request.getIncludeTemporary().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "includeTemporary", request.getIncludeTemporary().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -219,13 +237,17 @@ public class RawTokenStorageClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(
             String methodId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("TokenStorage")
-                .addPathSegment(methodId)
-                .build();
+                .addPathSegment(methodId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -274,6 +296,22 @@ public class RawTokenStorageClient {
      * Updates a saved payment method.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
+            String methodId, RequestTokenStorage body) {
+        return updateMethod(methodId, UpdateMethodRequest.builder().body(body).build());
+    }
+
+    /**
+     * Updates a saved payment method.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
+            String methodId, RequestTokenStorage body, RequestOptions requestOptions) {
+        return updateMethod(methodId, UpdateMethodRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Updates a saved payment method.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
             String methodId, UpdateMethodRequest request) {
         return updateMethod(methodId, request, null);
     }
@@ -290,6 +328,11 @@ public class RawTokenStorageClient {
         if (request.getAchValidation().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "achValidation", request.getAchValidation().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {

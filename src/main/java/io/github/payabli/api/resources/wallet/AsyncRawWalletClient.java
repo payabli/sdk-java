@@ -56,6 +56,15 @@ public class AsyncRawWalletClient {
      * Configure and activate Apple Pay for a Payabli organization
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse>>
+            configureApplePayOrganization(RequestOptions requestOptions) {
+        return configureApplePayOrganization(
+                ConfigureOrganizationRequestApplePay.builder().build(), requestOptions);
+    }
+
+    /**
+     * Configure and activate Apple Pay for a Payabli organization
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse>>
             configureApplePayOrganization(ConfigureOrganizationRequestApplePay request) {
         return configureApplePayOrganization(request, null);
     }
@@ -65,10 +74,14 @@ public class AsyncRawWalletClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse>>
             configureApplePayOrganization(ConfigureOrganizationRequestApplePay request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Wallet/applepay/configure-organization")
-                .build();
+                .addPathSegments("Wallet/applepay/configure-organization");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -77,7 +90,7 @@ public class AsyncRawWalletClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -157,6 +170,15 @@ public class AsyncRawWalletClient {
      * Configure and activate Apple Pay for a Payabli paypoint
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePaypointApiResponse>> configureApplePayPaypoint(
+            RequestOptions requestOptions) {
+        return configureApplePayPaypoint(
+                ConfigurePaypointRequestApplePay.builder().build(), requestOptions);
+    }
+
+    /**
+     * Configure and activate Apple Pay for a Payabli paypoint
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePaypointApiResponse>> configureApplePayPaypoint(
             ConfigurePaypointRequestApplePay request) {
         return configureApplePayPaypoint(request, null);
     }
@@ -166,10 +188,14 @@ public class AsyncRawWalletClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePaypointApiResponse>> configureApplePayPaypoint(
             ConfigurePaypointRequestApplePay request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Wallet/applepay/configure-paypoint")
-                .build();
+                .addPathSegments("Wallet/applepay/configure-paypoint");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -178,7 +204,7 @@ public class AsyncRawWalletClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -258,6 +284,15 @@ public class AsyncRawWalletClient {
      * Configure and activate Google Pay for a Payabli organization
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse>>
+            configureGooglePayOrganization(RequestOptions requestOptions) {
+        return configureGooglePayOrganization(
+                ConfigureOrganizationRequestGooglePay.builder().build(), requestOptions);
+    }
+
+    /**
+     * Configure and activate Google Pay for a Payabli organization
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse>>
             configureGooglePayOrganization(ConfigureOrganizationRequestGooglePay request) {
         return configureGooglePayOrganization(request, null);
     }
@@ -268,10 +303,14 @@ public class AsyncRawWalletClient {
     public CompletableFuture<PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse>>
             configureGooglePayOrganization(
                     ConfigureOrganizationRequestGooglePay request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Wallet/googlepay/configure-organization")
-                .build();
+                .addPathSegments("Wallet/googlepay/configure-organization");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -280,7 +319,7 @@ public class AsyncRawWalletClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -360,6 +399,15 @@ public class AsyncRawWalletClient {
      * Configure and activate Google Pay for a Payabli paypoint
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse>> configureGooglePayPaypoint(
+            RequestOptions requestOptions) {
+        return configureGooglePayPaypoint(
+                ConfigurePaypointRequestGooglePay.builder().build(), requestOptions);
+    }
+
+    /**
+     * Configure and activate Google Pay for a Payabli paypoint
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse>> configureGooglePayPaypoint(
             ConfigurePaypointRequestGooglePay request) {
         return configureGooglePayPaypoint(request, null);
     }
@@ -369,10 +417,14 @@ public class AsyncRawWalletClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse>> configureGooglePayPaypoint(
             ConfigurePaypointRequestGooglePay request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Wallet/googlepay/configure-paypoint")
-                .build();
+                .addPathSegments("Wallet/googlepay/configure-paypoint");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -381,7 +433,7 @@ public class AsyncRawWalletClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

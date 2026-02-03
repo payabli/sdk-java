@@ -52,6 +52,14 @@ public class AsyncRawCloudClient {
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
+    public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(
+            String entry, RequestOptions requestOptions) {
+        return addDevice(entry, DeviceEntry.builder().build(), requestOptions);
+    }
+
+    /**
+     * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
+     */
     public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(String entry, DeviceEntry request) {
         return addDevice(entry, request, null);
     }
@@ -61,11 +69,15 @@ public class AsyncRawCloudClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(
             String entry, DeviceEntry request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/register")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -74,7 +86,7 @@ public class AsyncRawCloudClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -157,14 +169,18 @@ public class AsyncRawCloudClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> historyDevice(
             String entry, String deviceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/history")
                 .addPathSegment(entry)
-                .addPathSegment(deviceId)
-                .build();
+                .addPathSegment(deviceId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -240,6 +256,14 @@ public class AsyncRawCloudClient {
      * Get a list of cloud devices registered to an entrypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> listDevice(
+            String entry, RequestOptions requestOptions) {
+        return listDevice(entry, ListDeviceRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Get a list of cloud devices registered to an entrypoint.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> listDevice(
             String entry, ListDeviceRequest request) {
         return listDevice(entry, request, null);
     }
@@ -256,6 +280,11 @@ public class AsyncRawCloudClient {
         if (request.getForceRefresh().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "forceRefresh", request.getForceRefresh().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -335,14 +364,18 @@ public class AsyncRawCloudClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> removeDevice(
             String entry, String deviceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Cloud/register")
                 .addPathSegment(entry)
-                .addPathSegment(deviceId)
-                .build();
+                .addPathSegment(deviceId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

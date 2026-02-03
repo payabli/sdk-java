@@ -42,6 +42,23 @@ public class RawCustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
      * If you don't include an identifier, the record is rejected.
      */
+    public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(String entry, CustomerData body) {
+        return addCustomer(entry, AddCustomerRequest.builder().body(body).build());
+    }
+
+    /**
+     * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
+     * If you don't include an identifier, the record is rejected.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
+            String entry, CustomerData body, RequestOptions requestOptions) {
+        return addCustomer(entry, AddCustomerRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
+     * If you don't include an identifier, the record is rejected.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
             String entry, AddCustomerRequest request) {
         return addCustomer(entry, request, null);
@@ -67,6 +84,11 @@ public class RawCustomerClient {
         if (request.getReplaceExisting().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "replaceExisting", request.getReplaceExisting().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -137,13 +159,17 @@ public class RawCustomerClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteCustomer(
             int customerId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Customer")
-                .addPathSegment(Integer.toString(customerId))
-                .build();
+                .addPathSegment(Integer.toString(customerId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -199,13 +225,17 @@ public class RawCustomerClient {
      * Retrieves a customer's record and details.
      */
     public PayabliApiHttpResponse<CustomerQueryRecords> getCustomer(int customerId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Customer")
-                .addPathSegment(Integer.toString(customerId))
-                .build();
+                .addPathSegment(Integer.toString(customerId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -261,14 +291,18 @@ public class RawCustomerClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
             int customerId, String transId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Customer/link")
                 .addPathSegment(Integer.toString(customerId))
-                .addPathSegment(transId)
-                .build();
+                .addPathSegment(transId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -325,14 +359,18 @@ public class RawCustomerClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> requestConsent(
             int customerId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Customer")
                 .addPathSegment(Integer.toString(customerId))
-                .addPathSegments("consent")
-                .build();
+                .addPathSegments("consent");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -388,6 +426,14 @@ public class RawCustomerClient {
      * Update a customer record. Include only the fields you want to change.
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
+            int customerId, RequestOptions requestOptions) {
+        return updateCustomer(customerId, CustomerData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Update a customer record. Include only the fields you want to change.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
             int customerId, CustomerData request) {
         return updateCustomer(customerId, request, null);
     }
@@ -397,11 +443,15 @@ public class RawCustomerClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
             int customerId, CustomerData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Customer")
-                .addPathSegment(Integer.toString(customerId))
-                .build();
+                .addPathSegment(Integer.toString(customerId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -410,7 +460,7 @@ public class RawCustomerClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

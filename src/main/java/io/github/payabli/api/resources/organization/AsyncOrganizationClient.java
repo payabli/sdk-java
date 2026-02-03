@@ -70,6 +70,13 @@ public class AsyncOrganizationClient {
     /**
      * Updates an organization's details by ID.
      */
+    public CompletableFuture<EditOrganizationResponse> editOrganization(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.editOrganization(orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates an organization's details by ID.
+     */
     public CompletableFuture<EditOrganizationResponse> editOrganization(int orgId, OrganizationData request) {
         return this.rawClient.editOrganization(orgId, request).thenApply(response -> response.body());
     }

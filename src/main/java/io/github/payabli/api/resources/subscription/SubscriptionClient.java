@@ -9,6 +9,7 @@ import io.github.payabli.api.resources.subscription.requests.RequestSchedule;
 import io.github.payabli.api.resources.subscription.requests.RequestUpdateSchedule;
 import io.github.payabli.api.resources.subscription.types.AddSubscriptionResponse;
 import io.github.payabli.api.resources.subscription.types.RemoveSubscriptionResponse;
+import io.github.payabli.api.resources.subscription.types.SubscriptionRequestBody;
 import io.github.payabli.api.resources.subscription.types.UpdateSubscriptionResponse;
 import io.github.payabli.api.types.SubscriptionQueryRecords;
 
@@ -46,6 +47,20 @@ public class SubscriptionClient {
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency.
      */
+    public AddSubscriptionResponse newSubscription(SubscriptionRequestBody body) {
+        return this.rawClient.newSubscription(body).body();
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency.
+     */
+    public AddSubscriptionResponse newSubscription(SubscriptionRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.newSubscription(body, requestOptions).body();
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency.
+     */
     public AddSubscriptionResponse newSubscription(RequestSchedule request) {
         return this.rawClient.newSubscription(request).body();
     }
@@ -76,6 +91,13 @@ public class SubscriptionClient {
      */
     public UpdateSubscriptionResponse updateSubscription(int subId) {
         return this.rawClient.updateSubscription(subId).body();
+    }
+
+    /**
+     * Updates a subscription's details.
+     */
+    public UpdateSubscriptionResponse updateSubscription(int subId, RequestOptions requestOptions) {
+        return this.rawClient.updateSubscription(subId, requestOptions).body();
     }
 
     /**

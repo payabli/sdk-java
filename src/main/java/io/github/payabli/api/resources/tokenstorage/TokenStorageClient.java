@@ -10,6 +10,7 @@ import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
 import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
+import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
 
 public class TokenStorageClient {
@@ -53,6 +54,13 @@ public class TokenStorageClient {
     /**
      * Retrieves details for a saved payment method.
      */
+    public GetMethodResponse getMethod(String methodId, RequestOptions requestOptions) {
+        return this.rawClient.getMethod(methodId, requestOptions).body();
+    }
+
+    /**
+     * Retrieves details for a saved payment method.
+     */
     public GetMethodResponse getMethod(String methodId, GetMethodRequest request) {
         return this.rawClient.getMethod(methodId, request).body();
     }
@@ -76,6 +84,21 @@ public class TokenStorageClient {
      */
     public PayabliApiResponsePaymethodDelete removeMethod(String methodId, RequestOptions requestOptions) {
         return this.rawClient.removeMethod(methodId, requestOptions).body();
+    }
+
+    /**
+     * Updates a saved payment method.
+     */
+    public PayabliApiResponsePaymethodDelete updateMethod(String methodId, RequestTokenStorage body) {
+        return this.rawClient.updateMethod(methodId, body).body();
+    }
+
+    /**
+     * Updates a saved payment method.
+     */
+    public PayabliApiResponsePaymethodDelete updateMethod(
+            String methodId, RequestTokenStorage body, RequestOptions requestOptions) {
+        return this.rawClient.updateMethod(methodId, body, requestOptions).body();
     }
 
     /**

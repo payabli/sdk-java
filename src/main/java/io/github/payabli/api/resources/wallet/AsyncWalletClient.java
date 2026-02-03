@@ -42,6 +42,14 @@ public class AsyncWalletClient {
      * Configure and activate Apple Pay for a Payabli organization
      */
     public CompletableFuture<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
+            RequestOptions requestOptions) {
+        return this.rawClient.configureApplePayOrganization(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Configure and activate Apple Pay for a Payabli organization
+     */
+    public CompletableFuture<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
             ConfigureOrganizationRequestApplePay request) {
         return this.rawClient.configureApplePayOrganization(request).thenApply(response -> response.body());
     }
@@ -61,6 +69,14 @@ public class AsyncWalletClient {
      */
     public CompletableFuture<ConfigureApplePaypointApiResponse> configureApplePayPaypoint() {
         return this.rawClient.configureApplePayPaypoint().thenApply(response -> response.body());
+    }
+
+    /**
+     * Configure and activate Apple Pay for a Payabli paypoint
+     */
+    public CompletableFuture<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
+            RequestOptions requestOptions) {
+        return this.rawClient.configureApplePayPaypoint(requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -90,6 +106,14 @@ public class AsyncWalletClient {
      * Configure and activate Google Pay for a Payabli organization
      */
     public CompletableFuture<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
+            RequestOptions requestOptions) {
+        return this.rawClient.configureGooglePayOrganization(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Configure and activate Google Pay for a Payabli organization
+     */
+    public CompletableFuture<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
             ConfigureOrganizationRequestGooglePay request) {
         return this.rawClient.configureGooglePayOrganization(request).thenApply(response -> response.body());
     }
@@ -109,6 +133,14 @@ public class AsyncWalletClient {
      */
     public CompletableFuture<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint() {
         return this.rawClient.configureGooglePayPaypoint().thenApply(response -> response.body());
+    }
+
+    /**
+     * Configure and activate Google Pay for a Payabli paypoint
+     */
+    public CompletableFuture<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
+            RequestOptions requestOptions) {
+        return this.rawClient.configureGooglePayPaypoint(requestOptions).thenApply(response -> response.body());
     }
 
     /**

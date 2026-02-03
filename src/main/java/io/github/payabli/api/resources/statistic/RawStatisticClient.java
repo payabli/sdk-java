@@ -54,6 +54,15 @@ public class RawStatisticClient {
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
     public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+            String mode, String freq, int level, long entryId, RequestOptions requestOptions) {
+        return basicStats(
+                mode, freq, level, entryId, BasicStatsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+     */
+    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId, BasicStatsRequest request) {
         return basicStats(mode, freq, level, entryId, request, null);
     }
@@ -86,6 +95,11 @@ public class RawStatisticClient {
         if (request.getStartDate().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "startDate", request.getStartDate().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -146,6 +160,15 @@ public class RawStatisticClient {
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
     public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+            String mode, String freq, int customerId, RequestOptions requestOptions) {
+        return customerBasicStats(
+                mode, freq, customerId, CustomerBasicStatsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+     */
+    public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId, CustomerBasicStatsRequest request) {
         return customerBasicStats(mode, freq, customerId, request, null);
     }
@@ -168,6 +191,11 @@ public class RawStatisticClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -226,6 +254,14 @@ public class RawStatisticClient {
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
     public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
+            String interval, int level, long entryId, RequestOptions requestOptions) {
+        return subStats(interval, level, entryId, SubStatsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves the subscription statistics for a given interval for a paypoint or organization.
+     */
+    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
             String interval, int level, long entryId, SubStatsRequest request) {
         return subStats(interval, level, entryId, request, null);
     }
@@ -244,6 +280,11 @@ public class RawStatisticClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -304,6 +345,15 @@ public class RawStatisticClient {
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
     public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
+            String mode, String freq, int idVendor, RequestOptions requestOptions) {
+        return vendorBasicStats(
+                mode, freq, idVendor, VendorBasicStatsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+     */
+    public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor, VendorBasicStatsRequest request) {
         return vendorBasicStats(mode, freq, idVendor, request, null);
     }
@@ -322,6 +372,11 @@ public class RawStatisticClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

@@ -74,6 +74,13 @@ public class AsyncPaypointClient {
     /**
      * Gets the details for a single paypoint.
      */
+    public CompletableFuture<GetEntryConfigResponse> getEntryConfig(String entry, RequestOptions requestOptions) {
+        return this.rawClient.getEntryConfig(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Gets the details for a single paypoint.
+     */
     public CompletableFuture<GetEntryConfigResponse> getEntryConfig(String entry, GetEntryConfigRequest request) {
         return this.rawClient.getEntryConfig(entry, request).thenApply(response -> response.body());
     }
@@ -120,6 +127,14 @@ public class AsyncPaypointClient {
      */
     public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry) {
         return this.rawClient.saveLogo(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(
+            String entry, RequestOptions requestOptions) {
+        return this.rawClient.saveLogo(entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**

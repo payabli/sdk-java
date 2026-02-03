@@ -12,6 +12,7 @@ import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
 import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
+import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
 import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
 import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
 import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
@@ -35,6 +36,21 @@ public class AsyncInvoiceClient {
      */
     public AsyncRawInvoiceClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * Creates an invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> addInvoice(String entry, InvoiceDataRequest body) {
+        return this.rawClient.addInvoice(entry, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates an invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> addInvoice(
+            String entry, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return this.rawClient.addInvoice(entry, body, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -86,6 +102,21 @@ public class AsyncInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
+    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(int idInvoice, InvoiceDataRequest body) {
+        return this.rawClient.editInvoice(idInvoice, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(
+            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return this.rawClient.editInvoice(idInvoice, body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
     public CompletableFuture<InvoiceResponseWithoutData> editInvoice(int idInvoice, EditInvoiceRequest request) {
         return this.rawClient.editInvoice(idInvoice, request).thenApply(response -> response.body());
     }
@@ -103,6 +134,16 @@ public class AsyncInvoiceClient {
      */
     public CompletableFuture<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
         return this.rawClient.getAttachedFileFromInvoice(idInvoice, filename).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public CompletableFuture<FileContent> getAttachedFileFromInvoice(
+            int idInvoice, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .getAttachedFileFromInvoice(idInvoice, filename, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
@@ -163,6 +204,13 @@ public class AsyncInvoiceClient {
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public CompletableFuture<QueryInvoiceResponse> listInvoices(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listInvoices(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public CompletableFuture<QueryInvoiceResponse> listInvoices(String entry, ListInvoicesRequest request) {
         return this.rawClient.listInvoices(entry, request).thenApply(response -> response.body());
     }
@@ -185,6 +233,13 @@ public class AsyncInvoiceClient {
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public CompletableFuture<QueryInvoiceResponse> listInvoicesOrg(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listInvoicesOrg(orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public CompletableFuture<QueryInvoiceResponse> listInvoicesOrg(int orgId, ListInvoicesOrgRequest request) {
         return this.rawClient.listInvoicesOrg(orgId, request).thenApply(response -> response.body());
     }
@@ -202,6 +257,13 @@ public class AsyncInvoiceClient {
      */
     public CompletableFuture<SendInvoiceResponse> sendInvoice(int idInvoice) {
         return this.rawClient.sendInvoice(idInvoice).thenApply(response -> response.body());
+    }
+
+    /**
+     * Sends an invoice from an entrypoint via email.
+     */
+    public CompletableFuture<SendInvoiceResponse> sendInvoice(int idInvoice, RequestOptions requestOptions) {
+        return this.rawClient.sendInvoice(idInvoice, requestOptions).thenApply(response -> response.body());
     }
 
     /**

@@ -68,6 +68,13 @@ public class OrganizationClient {
     /**
      * Updates an organization's details by ID.
      */
+    public EditOrganizationResponse editOrganization(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.editOrganization(orgId, requestOptions).body();
+    }
+
+    /**
+     * Updates an organization's details by ID.
+     */
     public EditOrganizationResponse editOrganization(int orgId, OrganizationData request) {
         return this.rawClient.editOrganization(orgId, request).body();
     }

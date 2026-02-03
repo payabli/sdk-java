@@ -38,6 +38,13 @@ public class CloudClient {
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
+    public AddDeviceResponse addDevice(String entry, RequestOptions requestOptions) {
+        return this.rawClient.addDevice(entry, requestOptions).body();
+    }
+
+    /**
+     * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
+     */
     public AddDeviceResponse addDevice(String entry, DeviceEntry request) {
         return this.rawClient.addDevice(entry, request).body();
     }
@@ -68,6 +75,13 @@ public class CloudClient {
      */
     public CloudQueryApiResponse listDevice(String entry) {
         return this.rawClient.listDevice(entry).body();
+    }
+
+    /**
+     * Get a list of cloud devices registered to an entrypoint.
+     */
+    public CloudQueryApiResponse listDevice(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listDevice(entry, requestOptions).body();
     }
 
     /**

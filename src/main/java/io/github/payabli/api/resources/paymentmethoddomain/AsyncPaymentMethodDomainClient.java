@@ -42,6 +42,13 @@ public class AsyncPaymentMethodDomainClient {
     /**
      * Add a payment method domain to an organization or paypoint.
      */
+    public CompletableFuture<AddPaymentMethodDomainApiResponse> addPaymentMethodDomain(RequestOptions requestOptions) {
+        return this.rawClient.addPaymentMethodDomain(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Add a payment method domain to an organization or paypoint.
+     */
     public CompletableFuture<AddPaymentMethodDomainApiResponse> addPaymentMethodDomain(
             AddPaymentMethodDomainRequest request) {
         return this.rawClient.addPaymentMethodDomain(request).thenApply(response -> response.body());
@@ -114,6 +121,13 @@ public class AsyncPaymentMethodDomainClient {
     /**
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
+    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(RequestOptions requestOptions) {
+        return this.rawClient.listPaymentMethodDomains(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
     public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(
             ListPaymentMethodDomainsRequest request) {
         return this.rawClient.listPaymentMethodDomains(request).thenApply(response -> response.body());
@@ -132,6 +146,16 @@ public class AsyncPaymentMethodDomainClient {
      */
     public CompletableFuture<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(String domainId) {
         return this.rawClient.updatePaymentMethodDomain(domainId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Update a payment method domain's configuration values.
+     */
+    public CompletableFuture<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
+            String domainId, RequestOptions requestOptions) {
+        return this.rawClient
+                .updatePaymentMethodDomain(domainId, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**

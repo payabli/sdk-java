@@ -24,6 +24,7 @@ import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
 import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
+import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
 import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
 import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
 import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
@@ -50,6 +51,21 @@ public class RawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
+    public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(String entry, InvoiceDataRequest body) {
+        return addInvoice(entry, AddInvoiceRequest.builder().body(body).build());
+    }
+
+    /**
+     * Creates an invoice in an entrypoint.
+     */
+    public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(
+            String entry, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return addInvoice(entry, AddInvoiceRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Creates an invoice in an entrypoint.
+     */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(String entry, AddInvoiceRequest request) {
         return addInvoice(entry, request, null);
     }
@@ -69,6 +85,11 @@ public class RawInvoiceClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -140,14 +161,18 @@ public class RawInvoiceClient {
      */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice/attachedFileFromInvoice")
                 .addPathSegment(Integer.toString(idInvoice))
-                .addPathSegment(filename)
-                .build();
+                .addPathSegment(filename);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -203,13 +228,17 @@ public class RawInvoiceClient {
      */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(
             int idInvoice, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice")
-                .addPathSegment(Integer.toString(idInvoice))
-                .build();
+                .addPathSegment(Integer.toString(idInvoice));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -256,6 +285,21 @@ public class RawInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
+    public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(int idInvoice, InvoiceDataRequest body) {
+        return editInvoice(idInvoice, EditInvoiceRequest.builder().body(body).build());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(
+            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return editInvoice(idInvoice, EditInvoiceRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(int idInvoice, EditInvoiceRequest request) {
         return editInvoice(idInvoice, request, null);
     }
@@ -275,6 +319,11 @@ public class RawInvoiceClient {
                     "forceCustomerCreation",
                     request.getForceCustomerCreation().get(),
                     false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -341,6 +390,15 @@ public class RawInvoiceClient {
      * Retrieves a file attached to an invoice.
      */
     public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+            int idInvoice, String filename, RequestOptions requestOptions) {
+        return getAttachedFileFromInvoice(
+                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
             int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
         return getAttachedFileFromInvoice(idInvoice, filename, request, null);
     }
@@ -358,6 +416,11 @@ public class RawInvoiceClient {
         if (request.getReturnObject().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "returnObject", request.getReturnObject().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -414,13 +477,17 @@ public class RawInvoiceClient {
      * Retrieves a single invoice by ID.
      */
     public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice")
-                .addPathSegment(Integer.toString(idInvoice))
-                .build();
+                .addPathSegment(Integer.toString(idInvoice));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -474,13 +541,17 @@ public class RawInvoiceClient {
      * Retrieves the next available invoice number for a paypoint.
      */
     public PayabliApiHttpResponse<InvoiceNumberResponse> getInvoiceNumber(String entry, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice/getNumber")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -533,6 +604,13 @@ public class RawInvoiceClient {
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry, RequestOptions requestOptions) {
+        return listInvoices(entry, ListInvoicesRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry, ListInvoicesRequest request) {
         return listInvoices(entry, request, null);
     }
@@ -565,6 +643,11 @@ public class RawInvoiceClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -620,6 +703,13 @@ public class RawInvoiceClient {
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId, RequestOptions requestOptions) {
+        return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId, ListInvoicesOrgRequest request) {
         return listInvoicesOrg(orgId, request, null);
     }
@@ -652,6 +742,11 @@ public class RawInvoiceClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -707,6 +802,13 @@ public class RawInvoiceClient {
     /**
      * Sends an invoice from an entrypoint via email.
      */
+    public PayabliApiHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice, RequestOptions requestOptions) {
+        return sendInvoice(idInvoice, SendInvoiceRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Sends an invoice from an entrypoint via email.
+     */
     public PayabliApiHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice, SendInvoiceRequest request) {
         return sendInvoice(idInvoice, request, null);
     }
@@ -727,6 +829,11 @@ public class RawInvoiceClient {
         if (request.getMail2().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "mail2", request.getMail2().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -783,13 +890,17 @@ public class RawInvoiceClient {
      * Export a single invoice in PDF format.
      */
     public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/invoicePdf")
-                .addPathSegment(Integer.toString(idInvoice))
-                .build();
+                .addPathSegment(Integer.toString(idInvoice));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

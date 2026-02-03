@@ -24,6 +24,7 @@ import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromId
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
 import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PushPayLinkRequest;
 import java.io.IOException;
@@ -40,6 +41,24 @@ public class RawPaymentLinkClient {
 
     public RawPaymentLinkClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Generates a payment link for an invoice from the invoice ID.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+            int idInvoice, PaymentPageRequestBody body) {
+        return addPayLinkFromInvoice(
+                idInvoice, PayLinkDataInvoice.builder().body(body).build());
+    }
+
+    /**
+     * Generates a payment link for an invoice from the invoice ID.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+            int idInvoice, PaymentPageRequestBody body, RequestOptions requestOptions) {
+        return addPayLinkFromInvoice(
+                idInvoice, PayLinkDataInvoice.builder().body(body).build(), requestOptions);
     }
 
     /**
@@ -66,6 +85,11 @@ public class RawPaymentLinkClient {
         if (request.getMail2().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "mail2", request.getMail2().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -128,6 +152,22 @@ public class RawPaymentLinkClient {
      * Generates a payment link for a bill from the bill ID.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+            int billId, PaymentPageRequestBody body) {
+        return addPayLinkFromBill(billId, PayLinkDataBill.builder().body(body).build());
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+            int billId, PaymentPageRequestBody body, RequestOptions requestOptions) {
+        return addPayLinkFromBill(billId, PayLinkDataBill.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Generates a payment link for a bill from the bill ID.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PayLinkDataBill request) {
         return addPayLinkFromBill(billId, request, null);
     }
@@ -148,6 +188,11 @@ public class RawPaymentLinkClient {
         if (request.getMail2().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "mail2", request.getMail2().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -218,13 +263,17 @@ public class RawPaymentLinkClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> deletePayLinkFromId(
             String payLinkId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentLink")
-                .addPathSegment(payLinkId)
-                .build();
+                .addPathSegment(payLinkId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -280,13 +329,17 @@ public class RawPaymentLinkClient {
      */
     public PayabliApiHttpResponse<GetPayLinkFromIdResponse> getPayLinkFromId(
             String paylinkId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentLink/load")
-                .addPathSegment(paylinkId)
-                .build();
+                .addPathSegment(paylinkId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -343,11 +396,15 @@ public class RawPaymentLinkClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> pushPayLinkFromId(
             String payLinkId, PushPayLinkRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentLink/push")
-                .addPathSegment(payLinkId)
-                .build();
+                .addPathSegment(payLinkId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -356,7 +413,7 @@ public class RawPaymentLinkClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -413,6 +470,15 @@ public class RawPaymentLinkClient {
      * Refresh a payment link's content after an update.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
+            String payLinkId, RequestOptions requestOptions) {
+        return refreshPayLinkFromId(
+                payLinkId, RefreshPayLinkFromIdRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Refresh a payment link's content after an update.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
             String payLinkId, RefreshPayLinkFromIdRequest request) {
         return refreshPayLinkFromId(payLinkId, request, null);
     }
@@ -429,6 +495,11 @@ public class RawPaymentLinkClient {
         if (request.getAmountFixed().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "amountFixed", request.getAmountFixed().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -486,6 +557,14 @@ public class RawPaymentLinkClient {
      * Sends a payment link to the specified email addresses.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
+            String payLinkId, RequestOptions requestOptions) {
+        return sendPayLinkFromId(payLinkId, SendPayLinkFromIdRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Sends a payment link to the specified email addresses.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
             String payLinkId, SendPayLinkFromIdRequest request) {
         return sendPayLinkFromId(payLinkId, request, null);
     }
@@ -506,6 +585,11 @@ public class RawPaymentLinkClient {
         if (request.getMail2().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "mail2", request.getMail2().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -563,6 +647,14 @@ public class RawPaymentLinkClient {
      * Updates a payment link's details.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
+            String payLinkId, RequestOptions requestOptions) {
+        return updatePayLinkFromId(payLinkId, PayLinkUpdateData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a payment link's details.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
             String payLinkId, PayLinkUpdateData request) {
         return updatePayLinkFromId(payLinkId, request, null);
     }
@@ -572,11 +664,15 @@ public class RawPaymentLinkClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
             String payLinkId, PayLinkUpdateData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentLink/update")
-                .addPathSegment(payLinkId)
-                .build();
+                .addPathSegment(payLinkId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -585,7 +681,7 @@ public class RawPaymentLinkClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -656,6 +752,11 @@ public class RawPaymentLinkClient {
         if (request.getAmountFixed().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "amountFixed", request.getAmountFixed().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {

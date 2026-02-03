@@ -106,7 +106,7 @@ public final class V2BadRequestError {
     }
 
     /**
-     * @return Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.
+     * @return Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
     @JsonProperty("code")
     public String getCode() {
@@ -214,7 +214,7 @@ public final class V2BadRequestError {
 
     public interface CodeStage {
         /**
-         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
          */
         _FinalStage code(@NotNull String code);
     }
@@ -339,8 +339,8 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
-         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/developers/references/pay-in-unified-response-codes">Pay In unified response codes reference</a> for more information.</p>
+         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

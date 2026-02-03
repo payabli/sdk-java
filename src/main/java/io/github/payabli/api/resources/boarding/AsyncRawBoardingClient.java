@@ -63,10 +63,14 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> addApplication(
             AddApplicationRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Boarding/app")
-                .build();
+                .addPathSegments("Boarding/app");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -75,7 +79,7 @@ public class AsyncRawBoardingClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -156,13 +160,17 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> deleteApplication(
             int appId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/app")
-                .addPathSegment(Integer.toString(appId))
-                .build();
+                .addPathSegment(Integer.toString(appId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -241,13 +249,17 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ApplicationDetailsRecord>> getApplication(
             int appId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/read")
-                .addPathSegment(Integer.toString(appId))
-                .build();
+                .addPathSegment(Integer.toString(appId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -323,6 +335,14 @@ public class AsyncRawBoardingClient {
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
     public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
+            String xId, RequestOptions requestOptions) {
+        return getApplicationByAuth(xId, RequestAppByAuth.builder().build(), requestOptions);
+    }
+
+    /**
+     * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
             String xId, RequestAppByAuth request) {
         return getApplicationByAuth(xId, request, null);
     }
@@ -332,11 +352,15 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
             String xId, RequestAppByAuth request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/read")
-                .addPathSegment(xId)
-                .build();
+                .addPathSegment(xId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -345,7 +369,7 @@ public class AsyncRawBoardingClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -424,13 +448,17 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getByIdLinkApplication(
             int boardingLinkId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/linkbyId")
-                .addPathSegment(Integer.toString(boardingLinkId))
-                .build();
+                .addPathSegment(Integer.toString(boardingLinkId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -508,13 +536,17 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getByTemplateIdLinkApplication(
             double templateId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/linkbyTemplate")
-                .addPathSegment(Double.toString(templateId))
-                .build();
+                .addPathSegment(Double.toString(templateId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -592,6 +624,15 @@ public class AsyncRawBoardingClient {
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> getExternalApplication(
+            int appId, String mail2, RequestOptions requestOptions) {
+        return getExternalApplication(
+                appId, mail2, GetExternalApplicationRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> getExternalApplication(
             int appId, String mail2, GetExternalApplicationRequest request) {
         return getExternalApplication(appId, mail2, request, null);
     }
@@ -609,6 +650,11 @@ public class AsyncRawBoardingClient {
         if (request.getSendEmail().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sendEmail", request.getSendEmail().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -689,13 +735,17 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getLinkApplication(
             String boardingLinkReference, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/link")
-                .addPathSegment(boardingLinkReference)
-                .build();
+                .addPathSegment(boardingLinkReference);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -771,6 +821,14 @@ public class AsyncRawBoardingClient {
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
+            int orgId, RequestOptions requestOptions) {
+        return listApplications(orgId, ListApplicationsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
             int orgId, ListApplicationsRequest request) {
         return listApplications(orgId, request, null);
     }
@@ -803,6 +861,11 @@ public class AsyncRawBoardingClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -882,6 +945,14 @@ public class AsyncRawBoardingClient {
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
+            int orgId, RequestOptions requestOptions) {
+        return listBoardingLinks(orgId, ListBoardingLinksRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Return a list of boarding links for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
             int orgId, ListBoardingLinksRequest request) {
         return listBoardingLinks(orgId, request, null);
     }
@@ -910,6 +981,11 @@ public class AsyncRawBoardingClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -990,6 +1066,14 @@ public class AsyncRawBoardingClient {
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
+            int appId, RequestOptions requestOptions) {
+        return updateApplication(appId, ApplicationData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
             int appId, ApplicationData request) {
         return updateApplication(appId, request, null);
     }
@@ -999,11 +1083,15 @@ public class AsyncRawBoardingClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
             int appId, ApplicationData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/app")
-                .addPathSegment(Integer.toString(appId))
-                .build();
+                .addPathSegment(Integer.toString(appId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -1012,7 +1100,7 @@ public class AsyncRawBoardingClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

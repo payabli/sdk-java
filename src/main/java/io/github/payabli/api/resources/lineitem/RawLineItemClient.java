@@ -43,6 +43,21 @@ public class RawLineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
+    public PayabliApiHttpResponse<PayabliApiResponse6> addItem(String entry, LineItem body) {
+        return addItem(entry, AddItemRequest.builder().body(body).build());
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponse6> addItem(
+            String entry, LineItem body, RequestOptions requestOptions) {
+        return addItem(entry, AddItemRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
     public PayabliApiHttpResponse<PayabliApiResponse6> addItem(String entry, AddItemRequest request) {
         return addItem(entry, request, null);
     }
@@ -52,11 +67,15 @@ public class RawLineItemClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse6> addItem(
             String entry, AddItemRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -65,7 +84,7 @@ public class RawLineItemClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -124,13 +143,17 @@ public class RawLineItemClient {
      * Deletes an item.
      */
     public PayabliApiHttpResponse<DeleteItemResponse> deleteItem(int lineItemId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(Integer.toString(lineItemId))
-                .build();
+                .addPathSegment(Integer.toString(lineItemId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -184,13 +207,17 @@ public class RawLineItemClient {
      * Gets an item by ID.
      */
     public PayabliApiHttpResponse<LineItemQueryRecord> getItem(int lineItemId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(Integer.toString(lineItemId))
-                .build();
+                .addPathSegment(Integer.toString(lineItemId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -243,6 +270,13 @@ public class RawLineItemClient {
     /**
      * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
      */
+    public PayabliApiHttpResponse<QueryResponseItems> listLineItems(String entry, RequestOptions requestOptions) {
+        return listLineItems(entry, ListLineItemsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+     */
     public PayabliApiHttpResponse<QueryResponseItems> listLineItems(String entry, ListLineItemsRequest request) {
         return listLineItems(entry, request, null);
     }
@@ -271,6 +305,11 @@ public class RawLineItemClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -328,11 +367,15 @@ public class RawLineItemClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse6> updateItem(
             int lineItemId, LineItem request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(Integer.toString(lineItemId))
-                .build();
+                .addPathSegment(Integer.toString(lineItemId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -341,7 +384,7 @@ public class RawLineItemClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

@@ -45,6 +45,16 @@ public class AsyncStatisticClient {
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
     public CompletableFuture<List<StatBasicExtendedQueryRecord>> basicStats(
+            String mode, String freq, int level, long entryId, RequestOptions requestOptions) {
+        return this.rawClient
+                .basicStats(mode, freq, level, entryId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+     */
+    public CompletableFuture<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId, BasicStatsRequest request) {
         return this.rawClient.basicStats(mode, freq, level, entryId, request).thenApply(response -> response.body());
     }
@@ -70,6 +80,16 @@ public class AsyncStatisticClient {
     public CompletableFuture<List<SubscriptionStatsQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId) {
         return this.rawClient.customerBasicStats(mode, freq, customerId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+     */
+    public CompletableFuture<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+            String mode, String freq, int customerId, RequestOptions requestOptions) {
+        return this.rawClient
+                .customerBasicStats(mode, freq, customerId, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
@@ -107,6 +127,14 @@ public class AsyncStatisticClient {
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
     public CompletableFuture<List<StatBasicQueryRecord>> subStats(
+            String interval, int level, long entryId, RequestOptions requestOptions) {
+        return this.rawClient.subStats(interval, level, entryId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves the subscription statistics for a given interval for a paypoint or organization.
+     */
+    public CompletableFuture<List<StatBasicQueryRecord>> subStats(
             String interval, int level, long entryId, SubStatsRequest request) {
         return this.rawClient.subStats(interval, level, entryId, request).thenApply(response -> response.body());
     }
@@ -127,6 +155,16 @@ public class AsyncStatisticClient {
     public CompletableFuture<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor) {
         return this.rawClient.vendorBasicStats(mode, freq, idVendor).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+     */
+    public CompletableFuture<List<StatisticsVendorQueryRecord>> vendorBasicStats(
+            String mode, String freq, int idVendor, RequestOptions requestOptions) {
+        return this.rawClient
+                .vendorBasicStats(mode, freq, idVendor, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**

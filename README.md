@@ -188,7 +188,6 @@ PayabliApiClient client = PayabliApiClient
 ### Timeouts
 
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
-
 ```java
 import io.github.payabli.api.PayabliApiClient;
 import io.github.payabli.api.core.RequestOptions;
@@ -196,7 +195,7 @@ import io.github.payabli.api.core.RequestOptions;
 // Client level
 PayabliApiClient client = PayabliApiClient
     .builder()
-    .timeout(10)
+    .timeout(60)
     .build();
 
 // Request level
@@ -204,7 +203,7 @@ client.moneyIn().getpaid(
     ...,
     RequestOptions
         .builder()
-        .timeout(10)
+        .timeout(60)
         .build()
 );
 ```
@@ -281,7 +280,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.308</version>
+  <version>0.0.309</version>
 </dependency>
 ```
 

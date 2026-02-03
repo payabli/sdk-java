@@ -32,6 +32,22 @@ public class CustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
      * If you don't include an identifier, the record is rejected.
      */
+    public PayabliApiResponseCustomerQuery addCustomer(String entry, CustomerData body) {
+        return this.rawClient.addCustomer(entry, body).body();
+    }
+
+    /**
+     * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
+     * If you don't include an identifier, the record is rejected.
+     */
+    public PayabliApiResponseCustomerQuery addCustomer(String entry, CustomerData body, RequestOptions requestOptions) {
+        return this.rawClient.addCustomer(entry, body, requestOptions).body();
+    }
+
+    /**
+     * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
+     * If you don't include an identifier, the record is rejected.
+     */
     public PayabliApiResponseCustomerQuery addCustomer(String entry, AddCustomerRequest request) {
         return this.rawClient.addCustomer(entry, request).body();
     }
@@ -109,6 +125,13 @@ public class CustomerClient {
      */
     public PayabliApiResponse00Responsedatanonobject updateCustomer(int customerId) {
         return this.rawClient.updateCustomer(customerId).body();
+    }
+
+    /**
+     * Update a customer record. Include only the fields you want to change.
+     */
+    public PayabliApiResponse00Responsedatanonobject updateCustomer(int customerId, RequestOptions requestOptions) {
+        return this.rawClient.updateCustomer(customerId, requestOptions).body();
     }
 
     /**

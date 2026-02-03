@@ -59,11 +59,15 @@ public class AsyncRawImportClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importBills(
             String entry, File file, ImportBillsRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/billsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
             String fileMimeType = Files.probeContentType(file.toPath());
@@ -74,7 +78,7 @@ public class AsyncRawImportClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", multipartBodyBuilder.build())
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
@@ -141,17 +145,16 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importBills(
             String entry, InputStream stream, String filename) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/billsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
         FileStream fs = new FileStream(stream, filename, null);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(null)));
         Request okhttpRequest = _requestBuilder.build();
@@ -214,17 +217,16 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importBills(
             String entry, InputStream stream, String filename, MediaType mediaType) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/billsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
         FileStream fs = new FileStream(stream, filename, mediaType);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(null)));
         Request okhttpRequest = _requestBuilder.build();
@@ -287,17 +289,21 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importBills(
             String entry, InputStream stream, String filename, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/billsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         FileStream fs = new FileStream(stream, filename, null);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(requestOptions)));
         Request okhttpRequest = _requestBuilder.build();
@@ -363,17 +369,21 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importBills(
             String entry, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/billsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         FileStream fs = new FileStream(stream, filename, mediaType);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(requestOptions)));
         Request okhttpRequest = _requestBuilder.build();
@@ -457,6 +467,11 @@ public class AsyncRawImportClient {
         if (request.getReplaceExisting().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "replaceExisting", request.getReplaceExisting().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
@@ -546,11 +561,15 @@ public class AsyncRawImportClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importVendor(
             String entry, File file, ImportVendorRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/vendorsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
             String fileMimeType = Files.probeContentType(file.toPath());
@@ -561,7 +580,7 @@ public class AsyncRawImportClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", multipartBodyBuilder.build())
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
@@ -601,17 +620,16 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importVendor(
             String entry, InputStream stream, String filename) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/vendorsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
         FileStream fs = new FileStream(stream, filename, null);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(null)));
         Request okhttpRequest = _requestBuilder.build();
@@ -647,17 +665,16 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importVendor(
             String entry, InputStream stream, String filename, MediaType mediaType) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/vendorsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
         FileStream fs = new FileStream(stream, filename, mediaType);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(null)));
         Request okhttpRequest = _requestBuilder.build();
@@ -693,17 +710,21 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importVendor(
             String entry, InputStream stream, String filename, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/vendorsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         FileStream fs = new FileStream(stream, filename, null);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(requestOptions)));
         Request okhttpRequest = _requestBuilder.build();
@@ -742,17 +763,21 @@ public class AsyncRawImportClient {
 
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseImport>> importVendor(
             String entry, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/vendorsForm")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         FileStream fs = new FileStream(stream, filename, mediaType);
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
         RequestBody body = multipartBodyBuilder.build();
         Request.Builder _requestBuilder = new Request.Builder();
-        _requestBuilder.url(httpUrl);
+        _requestBuilder.url(httpUrl.build());
         _requestBuilder.method("POST", body);
         _requestBuilder.headers(Headers.of(this.clientOptions.headers(requestOptions)));
         Request okhttpRequest = _requestBuilder.build();

@@ -52,13 +52,17 @@ public class AsyncRawTemplatesClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(
             double templateId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Templates")
-                .addPathSegment(Double.toString(templateId))
-                .build();
+                .addPathSegment(Double.toString(templateId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -137,14 +141,18 @@ public class AsyncRawTemplatesClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
             double templateId, boolean ignoreEmpty, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Templates/getlink")
                 .addPathSegment(Double.toString(templateId))
-                .addPathSegment(Boolean.toString(ignoreEmpty))
-                .build();
+                .addPathSegment(Boolean.toString(ignoreEmpty));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -221,13 +229,17 @@ public class AsyncRawTemplatesClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<TemplateQueryRecord>> getTemplate(
             double templateId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Templates/get")
-                .addPathSegment(Double.toString(templateId))
-                .build();
+                .addPathSegment(Double.toString(templateId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -303,6 +315,14 @@ public class AsyncRawTemplatesClient {
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
     public CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> listTemplates(
+            int orgId, RequestOptions requestOptions) {
+        return listTemplates(orgId, ListTemplatesRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> listTemplates(
             int orgId, ListTemplatesRequest request) {
         return listTemplates(orgId, request, null);
     }
@@ -331,6 +351,11 @@ public class AsyncRawTemplatesClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

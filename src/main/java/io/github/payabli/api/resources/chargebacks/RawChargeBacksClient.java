@@ -45,6 +45,13 @@ public class RawChargeBacksClient {
     /**
      * Add a response to a chargeback or ACH return.
      */
+    public PayabliApiHttpResponse<AddResponseResponse> addResponse(long id, RequestOptions requestOptions) {
+        return addResponse(id, ResponseChargeBack.builder().build(), requestOptions);
+    }
+
+    /**
+     * Add a response to a chargeback or ACH return.
+     */
     public PayabliApiHttpResponse<AddResponseResponse> addResponse(long id, ResponseChargeBack request) {
         return addResponse(id, request, null);
     }
@@ -54,11 +61,15 @@ public class RawChargeBacksClient {
      */
     public PayabliApiHttpResponse<AddResponseResponse> addResponse(
             long id, ResponseChargeBack request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("ChargeBacks/response")
-                .addPathSegment(Long.toString(id))
-                .build();
+                .addPathSegment(Long.toString(id));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -67,7 +78,7 @@ public class RawChargeBacksClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -126,13 +137,17 @@ public class RawChargeBacksClient {
      * Retrieves a chargeback record and its details.
      */
     public PayabliApiHttpResponse<ChargebackQueryRecords> getChargeback(long id, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("ChargeBacks/read")
-                .addPathSegment(Long.toString(id))
-                .build();
+                .addPathSegment(Long.toString(id));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -188,14 +203,18 @@ public class RawChargeBacksClient {
      */
     public PayabliApiHttpResponse<String> getChargebackAttachment(
             long id, String fileName, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("ChargeBacks/getChargebackAttachments")
                 .addPathSegment(Long.toString(id))
-                .addPathSegment(fileName)
-                .build();
+                .addPathSegment(fileName);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

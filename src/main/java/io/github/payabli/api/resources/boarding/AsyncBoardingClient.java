@@ -91,6 +91,13 @@ public class AsyncBoardingClient {
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
+    public CompletableFuture<ApplicationQueryRecord> getApplicationByAuth(String xId, RequestOptions requestOptions) {
+        return this.rawClient.getApplicationByAuth(xId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
+     */
     public CompletableFuture<ApplicationQueryRecord> getApplicationByAuth(String xId, RequestAppByAuth request) {
         return this.rawClient.getApplicationByAuth(xId, request).thenApply(response -> response.body());
     }
@@ -148,6 +155,16 @@ public class AsyncBoardingClient {
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
     public CompletableFuture<PayabliApiResponse00> getExternalApplication(
+            int appId, String mail2, RequestOptions requestOptions) {
+        return this.rawClient
+                .getExternalApplication(appId, mail2, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
+     */
+    public CompletableFuture<PayabliApiResponse00> getExternalApplication(
             int appId, String mail2, GetExternalApplicationRequest request) {
         return this.rawClient.getExternalApplication(appId, mail2, request).thenApply(response -> response.body());
     }
@@ -189,6 +206,13 @@ public class AsyncBoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public CompletableFuture<QueryBoardingAppsListResponse> listApplications(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listApplications(orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public CompletableFuture<QueryBoardingAppsListResponse> listApplications(
             int orgId, ListApplicationsRequest request) {
         return this.rawClient.listApplications(orgId, request).thenApply(response -> response.body());
@@ -212,6 +236,13 @@ public class AsyncBoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
+    public CompletableFuture<QueryBoardingLinksResponse> listBoardingLinks(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listBoardingLinks(orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Return a list of boarding links for an organization. Use filters to limit results.
+     */
     public CompletableFuture<QueryBoardingLinksResponse> listBoardingLinks(
             int orgId, ListBoardingLinksRequest request) {
         return this.rawClient.listBoardingLinks(orgId, request).thenApply(response -> response.body());
@@ -230,6 +261,14 @@ public class AsyncBoardingClient {
      */
     public CompletableFuture<PayabliApiResponse00Responsedatanonobject> updateApplication(int appId) {
         return this.rawClient.updateApplication(appId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> updateApplication(
+            int appId, RequestOptions requestOptions) {
+        return this.rawClient.updateApplication(appId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

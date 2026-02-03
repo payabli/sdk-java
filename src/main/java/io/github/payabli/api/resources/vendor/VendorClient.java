@@ -36,6 +36,13 @@ public class VendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
+    public PayabliApiResponseVendors addVendor(String entry, RequestOptions requestOptions) {
+        return this.rawClient.addVendor(entry, requestOptions).body();
+    }
+
+    /**
+     * Creates a vendor in an entrypoint.
+     */
     public PayabliApiResponseVendors addVendor(String entry, VendorData request) {
         return this.rawClient.addVendor(entry, request).body();
     }
@@ -66,6 +73,13 @@ public class VendorClient {
      */
     public PayabliApiResponseVendors editVendor(int idVendor) {
         return this.rawClient.editVendor(idVendor).body();
+    }
+
+    /**
+     * Updates a vendor's information. Send only the fields you need to update.
+     */
+    public PayabliApiResponseVendors editVendor(int idVendor, RequestOptions requestOptions) {
+        return this.rawClient.editVendor(idVendor, requestOptions).body();
     }
 
     /**

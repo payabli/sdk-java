@@ -33,6 +33,23 @@ public class AsyncCustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
      * If you don't include an identifier, the record is rejected.
      */
+    public CompletableFuture<PayabliApiResponseCustomerQuery> addCustomer(String entry, CustomerData body) {
+        return this.rawClient.addCustomer(entry, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
+     * If you don't include an identifier, the record is rejected.
+     */
+    public CompletableFuture<PayabliApiResponseCustomerQuery> addCustomer(
+            String entry, CustomerData body, RequestOptions requestOptions) {
+        return this.rawClient.addCustomer(entry, body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in PartnerHub.
+     * If you don't include an identifier, the record is rejected.
+     */
     public CompletableFuture<PayabliApiResponseCustomerQuery> addCustomer(String entry, AddCustomerRequest request) {
         return this.rawClient.addCustomer(entry, request).thenApply(response -> response.body());
     }
@@ -113,6 +130,14 @@ public class AsyncCustomerClient {
      */
     public CompletableFuture<PayabliApiResponse00Responsedatanonobject> updateCustomer(int customerId) {
         return this.rawClient.updateCustomer(customerId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Update a customer record. Include only the fields you want to change.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> updateCustomer(
+            int customerId, RequestOptions requestOptions) {
+        return this.rawClient.updateCustomer(customerId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

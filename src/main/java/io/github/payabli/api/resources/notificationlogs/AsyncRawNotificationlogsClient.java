@@ -20,6 +20,7 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
 import io.github.payabli.api.resources.notificationlogs.types.NotificationLog;
 import io.github.payabli.api.resources.notificationlogs.types.NotificationLogDetail;
+import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
 import io.github.payabli.api.types.PayabliApiResponse;
 import java.io.IOException;
 import java.util.List;
@@ -41,6 +42,34 @@ public class AsyncRawNotificationlogsClient {
 
     public AsyncRawNotificationlogsClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Search notification logs with filtering and pagination.
+     * <ul>
+     * <li>Start date and end date cannot be more than 30 days apart</li>
+     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
+     * </ul>
+     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<List<NotificationLog>>> searchNotificationLogs(
+            NotificationLogSearchRequest body) {
+        return searchNotificationLogs(
+                SearchNotificationLogsRequest.builder().body(body).build());
+    }
+
+    /**
+     * Search notification logs with filtering and pagination.
+     * <ul>
+     * <li>Start date and end date cannot be more than 30 days apart</li>
+     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
+     * </ul>
+     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<List<NotificationLog>>> searchNotificationLogs(
+            NotificationLogSearchRequest body, RequestOptions requestOptions) {
+        return searchNotificationLogs(
+                SearchNotificationLogsRequest.builder().body(body).build(), requestOptions);
     }
 
     /**
@@ -77,6 +106,11 @@ public class AsyncRawNotificationlogsClient {
         if (request.getPage().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "Page", request.getPage().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         RequestBody body;
         try {
@@ -167,14 +201,18 @@ public class AsyncRawNotificationlogsClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> getNotificationLog(
             UUID uuid, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2")
                 .addPathSegments("notificationlogs")
-                .addPathSegment(uuid.toString())
-                .build();
+                .addPathSegment(uuid.toString());
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -253,15 +291,19 @@ public class AsyncRawNotificationlogsClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> retryNotificationLog(
             UUID uuid, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2")
                 .addPathSegments("notificationlogs")
                 .addPathSegment(uuid.toString())
-                .addPathSegments("retry")
-                .build();
+                .addPathSegments("retry");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -342,11 +384,15 @@ public class AsyncRawNotificationlogsClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<Void>> bulkRetryNotificationLogs(
             List<UUID> request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2")
-                .addPathSegments("notificationlogs/retry")
-                .build();
+                .addPathSegments("notificationlogs/retry");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -355,7 +401,7 @@ public class AsyncRawNotificationlogsClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

@@ -83,6 +83,13 @@ public class TemplatesClient {
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
+    public TemplateQueryResponse listTemplates(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listTemplates(orgId, requestOptions).body();
+    }
+
+    /**
+     * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
+     */
     public TemplateQueryResponse listTemplates(int orgId, ListTemplatesRequest request) {
         return this.rawClient.listTemplates(orgId, request).body();
     }

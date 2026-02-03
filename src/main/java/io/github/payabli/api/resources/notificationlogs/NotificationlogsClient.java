@@ -8,6 +8,7 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
 import io.github.payabli.api.resources.notificationlogs.types.NotificationLog;
 import io.github.payabli.api.resources.notificationlogs.types.NotificationLogDetail;
+import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,31 @@ public class NotificationlogsClient {
      */
     public RawNotificationlogsClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * Search notification logs with filtering and pagination.
+     * <ul>
+     * <li>Start date and end date cannot be more than 30 days apart</li>
+     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
+     * </ul>
+     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
+     */
+    public List<NotificationLog> searchNotificationLogs(NotificationLogSearchRequest body) {
+        return this.rawClient.searchNotificationLogs(body).body();
+    }
+
+    /**
+     * Search notification logs with filtering and pagination.
+     * <ul>
+     * <li>Start date and end date cannot be more than 30 days apart</li>
+     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
+     * </ul>
+     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
+     */
+    public List<NotificationLog> searchNotificationLogs(
+            NotificationLogSearchRequest body, RequestOptions requestOptions) {
+        return this.rawClient.searchNotificationLogs(body, requestOptions).body();
     }
 
     /**

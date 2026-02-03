@@ -49,6 +49,14 @@ public class AsyncRawOcrClient {
      * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
+            String typeResult, RequestOptions requestOptions) {
+        return ocrDocumentForm(typeResult, FileContentImageOnly.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
             String typeResult, FileContentImageOnly request) {
         return ocrDocumentForm(typeResult, request, null);
     }
@@ -58,12 +66,16 @@ public class AsyncRawOcrClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
             String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import")
                 .addPathSegments("ocrDocumentForm")
-                .addPathSegment(typeResult)
-                .build();
+                .addPathSegment(typeResult);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -72,7 +84,7 @@ public class AsyncRawOcrClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -149,6 +161,14 @@ public class AsyncRawOcrClient {
      * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(
+            String typeResult, RequestOptions requestOptions) {
+        return ocrDocumentJson(typeResult, FileContentImageOnly.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(
             String typeResult, FileContentImageOnly request) {
         return ocrDocumentJson(typeResult, request, null);
     }
@@ -158,12 +178,16 @@ public class AsyncRawOcrClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(
             String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import")
                 .addPathSegments("ocrDocumentJson")
-                .addPathSegment(typeResult)
-                .build();
+                .addPathSegment(typeResult);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -172,7 +196,7 @@ public class AsyncRawOcrClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

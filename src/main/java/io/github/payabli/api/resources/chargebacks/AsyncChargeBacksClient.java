@@ -37,6 +37,13 @@ public class AsyncChargeBacksClient {
     /**
      * Add a response to a chargeback or ACH return.
      */
+    public CompletableFuture<AddResponseResponse> addResponse(long id, RequestOptions requestOptions) {
+        return this.rawClient.addResponse(id, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Add a response to a chargeback or ACH return.
+     */
     public CompletableFuture<AddResponseResponse> addResponse(long id, ResponseChargeBack request) {
         return this.rawClient.addResponse(id, request).thenApply(response -> response.body());
     }

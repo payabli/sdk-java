@@ -47,6 +47,21 @@ public class AsyncRawLineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(String entry, LineItem body) {
+        return addItem(entry, AddItemRequest.builder().body(body).build());
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(
+            String entry, LineItem body, RequestOptions requestOptions) {
+        return addItem(entry, AddItemRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(
             String entry, AddItemRequest request) {
         return addItem(entry, request, null);
@@ -57,11 +72,15 @@ public class AsyncRawLineItemClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(
             String entry, AddItemRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -70,7 +89,7 @@ public class AsyncRawLineItemClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -152,13 +171,17 @@ public class AsyncRawLineItemClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<DeleteItemResponse>> deleteItem(
             int lineItemId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(Integer.toString(lineItemId))
-                .build();
+                .addPathSegment(Integer.toString(lineItemId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -235,13 +258,17 @@ public class AsyncRawLineItemClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<LineItemQueryRecord>> getItem(
             int lineItemId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(Integer.toString(lineItemId))
-                .build();
+                .addPathSegment(Integer.toString(lineItemId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -317,6 +344,14 @@ public class AsyncRawLineItemClient {
      * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
      */
     public CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> listLineItems(
+            String entry, RequestOptions requestOptions) {
+        return listLineItems(entry, ListLineItemsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> listLineItems(
             String entry, ListLineItemsRequest request) {
         return listLineItems(entry, request, null);
     }
@@ -345,6 +380,11 @@ public class AsyncRawLineItemClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -424,11 +464,15 @@ public class AsyncRawLineItemClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> updateItem(
             int lineItemId, LineItem request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("LineItem")
-                .addPathSegment(Integer.toString(lineItemId))
-                .build();
+                .addPathSegment(Integer.toString(lineItemId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -437,7 +481,7 @@ public class AsyncRawLineItemClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

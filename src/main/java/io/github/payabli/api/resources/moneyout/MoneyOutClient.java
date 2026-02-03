@@ -10,6 +10,7 @@ import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
+import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
 import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
 import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
@@ -32,6 +33,20 @@ public class MoneyOutClient {
      */
     public RawMoneyOutClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     */
+    public AuthCapturePayoutResponse authorizeOut(AuthorizePayoutBody body) {
+        return this.rawClient.authorizeOut(body).body();
+    }
+
+    /**
+     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     */
+    public AuthCapturePayoutResponse authorizeOut(AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return this.rawClient.authorizeOut(body, requestOptions).body();
     }
 
     /**
@@ -94,6 +109,20 @@ public class MoneyOutClient {
     /**
      * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
      */
+    public CaptureAllOutResponse captureAllOut(List<String> body) {
+        return this.rawClient.captureAllOut(body).body();
+    }
+
+    /**
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+     */
+    public CaptureAllOutResponse captureAllOut(List<String> body, RequestOptions requestOptions) {
+        return this.rawClient.captureAllOut(body, requestOptions).body();
+    }
+
+    /**
+     * Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+     */
     public CaptureAllOutResponse captureAllOut(CaptureAllOutRequest request) {
         return this.rawClient.captureAllOut(request).body();
     }
@@ -110,6 +139,13 @@ public class MoneyOutClient {
      */
     public AuthCapturePayoutResponse captureOut(String referenceId) {
         return this.rawClient.captureOut(referenceId).body();
+    }
+
+    /**
+     * Captures a single authorized payout transaction by ID.
+     */
+    public AuthCapturePayoutResponse captureOut(String referenceId, RequestOptions requestOptions) {
+        return this.rawClient.captureOut(referenceId, requestOptions).body();
     }
 
     /**

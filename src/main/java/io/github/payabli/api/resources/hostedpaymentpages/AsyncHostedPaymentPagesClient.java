@@ -45,6 +45,23 @@ public class AsyncHostedPaymentPagesClient {
      * Creates a new payment page for a paypoint.
      * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
      */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> newPage(String entry, PayabliPages body) {
+        return this.rawClient.newPage(entry, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a new payment page for a paypoint.
+     * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> newPage(
+            String entry, PayabliPages body, RequestOptions requestOptions) {
+        return this.rawClient.newPage(entry, body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a new payment page for a paypoint.
+     * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+     */
     public CompletableFuture<PayabliApiResponse00Responsedatanonobject> newPage(String entry, NewPageRequest request) {
         return this.rawClient.newPage(entry, request).thenApply(response -> response.body());
     }
@@ -63,6 +80,14 @@ public class AsyncHostedPaymentPagesClient {
      */
     public CompletableFuture<PayabliApiResponse00Responsedatanonobject> savePage(String entry, String subdomain) {
         return this.rawClient.savePage(entry, subdomain).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a payment page in a paypoint.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> savePage(
+            String entry, String subdomain, RequestOptions requestOptions) {
+        return this.rawClient.savePage(entry, subdomain, requestOptions).thenApply(response -> response.body());
     }
 
     /**

@@ -34,6 +34,20 @@ public class AsyncLineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
+    public CompletableFuture<PayabliApiResponse6> addItem(String entry, LineItem body) {
+        return this.rawClient.addItem(entry, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
+    public CompletableFuture<PayabliApiResponse6> addItem(String entry, LineItem body, RequestOptions requestOptions) {
+        return this.rawClient.addItem(entry, body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
     public CompletableFuture<PayabliApiResponse6> addItem(String entry, AddItemRequest request) {
         return this.rawClient.addItem(entry, request).thenApply(response -> response.body());
     }
@@ -79,6 +93,13 @@ public class AsyncLineItemClient {
      */
     public CompletableFuture<QueryResponseItems> listLineItems(String entry) {
         return this.rawClient.listLineItems(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+     */
+    public CompletableFuture<QueryResponseItems> listLineItems(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listLineItems(entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**

@@ -12,6 +12,7 @@ import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
 import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
+import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
 import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
 import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
 import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
@@ -34,6 +35,20 @@ public class InvoiceClient {
      */
     public RawInvoiceClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * Creates an invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData addInvoice(String entry, InvoiceDataRequest body) {
+        return this.rawClient.addInvoice(entry, body).body();
+    }
+
+    /**
+     * Creates an invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData addInvoice(String entry, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return this.rawClient.addInvoice(entry, body, requestOptions).body();
     }
 
     /**
@@ -85,6 +100,21 @@ public class InvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
+    public InvoiceResponseWithoutData editInvoice(int idInvoice, InvoiceDataRequest body) {
+        return this.rawClient.editInvoice(idInvoice, body).body();
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData editInvoice(
+            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return this.rawClient.editInvoice(idInvoice, body, requestOptions).body();
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
     public InvoiceResponseWithoutData editInvoice(int idInvoice, EditInvoiceRequest request) {
         return this.rawClient.editInvoice(idInvoice, request).body();
     }
@@ -102,6 +132,15 @@ public class InvoiceClient {
      */
     public FileContent getAttachedFileFromInvoice(int idInvoice, String filename) {
         return this.rawClient.getAttachedFileFromInvoice(idInvoice, filename).body();
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public FileContent getAttachedFileFromInvoice(int idInvoice, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .getAttachedFileFromInvoice(idInvoice, filename, requestOptions)
+                .body();
     }
 
     /**
@@ -162,6 +201,13 @@ public class InvoiceClient {
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public QueryInvoiceResponse listInvoices(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listInvoices(entry, requestOptions).body();
+    }
+
+    /**
+     * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public QueryInvoiceResponse listInvoices(String entry, ListInvoicesRequest request) {
         return this.rawClient.listInvoices(entry, request).body();
     }
@@ -178,6 +224,13 @@ public class InvoiceClient {
      */
     public QueryInvoiceResponse listInvoicesOrg(int orgId) {
         return this.rawClient.listInvoicesOrg(orgId).body();
+    }
+
+    /**
+     * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public QueryInvoiceResponse listInvoicesOrg(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listInvoicesOrg(orgId, requestOptions).body();
     }
 
     /**
@@ -200,6 +253,13 @@ public class InvoiceClient {
      */
     public SendInvoiceResponse sendInvoice(int idInvoice) {
         return this.rawClient.sendInvoice(idInvoice).body();
+    }
+
+    /**
+     * Sends an invoice from an entrypoint via email.
+     */
+    public SendInvoiceResponse sendInvoice(int idInvoice, RequestOptions requestOptions) {
+        return this.rawClient.sendInvoice(idInvoice, requestOptions).body();
     }
 
     /**

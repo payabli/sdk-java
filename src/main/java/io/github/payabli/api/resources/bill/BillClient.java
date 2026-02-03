@@ -42,6 +42,20 @@ public class BillClient {
     /**
      * Creates a bill in an entrypoint.
      */
+    public BillResponse addBill(String entry, BillOutData body) {
+        return this.rawClient.addBill(entry, body).body();
+    }
+
+    /**
+     * Creates a bill in an entrypoint.
+     */
+    public BillResponse addBill(String entry, BillOutData body, RequestOptions requestOptions) {
+        return this.rawClient.addBill(entry, body, requestOptions).body();
+    }
+
+    /**
+     * Creates a bill in an entrypoint.
+     */
     public BillResponse addBill(String entry, AddBillRequest request) {
         return this.rawClient.addBill(entry, request).body();
     }
@@ -58,6 +72,15 @@ public class BillClient {
      */
     public BillResponse deleteAttachedFromBill(int idBill, String filename) {
         return this.rawClient.deleteAttachedFromBill(idBill, filename).body();
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public BillResponse deleteAttachedFromBill(int idBill, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromBill(idBill, filename, requestOptions)
+                .body();
     }
 
     /**
@@ -101,6 +124,13 @@ public class BillClient {
     /**
      * Updates a bill by ID.
      */
+    public EditBillResponse editBill(int idBill, RequestOptions requestOptions) {
+        return this.rawClient.editBill(idBill, requestOptions).body();
+    }
+
+    /**
+     * Updates a bill by ID.
+     */
     public EditBillResponse editBill(int idBill, BillOutData request) {
         return this.rawClient.editBill(idBill, request).body();
     }
@@ -117,6 +147,15 @@ public class BillClient {
      */
     public FileContent getAttachedFromBill(int idBill, String filename) {
         return this.rawClient.getAttachedFromBill(idBill, filename).body();
+    }
+
+    /**
+     * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
+     */
+    public FileContent getAttachedFromBill(int idBill, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .getAttachedFromBill(idBill, filename, requestOptions)
+                .body();
     }
 
     /**
@@ -160,6 +199,13 @@ public class BillClient {
     /**
      * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
+    public BillQueryResponse listBills(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listBills(entry, requestOptions).body();
+    }
+
+    /**
+     * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
     public BillQueryResponse listBills(String entry, ListBillsRequest request) {
         return this.rawClient.listBills(entry, request).body();
     }
@@ -176,6 +222,13 @@ public class BillClient {
      */
     public BillQueryResponse listBillsOrg(int orgId) {
         return this.rawClient.listBillsOrg(orgId).body();
+    }
+
+    /**
+     * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public BillQueryResponse listBillsOrg(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listBillsOrg(orgId, requestOptions).body();
     }
 
     /**
@@ -212,6 +265,20 @@ public class BillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
+    public BillResponse sendToApprovalBill(int idBill, List<String> body) {
+        return this.rawClient.sendToApprovalBill(idBill, body).body();
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public BillResponse sendToApprovalBill(int idBill, List<String> body, RequestOptions requestOptions) {
+        return this.rawClient.sendToApprovalBill(idBill, body, requestOptions).body();
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
     public BillResponse sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
         return this.rawClient.sendToApprovalBill(idBill, request).body();
     }
@@ -231,6 +298,13 @@ public class BillClient {
      */
     public SetApprovedBillResponse setApprovedBill(int idBill, String approved) {
         return this.rawClient.setApprovedBill(idBill, approved).body();
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public SetApprovedBillResponse setApprovedBill(int idBill, String approved, RequestOptions requestOptions) {
+        return this.rawClient.setApprovedBill(idBill, approved, requestOptions).body();
     }
 
     /**

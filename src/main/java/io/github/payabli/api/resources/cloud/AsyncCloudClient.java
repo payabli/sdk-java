@@ -39,6 +39,13 @@ public class AsyncCloudClient {
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
+    public CompletableFuture<AddDeviceResponse> addDevice(String entry, RequestOptions requestOptions) {
+        return this.rawClient.addDevice(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
+     */
     public CompletableFuture<AddDeviceResponse> addDevice(String entry, DeviceEntry request) {
         return this.rawClient.addDevice(entry, request).thenApply(response -> response.body());
     }
@@ -71,6 +78,13 @@ public class AsyncCloudClient {
      */
     public CompletableFuture<CloudQueryApiResponse> listDevice(String entry) {
         return this.rawClient.listDevice(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of cloud devices registered to an entrypoint.
+     */
+    public CompletableFuture<CloudQueryApiResponse> listDevice(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listDevice(entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**

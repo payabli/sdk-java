@@ -45,6 +45,13 @@ public class RawVendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
+    public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(String entry, RequestOptions requestOptions) {
+        return addVendor(entry, VendorData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Creates a vendor in an entrypoint.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(String entry, VendorData request) {
         return addVendor(entry, request, null);
     }
@@ -54,11 +61,15 @@ public class RawVendorClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(
             String entry, VendorData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor/single")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -67,7 +78,7 @@ public class RawVendorClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -123,13 +134,17 @@ public class RawVendorClient {
      * Delete a vendor.
      */
     public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
-                .addPathSegment(Integer.toString(idVendor))
-                .build();
+                .addPathSegment(Integer.toString(idVendor));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -183,6 +198,13 @@ public class RawVendorClient {
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
+    public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor, RequestOptions requestOptions) {
+        return editVendor(idVendor, VendorData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a vendor's information. Send only the fields you need to update.
+     */
     public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor, VendorData request) {
         return editVendor(idVendor, request, null);
     }
@@ -192,11 +214,15 @@ public class RawVendorClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(
             int idVendor, VendorData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
-                .addPathSegment(Integer.toString(idVendor))
-                .build();
+                .addPathSegment(Integer.toString(idVendor));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -205,7 +231,7 @@ public class RawVendorClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -261,13 +287,17 @@ public class RawVendorClient {
      * Retrieves a vendor's details.
      */
     public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
-                .addPathSegment(Integer.toString(idVendor))
-                .build();
+                .addPathSegment(Integer.toString(idVendor));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

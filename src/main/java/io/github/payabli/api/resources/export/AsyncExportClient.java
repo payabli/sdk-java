@@ -66,6 +66,14 @@ public class AsyncExportClient {
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportApplications(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportApplications(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of boarding applications for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportApplications(
             ExportFormat1 format, int orgId, ExportApplicationsRequest request) {
         return this.rawClient.exportApplications(format, orgId, request).thenApply(response -> response.body());
     }
@@ -85,6 +93,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetails(ExportFormat1 format, String entry) {
         return this.rawClient.exportBatchDetails(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBatchDetails(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportBatchDetails(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -116,6 +132,16 @@ public class AsyncExportClient {
      * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetailsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient
+                .exportBatchDetailsOrg(format, orgId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request) {
         return this.rawClient.exportBatchDetailsOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -135,6 +161,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportBatches(ExportFormat1 format, String entry) {
         return this.rawClient.exportBatches(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of batches for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBatches(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportBatches(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -166,6 +200,14 @@ public class AsyncExportClient {
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportBatchesOrg(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of batches for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBatchesOrg(
             ExportFormat1 format, int orgId, ExportBatchesOrgRequest request) {
         return this.rawClient.exportBatchesOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -185,6 +227,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOut(ExportFormat1 format, String entry) {
         return this.rawClient.exportBatchesOut(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of money out batches for a paypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBatchesOut(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportBatchesOut(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -216,6 +266,14 @@ public class AsyncExportClient {
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOutOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportBatchesOutOrg(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of money out batches for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBatchesOutOrg(
             ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request) {
         return this.rawClient.exportBatchesOutOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -235,6 +293,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportBills(ExportFormat1 format, String entry) {
         return this.rawClient.exportBills(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of bills for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBills(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportBills(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -266,6 +332,14 @@ public class AsyncExportClient {
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBillsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportBillsOrg(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of bills for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportBillsOrg(
             ExportFormat1 format, int orgId, ExportBillsOrgRequest request) {
         return this.rawClient.exportBillsOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -285,6 +359,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportChargebacks(ExportFormat1 format, String entry) {
         return this.rawClient.exportChargebacks(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportChargebacks(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportChargebacks(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -316,6 +398,16 @@ public class AsyncExportClient {
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacksOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient
+                .exportChargebacksOrg(format, orgId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportChargebacksOrg(
             ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request) {
         return this.rawClient.exportChargebacksOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -335,6 +427,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportCustomers(ExportFormat1 format, String entry) {
         return this.rawClient.exportCustomers(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of customers for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportCustomers(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportCustomers(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -366,6 +466,14 @@ public class AsyncExportClient {
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomersOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportCustomersOrg(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Exports a list of customers for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportCustomersOrg(
             ExportFormat1 format, int orgId, ExportCustomersOrgRequest request) {
         return this.rawClient.exportCustomersOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -385,6 +493,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportInvoices(ExportFormat1 format, String entry) {
         return this.rawClient.exportInvoices(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export list of invoices for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportInvoices(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportInvoices(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -416,6 +532,14 @@ public class AsyncExportClient {
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoicesOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportInvoicesOrg(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of invoices for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportInvoicesOrg(
             ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request) {
         return this.rawClient.exportInvoicesOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -435,6 +559,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportOrganizations(ExportFormat1 format, int orgId) {
         return this.rawClient.exportOrganizations(format, orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of child organizations (suborganizations) for a parent organization.
+     */
+    public CompletableFuture<Map<String, Object>> exportOrganizations(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportOrganizations(format, orgId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -466,6 +598,14 @@ public class AsyncExportClient {
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayout(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportPayout(format, entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportPayout(
             ExportFormat1 format, String entry, ExportPayoutRequest request) {
         return this.rawClient.exportPayout(format, entry, request).thenApply(response -> response.body());
     }
@@ -485,6 +625,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportPayoutOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportPayoutOrg(format, orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of payouts and their details for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportPayoutOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportPayoutOrg(format, orgId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -516,6 +664,14 @@ public class AsyncExportClient {
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPaypoints(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportPaypoints(format, orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of paypoints in an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportPaypoints(
             ExportFormat1 format, int orgId, ExportPaypointsRequest request) {
         return this.rawClient.exportPaypoints(format, orgId, request).thenApply(response -> response.body());
     }
@@ -535,6 +691,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportSettlements(ExportFormat1 format, String entry) {
         return this.rawClient.exportSettlements(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of settled transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportSettlements(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportSettlements(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -566,6 +730,16 @@ public class AsyncExportClient {
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlementsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient
+                .exportSettlementsOrg(format, orgId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of settled transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportSettlementsOrg(
             ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request) {
         return this.rawClient.exportSettlementsOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -585,6 +759,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptions(ExportFormat1 format, String entry) {
         return this.rawClient.exportSubscriptions(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of subscriptions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportSubscriptions(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportSubscriptions(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -616,6 +798,16 @@ public class AsyncExportClient {
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptionsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient
+                .exportSubscriptionsOrg(format, orgId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of subscriptions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportSubscriptionsOrg(
             ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request) {
         return this.rawClient.exportSubscriptionsOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -635,6 +827,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportTransactions(ExportFormat1 format, String entry) {
         return this.rawClient.exportTransactions(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     */
+    public CompletableFuture<Map<String, Object>> exportTransactions(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportTransactions(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -666,6 +866,16 @@ public class AsyncExportClient {
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactionsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient
+                .exportTransactionsOrg(format, orgId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     */
+    public CompletableFuture<Map<String, Object>> exportTransactionsOrg(
             ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request) {
         return this.rawClient.exportTransactionsOrg(format, orgId, request).thenApply(response -> response.body());
     }
@@ -686,6 +896,16 @@ public class AsyncExportClient {
     public CompletableFuture<Map<String, Object>> exportTransferDetails(
             ExportFormat1 format, String entry, long transferId) {
         return this.rawClient.exportTransferDetails(format, entry, transferId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of transfer details for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportTransferDetails(
+            ExportFormat1 format, String entry, long transferId, RequestOptions requestOptions) {
+        return this.rawClient
+                .exportTransferDetails(format, entry, transferId, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
@@ -722,6 +942,13 @@ public class AsyncExportClient {
     /**
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
+    public CompletableFuture<Map<String, Object>> exportTransfers(String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportTransfers(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of transfers for an entrypoint. Use filters to limit results.
+     */
     public CompletableFuture<Map<String, Object>> exportTransfers(String entry, ExportTransfersRequest request) {
         return this.rawClient.exportTransfers(entry, request).thenApply(response -> response.body());
     }
@@ -739,6 +966,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportVendors(ExportFormat1 format, String entry) {
         return this.rawClient.exportVendors(format, entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of vendors for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportVendors(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return this.rawClient.exportVendors(format, entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -764,6 +999,14 @@ public class AsyncExportClient {
      */
     public CompletableFuture<Map<String, Object>> exportVendorsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportVendorsOrg(format, orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Export a list of vendors for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<Map<String, Object>> exportVendorsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return this.rawClient.exportVendorsOrg(format, orgId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

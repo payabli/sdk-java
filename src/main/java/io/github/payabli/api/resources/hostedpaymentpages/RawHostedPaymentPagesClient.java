@@ -47,14 +47,18 @@ public class RawHostedPaymentPagesClient {
      */
     public PayabliApiHttpResponse<PayabliPages> loadPage(
             String entry, String subdomain, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/load")
                 .addPathSegment(entry)
-                .addPathSegment(subdomain)
-                .build();
+                .addPathSegment(subdomain);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -101,6 +105,23 @@ public class RawHostedPaymentPagesClient {
      * Creates a new payment page for a paypoint.
      * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
      */
+    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> newPage(String entry, PayabliPages body) {
+        return newPage(entry, NewPageRequest.builder().body(body).build());
+    }
+
+    /**
+     * Creates a new payment page for a paypoint.
+     * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> newPage(
+            String entry, PayabliPages body, RequestOptions requestOptions) {
+        return newPage(entry, NewPageRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Creates a new payment page for a paypoint.
+     * Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+     */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> newPage(
             String entry, NewPageRequest request) {
         return newPage(entry, request, null);
@@ -112,11 +133,15 @@ public class RawHostedPaymentPagesClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> newPage(
             String entry, NewPageRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -125,7 +150,7 @@ public class RawHostedPaymentPagesClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -186,6 +211,14 @@ public class RawHostedPaymentPagesClient {
      * Updates a payment page in a paypoint.
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> savePage(
+            String entry, String subdomain, RequestOptions requestOptions) {
+        return savePage(entry, subdomain, PayabliPages.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates a payment page in a paypoint.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> savePage(
             String entry, String subdomain, PayabliPages request) {
         return savePage(entry, subdomain, request, null);
     }
@@ -195,12 +228,16 @@ public class RawHostedPaymentPagesClient {
      */
     public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> savePage(
             String entry, String subdomain, PayabliPages request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
                 .addPathSegment(entry)
-                .addPathSegment(subdomain)
-                .build();
+                .addPathSegment(subdomain);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -209,7 +246,7 @@ public class RawHostedPaymentPagesClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

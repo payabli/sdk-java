@@ -9,6 +9,7 @@ import io.github.payabli.api.resources.subscription.requests.RequestSchedule;
 import io.github.payabli.api.resources.subscription.requests.RequestUpdateSchedule;
 import io.github.payabli.api.resources.subscription.types.AddSubscriptionResponse;
 import io.github.payabli.api.resources.subscription.types.RemoveSubscriptionResponse;
+import io.github.payabli.api.resources.subscription.types.SubscriptionRequestBody;
 import io.github.payabli.api.resources.subscription.types.UpdateSubscriptionResponse;
 import io.github.payabli.api.types.SubscriptionQueryRecords;
 import java.util.concurrent.CompletableFuture;
@@ -47,6 +48,21 @@ public class AsyncSubscriptionClient {
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency.
      */
+    public CompletableFuture<AddSubscriptionResponse> newSubscription(SubscriptionRequestBody body) {
+        return this.rawClient.newSubscription(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency.
+     */
+    public CompletableFuture<AddSubscriptionResponse> newSubscription(
+            SubscriptionRequestBody body, RequestOptions requestOptions) {
+        return this.rawClient.newSubscription(body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency.
+     */
     public CompletableFuture<AddSubscriptionResponse> newSubscription(RequestSchedule request) {
         return this.rawClient.newSubscription(request).thenApply(response -> response.body());
     }
@@ -78,6 +94,13 @@ public class AsyncSubscriptionClient {
      */
     public CompletableFuture<UpdateSubscriptionResponse> updateSubscription(int subId) {
         return this.rawClient.updateSubscription(subId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a subscription's details.
+     */
+    public CompletableFuture<UpdateSubscriptionResponse> updateSubscription(int subId, RequestOptions requestOptions) {
+        return this.rawClient.updateSubscription(subId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

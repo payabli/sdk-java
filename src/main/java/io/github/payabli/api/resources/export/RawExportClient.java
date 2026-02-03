@@ -75,6 +75,15 @@ public class RawExportClient {
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportApplications(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportApplications(
+                format, orgId, ExportApplicationsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of boarding applications for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportApplications(
             ExportFormat1 format, int orgId, ExportApplicationsRequest request) {
         return exportApplications(format, orgId, request, null);
     }
@@ -104,6 +113,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -163,6 +177,15 @@ public class RawExportClient {
      * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetails(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportBatchDetails(
+                format, entry, ExportBatchDetailsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetails(
             ExportFormat1 format, String entry, ExportBatchDetailsRequest request) {
         return exportBatchDetails(format, entry, request, null);
     }
@@ -192,6 +215,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -251,6 +279,15 @@ public class RawExportClient {
      * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetailsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportBatchDetailsOrg(
+                format, orgId, ExportBatchDetailsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request) {
         return exportBatchDetailsOrg(format, orgId, request, null);
     }
@@ -281,6 +318,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -339,6 +381,14 @@ public class RawExportClient {
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatches(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportBatches(format, entry, ExportBatchesRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of batches for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatches(
             ExportFormat1 format, String entry, ExportBatchesRequest request) {
         return exportBatches(format, entry, request, null);
     }
@@ -368,6 +418,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -426,6 +481,14 @@ public class RawExportClient {
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportBatchesOrg(format, orgId, ExportBatchesOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of batches for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOrg(
             ExportFormat1 format, int orgId, ExportBatchesOrgRequest request) {
         return exportBatchesOrg(format, orgId, request, null);
     }
@@ -456,6 +519,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -514,6 +582,14 @@ public class RawExportClient {
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOut(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportBatchesOut(format, entry, ExportBatchesOutRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of money out batches for a paypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOut(
             ExportFormat1 format, String entry, ExportBatchesOutRequest request) {
         return exportBatchesOut(format, entry, request, null);
     }
@@ -543,6 +619,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -602,6 +683,15 @@ public class RawExportClient {
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOutOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportBatchesOutOrg(
+                format, orgId, ExportBatchesOutOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of money out batches for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBatchesOutOrg(
             ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request) {
         return exportBatchesOutOrg(format, orgId, request, null);
     }
@@ -632,6 +722,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -690,6 +785,14 @@ public class RawExportClient {
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBills(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportBills(format, entry, ExportBillsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of bills for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBills(
             ExportFormat1 format, String entry, ExportBillsRequest request) {
         return exportBills(format, entry, request, null);
     }
@@ -719,6 +822,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -777,6 +885,14 @@ public class RawExportClient {
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportBillsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportBillsOrg(format, orgId, ExportBillsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of bills for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportBillsOrg(
             ExportFormat1 format, int orgId, ExportBillsOrgRequest request) {
         return exportBillsOrg(format, orgId, request, null);
     }
@@ -807,6 +923,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -866,6 +987,15 @@ public class RawExportClient {
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportChargebacks(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportChargebacks(
+                format, entry, ExportChargebacksRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportChargebacks(
             ExportFormat1 format, String entry, ExportChargebacksRequest request) {
         return exportChargebacks(format, entry, request, null);
     }
@@ -895,6 +1025,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -954,6 +1089,15 @@ public class RawExportClient {
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportChargebacksOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportChargebacksOrg(
+                format, orgId, ExportChargebacksOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportChargebacksOrg(
             ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request) {
         return exportChargebacksOrg(format, orgId, request, null);
     }
@@ -984,6 +1128,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1042,6 +1191,14 @@ public class RawExportClient {
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportCustomers(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportCustomers(format, entry, ExportCustomersRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of customers for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportCustomers(
             ExportFormat1 format, String entry, ExportCustomersRequest request) {
         return exportCustomers(format, entry, request, null);
     }
@@ -1071,6 +1228,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1130,6 +1292,15 @@ public class RawExportClient {
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportCustomersOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportCustomersOrg(
+                format, orgId, ExportCustomersOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Exports a list of customers for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportCustomersOrg(
             ExportFormat1 format, int orgId, ExportCustomersOrgRequest request) {
         return exportCustomersOrg(format, orgId, request, null);
     }
@@ -1160,6 +1331,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1218,6 +1394,14 @@ public class RawExportClient {
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportInvoices(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportInvoices(format, entry, ExportInvoicesRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export list of invoices for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportInvoices(
             ExportFormat1 format, String entry, ExportInvoicesRequest request) {
         return exportInvoices(format, entry, request, null);
     }
@@ -1247,6 +1431,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1306,6 +1495,15 @@ public class RawExportClient {
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportInvoicesOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportInvoicesOrg(
+                format, orgId, ExportInvoicesOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of invoices for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportInvoicesOrg(
             ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request) {
         return exportInvoicesOrg(format, orgId, request, null);
     }
@@ -1336,6 +1534,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1395,6 +1598,15 @@ public class RawExportClient {
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportOrganizations(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportOrganizations(
+                format, orgId, ExportOrganizationsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of child organizations (suborganizations) for a parent organization.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportOrganizations(
             ExportFormat1 format, int orgId, ExportOrganizationsRequest request) {
         return exportOrganizations(format, orgId, request, null);
     }
@@ -1425,6 +1637,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1483,6 +1700,14 @@ public class RawExportClient {
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPayout(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportPayout(format, entry, ExportPayoutRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportPayout(
             ExportFormat1 format, String entry, ExportPayoutRequest request) {
         return exportPayout(format, entry, request, null);
     }
@@ -1512,6 +1737,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1570,6 +1800,14 @@ public class RawExportClient {
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPayoutOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportPayoutOrg(format, orgId, ExportPayoutOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of payouts and their details for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportPayoutOrg(
             ExportFormat1 format, int orgId, ExportPayoutOrgRequest request) {
         return exportPayoutOrg(format, orgId, request, null);
     }
@@ -1600,6 +1838,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1658,6 +1901,14 @@ public class RawExportClient {
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportPaypoints(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportPaypoints(format, orgId, ExportPaypointsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of paypoints in an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportPaypoints(
             ExportFormat1 format, int orgId, ExportPaypointsRequest request) {
         return exportPaypoints(format, orgId, request, null);
     }
@@ -1687,6 +1938,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1746,6 +2002,15 @@ public class RawExportClient {
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSettlements(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportSettlements(
+                format, entry, ExportSettlementsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of settled transactions for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportSettlements(
             ExportFormat1 format, String entry, ExportSettlementsRequest request) {
         return exportSettlements(format, entry, request, null);
     }
@@ -1775,6 +2040,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1834,6 +2104,15 @@ public class RawExportClient {
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSettlementsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportSettlementsOrg(
+                format, orgId, ExportSettlementsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of settled transactions for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportSettlementsOrg(
             ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request) {
         return exportSettlementsOrg(format, orgId, request, null);
     }
@@ -1864,6 +2143,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -1923,6 +2207,15 @@ public class RawExportClient {
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptions(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportSubscriptions(
+                format, entry, ExportSubscriptionsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of subscriptions for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptions(
             ExportFormat1 format, String entry, ExportSubscriptionsRequest request) {
         return exportSubscriptions(format, entry, request, null);
     }
@@ -1952,6 +2245,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2011,6 +2309,15 @@ public class RawExportClient {
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptionsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportSubscriptionsOrg(
+                format, orgId, ExportSubscriptionsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of subscriptions for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportSubscriptionsOrg(
             ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request) {
         return exportSubscriptionsOrg(format, orgId, request, null);
     }
@@ -2041,6 +2348,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2100,6 +2412,15 @@ public class RawExportClient {
      * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransactions(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportTransactions(
+                format, entry, ExportTransactionsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportTransactions(
             ExportFormat1 format, String entry, ExportTransactionsRequest request) {
         return exportTransactions(format, entry, request, null);
     }
@@ -2129,6 +2450,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2188,6 +2514,15 @@ public class RawExportClient {
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransactionsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportTransactionsOrg(
+                format, orgId, ExportTransactionsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportTransactionsOrg(
             ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request) {
         return exportTransactionsOrg(format, orgId, request, null);
     }
@@ -2218,6 +2553,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2281,6 +2621,19 @@ public class RawExportClient {
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransferDetails(
+            ExportFormat1 format, String entry, long transferId, RequestOptions requestOptions) {
+        return exportTransferDetails(
+                format,
+                entry,
+                transferId,
+                ExportTransferDetailsRequest.builder().build(),
+                requestOptions);
+    }
+
+    /**
+     * Export a list of transfer details for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportTransferDetails(
             ExportFormat1 format, String entry, long transferId, ExportTransferDetailsRequest request) {
         return exportTransferDetails(format, entry, transferId, request, null);
     }
@@ -2319,6 +2672,11 @@ public class RawExportClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2376,6 +2734,13 @@ public class RawExportClient {
     /**
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
+    public PayabliApiHttpResponse<Map<String, Object>> exportTransfers(String entry, RequestOptions requestOptions) {
+        return exportTransfers(entry, ExportTransfersRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Get a list of transfers for an entrypoint. Use filters to limit results.
+     */
     public PayabliApiHttpResponse<Map<String, Object>> exportTransfers(String entry, ExportTransfersRequest request) {
         return exportTransfers(entry, request, null);
     }
@@ -2408,6 +2773,11 @@ public class RawExportClient {
         if (request.getSortBy().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2466,6 +2836,14 @@ public class RawExportClient {
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportVendors(
+            ExportFormat1 format, String entry, RequestOptions requestOptions) {
+        return exportVendors(format, entry, ExportVendorsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of vendors for an entrypoint. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportVendors(
             ExportFormat1 format, String entry, ExportVendorsRequest request) {
         return exportVendors(format, entry, request, null);
     }
@@ -2495,6 +2873,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -2553,6 +2936,14 @@ public class RawExportClient {
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public PayabliApiHttpResponse<Map<String, Object>> exportVendorsOrg(
+            ExportFormat1 format, int orgId, RequestOptions requestOptions) {
+        return exportVendorsOrg(format, orgId, ExportVendorsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Export a list of vendors for an organization. Use filters to limit results.
+     */
+    public PayabliApiHttpResponse<Map<String, Object>> exportVendorsOrg(
             ExportFormat1 format, int orgId, ExportVendorsOrgRequest request) {
         return exportVendorsOrg(format, orgId, request, null);
     }
@@ -2583,6 +2974,11 @@ public class RawExportClient {
         if (request.getParameters().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

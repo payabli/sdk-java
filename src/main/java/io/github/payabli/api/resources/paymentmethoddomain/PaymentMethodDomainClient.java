@@ -41,6 +41,13 @@ public class PaymentMethodDomainClient {
     /**
      * Add a payment method domain to an organization or paypoint.
      */
+    public AddPaymentMethodDomainApiResponse addPaymentMethodDomain(RequestOptions requestOptions) {
+        return this.rawClient.addPaymentMethodDomain(requestOptions).body();
+    }
+
+    /**
+     * Add a payment method domain to an organization or paypoint.
+     */
     public AddPaymentMethodDomainApiResponse addPaymentMethodDomain(AddPaymentMethodDomainRequest request) {
         return this.rawClient.addPaymentMethodDomain(request).body();
     }
@@ -110,6 +117,13 @@ public class PaymentMethodDomainClient {
     /**
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
+    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(RequestOptions requestOptions) {
+        return this.rawClient.listPaymentMethodDomains(requestOptions).body();
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
     public ListPaymentMethodDomainsResponse listPaymentMethodDomains(ListPaymentMethodDomainsRequest request) {
         return this.rawClient.listPaymentMethodDomains(request).body();
     }
@@ -127,6 +141,16 @@ public class PaymentMethodDomainClient {
      */
     public PaymentMethodDomainGeneralResponse updatePaymentMethodDomain(String domainId) {
         return this.rawClient.updatePaymentMethodDomain(domainId).body();
+    }
+
+    /**
+     * Update a payment method domain's configuration values.
+     */
+    public PaymentMethodDomainGeneralResponse updatePaymentMethodDomain(
+            String domainId, RequestOptions requestOptions) {
+        return this.rawClient
+                .updatePaymentMethodDomain(domainId, requestOptions)
+                .body();
     }
 
     /**

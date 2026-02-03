@@ -72,6 +72,13 @@ public class PaypointClient {
     /**
      * Gets the details for a single paypoint.
      */
+    public GetEntryConfigResponse getEntryConfig(String entry, RequestOptions requestOptions) {
+        return this.rawClient.getEntryConfig(entry, requestOptions).body();
+    }
+
+    /**
+     * Gets the details for a single paypoint.
+     */
     public GetEntryConfigResponse getEntryConfig(String entry, GetEntryConfigRequest request) {
         return this.rawClient.getEntryConfig(entry, request).body();
     }
@@ -117,6 +124,13 @@ public class PaypointClient {
      */
     public PayabliApiResponse00Responsedatanonobject saveLogo(String entry) {
         return this.rawClient.saveLogo(entry).body();
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry, RequestOptions requestOptions) {
+        return this.rawClient.saveLogo(entry, requestOptions).body();
     }
 
     /**

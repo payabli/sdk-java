@@ -51,10 +51,14 @@ public class RawOrganizationClient {
      */
     public PayabliApiHttpResponse<AddOrganizationResponse> addOrganization(
             AddOrganizationRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Organization")
-                .build();
+                .addPathSegments("Organization");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -63,7 +67,7 @@ public class RawOrganizationClient {
             throw new RuntimeException(e);
         }
         Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -124,13 +128,17 @@ public class RawOrganizationClient {
      */
     public PayabliApiHttpResponse<DeleteOrganizationResponse> deleteOrganization(
             int orgId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization")
-                .addPathSegment(Integer.toString(orgId))
-                .build();
+                .addPathSegment(Integer.toString(orgId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -184,6 +192,13 @@ public class RawOrganizationClient {
     /**
      * Updates an organization's details by ID.
      */
+    public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(int orgId, RequestOptions requestOptions) {
+        return editOrganization(orgId, OrganizationData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates an organization's details by ID.
+     */
     public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(int orgId, OrganizationData request) {
         return editOrganization(orgId, request, null);
     }
@@ -193,11 +208,15 @@ public class RawOrganizationClient {
      */
     public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(
             int orgId, OrganizationData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization")
-                .addPathSegment(Integer.toString(orgId))
-                .build();
+                .addPathSegment(Integer.toString(orgId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -206,7 +225,7 @@ public class RawOrganizationClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -263,13 +282,17 @@ public class RawOrganizationClient {
      */
     public PayabliApiHttpResponse<OrganizationQueryRecord> getBasicOrganization(
             String entry, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization/basic")
-                .addPathSegment(entry)
-                .build();
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -325,13 +348,17 @@ public class RawOrganizationClient {
      */
     public PayabliApiHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(
             int orgId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization/basicById")
-                .addPathSegment(Integer.toString(orgId))
-                .build();
+                .addPathSegment(Integer.toString(orgId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -386,13 +413,17 @@ public class RawOrganizationClient {
      * Retrieves details for an organization by ID.
      */
     public PayabliApiHttpResponse<OrganizationQueryRecord> getOrganization(int orgId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization/read")
-                .addPathSegment(Integer.toString(orgId))
-                .build();
+                .addPathSegment(Integer.toString(orgId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -448,13 +479,17 @@ public class RawOrganizationClient {
      */
     public PayabliApiHttpResponse<SettingsQueryRecord> getSettingsOrganization(
             int orgId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization/settings")
-                .addPathSegment(Integer.toString(orgId))
-                .build();
+                .addPathSegment(Integer.toString(orgId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")

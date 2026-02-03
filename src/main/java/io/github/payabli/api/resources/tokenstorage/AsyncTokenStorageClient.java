@@ -10,6 +10,7 @@ import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
 import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
+import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
 import java.util.concurrent.CompletableFuture;
 
@@ -54,6 +55,13 @@ public class AsyncTokenStorageClient {
     /**
      * Retrieves details for a saved payment method.
      */
+    public CompletableFuture<GetMethodResponse> getMethod(String methodId, RequestOptions requestOptions) {
+        return this.rawClient.getMethod(methodId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves details for a saved payment method.
+     */
     public CompletableFuture<GetMethodResponse> getMethod(String methodId, GetMethodRequest request) {
         return this.rawClient.getMethod(methodId, request).thenApply(response -> response.body());
     }
@@ -79,6 +87,22 @@ public class AsyncTokenStorageClient {
     public CompletableFuture<PayabliApiResponsePaymethodDelete> removeMethod(
             String methodId, RequestOptions requestOptions) {
         return this.rawClient.removeMethod(methodId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a saved payment method.
+     */
+    public CompletableFuture<PayabliApiResponsePaymethodDelete> updateMethod(
+            String methodId, RequestTokenStorage body) {
+        return this.rawClient.updateMethod(methodId, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a saved payment method.
+     */
+    public CompletableFuture<PayabliApiResponsePaymethodDelete> updateMethod(
+            String methodId, RequestTokenStorage body, RequestOptions requestOptions) {
+        return this.rawClient.updateMethod(methodId, body, requestOptions).thenApply(response -> response.body());
     }
 
     /**

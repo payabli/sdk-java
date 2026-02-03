@@ -63,6 +63,13 @@ public class AsyncRawUserClient {
     /**
      * Use this endpoint to add a new user to an organization.
      */
+    public CompletableFuture<PayabliApiHttpResponse<AddUserResponse>> addUser(RequestOptions requestOptions) {
+        return addUser(UserData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to add a new user to an organization.
+     */
     public CompletableFuture<PayabliApiHttpResponse<AddUserResponse>> addUser(UserData request) {
         return addUser(request, null);
     }
@@ -72,10 +79,14 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<AddUserResponse>> addUser(
             UserData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User")
-                .build();
+                .addPathSegments("User");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -84,7 +95,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -162,12 +173,16 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> authRefreshUser(
             RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/authrefresh")
-                .build();
+                .addPathSegments("User/authrefresh");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -244,6 +259,14 @@ public class AsyncRawUserClient {
      * Use this endpoint to initiate a password reset for a user within an organization.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
+            RequestOptions requestOptions) {
+        return authResetUser(UserAuthResetRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
             UserAuthResetRequest request) {
         return authResetUser(request, null);
     }
@@ -253,10 +276,14 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
             UserAuthResetRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/authreset")
-                .build();
+                .addPathSegments("User/authreset");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -265,7 +292,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -342,6 +369,14 @@ public class AsyncRawUserClient {
      * This endpoint requires an application API token.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseMfaBasic>> authUser(
+            String provider, RequestOptions requestOptions) {
+        return authUser(provider, UserAuthRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * This endpoint requires an application API token.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseMfaBasic>> authUser(
             String provider, UserAuthRequest request) {
         return authUser(provider, request, null);
     }
@@ -351,11 +386,15 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseMfaBasic>> authUser(
             String provider, UserAuthRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User/auth")
-                .addPathSegment(provider)
-                .build();
+                .addPathSegment(provider);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -364,7 +403,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -442,6 +481,14 @@ public class AsyncRawUserClient {
      * Use this endpoint to change the password for a user within an organization.
      */
     public CompletableFuture<PayabliApiHttpResponse<ChangePswUserResponse>> changePswUser(
+            RequestOptions requestOptions) {
+        return changePswUser(UserAuthPswResetRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to change the password for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ChangePswUserResponse>> changePswUser(
             UserAuthPswResetRequest request) {
         return changePswUser(request, null);
     }
@@ -451,10 +498,14 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<ChangePswUserResponse>> changePswUser(
             UserAuthPswResetRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/authpsw")
-                .build();
+                .addPathSegments("User/authpsw");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -463,7 +514,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -541,13 +592,17 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> deleteUser(
             long userId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User")
-                .addPathSegment(Long.toString(userId))
-                .build();
+                .addPathSegment(Long.toString(userId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -622,6 +677,14 @@ public class AsyncRawUserClient {
     /**
      * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
      */
+    public CompletableFuture<PayabliApiHttpResponse<EditMfaUserResponse>> editMfaUser(
+            long userId, RequestOptions requestOptions) {
+        return editMfaUser(userId, MfaData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+     */
     public CompletableFuture<PayabliApiHttpResponse<EditMfaUserResponse>> editMfaUser(long userId, MfaData request) {
         return editMfaUser(userId, request, null);
     }
@@ -631,11 +694,15 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<EditMfaUserResponse>> editMfaUser(
             long userId, MfaData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User/mfa")
-                .addPathSegment(Long.toString(userId))
-                .build();
+                .addPathSegment(Long.toString(userId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -644,7 +711,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -720,6 +787,14 @@ public class AsyncRawUserClient {
     /**
      * Use this endpoint to modify the details of a specific user within an organization.
      */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(
+            long userId, RequestOptions requestOptions) {
+        return editUser(userId, UserData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(long userId, UserData request) {
         return editUser(userId, request, null);
     }
@@ -729,11 +804,15 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(
             long userId, UserData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User")
-                .addPathSegment(Long.toString(userId))
-                .build();
+                .addPathSegment(Long.toString(userId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -742,7 +821,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -818,6 +897,14 @@ public class AsyncRawUserClient {
     /**
      * Use this endpoint to retrieve information about a specific user within an organization.
      */
+    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(
+            long userId, RequestOptions requestOptions) {
+        return getUser(userId, GetUserRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
     public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(long userId, GetUserRequest request) {
         return getUser(userId, request, null);
     }
@@ -838,6 +925,11 @@ public class AsyncRawUserClient {
         if (request.getLevel().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "level", request.getLevel().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -916,12 +1008,16 @@ public class AsyncRawUserClient {
      * Use this endpoint to log a user out from the system.
      */
     public CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> logoutUser(RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/authlogout")
-                .build();
+                .addPathSegments("User/authlogout");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -999,15 +1095,19 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseMfaBasic>> resendMfaCode(
             String usrname, String entry, int entryType, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User/resendmfa")
                 .addPathSegment(usrname)
                 .addPathSegment(entry)
-                .addPathSegment(Integer.toString(entryType))
-                .build();
+                .addPathSegment(Integer.toString(entryType));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -1084,6 +1184,14 @@ public class AsyncRawUserClient {
      * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
+            RequestOptions requestOptions) {
+        return validateMfaUser(MfaValidationData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
             MfaValidationData request) {
         return validateMfaUser(request, null);
     }
@@ -1093,10 +1201,14 @@ public class AsyncRawUserClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
             MfaValidationData request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/mfa")
-                .build();
+                .addPathSegments("User/mfa");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -1105,7 +1217,7 @@ public class AsyncRawUserClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")

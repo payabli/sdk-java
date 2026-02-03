@@ -57,7 +57,7 @@ public final class QueryTransactionEvents {
     }
 
     /**
-     * @return Event descriptor. See <a href="/developers/references/transevents">TransEvent Reference</a> for more details.
+     * @return Event descriptor. See <a href="/guides/pay-in-transevents-reference">TransEvent Reference</a> for more details.
      */
     @JsonProperty("TransEvent")
     public Optional<String> getTransEvent() {
@@ -144,7 +144,7 @@ public final class QueryTransactionEvents {
         }
 
         /**
-         * <p>Event descriptor. See <a href="/developers/references/transevents">TransEvent Reference</a> for more details.</p>
+         * <p>Event descriptor. See <a href="/guides/pay-in-transevents-reference">TransEvent Reference</a> for more details.</p>
          */
         @JsonSetter(value = "TransEvent", nulls = Nulls.SKIP)
         public Builder transEvent(Optional<String> transEvent) {

@@ -33,6 +33,20 @@ public class LineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
+    public PayabliApiResponse6 addItem(String entry, LineItem body) {
+        return this.rawClient.addItem(entry, body).body();
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
+    public PayabliApiResponse6 addItem(String entry, LineItem body, RequestOptions requestOptions) {
+        return this.rawClient.addItem(entry, body, requestOptions).body();
+    }
+
+    /**
+     * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
+     */
     public PayabliApiResponse6 addItem(String entry, AddItemRequest request) {
         return this.rawClient.addItem(entry, request).body();
     }
@@ -77,6 +91,13 @@ public class LineItemClient {
      */
     public QueryResponseItems listLineItems(String entry) {
         return this.rawClient.listLineItems(entry).body();
+    }
+
+    /**
+     * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+     */
+    public QueryResponseItems listLineItems(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listLineItems(entry, requestOptions).body();
     }
 
     /**

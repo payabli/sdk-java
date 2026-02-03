@@ -37,6 +37,13 @@ public class AsyncVendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
+    public CompletableFuture<PayabliApiResponseVendors> addVendor(String entry, RequestOptions requestOptions) {
+        return this.rawClient.addVendor(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a vendor in an entrypoint.
+     */
     public CompletableFuture<PayabliApiResponseVendors> addVendor(String entry, VendorData request) {
         return this.rawClient.addVendor(entry, request).thenApply(response -> response.body());
     }
@@ -68,6 +75,13 @@ public class AsyncVendorClient {
      */
     public CompletableFuture<PayabliApiResponseVendors> editVendor(int idVendor) {
         return this.rawClient.editVendor(idVendor).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a vendor's information. Send only the fields you need to update.
+     */
+    public CompletableFuture<PayabliApiResponseVendors> editVendor(int idVendor, RequestOptions requestOptions) {
+        return this.rawClient.editVendor(idVendor, requestOptions).thenApply(response -> response.body());
     }
 
     /**

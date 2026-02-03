@@ -56,6 +56,14 @@ public class AsyncRawPaymentMethodDomainClient {
      * Add a payment method domain to an organization or paypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
+            RequestOptions requestOptions) {
+        return addPaymentMethodDomain(AddPaymentMethodDomainRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Add a payment method domain to an organization or paypoint.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
             AddPaymentMethodDomainRequest request) {
         return addPaymentMethodDomain(request, null);
     }
@@ -65,10 +73,14 @@ public class AsyncRawPaymentMethodDomainClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
             AddPaymentMethodDomainRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("PaymentMethodDomain")
-                .build();
+                .addPathSegments("PaymentMethodDomain");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -77,7 +89,7 @@ public class AsyncRawPaymentMethodDomainClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -157,14 +169,18 @@ public class AsyncRawPaymentMethodDomainClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> cascadePaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
                 .addPathSegment(domainId)
-                .addPathSegments("cascade")
-                .build();
+                .addPathSegments("cascade");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -244,13 +260,17 @@ public class AsyncRawPaymentMethodDomainClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<DeletePaymentMethodDomainResponse>> deletePaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
-                .addPathSegment(domainId)
-                .build();
+                .addPathSegment(domainId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -329,13 +349,17 @@ public class AsyncRawPaymentMethodDomainClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainApiResponse>> getPaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
-                .addPathSegment(domainId)
-                .build();
+                .addPathSegment(domainId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
@@ -413,6 +437,15 @@ public class AsyncRawPaymentMethodDomainClient {
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
+            RequestOptions requestOptions) {
+        return listPaymentMethodDomains(
+                ListPaymentMethodDomainsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
             ListPaymentMethodDomainsRequest request) {
         return listPaymentMethodDomains(request, null);
     }
@@ -440,6 +473,11 @@ public class AsyncRawPaymentMethodDomainClient {
         if (request.getLimitRecord().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "limitRecord", request.getLimitRecord().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -521,6 +559,15 @@ public class AsyncRawPaymentMethodDomainClient {
      * Update a payment method domain's configuration values.
      */
     public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
+            String domainId, RequestOptions requestOptions) {
+        return updatePaymentMethodDomain(
+                domainId, UpdatePaymentMethodDomainRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Update a payment method domain's configuration values.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
             String domainId, UpdatePaymentMethodDomainRequest request) {
         return updatePaymentMethodDomain(domainId, request, null);
     }
@@ -530,11 +577,15 @@ public class AsyncRawPaymentMethodDomainClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
             String domainId, UpdatePaymentMethodDomainRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
-                .addPathSegment(domainId)
-                .build();
+                .addPathSegment(domainId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
@@ -543,7 +594,7 @@ public class AsyncRawPaymentMethodDomainClient {
             throw new PayabliApiException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("PATCH", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
@@ -624,14 +675,18 @@ public class AsyncRawPaymentMethodDomainClient {
      */
     public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> verifyPaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
                 .addPathSegment(domainId)
-                .addPathSegments("verify")
-                .build();
+                .addPathSegments("verify");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
         Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
