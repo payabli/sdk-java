@@ -7,5 +7,5 @@
     "package-prefix": "io.github.payabli.api",
     "enable-wire-tests": false
   },
-  "sdkVersion": "0.0.310"
+  "sdkVersion": "0.0.311"
 }

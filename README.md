@@ -7,6 +7,7 @@ The Payabli Java library provides convenient access to the Payabli APIs from Jav
 
 ## Table of Contents
 
+- [Passing Query Parameters](#passing-query-parameters)
 - [Usage](#usage)
 - [Environments](#environments)
 - [Base Url](#base-url)
@@ -21,6 +22,27 @@ The Payabli Java library provides convenient access to the Payabli APIs from Jav
 - [Documentation](#documentation)
 - [Installation](#installation)
 - [Reference](#reference)
+
+## Passing Query Parameters
+
+```java
+public static void main(String[] args) {
+    PayabliApiClient client = new PayabliApiClientBuilder()
+            .apiKey("API_KEY")
+            .build();
+
+    QueryCustomerResponse result = client.query().listCustomers(
+            "ENTRYPOINT",
+            ListCustomersRequest.builder().build(),
+            RequestOptions.builder()
+                    .addQueryParameter("email", "test@example.com")
+            .build()
+    );
+
+    System.out.println(result);
+}
+```
+
 
 ## Usage
 
@@ -280,7 +302,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.310</version>
+  <version>0.0.311</version>
 </dependency>
 ```
 
