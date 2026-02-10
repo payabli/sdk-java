@@ -20,6 +20,7 @@ import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
+import io.github.payabli.api.resources.moneyouttypes.types.AllowedCheckPaymentStatus;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
 import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
@@ -28,6 +29,7 @@ import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0000;
+import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -986,6 +988,118 @@ public class AsyncRawMoneyOutClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, String.class), response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
+     * <p>The transaction must meet all of the following criteria:</p>
+     * <ul>
+     * <li><strong>Status</strong>: Must be in Processing or Processed status.</li>
+     * <li><strong>Payment method</strong>: Must be a check payment method.</li>
+     * </ul>
+     * <h3>Allowed status values</h3>
+     * <p>| Value | Status | Description |
+     * |-------|--------|-------------|
+     * | <code>0</code> | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates &quot;Cancelled&quot; events, and sends a <code>payout_transaction_voidedcancelled</code> notification if the notification is enabled. |
+     * | <code>5</code> | Paid | Marks the check transaction as paid. Updates associated bills to &quot;Paid&quot; status, creates &quot;Paid&quot; events, and sends a <code>payout_transaction_paid</code> notification if the notification is enabled. |</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>>
+            updateCheckPaymentStatus(String transId, AllowedCheckPaymentStatus checkPaymentStatus) {
+        return updateCheckPaymentStatus(transId, checkPaymentStatus, null);
+    }
+
+    /**
+     * Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
+     * <p>The transaction must meet all of the following criteria:</p>
+     * <ul>
+     * <li><strong>Status</strong>: Must be in Processing or Processed status.</li>
+     * <li><strong>Payment method</strong>: Must be a check payment method.</li>
+     * </ul>
+     * <h3>Allowed status values</h3>
+     * <p>| Value | Status | Description |
+     * |-------|--------|-------------|
+     * | <code>0</code> | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates &quot;Cancelled&quot; events, and sends a <code>payout_transaction_voidedcancelled</code> notification if the notification is enabled. |
+     * | <code>5</code> | Paid | Marks the check transaction as paid. Updates associated bills to &quot;Paid&quot; status, creates &quot;Paid&quot; events, and sends a <code>payout_transaction_paid</code> notification if the notification is enabled. |</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>>
+            updateCheckPaymentStatus(
+                    String transId, AllowedCheckPaymentStatus checkPaymentStatus, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyOut/status")
+                .addPathSegment(transId)
+                .addPathSegment(checkPaymentStatus.toString());
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("PATCH", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
+                new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
+                                response));
                         return;
                     }
                     try {

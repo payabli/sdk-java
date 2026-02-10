@@ -11883,6 +11883,79 @@ in the response when you make a GET request to `/MoneyOut/details/{transId}`.
 </dl>
 </details>
 
+<details><summary><code>client.moneyOut.updateCheckPaymentStatus(transId, checkPaymentStatus) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
+
+The transaction must meet all of the following criteria:
+- **Status**: Must be in Processing or Processed status.
+- **Payment method**: Must be a check payment method.
+
+### Allowed status values
+
+| Value | Status | Description |
+|-------|--------|-------------|
+| `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
+| `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().updateCheckPaymentStatus("TRANS123456", AllowedCheckPaymentStatus.PAID);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — The Payabli transaction ID for the check payment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkPaymentStatus:** `AllowedCheckPaymentStatus` — The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Notification
 <details><summary><code>client.notification.addNotification(request) -> PayabliApiResponseNotifications</code></summary>
 <dl>

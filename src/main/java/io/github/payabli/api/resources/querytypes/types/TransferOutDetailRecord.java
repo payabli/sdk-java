@@ -33,8 +33,6 @@ public final class TransferOutDetailRecord {
 
     private final Optional<Integer> idOut;
 
-    private final Optional<Integer> idOut;
-
     private final Optional<String> method;
 
     private final Optional<String> type;
@@ -160,7 +158,6 @@ public final class TransferOutDetailRecord {
             Optional<Integer> transferId,
             Optional<String> transactionId,
             Optional<Integer> idOut,
-            Optional<Integer> idOut,
             Optional<String> method,
             Optional<String> type,
             Optional<String> category,
@@ -224,7 +221,6 @@ public final class TransferOutDetailRecord {
         this.transferDetailId = transferDetailId;
         this.transferId = transferId;
         this.transactionId = transactionId;
-        this.idOut = idOut;
         this.idOut = idOut;
         this.method = method;
         this.type = type;
@@ -323,17 +319,6 @@ public final class TransferOutDetailRecord {
 
     /**
      * @return The outbound transaction ID.
-     */
-    @JsonIgnore
-    public Optional<Integer> getIdOut() {
-        if (idOut == null) {
-            return Optional.empty();
-        }
-        return idOut;
-    }
-
-    /**
-     * @return The outbound transaction ID (alternate casing).
      */
     @JsonIgnore
     public Optional<Integer> getIdOut() {
@@ -1011,12 +996,6 @@ public final class TransferOutDetailRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
-    @JsonProperty("idOut")
-    private Optional<Integer> _getIdOut() {
-        return idOut;
-    }
-
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("IdOut")
     private Optional<Integer> _getIdOut() {
         return idOut;
@@ -1392,7 +1371,6 @@ public final class TransferOutDetailRecord {
                 && transferId.equals(other.transferId)
                 && transactionId.equals(other.transactionId)
                 && idOut.equals(other.idOut)
-                && idOut.equals(other.idOut)
                 && method.equals(other.method)
                 && type.equals(other.type)
                 && category.equals(other.category)
@@ -1460,7 +1438,6 @@ public final class TransferOutDetailRecord {
                 this.transferDetailId,
                 this.transferId,
                 this.transactionId,
-                this.idOut,
                 this.idOut,
                 this.method,
                 this.type,
@@ -1539,8 +1516,6 @@ public final class TransferOutDetailRecord {
         private Optional<Integer> transferId = Optional.empty();
 
         private Optional<String> transactionId = Optional.empty();
-
-        private Optional<Integer> idOut = Optional.empty();
 
         private Optional<Integer> idOut = Optional.empty();
 
@@ -1671,7 +1646,6 @@ public final class TransferOutDetailRecord {
             transferDetailId(other.getTransferDetailId());
             transferId(other.getTransferId());
             transactionId(other.getTransactionId());
-            idOut(other.getIdOut());
             idOut(other.getIdOut());
             method(other.getMethod());
             type(other.getType());
@@ -1812,31 +1786,6 @@ public final class TransferOutDetailRecord {
 
         /**
          * <p>The outbound transaction ID.</p>
-         */
-        @JsonSetter(value = "idOut", nulls = Nulls.SKIP)
-        public Builder idOut(Optional<Integer> idOut) {
-            this.idOut = idOut;
-            return this;
-        }
-
-        public Builder idOut(Integer idOut) {
-            this.idOut = Optional.ofNullable(idOut);
-            return this;
-        }
-
-        public Builder idOut(Nullable<Integer> idOut) {
-            if (idOut.isNull()) {
-                this.idOut = null;
-            } else if (idOut.isEmpty()) {
-                this.idOut = Optional.empty();
-            } else {
-                this.idOut = Optional.of(idOut.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>The outbound transaction ID (alternate casing).</p>
          */
         @JsonSetter(value = "IdOut", nulls = Nulls.SKIP)
         public Builder idOut(Optional<Integer> idOut) {
@@ -3340,7 +3289,6 @@ public final class TransferOutDetailRecord {
                     transferDetailId,
                     transferId,
                     transactionId,
-                    idOut,
                     idOut,
                     method,
                     type,
