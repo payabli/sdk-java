@@ -33,6 +33,8 @@ public final class PaymentDetail {
 
     private final Optional<List<SplitFundingContent>> splitFunding;
 
+    private final Optional<String> checkUniqueId;
+
     private final double totalAmount;
 
     private final Map<String, Object> additionalProperties;
@@ -44,6 +46,7 @@ public final class PaymentDetail {
             Optional<String> currency,
             Optional<Double> serviceFee,
             Optional<List<SplitFundingContent>> splitFunding,
+            Optional<String> checkUniqueId,
             double totalAmount,
             Map<String, Object> additionalProperties) {
         this.categories = categories;
@@ -52,6 +55,7 @@ public final class PaymentDetail {
         this.currency = currency;
         this.serviceFee = serviceFee;
         this.splitFunding = splitFunding;
+        this.checkUniqueId = checkUniqueId;
         this.totalAmount = totalAmount;
         this.additionalProperties = additionalProperties;
     }
@@ -106,6 +110,14 @@ public final class PaymentDetail {
     }
 
     /**
+     * @return Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.
+     */
+    @JsonProperty("checkUniqueId")
+    public Optional<String> getCheckUniqueId() {
+        return checkUniqueId;
+    }
+
+    /**
      * @return Total amount to be charged. If a service fee is sent, then this amount should include the service fee.&quot;
      */
     @JsonProperty("totalAmount")
@@ -131,6 +143,7 @@ public final class PaymentDetail {
                 && currency.equals(other.currency)
                 && serviceFee.equals(other.serviceFee)
                 && splitFunding.equals(other.splitFunding)
+                && checkUniqueId.equals(other.checkUniqueId)
                 && totalAmount == other.totalAmount;
     }
 
@@ -143,6 +156,7 @@ public final class PaymentDetail {
                 this.currency,
                 this.serviceFee,
                 this.splitFunding,
+                this.checkUniqueId,
                 this.totalAmount);
     }
 
@@ -209,11 +223,20 @@ public final class PaymentDetail {
         _FinalStage splitFunding(Optional<List<SplitFundingContent>> splitFunding);
 
         _FinalStage splitFunding(List<SplitFundingContent> splitFunding);
+
+        /**
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         */
+        _FinalStage checkUniqueId(Optional<String> checkUniqueId);
+
+        _FinalStage checkUniqueId(String checkUniqueId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements TotalAmountStage, _FinalStage {
         private double totalAmount;
+
+        private Optional<String> checkUniqueId = Optional.empty();
 
         private Optional<List<SplitFundingContent>> splitFunding = Optional.empty();
 
@@ -240,6 +263,7 @@ public final class PaymentDetail {
             currency(other.getCurrency());
             serviceFee(other.getServiceFee());
             splitFunding(other.getSplitFunding());
+            checkUniqueId(other.getCheckUniqueId());
             totalAmount(other.getTotalAmount());
             return this;
         }
@@ -253,6 +277,26 @@ public final class PaymentDetail {
         @JsonSetter("totalAmount")
         public _FinalStage totalAmount(double totalAmount) {
             this.totalAmount = totalAmount;
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage checkUniqueId(String checkUniqueId) {
+            this.checkUniqueId = Optional.ofNullable(checkUniqueId);
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "checkUniqueId", nulls = Nulls.SKIP)
+        public _FinalStage checkUniqueId(Optional<String> checkUniqueId) {
+            this.checkUniqueId = checkUniqueId;
             return this;
         }
 
@@ -387,6 +431,7 @@ public final class PaymentDetail {
                     currency,
                     serviceFee,
                     splitFunding,
+                    checkUniqueId,
                     totalAmount,
                     additionalProperties);
         }
