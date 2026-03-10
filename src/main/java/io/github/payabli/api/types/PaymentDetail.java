@@ -110,7 +110,7 @@ public final class PaymentDetail {
     }
 
     /**
-     * @return Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.
+     * @return Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.
      */
     @JsonProperty("checkUniqueId")
     public Optional<String> getCheckUniqueId() {
@@ -225,7 +225,7 @@ public final class PaymentDetail {
         _FinalStage splitFunding(List<SplitFundingContent> splitFunding);
 
         /**
-         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.</p>
          */
         _FinalStage checkUniqueId(Optional<String> checkUniqueId);
 
@@ -281,7 +281,7 @@ public final class PaymentDetail {
         }
 
         /**
-         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -291,7 +291,7 @@ public final class PaymentDetail {
         }
 
         /**
-         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "checkUniqueId", nulls = Nulls.SKIP)

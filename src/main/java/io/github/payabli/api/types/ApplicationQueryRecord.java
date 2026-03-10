@@ -140,7 +140,7 @@ public final class ApplicationQueryRecord {
 
     private final Optional<Whenrefunded> whenrefund;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> repCode;
 
@@ -210,7 +210,7 @@ public final class ApplicationQueryRecord {
             Optional<Whendelivered> whendelivered,
             Optional<Whenprovided> whenProvided,
             Optional<Whenrefunded> whenrefund,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
@@ -586,7 +586,7 @@ public final class ApplicationQueryRecord {
     }
 
     @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -879,7 +879,7 @@ public final class ApplicationQueryRecord {
 
         private Optional<Whenrefunded> whenrefund = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> repCode = Optional.empty();
 
@@ -1618,12 +1618,12 @@ public final class ApplicationQueryRecord {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

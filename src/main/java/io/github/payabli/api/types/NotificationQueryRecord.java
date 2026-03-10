@@ -33,7 +33,7 @@ public final class NotificationQueryRecord {
 
     private final Optional<Long> notificationId;
 
-    private final Optional<String> ownerId;
+    private final Optional<Integer> ownerId;
 
     private final Optional<String> ownerName;
 
@@ -54,7 +54,7 @@ public final class NotificationQueryRecord {
             Optional<OffsetDateTime> lastUpdated,
             Optional<Methodnotification> method,
             Optional<Long> notificationId,
-            Optional<String> ownerId,
+            Optional<Integer> ownerId,
             Optional<String> ownerName,
             Optional<Integer> ownerType,
             Optional<String> source,
@@ -116,7 +116,7 @@ public final class NotificationQueryRecord {
     }
 
     @JsonProperty("ownerId")
-    public Optional<String> getOwnerId() {
+    public Optional<Integer> getOwnerId() {
         return ownerId;
     }
 
@@ -217,7 +217,7 @@ public final class NotificationQueryRecord {
 
         private Optional<Long> notificationId = Optional.empty();
 
-        private Optional<String> ownerId = Optional.empty();
+        private Optional<Integer> ownerId = Optional.empty();
 
         private Optional<String> ownerName = Optional.empty();
 
@@ -326,12 +326,12 @@ public final class NotificationQueryRecord {
         }
 
         @JsonSetter(value = "ownerId", nulls = Nulls.SKIP)
-        public Builder ownerId(Optional<String> ownerId) {
+        public Builder ownerId(Optional<Integer> ownerId) {
             this.ownerId = ownerId;
             return this;
         }
 
-        public Builder ownerId(String ownerId) {
+        public Builder ownerId(Integer ownerId) {
             this.ownerId = Optional.ofNullable(ownerId);
             return this;
         }

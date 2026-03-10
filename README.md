@@ -302,7 +302,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.313</version>
+  <version>0.0.314</version>
 </dependency>
 ```
 

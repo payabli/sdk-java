@@ -33,7 +33,7 @@ public final class ApplicationData {
 
     private final Optional<String> baddress1;
 
-    private final Optional<Bank> bankData;
+    private final Optional<List<Bank>> bankData;
 
     private final Optional<String> bcity;
 
@@ -142,7 +142,7 @@ public final class ApplicationData {
             Optional<Double> avgmonthly,
             Optional<String> baddress,
             Optional<String> baddress1,
-            Optional<Bank> bankData,
+            Optional<List<Bank>> bankData,
             Optional<String> bcity,
             Optional<String> bcountry,
             Optional<Integer> binperson,
@@ -283,7 +283,7 @@ public final class ApplicationData {
     }
 
     @JsonProperty("bankData")
-    public Optional<Bank> getBankData() {
+    public Optional<List<Bank>> getBankData() {
         return bankData;
     }
 
@@ -689,7 +689,7 @@ public final class ApplicationData {
 
         private Optional<String> baddress1 = Optional.empty();
 
-        private Optional<Bank> bankData = Optional.empty();
+        private Optional<List<Bank>> bankData = Optional.empty();
 
         private Optional<String> bcity = Optional.empty();
 
@@ -921,12 +921,12 @@ public final class ApplicationData {
         }
 
         @JsonSetter(value = "bankData", nulls = Nulls.SKIP)
-        public Builder bankData(Optional<Bank> bankData) {
+        public Builder bankData(Optional<List<Bank>> bankData) {
             this.bankData = bankData;
             return this;
         }
 
-        public Builder bankData(Bank bankData) {
+        public Builder bankData(List<Bank> bankData) {
             this.bankData = Optional.ofNullable(bankData);
             return this;
         }

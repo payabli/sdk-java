@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Bank.Builder.class)
-public final class Bank implements IBank {
+public final class Bank {
     private final Optional<Integer> id;
 
     private final Optional<String> accountId;
@@ -84,7 +84,6 @@ public final class Bank implements IBank {
      * @return The Payabli-assigned internal identifier for the bank account.
      */
     @JsonProperty("id")
-    @java.lang.Override
     public Optional<Integer> getId() {
         return id;
     }
@@ -93,55 +92,46 @@ public final class Bank implements IBank {
      * @return A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.
      */
     @JsonProperty("accountId")
-    @java.lang.Override
     public Optional<String> getAccountId() {
         return accountId;
     }
 
     @JsonProperty("nickname")
-    @java.lang.Override
     public Optional<String> getNickname() {
         return nickname;
     }
 
     @JsonProperty("bankName")
-    @java.lang.Override
     public Optional<String> getBankName() {
         return bankName;
     }
 
     @JsonProperty("routingAccount")
-    @java.lang.Override
     public Optional<String> getRoutingAccount() {
         return routingAccount;
     }
 
     @JsonProperty("accountNumber")
-    @java.lang.Override
     public Optional<String> getAccountNumber() {
         return accountNumber;
     }
 
     @JsonProperty("typeAccount")
-    @java.lang.Override
     public Optional<TypeAccount> getTypeAccount() {
         return typeAccount;
     }
 
     @JsonProperty("bankAccountHolderName")
-    @java.lang.Override
     public Optional<String> getBankAccountHolderName() {
         return bankAccountHolderName;
     }
 
     @JsonProperty("bankAccountHolderType")
-    @java.lang.Override
     public Optional<BankAccountHolderType> getBankAccountHolderType() {
         return bankAccountHolderType;
     }
 
     @JsonProperty("bankAccountFunction")
-    @java.lang.Override
     public Optional<Integer> getBankAccountFunction() {
         return bankAccountFunction;
     }
@@ -150,7 +140,6 @@ public final class Bank implements IBank {
      * @return Bank account verification status. When <code>true</code>, the account has been verified to exist and be in good standing based on vendor checks or previous processing histories.
      */
     @JsonProperty("verified")
-    @java.lang.Override
     public Optional<Boolean> getVerified() {
         return verified;
     }
@@ -159,7 +148,6 @@ public final class Bank implements IBank {
      * @return Bank account status
      */
     @JsonProperty("status")
-    @java.lang.Override
     public Optional<Integer> getStatus() {
         return status;
     }
@@ -168,7 +156,6 @@ public final class Bank implements IBank {
      * @return Array of services associated with this bank account
      */
     @JsonProperty("services")
-    @java.lang.Override
     public Optional<List<String>> getServices() {
         return services;
     }

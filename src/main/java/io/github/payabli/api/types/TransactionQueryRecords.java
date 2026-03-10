@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -416,8 +419,11 @@ public final class TransactionQueryRecords {
     /**
      * @return Transaction date and time, in UTC.
      */
-    @JsonProperty("TransactionTime")
+    @JsonIgnore
     public Optional<OffsetDateTime> getTransactionTime() {
+        if (transactionTime == null) {
+            return Optional.empty();
+        }
         return transactionTime;
     }
 
@@ -432,6 +438,12 @@ public final class TransactionQueryRecords {
     @JsonProperty("TransStatus")
     public Optional<Integer> getTransStatus() {
         return transStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransactionTime")
+    private Optional<OffsetDateTime> _getTransactionTime() {
+        return transactionTime;
     }
 
     @java.lang.Override
@@ -1123,6 +1135,17 @@ public final class TransactionQueryRecords {
 
         public Builder transactionTime(OffsetDateTime transactionTime) {
             this.transactionTime = Optional.ofNullable(transactionTime);
+            return this;
+        }
+
+        public Builder transactionTime(Nullable<OffsetDateTime> transactionTime) {
+            if (transactionTime.isNull()) {
+                this.transactionTime = null;
+            } else if (transactionTime.isEmpty()) {
+                this.transactionTime = Optional.empty();
+            } else {
+                this.transactionTime = Optional.of(transactionTime.get());
+            }
             return this;
         }
 

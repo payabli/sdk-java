@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public final class ApplicationDataPayIn {
 
     private final Optional<String> baddress1;
 
-    private final ApplicationDataPayInBankData bankData;
+    private final List<Bank> bankData;
 
     private final Optional<String> bcity;
 
@@ -126,7 +127,7 @@ public final class ApplicationDataPayIn {
 
     private final Whenrefunded whenRefunded;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> repCode;
 
@@ -146,7 +147,7 @@ public final class ApplicationDataPayIn {
             Optional<Double> avgmonthly,
             Optional<String> baddress,
             Optional<String> baddress1,
-            ApplicationDataPayInBankData bankData,
+            List<Bank> bankData,
             Optional<String> bcity,
             Optional<String> bcountry,
             Optional<Integer> binperson,
@@ -191,7 +192,7 @@ public final class ApplicationDataPayIn {
             Whendelivered whenDelivered,
             Whenprovided whenProvided,
             Whenrefunded whenRefunded,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
@@ -293,7 +294,7 @@ public final class ApplicationDataPayIn {
     }
 
     @JsonProperty("bankData")
-    public ApplicationDataPayInBankData getBankData() {
+    public List<Bank> getBankData() {
         return bankData;
     }
 
@@ -359,7 +360,7 @@ public final class ApplicationDataPayIn {
     }
 
     /**
-     * @return The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
+     * @return The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see <code>payoutCreditLimit</code>.
      */
     @JsonProperty("creditLimit")
     public Optional<String> getCreditLimit() {
@@ -548,7 +549,7 @@ public final class ApplicationDataPayIn {
     }
 
     @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -715,13 +716,9 @@ public final class ApplicationDataPayIn {
     }
 
     public interface ServicesStage {
-        BankDataStage services(@NotNull ApplicationDataPayInServices services);
+        PhonenumberStage services(@NotNull ApplicationDataPayInServices services);
 
         Builder from(ApplicationDataPayIn other);
-    }
-
-    public interface BankDataStage {
-        PhonenumberStage bankData(@NotNull ApplicationDataPayInBankData bankData);
     }
 
     public interface PhonenumberStage {
@@ -785,6 +782,12 @@ public final class ApplicationDataPayIn {
 
         _FinalStage baddress1(String baddress1);
 
+        _FinalStage bankData(List<Bank> bankData);
+
+        _FinalStage addBankData(Bank bankData);
+
+        _FinalStage addAllBankData(List<Bank> bankData);
+
         _FinalStage bcity(Optional<String> bcity);
 
         _FinalStage bcity(String bcity);
@@ -836,7 +839,7 @@ public final class ApplicationDataPayIn {
         _FinalStage contacts(List<ApplicationDataPayInContactsItem> contacts);
 
         /**
-         * <p>The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.</p>
+         * <p>The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see <code>payoutCreditLimit</code>.</p>
          */
         _FinalStage creditLimit(Optional<String> creditLimit);
 
@@ -957,9 +960,9 @@ public final class ApplicationDataPayIn {
 
         _FinalStage website(String website);
 
-        _FinalStage additionalData(Optional<String> additionalData);
+        _FinalStage additionalData(Optional<Map<String, String>> additionalData);
 
-        _FinalStage additionalData(String additionalData);
+        _FinalStage additionalData(Map<String, String> additionalData);
 
         _FinalStage repCode(Optional<String> repCode);
 
@@ -981,7 +984,6 @@ public final class ApplicationDataPayIn {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
             implements ServicesStage,
-                    BankDataStage,
                     PhonenumberStage,
                     ProcessingRegionStage,
                     SignerStage,
@@ -991,8 +993,6 @@ public final class ApplicationDataPayIn {
                     WhenRefundedStage,
                     _FinalStage {
         private ApplicationDataPayInServices services;
-
-        private ApplicationDataPayInBankData bankData;
 
         private String phonenumber;
 
@@ -1016,7 +1016,7 @@ public final class ApplicationDataPayIn {
 
         private Optional<String> repCode = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> website = Optional.empty();
 
@@ -1091,6 +1091,8 @@ public final class ApplicationDataPayIn {
         private Optional<String> bcountry = Optional.empty();
 
         private Optional<String> bcity = Optional.empty();
+
+        private List<Bank> bankData = new ArrayList<>();
 
         private Optional<String> baddress1 = Optional.empty();
 
@@ -1173,15 +1175,8 @@ public final class ApplicationDataPayIn {
 
         @java.lang.Override
         @JsonSetter("services")
-        public BankDataStage services(@NotNull ApplicationDataPayInServices services) {
+        public PhonenumberStage services(@NotNull ApplicationDataPayInServices services) {
             this.services = Objects.requireNonNull(services, "services must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("bankData")
-        public PhonenumberStage bankData(@NotNull ApplicationDataPayInBankData bankData) {
-            this.bankData = Objects.requireNonNull(bankData, "bankData must not be null");
             return this;
         }
 
@@ -1297,14 +1292,14 @@ public final class ApplicationDataPayIn {
         }
 
         @java.lang.Override
-        public _FinalStage additionalData(String additionalData) {
+        public _FinalStage additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public _FinalStage additionalData(Optional<String> additionalData) {
+        public _FinalStage additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
@@ -1670,7 +1665,7 @@ public final class ApplicationDataPayIn {
         }
 
         /**
-         * <p>The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.</p>
+         * <p>The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see <code>payoutCreditLimit</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1680,7 +1675,7 @@ public final class ApplicationDataPayIn {
         }
 
         /**
-         * <p>The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.</p>
+         * <p>The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see <code>payoutCreditLimit</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "creditLimit", nulls = Nulls.SKIP)
@@ -1843,6 +1838,30 @@ public final class ApplicationDataPayIn {
         @JsonSetter(value = "bcity", nulls = Nulls.SKIP)
         public _FinalStage bcity(Optional<String> bcity) {
             this.bcity = bcity;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addAllBankData(List<Bank> bankData) {
+            if (bankData != null) {
+                this.bankData.addAll(bankData);
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addBankData(Bank bankData) {
+            this.bankData.add(bankData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "bankData", nulls = Nulls.SKIP)
+        public _FinalStage bankData(List<Bank> bankData) {
+            this.bankData.clear();
+            if (bankData != null) {
+                this.bankData.addAll(bankData);
+            }
             return this;
         }
 

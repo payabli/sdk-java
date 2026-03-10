@@ -12,8 +12,10 @@ import io.github.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
+import io.github.payabli.api.resources.paymentlink.types.PatchOutPaymentLinkRequest;
 import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
 import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
 import io.github.payabli.api.types.PushPayLinkRequest;
 
 public class PaymentLinkClient {
@@ -68,29 +70,29 @@ public class PaymentLinkClient {
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
-    public PayabliApiResponsePaymentLinks addPayLinkFromBill(int billId, PaymentPageRequestBody body) {
+    public PayabliApiResponsePaymentLinks addPayLinkFromBill(int billId, PaymentPageRequestBodyOut body) {
         return this.rawClient.addPayLinkFromBill(billId, body).body();
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiResponsePaymentLinks addPayLinkFromBill(
-            int billId, PaymentPageRequestBody body, RequestOptions requestOptions) {
+            int billId, PaymentPageRequestBodyOut body, RequestOptions requestOptions) {
         return this.rawClient.addPayLinkFromBill(billId, body, requestOptions).body();
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiResponsePaymentLinks addPayLinkFromBill(int billId, PayLinkDataBill request) {
         return this.rawClient.addPayLinkFromBill(billId, request).body();
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiResponsePaymentLinks addPayLinkFromBill(
             int billId, PayLinkDataBill request, RequestOptions requestOptions) {
@@ -251,6 +253,68 @@ public class PaymentLinkClient {
             String lotNumber, PayLinkDataOut request, RequestOptions requestOptions) {
         return this.rawClient
                 .addPayLinkFromBillLotNumber(lotNumber, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiResponsePaymentLinks patchOutPaymentLink(String paylinkId) {
+        return this.rawClient.patchOutPaymentLink(paylinkId).body();
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiResponsePaymentLinks patchOutPaymentLink(String paylinkId, RequestOptions requestOptions) {
+        return this.rawClient.patchOutPaymentLink(paylinkId, requestOptions).body();
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiResponsePaymentLinks patchOutPaymentLink(String paylinkId, PatchOutPaymentLinkRequest request) {
+        return this.rawClient.patchOutPaymentLink(paylinkId, request).body();
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiResponsePaymentLinks patchOutPaymentLink(
+            String paylinkId, PatchOutPaymentLinkRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .patchOutPaymentLink(paylinkId, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiResponsePaymentLinks updatePayLinkOutFromId(String paylinkId) {
+        return this.rawClient.updatePayLinkOutFromId(paylinkId).body();
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiResponsePaymentLinks updatePayLinkOutFromId(String paylinkId, RequestOptions requestOptions) {
+        return this.rawClient.updatePayLinkOutFromId(paylinkId, requestOptions).body();
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiResponsePaymentLinks updatePayLinkOutFromId(String paylinkId, PaymentPageRequestBodyOut request) {
+        return this.rawClient.updatePayLinkOutFromId(paylinkId, request).body();
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiResponsePaymentLinks updatePayLinkOutFromId(
+            String paylinkId, PaymentPageRequestBodyOut request, RequestOptions requestOptions) {
+        return this.rawClient
+                .updatePayLinkOutFromId(paylinkId, request, requestOptions)
                 .body();
     }
 }

@@ -75,11 +75,17 @@ public final class PayabliCredentialsPascal {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are <code>card</code> (credit/debit card), <code>ach</code> (ACH bank transfer), <code>check</code> (paper check), <code>vcard</code> (virtual card), <code>cloud</code> (card-present), <code>cash</code>, <code>managed</code> (managed payment service), and <code>wallet</code>.
+     */
     @JsonProperty("Service")
     public Optional<String> getService() {
         return service;
     }
 
+    /**
+     * @return The payment mode supported by this service. <code>0</code> for one-time payments, <code>1</code> for recurring payments, <code>2</code> for both.
+     */
     @JsonProperty("Mode")
     public Optional<Integer> getMode() {
         return mode;
@@ -237,6 +243,9 @@ public final class PayabliCredentialsPascal {
             return this;
         }
 
+        /**
+         * <p>The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are <code>card</code> (credit/debit card), <code>ach</code> (ACH bank transfer), <code>check</code> (paper check), <code>vcard</code> (virtual card), <code>cloud</code> (card-present), <code>cash</code>, <code>managed</code> (managed payment service), and <code>wallet</code>.</p>
+         */
         @JsonSetter(value = "Service", nulls = Nulls.SKIP)
         public Builder service(Optional<String> service) {
             this.service = service;
@@ -248,6 +257,9 @@ public final class PayabliCredentialsPascal {
             return this;
         }
 
+        /**
+         * <p>The payment mode supported by this service. <code>0</code> for one-time payments, <code>1</code> for recurring payments, <code>2</code> for both.</p>
+         */
         @JsonSetter(value = "Mode", nulls = Nulls.SKIP)
         public Builder mode(Optional<Integer> mode) {
             this.mode = mode;

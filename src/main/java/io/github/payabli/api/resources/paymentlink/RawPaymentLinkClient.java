@@ -23,8 +23,10 @@ import io.github.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
+import io.github.payabli.api.resources.paymentlink.types.PatchOutPaymentLinkRequest;
 import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
 import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PushPayLinkRequest;
 import java.io.IOException;
@@ -149,23 +151,23 @@ public class RawPaymentLinkClient {
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
-            int billId, PaymentPageRequestBody body) {
+            int billId, PaymentPageRequestBodyOut body) {
         return addPayLinkFromBill(billId, PayLinkDataBill.builder().body(body).build());
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
-            int billId, PaymentPageRequestBody body, RequestOptions requestOptions) {
+            int billId, PaymentPageRequestBodyOut body, RequestOptions requestOptions) {
         return addPayLinkFromBill(billId, PayLinkDataBill.builder().body(body).build(), requestOptions);
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PayLinkDataBill request) {
@@ -173,7 +175,7 @@ public class RawPaymentLinkClient {
     }
 
     /**
-     * Generates a payment link for a bill from the bill ID.
+     * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PayLinkDataBill request, RequestOptions requestOptions) {
@@ -783,6 +785,190 @@ public class RawPaymentLinkClient {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(String paylinkId) {
+        return patchOutPaymentLink(
+                paylinkId, PatchOutPaymentLinkRequest.builder().build());
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
+            String paylinkId, RequestOptions requestOptions) {
+        return patchOutPaymentLink(
+                paylinkId, PatchOutPaymentLinkRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
+            String paylinkId, PatchOutPaymentLinkRequest request) {
+        return patchOutPaymentLink(paylinkId, request, null);
+    }
+
+    /**
+     * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
+            String paylinkId, PatchOutPaymentLinkRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("PaymentLink/out")
+                .addPathSegment(paylinkId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("PATCH", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(String paylinkId) {
+        return updatePayLinkOutFromId(
+                paylinkId, PaymentPageRequestBodyOut.builder().build());
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
+            String paylinkId, RequestOptions requestOptions) {
+        return updatePayLinkOutFromId(
+                paylinkId, PaymentPageRequestBodyOut.builder().build(), requestOptions);
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
+            String paylinkId, PaymentPageRequestBodyOut request) {
+        return updatePayLinkOutFromId(paylinkId, request, null);
+    }
+
+    /**
+     * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
+            String paylinkId, PaymentPageRequestBodyOut request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("PaymentLink/updateOut")
+                .addPathSegment(paylinkId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("PATCH", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(

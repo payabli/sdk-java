@@ -36,41 +36,37 @@ client.bill().addBill(
                 .builder()
                 .accountingField1("MyInternalId")
                 .attachments(
-                    Optional.of(
-                        Arrays.asList(
-                            FileContent
-                                .builder()
-                                .filename("my-doc.pdf")
-                                .ftype(FileContentFtype.PDF)
-                                .furl("https://mysite.com/my-doc.pdf")
-                                .build()
-                        )
+                    Arrays.asList(
+                        FileContent
+                            .builder()
+                            .filename("my-doc.pdf")
+                            .ftype(FileContentFtype.PDF)
+                            .furl("https://mysite.com/my-doc.pdf")
+                            .build()
                     )
                 )
                 .billDate("2024-07-01")
                 .billItems(
-                    Optional.of(
-                        Arrays.asList(
-                            BillItem
-                                .builder()
-                                .itemCost(5.0)
-                                .itemCategories(
-                                    Optional.of(
-                                        Arrays.asList(Optional.of("deposits"))
-                                    )
+                    Arrays.asList(
+                        BillItem
+                            .builder()
+                            .itemCost(5.0)
+                            .itemCategories(
+                                Optional.of(
+                                    Arrays.asList(Optional.of("deposits"))
                                 )
-                                .itemCommodityCode("010")
-                                .itemDescription("Deposit for materials")
-                                .itemMode(0)
-                                .itemProductCode("M-DEPOSIT")
-                                .itemProductName("Materials deposit")
-                                .itemQty(1)
-                                .itemTaxAmount(7.0)
-                                .itemTaxRate(0.075)
-                                .itemTotalAmount(123.0)
-                                .itemUnitOfMeasure("SqFt")
-                                .build()
-                        )
+                            )
+                            .itemCommodityCode("010")
+                            .itemDescription("Deposit for materials")
+                            .itemMode(0)
+                            .itemProductCode("M-DEPOSIT")
+                            .itemProductName("Materials deposit")
+                            .itemQty(1)
+                            .itemTaxAmount(7.0)
+                            .itemTaxRate(0.075)
+                            .itemTotalAmount(123.0)
+                            .itemUnitOfMeasure("SqFt")
+                            .build()
                     )
                 )
                 .billNumber("ABC-123")
@@ -1064,11 +1060,6 @@ client.boarding().addApplication(
                     )
                     .build()
             )
-            .bankData(
-                ApplicationDataPayInBankData
-                    .builder()
-                    .build()
-            )
             .phonenumber("1234567890")
             .processingRegion("US")
             .signer(
@@ -1088,7 +1079,13 @@ client.boarding().addApplication(
                     .signedDocumentReference("https://example.com/signed-document.pdf")
                     .pciAttestation(true)
                     .attestationDate("04/20/2025")
-                    .additionalData("{\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"session\":\"fifji4-fiu443-fn4843\",\"timeWithCompany\":\"6 Years\"}")
+                    .additionalData(
+                        new HashMap<String, String>() {{
+                            put("deviceId", "499585-389fj484-3jcj8hj3");
+                            put("session", "fifji4-fiu443-fn4843");
+                            put("timeWithCompany", "6 Years");
+                        }}
+                    )
                     .signDate("04/20/2025")
                     .build()
             )
@@ -1102,6 +1099,34 @@ client.boarding().addApplication(
             .avgmonthly(1000.0)
             .baddress("123 Walnut Street")
             .baddress1("Suite 103")
+            .bankData(
+                Arrays.asList(
+                    Bank
+                        .builder()
+                        .accountId("123-456")
+                        .nickname("Withdrawal Account")
+                        .bankName("Test Bank")
+                        .routingAccount("123123123")
+                        .accountNumber("123123123")
+                        .typeAccount(TypeAccount.CHECKING)
+                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                        .bankAccountFunction(1)
+                        .build(),
+                    Bank
+                        .builder()
+                        .accountId("123-456")
+                        .nickname("Deposit Account")
+                        .bankName("Test Bank")
+                        .routingAccount("123123123")
+                        .accountNumber("123123123")
+                        .typeAccount(TypeAccount.CHECKING)
+                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                        .bankAccountFunction(0)
+                        .build()
+                )
+            )
             .bcity("New Vegas")
             .bcountry("US")
             .binperson(60)
@@ -9812,7 +9837,7 @@ client.moneyIn().captureAuth(
 <dl>
 <dd>
 
-Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`.
+Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
 
 This feature must be enabled by Payabli on a per-merchant basis. Contact support for help. 
 </dd>
@@ -11998,7 +12023,7 @@ client.notification().addNotification(
                     .eventType(NotificationStandardRequestContentEventType.CREATED_APPLICATION)
                     .build()
             )
-            .ownerId("236")
+            .ownerId(236)
             .status(1)
             .build()
     )
@@ -12179,7 +12204,7 @@ client.notification().updateNotification(
                     .eventType(NotificationStandardRequestContentEventType.APPROVED_PAYMENT)
                     .build()
             )
-            .ownerId("136")
+            .ownerId(136)
             .status(1)
             .build()
     )
@@ -12715,16 +12740,14 @@ client.organization().addOrganization(
                 .build()
         )
         .contacts(
-            Optional.of(
-                Arrays.asList(
-                    Contacts
-                        .builder()
-                        .contactEmail("herman@hermanscoatings.com")
-                        .contactName("Herman Martinez")
-                        .contactPhone("3055550000")
-                        .contactTitle("Owner")
-                        .build()
-                )
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("herman@hermanscoatings.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
             )
         )
         .hasBilling(true)
@@ -13014,16 +13037,14 @@ client.organization().editOrganization(
     OrganizationData
         .builder()
         .contacts(
-            Optional.of(
-                Arrays.asList(
-                    Contacts
-                        .builder()
-                        .contactEmail("herman@hermanscoatings.com")
-                        .contactName("Herman Martinez")
-                        .contactPhone("3055550000")
-                        .contactTitle("Owner")
-                        .build()
-                )
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("herman@hermanscoatings.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
             )
         )
         .orgAddress("123 Walnut Street")
@@ -13706,7 +13727,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-Generates a payment link for a bill from the bill ID. 
+Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
 </dd>
 </dl>
 </dd>
@@ -13726,7 +13747,7 @@ client.paymentLink().addPayLinkFromBill(
     PayLinkDataBill
         .builder()
         .body(
-            PaymentPageRequestBody
+            PaymentPageRequestBodyOut
                 .builder()
                 .contactUs(
                     ContactElement
@@ -13782,50 +13803,23 @@ client.paymentLink().addPayLinkFromBill(
                         .build()
                 )
                 .paymentMethods(
-                    MethodElement
+                    MethodElementOut
                         .builder()
                         .allMethodsChecked(true)
+                        .allowMultipleMethods(true)
+                        .defaultMethod("vcard")
                         .enabled(true)
                         .header("Payment Methods")
                         .methods(
-                            MethodsList
+                            MethodsListOut
                                 .builder()
-                                .amex(true)
-                                .applePay(true)
-                                .discover(true)
-                                .eCheck(true)
-                                .mastercard(true)
-                                .visa(true)
+                                .ach(true)
+                                .check(true)
+                                .vcard(true)
                                 .build()
                         )
                         .order(0)
-                        .build()
-                )
-                .payor(
-                    PayorElement
-                        .builder()
-                        .enabled(true)
-                        .fields(
-                            Optional.of(
-                                Arrays.asList(
-                                    PayorFields
-                                        .builder()
-                                        .display(true)
-                                        .fixed(true)
-                                        .identifier(true)
-                                        .label("Full Name")
-                                        .name("fullName")
-                                        .order(0)
-                                        .required(true)
-                                        .validation("alpha")
-                                        .value("")
-                                        .width(0)
-                                        .build()
-                                )
-                            )
-                        )
-                        .header("Payor Information")
-                        .order(0)
+                        .showPreviewVirtualCard(true)
                         .build()
                 )
                 .review(
@@ -13894,7 +13888,7 @@ client.paymentLink().addPayLinkFromBill(
 <dl>
 <dd>
 
-**request:** `PaymentPageRequestBody` 
+**request:** `PaymentPageRequestBodyOut` 
     
 </dd>
 </dl>
@@ -13933,7 +13927,7 @@ Deletes a payment link by ID.
 <dd>
 
 ```java
-client.paymentLink().deletePayLinkFromId("payLinkId");
+client.paymentLink().deletePayLinkFromId("2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234");
 ```
 </dd>
 </dl>
@@ -14409,7 +14403,7 @@ client.paymentLink().addPayLinkFromBillLotNumber(
         .entryPoint("billing")
         .vendorNumber("VENDOR-123")
         .body(
-            PaymentPageRequestBody
+            PaymentPageRequestBodyOut
                 .builder()
                 .contactUs(
                     ContactElement
@@ -14465,50 +14459,23 @@ client.paymentLink().addPayLinkFromBillLotNumber(
                         .build()
                 )
                 .paymentMethods(
-                    MethodElement
+                    MethodElementOut
                         .builder()
                         .allMethodsChecked(true)
+                        .allowMultipleMethods(true)
+                        .defaultMethod("vcard")
                         .enabled(true)
                         .header("Payment Methods")
                         .methods(
-                            MethodsList
+                            MethodsListOut
                                 .builder()
-                                .amex(true)
-                                .applePay(true)
-                                .discover(true)
-                                .eCheck(true)
-                                .mastercard(true)
-                                .visa(true)
+                                .ach(true)
+                                .check(true)
+                                .vcard(true)
                                 .build()
                         )
                         .order(0)
-                        .build()
-                )
-                .payor(
-                    PayorElement
-                        .builder()
-                        .enabled(true)
-                        .fields(
-                            Optional.of(
-                                Arrays.asList(
-                                    PayorFields
-                                        .builder()
-                                        .display(true)
-                                        .fixed(true)
-                                        .identifier(true)
-                                        .label("Full Name")
-                                        .name("fullName")
-                                        .order(0)
-                                        .required(true)
-                                        .validation("alpha")
-                                        .value("")
-                                        .width(0)
-                                        .build()
-                                )
-                            )
-                        )
-                        .header("Payor Information")
-                        .order(0)
+                        .showPreviewVirtualCard(true)
                         .build()
                 )
                 .review(
@@ -14586,7 +14553,231 @@ client.paymentLink().addPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**request:** `PaymentPageRequestBody` 
+**request:** `PaymentPageRequestBodyOut` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentLink.patchOutPaymentLink(paylinkId, request) -> PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentLink().patchOutPaymentLink(
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    PatchOutPaymentLinkRequest
+        .builder()
+        .expirationDate("2026-06-01T00:00:00Z")
+        .status(PaymentLinkStatus.ACTIVE)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `String` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PatchOutPaymentLinkRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentLink.updatePayLinkOutFromId(paylinkId, request) -> PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentLink().updatePayLinkOutFromId(
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    PaymentPageRequestBodyOut
+        .builder()
+        .contactUs(
+            ContactElement
+                .builder()
+                .emailLabel("Email")
+                .enabled(true)
+                .header("Contact Us")
+                .order(0)
+                .paymentIcons(true)
+                .phoneLabel("Phone")
+                .build()
+        )
+        .logo(
+            Element
+                .builder()
+                .enabled(true)
+                .order(0)
+                .build()
+        )
+        .messageBeforePaying(
+            LabelElement
+                .builder()
+                .enabled(true)
+                .label("Please review your payment details")
+                .order(0)
+                .build()
+        )
+        .notes(
+            NoteElement
+                .builder()
+                .enabled(true)
+                .header("Additional Notes")
+                .order(0)
+                .placeholder("Enter any additional notes here")
+                .value("")
+                .build()
+        )
+        .page(
+            PageElement
+                .builder()
+                .description("Get paid securely")
+                .enabled(true)
+                .header("Payment Page")
+                .order(0)
+                .build()
+        )
+        .paymentButton(
+            LabelElement
+                .builder()
+                .enabled(true)
+                .label("Pay Now")
+                .order(0)
+                .build()
+        )
+        .paymentMethods(
+            MethodElementOut
+                .builder()
+                .allMethodsChecked(true)
+                .allowMultipleMethods(true)
+                .defaultMethod("vcard")
+                .enabled(true)
+                .header("Payment Methods")
+                .methods(
+                    MethodsListOut
+                        .builder()
+                        .ach(true)
+                        .check(true)
+                        .vcard(true)
+                        .build()
+                )
+                .order(0)
+                .showPreviewVirtualCard(true)
+                .build()
+        )
+        .review(
+            HeaderElement
+                .builder()
+                .enabled(true)
+                .header("Review Payment")
+                .order(0)
+                .build()
+        )
+        .settings(
+            PagelinkSetting
+                .builder()
+                .color("#000000")
+                .language("en")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `String` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PaymentPageRequestBodyOut` 
     
 </dd>
 </dl>
@@ -22339,6 +22530,8 @@ client.tokenStorage().addMethod(
                 )
                 .entryPoint("f743aed24a")
                 .fallbackAuth(true)
+                .fallbackAuthAmount(100)
+                .methodDescription("Primary Visa card")
                 .paymentMethod(
                     RequestTokenStoragePaymentMethod.of(
                         TokenizeCard
@@ -22352,6 +22545,7 @@ client.tokenStorage().addMethod(
                             .build()
                     )
                 )
+                .source("api")
                 .build()
         )
         .build()
@@ -23490,16 +23684,14 @@ client.vendor().addVendor(
         )
         .city("Miami")
         .contacts(
-            Optional.of(
-                Arrays.asList(
-                    Contacts
-                        .builder()
-                        .contactEmail("example@email.com")
-                        .contactName("Herman Martinez")
-                        .contactPhone("3055550000")
-                        .contactTitle("Owner")
-                        .build()
-                )
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("example@email.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
             )
         )
         .country("US")

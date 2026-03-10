@@ -50,7 +50,7 @@ public final class SignerDataRequest {
 
     private final Optional<String> attestationDate;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> signDate;
 
@@ -72,7 +72,7 @@ public final class SignerDataRequest {
             Optional<String> signedDocumentReference,
             Optional<Boolean> pciAttestation,
             Optional<String> attestationDate,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> signDate,
             Map<String, Object> additionalProperties) {
         this.name = name;
@@ -174,7 +174,7 @@ public final class SignerDataRequest {
     }
 
     @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -277,7 +277,7 @@ public final class SignerDataRequest {
 
         private Optional<String> attestationDate = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> signDate = Optional.empty();
 
@@ -476,12 +476,12 @@ public final class SignerDataRequest {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

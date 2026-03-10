@@ -27,7 +27,7 @@ public final class NotificationReportRequest {
 
     private final NotificationReportRequestMethod method;
 
-    private final Optional<String> ownerId;
+    private final Optional<Integer> ownerId;
 
     private final int ownerType;
 
@@ -41,7 +41,7 @@ public final class NotificationReportRequest {
             NotificationReportRequestContent content,
             NotificationReportRequestFrequency frequency,
             NotificationReportRequestMethod method,
-            Optional<String> ownerId,
+            Optional<Integer> ownerId,
             int ownerType,
             Optional<Integer> status,
             String target,
@@ -75,7 +75,7 @@ public final class NotificationReportRequest {
     }
 
     @JsonProperty("ownerId")
-    public Optional<String> getOwnerId() {
+    public Optional<Integer> getOwnerId() {
         return ownerId;
     }
 
@@ -168,9 +168,9 @@ public final class NotificationReportRequest {
     public interface _FinalStage {
         NotificationReportRequest build();
 
-        _FinalStage ownerId(Optional<String> ownerId);
+        _FinalStage ownerId(Optional<Integer> ownerId);
 
-        _FinalStage ownerId(String ownerId);
+        _FinalStage ownerId(Integer ownerId);
 
         _FinalStage status(Optional<Integer> status);
 
@@ -192,7 +192,7 @@ public final class NotificationReportRequest {
 
         private Optional<Integer> status = Optional.empty();
 
-        private Optional<String> ownerId = Optional.empty();
+        private Optional<Integer> ownerId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -274,14 +274,14 @@ public final class NotificationReportRequest {
         }
 
         @java.lang.Override
-        public _FinalStage ownerId(String ownerId) {
+        public _FinalStage ownerId(Integer ownerId) {
             this.ownerId = Optional.ofNullable(ownerId);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "ownerId", nulls = Nulls.SKIP)
-        public _FinalStage ownerId(Optional<String> ownerId) {
+        public _FinalStage ownerId(Optional<Integer> ownerId) {
             this.ownerId = ownerId;
             return this;
         }

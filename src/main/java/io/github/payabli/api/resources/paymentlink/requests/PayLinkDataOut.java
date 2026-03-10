@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,7 +30,7 @@ public final class PayLinkDataOut {
 
     private final Optional<String> amountFixed;
 
-    private final PaymentPageRequestBody body;
+    private final PaymentPageRequestBodyOut body;
 
     private final Map<String, Object> additionalProperties;
 
@@ -39,7 +39,7 @@ public final class PayLinkDataOut {
             String vendorNumber,
             Optional<String> mail2,
             Optional<String> amountFixed,
-            PaymentPageRequestBody body,
+            PaymentPageRequestBodyOut body,
             Map<String, Object> additionalProperties) {
         this.entryPoint = entryPoint;
         this.vendorNumber = vendorNumber;
@@ -79,7 +79,7 @@ public final class PayLinkDataOut {
     }
 
     @JsonProperty("body")
-    public PaymentPageRequestBody getBody() {
+    public PaymentPageRequestBodyOut getBody() {
         return body;
     }
 
@@ -130,7 +130,7 @@ public final class PayLinkDataOut {
     }
 
     public interface BodyStage {
-        _FinalStage body(@NotNull PaymentPageRequestBody body);
+        _FinalStage body(@NotNull PaymentPageRequestBodyOut body);
     }
 
     public interface _FinalStage {
@@ -157,7 +157,7 @@ public final class PayLinkDataOut {
 
         private String vendorNumber;
 
-        private PaymentPageRequestBody body;
+        private PaymentPageRequestBodyOut body;
 
         private Optional<String> amountFixed = Optional.empty();
 
@@ -199,7 +199,7 @@ public final class PayLinkDataOut {
 
         @java.lang.Override
         @JsonSetter("body")
-        public _FinalStage body(@NotNull PaymentPageRequestBody body) {
+        public _FinalStage body(@NotNull PaymentPageRequestBodyOut body) {
             this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }

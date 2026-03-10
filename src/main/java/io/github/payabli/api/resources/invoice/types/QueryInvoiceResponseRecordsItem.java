@@ -263,40 +263,55 @@ public final class QueryInvoiceResponseRecordsItem {
     /**
      * @return Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
      */
-    @JsonProperty("invoiceDate")
+    @JsonIgnore
     public Optional<String> getInvoiceDate() {
+        if (invoiceDate == null) {
+            return Optional.empty();
+        }
         return invoiceDate;
     }
 
     /**
      * @return Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
      */
-    @JsonProperty("invoiceDueDate")
+    @JsonIgnore
     public Optional<String> getInvoiceDueDate() {
+        if (invoiceDueDate == null) {
+            return Optional.empty();
+        }
         return invoiceDueDate;
     }
 
     /**
      * @return Invoice sent date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
      */
-    @JsonProperty("invoiceSentDate")
+    @JsonIgnore
     public Optional<String> getInvoiceSentDate() {
+        if (invoiceSentDate == null) {
+            return Optional.empty();
+        }
         return invoiceSentDate;
     }
 
     /**
      * @return The end date for a scheduled invoice cycle (<code>invoiceType</code> = 1).
      */
-    @JsonProperty("invoiceEndDate")
+    @JsonIgnore
     public Optional<String> getInvoiceEndDate() {
+        if (invoiceEndDate == null) {
+            return Optional.empty();
+        }
         return invoiceEndDate;
     }
 
     /**
      * @return Timestamp of last payment.
      */
-    @JsonProperty("lastPaymentDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getLastPaymentDate() {
+        if (lastPaymentDate == null) {
+            return Optional.empty();
+        }
         return lastPaymentDate;
     }
 
@@ -572,6 +587,36 @@ public final class QueryInvoiceResponseRecordsItem {
             return Optional.empty();
         }
         return pageIdentifier;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceDate")
+    private Optional<String> _getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceDueDate")
+    private Optional<String> _getInvoiceDueDate() {
+        return invoiceDueDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceSentDate")
+    private Optional<String> _getInvoiceSentDate() {
+        return invoiceSentDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceEndDate")
+    private Optional<String> _getInvoiceEndDate() {
+        return invoiceEndDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("lastPaymentDate")
+    private Optional<OffsetDateTime> _getLastPaymentDate() {
+        return lastPaymentDate;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -912,12 +957,16 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage invoiceDate(String invoiceDate);
 
+        _FinalStage invoiceDate(Nullable<String> invoiceDate);
+
         /**
          * <p>Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
          */
         _FinalStage invoiceDueDate(Optional<String> invoiceDueDate);
 
         _FinalStage invoiceDueDate(String invoiceDueDate);
+
+        _FinalStage invoiceDueDate(Nullable<String> invoiceDueDate);
 
         /**
          * <p>Invoice sent date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
@@ -926,6 +975,8 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage invoiceSentDate(String invoiceSentDate);
 
+        _FinalStage invoiceSentDate(Nullable<String> invoiceSentDate);
+
         /**
          * <p>The end date for a scheduled invoice cycle (<code>invoiceType</code> = 1).</p>
          */
@@ -933,12 +984,16 @@ public final class QueryInvoiceResponseRecordsItem {
 
         _FinalStage invoiceEndDate(String invoiceEndDate);
 
+        _FinalStage invoiceEndDate(Nullable<String> invoiceEndDate);
+
         /**
          * <p>Timestamp of last payment.</p>
          */
         _FinalStage lastPaymentDate(Optional<OffsetDateTime> lastPaymentDate);
 
         _FinalStage lastPaymentDate(OffsetDateTime lastPaymentDate);
+
+        _FinalStage lastPaymentDate(Nullable<OffsetDateTime> lastPaymentDate);
 
         _FinalStage termsConditions(Optional<String> termsConditions);
 
@@ -1867,6 +1922,22 @@ public final class QueryInvoiceResponseRecordsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage lastPaymentDate(Nullable<OffsetDateTime> lastPaymentDate) {
+            if (lastPaymentDate.isNull()) {
+                this.lastPaymentDate = null;
+            } else if (lastPaymentDate.isEmpty()) {
+                this.lastPaymentDate = Optional.empty();
+            } else {
+                this.lastPaymentDate = Optional.of(lastPaymentDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Timestamp of last payment.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage lastPaymentDate(OffsetDateTime lastPaymentDate) {
             this.lastPaymentDate = Optional.ofNullable(lastPaymentDate);
             return this;
@@ -1879,6 +1950,22 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "lastPaymentDate", nulls = Nulls.SKIP)
         public _FinalStage lastPaymentDate(Optional<OffsetDateTime> lastPaymentDate) {
             this.lastPaymentDate = lastPaymentDate;
+            return this;
+        }
+
+        /**
+         * <p>The end date for a scheduled invoice cycle (<code>invoiceType</code> = 1).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage invoiceEndDate(Nullable<String> invoiceEndDate) {
+            if (invoiceEndDate.isNull()) {
+                this.invoiceEndDate = null;
+            } else if (invoiceEndDate.isEmpty()) {
+                this.invoiceEndDate = Optional.empty();
+            } else {
+                this.invoiceEndDate = Optional.of(invoiceEndDate.get());
+            }
             return this;
         }
 
@@ -1907,6 +1994,22 @@ public final class QueryInvoiceResponseRecordsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage invoiceSentDate(Nullable<String> invoiceSentDate) {
+            if (invoiceSentDate.isNull()) {
+                this.invoiceSentDate = null;
+            } else if (invoiceSentDate.isEmpty()) {
+                this.invoiceSentDate = Optional.empty();
+            } else {
+                this.invoiceSentDate = Optional.of(invoiceSentDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Invoice sent date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage invoiceSentDate(String invoiceSentDate) {
             this.invoiceSentDate = Optional.ofNullable(invoiceSentDate);
             return this;
@@ -1927,6 +2030,22 @@ public final class QueryInvoiceResponseRecordsItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage invoiceDueDate(Nullable<String> invoiceDueDate) {
+            if (invoiceDueDate.isNull()) {
+                this.invoiceDueDate = null;
+            } else if (invoiceDueDate.isEmpty()) {
+                this.invoiceDueDate = Optional.empty();
+            } else {
+                this.invoiceDueDate = Optional.of(invoiceDueDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage invoiceDueDate(String invoiceDueDate) {
             this.invoiceDueDate = Optional.ofNullable(invoiceDueDate);
             return this;
@@ -1939,6 +2058,22 @@ public final class QueryInvoiceResponseRecordsItem {
         @JsonSetter(value = "invoiceDueDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDueDate(Optional<String> invoiceDueDate) {
             this.invoiceDueDate = invoiceDueDate;
+            return this;
+        }
+
+        /**
+         * <p>Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage invoiceDate(Nullable<String> invoiceDate) {
+            if (invoiceDate.isNull()) {
+                this.invoiceDate = null;
+            } else if (invoiceDate.isEmpty()) {
+                this.invoiceDate = Optional.empty();
+            } else {
+                this.invoiceDate = Optional.of(invoiceDate.get());
+            }
             return this;
         }
 

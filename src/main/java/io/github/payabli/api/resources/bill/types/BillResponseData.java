@@ -5,12 +5,15 @@ package io.github.payabli.api.resources.bill.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.types.BillItem;
 import io.github.payabli.api.types.BillQueryRecord2BillApprovalsItem;
@@ -224,16 +227,22 @@ public final class BillResponseData {
     /**
      * @return Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
      */
-    @JsonProperty("BillDate")
+    @JsonIgnore
     public Optional<String> getBillDate() {
+        if (billDate == null) {
+            return Optional.empty();
+        }
         return billDate;
     }
 
     /**
      * @return Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
      */
-    @JsonProperty("DueDate")
+    @JsonIgnore
     public Optional<String> getDueDate() {
+        if (dueDate == null) {
+            return Optional.empty();
+        }
         return dueDate;
     }
 
@@ -331,8 +340,11 @@ public final class BillResponseData {
     /**
      * @return End date for scheduled bills. Applied only in <code>Mode</code> = 1.
      */
-    @JsonProperty("EndDate")
+    @JsonIgnore
     public Optional<String> getEndDate() {
+        if (endDate == null) {
+            return Optional.empty();
+        }
         return endDate;
     }
 
@@ -421,6 +433,24 @@ public final class BillResponseData {
     @JsonProperty("EntityID")
     public Optional<Long> getEntityId() {
         return entityId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("BillDate")
+    private Optional<String> _getBillDate() {
+        return billDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("DueDate")
+    private Optional<String> _getDueDate() {
+        return dueDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EndDate")
+    private Optional<String> _getEndDate() {
+        return endDate;
     }
 
     @java.lang.Override
@@ -728,6 +758,17 @@ public final class BillResponseData {
             return this;
         }
 
+        public Builder billDate(Nullable<String> billDate) {
+            if (billDate.isNull()) {
+                this.billDate = null;
+            } else if (billDate.isEmpty()) {
+                this.billDate = Optional.empty();
+            } else {
+                this.billDate = Optional.of(billDate.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY</p>
          */
@@ -739,6 +780,17 @@ public final class BillResponseData {
 
         public Builder dueDate(String dueDate) {
             this.dueDate = Optional.ofNullable(dueDate);
+            return this;
+        }
+
+        public Builder dueDate(Nullable<String> dueDate) {
+            if (dueDate.isNull()) {
+                this.dueDate = null;
+            } else if (dueDate.isEmpty()) {
+                this.dueDate = Optional.empty();
+            } else {
+                this.dueDate = Optional.of(dueDate.get());
+            }
             return this;
         }
 
@@ -928,6 +980,17 @@ public final class BillResponseData {
 
         public Builder endDate(String endDate) {
             this.endDate = Optional.ofNullable(endDate);
+            return this;
+        }
+
+        public Builder endDate(Nullable<String> endDate) {
+            if (endDate.isNull()) {
+                this.endDate = null;
+            } else if (endDate.isEmpty()) {
+                this.endDate = Optional.empty();
+            } else {
+                this.endDate = Optional.of(endDate.get());
+            }
             return this;
         }
 
