@@ -67,7 +67,7 @@ public final class TransactionDetailCustomer {
 
     private final int customerStatus;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Map<String, Object> additionalProperties;
 
@@ -93,7 +93,7 @@ public final class TransactionDetailCustomer {
             String shippingCountry,
             long customerId,
             int customerStatus,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Map<String, Object> additionalProperties) {
         this.identifiers = identifiers;
         this.firstName = firstName;
@@ -229,7 +229,7 @@ public final class TransactionDetailCustomer {
     }
 
     @JsonIgnore
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         if (additionalData == null) {
             return Optional.empty();
         }
@@ -244,7 +244,7 @@ public final class TransactionDetailCustomer {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("additionalData")
-    private Optional<String> _getAdditionalData() {
+    private Optional<Map<String, String>> _getAdditionalData() {
         return additionalData;
     }
 
@@ -411,11 +411,11 @@ public final class TransactionDetailCustomer {
 
         _FinalStage identifiers(Nullable<List<Optional<String>>> identifiers);
 
-        _FinalStage additionalData(Optional<String> additionalData);
+        _FinalStage additionalData(Optional<Map<String, String>> additionalData);
 
-        _FinalStage additionalData(String additionalData);
+        _FinalStage additionalData(Map<String, String> additionalData);
 
-        _FinalStage additionalData(Nullable<String> additionalData);
+        _FinalStage additionalData(Nullable<Map<String, String>> additionalData);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -481,7 +481,7 @@ public final class TransactionDetailCustomer {
 
         private int customerStatus;
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<List<Optional<String>>> identifiers = Optional.empty();
 
@@ -658,7 +658,7 @@ public final class TransactionDetailCustomer {
         }
 
         @java.lang.Override
-        public _FinalStage additionalData(Nullable<String> additionalData) {
+        public _FinalStage additionalData(Nullable<Map<String, String>> additionalData) {
             if (additionalData.isNull()) {
                 this.additionalData = null;
             } else if (additionalData.isEmpty()) {
@@ -670,14 +670,14 @@ public final class TransactionDetailCustomer {
         }
 
         @java.lang.Override
-        public _FinalStage additionalData(String additionalData) {
+        public _FinalStage additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public _FinalStage additionalData(Optional<String> additionalData) {
+        public _FinalStage additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
