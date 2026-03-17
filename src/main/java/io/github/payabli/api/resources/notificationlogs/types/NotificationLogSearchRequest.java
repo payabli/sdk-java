@@ -155,6 +155,10 @@ public final class NotificationLogSearchRequest {
     public interface _FinalStage {
         NotificationLogSearchRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The type of notification event to filter by.</p>
          */
@@ -322,6 +326,18 @@ public final class NotificationLogSearchRequest {
         public NotificationLogSearchRequest build() {
             return new NotificationLogSearchRequest(
                     startDate, endDate, notificationEvent, succeeded, orgId, paypointId, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

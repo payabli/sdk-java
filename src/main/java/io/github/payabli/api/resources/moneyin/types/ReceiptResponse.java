@@ -95,6 +95,10 @@ public final class ReceiptResponse {
     public interface _FinalStage {
         ReceiptResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage isSuccess(Optional<Boolean> isSuccess);
 
         _FinalStage isSuccess(Boolean isSuccess);
@@ -161,6 +165,18 @@ public final class ReceiptResponse {
         @java.lang.Override
         public ReceiptResponse build() {
             return new ReceiptResponse(isSuccess, pageIdentifier, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

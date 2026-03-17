@@ -131,6 +131,10 @@ public final class GetBillResponse {
     public interface _FinalStage {
         GetBillResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage responseCode(Optional<Integer> responseCode);
 
         _FinalStage responseCode(Integer responseCode);
@@ -258,6 +262,18 @@ public final class GetBillResponse {
         public GetBillResponse build() {
             return new GetBillResponse(
                     responseCode, pageIdentifier, roomId, isSuccess, responseText, responseData, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

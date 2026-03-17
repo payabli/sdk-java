@@ -106,6 +106,10 @@ public final class PaymentDetailCredit {
     public interface _FinalStage {
         PaymentDetailCredit build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Currency code ISO-4217. If not code is provided the currency in the paypoint setting is taken. Default is <strong>USD</strong></p>
          */
@@ -197,6 +201,18 @@ public final class PaymentDetailCredit {
         @java.lang.Override
         public PaymentDetailCredit build() {
             return new PaymentDetailCredit(currency, serviceFee, totalAmount, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

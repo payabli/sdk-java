@@ -52,7 +52,7 @@ public final class SplitFundingContent {
     }
 
     /**
-     * @return Amount from the transaction to sent to this recipient.
+     * @return Amount from the transaction to send to this recipient.
      */
     @JsonProperty("amount")
     public Optional<Double> getAmount() {
@@ -145,7 +145,7 @@ public final class SplitFundingContent {
         }
 
         /**
-         * <p>Amount from the transaction to sent to this recipient.</p>
+         * <p>Amount from the transaction to send to this recipient.</p>
          */
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public Builder amount(Optional<Double> amount) {
@@ -188,6 +188,16 @@ public final class SplitFundingContent {
 
         public SplitFundingContent build() {
             return new SplitFundingContent(accountId, amount, description, recipientEntryPoint, additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

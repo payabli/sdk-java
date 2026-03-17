@@ -13,23 +13,27 @@ import io.github.payabli.api.core.PayabliApiHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.errors.BadRequestError;
+import io.github.payabli.api.errors.ForbiddenError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
+import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.resources.moneyouttypes.types.AllowedCheckPaymentStatus;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
 import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
+import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
+import io.github.payabli.api.types.PayabliApiResponsePaylinks;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -877,6 +881,92 @@ public class RawMoneyOutClient {
                     case 401:
                         throw new UnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
+     */
+    public PayabliApiHttpResponse<ReissuePayoutResponse> reissueOut(ReissueOutRequest request) {
+        return reissueOut(request, null);
+    }
+
+    /**
+     * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
+     */
+    public PayabliApiHttpResponse<ReissuePayoutResponse> reissueOut(
+            ReissueOutRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyOut/reissue");
+        QueryStringMapper.addQueryParameter(httpUrl, "transId", request.getTransId(), false);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        if (request.getIdempotencyKey().isPresent()) {
+            _requestBuilder.addHeader(
+                    "idempotencyKey", request.getIdempotencyKey().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ReissuePayoutResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 403:
+                        throw new ForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, PayabliApiResponsePaylinks.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

@@ -207,5 +207,15 @@ public final class NoteElement {
         public NoteElement build() {
             return new NoteElement(enabled, header, order, placeholder, value, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

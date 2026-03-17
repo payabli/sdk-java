@@ -83,6 +83,10 @@ public final class NewPageRequest {
     public interface _FinalStage {
         NewPageRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
@@ -128,6 +132,18 @@ public final class NewPageRequest {
         @java.lang.Override
         public NewPageRequest build() {
             return new NewPageRequest(idempotencyKey, body, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -93,5 +93,15 @@ public final class AddPaymentMethodDomainRequestGooglePay {
         public AddPaymentMethodDomainRequestGooglePay build() {
             return new AddPaymentMethodDomainRequestGooglePay(isEnabled, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

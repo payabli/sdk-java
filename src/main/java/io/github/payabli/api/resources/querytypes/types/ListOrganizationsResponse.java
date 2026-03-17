@@ -85,6 +85,10 @@ public final class ListOrganizationsResponse {
     public interface _FinalStage {
         ListOrganizationsResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage records(List<OrganizationQueryRecord> records);
 
         _FinalStage addRecords(OrganizationQueryRecord records);
@@ -144,6 +148,18 @@ public final class ListOrganizationsResponse {
         @java.lang.Override
         public ListOrganizationsResponse build() {
             return new ListOrganizationsResponse(records, summary, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

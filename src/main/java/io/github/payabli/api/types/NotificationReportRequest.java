@@ -168,6 +168,10 @@ public final class NotificationReportRequest {
     public interface _FinalStage {
         NotificationReportRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage ownerId(Optional<Integer> ownerId);
 
         _FinalStage ownerId(Integer ownerId);
@@ -290,6 +294,18 @@ public final class NotificationReportRequest {
         public NotificationReportRequest build() {
             return new NotificationReportRequest(
                     content, frequency, method, ownerId, ownerType, status, target, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

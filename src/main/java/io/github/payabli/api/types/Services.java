@@ -139,5 +139,15 @@ public final class Services {
         public Services build() {
             return new Services(ach, card, odp, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

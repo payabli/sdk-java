@@ -348,6 +348,10 @@ public final class TransactionDetailPaymentDetails {
     public interface _FinalStage {
         TransactionDetailPaymentDetails build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage checkNumber(Optional<String> checkNumber);
 
         _FinalStage checkNumber(String checkNumber);
@@ -828,6 +832,18 @@ public final class TransactionDetailPaymentDetails {
                     categories,
                     splitFunding,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

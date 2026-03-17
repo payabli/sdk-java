@@ -231,5 +231,15 @@ public final class SettingsQueryRecord {
             return new SettingsQueryRecord(
                     customFields, forInvoices, forPayOuts, forWallets, general, identifiers, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

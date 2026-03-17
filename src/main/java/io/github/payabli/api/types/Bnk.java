@@ -165,5 +165,15 @@ public final class Bnk {
         public Bnk build() {
             return new Bnk(accountNumber, bankName, routingAccount, typeAccount, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

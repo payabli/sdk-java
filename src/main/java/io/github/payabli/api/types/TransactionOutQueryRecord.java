@@ -329,7 +329,7 @@ public final class TransactionOutQueryRecord {
     }
 
     /**
-     * @return Events associated to this transaction.
+     * @return Bills associated with this transaction.
      */
     @JsonProperty("Bills")
     public Optional<List<BillPayOutData>> getBills() {
@@ -337,7 +337,7 @@ public final class TransactionOutQueryRecord {
     }
 
     /**
-     * @return Events associated to this transaction.
+     * @return Events associated with this transaction.
      */
     @JsonProperty("Events")
     public Optional<List<QueryTransactionEvents>> getEvents() {
@@ -932,7 +932,7 @@ public final class TransactionOutQueryRecord {
         }
 
         /**
-         * <p>Events associated to this transaction.</p>
+         * <p>Bills associated with this transaction.</p>
          */
         @JsonSetter(value = "Bills", nulls = Nulls.SKIP)
         public Builder bills(Optional<List<BillPayOutData>> bills) {
@@ -946,7 +946,7 @@ public final class TransactionOutQueryRecord {
         }
 
         /**
-         * <p>Events associated to this transaction.</p>
+         * <p>Events associated with this transaction.</p>
          */
         @JsonSetter(value = "Events", nulls = Nulls.SKIP)
         public Builder events(Optional<List<QueryTransactionEvents>> events) {
@@ -1169,6 +1169,16 @@ public final class TransactionOutQueryRecord {
                     riskActionCode,
                     payoutProgram,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

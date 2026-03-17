@@ -184,5 +184,15 @@ public final class FileContentImageOnly {
         public FileContentImageOnly build() {
             return new FileContentImageOnly(ftype, filename, furl, fContent, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

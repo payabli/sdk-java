@@ -83,6 +83,10 @@ public final class TransferQueryResponse {
     public interface _FinalStage {
         TransferQueryResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage records(List<Transfer> records);
 
         _FinalStage addRecords(Transfer records);
@@ -142,6 +146,18 @@ public final class TransferQueryResponse {
         @java.lang.Override
         public TransferQueryResponse build() {
             return new TransferQueryResponse(records, summary, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

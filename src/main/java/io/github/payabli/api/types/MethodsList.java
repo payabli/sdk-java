@@ -280,5 +280,15 @@ public final class MethodsList {
         public MethodsList build() {
             return new MethodsList(amex, applePay, googlePay, discover, eCheck, mastercard, visa, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

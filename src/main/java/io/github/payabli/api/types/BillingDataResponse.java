@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public final class BillingDataResponse {
     private final int id;
 
-    private final Optional<Object> accountId;
+    private final Optional<String> accountId;
 
     private final String nickname;
 
@@ -55,7 +55,7 @@ public final class BillingDataResponse {
 
     private BillingDataResponse(
             int id,
-            Optional<Object> accountId,
+            Optional<String> accountId,
             String nickname,
             String bankName,
             String routingAccount,
@@ -94,8 +94,11 @@ public final class BillingDataResponse {
         return id;
     }
 
+    /**
+     * @return An identifier for the bank account. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>-2</code>. This value is also used as the identifier for the bank account's associated payment connector.
+     */
     @JsonProperty("accountId")
-    public Optional<Object> getAccountId() {
+    public Optional<String> getAccountId() {
         return accountId;
     }
 
@@ -287,9 +290,16 @@ public final class BillingDataResponse {
     public interface _FinalStage {
         BillingDataResponse build();
 
-        _FinalStage accountId(Optional<Object> accountId);
+        _FinalStage additionalProperty(String key, Object value);
 
-        _FinalStage accountId(Object accountId);
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>An identifier for the bank account. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>-2</code>. This value is also used as the identifier for the bank account's associated payment connector.</p>
+         */
+        _FinalStage accountId(Optional<String> accountId);
+
+        _FinalStage accountId(String accountId);
 
         _FinalStage services(List<Object> services);
 
@@ -339,7 +349,7 @@ public final class BillingDataResponse {
 
         private List<Object> services = new ArrayList<>();
 
-        private Optional<Object> accountId = Optional.empty();
+        private Optional<String> accountId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -495,15 +505,22 @@ public final class BillingDataResponse {
             return this;
         }
 
+        /**
+         * <p>An identifier for the bank account. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>-2</code>. This value is also used as the identifier for the bank account's associated payment connector.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        public _FinalStage accountId(Object accountId) {
+        public _FinalStage accountId(String accountId) {
             this.accountId = Optional.ofNullable(accountId);
             return this;
         }
 
+        /**
+         * <p>An identifier for the bank account. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>-2</code>. This value is also used as the identifier for the bank account's associated payment connector.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
-        public _FinalStage accountId(Optional<Object> accountId) {
+        public _FinalStage accountId(Optional<String> accountId) {
             this.accountId = accountId;
             return this;
         }
@@ -526,6 +543,18 @@ public final class BillingDataResponse {
                     services,
                     default_,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -165,5 +165,15 @@ public final class QuerySummaryNoAmt {
         public QuerySummaryNoAmt build() {
             return new QuerySummaryNoAmt(pageIdentifier, pageSize, totalPages, totalRecords, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

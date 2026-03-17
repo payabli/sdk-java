@@ -156,6 +156,10 @@ public final class V2TransactionResponseWrapper {
     public interface _FinalStage {
         V2TransactionResponseWrapper build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Pagination token (equivalent to <code>pageIdentifier</code> in v1 APIs). Returns <code>null</code> when pagination is not applicable.</p>
          */
@@ -272,6 +276,18 @@ public final class V2TransactionResponseWrapper {
         public V2TransactionResponseWrapper build() {
             return new V2TransactionResponseWrapper(
                     code, reason, explanation, action, data, token, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

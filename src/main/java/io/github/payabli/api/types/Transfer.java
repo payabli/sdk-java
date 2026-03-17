@@ -749,6 +749,10 @@ public final class Transfer {
     public interface _FinalStage {
         Transfer build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The currency of the batch, either USD or CAD.</p>
          */
@@ -1776,6 +1780,18 @@ public final class Transfer {
                     eventsData,
                     messages,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

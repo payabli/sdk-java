@@ -86,6 +86,10 @@ public final class QueryInvoiceResponse {
     public interface _FinalStage {
         QueryInvoiceResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage records(List<QueryInvoiceResponseRecordsItem> records);
 
         _FinalStage addRecords(QueryInvoiceResponseRecordsItem records);
@@ -145,6 +149,18 @@ public final class QueryInvoiceResponse {
         @java.lang.Override
         public QueryInvoiceResponse build() {
             return new QueryInvoiceResponse(records, summary, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

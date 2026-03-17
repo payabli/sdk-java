@@ -199,6 +199,10 @@ public final class GetPaidResponseData {
     public interface _FinalStage {
         GetPaidResponseData build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage authCode(Optional<String> authCode);
 
         _FinalStage authCode(String authCode);
@@ -376,6 +380,18 @@ public final class GetPaidResponseData {
                     customerId,
                     methodReferenceId,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

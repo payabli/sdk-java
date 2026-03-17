@@ -950,6 +950,10 @@ public final class QueryInvoiceResponseRecordsItem {
     public interface _FinalStage {
         QueryInvoiceResponseRecordsItem build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
          */
@@ -2151,6 +2155,18 @@ public final class QueryInvoiceResponseRecordsItem {
                     externalPaypointId,
                     pageIdentifier,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

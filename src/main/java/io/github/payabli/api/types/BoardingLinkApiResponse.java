@@ -86,6 +86,10 @@ public final class BoardingLinkApiResponse {
     public interface _FinalStage {
         BoardingLinkApiResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Reference name for boarding link (if responseText = Success) or
          * List of empty fields separated by comma (if responseText = Fail)</p>
@@ -145,6 +149,18 @@ public final class BoardingLinkApiResponse {
         @java.lang.Override
         public BoardingLinkApiResponse build() {
             return new BoardingLinkApiResponse(responseData, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

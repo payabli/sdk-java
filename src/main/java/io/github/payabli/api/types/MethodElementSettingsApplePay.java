@@ -159,5 +159,15 @@ public final class MethodElementSettingsApplePay {
         public MethodElementSettingsApplePay build() {
             return new MethodElementSettingsApplePay(buttonStyle, buttonType, language, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

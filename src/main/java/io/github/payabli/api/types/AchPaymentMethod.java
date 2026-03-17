@@ -105,5 +105,15 @@ public final class AchPaymentMethod {
         public AchPaymentMethod build() {
             return new AchPaymentMethod(storedMethodId, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

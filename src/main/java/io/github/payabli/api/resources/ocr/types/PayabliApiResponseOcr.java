@@ -116,6 +116,10 @@ public final class PayabliApiResponseOcr {
     public interface _FinalStage {
         PayabliApiResponseOcr build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Details of the OCR processing result</p>
          */
@@ -192,6 +196,18 @@ public final class PayabliApiResponseOcr {
         @java.lang.Override
         public PayabliApiResponseOcr build() {
             return new PayabliApiResponseOcr(isSuccess, responseText, responseCode, responseData, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

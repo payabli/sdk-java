@@ -115,6 +115,10 @@ public final class AddSubscriptionResponse {
     public interface _FinalStage {
         AddSubscriptionResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage customerId(Optional<Long> customerId);
 
         _FinalStage customerId(Long customerId);
@@ -196,6 +200,18 @@ public final class AddSubscriptionResponse {
         @java.lang.Override
         public AddSubscriptionResponse build() {
             return new AddSubscriptionResponse(customerId, responseText, isSuccess, responseData, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

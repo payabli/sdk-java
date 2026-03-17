@@ -244,5 +244,15 @@ public final class BillQueryRecord2BillApprovalsItem {
             return new BillQueryRecord2BillApprovalsItem(
                     approved, approvedTime, comments, email, id, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

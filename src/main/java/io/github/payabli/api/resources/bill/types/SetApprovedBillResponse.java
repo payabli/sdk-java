@@ -101,6 +101,10 @@ public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric
     public interface _FinalStage {
         SetApprovedBillResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage isSuccess(Optional<Boolean> isSuccess);
 
         _FinalStage isSuccess(Boolean isSuccess);
@@ -177,6 +181,18 @@ public final class SetApprovedBillResponse implements IPayabliApiResponseGeneric
         @java.lang.Override
         public SetApprovedBillResponse build() {
             return new SetApprovedBillResponse(isSuccess, responseText, responseData, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -758,6 +758,10 @@ public final class ApplicationDataPayIn {
     public interface _FinalStage {
         ApplicationDataPayIn build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage annualRevenue(Optional<Double> annualRevenue);
 
         _FinalStage annualRevenue(Double annualRevenue);
@@ -2004,6 +2008,18 @@ public final class ApplicationDataPayIn {
                     repOffice,
                     onCreate,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

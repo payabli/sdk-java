@@ -405,6 +405,10 @@ public final class TransactionDetailCustomer {
     public interface _FinalStage {
         TransactionDetailCustomer build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage identifiers(Optional<List<Optional<String>>> identifiers);
 
         _FinalStage identifiers(List<Optional<String>> identifiers);
@@ -733,6 +737,18 @@ public final class TransactionDetailCustomer {
                     customerStatus,
                     additionalData,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

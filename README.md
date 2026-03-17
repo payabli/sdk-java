@@ -302,10 +302,11 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.315</version>
+  <version>0.0.316</version>
 </dependency>
 ```
 
 ## Reference
 
 A full reference for this library is available [here](https://github.com/payabli/sdk-java/blob/HEAD/./reference.md).
+

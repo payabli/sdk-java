@@ -194,5 +194,15 @@ public final class ApplicationDataPayInServicesCard implements ICardSetup {
             return new ApplicationDataPayInServicesCard(
                     acceptAmex, acceptDiscover, acceptMastercard, acceptVisa, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

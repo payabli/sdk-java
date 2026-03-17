@@ -65,6 +65,8 @@ public final class PaypointData {
 
     private final Optional<String> zip;
 
+    private final Optional<StatementEmailConfig> statementEmail;
+
     private final Map<String, Object> additionalProperties;
 
     private PaypointData(
@@ -90,6 +92,7 @@ public final class PaypointData {
             Optional<Integer> timeZone,
             Optional<String> websiteAddress,
             Optional<String> zip,
+            Optional<StatementEmailConfig> statementEmail,
             Map<String, Object> additionalProperties) {
         this.address1 = address1;
         this.address2 = address2;
@@ -113,6 +116,7 @@ public final class PaypointData {
         this.timeZone = timeZone;
         this.websiteAddress = websiteAddress;
         this.zip = zip;
+        this.statementEmail = statementEmail;
         this.additionalProperties = additionalProperties;
     }
 
@@ -229,6 +233,14 @@ public final class PaypointData {
         return zip;
     }
 
+    /**
+     * @return Configuration for billing statement email recipients and sender address. <code>null</code> if not configured.
+     */
+    @JsonProperty("statementEmail")
+    public Optional<StatementEmailConfig> getStatementEmail() {
+        return statementEmail;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -262,7 +274,8 @@ public final class PaypointData {
                 && summary.equals(other.summary)
                 && timeZone.equals(other.timeZone)
                 && websiteAddress.equals(other.websiteAddress)
-                && zip.equals(other.zip);
+                && zip.equals(other.zip)
+                && statementEmail.equals(other.statementEmail);
     }
 
     @java.lang.Override
@@ -289,7 +302,8 @@ public final class PaypointData {
                 this.summary,
                 this.timeZone,
                 this.websiteAddress,
-                this.zip);
+                this.zip,
+                this.statementEmail);
     }
 
     @java.lang.Override
@@ -347,6 +361,8 @@ public final class PaypointData {
 
         private Optional<String> zip = Optional.empty();
 
+        private Optional<StatementEmailConfig> statementEmail = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -375,6 +391,7 @@ public final class PaypointData {
             timeZone(other.getTimeZone());
             websiteAddress(other.getWebsiteAddress());
             zip(other.getZip());
+            statementEmail(other.getStatementEmail());
             return this;
         }
 
@@ -623,6 +640,20 @@ public final class PaypointData {
             return this;
         }
 
+        /**
+         * <p>Configuration for billing statement email recipients and sender address. <code>null</code> if not configured.</p>
+         */
+        @JsonSetter(value = "statementEmail", nulls = Nulls.SKIP)
+        public Builder statementEmail(Optional<StatementEmailConfig> statementEmail) {
+            this.statementEmail = statementEmail;
+            return this;
+        }
+
+        public Builder statementEmail(StatementEmailConfig statementEmail) {
+            this.statementEmail = Optional.ofNullable(statementEmail);
+            return this;
+        }
+
         public PaypointData build() {
             return new PaypointData(
                     address1,
@@ -647,7 +678,18 @@ public final class PaypointData {
                     timeZone,
                     websiteAddress,
                     zip,
+                    statementEmail,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

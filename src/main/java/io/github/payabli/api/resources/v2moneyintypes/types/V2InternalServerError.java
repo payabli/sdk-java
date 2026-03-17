@@ -134,6 +134,10 @@ public final class V2InternalServerError {
 
     public interface _FinalStage {
         V2InternalServerError build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -211,6 +215,18 @@ public final class V2InternalServerError {
         @java.lang.Override
         public V2InternalServerError build() {
             return new V2InternalServerError(title, status, detail, instance, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

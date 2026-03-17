@@ -127,5 +127,15 @@ public final class PayabliApiResponseError400ResponseData {
         public PayabliApiResponseError400ResponseData build() {
             return new PayabliApiResponseError400ResponseData(explanation, todoAction, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

@@ -249,6 +249,10 @@ public final class PaymentMethodDomainApiResponse {
     public interface _FinalStage {
         PaymentMethodDomainApiResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The record type. For payment method domains, this is always <code>PaymentMethodDomain</code>.</p>
          */
@@ -476,6 +480,18 @@ public final class PaymentMethodDomainApiResponse {
                     ownerEntityType,
                     updatedAt,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

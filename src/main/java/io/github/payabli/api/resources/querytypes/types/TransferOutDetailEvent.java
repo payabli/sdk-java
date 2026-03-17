@@ -222,5 +222,15 @@ public final class TransferOutDetailEvent {
         public TransferOutDetailEvent build() {
             return new TransferOutDetailEvent(transEvent, eventData, eventTime, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

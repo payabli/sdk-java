@@ -99,6 +99,10 @@ public final class MigratePaypointResponse {
     public interface _FinalStage {
         MigratePaypointResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage responseCode(Optional<Integer> responseCode);
 
         _FinalStage responseCode(Integer responseCode);
@@ -155,6 +159,18 @@ public final class MigratePaypointResponse {
         @java.lang.Override
         public MigratePaypointResponse build() {
             return new MigratePaypointResponse(isSuccess, responseCode, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

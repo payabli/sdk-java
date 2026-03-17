@@ -177,6 +177,10 @@ public final class AuthResponseResponseData {
     public interface _FinalStage {
         AuthResponseResponseData build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage methodReferenceId(Optional<String> methodReferenceId);
 
         _FinalStage methodReferenceId(String methodReferenceId);
@@ -300,6 +304,18 @@ public final class AuthResponseResponseData {
                     customerId,
                     methodReferenceId,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

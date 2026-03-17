@@ -94,6 +94,10 @@ public final class NotificationRequest {
     public interface _FinalStage {
         NotificationRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>A dictionary of key-value pairs to be inserted in the header when the notification request is submitted</p>
          */
@@ -155,6 +159,18 @@ public final class NotificationRequest {
         @java.lang.Override
         public NotificationRequest build() {
             return new NotificationRequest(notificationUrl, webHeaderParameters, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

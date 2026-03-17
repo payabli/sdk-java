@@ -113,6 +113,10 @@ public final class PayabliApiResponseGetPaid {
     public interface _FinalStage {
         PayabliApiResponseGetPaid build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage pageIdentifier(Optional<String> pageIdentifier);
 
         _FinalStage pageIdentifier(String pageIdentifier);
@@ -180,6 +184,18 @@ public final class PayabliApiResponseGetPaid {
         public PayabliApiResponseGetPaid build() {
             return new PayabliApiResponseGetPaid(
                     responseText, isSuccess, pageIdentifier, responseData, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

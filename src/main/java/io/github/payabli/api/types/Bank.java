@@ -89,7 +89,7 @@ public final class Bank {
     }
 
     /**
-     * @return A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.
+     * @return An identifier for the bank account, used to specify which account handles payments when multiple accounts are configured. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. The mask always uses five <code>x</code> characters regardless of account number length. For example, account number <code>123456789</code> produces <code>acct-1xxxxx6789</code>. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>acct-1xxxxx6789-2</code>. This value is also used as the identifier for the bank account's associated payment connector.
      */
     @JsonProperty("accountId")
     public Optional<String> getAccountId() {
@@ -279,7 +279,7 @@ public final class Bank {
         }
 
         /**
-         * <p>A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.</p>
+         * <p>An identifier for the bank account, used to specify which account handles payments when multiple accounts are configured. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. The mask always uses five <code>x</code> characters regardless of account number length. For example, account number <code>123456789</code> produces <code>acct-1xxxxx6789</code>. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>acct-1xxxxx6789-2</code>. This value is also used as the identifier for the bank account's associated payment connector.</p>
          */
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
         public Builder accountId(Optional<String> accountId) {
@@ -438,6 +438,16 @@ public final class Bank {
                     status,
                     services,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -121,6 +121,10 @@ public final class RequestPaymentV2 {
     public interface _FinalStage {
         RequestPaymentV2 build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
@@ -236,6 +240,18 @@ public final class RequestPaymentV2 {
         public RequestPaymentV2 build() {
             return new RequestPaymentV2(
                     idempotencyKey, validationCode, achValidation, forceCustomerCreation, body, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

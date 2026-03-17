@@ -181,6 +181,10 @@ public final class PaymentDetail {
     public interface _FinalStage {
         PaymentDetail build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Array of payment categories/line items describing the amount to be paid.
          * <strong>Note</strong>: These categories are for information only and aren't validated against the total amount provided.</p>
@@ -434,6 +438,18 @@ public final class PaymentDetail {
                     checkUniqueId,
                     totalAmount,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

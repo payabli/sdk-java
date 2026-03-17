@@ -91,6 +91,10 @@ public final class VendorPaymentMethod {
     public interface _FinalStage {
         VendorPaymentMethod build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>ID of the stored ACH payment method. Only applicable when method is &quot;ach&quot;. Required when using a previously saved ACH method when the vendor has more than one saved method. See the <a href="/developers/developer-guides/pay-out-manage-payouts">Payouts with saved ACH payment methods</a> section for more details.</p>
          */
@@ -152,6 +156,18 @@ public final class VendorPaymentMethod {
         @java.lang.Override
         public VendorPaymentMethod build() {
             return new VendorPaymentMethod(method, storedMethodId, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

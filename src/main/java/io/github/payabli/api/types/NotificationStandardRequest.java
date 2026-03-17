@@ -170,6 +170,10 @@ public final class NotificationStandardRequest {
     public interface _FinalStage {
         NotificationStandardRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage content(Optional<NotificationStandardRequestContent> content);
 
         _FinalStage content(NotificationStandardRequestContent content);
@@ -307,6 +311,18 @@ public final class NotificationStandardRequest {
         public NotificationStandardRequest build() {
             return new NotificationStandardRequest(
                     content, frequency, method, ownerId, ownerType, status, target, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -372,6 +372,10 @@ public final class V2TransactionDetailResponseData {
     public interface _FinalStage {
         V2TransactionDetailResponseData build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage response(Optional<String> response);
 
         _FinalStage response(String response);
@@ -827,6 +831,18 @@ public final class V2TransactionDetailResponseData {
                     customerVaultId,
                     emvAuthResponseData,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -113,6 +113,10 @@ public final class RefundResponse {
     public interface _FinalStage {
         RefundResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage pageidentifier(Optional<String> pageidentifier);
 
         _FinalStage pageidentifier(String pageidentifier);
@@ -179,6 +183,18 @@ public final class RefundResponse {
         @java.lang.Override
         public RefundResponse build() {
             return new RefundResponse(responseText, isSuccess, responseData, pageidentifier, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

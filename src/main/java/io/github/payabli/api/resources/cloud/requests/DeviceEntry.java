@@ -169,5 +169,15 @@ public final class DeviceEntry {
         public DeviceEntry build() {
             return new DeviceEntry(idempotencyKey, description, registrationCode, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

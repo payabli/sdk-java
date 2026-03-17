@@ -186,7 +186,7 @@ public final class BillDetailResponse {
     }
 
     /**
-     * @return Events associated to this transaction.
+     * @return Bills associated with this transaction.
      */
     @JsonProperty("Bills")
     public Optional<List<BillDetailsResponse>> getBills() {
@@ -350,7 +350,7 @@ public final class BillDetailResponse {
     }
 
     /**
-     * @return Status of payout transaction.
+     * @return Text description of the payout transaction status.
      */
     @JsonProperty("StatusText")
     public Optional<String> getStatusText() {
@@ -676,7 +676,7 @@ public final class BillDetailResponse {
         }
 
         /**
-         * <p>Events associated to this transaction.</p>
+         * <p>Bills associated with this transaction.</p>
          */
         @JsonSetter(value = "Bills", nulls = Nulls.SKIP)
         public Builder bills(Optional<List<BillDetailsResponse>> bills) {
@@ -978,7 +978,7 @@ public final class BillDetailResponse {
         }
 
         /**
-         * <p>Status of payout transaction.</p>
+         * <p>Text description of the payout transaction status.</p>
          */
         @JsonSetter(value = "StatusText", nulls = Nulls.SKIP)
         public Builder statusText(Optional<String> statusText) {
@@ -1207,6 +1207,16 @@ public final class BillDetailResponse {
                     riskAction,
                     riskActionCode,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }
