@@ -167,7 +167,7 @@ public final class VendorData {
     }
 
     /**
-     * @return Vendor's address
+     * @return Vendor's street address. If any address field is provided, this field is required along with <code>city</code>, <code>state</code>, and <code>zip</code>. Allowed characters are letters, numbers, spaces, and `. ,
      */
     @JsonProperty("address1")
     public Optional<String> getAddress1() {
@@ -175,7 +175,7 @@ public final class VendorData {
     }
 
     /**
-     * @return Additional line for vendor's address.
+     * @return Additional line for vendor's address, such as a suite or unit number. Always optional.
      */
     @JsonProperty("address2")
     public Optional<String> getAddress2() {
@@ -191,7 +191,7 @@ public final class VendorData {
     }
 
     /**
-     * @return Vendor's city.
+     * @return Vendor's city. Required if any address field is provided.
      */
     @JsonProperty("city")
     public Optional<String> getCity() {
@@ -207,7 +207,7 @@ public final class VendorData {
     }
 
     /**
-     * @return Vendor's country.
+     * @return Vendor's country. Must be <code>US</code> or <code>CA</code>. Defaults to <code>US</code> if not provided.
      */
     @JsonProperty("country")
     public Optional<String> getCountry() {
@@ -335,7 +335,7 @@ public final class VendorData {
     }
 
     /**
-     * @return Vendor's state. Must be a 2 character state code.
+     * @return Vendor's state or province. Required if any address field is provided. Must be a valid US state abbreviation (such as <code>CA</code>, <code>NY</code>) or Canadian province abbreviation (such as <code>ON</code>, <code>BC</code>), depending on the <code>country</code> value.
      */
     @JsonProperty("state")
     public Optional<String> getState() {
@@ -348,7 +348,7 @@ public final class VendorData {
     }
 
     /**
-     * @return Vendor's zip code.
+     * @return Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).
      */
     @JsonProperty("zip")
     public Optional<String> getZip() {
@@ -577,7 +577,7 @@ public final class VendorData {
         }
 
         /**
-         * <p>Vendor's address</p>
+         * <p>Vendor's street address. If any address field is provided, this field is required along with <code>city</code>, <code>state</code>, and <code>zip</code>. Allowed characters are letters, numbers, spaces, and `. ,</p>
          */
         @JsonSetter(value = "address1", nulls = Nulls.SKIP)
         public Builder address1(Optional<String> address1) {
@@ -591,7 +591,7 @@ public final class VendorData {
         }
 
         /**
-         * <p>Additional line for vendor's address.</p>
+         * <p>Additional line for vendor's address, such as a suite or unit number. Always optional.</p>
          */
         @JsonSetter(value = "address2", nulls = Nulls.SKIP)
         public Builder address2(Optional<String> address2) {
@@ -619,7 +619,7 @@ public final class VendorData {
         }
 
         /**
-         * <p>Vendor's city.</p>
+         * <p>Vendor's city. Required if any address field is provided.</p>
          */
         @JsonSetter(value = "city", nulls = Nulls.SKIP)
         public Builder city(Optional<String> city) {
@@ -647,7 +647,7 @@ public final class VendorData {
         }
 
         /**
-         * <p>Vendor's country.</p>
+         * <p>Vendor's country. Must be <code>US</code> or <code>CA</code>. Defaults to <code>US</code> if not provided.</p>
          */
         @JsonSetter(value = "country", nulls = Nulls.SKIP)
         public Builder country(Optional<String> country) {
@@ -907,7 +907,7 @@ public final class VendorData {
         }
 
         /**
-         * <p>Vendor's state. Must be a 2 character state code.</p>
+         * <p>Vendor's state or province. Required if any address field is provided. Must be a valid US state abbreviation (such as <code>CA</code>, <code>NY</code>) or Canadian province abbreviation (such as <code>ON</code>, <code>BC</code>), depending on the <code>country</code> value.</p>
          */
         @JsonSetter(value = "state", nulls = Nulls.SKIP)
         public Builder state(Optional<String> state) {
@@ -932,7 +932,7 @@ public final class VendorData {
         }
 
         /**
-         * <p>Vendor's zip code.</p>
+         * <p>Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
          */
         @JsonSetter(value = "zip", nulls = Nulls.SKIP)
         public Builder zip(Optional<String> zip) {

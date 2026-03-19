@@ -107,6 +107,7 @@ public final class PushPayLinkRequest {
     @JsonIgnoreProperties("channel")
     private static final class EmailValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "channel", allowSetters = true)
         private PushPayLinkRequestEmail value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -146,6 +147,7 @@ public final class PushPayLinkRequest {
     @JsonIgnoreProperties("channel")
     private static final class SmsValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "channel", allowSetters = true)
         private PushPayLinkRequestSms value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
