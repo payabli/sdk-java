@@ -159,5 +159,15 @@ public final class GooglePayMetadata {
         public GooglePayMetadata build() {
             return new GooglePayMetadata(statusCode, redirectUrl, redirectDomainName, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

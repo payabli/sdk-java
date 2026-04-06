@@ -85,6 +85,9 @@ public final class TokenizeAch {
         return achCode;
     }
 
+    /**
+     * @return Bank account holder. This field is <strong>required</strong> when <code>method</code> is <code>ach</code>. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.
+     */
     @JsonProperty("achHolder")
     public String getAchHolder() {
         return achHolder;
@@ -167,6 +170,9 @@ public final class TokenizeAch {
     }
 
     public interface AchHolderStage {
+        /**
+         * <p>Bank account holder. This field is <strong>required</strong> when <code>method</code> is <code>ach</code>. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.</p>
+         */
         AchRoutingStage achHolder(@NotNull String achHolder);
     }
 
@@ -176,6 +182,10 @@ public final class TokenizeAch {
 
     public interface _FinalStage {
         TokenizeAch build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         _FinalStage achCode(Optional<String> achCode);
 
@@ -253,6 +263,11 @@ public final class TokenizeAch {
             return this;
         }
 
+        /**
+         * <p>Bank account holder. This field is <strong>required</strong> when <code>method</code> is <code>ach</code>. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.</p>
+         * <p>Bank account holder. This field is <strong>required</strong> when <code>method</code> is <code>ach</code>. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("achHolder")
         public AchRoutingStage achHolder(@NotNull String achHolder) {
@@ -318,6 +333,18 @@ public final class TokenizeAch {
                     achRouting,
                     device,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

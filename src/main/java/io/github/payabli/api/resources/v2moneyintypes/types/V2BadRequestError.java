@@ -222,6 +222,10 @@ public final class V2BadRequestError {
     public interface _FinalStage {
         V2BadRequestError build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Dictionary of field-specific validation errors. Keys are field paths (e.g., &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
          */
@@ -425,6 +429,18 @@ public final class V2BadRequestError {
         public V2BadRequestError build() {
             return new V2BadRequestError(
                     type, title, status, detail, instance, code, errors, token, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

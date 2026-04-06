@@ -915,6 +915,10 @@ public final class BatchDetailResponseRecord {
     public interface _FinalStage {
         BatchDetailResponseRecord build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage walletType(Optional<String> walletType);
 
         _FinalStage walletType(String walletType);
@@ -1826,6 +1830,18 @@ public final class BatchDetailResponseRecord {
                     externalPaypointId,
                     isHold,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

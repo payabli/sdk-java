@@ -380,6 +380,10 @@ public final class NotificationLogDetail implements INotificationLog {
     public interface _FinalStage {
         NotificationLogDetail build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>The ID of the organization that the notification belongs to.</p>
          */
@@ -917,6 +921,18 @@ public final class NotificationLogDetail implements INotificationLog {
                     responseHeaders,
                     responseContent,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -143,6 +143,10 @@ public final class TokenizeCard {
     public interface _FinalStage {
         TokenizeCard build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage cardcvv(Optional<String> cardcvv);
 
         _FinalStage cardcvv(String cardcvv);
@@ -245,6 +249,18 @@ public final class TokenizeCard {
         @java.lang.Override
         public TokenizeCard build() {
             return new TokenizeCard(method, cardcvv, cardexp, cardHolder, cardnumber, cardzip, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

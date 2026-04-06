@@ -99,6 +99,10 @@ public final class AddOrganizationResponse {
     public interface _FinalStage {
         AddOrganizationResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage isSuccess(Optional<Boolean> isSuccess);
 
         _FinalStage isSuccess(Boolean isSuccess);
@@ -175,6 +179,18 @@ public final class AddOrganizationResponse {
         @java.lang.Override
         public AddOrganizationResponse build() {
             return new AddOrganizationResponse(isSuccess, responseData, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -108,6 +108,10 @@ public final class PaypointMoveRequest {
     public interface _FinalStage {
         PaypointMoveRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Optional notification request object for a webhook</p>
          */
@@ -180,6 +184,18 @@ public final class PaypointMoveRequest {
         public PaypointMoveRequest build() {
             return new PaypointMoveRequest(
                     entryPoint, newParentOrganizationId, notificationRequest, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

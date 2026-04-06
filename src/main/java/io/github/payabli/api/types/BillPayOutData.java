@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.List;
@@ -95,16 +98,22 @@ public final class BillPayOutData {
     /**
      * @return Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
      */
-    @JsonProperty("dueDate")
+    @JsonIgnore
     public Optional<String> getDueDate() {
+        if (dueDate == null) {
+            return Optional.empty();
+        }
         return dueDate;
     }
 
     /**
      * @return Bill date in format YYYY-MM-DD or MM/DD/YYYY.
      */
-    @JsonProperty("invoiceDate")
+    @JsonIgnore
     public Optional<String> getInvoiceDate() {
+        if (invoiceDate == null) {
+            return Optional.empty();
+        }
         return invoiceDate;
     }
 
@@ -161,6 +170,18 @@ public final class BillPayOutData {
     @JsonProperty("attachments")
     public Optional<List<FileContent>> getAttachments() {
         return attachments;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("dueDate")
+    private Optional<String> _getDueDate() {
+        return dueDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceDate")
+    private Optional<String> _getInvoiceDate() {
+        return invoiceDate;
     }
 
     @java.lang.Override
@@ -304,6 +325,17 @@ public final class BillPayOutData {
             return this;
         }
 
+        public Builder dueDate(Nullable<String> dueDate) {
+            if (dueDate.isNull()) {
+                this.dueDate = null;
+            } else if (dueDate.isEmpty()) {
+                this.dueDate = Optional.empty();
+            } else {
+                this.dueDate = Optional.of(dueDate.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Bill date in format YYYY-MM-DD or MM/DD/YYYY.</p>
          */
@@ -315,6 +347,17 @@ public final class BillPayOutData {
 
         public Builder invoiceDate(String invoiceDate) {
             this.invoiceDate = Optional.ofNullable(invoiceDate);
+            return this;
+        }
+
+        public Builder invoiceDate(Nullable<String> invoiceDate) {
+            if (invoiceDate.isNull()) {
+                this.invoiceDate = null;
+            } else if (invoiceDate.isEmpty()) {
+                this.invoiceDate = Optional.empty();
+            } else {
+                this.invoiceDate = Optional.of(invoiceDate.get());
+            }
             return this;
         }
 
@@ -436,6 +479,16 @@ public final class BillPayOutData {
                     additionalData,
                     attachments,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

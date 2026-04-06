@@ -114,6 +114,10 @@ public final class PayMethodStoredMethod {
     public interface _FinalStage {
         PayMethodStoredMethod build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage initiator(Optional<String> initiator);
 
         _FinalStage initiator(String initiator);
@@ -216,6 +220,18 @@ public final class PayMethodStoredMethod {
         public PayMethodStoredMethod build() {
             return new PayMethodStoredMethod(
                     initiator, method, storedMethodId, storedMethodUsageType, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

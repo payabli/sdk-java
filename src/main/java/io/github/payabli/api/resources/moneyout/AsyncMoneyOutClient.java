@@ -8,12 +8,14 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
+import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.resources.moneyouttypes.types.AllowedCheckPaymentStatus;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
 import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
+import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutResponse;
 import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.PayabliApiResponse0000;
@@ -268,5 +270,24 @@ public class AsyncMoneyOutClient {
         return this.rawClient
                 .updateCheckPaymentStatus(transId, checkPaymentStatus, requestOptions)
                 .thenApply(response -> response.body());
+    }
+
+    /**
+     * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
+     */
+    public CompletableFuture<ReissuePayoutResponse> reissueOut(ReissueOutRequest request) {
+        return this.rawClient.reissueOut(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
+     */
+    public CompletableFuture<ReissuePayoutResponse> reissueOut(
+            ReissueOutRequest request, RequestOptions requestOptions) {
+        return this.rawClient.reissueOut(request, requestOptions).thenApply(response -> response.body());
     }
 }

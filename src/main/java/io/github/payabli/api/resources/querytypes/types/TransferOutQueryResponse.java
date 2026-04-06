@@ -92,6 +92,10 @@ public final class TransferOutQueryResponse {
     public interface _FinalStage {
         TransferOutQueryResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>List of outbound transfer records.</p>
          */
@@ -170,6 +174,18 @@ public final class TransferOutQueryResponse {
         @java.lang.Override
         public TransferOutQueryResponse build() {
             return new TransferOutQueryResponse(summary, records, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

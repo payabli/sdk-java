@@ -214,5 +214,15 @@ public final class RequestOutAuthorizePaymentDetails {
             return new RequestOutAuthorizePaymentDetails(
                     checkNumber, currency, serviceFee, totalAmount, unbundled, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

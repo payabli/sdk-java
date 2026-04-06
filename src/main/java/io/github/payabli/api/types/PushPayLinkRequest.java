@@ -67,6 +67,22 @@ public final class PushPayLinkRequest {
         return Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return other instanceof PushPayLinkRequest && value.equals(((PushPayLinkRequest) other).value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     @JsonValue
     private Value getValue() {
         return this.value;
@@ -91,6 +107,7 @@ public final class PushPayLinkRequest {
     @JsonIgnoreProperties("channel")
     private static final class EmailValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "channel", allowSetters = true)
         private PushPayLinkRequestEmail value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -130,6 +147,7 @@ public final class PushPayLinkRequest {
     @JsonIgnoreProperties("channel")
     private static final class SmsValue implements Value {
         @JsonUnwrapped
+        @JsonIgnoreProperties(value = "channel", allowSetters = true)
         private PushPayLinkRequestSms value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

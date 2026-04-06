@@ -36,41 +36,37 @@ client.bill().addBill(
                 .builder()
                 .accountingField1("MyInternalId")
                 .attachments(
-                    Optional.of(
-                        Arrays.asList(
-                            FileContent
-                                .builder()
-                                .filename("my-doc.pdf")
-                                .ftype(FileContentFtype.PDF)
-                                .furl("https://mysite.com/my-doc.pdf")
-                                .build()
-                        )
+                    Arrays.asList(
+                        FileContent
+                            .builder()
+                            .filename("my-doc.pdf")
+                            .ftype(FileContentFtype.PDF)
+                            .furl("https://mysite.com/my-doc.pdf")
+                            .build()
                     )
                 )
                 .billDate("2024-07-01")
                 .billItems(
-                    Optional.of(
-                        Arrays.asList(
-                            BillItem
-                                .builder()
-                                .itemCost(5.0)
-                                .itemCategories(
-                                    Optional.of(
-                                        Arrays.asList(Optional.of("deposits"))
-                                    )
+                    Arrays.asList(
+                        BillItem
+                            .builder()
+                            .itemCost(5.0)
+                            .itemCategories(
+                                Optional.of(
+                                    Arrays.asList(Optional.of("deposits"))
                                 )
-                                .itemCommodityCode("010")
-                                .itemDescription("Deposit for materials")
-                                .itemMode(0)
-                                .itemProductCode("M-DEPOSIT")
-                                .itemProductName("Materials deposit")
-                                .itemQty(1)
-                                .itemTaxAmount(7.0)
-                                .itemTaxRate(0.075)
-                                .itemTotalAmount(123.0)
-                                .itemUnitOfMeasure("SqFt")
-                                .build()
-                        )
+                            )
+                            .itemCommodityCode("010")
+                            .itemDescription("Deposit for materials")
+                            .itemMode(0)
+                            .itemProductCode("M-DEPOSIT")
+                            .itemProductName("Materials deposit")
+                            .itemQty(1)
+                            .itemTaxAmount(7.0)
+                            .itemTaxRate(0.075)
+                            .itemTotalAmount(123.0)
+                            .itemUnitOfMeasure("SqFt")
+                            .build()
                     )
                 )
                 .billNumber("ABC-123")
@@ -1056,17 +1052,12 @@ client.boarding().addApplication(
                     .card(
                         ApplicationDataPayInServicesCard
                             .builder()
-                            .acceptAmex(true)
-                            .acceptDiscover(true)
-                            .acceptMastercard(true)
-                            .acceptVisa(true)
+                            .acceptAmex(Optional.of(true))
+                            .acceptDiscover(Optional.of(true))
+                            .acceptMastercard(Optional.of(true))
+                            .acceptVisa(Optional.of(true))
                             .build()
                     )
-                    .build()
-            )
-            .bankData(
-                ApplicationDataPayInBankData
-                    .builder()
                     .build()
             )
             .phonenumber("1234567890")
@@ -1074,43 +1065,79 @@ client.boarding().addApplication(
             .signer(
                 SignerDataRequest
                     .builder()
-                    .name("John Smith")
-                    .ssn("123456789")
-                    .dob("01/01/1976")
-                    .phone("555888111")
-                    .email("test@email.com")
-                    .address("33 North St")
-                    .address1("STE 900")
-                    .city("Bristol")
-                    .country("US")
-                    .state("TN")
-                    .zip("55555")
-                    .signedDocumentReference("https://example.com/signed-document.pdf")
-                    .pciAttestation(true)
-                    .attestationDate("04/20/2025")
-                    .additionalData("{\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"session\":\"fifji4-fiu443-fn4843\",\"timeWithCompany\":\"6 Years\"}")
-                    .signDate("04/20/2025")
+                    .name(Optional.of("John Smith"))
+                    .ssn(Optional.of("123456789"))
+                    .dob(Optional.of("01/01/1976"))
+                    .phone(Optional.of("555888111"))
+                    .email(Optional.of("test@email.com"))
+                    .address(Optional.of("33 North St"))
+                    .address1(Optional.of("STE 900"))
+                    .city(Optional.of("Bristol"))
+                    .country(Optional.of("US"))
+                    .state(Optional.of("TN"))
+                    .zip(Optional.of("55555"))
+                    .signedDocumentReference(Optional.of("https://example.com/signed-document.pdf"))
+                    .pciAttestation(Optional.of(true))
+                    .attestationDate(Optional.of("04/20/2025"))
+                    .additionalData(
+                        Optional.of(
+                            new HashMap<String, String>() {{
+                                put("deviceId", "499585-389fj484-3jcj8hj3");
+                                put("session", "fifji4-fiu443-fn4843");
+                                put("timeWithCompany", "6 Years");
+                            }}
+                        )
+                    )
+                    .signDate(Optional.of("04/20/2025"))
                     .build()
             )
             .whenCharged(Whencharged.WHEN_SERVICE_PROVIDED)
             .whenDelivered(Whendelivered.OVER_30_DAYS)
             .whenProvided(Whenprovided.THIRTY_DAYS_OR_LESS)
             .whenRefunded(Whenrefunded.THIRTY_DAYS_OR_LESS)
-            .annualRevenue(1000.0)
-            .averageBillSize("500")
-            .averageMonthlyBill("5650")
-            .avgmonthly(1000.0)
-            .baddress("123 Walnut Street")
-            .baddress1("Suite 103")
-            .bcity("New Vegas")
-            .bcountry("US")
-            .binperson(60)
-            .binphone(20)
-            .binweb(20)
-            .bstate("FL")
-            .bsummary("Brick and mortar store that sells office supplies")
-            .btype(OwnType.LIMITED_LIABILITY_COMPANY)
-            .bzip("33000")
+            .annualRevenue(Optional.of(1000.0))
+            .averageBillSize(Optional.of("500"))
+            .averageMonthlyBill(Optional.of("5650"))
+            .avgmonthly(Optional.of(1000.0))
+            .baddress(Optional.of("123 Walnut Street"))
+            .baddress1(Optional.of("Suite 103"))
+            .bankData(
+                Arrays.asList(
+                    Bank
+                        .builder()
+                        .accountId("123-456")
+                        .nickname("Withdrawal Account")
+                        .bankName("Test Bank")
+                        .routingAccount("123123123")
+                        .accountNumber("123123123")
+                        .typeAccount(TypeAccount.CHECKING)
+                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                        .bankAccountFunction(1)
+                        .build(),
+                    Bank
+                        .builder()
+                        .accountId("123-456")
+                        .nickname("Deposit Account")
+                        .bankName("Test Bank")
+                        .routingAccount("123123123")
+                        .accountNumber("123123123")
+                        .typeAccount(TypeAccount.CHECKING)
+                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                        .bankAccountFunction(0)
+                        .build()
+                )
+            )
+            .bcity(Optional.of("New Vegas"))
+            .bcountry(Optional.of("US"))
+            .binperson(Optional.of(60))
+            .binphone(Optional.of(20))
+            .binweb(Optional.of(20))
+            .bstate(Optional.of("FL"))
+            .bsummary(Optional.of("Brick and mortar store that sells office supplies"))
+            .btype(Optional.of(OwnType.LIMITED_LIABILITY_COMPANY))
+            .bzip(Optional.of("33000"))
             .contacts(
                 Optional.of(
                     Arrays.asList(
@@ -1124,22 +1151,22 @@ client.boarding().addApplication(
                     )
                 )
             )
-            .creditLimit("creditLimit")
-            .dbaName("Sunshine Gutters")
-            .ein("123456789")
-            .faxnumber("1234567890")
-            .highticketamt(1000.0)
-            .legalName("Sunshine Services, LLC")
-            .license("2222222FFG")
-            .licstate("CA")
-            .maddress("123 Walnut Street")
-            .maddress1("STE 900")
-            .mcc("7777")
-            .mcity("Johnson City")
-            .mcountry("US")
-            .mstate("TN")
-            .mzip("37615")
-            .orgId(123L)
+            .creditLimit(Optional.of("creditLimit"))
+            .dbaName(Optional.of("Sunshine Gutters"))
+            .ein(Optional.of("123456789"))
+            .faxnumber(Optional.of("1234567890"))
+            .highticketamt(Optional.of(1000.0))
+            .legalName(Optional.of("Sunshine Services, LLC"))
+            .license(Optional.of("2222222FFG"))
+            .licstate(Optional.of("CA"))
+            .maddress(Optional.of("123 Walnut Street"))
+            .maddress1(Optional.of("STE 900"))
+            .mcc(Optional.of("7777"))
+            .mcity(Optional.of("Johnson City"))
+            .mcountry(Optional.of("US"))
+            .mstate(Optional.of("TN"))
+            .mzip(Optional.of("37615"))
+            .orgId(Optional.of(123L))
             .ownership(
                 Optional.of(
                     Arrays.asList(
@@ -1164,14 +1191,14 @@ client.boarding().addApplication(
                     )
                 )
             )
-            .recipientEmail("josephray@example.com")
-            .recipientEmailNotification(true)
-            .resumable(true)
-            .startdate("01/01/1990")
-            .taxFillName("Sunshine LLC")
-            .templateId(22L)
-            .ticketamt(1000.0)
-            .website("www.example.com")
+            .recipientEmail(Optional.of("josephray@example.com"))
+            .recipientEmailNotification(Optional.of(true))
+            .resumable(Optional.of(true))
+            .startdate(Optional.of("01/01/1990"))
+            .taxFillName(Optional.of("Sunshine LLC"))
+            .templateId(Optional.of(22L))
+            .ticketamt(Optional.of(1000.0))
+            .website(Optional.of("www.example.com"))
             .build()
     )
 );
@@ -9592,10 +9619,10 @@ client.moneyIn().authorize(
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
                             .method("card")
-                            .cardcvv("999")
-                            .cardHolder("John Cassian")
-                            .cardzip("12345")
-                            .initiator("payor")
+                            .cardcvv(Optional.of("999"))
+                            .cardHolder(Optional.of("John Cassian"))
+                            .cardzip(Optional.of("12345"))
+                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
@@ -9812,7 +9839,7 @@ client.moneyIn().captureAuth(
 <dl>
 <dd>
 
-Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`.
+Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
 
 This feature must be enabled by Payabli on a per-merchant basis. Contact support for help. 
 </dd>
@@ -10070,10 +10097,10 @@ client.moneyIn().getpaid(
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
                             .method("card")
-                            .cardcvv("999")
-                            .cardHolder("John Cassian")
-                            .cardzip("12345")
-                            .initiator("payor")
+                            .cardcvv(Optional.of("999"))
+                            .cardHolder(Optional.of("John Cassian"))
+                            .cardzip(Optional.of("12345"))
+                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
@@ -10789,10 +10816,10 @@ client.moneyIn().getpaidv2(
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
                             .method("card")
-                            .cardcvv("999")
-                            .cardHolder("John Cassian")
-                            .cardzip("12345")
-                            .initiator("payor")
+                            .cardcvv(Optional.of("999"))
+                            .cardHolder(Optional.of("John Cassian"))
+                            .cardzip(Optional.of("12345"))
+                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
@@ -10915,10 +10942,10 @@ client.moneyIn().authorizev2(
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
                             .method("card")
-                            .cardcvv("999")
-                            .cardHolder("John Cassian")
-                            .cardzip("12345")
-                            .initiator("payor")
+                            .cardcvv(Optional.of("999"))
+                            .cardHolder(Optional.of("John Cassian"))
+                            .cardzip(Optional.of("12345"))
+                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
@@ -11956,6 +11983,101 @@ client.moneyOut().updateCheckPaymentStatus("TRANS123456", AllowedCheckPaymentSta
 </dl>
 </details>
 
+<details><summary><code>client.moneyOut.reissueOut(request) -> ReissuePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+
+The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
+
+The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().reissueOut(
+    ReissueOutRequest
+        .builder()
+        .transId("129-219")
+        .body(
+            ReissuePayoutBody
+                .builder()
+                .paymentMethod(
+                    ReissuePaymentMethod
+                        .builder()
+                        .method("ach")
+                        .achHolder("Acme Corp")
+                        .achRouting("021000021")
+                        .achAccount("9876543210")
+                        .achAccountType("savings")
+                        .achHolderType(AchHolderType.BUSINESS)
+                        .build()
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — The transaction ID of the payout to reissue.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ReissuePayoutBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Notification
 <details><summary><code>client.notification.addNotification(request) -> PayabliApiResponseNotifications</code></summary>
 <dl>
@@ -11993,13 +12115,15 @@ client.notification().addNotification(
             .ownerType(0)
             .target("https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275")
             .content(
-                NotificationStandardRequestContent
-                    .builder()
-                    .eventType(NotificationStandardRequestContentEventType.CREATED_APPLICATION)
-                    .build()
+                Optional.of(
+                    NotificationStandardRequestContent
+                        .builder()
+                        .eventType(Optional.of(NotificationStandardRequestContentEventType.CREATED_APPLICATION))
+                        .build()
+                )
             )
-            .ownerId("236")
-            .status(1)
+            .ownerId(Optional.of(236))
+            .status(Optional.of(1))
             .build()
     )
 );
@@ -12174,13 +12298,15 @@ client.notification().updateNotification(
             .ownerType(0)
             .target("newemail@email.com")
             .content(
-                NotificationStandardRequestContent
-                    .builder()
-                    .eventType(NotificationStandardRequestContentEventType.APPROVED_PAYMENT)
-                    .build()
+                Optional.of(
+                    NotificationStandardRequestContent
+                        .builder()
+                        .eventType(Optional.of(NotificationStandardRequestContentEventType.APPROVED_PAYMENT))
+                        .build()
+                )
             )
-            .ownerId("136")
-            .status(1)
+            .ownerId(Optional.of(136))
+            .status(Optional.of(1))
             .build()
     )
 );
@@ -12715,16 +12841,14 @@ client.organization().addOrganization(
                 .build()
         )
         .contacts(
-            Optional.of(
-                Arrays.asList(
-                    Contacts
-                        .builder()
-                        .contactEmail("herman@hermanscoatings.com")
-                        .contactName("Herman Martinez")
-                        .contactPhone("3055550000")
-                        .contactTitle("Owner")
-                        .build()
-                )
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("herman@hermanscoatings.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
             )
         )
         .hasBilling(true)
@@ -13014,16 +13138,14 @@ client.organization().editOrganization(
     OrganizationData
         .builder()
         .contacts(
-            Optional.of(
-                Arrays.asList(
-                    Contacts
-                        .builder()
-                        .contactEmail("herman@hermanscoatings.com")
-                        .contactName("Herman Martinez")
-                        .contactPhone("3055550000")
-                        .contactTitle("Owner")
-                        .build()
-                )
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("herman@hermanscoatings.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
             )
         )
         .orgAddress("123 Walnut Street")
@@ -13706,7 +13828,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-Generates a payment link for a bill from the bill ID. 
+Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
 </dd>
 </dl>
 </dd>
@@ -13726,7 +13848,7 @@ client.paymentLink().addPayLinkFromBill(
     PayLinkDataBill
         .builder()
         .body(
-            PaymentPageRequestBody
+            PaymentPageRequestBodyOut
                 .builder()
                 .contactUs(
                     ContactElement
@@ -13782,50 +13904,23 @@ client.paymentLink().addPayLinkFromBill(
                         .build()
                 )
                 .paymentMethods(
-                    MethodElement
+                    MethodElementOut
                         .builder()
                         .allMethodsChecked(true)
+                        .allowMultipleMethods(true)
+                        .defaultMethod("vcard")
                         .enabled(true)
                         .header("Payment Methods")
                         .methods(
-                            MethodsList
+                            MethodsListOut
                                 .builder()
-                                .amex(true)
-                                .applePay(true)
-                                .discover(true)
-                                .eCheck(true)
-                                .mastercard(true)
-                                .visa(true)
+                                .ach(true)
+                                .check(true)
+                                .vcard(true)
                                 .build()
                         )
                         .order(0)
-                        .build()
-                )
-                .payor(
-                    PayorElement
-                        .builder()
-                        .enabled(true)
-                        .fields(
-                            Optional.of(
-                                Arrays.asList(
-                                    PayorFields
-                                        .builder()
-                                        .display(true)
-                                        .fixed(true)
-                                        .identifier(true)
-                                        .label("Full Name")
-                                        .name("fullName")
-                                        .order(0)
-                                        .required(true)
-                                        .validation("alpha")
-                                        .value("")
-                                        .width(0)
-                                        .build()
-                                )
-                            )
-                        )
-                        .header("Payor Information")
-                        .order(0)
+                        .showPreviewVirtualCard(true)
                         .build()
                 )
                 .review(
@@ -13894,7 +13989,7 @@ client.paymentLink().addPayLinkFromBill(
 <dl>
 <dd>
 
-**request:** `PaymentPageRequestBody` 
+**request:** `PaymentPageRequestBodyOut` 
     
 </dd>
 </dl>
@@ -13933,7 +14028,7 @@ Deletes a payment link by ID.
 <dd>
 
 ```java
-client.paymentLink().deletePayLinkFromId("payLinkId");
+client.paymentLink().deletePayLinkFromId("2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234");
 ```
 </dd>
 </dl>
@@ -14409,7 +14504,7 @@ client.paymentLink().addPayLinkFromBillLotNumber(
         .entryPoint("billing")
         .vendorNumber("VENDOR-123")
         .body(
-            PaymentPageRequestBody
+            PaymentPageRequestBodyOut
                 .builder()
                 .contactUs(
                     ContactElement
@@ -14465,50 +14560,23 @@ client.paymentLink().addPayLinkFromBillLotNumber(
                         .build()
                 )
                 .paymentMethods(
-                    MethodElement
+                    MethodElementOut
                         .builder()
                         .allMethodsChecked(true)
+                        .allowMultipleMethods(true)
+                        .defaultMethod("vcard")
                         .enabled(true)
                         .header("Payment Methods")
                         .methods(
-                            MethodsList
+                            MethodsListOut
                                 .builder()
-                                .amex(true)
-                                .applePay(true)
-                                .discover(true)
-                                .eCheck(true)
-                                .mastercard(true)
-                                .visa(true)
+                                .ach(true)
+                                .check(true)
+                                .vcard(true)
                                 .build()
                         )
                         .order(0)
-                        .build()
-                )
-                .payor(
-                    PayorElement
-                        .builder()
-                        .enabled(true)
-                        .fields(
-                            Optional.of(
-                                Arrays.asList(
-                                    PayorFields
-                                        .builder()
-                                        .display(true)
-                                        .fixed(true)
-                                        .identifier(true)
-                                        .label("Full Name")
-                                        .name("fullName")
-                                        .order(0)
-                                        .required(true)
-                                        .validation("alpha")
-                                        .value("")
-                                        .width(0)
-                                        .build()
-                                )
-                            )
-                        )
-                        .header("Payor Information")
-                        .order(0)
+                        .showPreviewVirtualCard(true)
                         .build()
                 )
                 .review(
@@ -14586,7 +14654,231 @@ client.paymentLink().addPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**request:** `PaymentPageRequestBody` 
+**request:** `PaymentPageRequestBodyOut` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentLink.patchOutPaymentLink(paylinkId, request) -> PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentLink().patchOutPaymentLink(
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    PatchOutPaymentLinkRequest
+        .builder()
+        .expirationDate("2026-06-01T00:00:00Z")
+        .status(PaymentLinkStatus.ACTIVE)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `String` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PatchOutPaymentLinkRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentLink.updatePayLinkOutFromId(paylinkId, request) -> PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentLink().updatePayLinkOutFromId(
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    PaymentPageRequestBodyOut
+        .builder()
+        .contactUs(
+            ContactElement
+                .builder()
+                .emailLabel("Email")
+                .enabled(true)
+                .header("Contact Us")
+                .order(0)
+                .paymentIcons(true)
+                .phoneLabel("Phone")
+                .build()
+        )
+        .logo(
+            Element
+                .builder()
+                .enabled(true)
+                .order(0)
+                .build()
+        )
+        .messageBeforePaying(
+            LabelElement
+                .builder()
+                .enabled(true)
+                .label("Please review your payment details")
+                .order(0)
+                .build()
+        )
+        .notes(
+            NoteElement
+                .builder()
+                .enabled(true)
+                .header("Additional Notes")
+                .order(0)
+                .placeholder("Enter any additional notes here")
+                .value("")
+                .build()
+        )
+        .page(
+            PageElement
+                .builder()
+                .description("Get paid securely")
+                .enabled(true)
+                .header("Payment Page")
+                .order(0)
+                .build()
+        )
+        .paymentButton(
+            LabelElement
+                .builder()
+                .enabled(true)
+                .label("Pay Now")
+                .order(0)
+                .build()
+        )
+        .paymentMethods(
+            MethodElementOut
+                .builder()
+                .allMethodsChecked(true)
+                .allowMultipleMethods(true)
+                .defaultMethod("vcard")
+                .enabled(true)
+                .header("Payment Methods")
+                .methods(
+                    MethodsListOut
+                        .builder()
+                        .ach(true)
+                        .check(true)
+                        .vcard(true)
+                        .build()
+                )
+                .order(0)
+                .showPreviewVirtualCard(true)
+                .build()
+        )
+        .review(
+            HeaderElement
+                .builder()
+                .enabled(true)
+                .header("Review Payment")
+                .order(0)
+                .build()
+        )
+        .settings(
+            PagelinkSetting
+                .builder()
+                .color("#000000")
+                .language("en")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `String` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PaymentPageRequestBodyOut` 
     
 </dd>
 </dl>
@@ -21787,10 +22079,10 @@ client.subscription().newSubscription(
                             .cardexp("02/25")
                             .cardnumber("4111111111111111")
                             .method("card")
-                            .cardcvv("123")
-                            .cardHolder("John Cassian")
-                            .cardzip("37615")
-                            .initiator("payor")
+                            .cardcvv(Optional.of("123"))
+                            .cardHolder(Optional.of("John Cassian"))
+                            .cardzip(Optional.of("37615"))
+                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
@@ -22339,6 +22631,8 @@ client.tokenStorage().addMethod(
                 )
                 .entryPoint("f743aed24a")
                 .fallbackAuth(true)
+                .fallbackAuthAmount(100)
+                .methodDescription("Primary Visa card")
                 .paymentMethod(
                     RequestTokenStoragePaymentMethod.of(
                         TokenizeCard
@@ -22347,11 +22641,12 @@ client.tokenStorage().addMethod(
                             .cardexp("02/25")
                             .cardHolder("John Doe")
                             .cardnumber("4111111111111111")
-                            .cardcvv("123")
-                            .cardzip("12345")
+                            .cardcvv(Optional.of("123"))
+                            .cardzip(Optional.of("12345"))
                             .build()
                     )
                 )
+                .source("api")
                 .build()
         )
         .build()
@@ -22613,8 +22908,8 @@ client.tokenStorage().updateMethod(
                             .cardexp("02/25")
                             .cardHolder("John Doe")
                             .cardnumber("4111111111111111")
-                            .cardcvv("123")
-                            .cardzip("12345")
+                            .cardcvv(Optional.of("123"))
+                            .cardzip(Optional.of("12345"))
                             .build()
                     )
                 )
@@ -23490,16 +23785,14 @@ client.vendor().addVendor(
         )
         .city("Miami")
         .contacts(
-            Optional.of(
-                Arrays.asList(
-                    Contacts
-                        .builder()
-                        .contactEmail("example@email.com")
-                        .contactName("Herman Martinez")
-                        .contactPhone("3055550000")
-                        .contactTitle("Owner")
-                        .build()
-                )
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("example@email.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
             )
         )
         .country("US")
@@ -24026,3 +24319,4 @@ client.wallet().configureGooglePayPaypoint(
 </dd>
 </dl>
 </details>
+

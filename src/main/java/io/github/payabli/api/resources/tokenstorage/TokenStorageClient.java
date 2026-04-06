@@ -33,6 +33,20 @@ public class TokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
+    public AddMethodResponse addMethod(RequestTokenStorage body) {
+        return this.rawClient.addMethod(body).body();
+    }
+
+    /**
+     * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
+     */
+    public AddMethodResponse addMethod(RequestTokenStorage body, RequestOptions requestOptions) {
+        return this.rawClient.addMethod(body, requestOptions).body();
+    }
+
+    /**
+     * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
+     */
     public AddMethodResponse addMethod(AddMethodRequest request) {
         return this.rawClient.addMethod(request).body();
     }

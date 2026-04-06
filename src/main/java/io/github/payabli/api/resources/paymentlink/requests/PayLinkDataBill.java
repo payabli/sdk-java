@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
+import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,7 +29,7 @@ public final class PayLinkDataBill {
 
     private final Optional<String> mail2;
 
-    private final PaymentPageRequestBody body;
+    private final PaymentPageRequestBodyOut body;
 
     private final Map<String, Object> additionalProperties;
 
@@ -37,7 +37,7 @@ public final class PayLinkDataBill {
             Optional<String> idempotencyKey,
             Optional<Boolean> amountFixed,
             Optional<String> mail2,
-            PaymentPageRequestBody body,
+            PaymentPageRequestBodyOut body,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.amountFixed = amountFixed;
@@ -68,7 +68,7 @@ public final class PayLinkDataBill {
     }
 
     @JsonProperty("body")
-    public PaymentPageRequestBody getBody() {
+    public PaymentPageRequestBodyOut getBody() {
         return body;
     }
 
@@ -105,13 +105,17 @@ public final class PayLinkDataBill {
     }
 
     public interface BodyStage {
-        _FinalStage body(@NotNull PaymentPageRequestBody body);
+        _FinalStage body(@NotNull PaymentPageRequestBodyOut body);
 
         Builder from(PayLinkDataBill other);
     }
 
     public interface _FinalStage {
         PayLinkDataBill build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
@@ -134,7 +138,7 @@ public final class PayLinkDataBill {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements BodyStage, _FinalStage {
-        private PaymentPageRequestBody body;
+        private PaymentPageRequestBodyOut body;
 
         private Optional<String> mail2 = Optional.empty();
 
@@ -158,7 +162,7 @@ public final class PayLinkDataBill {
 
         @java.lang.Override
         @JsonSetter("body")
-        public _FinalStage body(@NotNull PaymentPageRequestBody body) {
+        public _FinalStage body(@NotNull PaymentPageRequestBodyOut body) {
             this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }
@@ -218,6 +222,18 @@ public final class PayLinkDataBill {
         @java.lang.Override
         public PayLinkDataBill build() {
             return new PayLinkDataBill(idempotencyKey, amountFixed, mail2, body, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

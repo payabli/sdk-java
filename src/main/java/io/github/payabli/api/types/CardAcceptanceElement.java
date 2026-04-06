@@ -213,5 +213,15 @@ public final class CardAcceptanceElement {
         public CardAcceptanceElement build() {
             return new CardAcceptanceElement(types, posCol, posRow, readOnly, value, visible, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

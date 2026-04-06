@@ -252,28 +252,43 @@ public final class GetInvoiceRecord {
         return invoiceNumber;
     }
 
-    @JsonProperty("invoiceDate")
+    @JsonIgnore
     public Optional<String> getInvoiceDate() {
+        if (invoiceDate == null) {
+            return Optional.empty();
+        }
         return invoiceDate;
     }
 
-    @JsonProperty("invoiceDueDate")
+    @JsonIgnore
     public Optional<String> getInvoiceDueDate() {
+        if (invoiceDueDate == null) {
+            return Optional.empty();
+        }
         return invoiceDueDate;
     }
 
-    @JsonProperty("invoiceSentDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getInvoiceSentDate() {
+        if (invoiceSentDate == null) {
+            return Optional.empty();
+        }
         return invoiceSentDate;
     }
 
-    @JsonProperty("invoiceEndDate")
+    @JsonIgnore
     public Optional<String> getInvoiceEndDate() {
+        if (invoiceEndDate == null) {
+            return Optional.empty();
+        }
         return invoiceEndDate;
     }
 
-    @JsonProperty("lastPaymentDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getLastPaymentDate() {
+        if (lastPaymentDate == null) {
+            return Optional.empty();
+        }
         return lastPaymentDate;
     }
 
@@ -485,6 +500,36 @@ public final class GetInvoiceRecord {
     @JsonProperty("externalPaypointID")
     public Optional<String> getExternalPaypointId() {
         return externalPaypointId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceDate")
+    private Optional<String> _getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceDueDate")
+    private Optional<String> _getInvoiceDueDate() {
+        return invoiceDueDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceSentDate")
+    private Optional<OffsetDateTime> _getInvoiceSentDate() {
+        return invoiceSentDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceEndDate")
+    private Optional<String> _getInvoiceEndDate() {
+        return invoiceEndDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("lastPaymentDate")
+    private Optional<OffsetDateTime> _getLastPaymentDate() {
+        return lastPaymentDate;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -748,25 +793,39 @@ public final class GetInvoiceRecord {
     public interface _FinalStage {
         GetInvoiceRecord build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage invoiceDate(Optional<String> invoiceDate);
 
         _FinalStage invoiceDate(String invoiceDate);
+
+        _FinalStage invoiceDate(Nullable<String> invoiceDate);
 
         _FinalStage invoiceDueDate(Optional<String> invoiceDueDate);
 
         _FinalStage invoiceDueDate(String invoiceDueDate);
 
+        _FinalStage invoiceDueDate(Nullable<String> invoiceDueDate);
+
         _FinalStage invoiceSentDate(Optional<OffsetDateTime> invoiceSentDate);
 
         _FinalStage invoiceSentDate(OffsetDateTime invoiceSentDate);
+
+        _FinalStage invoiceSentDate(Nullable<OffsetDateTime> invoiceSentDate);
 
         _FinalStage invoiceEndDate(Optional<String> invoiceEndDate);
 
         _FinalStage invoiceEndDate(String invoiceEndDate);
 
+        _FinalStage invoiceEndDate(Nullable<String> invoiceEndDate);
+
         _FinalStage lastPaymentDate(Optional<OffsetDateTime> lastPaymentDate);
 
         _FinalStage lastPaymentDate(OffsetDateTime lastPaymentDate);
+
+        _FinalStage lastPaymentDate(Nullable<OffsetDateTime> lastPaymentDate);
 
         _FinalStage termsConditions(Optional<String> termsConditions);
 
@@ -1460,6 +1519,18 @@ public final class GetInvoiceRecord {
         }
 
         @java.lang.Override
+        public _FinalStage lastPaymentDate(Nullable<OffsetDateTime> lastPaymentDate) {
+            if (lastPaymentDate.isNull()) {
+                this.lastPaymentDate = null;
+            } else if (lastPaymentDate.isEmpty()) {
+                this.lastPaymentDate = Optional.empty();
+            } else {
+                this.lastPaymentDate = Optional.of(lastPaymentDate.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage lastPaymentDate(OffsetDateTime lastPaymentDate) {
             this.lastPaymentDate = Optional.ofNullable(lastPaymentDate);
             return this;
@@ -1469,6 +1540,18 @@ public final class GetInvoiceRecord {
         @JsonSetter(value = "lastPaymentDate", nulls = Nulls.SKIP)
         public _FinalStage lastPaymentDate(Optional<OffsetDateTime> lastPaymentDate) {
             this.lastPaymentDate = lastPaymentDate;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage invoiceEndDate(Nullable<String> invoiceEndDate) {
+            if (invoiceEndDate.isNull()) {
+                this.invoiceEndDate = null;
+            } else if (invoiceEndDate.isEmpty()) {
+                this.invoiceEndDate = Optional.empty();
+            } else {
+                this.invoiceEndDate = Optional.of(invoiceEndDate.get());
+            }
             return this;
         }
 
@@ -1486,6 +1569,18 @@ public final class GetInvoiceRecord {
         }
 
         @java.lang.Override
+        public _FinalStage invoiceSentDate(Nullable<OffsetDateTime> invoiceSentDate) {
+            if (invoiceSentDate.isNull()) {
+                this.invoiceSentDate = null;
+            } else if (invoiceSentDate.isEmpty()) {
+                this.invoiceSentDate = Optional.empty();
+            } else {
+                this.invoiceSentDate = Optional.of(invoiceSentDate.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage invoiceSentDate(OffsetDateTime invoiceSentDate) {
             this.invoiceSentDate = Optional.ofNullable(invoiceSentDate);
             return this;
@@ -1499,6 +1594,18 @@ public final class GetInvoiceRecord {
         }
 
         @java.lang.Override
+        public _FinalStage invoiceDueDate(Nullable<String> invoiceDueDate) {
+            if (invoiceDueDate.isNull()) {
+                this.invoiceDueDate = null;
+            } else if (invoiceDueDate.isEmpty()) {
+                this.invoiceDueDate = Optional.empty();
+            } else {
+                this.invoiceDueDate = Optional.of(invoiceDueDate.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage invoiceDueDate(String invoiceDueDate) {
             this.invoiceDueDate = Optional.ofNullable(invoiceDueDate);
             return this;
@@ -1508,6 +1615,18 @@ public final class GetInvoiceRecord {
         @JsonSetter(value = "invoiceDueDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDueDate(Optional<String> invoiceDueDate) {
             this.invoiceDueDate = invoiceDueDate;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage invoiceDate(Nullable<String> invoiceDate) {
+            if (invoiceDate.isNull()) {
+                this.invoiceDate = null;
+            } else if (invoiceDate.isEmpty()) {
+                this.invoiceDate = Optional.empty();
+            } else {
+                this.invoiceDate = Optional.of(invoiceDate.get());
+            }
             return this;
         }
 
@@ -1576,6 +1695,18 @@ public final class GetInvoiceRecord {
                     documentsRef,
                     externalPaypointId,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

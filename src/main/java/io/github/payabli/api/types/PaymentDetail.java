@@ -110,7 +110,7 @@ public final class PaymentDetail {
     }
 
     /**
-     * @return Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.
+     * @return Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.
      */
     @JsonProperty("checkUniqueId")
     public Optional<String> getCheckUniqueId() {
@@ -181,6 +181,10 @@ public final class PaymentDetail {
     public interface _FinalStage {
         PaymentDetail build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Array of payment categories/line items describing the amount to be paid.
          * <strong>Note</strong>: These categories are for information only and aren't validated against the total amount provided.</p>
@@ -225,7 +229,7 @@ public final class PaymentDetail {
         _FinalStage splitFunding(List<SplitFundingContent> splitFunding);
 
         /**
-         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.</p>
          */
         _FinalStage checkUniqueId(Optional<String> checkUniqueId);
 
@@ -281,7 +285,7 @@ public final class PaymentDetail {
         }
 
         /**
-         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -291,7 +295,7 @@ public final class PaymentDetail {
         }
 
         /**
-         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/checkcapture/process-a-check-image">check processing</a> response.</p>
+         * <p>Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where <code>achCode</code> is <code>BOC</code>. Use the <code>id</code> value from the <a href="/developers/api-reference/moneyin/check-capture">check processing</a> response.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "checkUniqueId", nulls = Nulls.SKIP)
@@ -434,6 +438,18 @@ public final class PaymentDetail {
                     checkUniqueId,
                     totalAmount,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

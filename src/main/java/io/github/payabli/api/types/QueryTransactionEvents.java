@@ -160,5 +160,15 @@ public final class QueryTransactionEvents {
         public QueryTransactionEvents build() {
             return new QueryTransactionEvents(eventData, eventTime, transEvent, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

@@ -89,7 +89,7 @@ public final class TransactionDetailInvoiceData {
 
     private final Optional<List<FileContent>> attachments;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Map<String, Object> additionalProperties;
 
@@ -125,7 +125,7 @@ public final class TransactionDetailInvoiceData {
             Optional<String> summaryCommodityCode,
             Optional<List<BillItem>> items,
             Optional<List<FileContent>> attachments,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Map<String, Object> additionalProperties) {
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
@@ -411,7 +411,7 @@ public final class TransactionDetailInvoiceData {
     }
 
     @JsonIgnore
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         if (additionalData == null) {
             return Optional.empty();
         }
@@ -606,7 +606,7 @@ public final class TransactionDetailInvoiceData {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("additionalData")
-    private Optional<String> _getAdditionalData() {
+    private Optional<Map<String, String>> _getAdditionalData() {
         return additionalData;
     }
 
@@ -766,7 +766,7 @@ public final class TransactionDetailInvoiceData {
 
         private Optional<List<FileContent>> attachments = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -1492,17 +1492,17 @@ public final class TransactionDetailInvoiceData {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
-        public Builder additionalData(Nullable<String> additionalData) {
+        public Builder additionalData(Nullable<Map<String, String>> additionalData) {
             if (additionalData.isNull()) {
                 this.additionalData = null;
             } else if (additionalData.isEmpty()) {
@@ -1548,6 +1548,16 @@ public final class TransactionDetailInvoiceData {
                     attachments,
                     additionalData,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

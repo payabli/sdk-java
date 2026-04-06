@@ -223,6 +223,10 @@ public final class ChargebackMessage {
     public interface _FinalStage {
         ChargebackMessage build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Additional properties of the message.</p>
          */
@@ -391,6 +395,18 @@ public final class ChargebackMessage {
                     messageType,
                     messageProperties,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

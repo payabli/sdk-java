@@ -123,6 +123,10 @@ public final class PayabliApiResponseNotifications {
     public interface _FinalStage {
         PayabliApiResponseNotifications build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.</p>
          * <p>If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
@@ -253,6 +257,18 @@ public final class PayabliApiResponseNotifications {
         public PayabliApiResponseNotifications build() {
             return new PayabliApiResponseNotifications(
                     isSuccess, pageIdentifier, responseCode, responseData, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

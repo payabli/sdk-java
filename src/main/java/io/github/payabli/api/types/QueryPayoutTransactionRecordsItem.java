@@ -199,7 +199,7 @@ public final class QueryPayoutTransactionRecordsItem {
     }
 
     /**
-     * @return Events associated with this transaction.
+     * @return Bills associated with this transaction.
      */
     @JsonProperty("Bills")
     public Optional<List<BillPayOutData>> getBills() {
@@ -688,7 +688,7 @@ public final class QueryPayoutTransactionRecordsItem {
         }
 
         /**
-         * <p>Events associated with this transaction.</p>
+         * <p>Bills associated with this transaction.</p>
          */
         @JsonSetter(value = "Bills", nulls = Nulls.SKIP)
         public Builder bills(Optional<List<BillPayOutData>> bills) {
@@ -1181,6 +1181,16 @@ public final class QueryPayoutTransactionRecordsItem {
                     totalAmount,
                     vendor,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

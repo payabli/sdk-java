@@ -296,6 +296,10 @@ public final class LineItemQueryRecord {
     public interface _FinalStage {
         LineItemQueryRecord build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Timestamp of when line item was created, in UTC.</p>
          */
@@ -750,6 +754,18 @@ public final class LineItemQueryRecord {
                     paypointEntryname,
                     paypointLegalname,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

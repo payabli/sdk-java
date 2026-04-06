@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -59,8 +62,11 @@ public final class BillQueryRecord2BillApprovalsItem {
     /**
      * @return Timestamp of when the approval was made, in UTC.
      */
-    @JsonProperty("approvedTime")
+    @JsonIgnore
     public Optional<OffsetDateTime> getApprovedTime() {
+        if (approvedTime == null) {
+            return Optional.empty();
+        }
         return approvedTime;
     }
 
@@ -86,6 +92,12 @@ public final class BillQueryRecord2BillApprovalsItem {
     @JsonProperty("Id")
     public Optional<Long> getId() {
         return id;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("approvedTime")
+    private Optional<OffsetDateTime> _getApprovedTime() {
+        return approvedTime;
     }
 
     @java.lang.Override
@@ -175,6 +187,17 @@ public final class BillQueryRecord2BillApprovalsItem {
             return this;
         }
 
+        public Builder approvedTime(Nullable<OffsetDateTime> approvedTime) {
+            if (approvedTime.isNull()) {
+                this.approvedTime = null;
+            } else if (approvedTime.isEmpty()) {
+                this.approvedTime = Optional.empty();
+            } else {
+                this.approvedTime = Optional.of(approvedTime.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Additional comments on the approval.</p>
          */
@@ -220,6 +243,16 @@ public final class BillQueryRecord2BillApprovalsItem {
         public BillQueryRecord2BillApprovalsItem build() {
             return new BillQueryRecord2BillApprovalsItem(
                     approved, approvedTime, comments, email, id, additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

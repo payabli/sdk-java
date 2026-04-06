@@ -97,6 +97,10 @@ public final class SearchNotificationLogsRequest {
     public interface _FinalStage {
         SearchNotificationLogsRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage pageSize(Optional<Integer> pageSize);
 
         _FinalStage pageSize(Integer pageSize);
@@ -173,6 +177,18 @@ public final class SearchNotificationLogsRequest {
         @java.lang.Override
         public SearchNotificationLogsRequest build() {
             return new SearchNotificationLogsRequest(pageSize, page, body, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -86,6 +86,10 @@ public final class QueryBatchesResponse {
     public interface _FinalStage {
         QueryBatchesResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage records(List<QueryBatchesResponseRecordsItem> records);
 
         _FinalStage addRecords(QueryBatchesResponseRecordsItem records);
@@ -145,6 +149,18 @@ public final class QueryBatchesResponse {
         @java.lang.Override
         public QueryBatchesResponse build() {
             return new QueryBatchesResponse(records, summary, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

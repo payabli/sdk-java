@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -161,8 +164,11 @@ public final class SubscriptionQueryRecords {
     /**
      * @return The subscription's end date.
      */
-    @JsonProperty("EndDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getEndDate() {
+        if (endDate == null) {
+            return Optional.empty();
+        }
         return endDate;
     }
 
@@ -208,8 +214,11 @@ public final class SubscriptionQueryRecords {
     /**
      * @return The last time the subscription was processed.
      */
-    @JsonProperty("LastRun")
+    @JsonIgnore
     public Optional<OffsetDateTime> getLastRun() {
+        if (lastRun == null) {
+            return Optional.empty();
+        }
         return lastRun;
     }
 
@@ -248,8 +257,11 @@ public final class SubscriptionQueryRecords {
     /**
      * @return The next date the subscription will be processed.
      */
-    @JsonProperty("NextDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getNextDate() {
+        if (nextDate == null) {
+            return Optional.empty();
+        }
         return nextDate;
     }
 
@@ -308,8 +320,11 @@ public final class SubscriptionQueryRecords {
     /**
      * @return The subscription start date.
      */
-    @JsonProperty("StartDate")
+    @JsonIgnore
     public Optional<OffsetDateTime> getStartDate() {
+        if (startDate == null) {
+            return Optional.empty();
+        }
         return startDate;
     }
 
@@ -355,6 +370,30 @@ public final class SubscriptionQueryRecords {
     @JsonProperty("UntilCancelled")
     public Optional<Boolean> getUntilCancelled() {
         return untilCancelled;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EndDate")
+    private Optional<OffsetDateTime> _getEndDate() {
+        return endDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("LastRun")
+    private Optional<OffsetDateTime> _getLastRun() {
+        return lastRun;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("NextDate")
+    private Optional<OffsetDateTime> _getNextDate() {
+        return nextDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StartDate")
+    private Optional<OffsetDateTime> _getStartDate() {
+        return startDate;
     }
 
     @java.lang.Override
@@ -580,6 +619,17 @@ public final class SubscriptionQueryRecords {
             return this;
         }
 
+        public Builder endDate(Nullable<OffsetDateTime> endDate) {
+            if (endDate.isNull()) {
+                this.endDate = null;
+            } else if (endDate.isEmpty()) {
+                this.endDate = Optional.empty();
+            } else {
+                this.endDate = Optional.of(endDate.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
         public Builder entrypageId(Optional<Long> entrypageId) {
             this.entrypageId = entrypageId;
@@ -669,6 +719,17 @@ public final class SubscriptionQueryRecords {
             return this;
         }
 
+        public Builder lastRun(Nullable<OffsetDateTime> lastRun) {
+            if (lastRun.isNull()) {
+                this.lastRun = null;
+            } else if (lastRun.isEmpty()) {
+                this.lastRun = Optional.empty();
+            } else {
+                this.lastRun = Optional.of(lastRun.get());
+            }
+            return this;
+        }
+
         /**
          * <p>The last date and time the subscription was updated.</p>
          */
@@ -736,6 +797,17 @@ public final class SubscriptionQueryRecords {
 
         public Builder nextDate(OffsetDateTime nextDate) {
             this.nextDate = Optional.ofNullable(nextDate);
+            return this;
+        }
+
+        public Builder nextDate(Nullable<OffsetDateTime> nextDate) {
+            if (nextDate.isNull()) {
+                this.nextDate = null;
+            } else if (nextDate.isEmpty()) {
+                this.nextDate = Optional.empty();
+            } else {
+                this.nextDate = Optional.of(nextDate.get());
+            }
             return this;
         }
 
@@ -853,6 +925,17 @@ public final class SubscriptionQueryRecords {
             return this;
         }
 
+        public Builder startDate(Nullable<OffsetDateTime> startDate) {
+            if (startDate.isNull()) {
+                this.startDate = null;
+            } else if (startDate.isEmpty()) {
+                this.startDate = Optional.empty();
+            } else {
+                this.startDate = Optional.of(startDate.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Events associated with the subscription.</p>
          */
@@ -959,6 +1042,16 @@ public final class SubscriptionQueryRecords {
                     totalCycles,
                     untilCancelled,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

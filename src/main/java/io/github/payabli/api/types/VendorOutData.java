@@ -155,7 +155,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Vendor's address
+     * @return Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,
      */
     @JsonProperty("Address1")
     public Optional<String> getAddress1() {
@@ -163,7 +163,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Additional line for vendor's address.
+     * @return Additional line for vendor's address, such as a suite or unit number.
      */
     @JsonProperty("Address2")
     public Optional<String> getAddress2() {
@@ -195,7 +195,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Vendor's country.
+     * @return Vendor's country. <code>US</code> or <code>CA</code>.
      */
     @JsonProperty("Country")
     public String getCountry() {
@@ -211,7 +211,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return EIN/Tax ID for vendor. In reponses, this field is masked, and looks like: <code>XXXXX6789</code>.
+     * @return EIN/Tax ID for vendor. Must be nine digits formatted as <code>XX-XXXXXXX</code>. In responses, this field is masked and looks like: <code>XXXXX6789</code>.
      */
     @JsonProperty("EIN")
     public String getEin() {
@@ -245,7 +245,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Primary name for vendor. Required for new vendor.
+     * @return Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' &amp; ( )
      */
     @JsonProperty("Name1")
     public String getName1() {
@@ -253,7 +253,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Secondary name for vendor.
+     * @return Secondary name for vendor. If provided, allowed characters are the same as <code>Name1</code>.
      */
     @JsonProperty("Name2")
     public Optional<String> getName2() {
@@ -276,7 +276,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Vendor's phone number
+     * @return Vendor's phone number. Digits only when creating or updating a vendor.
      */
     @JsonProperty("Phone")
     public String getPhone() {
@@ -314,7 +314,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Vendor's state. Must be a 2 character state code.
+     * @return Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the <code>Country</code> value.
      */
     @JsonProperty("State")
     public String getState() {
@@ -340,7 +340,7 @@ public final class VendorOutData {
     }
 
     /**
-     * @return Vendor's zip code.
+     * @return Vendor's ZIP or postal code. For US addresses, five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).
      */
     @JsonProperty("Zip")
     public String getZip() {
@@ -446,42 +446,42 @@ public final class VendorOutData {
 
     public interface CountryStage {
         /**
-         * <p>Vendor's country.</p>
+         * <p>Vendor's country. <code>US</code> or <code>CA</code>.</p>
          */
         EinStage country(@NotNull String country);
     }
 
     public interface EinStage {
         /**
-         * <p>EIN/Tax ID for vendor. In reponses, this field is masked, and looks like: <code>XXXXX6789</code>.</p>
+         * <p>EIN/Tax ID for vendor. Must be nine digits formatted as <code>XX-XXXXXXX</code>. In responses, this field is masked and looks like: <code>XXXXX6789</code>.</p>
          */
         Name1Stage ein(@NotNull String ein);
     }
 
     public interface Name1Stage {
         /**
-         * <p>Primary name for vendor. Required for new vendor.</p>
+         * <p>Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' &amp; ( )</p>
          */
         PhoneStage name1(@NotNull String name1);
     }
 
     public interface PhoneStage {
         /**
-         * <p>Vendor's phone number</p>
+         * <p>Vendor's phone number. Digits only when creating or updating a vendor.</p>
          */
         StateStage phone(@NotNull String phone);
     }
 
     public interface StateStage {
         /**
-         * <p>Vendor's state. Must be a 2 character state code.</p>
+         * <p>Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the <code>Country</code> value.</p>
          */
         ZipStage state(@NotNull String state);
     }
 
     public interface ZipStage {
         /**
-         * <p>Vendor's zip code.</p>
+         * <p>Vendor's ZIP or postal code. For US addresses, five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
          */
         _FinalStage zip(@NotNull String zip);
     }
@@ -489,19 +489,23 @@ public final class VendorOutData {
     public interface _FinalStage {
         VendorOutData build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData);
 
         _FinalStage additionalData(Map<String, Optional<Map<String, Object>>> additionalData);
 
         /**
-         * <p>Vendor's address</p>
+         * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
          */
         _FinalStage address1(Optional<String> address1);
 
         _FinalStage address1(String address1);
 
         /**
-         * <p>Additional line for vendor's address.</p>
+         * <p>Additional line for vendor's address, such as a suite or unit number.</p>
          */
         _FinalStage address2(Optional<String> address2);
 
@@ -551,7 +555,7 @@ public final class VendorOutData {
         _FinalStage mcc(String mcc);
 
         /**
-         * <p>Secondary name for vendor.</p>
+         * <p>Secondary name for vendor. If provided, allowed characters are the same as <code>Name1</code>.</p>
          */
         _FinalStage name2(Optional<String> name2);
 
@@ -725,8 +729,8 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's country.</p>
-         * <p>Vendor's country.</p>
+         * <p>Vendor's country. <code>US</code> or <code>CA</code>.</p>
+         * <p>Vendor's country. <code>US</code> or <code>CA</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -737,8 +741,8 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>EIN/Tax ID for vendor. In reponses, this field is masked, and looks like: <code>XXXXX6789</code>.</p>
-         * <p>EIN/Tax ID for vendor. In reponses, this field is masked, and looks like: <code>XXXXX6789</code>.</p>
+         * <p>EIN/Tax ID for vendor. Must be nine digits formatted as <code>XX-XXXXXXX</code>. In responses, this field is masked and looks like: <code>XXXXX6789</code>.</p>
+         * <p>EIN/Tax ID for vendor. Must be nine digits formatted as <code>XX-XXXXXXX</code>. In responses, this field is masked and looks like: <code>XXXXX6789</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -749,8 +753,8 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Primary name for vendor. Required for new vendor.</p>
-         * <p>Primary name for vendor. Required for new vendor.</p>
+         * <p>Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' &amp; ( )</p>
+         * <p>Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' &amp; ( )</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -761,8 +765,8 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's phone number</p>
-         * <p>Vendor's phone number</p>
+         * <p>Vendor's phone number. Digits only when creating or updating a vendor.</p>
+         * <p>Vendor's phone number. Digits only when creating or updating a vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -773,8 +777,8 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's state. Must be a 2 character state code.</p>
-         * <p>Vendor's state. Must be a 2 character state code.</p>
+         * <p>Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the <code>Country</code> value.</p>
+         * <p>Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the <code>Country</code> value.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -785,8 +789,8 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's zip code.</p>
-         * <p>Vendor's zip code.</p>
+         * <p>Vendor's ZIP or postal code. For US addresses, five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
+         * <p>Vendor's ZIP or postal code. For US addresses, five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -960,7 +964,7 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Secondary name for vendor.</p>
+         * <p>Secondary name for vendor. If provided, allowed characters are the same as <code>Name1</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -970,7 +974,7 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Secondary name for vendor.</p>
+         * <p>Secondary name for vendor. If provided, allowed characters are the same as <code>Name1</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "Name2", nulls = Nulls.SKIP)
@@ -1106,7 +1110,7 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Additional line for vendor's address.</p>
+         * <p>Additional line for vendor's address, such as a suite or unit number.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1116,7 +1120,7 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Additional line for vendor's address.</p>
+         * <p>Additional line for vendor's address, such as a suite or unit number.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "Address2", nulls = Nulls.SKIP)
@@ -1126,7 +1130,7 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's address</p>
+         * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1136,7 +1140,7 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's address</p>
+         * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
          */
         @java.lang.Override
         @JsonSetter(value = "Address1", nulls = Nulls.SKIP)
@@ -1192,6 +1196,18 @@ public final class VendorOutData {
                     vendorStatus,
                     zip,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

@@ -47,6 +47,21 @@ public class AsyncRawTokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
+    public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(RequestTokenStorage body) {
+        return addMethod(AddMethodRequest.builder().body(body).build());
+    }
+
+    /**
+     * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(
+            RequestTokenStorage body, RequestOptions requestOptions) {
+        return addMethod(AddMethodRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
+     */
     public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(AddMethodRequest request) {
         return addMethod(request, null);
     }

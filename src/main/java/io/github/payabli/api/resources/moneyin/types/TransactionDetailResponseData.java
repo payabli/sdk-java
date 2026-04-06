@@ -352,6 +352,10 @@ public final class TransactionDetailResponseData {
     public interface _FinalStage {
         TransactionDetailResponseData build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Unified result code for the transaction. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes</a> for more information.</p>
          */
@@ -826,6 +830,18 @@ public final class TransactionDetailResponseData {
                     customerVaultId,
                     emvAuthResponseData,
                     additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

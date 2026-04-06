@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Bank.Builder.class)
-public final class Bank implements IBank {
+public final class Bank {
     private final Optional<Integer> id;
 
     private final Optional<String> accountId;
@@ -84,64 +84,54 @@ public final class Bank implements IBank {
      * @return The Payabli-assigned internal identifier for the bank account.
      */
     @JsonProperty("id")
-    @java.lang.Override
     public Optional<Integer> getId() {
         return id;
     }
 
     /**
-     * @return A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.
+     * @return An identifier for the bank account, used to specify which account handles payments when multiple accounts are configured. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. The mask always uses five <code>x</code> characters regardless of account number length. For example, account number <code>123456789</code> produces <code>acct-1xxxxx6789</code>. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>acct-1xxxxx6789-2</code>. This value is also used as the identifier for the bank account's associated payment connector.
      */
     @JsonProperty("accountId")
-    @java.lang.Override
     public Optional<String> getAccountId() {
         return accountId;
     }
 
     @JsonProperty("nickname")
-    @java.lang.Override
     public Optional<String> getNickname() {
         return nickname;
     }
 
     @JsonProperty("bankName")
-    @java.lang.Override
     public Optional<String> getBankName() {
         return bankName;
     }
 
     @JsonProperty("routingAccount")
-    @java.lang.Override
     public Optional<String> getRoutingAccount() {
         return routingAccount;
     }
 
     @JsonProperty("accountNumber")
-    @java.lang.Override
     public Optional<String> getAccountNumber() {
         return accountNumber;
     }
 
     @JsonProperty("typeAccount")
-    @java.lang.Override
     public Optional<TypeAccount> getTypeAccount() {
         return typeAccount;
     }
 
     @JsonProperty("bankAccountHolderName")
-    @java.lang.Override
     public Optional<String> getBankAccountHolderName() {
         return bankAccountHolderName;
     }
 
     @JsonProperty("bankAccountHolderType")
-    @java.lang.Override
     public Optional<BankAccountHolderType> getBankAccountHolderType() {
         return bankAccountHolderType;
     }
 
     @JsonProperty("bankAccountFunction")
-    @java.lang.Override
     public Optional<Integer> getBankAccountFunction() {
         return bankAccountFunction;
     }
@@ -150,7 +140,6 @@ public final class Bank implements IBank {
      * @return Bank account verification status. When <code>true</code>, the account has been verified to exist and be in good standing based on vendor checks or previous processing histories.
      */
     @JsonProperty("verified")
-    @java.lang.Override
     public Optional<Boolean> getVerified() {
         return verified;
     }
@@ -159,7 +148,6 @@ public final class Bank implements IBank {
      * @return Bank account status
      */
     @JsonProperty("status")
-    @java.lang.Override
     public Optional<Integer> getStatus() {
         return status;
     }
@@ -168,7 +156,6 @@ public final class Bank implements IBank {
      * @return Array of services associated with this bank account
      */
     @JsonProperty("services")
-    @java.lang.Override
     public Optional<List<String>> getServices() {
         return services;
     }
@@ -292,7 +279,7 @@ public final class Bank implements IBank {
         }
 
         /**
-         * <p>A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.</p>
+         * <p>An identifier for the bank account, used to specify which account handles payments when multiple accounts are configured. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. The mask always uses five <code>x</code> characters regardless of account number length. For example, account number <code>123456789</code> produces <code>acct-1xxxxx6789</code>. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>acct-1xxxxx6789-2</code>. This value is also used as the identifier for the bank account's associated payment connector.</p>
          */
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
         public Builder accountId(Optional<String> accountId) {
@@ -451,6 +438,16 @@ public final class Bank implements IBank {
                     status,
                     services,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

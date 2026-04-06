@@ -40,6 +40,12 @@ public final class PayabliCredentials {
 
     private final Optional<String> service;
 
+    private final Optional<Boolean> greaterValueAllowed;
+
+    private final Optional<Boolean> absorbDifference;
+
+    private final Optional<Boolean> allowOverride;
+
     private final Map<String, Object> additionalProperties;
 
     private PayabliCredentials(
@@ -53,6 +59,9 @@ public final class PayabliCredentials {
             Optional<Integer> mode,
             Optional<Long> referenceId,
             Optional<String> service,
+            Optional<Boolean> greaterValueAllowed,
+            Optional<Boolean> absorbDifference,
+            Optional<Boolean> allowOverride,
             Map<String, Object> additionalProperties) {
         this.accountId = accountId;
         this.cfeeFix = cfeeFix;
@@ -64,9 +73,15 @@ public final class PayabliCredentials {
         this.mode = mode;
         this.referenceId = referenceId;
         this.service = service;
+        this.greaterValueAllowed = greaterValueAllowed;
+        this.absorbDifference = absorbDifference;
+        this.allowOverride = allowOverride;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The identifier for the payment connector, matching the <code>accountId</code> of the linked bank account.
+     */
     @JsonProperty("accountId")
     public Optional<String> getAccountId() {
         return accountId;
@@ -102,6 +117,9 @@ public final class PayabliCredentials {
         return minticket;
     }
 
+    /**
+     * @return The payment mode supported by this service. <code>0</code> for one-time payments, <code>1</code> for recurring payments, <code>2</code> for both.
+     */
     @JsonProperty("mode")
     public Optional<Integer> getMode() {
         return mode;
@@ -112,9 +130,27 @@ public final class PayabliCredentials {
         return referenceId;
     }
 
+    /**
+     * @return The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are <code>card</code> (credit/debit card), <code>ach</code> (ACH bank transfer), <code>check</code> (paper check), <code>vcard</code> (virtual card), <code>cloud</code> (card-present), <code>cash</code>, <code>managed</code> (managed payment service), and <code>wallet</code>.
+     */
     @JsonProperty("service")
     public Optional<String> getService() {
         return service;
+    }
+
+    @JsonProperty("greaterValueAllowed")
+    public Optional<Boolean> getGreaterValueAllowed() {
+        return greaterValueAllowed;
+    }
+
+    @JsonProperty("absorbDifference")
+    public Optional<Boolean> getAbsorbDifference() {
+        return absorbDifference;
+    }
+
+    @JsonProperty("allowOverride")
+    public Optional<Boolean> getAllowOverride() {
+        return allowOverride;
     }
 
     @java.lang.Override
@@ -138,7 +174,10 @@ public final class PayabliCredentials {
                 && minticket.equals(other.minticket)
                 && mode.equals(other.mode)
                 && referenceId.equals(other.referenceId)
-                && service.equals(other.service);
+                && service.equals(other.service)
+                && greaterValueAllowed.equals(other.greaterValueAllowed)
+                && absorbDifference.equals(other.absorbDifference)
+                && allowOverride.equals(other.allowOverride);
     }
 
     @java.lang.Override
@@ -153,7 +192,10 @@ public final class PayabliCredentials {
                 this.minticket,
                 this.mode,
                 this.referenceId,
-                this.service);
+                this.service,
+                this.greaterValueAllowed,
+                this.absorbDifference,
+                this.allowOverride);
     }
 
     @java.lang.Override
@@ -187,6 +229,12 @@ public final class PayabliCredentials {
 
         private Optional<String> service = Optional.empty();
 
+        private Optional<Boolean> greaterValueAllowed = Optional.empty();
+
+        private Optional<Boolean> absorbDifference = Optional.empty();
+
+        private Optional<Boolean> allowOverride = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -203,9 +251,15 @@ public final class PayabliCredentials {
             mode(other.getMode());
             referenceId(other.getReferenceId());
             service(other.getService());
+            greaterValueAllowed(other.getGreaterValueAllowed());
+            absorbDifference(other.getAbsorbDifference());
+            allowOverride(other.getAllowOverride());
             return this;
         }
 
+        /**
+         * <p>The identifier for the payment connector, matching the <code>accountId</code> of the linked bank account.</p>
+         */
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
         public Builder accountId(Optional<String> accountId) {
             this.accountId = accountId;
@@ -283,6 +337,9 @@ public final class PayabliCredentials {
             return this;
         }
 
+        /**
+         * <p>The payment mode supported by this service. <code>0</code> for one-time payments, <code>1</code> for recurring payments, <code>2</code> for both.</p>
+         */
         @JsonSetter(value = "mode", nulls = Nulls.SKIP)
         public Builder mode(Optional<Integer> mode) {
             this.mode = mode;
@@ -305,6 +362,9 @@ public final class PayabliCredentials {
             return this;
         }
 
+        /**
+         * <p>The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are <code>card</code> (credit/debit card), <code>ach</code> (ACH bank transfer), <code>check</code> (paper check), <code>vcard</code> (virtual card), <code>cloud</code> (card-present), <code>cash</code>, <code>managed</code> (managed payment service), and <code>wallet</code>.</p>
+         */
         @JsonSetter(value = "service", nulls = Nulls.SKIP)
         public Builder service(Optional<String> service) {
             this.service = service;
@@ -313,6 +373,39 @@ public final class PayabliCredentials {
 
         public Builder service(String service) {
             this.service = Optional.ofNullable(service);
+            return this;
+        }
+
+        @JsonSetter(value = "greaterValueAllowed", nulls = Nulls.SKIP)
+        public Builder greaterValueAllowed(Optional<Boolean> greaterValueAllowed) {
+            this.greaterValueAllowed = greaterValueAllowed;
+            return this;
+        }
+
+        public Builder greaterValueAllowed(Boolean greaterValueAllowed) {
+            this.greaterValueAllowed = Optional.ofNullable(greaterValueAllowed);
+            return this;
+        }
+
+        @JsonSetter(value = "absorbDifference", nulls = Nulls.SKIP)
+        public Builder absorbDifference(Optional<Boolean> absorbDifference) {
+            this.absorbDifference = absorbDifference;
+            return this;
+        }
+
+        public Builder absorbDifference(Boolean absorbDifference) {
+            this.absorbDifference = Optional.ofNullable(absorbDifference);
+            return this;
+        }
+
+        @JsonSetter(value = "allowOverride", nulls = Nulls.SKIP)
+        public Builder allowOverride(Optional<Boolean> allowOverride) {
+            this.allowOverride = allowOverride;
+            return this;
+        }
+
+        public Builder allowOverride(Boolean allowOverride) {
+            this.allowOverride = Optional.ofNullable(allowOverride);
             return this;
         }
 
@@ -328,7 +421,20 @@ public final class PayabliCredentials {
                     mode,
                     referenceId,
                     service,
+                    greaterValueAllowed,
+                    absorbDifference,
+                    allowOverride,
                     additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

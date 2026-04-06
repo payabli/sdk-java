@@ -121,6 +121,10 @@ public final class GetBasicEntryByIdResponse {
     public interface _FinalStage {
         GetBasicEntryByIdResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage pageIdentifier(Optional<String> pageIdentifier);
 
         _FinalStage pageIdentifier(String pageIdentifier);
@@ -218,6 +222,18 @@ public final class GetBasicEntryByIdResponse {
         public GetBasicEntryByIdResponse build() {
             return new GetBasicEntryByIdResponse(
                     isSuccess, pageIdentifier, responseCode, responseData, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

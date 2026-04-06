@@ -407,7 +407,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with <code>reverseCredit</code>.
+     * Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with <code>reverseCredit</code>. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
      * <p>This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse0>> credit(RequestCredit request) {
@@ -415,7 +415,7 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with <code>reverseCredit</code>.
+     * Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with <code>reverseCredit</code>. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
      * <p>This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse0>> credit(

@@ -84,6 +84,10 @@ public final class PayabliApiResponseGeneric2Part implements IPayabliApiResponse
     public interface _FinalStage {
         PayabliApiResponseGeneric2Part build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage isSuccess(Optional<Boolean> isSuccess);
 
         _FinalStage isSuccess(Boolean isSuccess);
@@ -130,6 +134,18 @@ public final class PayabliApiResponseGeneric2Part implements IPayabliApiResponse
         @java.lang.Override
         public PayabliApiResponseGeneric2Part build() {
             return new PayabliApiResponseGeneric2Part(isSuccess, responseText, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

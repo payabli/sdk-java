@@ -56,7 +56,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the annual frequency.
      */
     @JsonProperty("annually")
     public Optional<Boolean> getAnnually() {
@@ -64,7 +64,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the every-two-weeks frequency.
      */
     @JsonProperty("every2Weeks")
     public Optional<Boolean> getEvery2Weeks() {
@@ -72,7 +72,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the every-three-months frequency.
      */
     @JsonProperty("every3Months")
     public Optional<Boolean> getEvery3Months() {
@@ -80,7 +80,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the every-six-months frequency.
      */
     @JsonProperty("every6Months")
     public Optional<Boolean> getEvery6Months() {
@@ -88,7 +88,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the monthly frequency.
      */
     @JsonProperty("monthly")
     public Optional<Boolean> getMonthly() {
@@ -96,7 +96,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the one-time frequency.
      */
     @JsonProperty("onetime")
     public Optional<Boolean> getOnetime() {
@@ -104,7 +104,7 @@ public final class FrequencyList {
     }
 
     /**
-     * @return Enable or disable frequency
+     * @return Enable or disable the weekly frequency.
      */
     @JsonProperty("weekly")
     public Optional<Boolean> getWeekly() {
@@ -186,7 +186,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the annual frequency.</p>
          */
         @JsonSetter(value = "annually", nulls = Nulls.SKIP)
         public Builder annually(Optional<Boolean> annually) {
@@ -200,7 +200,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the every-two-weeks frequency.</p>
          */
         @JsonSetter(value = "every2Weeks", nulls = Nulls.SKIP)
         public Builder every2Weeks(Optional<Boolean> every2Weeks) {
@@ -214,7 +214,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the every-three-months frequency.</p>
          */
         @JsonSetter(value = "every3Months", nulls = Nulls.SKIP)
         public Builder every3Months(Optional<Boolean> every3Months) {
@@ -228,7 +228,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the every-six-months frequency.</p>
          */
         @JsonSetter(value = "every6Months", nulls = Nulls.SKIP)
         public Builder every6Months(Optional<Boolean> every6Months) {
@@ -242,7 +242,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the monthly frequency.</p>
          */
         @JsonSetter(value = "monthly", nulls = Nulls.SKIP)
         public Builder monthly(Optional<Boolean> monthly) {
@@ -256,7 +256,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the one-time frequency.</p>
          */
         @JsonSetter(value = "onetime", nulls = Nulls.SKIP)
         public Builder onetime(Optional<Boolean> onetime) {
@@ -270,7 +270,7 @@ public final class FrequencyList {
         }
 
         /**
-         * <p>Enable or disable frequency</p>
+         * <p>Enable or disable the weekly frequency.</p>
          */
         @JsonSetter(value = "weekly", nulls = Nulls.SKIP)
         public Builder weekly(Optional<Boolean> weekly) {
@@ -286,6 +286,16 @@ public final class FrequencyList {
         public FrequencyList build() {
             return new FrequencyList(
                     annually, every2Weeks, every3Months, every6Months, monthly, onetime, weekly, additionalProperties);
+        }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

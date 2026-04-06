@@ -193,5 +193,15 @@ public final class RequestOutAuthorizeVendorBillingData {
             return new RequestOutAuthorizeVendorBillingData(
                     bankName, routingAccount, accountNumber, typeAccount, bankAccountHolderName, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }

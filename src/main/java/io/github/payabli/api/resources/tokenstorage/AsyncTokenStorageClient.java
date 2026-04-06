@@ -34,6 +34,20 @@ public class AsyncTokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
+    public CompletableFuture<AddMethodResponse> addMethod(RequestTokenStorage body) {
+        return this.rawClient.addMethod(body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
+     */
+    public CompletableFuture<AddMethodResponse> addMethod(RequestTokenStorage body, RequestOptions requestOptions) {
+        return this.rawClient.addMethod(body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
+     */
     public CompletableFuture<AddMethodResponse> addMethod(AddMethodRequest request) {
         return this.rawClient.addMethod(request).thenApply(response -> response.body());
     }

@@ -151,6 +151,10 @@ public final class ConfigureGooglePaypointApiResponse {
     public interface _FinalStage {
         ConfigureGooglePaypointApiResponse build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>Field not in use on this endpoint</p>
          */
@@ -254,6 +258,18 @@ public final class ConfigureGooglePaypointApiResponse {
         public ConfigureGooglePaypointApiResponse build() {
             return new ConfigureGooglePaypointApiResponse(
                     isSuccess, pageIdentifier, responseCode, responseData, responseText, roomId, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

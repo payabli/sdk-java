@@ -58,6 +58,7 @@ import io.github.payabli.api.types.PayMethodCredit;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
+import java.util.Optional;
 
 public class Example {
     public static void main(String[] args) {
@@ -86,11 +87,11 @@ public class Example {
                                     .cardexp("02/25")
                                     .cardnumber("4111111111111111")
                                     .method("card")
-                                    .cardcvv("123")
-                                    .cardHolder("John Cassian")
-                                    .cardzip("12345")
-                                    .initiator("payor")
-                                    .saveIfSuccess(true)
+                                    .cardcvv(Optional.of("123"))
+                                    .cardHolder(Optional.of("John Cassian"))
+                                    .cardzip(Optional.of("12345"))
+                                    .initiator(Optional.of("payor"))
+                                    .saveIfSuccess(Optional.of(true))
                                     .build()
                             )
                         )
@@ -263,7 +264,7 @@ The `withRawResponse()` method returns a raw client that wraps all responses wit
 (A normal client's `response` is identical to a raw client's `response.body()`.)
 
 ```java
-GetpaidHttpResponse response = client.moneyIn().withRawResponse().getpaid(...);
+PayabliApiHttpResponse response = client.moneyIn().withRawResponse().getpaid(...);
 
 System.out.println(response.body());
 System.out.println(response.headers().get("X-My-Header"));
@@ -302,10 +303,11 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.313</version>
+  <version>0.0.318</version>
 </dependency>
 ```
 
 ## Reference
 
 A full reference for this library is available [here](https://github.com/payabli/sdk-java/blob/HEAD/./reference.md).
+

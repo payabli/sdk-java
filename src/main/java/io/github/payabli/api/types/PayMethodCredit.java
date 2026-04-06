@@ -154,6 +154,10 @@ public final class PayMethodCredit {
     public interface _FinalStage {
         PayMethodCredit build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage cardcvv(Optional<String> cardcvv);
 
         _FinalStage cardcvv(String cardcvv);
@@ -291,6 +295,18 @@ public final class PayMethodCredit {
         public PayMethodCredit build() {
             return new PayMethodCredit(
                     cardcvv, cardexp, cardHolder, cardnumber, cardzip, initiator, saveIfSuccess, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

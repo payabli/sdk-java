@@ -27,7 +27,7 @@ public final class NotificationStandardRequest {
 
     private final NotificationStandardRequestMethod method;
 
-    private final Optional<String> ownerId;
+    private final Optional<Integer> ownerId;
 
     private final int ownerType;
 
@@ -41,7 +41,7 @@ public final class NotificationStandardRequest {
             Optional<NotificationStandardRequestContent> content,
             NotificationStandardRequestFrequency frequency,
             NotificationStandardRequestMethod method,
-            Optional<String> ownerId,
+            Optional<Integer> ownerId,
             int ownerType,
             Optional<Integer> status,
             String target,
@@ -75,7 +75,7 @@ public final class NotificationStandardRequest {
     }
 
     @JsonProperty("ownerId")
-    public Optional<String> getOwnerId() {
+    public Optional<Integer> getOwnerId() {
         return ownerId;
     }
 
@@ -170,13 +170,17 @@ public final class NotificationStandardRequest {
     public interface _FinalStage {
         NotificationStandardRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         _FinalStage content(Optional<NotificationStandardRequestContent> content);
 
         _FinalStage content(NotificationStandardRequestContent content);
 
-        _FinalStage ownerId(Optional<String> ownerId);
+        _FinalStage ownerId(Optional<Integer> ownerId);
 
-        _FinalStage ownerId(String ownerId);
+        _FinalStage ownerId(Integer ownerId);
 
         _FinalStage status(Optional<Integer> status);
 
@@ -195,7 +199,7 @@ public final class NotificationStandardRequest {
 
         private Optional<Integer> status = Optional.empty();
 
-        private Optional<String> ownerId = Optional.empty();
+        private Optional<Integer> ownerId = Optional.empty();
 
         private Optional<NotificationStandardRequestContent> content = Optional.empty();
 
@@ -278,14 +282,14 @@ public final class NotificationStandardRequest {
         }
 
         @java.lang.Override
-        public _FinalStage ownerId(String ownerId) {
+        public _FinalStage ownerId(Integer ownerId) {
             this.ownerId = Optional.ofNullable(ownerId);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "ownerId", nulls = Nulls.SKIP)
-        public _FinalStage ownerId(Optional<String> ownerId) {
+        public _FinalStage ownerId(Optional<Integer> ownerId) {
             this.ownerId = ownerId;
             return this;
         }
@@ -307,6 +311,18 @@ public final class NotificationStandardRequest {
         public NotificationStandardRequest build() {
             return new NotificationStandardRequest(
                     content, frequency, method, ownerId, ownerType, status, target, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

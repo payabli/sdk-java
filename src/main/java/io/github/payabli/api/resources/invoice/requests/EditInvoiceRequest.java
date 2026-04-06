@@ -88,6 +88,10 @@ public final class EditInvoiceRequest {
     public interface _FinalStage {
         EditInvoiceRequest build();
 
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
         /**
          * <p>When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.</p>
          */
@@ -144,6 +148,18 @@ public final class EditInvoiceRequest {
         @java.lang.Override
         public EditInvoiceRequest build() {
             return new EditInvoiceRequest(forceCustomerCreation, body, additionalProperties);
+        }
+
+        @java.lang.Override
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
         }
     }
 }

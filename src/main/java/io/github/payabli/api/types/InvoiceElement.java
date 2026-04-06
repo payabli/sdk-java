@@ -177,5 +177,15 @@ public final class InvoiceElement {
         public InvoiceElement build() {
             return new InvoiceElement(enabled, invoiceLink, order, viewInvoiceDetails, additionalProperties);
         }
+
+        public Builder additionalProperty(String key, Object value) {
+            this.additionalProperties.put(key, value);
+            return this;
+        }
+
+        public Builder additionalProperties(Map<String, Object> additionalProperties) {
+            this.additionalProperties.putAll(additionalProperties);
+            return this;
+        }
     }
 }
