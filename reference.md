@@ -7721,6 +7721,290 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
+## GhostCard
+<details><summary><code>client.ghostCard.createGhostCard(entry, request) -> CreateGhostCardResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
+
+Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
+
+Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.ghostCard().createGhostCard(
+    "8cfec2e0fa",
+    CreateGhostCardRequestBody
+        .builder()
+        .vendorId(42L)
+        .expenseLimit(500.0)
+        .amount(500.0)
+        .maxNumberOfUses(3)
+        .exactAmount(false)
+        .expenseLimitPeriod("monthly")
+        .billingCycle("monthly")
+        .billingCycleDay("1")
+        .dailyTransactionCount(5)
+        .dailyAmountLimit(200.0)
+        .transactionAmountLimit(100)
+        .mcc("5411")
+        .tcc("R")
+        .misc1("PO-98765")
+        .misc2("Dept-Finance")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorId:** `Long` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimit:** `Double` — Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `Optional<String>` — Requested expiration date for the card. If not provided, defaults to 30 days from creation.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `Double` — Initial load amount for the card.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxNumberOfUses:** `Integer` — Maximum number of times the card can be used. Ignored and set to `1` when `exactAmount` is `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exactAmount:** `Boolean` — When `true`, restricts the card to a single use. `maxNumberOfUses` is automatically set to `1` regardless of any other value provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimitPeriod:** `String` — Time period over which `expenseLimit` applies (for example, `monthly` or `weekly`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycle:** `String` — Billing cycle identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycleDay:** `String` — Day within the billing cycle.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyTransactionCount:** `Integer` — Maximum number of transactions allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyAmountLimit:** `Double` — Maximum total spend allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transactionAmountLimit:** `Integer` — Maximum spend allowed per single transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mcc:** `Optional<String>` — Merchant Category Code to restrict where the card can be used. Must be a valid MCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tcc:** `Optional<String>` — Transaction Category Code to restrict where the card can be used. Must be a valid TCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc1:** `Optional<String>` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc2:** `Optional<String>` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ghostCard.updateCard(entry, request) -> PayabliApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a virtual card (including ghost cards) under a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.ghostCard().updateCard(
+    "8cfec2e0fa",
+    UpdateCardRequestBody
+        .builder()
+        .cardToken("gc_abc123def456")
+        .status(CardStatus.CANCELLED)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cardToken:** `String` — Token that uniquely identifies the card. This is the `ReferenceId` returned when the card was created.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<CardStatus>` — The new status to set on the card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## HostedPaymentPages
 <details><summary><code>client.hostedPaymentPages.loadPage(entry, subdomain) -> PayabliPages</code></summary>
 <dl>
@@ -15391,6 +15675,300 @@ client.paymentMethodDomain().verifyPaymentMethodDomain("pmd_b8237fa45c964d8a9ef2
 </dl>
 </details>
 
+## PayoutSubscription
+<details><summary><code>client.payoutSubscription.createPayoutSubscription(request) -> AddPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().createPayoutSubscription(
+    RequestPayoutSchedule
+        .builder()
+        .body(
+            PayoutSubscriptionRequestBody
+                .builder()
+                .entryPoint("d193cf9a46")
+                .paymentMethod(
+                    AuthorizePaymentMethod
+                        .builder()
+                        .method("ach")
+                        .achHolder("Herman Coatings")
+                        .achRouting("021000021")
+                        .achAccount("3453445666")
+                        .achAccountType("checking")
+                        .build()
+                )
+                .vendorData(
+                    RequestOutAuthorizeVendorData
+                        .builder()
+                        .vendorId(1501)
+                        .build()
+                )
+                .paymentDetails(
+                    PayoutPaymentDetail
+                        .builder()
+                        .totalAmount(500.0)
+                        .serviceFee(0.0)
+                        .currency("USD")
+                        .build()
+                )
+                .billData(
+                    Optional.of(
+                        Arrays.asList(
+                            BillPayOutDataRequest
+                                .builder()
+                                .dueDate("2025-08-15")
+                                .invoiceDate("2025-08-01")
+                                .invoiceNumber("INV-5001")
+                                .netAmount("500")
+                                .build()
+                        )
+                    )
+                )
+                .scheduleDetails(
+                    PayoutScheduleDetail
+                        .builder()
+                        .startDate("09/01/2025")
+                        .endDate("09/01/2026")
+                        .frequency(Frequency.MONTHLY)
+                        .build()
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PayoutSubscriptionRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payoutSubscription.getPayoutSubscription(id) -> GetPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().getPayoutSubscription(42L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payoutSubscription.updatePayoutSubscription(id, request) -> UpdatePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().updatePayoutSubscription(
+    42L,
+    UpdatePayoutSubscriptionBody
+        .builder()
+        .setPause(true)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The payout subscription ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdatePayoutSubscriptionBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payoutSubscription.deletePayoutSubscription(id) -> DeletePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().deletePayoutSubscription(42L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Paypoint
 <details><summary><code>client.paypoint.getBasicEntry(entry) -> GetBasicEntryResponse</code></summary>
 <dl>
@@ -19429,6 +20007,340 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
+<details><summary><code>client.query.listPayoutSubscriptions(entry) -> QueryPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listPayoutSubscriptions(
+    "8cfec329267",
+    ListPayoutSubscriptionsRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+
+Collection of field names, conditions, and values used to filter the query.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/entry123?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/entry123?totalAmount(gt)=1000&limitRecord=20
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+**List of field names accepted:**
+
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (ct, nct)
+- `payaccountType` (ne, eq, in, nin)
+- `payaccountCurrency` (ne, eq, in, nin)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct, nin, in)
+- `parentOrgId` (ne, eq, nin, in)
+- `subscriptionId` (eq, ne)
+- `orderDescription` (ct, nct)
+- `cycles` (eq, ne, gt, ge, lt, le)
+- `leftcycles` (eq, ne, gt, ge, lt, le)
+- `createdAt` (eq, ne, gt, ge, lt, le)
+- `updatedOn` (eq, ne, gt, ge, lt, le)
+- `vendorNumber` (ne, eq, ct, nct)
+- `name` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `address` (ne, eq, ct, nct)
+- `remitAddress` (ct, nct)
+- `city` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+
+**List of comparison operators accepted:**
+- `eq` or empty => equal
+- `gt` => greater than
+- `ge` => greater or equal
+- `lt` => less than
+- `le` => less or equal
+- `ne` => not equal
+- `ct` => contains
+- `nct` => not contains
+- `in` => inside array
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.query.listPayoutSubscriptionsOrg(orgId) -> QueryPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listPayoutSubscriptionsOrg(
+    123,
+    ListPayoutSubscriptionsOrgRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+
+Collection of field names, conditions, and values used to filter the query.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+**List of field names accepted:**
+
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (ct, nct)
+- `payaccountType` (ne, eq, in, nin)
+- `payaccountCurrency` (ne, eq, in, nin)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct, nin, in)
+- `parentOrgId` (ne, eq, nin, in)
+- `subscriptionId` (eq, ne)
+- `orderDescription` (ct, nct)
+- `cycles` (eq, ne, gt, ge, lt, le)
+- `leftcycles` (eq, ne, gt, ge, lt, le)
+- `createdAt` (eq, ne, gt, ge, lt, le)
+- `updatedOn` (eq, ne, gt, ge, lt, le)
+- `vendorNumber` (ne, eq, ct, nct)
+- `name` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `address` (ne, eq, ct, nct)
+- `remitAddress` (ct, nct)
+- `city` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+
+**List of comparison operators accepted:**
+- `eq` or empty => equal
+- `gt` => greater than
+- `ge` => greater or equal
+- `lt` => less than
+- `le` => less or equal
+- `ne` => not equal
+- `ct` => contains
+- `nct` => not contains
+- `in` => inside array
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.query.listTransactions(entry) -> QueryResponseTransactions</code></summary>
 <dl>
 <dd>
@@ -19444,9 +20356,8 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
-``` curl --request GET \
-  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-  --header 'requestToken: <api-key>'
+``` curl -X GET https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
+  -H 'requestToken: <API TOKEN>'
 
   ```
 </dd>
@@ -19645,9 +20556,8 @@ By default, this endpoint returns only transactions from the last 60 days. To qu
 For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
 
 ```
-curl --request GET \
-  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-  --header 'requestToken: <api-key>'
+curl -X GET "https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59"\
+  -H 'requestToken: <API TOKEN>'
 
   ```
 </dd>

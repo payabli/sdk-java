@@ -12,6 +12,7 @@ import io.github.payabli.api.resources.checkcapture.AsyncCheckCaptureClient;
 import io.github.payabli.api.resources.cloud.AsyncCloudClient;
 import io.github.payabli.api.resources.customer.AsyncCustomerClient;
 import io.github.payabli.api.resources.export.AsyncExportClient;
+import io.github.payabli.api.resources.ghostcard.AsyncGhostCardClient;
 import io.github.payabli.api.resources.hostedpaymentpages.AsyncHostedPaymentPagesClient;
 import io.github.payabli.api.resources.import_.AsyncImportClient;
 import io.github.payabli.api.resources.invoice.AsyncInvoiceClient;
@@ -24,6 +25,7 @@ import io.github.payabli.api.resources.ocr.AsyncOcrClient;
 import io.github.payabli.api.resources.organization.AsyncOrganizationClient;
 import io.github.payabli.api.resources.paymentlink.AsyncPaymentLinkClient;
 import io.github.payabli.api.resources.paymentmethoddomain.AsyncPaymentMethodDomainClient;
+import io.github.payabli.api.resources.payoutsubscription.AsyncPayoutSubscriptionClient;
 import io.github.payabli.api.resources.paypoint.AsyncPaypointClient;
 import io.github.payabli.api.resources.query.AsyncQueryClient;
 import io.github.payabli.api.resources.statistic.AsyncStatisticClient;
@@ -52,6 +54,8 @@ public class AsyncPayabliApiClient {
 
     protected final Supplier<AsyncExportClient> exportClient;
 
+    protected final Supplier<AsyncGhostCardClient> ghostCardClient;
+
     protected final Supplier<AsyncHostedPaymentPagesClient> hostedPaymentPagesClient;
 
     protected final Supplier<AsyncImportClient> importClient;
@@ -75,6 +79,8 @@ public class AsyncPayabliApiClient {
     protected final Supplier<AsyncPaymentLinkClient> paymentLinkClient;
 
     protected final Supplier<AsyncPaymentMethodDomainClient> paymentMethodDomainClient;
+
+    protected final Supplier<AsyncPayoutSubscriptionClient> payoutSubscriptionClient;
 
     protected final Supplier<AsyncPaypointClient> paypointClient;
 
@@ -103,6 +109,7 @@ public class AsyncPayabliApiClient {
         this.cloudClient = Suppliers.memoize(() -> new AsyncCloudClient(clientOptions));
         this.customerClient = Suppliers.memoize(() -> new AsyncCustomerClient(clientOptions));
         this.exportClient = Suppliers.memoize(() -> new AsyncExportClient(clientOptions));
+        this.ghostCardClient = Suppliers.memoize(() -> new AsyncGhostCardClient(clientOptions));
         this.hostedPaymentPagesClient = Suppliers.memoize(() -> new AsyncHostedPaymentPagesClient(clientOptions));
         this.importClient = Suppliers.memoize(() -> new AsyncImportClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
@@ -115,6 +122,7 @@ public class AsyncPayabliApiClient {
         this.organizationClient = Suppliers.memoize(() -> new AsyncOrganizationClient(clientOptions));
         this.paymentLinkClient = Suppliers.memoize(() -> new AsyncPaymentLinkClient(clientOptions));
         this.paymentMethodDomainClient = Suppliers.memoize(() -> new AsyncPaymentMethodDomainClient(clientOptions));
+        this.payoutSubscriptionClient = Suppliers.memoize(() -> new AsyncPayoutSubscriptionClient(clientOptions));
         this.paypointClient = Suppliers.memoize(() -> new AsyncPaypointClient(clientOptions));
         this.queryClient = Suppliers.memoize(() -> new AsyncQueryClient(clientOptions));
         this.statisticClient = Suppliers.memoize(() -> new AsyncStatisticClient(clientOptions));
@@ -152,6 +160,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncExportClient export() {
         return this.exportClient.get();
+    }
+
+    public AsyncGhostCardClient ghostCard() {
+        return this.ghostCardClient.get();
     }
 
     public AsyncHostedPaymentPagesClient hostedPaymentPages() {
@@ -200,6 +212,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncPaymentMethodDomainClient paymentMethodDomain() {
         return this.paymentMethodDomainClient.get();
+    }
+
+    public AsyncPayoutSubscriptionClient payoutSubscription() {
+        return this.payoutSubscriptionClient.get();
     }
 
     public AsyncPaypointClient paypoint() {

@@ -12,6 +12,7 @@ import io.github.payabli.api.resources.checkcapture.CheckCaptureClient;
 import io.github.payabli.api.resources.cloud.CloudClient;
 import io.github.payabli.api.resources.customer.CustomerClient;
 import io.github.payabli.api.resources.export.ExportClient;
+import io.github.payabli.api.resources.ghostcard.GhostCardClient;
 import io.github.payabli.api.resources.hostedpaymentpages.HostedPaymentPagesClient;
 import io.github.payabli.api.resources.import_.ImportClient;
 import io.github.payabli.api.resources.invoice.InvoiceClient;
@@ -24,6 +25,7 @@ import io.github.payabli.api.resources.ocr.OcrClient;
 import io.github.payabli.api.resources.organization.OrganizationClient;
 import io.github.payabli.api.resources.paymentlink.PaymentLinkClient;
 import io.github.payabli.api.resources.paymentmethoddomain.PaymentMethodDomainClient;
+import io.github.payabli.api.resources.payoutsubscription.PayoutSubscriptionClient;
 import io.github.payabli.api.resources.paypoint.PaypointClient;
 import io.github.payabli.api.resources.query.QueryClient;
 import io.github.payabli.api.resources.statistic.StatisticClient;
@@ -52,6 +54,8 @@ public class PayabliApiClient {
 
     protected final Supplier<ExportClient> exportClient;
 
+    protected final Supplier<GhostCardClient> ghostCardClient;
+
     protected final Supplier<HostedPaymentPagesClient> hostedPaymentPagesClient;
 
     protected final Supplier<ImportClient> importClient;
@@ -75,6 +79,8 @@ public class PayabliApiClient {
     protected final Supplier<PaymentLinkClient> paymentLinkClient;
 
     protected final Supplier<PaymentMethodDomainClient> paymentMethodDomainClient;
+
+    protected final Supplier<PayoutSubscriptionClient> payoutSubscriptionClient;
 
     protected final Supplier<PaypointClient> paypointClient;
 
@@ -103,6 +109,7 @@ public class PayabliApiClient {
         this.cloudClient = Suppliers.memoize(() -> new CloudClient(clientOptions));
         this.customerClient = Suppliers.memoize(() -> new CustomerClient(clientOptions));
         this.exportClient = Suppliers.memoize(() -> new ExportClient(clientOptions));
+        this.ghostCardClient = Suppliers.memoize(() -> new GhostCardClient(clientOptions));
         this.hostedPaymentPagesClient = Suppliers.memoize(() -> new HostedPaymentPagesClient(clientOptions));
         this.importClient = Suppliers.memoize(() -> new ImportClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
@@ -115,6 +122,7 @@ public class PayabliApiClient {
         this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
         this.paymentLinkClient = Suppliers.memoize(() -> new PaymentLinkClient(clientOptions));
         this.paymentMethodDomainClient = Suppliers.memoize(() -> new PaymentMethodDomainClient(clientOptions));
+        this.payoutSubscriptionClient = Suppliers.memoize(() -> new PayoutSubscriptionClient(clientOptions));
         this.paypointClient = Suppliers.memoize(() -> new PaypointClient(clientOptions));
         this.queryClient = Suppliers.memoize(() -> new QueryClient(clientOptions));
         this.statisticClient = Suppliers.memoize(() -> new StatisticClient(clientOptions));
@@ -152,6 +160,10 @@ public class PayabliApiClient {
 
     public ExportClient export() {
         return this.exportClient.get();
+    }
+
+    public GhostCardClient ghostCard() {
+        return this.ghostCardClient.get();
     }
 
     public HostedPaymentPagesClient hostedPaymentPages() {
@@ -200,6 +212,10 @@ public class PayabliApiClient {
 
     public PaymentMethodDomainClient paymentMethodDomain() {
         return this.paymentMethodDomainClient.get();
+    }
+
+    public PayoutSubscriptionClient payoutSubscription() {
+        return this.payoutSubscriptionClient.get();
     }
 
     public PaypointClient paypoint() {

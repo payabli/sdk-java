@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.query;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
+import io.github.payabli.api.resources.payoutsubscription.types.QueryPayoutSubscriptionResponse;
 import io.github.payabli.api.resources.query.requests.ListBatchDetailsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListBatchDetailsRequest;
 import io.github.payabli.api.resources.query.requests.ListBatchesOrgRequest;
@@ -22,6 +23,8 @@ import io.github.payabli.api.resources.query.requests.ListNotificationsRequest;
 import io.github.payabli.api.resources.query.requests.ListOrganizationsRequest;
 import io.github.payabli.api.resources.query.requests.ListPayoutOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListPayoutRequest;
+import io.github.payabli.api.resources.query.requests.ListPayoutSubscriptionsOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListPayoutSubscriptionsRequest;
 import io.github.payabli.api.resources.query.requests.ListPaypointsRequest;
 import io.github.payabli.api.resources.query.requests.ListSettlementsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListSettlementsRequest;
@@ -732,11 +735,74 @@ public class QueryClient {
     }
 
     /**
+     * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptions(String entry) {
+        return this.rawClient.listPayoutSubscriptions(entry).body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptions(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listPayoutSubscriptions(entry, requestOptions).body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptions(
+            String entry, ListPayoutSubscriptionsRequest request) {
+        return this.rawClient.listPayoutSubscriptions(entry, request).body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptions(
+            String entry, ListPayoutSubscriptionsRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .listPayoutSubscriptions(entry, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptionsOrg(int orgId) {
+        return this.rawClient.listPayoutSubscriptionsOrg(orgId).body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptionsOrg(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listPayoutSubscriptionsOrg(orgId, requestOptions).body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptionsOrg(
+            int orgId, ListPayoutSubscriptionsOrgRequest request) {
+        return this.rawClient.listPayoutSubscriptionsOrg(orgId, request).body();
+    }
+
+    /**
+     * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     */
+    public QueryPayoutSubscriptionResponse listPayoutSubscriptionsOrg(
+            int orgId, ListPayoutSubscriptionsOrgRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .listPayoutSubscriptionsOrg(orgId, request, requestOptions)
+                .body();
+    }
+
+    /**
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -748,8 +814,7 @@ public class QueryClient {
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -761,8 +826,7 @@ public class QueryClient {
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -774,8 +838,7 @@ public class QueryClient {
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
      * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -789,9 +852,8 @@ public class QueryClient {
      * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
      * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl --request GET \
-     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -804,9 +866,8 @@ public class QueryClient {
      * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
      * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl --request GET \
-     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -819,9 +880,8 @@ public class QueryClient {
      * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
      * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl --request GET \
-     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */
@@ -834,9 +894,8 @@ public class QueryClient {
      * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
      * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl --request GET \
-     *   --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59\
-     *   --header 'requestToken: &lt;api-key&gt;'
+     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      *
      * </code></pre>
      */

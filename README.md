@@ -7,6 +7,7 @@ The Payabli Java library provides convenient access to the Payabli APIs from Jav
 
 ## Table of Contents
 
+- [Changelog](#changelog)
 - [Passing Query Parameters](#passing-query-parameters)
 - [Usage](#usage)
 - [Environments](#environments)
@@ -22,6 +23,11 @@ The Payabli Java library provides convenient access to the Payabli APIs from Jav
 - [Documentation](#documentation)
 - [Installation](#installation)
 - [Reference](#reference)
+
+## Changelog
+
+The changelog for the official Payabli Java SDK is available on the Payabli Docs site. See [Java SDK Changelog](https://docs.payabli.com/changelog/java-sdk) for more information.
+
 
 ## Passing Query Parameters
 
@@ -303,7 +309,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.318</version>
+  <version>0.0.319</version>
 </dependency>
 ```
 
