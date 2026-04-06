@@ -7,6 +7,6 @@
     "package-prefix": "io.github.payabli.api",
     "enable-wire-tests": false
   },
-  "originGitCommit": "f832172434ff6e66a6d2bae4417345ee599884a1",
-  "sdkVersion": "0.0.319"
+  "originGitCommit": "6415b5451c2da0d2c1cef85dc4081265a866360c",
+  "sdkVersion": "0.0.320"
 }
