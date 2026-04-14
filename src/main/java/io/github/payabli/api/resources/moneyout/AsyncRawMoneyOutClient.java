@@ -56,7 +56,7 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     * Authorizes transaction for payout.  If you don't pass the <code>autoCapture</code> field with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured.  Use <code>referenceId</code> returned in the response to capture the transaction.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(AuthorizePayoutBody body) {
         return authorizeOut(
@@ -64,7 +64,7 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     * Authorizes transaction for payout.  If you don't pass the <code>autoCapture</code> field with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured.  Use <code>referenceId</code> returned in the response to capture the transaction.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(
             AuthorizePayoutBody body, RequestOptions requestOptions) {
@@ -73,7 +73,7 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     * Authorizes transaction for payout.  If you don't pass the <code>autoCapture</code> field with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured.  Use <code>referenceId</code> returned in the response to capture the transaction.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(
             MoneyOutTypesRequestOutAuthorize request) {
@@ -81,7 +81,7 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use <code>referenceId</code> returned in the response to capture the transaction.
+     * Authorizes transaction for payout.  If you don't pass the <code>autoCapture</code> field with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured.  Use <code>referenceId</code> returned in the response to capture the transaction.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(
             MoneyOutTypesRequestOutAuthorize request, RequestOptions requestOptions) {
@@ -573,14 +573,14 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(String referenceId) {
         return captureOut(referenceId, CaptureOutRequest.builder().build());
     }
 
     /**
-     * Captures a single authorized payout transaction by ID.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, RequestOptions requestOptions) {
@@ -588,7 +588,7 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, CaptureOutRequest request) {
@@ -596,7 +596,7 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, CaptureOutRequest request, RequestOptions requestOptions) {

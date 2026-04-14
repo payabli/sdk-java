@@ -45,6 +45,8 @@ public final class AuthorizePayoutBody {
 
     private final Optional<Long> subscriptionId;
 
+    private final Optional<Boolean> autoCapture;
+
     private final Map<String, Object> additionalProperties;
 
     private AuthorizePayoutBody(
@@ -59,6 +61,7 @@ public final class AuthorizePayoutBody {
             Optional<String> accountId,
             Optional<String> subdomain,
             Optional<Long> subscriptionId,
+            Optional<Boolean> autoCapture,
             Map<String, Object> additionalProperties) {
         this.entryPoint = entryPoint;
         this.source = source;
@@ -71,6 +74,7 @@ public final class AuthorizePayoutBody {
         this.accountId = accountId;
         this.subdomain = subdomain;
         this.subscriptionId = subscriptionId;
+        this.autoCapture = autoCapture;
         this.additionalProperties = additionalProperties;
     }
 
@@ -138,6 +142,11 @@ public final class AuthorizePayoutBody {
         return subscriptionId;
     }
 
+    @JsonProperty("autoCapture")
+    public Optional<Boolean> getAutoCapture() {
+        return autoCapture;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -160,7 +169,8 @@ public final class AuthorizePayoutBody {
                 && invoiceData.equals(other.invoiceData)
                 && accountId.equals(other.accountId)
                 && subdomain.equals(other.subdomain)
-                && subscriptionId.equals(other.subscriptionId);
+                && subscriptionId.equals(other.subscriptionId)
+                && autoCapture.equals(other.autoCapture);
     }
 
     @java.lang.Override
@@ -176,7 +186,8 @@ public final class AuthorizePayoutBody {
                 this.invoiceData,
                 this.accountId,
                 this.subdomain,
-                this.subscriptionId);
+                this.subscriptionId,
+                this.autoCapture);
     }
 
     @java.lang.Override
@@ -251,6 +262,10 @@ public final class AuthorizePayoutBody {
         _FinalStage subscriptionId(Optional<Long> subscriptionId);
 
         _FinalStage subscriptionId(Long subscriptionId);
+
+        _FinalStage autoCapture(Optional<Boolean> autoCapture);
+
+        _FinalStage autoCapture(Boolean autoCapture);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -263,6 +278,8 @@ public final class AuthorizePayoutBody {
         private RequestOutAuthorizePaymentDetails paymentDetails;
 
         private RequestOutAuthorizeVendorData vendorData;
+
+        private Optional<Boolean> autoCapture = Optional.empty();
 
         private Optional<Long> subscriptionId = Optional.empty();
 
@@ -296,6 +313,7 @@ public final class AuthorizePayoutBody {
             accountId(other.getAccountId());
             subdomain(other.getSubdomain());
             subscriptionId(other.getSubscriptionId());
+            autoCapture(other.getAutoCapture());
             return this;
         }
 
@@ -334,6 +352,19 @@ public final class AuthorizePayoutBody {
         @JsonSetter("vendorData")
         public _FinalStage vendorData(@NotNull RequestOutAuthorizeVendorData vendorData) {
             this.vendorData = Objects.requireNonNull(vendorData, "vendorData must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage autoCapture(Boolean autoCapture) {
+            this.autoCapture = Optional.ofNullable(autoCapture);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "autoCapture", nulls = Nulls.SKIP)
+        public _FinalStage autoCapture(Optional<Boolean> autoCapture) {
+            this.autoCapture = autoCapture;
             return this;
         }
 
@@ -464,6 +495,7 @@ public final class AuthorizePayoutBody {
                     accountId,
                     subdomain,
                     subscriptionId,
+                    autoCapture,
                     additionalProperties);
         }
 

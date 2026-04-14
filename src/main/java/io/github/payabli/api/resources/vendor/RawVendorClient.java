@@ -15,6 +15,8 @@ import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
+import io.github.payabli.api.resources.vendor.types.VendorEnrichRequest;
+import io.github.payabli.api.resources.vendor.types.VendorEnrichResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
 import io.github.payabli.api.types.VendorData;
@@ -277,14 +279,14 @@ public class RawVendorClient {
     }
 
     /**
-     * Retrieves a vendor's details.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
     public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor) {
         return getVendor(idVendor, null);
     }
 
     /**
-     * Retrieves a vendor's details.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
     public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -312,6 +314,79 @@ public class RawVendorClient {
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class), response);
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
+     */
+    public PayabliApiHttpResponse<VendorEnrichResponse> enrichVendor(String entry, VendorEnrichRequest request) {
+        return enrichVendor(entry, request, null);
+    }
+
+    /**
+     * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
+     */
+    public PayabliApiHttpResponse<VendorEnrichResponse> enrichVendor(
+            String entry, VendorEnrichRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Vendor/enrich")
+                .addPathSegment(entry);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorEnrichResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(

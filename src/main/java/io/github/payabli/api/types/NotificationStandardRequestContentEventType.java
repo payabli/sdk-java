@@ -84,9 +84,6 @@ public final class NotificationStandardRequestContentEventType {
     public static final NotificationStandardRequestContentEventType RELEASED_TRANSACTION =
             new NotificationStandardRequestContentEventType(Value.RELEASED_TRANSACTION, "ReleasedTransaction");
 
-    public static final NotificationStandardRequestContentEventType UNDER_WRITING_APPLICATION =
-            new NotificationStandardRequestContentEventType(Value.UNDER_WRITING_APPLICATION, "UnderWritingApplication");
-
     public static final NotificationStandardRequestContentEventType ACTIVATED_MERCHANT =
             new NotificationStandardRequestContentEventType(Value.ACTIVATED_MERCHANT, "ActivatedMerchant");
 
@@ -504,8 +501,6 @@ public final class NotificationStandardRequestContentEventType {
                 return visitor.visitSystemAlert();
             case RELEASED_TRANSACTION:
                 return visitor.visitReleasedTransaction();
-            case UNDER_WRITING_APPLICATION:
-                return visitor.visitUnderWritingApplication();
             case ACTIVATED_MERCHANT:
                 return visitor.visitActivatedMerchant();
             case CARD_EXPIRED:
@@ -767,8 +762,6 @@ public final class NotificationStandardRequestContentEventType {
                 return SYSTEM_ALERT;
             case "ReleasedTransaction":
                 return RELEASED_TRANSACTION;
-            case "UnderWritingApplication":
-                return UNDER_WRITING_APPLICATION;
             case "ActivatedMerchant":
                 return ACTIVATED_MERCHANT;
             case "CardExpired":
@@ -1129,8 +1122,6 @@ public final class NotificationStandardRequestContentEventType {
 
         SUBMITTED_APPLICATION,
 
-        UNDER_WRITING_APPLICATION,
-
         ACTIVATED_MERCHANT,
 
         RECEIVED_CHARGE_BACK,
@@ -1386,8 +1377,6 @@ public final class NotificationStandardRequestContentEventType {
         T visitFailedBoardingApplication();
 
         T visitSubmittedApplication();
-
-        T visitUnderWritingApplication();
 
         T visitActivatedMerchant();
 

@@ -5,6 +5,8 @@ package io.github.payabli.api.resources.vendor;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
+import io.github.payabli.api.resources.vendor.types.VendorEnrichRequest;
+import io.github.payabli.api.resources.vendor.types.VendorEnrichResponse;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
 import io.github.payabli.api.types.VendorData;
 import io.github.payabli.api.types.VendorQueryRecord;
@@ -97,16 +99,30 @@ public class VendorClient {
     }
 
     /**
-     * Retrieves a vendor's details.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
     public VendorQueryRecord getVendor(int idVendor) {
         return this.rawClient.getVendor(idVendor).body();
     }
 
     /**
-     * Retrieves a vendor's details.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
     public VendorQueryRecord getVendor(int idVendor, RequestOptions requestOptions) {
         return this.rawClient.getVendor(idVendor, requestOptions).body();
+    }
+
+    /**
+     * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
+     */
+    public VendorEnrichResponse enrichVendor(String entry, VendorEnrichRequest request) {
+        return this.rawClient.enrichVendor(entry, request).body();
+    }
+
+    /**
+     * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
+     */
+    public VendorEnrichResponse enrichVendor(String entry, VendorEnrichRequest request, RequestOptions requestOptions) {
+        return this.rawClient.enrichVendor(entry, request, requestOptions).body();
     }
 }

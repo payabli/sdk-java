@@ -129,6 +129,7 @@ public final class BillOutData {
 
     /**
      * @return An array of bill images. Attachments aren't required, but we strongly recommend including them. Including a bill image can make payouts smoother and prevent delays. You can include either the Base64-encoded file content, or you can include an fURL to a public file. The maximum file size for image uploads is 30 MB.
+     * <p>When vendor enrichment is enabled and the first attachment is a PDF, the invoice is scanned and extracted vendor contact information and bill details (invoice number, amount due, due date) are merged into the request. Fields in the request body take precedence over extracted data. If the scan fails, bill creation proceeds with the original request data. See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details. Contact Payabli to enable this feature.</p>
      */
     @JsonProperty("attachments")
     public Optional<List<FileContent>> getAttachments() {
@@ -425,6 +426,7 @@ public final class BillOutData {
 
         /**
          * <p>An array of bill images. Attachments aren't required, but we strongly recommend including them. Including a bill image can make payouts smoother and prevent delays. You can include either the Base64-encoded file content, or you can include an fURL to a public file. The maximum file size for image uploads is 30 MB.</p>
+         * <p>When vendor enrichment is enabled and the first attachment is a PDF, the invoice is scanned and extracted vendor contact information and bill details (invoice number, amount due, due date) are merged into the request. Fields in the request body take precedence over extracted data. If the scan fails, bill creation proceeds with the original request data. See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details. Contact Payabli to enable this feature.</p>
          */
         @JsonSetter(value = "attachments", nulls = Nulls.SKIP)
         public Builder attachments(Optional<List<FileContent>> attachments) {

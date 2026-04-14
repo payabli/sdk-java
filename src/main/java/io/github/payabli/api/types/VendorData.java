@@ -85,6 +85,10 @@ public final class VendorData {
 
     private final Optional<String> zip;
 
+    private final Optional<String> defaultMethodId;
+
+    private final Optional<FileContent> attachment;
+
     private final Map<String, Object> additionalProperties;
 
     private VendorData(
@@ -120,6 +124,8 @@ public final class VendorData {
             Optional<String> state,
             Optional<Integer> vendorStatus,
             Optional<String> zip,
+            Optional<String> defaultMethodId,
+            Optional<FileContent> attachment,
             Map<String, Object> additionalProperties) {
         this.vendorNumber = vendorNumber;
         this.additionalData = additionalData;
@@ -153,6 +159,8 @@ public final class VendorData {
         this.state = state;
         this.vendorStatus = vendorStatus;
         this.zip = zip;
+        this.defaultMethodId = defaultMethodId;
+        this.attachment = attachment;
         this.additionalProperties = additionalProperties;
     }
 
@@ -355,6 +363,27 @@ public final class VendorData {
         return zip;
     }
 
+    /**
+     * @return Identifier for the vendor's default stored payment method.
+     */
+    @JsonProperty("defaultMethodId")
+    public Optional<String> getDefaultMethodId() {
+        return defaultMethodId;
+    }
+
+    /**
+     * @return PDF invoice attachment for AI-powered vendor enrichment.
+     * When this feature is enabled and you include an attachment, the invoice is scanned and extracted vendor information is merged into the request.
+     * Fields in the request body take precedence over extracted data.
+     * If the scan fails, vendor creation proceeds with the original request data.
+     * <p>See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details.
+     * Contact Payabli to enable this feature.</p>
+     */
+    @JsonProperty("attachment")
+    public Optional<FileContent> getAttachment() {
+        return attachment;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -398,7 +427,9 @@ public final class VendorData {
                 && remitZip.equals(other.remitZip)
                 && state.equals(other.state)
                 && vendorStatus.equals(other.vendorStatus)
-                && zip.equals(other.zip);
+                && zip.equals(other.zip)
+                && defaultMethodId.equals(other.defaultMethodId)
+                && attachment.equals(other.attachment);
     }
 
     @java.lang.Override
@@ -435,7 +466,9 @@ public final class VendorData {
                 this.remitZip,
                 this.state,
                 this.vendorStatus,
-                this.zip);
+                this.zip,
+                this.defaultMethodId,
+                this.attachment);
     }
 
     @java.lang.Override
@@ -513,6 +546,10 @@ public final class VendorData {
 
         private Optional<String> zip = Optional.empty();
 
+        private Optional<String> defaultMethodId = Optional.empty();
+
+        private Optional<FileContent> attachment = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -551,6 +588,8 @@ public final class VendorData {
             state(other.getState());
             vendorStatus(other.getVendorStatus());
             zip(other.getZip());
+            defaultMethodId(other.getDefaultMethodId());
+            attachment(other.getAttachment());
             return this;
         }
 
@@ -945,6 +984,39 @@ public final class VendorData {
             return this;
         }
 
+        /**
+         * <p>Identifier for the vendor's default stored payment method.</p>
+         */
+        @JsonSetter(value = "defaultMethodId", nulls = Nulls.SKIP)
+        public Builder defaultMethodId(Optional<String> defaultMethodId) {
+            this.defaultMethodId = defaultMethodId;
+            return this;
+        }
+
+        public Builder defaultMethodId(String defaultMethodId) {
+            this.defaultMethodId = Optional.ofNullable(defaultMethodId);
+            return this;
+        }
+
+        /**
+         * <p>PDF invoice attachment for AI-powered vendor enrichment.
+         * When this feature is enabled and you include an attachment, the invoice is scanned and extracted vendor information is merged into the request.
+         * Fields in the request body take precedence over extracted data.
+         * If the scan fails, vendor creation proceeds with the original request data.</p>
+         * <p>See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details.
+         * Contact Payabli to enable this feature.</p>
+         */
+        @JsonSetter(value = "attachment", nulls = Nulls.SKIP)
+        public Builder attachment(Optional<FileContent> attachment) {
+            this.attachment = attachment;
+            return this;
+        }
+
+        public Builder attachment(FileContent attachment) {
+            this.attachment = Optional.ofNullable(attachment);
+            return this;
+        }
+
         public VendorData build() {
             return new VendorData(
                     vendorNumber,
@@ -979,6 +1051,8 @@ public final class VendorData {
                     state,
                     vendorStatus,
                     zip,
+                    defaultMethodId,
+                    attachment,
                     additionalProperties);
         }
 

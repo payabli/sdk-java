@@ -110,6 +110,20 @@ public final class VendorQueryRecord {
 
     private final Optional<String> zip;
 
+    private final Optional<String> paymentPortalUrl;
+
+    private final Optional<String> cardAccepted;
+
+    private final Optional<String> achAccepted;
+
+    private final Optional<String> enrichmentStatus;
+
+    private final Optional<String> enrichedBy;
+
+    private final Optional<OffsetDateTime> enrichedAt;
+
+    private final Optional<String> enrichmentId;
+
     private final Map<String, Object> additionalProperties;
 
     private VendorQueryRecord(
@@ -157,6 +171,13 @@ public final class VendorQueryRecord {
             Optional<String> vendorNumber,
             Optional<Integer> vendorStatus,
             Optional<String> zip,
+            Optional<String> paymentPortalUrl,
+            Optional<String> cardAccepted,
+            Optional<String> achAccepted,
+            Optional<String> enrichmentStatus,
+            Optional<String> enrichedBy,
+            Optional<OffsetDateTime> enrichedAt,
+            Optional<String> enrichmentId,
             Map<String, Object> additionalProperties) {
         this.additionalData = additionalData;
         this.address1 = address1;
@@ -202,6 +223,13 @@ public final class VendorQueryRecord {
         this.vendorNumber = vendorNumber;
         this.vendorStatus = vendorStatus;
         this.zip = zip;
+        this.paymentPortalUrl = paymentPortalUrl;
+        this.cardAccepted = cardAccepted;
+        this.achAccepted = achAccepted;
+        this.enrichmentStatus = enrichmentStatus;
+        this.enrichedBy = enrichedBy;
+        this.enrichedAt = enrichedAt;
+        this.enrichmentId = enrichmentId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -425,6 +453,62 @@ public final class VendorQueryRecord {
         return zip;
     }
 
+    /**
+     * @return URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.
+     */
+    @JsonProperty("PaymentPortalUrl")
+    public Optional<String> getPaymentPortalUrl() {
+        return paymentPortalUrl;
+    }
+
+    /**
+     * @return Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.
+     */
+    @JsonProperty("CardAccepted")
+    public Optional<String> getCardAccepted() {
+        return cardAccepted;
+    }
+
+    /**
+     * @return Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.
+     */
+    @JsonProperty("AchAccepted")
+    public Optional<String> getAchAccepted() {
+        return achAccepted;
+    }
+
+    /**
+     * @return Current enrichment state of the vendor. Values are <code>not_enriched</code>, <code>partially_enriched</code>, <code>fully_enriched</code>, or <code>fallback_applied</code>.
+     */
+    @JsonProperty("EnrichmentStatus")
+    public Optional<String> getEnrichmentStatus() {
+        return enrichmentStatus;
+    }
+
+    /**
+     * @return Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.
+     */
+    @JsonProperty("EnrichedBy")
+    public Optional<String> getEnrichedBy() {
+        return enrichedBy;
+    }
+
+    /**
+     * @return When the vendor was last enriched (UTC).
+     */
+    @JsonProperty("EnrichedAt")
+    public Optional<OffsetDateTime> getEnrichedAt() {
+        return enrichedAt;
+    }
+
+    /**
+     * @return Identifier for the enrichment request that last updated this vendor.
+     */
+    @JsonProperty("EnrichmentId")
+    public Optional<String> getEnrichmentId() {
+        return enrichmentId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -480,7 +564,14 @@ public final class VendorQueryRecord {
                 && vendorId.equals(other.vendorId)
                 && vendorNumber.equals(other.vendorNumber)
                 && vendorStatus.equals(other.vendorStatus)
-                && zip.equals(other.zip);
+                && zip.equals(other.zip)
+                && paymentPortalUrl.equals(other.paymentPortalUrl)
+                && cardAccepted.equals(other.cardAccepted)
+                && achAccepted.equals(other.achAccepted)
+                && enrichmentStatus.equals(other.enrichmentStatus)
+                && enrichedBy.equals(other.enrichedBy)
+                && enrichedAt.equals(other.enrichedAt)
+                && enrichmentId.equals(other.enrichmentId);
     }
 
     @java.lang.Override
@@ -529,7 +620,14 @@ public final class VendorQueryRecord {
                 this.vendorId,
                 this.vendorNumber,
                 this.vendorStatus,
-                this.zip);
+                this.zip,
+                this.paymentPortalUrl,
+                this.cardAccepted,
+                this.achAccepted,
+                this.enrichmentStatus,
+                this.enrichedBy,
+                this.enrichedAt,
+                this.enrichmentId);
     }
 
     @java.lang.Override
@@ -631,6 +729,20 @@ public final class VendorQueryRecord {
 
         private Optional<String> zip = Optional.empty();
 
+        private Optional<String> paymentPortalUrl = Optional.empty();
+
+        private Optional<String> cardAccepted = Optional.empty();
+
+        private Optional<String> achAccepted = Optional.empty();
+
+        private Optional<String> enrichmentStatus = Optional.empty();
+
+        private Optional<String> enrichedBy = Optional.empty();
+
+        private Optional<OffsetDateTime> enrichedAt = Optional.empty();
+
+        private Optional<String> enrichmentId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -681,6 +793,13 @@ public final class VendorQueryRecord {
             vendorNumber(other.getVendorNumber());
             vendorStatus(other.getVendorStatus());
             zip(other.getZip());
+            paymentPortalUrl(other.getPaymentPortalUrl());
+            cardAccepted(other.getCardAccepted());
+            achAccepted(other.getAchAccepted());
+            enrichmentStatus(other.getEnrichmentStatus());
+            enrichedBy(other.getEnrichedBy());
+            enrichedAt(other.getEnrichedAt());
+            enrichmentId(other.getEnrichmentId());
             return this;
         }
 
@@ -1168,6 +1287,104 @@ public final class VendorQueryRecord {
             return this;
         }
 
+        /**
+         * <p>URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.</p>
+         */
+        @JsonSetter(value = "PaymentPortalUrl", nulls = Nulls.SKIP)
+        public Builder paymentPortalUrl(Optional<String> paymentPortalUrl) {
+            this.paymentPortalUrl = paymentPortalUrl;
+            return this;
+        }
+
+        public Builder paymentPortalUrl(String paymentPortalUrl) {
+            this.paymentPortalUrl = Optional.ofNullable(paymentPortalUrl);
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        @JsonSetter(value = "CardAccepted", nulls = Nulls.SKIP)
+        public Builder cardAccepted(Optional<String> cardAccepted) {
+            this.cardAccepted = cardAccepted;
+            return this;
+        }
+
+        public Builder cardAccepted(String cardAccepted) {
+            this.cardAccepted = Optional.ofNullable(cardAccepted);
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        @JsonSetter(value = "AchAccepted", nulls = Nulls.SKIP)
+        public Builder achAccepted(Optional<String> achAccepted) {
+            this.achAccepted = achAccepted;
+            return this;
+        }
+
+        public Builder achAccepted(String achAccepted) {
+            this.achAccepted = Optional.ofNullable(achAccepted);
+            return this;
+        }
+
+        /**
+         * <p>Current enrichment state of the vendor. Values are <code>not_enriched</code>, <code>partially_enriched</code>, <code>fully_enriched</code>, or <code>fallback_applied</code>.</p>
+         */
+        @JsonSetter(value = "EnrichmentStatus", nulls = Nulls.SKIP)
+        public Builder enrichmentStatus(Optional<String> enrichmentStatus) {
+            this.enrichmentStatus = enrichmentStatus;
+            return this;
+        }
+
+        public Builder enrichmentStatus(String enrichmentStatus) {
+            this.enrichmentStatus = Optional.ofNullable(enrichmentStatus);
+            return this;
+        }
+
+        /**
+         * <p>Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.</p>
+         */
+        @JsonSetter(value = "EnrichedBy", nulls = Nulls.SKIP)
+        public Builder enrichedBy(Optional<String> enrichedBy) {
+            this.enrichedBy = enrichedBy;
+            return this;
+        }
+
+        public Builder enrichedBy(String enrichedBy) {
+            this.enrichedBy = Optional.ofNullable(enrichedBy);
+            return this;
+        }
+
+        /**
+         * <p>When the vendor was last enriched (UTC).</p>
+         */
+        @JsonSetter(value = "EnrichedAt", nulls = Nulls.SKIP)
+        public Builder enrichedAt(Optional<OffsetDateTime> enrichedAt) {
+            this.enrichedAt = enrichedAt;
+            return this;
+        }
+
+        public Builder enrichedAt(OffsetDateTime enrichedAt) {
+            this.enrichedAt = Optional.ofNullable(enrichedAt);
+            return this;
+        }
+
+        /**
+         * <p>Identifier for the enrichment request that last updated this vendor.</p>
+         */
+        @JsonSetter(value = "EnrichmentId", nulls = Nulls.SKIP)
+        public Builder enrichmentId(Optional<String> enrichmentId) {
+            this.enrichmentId = enrichmentId;
+            return this;
+        }
+
+        public Builder enrichmentId(String enrichmentId) {
+            this.enrichmentId = Optional.ofNullable(enrichmentId);
+            return this;
+        }
+
         public VendorQueryRecord build() {
             return new VendorQueryRecord(
                     additionalData,
@@ -1214,6 +1431,13 @@ public final class VendorQueryRecord {
                     vendorNumber,
                     vendorStatus,
                     zip,
+                    paymentPortalUrl,
+                    cardAccepted,
+                    achAccepted,
+                    enrichmentStatus,
+                    enrichedBy,
+                    enrichedAt,
+                    enrichmentId,
                     additionalProperties);
         }
 
