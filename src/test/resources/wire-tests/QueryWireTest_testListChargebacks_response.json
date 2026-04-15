@@ -1,0 +1,156 @@
+{
+  "Records": [
+    {
+      "AccountType": "4XXXXXX0003",
+      "CaseNumber": "00001",
+      "ChargebackDate": "2023-02-08T00:00:00Z",
+      "CreatedAt": "2023-02-20T15:36:49Z",
+      "Customer": {
+        "AdditionalData": null,
+        "BillingAddress1": "321 Big Sky Road",
+        "BillingAddress2": "",
+        "BillingCity": "Helena",
+        "BillingCountry": "US",
+        "BillingEmail": "janis.berzins@example.com",
+        "BillingPhone": "406-555-0123",
+        "BillingState": "MT",
+        "BillingZip": "59601",
+        "CompanyName": "Big Sky Imports",
+        "customerId": 1324,
+        "CustomerNumber": "12345",
+        "customerStatus": 1,
+        "FirstName": "Janis",
+        "Identifiers": [
+          "firstname",
+          "email"
+        ],
+        "LastName": "Berzins",
+        "ShippingAddress1": "321 Big Sky Road",
+        "ShippingAddress2": "",
+        "ShippingCity": "Helena",
+        "ShippingCountry": "US",
+        "ShippingState": "MT",
+        "ShippingZip": "59601"
+      },
+      "externalPaypointID": "f743aed24a-10",
+      "Id": 578,
+      "LastFour": "4XXXXXX0003",
+      "Method": "card",
+      "NetAmount": 1.5,
+      "OrderId": "",
+      "ParentOrgName": "Par",
+      "PaymentData": {
+        "AccountExp": "0330",
+        "AccountType": "visa",
+        "HolderName": "Janis Berzins",
+        "MaskedAccount": "4XXXXXX0003",
+        "paymentDetails": {
+          "totalAmount": 100
+        },
+        "StoredId": "stored-id-123"
+      },
+      "PaymentTransId": "10-bfcd5a17861d4a8690ca53c00000X",
+      "PaypointDbaname": "Global Factory LLC",
+      "PaypointEntryname": "f743aed24a",
+      "PaypointLegalname": "Global Factory LLC",
+      "Reason": "Testing",
+      "ReasonCode": "00001",
+      "ReferenceNumber": "10-bfcd5a17861d4a8690ca53c00000X",
+      "ReplyBy": "2023-03-02T15:36:49Z",
+      "ScheduleReference": 0,
+      "Status": 3,
+      "Transaction": {
+        "BatchAmount": 0,
+        "Customer": {
+          "AdditionalData": null,
+          "BillingAddress1": "321 Big Sky Road",
+          "BillingAddress2": "",
+          "BillingCity": "Helena",
+          "BillingCountry": "US",
+          "BillingEmail": "janis.berzins@example.com",
+          "BillingPhone": "406-555-0123",
+          "BillingState": "MT",
+          "BillingZip": "59601",
+          "CompanyName": "Big Sky Imports",
+          "customerId": 1324,
+          "CustomerNumber": "12345",
+          "customerStatus": 1,
+          "FirstName": "Janis",
+          "Identifiers": [
+            "firstname",
+            "email"
+          ],
+          "LastName": "Berzins",
+          "ShippingAddress1": "321 Big Sky Road",
+          "ShippingAddress2": "",
+          "ShippingCity": "Helena",
+          "ShippingCountry": "US",
+          "ShippingState": "MT",
+          "ShippingZip": "59601"
+        },
+        "EntrypageId": 0,
+        "FeeAmount": 0.06,
+        "GatewayTransId": "8082800000",
+        "Method": "card",
+        "NetAmount": 1.5,
+        "Operation": "Sale",
+        "OrderId": "",
+        "OrgId": 0,
+        "PaymentData": {
+          "AccountExp": "0330",
+          "AccountType": "visa",
+          "HolderName": "Lisandra Sosa",
+          "MaskedAccount": "4XXXXXX0003",
+          "paymentDetails": {
+            "currency": "USD",
+            "serviceFee": 0.06,
+            "totalAmount": 1.56
+          }
+        },
+        "PaymentTransId": "10-bfcd5a17861d4a8690ca53c00000X",
+        "PayorId": 0,
+        "PaypointId": 0,
+        "RefundId": 0,
+        "ResponseData": {
+          "authcode": "123456",
+          "avsresponse": "N",
+          "avsresponse_text": "No address or ZIP match only",
+          "cvvresponse": "N",
+          "cvvresponse_text": "CVV2/CVC2 no match",
+          "orderid": "10-bfcd5a17861d4a8690ca53c00000X",
+          "response_code": "100",
+          "response_code_text": "Transaction was approved.",
+          "responsetext": "SUCCESS",
+          "transactionid": "8082800000"
+        },
+        "ReturnedId": 0,
+        "ScheduleReference": 0,
+        "SettlementStatus": 0,
+        "Source": "api",
+        "TotalAmount": 1.56,
+        "TransactionEvents": [
+          {
+            "EventTime": "2023-02-20T15:36:47Z",
+            "TransEvent": "created"
+          },
+          {
+            "EventData": "response=1&responsetext=SUCCESS&authcode=123456&transactionid=8082800000&avsresponse=N&cvvresponse=N&orderid=10-bfcd5a17861d4a8690ca53c00000X&type=sale&response_code=100",
+            "EventTime": "2023-02-20T15:36:49Z",
+            "TransEvent": "Approved"
+          }
+        ],
+        "TransactionTime": "2023-02-20T15:36:47Z",
+        "TransStatus": 1
+      },
+      "TransactionTime": "2023-02-20T15:36:47Z"
+    }
+  ],
+  "Summary": {
+    "pageIdentifier": "null",
+    "pageSize": 20,
+    "totalAmount": 1.56,
+    "totalNetAmount": 1.5,
+    "totalPages": 1,
+    "totalRecords": 1
+  }
+}

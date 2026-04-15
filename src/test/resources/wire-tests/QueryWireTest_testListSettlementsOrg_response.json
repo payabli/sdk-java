@@ -1,0 +1,156 @@
+{
+  "Records": [
+    {
+      "BatchAmount": 32,
+      "BatchNumber": "batch-100-20-2024",
+      "Category": "auth",
+      "CreatedAt": "2024-11-19T15:58:01Z",
+      "Customer": {
+        "AdditionalData": null,
+        "BillingAddress1": "100 Golden Ridge Drive",
+        "BillingAddress2": "STE 100",
+        "BillingCity": "Mendota",
+        "BillingCountry": "US",
+        "BillingEmail": "lydia@example.com",
+        "BillingPhone": "+12345678",
+        "BillingState": "VA",
+        "BillingZip": "20147",
+        "customerId": 2707,
+        "CustomerNumber": "901102",
+        "customerStatus": 1,
+        "FirstName": "Lydia",
+        "LastName": "Marshall"
+      },
+      "ExpectedDepositDate": "2024-11-22T00:00:00Z",
+      "GatewayTransId": "TRN_XXXXX",
+      "Id": 25048,
+      "isHold": 0,
+      "MaskedAccount": "1XXXXXX5678",
+      "Method": "ach",
+      "NetAmount": 2,
+      "Operation": "Sale",
+      "OrderId": "",
+      "ParentOrgName": "Pilgrim Planner",
+      "PaymentData": {
+        "AccountType": "Checking",
+        "HolderName": "Lydia Marshall",
+        "MaskedAccount": "1XXXXXX5678",
+        "paymentDetails": {
+          "categories": [
+            {
+              "amount": 1000,
+              "label": "Deposit"
+            }
+          ],
+          "currency": "USD",
+          "serviceFee": 0,
+          "splitFunding": [
+            {}
+          ],
+          "totalAmount": 2
+        }
+      },
+      "PaymentTransId": "245-9e4072eef77e45979ea0e49f680000X",
+      "PaymentTransStatus": 1,
+      "PaypointDbaname": "Gruzya Adventure Outfitters, LLC",
+      "PaypointEntryname": "7f1a3816XX",
+      "PaypointLegalname": "Gruzya Adventure Outfitters, LLC",
+      "ResponseData": {
+        "authcode": " ",
+        "avsresponse": " ",
+        "avsresponse_text": "",
+        "cvvresponse": " ",
+        "cvvresponse_text": " ",
+        "emv_auth_response_data": " ",
+        "orderid": null,
+        "response": "Success",
+        "response_code": "100",
+        "response_code_text": "Transaction was approved.",
+        "responsetext": "CAPTURED",
+        "resultCode": "A0000",
+        "resultCodeText": "Approved",
+        "transactionid": "TRN_xwCAjQorWAYX1nAhAoHZVfN8iYHbI0"
+      },
+      "ScheduleReference": 0,
+      "SettledAmount": 0.5,
+      "SettlementDate": "2024-11-20T00:00:00Z",
+      "Source": "api",
+      "Status": 1,
+      "TransactionEvents": [
+        {
+          "EventTime": "2024-11-19T15:57:40Z",
+          "TransEvent": "Created"
+        },
+        {
+          "EventData": {
+            "account_id": "TRA_XXXXX",
+            "account_name": "123456",
+            "action": {
+              "app_id": "XXXXX",
+              "app_name": "PayAbli",
+              "id": "ACT_XXXXX",
+              "result_code": "SUCCESS",
+              "time_created": "2024-11-19T20:58:01.583Z",
+              "type": "AUTHORIZE"
+            },
+            "amount": "200",
+            "batch_id": "",
+            "capture_mode": "AUTO",
+            "channel": "CNP",
+            "country": "US",
+            "currency": "USD",
+            "fees": {
+              "amount": "0",
+              "rate": "0.00",
+              "total_amount": "0"
+            },
+            "id": "TRN_XXXXX",
+            "merchant_amount": "200",
+            "merchant_id": "MER_XXXXX",
+            "merchant_name": "Henriette97",
+            "order": {
+              "reference": ""
+            },
+            "payment_method": {
+              "bank_transfer": {
+                "account_type": "CHECKING",
+                "bank": {
+                  "name": ""
+                },
+                "masked_account_number_last4": "XXXX5678"
+              },
+              "entry_mode": "ECOM",
+              "message": "Success",
+              "narrative": "Lydia Marshall",
+              "result": "00"
+            },
+            "reference": "245-XXXXX",
+            "status": "CAPTURED",
+            "time_created": "2024-11-19T20:58:01.583Z",
+            "type": "SALE"
+          },
+          "EventTime": "2024-11-19T20:58:01Z",
+          "TransEvent": "Approved"
+        },
+        {
+          "EventTime": "2024-11-20T03:05:10Z",
+          "TransEvent": "ClosedBatch"
+        }
+      ],
+      "TransactionTime": "2024-11-19T15:58:01Z",
+      "TransMethod": "ach",
+      "Type": "credit"
+    }
+  ],
+  "Summary": {
+    "heldAmount": 3.7,
+    "pageSize": 0,
+    "refunds": -3521.85,
+    "serviceFees": 852.48,
+    "totalAmount": 61645.74,
+    "totalNetAmount": 61645.74,
+    "totalPages": 21872,
+    "totalRecords": 21872,
+    "transferAmount": 0
+  }
+}

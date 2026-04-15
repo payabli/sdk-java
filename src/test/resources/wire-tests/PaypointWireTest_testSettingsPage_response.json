@@ -1,0 +1,184 @@
+{
+  "customFields": [
+    {
+      "key": "customerID",
+      "readOnly": false,
+      "value": ""
+    },
+    {
+      "key": "test",
+      "readOnly": false,
+      "value": ""
+    },
+    {
+      "key": "newfield",
+      "readOnly": false,
+      "value": ""
+    },
+    {
+      "key": "testfield",
+      "readOnly": false,
+      "value": ""
+    }
+  ],
+  "forInvoices": [
+    {
+      "key": "brandColor",
+      "value": "#0594fad1"
+    },
+    {
+      "key": "requiredInvoiceNumber",
+      "value": "true"
+    },
+    {
+      "key": "invoicePrefix",
+      "value": "INV-"
+    },
+    {
+      "key": "invoiceNumber",
+      "value": "1"
+    },
+    {
+      "key": "dueDate",
+      "value": "NET30"
+    },
+    {
+      "key": "dueDateCustom",
+      "value": "Invalid Date"
+    },
+    {
+      "key": "memoNote",
+      "value": "Thank you for your business!"
+    },
+    {
+      "key": "footerNote",
+      "value": "default footer testing"
+    },
+    {
+      "key": "includePaymentLink",
+      "value": "true"
+    },
+    {
+      "key": "paylinkHeader",
+      "value": "Gruzya Adventure Outfitters"
+    },
+    {
+      "key": "paylinkDescription",
+      "value": "Pay Invoice"
+    },
+    {
+      "key": "contactUsText",
+      "value": "Contact Us"
+    },
+    {
+      "key": "contactUsEmail",
+      "value": "support@gruzyaadventureoutfitters.com"
+    },
+    {
+      "key": "contactUsPhone",
+      "value": "5551234567"
+    },
+    {
+      "key": "invoiceNumbering",
+      "value": "autoapply"
+    },
+    {
+      "key": "paymentVisa",
+      "value": "true"
+    },
+    {
+      "key": "paymentMastercard",
+      "value": "true"
+    },
+    {
+      "key": "paymentDiscover",
+      "value": "true"
+    },
+    {
+      "key": "paymentAmex",
+      "value": "true"
+    },
+    {
+      "key": "paymentAch",
+      "value": "true"
+    },
+    {
+      "key": "paymentApplePay",
+      "value": "false"
+    },
+    {
+      "key": "paymentGooglePay",
+      "value": "false"
+    },
+    {
+      "key": "requireInvoiceNumber",
+      "value": "false"
+    },
+    {
+      "key": "autoCreateInvoice",
+      "value": "true"
+    },
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "forPayOuts": [
+    {
+      "key": "autoCapture",
+      "readOnly": false,
+      "value": "true"
+    },
+    {
+      "key": "autoPay",
+      "readOnly": false,
+      "value": "true"
+    },
+    {
+      "key": "autoDownloadCheckImage",
+      "readOnly": false,
+      "value": "false"
+    }
+  ],
+  "forWallets": [
+    {
+      "key": "isApplePayEnabled",
+      "readOnly": false,
+      "value": "false"
+    }
+  ],
+  "general": [
+    {
+      "key": "currency",
+      "readOnly": true,
+      "value": "USD"
+    },
+    {
+      "key": "disableAutoReceipt",
+      "readOnly": true,
+      "value": "true"
+    },
+    {
+      "key": "sendApprovedReceipt",
+      "readOnly": false,
+      "value": "true"
+    },
+    {
+      "key": "sendDeclinedReceipt",
+      "readOnly": false,
+      "value": "true"
+    },
+    {
+      "key": "",
+      "readOnly": true,
+      "value": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "key": "key",
+      "readOnly": false,
+      "value": "value"
+    }
+  ]
+}

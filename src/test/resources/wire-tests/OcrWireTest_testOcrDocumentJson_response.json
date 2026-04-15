@@ -1,0 +1,127 @@
+{
+  "isSuccess": true,
+  "responseText": "responseText",
+  "responseCode": 1,
+  "responseData": {
+    "resultData": {
+      "billNumber": "billNumber",
+      "netAmount": 1.1,
+      "billDate": "2024-01-15T09:30:00Z",
+      "dueDate": "2024-01-15T09:30:00Z",
+      "comments": "comments",
+      "billItems": [
+        {
+          "itemTotalAmount": 1.1,
+          "itemTaxAmount": 1.1,
+          "itemTaxRate": 1.1,
+          "itemProductCode": "itemProductCode",
+          "itemProductName": "itemProductName",
+          "itemDescription": "itemDescription",
+          "itemCommodityCode": "itemCommodityCode",
+          "itemUnitOfMeasure": "itemUnitOfMeasure",
+          "itemCost": 1.1,
+          "itemQty": 1,
+          "itemMode": 1,
+          "itemCategories": [
+            "itemCategories",
+            "itemCategories"
+          ]
+        },
+        {
+          "itemTotalAmount": 1.1,
+          "itemTaxAmount": 1.1,
+          "itemTaxRate": 1.1,
+          "itemProductCode": "itemProductCode",
+          "itemProductName": "itemProductName",
+          "itemDescription": "itemDescription",
+          "itemCommodityCode": "itemCommodityCode",
+          "itemUnitOfMeasure": "itemUnitOfMeasure",
+          "itemCost": 1.1,
+          "itemQty": 1,
+          "itemMode": 1,
+          "itemCategories": [
+            "itemCategories",
+            "itemCategories"
+          ]
+        }
+      ],
+      "mode": 1,
+      "accountingField1": "accountingField1",
+      "accountingField2": "accountingField2",
+      "additionalData": {
+        "category": "category",
+        "currency_code": "currency_code",
+        "type": "type",
+        "reference_number": "reference_number"
+      },
+      "vendor": {
+        "vendorNumber": "vendorNumber",
+        "name1": "name1",
+        "name2": "name2",
+        "ein": "ein",
+        "phone": "phone",
+        "email": "email",
+        "address1": "address1",
+        "address2": "address2",
+        "city": "city",
+        "state": "state",
+        "zip": "zip",
+        "country": "country",
+        "mcc": "mcc",
+        "locationCode": "locationCode",
+        "contacts": [
+          {},
+          {}
+        ],
+        "billingData": {
+          "id": 1,
+          "bankName": "bankName",
+          "routingAccount": "routingAccount",
+          "accountNumber": "accountNumber",
+          "typeAccount": "typeAccount",
+          "bankAccountHolderName": "bankAccountHolderName",
+          "bankAccountHolderType": "bankAccountHolderType",
+          "bankAccountFunction": 1
+        },
+        "paymentMethod": "paymentMethod",
+        "vendorStatus": 1,
+        "remitAddress1": "remitAddress1",
+        "remitAddress2": "remitAddress2",
+        "remitCity": "remitCity",
+        "remitState": "remitState",
+        "remitZip": "remitZip",
+        "remitCountry": "remitCountry",
+        "payeeName1": "payeeName1",
+        "payeeName2": "payeeName2",
+        "customerVendorAccount": "customerVendorAccount",
+        "internalReferenceId": 1000000,
+        "customField1": "customField1",
+        "customField2": "customField2",
+        "additionalData": {
+          "web": "web"
+        }
+      },
+      "endDate": "2024-01-15T09:30:00Z",
+      "frequency": "frequency",
+      "terms": "terms",
+      "status": 1,
+      "lotNumber": "lotNumber",
+      "attachments": [
+        {
+          "ftype": "ftype",
+          "filename": "filename",
+          "fileDescriptor": "fileDescriptor",
+          "furl": "furl",
+          "fContent": "fContent"
+        },
+        {
+          "ftype": "ftype",
+          "filename": "filename",
+          "fileDescriptor": "fileDescriptor",
+          "furl": "furl",
+          "fContent": "fContent"
+        }
+      ]
+    }
+  }
+}

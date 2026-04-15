@@ -5,8 +5,8 @@
   "generatorConfig": {
     "publish-to": "central",
     "package-prefix": "io.github.payabli.api",
-    "enable-wire-tests": false
+    "enable-wire-tests": true
   },
-  "originGitCommit": "b29070a45da273ecc88ef1b2903d30a6d29c3ea5",
-  "sdkVersion": "0.0.322"
+  "originGitCommit": "d8109909825b32fdbcb2f86bd2245cf753530059",
+  "sdkVersion": "0.0.323"
 }

@@ -1,0 +1,172 @@
+{
+  "annualRevenue": 1000,
+  "averageMonthlyVolume": 1000,
+  "averageTicketAmount": 1000,
+  "bAddress1": "123 Walnut Street",
+  "bAddress2": "Suite 103",
+  "bankData": [
+    {
+      "accountNumber": "1XXXXXX3123",
+      "bankAccountFunction": 1,
+      "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
+      "bankAccountHolderType": "Personal",
+      "bankName": "Country Bank",
+      "id": 1,
+      "nickname": "Business Checking 1234",
+      "routingAccount": "123123123",
+      "typeAccount": "Checking",
+      "accountId": "123-456"
+    },
+    {
+      "accountNumber": "1XXXXXX3123",
+      "bankAccountFunction": 0,
+      "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
+      "bankAccountHolderType": "Personal",
+      "bankName": "Country Bank",
+      "id": 1,
+      "nickname": "Business Checking 1234",
+      "routingAccount": "123123123",
+      "typeAccount": "Checking",
+      "accountId": "123-456"
+    }
+  ],
+  "bCity": "New Vegas",
+  "bCountry": "US",
+  "bFax": "5551234567",
+  "binPerson": 60,
+  "binPhone": 20,
+  "binWeb": 20,
+  "boardingLinkId": 91,
+  "boardingStatus": 1,
+  "boardingSubStatus": 1,
+  "bPhone": "5551234567",
+  "bStartdate": "01/01/1990",
+  "bState": "FL",
+  "bSummary": "Brick and mortar store that sells office supplies",
+  "builderData": {
+    "attributes": {
+      "minimumDocuments": 1,
+      "multipleContacts": true,
+      "multipleOwners": true
+    }
+  },
+  "bZip": "33000",
+  "contactData": [
+    {
+      "contactEmail": "example@email.com",
+      "contactName": "Herman Martinez",
+      "contactPhone": "3055550000",
+      "contactTitle": "Owner"
+    }
+  ],
+  "createdAt": "2022-07-01T15:00:01Z",
+  "dbaName": "Sunshine Gutters",
+  "documentsRef": {
+    "filelist": [
+      {}
+    ],
+    "zipfile": "zx45.zip"
+  },
+  "ein": "123456789",
+  "externalPaypointId": "Paypoint-100",
+  "generalEvents": [
+    {
+      "description": "TransferCreated",
+      "eventTime": "2023-07-05T22:31:06Z",
+      "extraData": {
+        "key": "value"
+      },
+      "refData": "refData",
+      "source": "api"
+    }
+  ],
+  "highTicketAmount": 1000,
+  "idApplication": 352,
+  "lastModified": "2022-07-01T15:00:01Z",
+  "legalName": "Sunshine Services, LLC",
+  "license": "2222222FFG",
+  "licenseState": "CA",
+  "logo": {
+    "fContent": "TXkgdGVzdCBmaWxlHJ==...",
+    "filename": "my-doc.pdf",
+    "ftype": "pdf",
+    "furl": "https://mysite.com/my-doc.pdf"
+  },
+  "mAddress1": "123 Walnut Street",
+  "mAddress2": "STE 900",
+  "mccid": "mccid",
+  "mCity": "TN",
+  "mCountry": "US",
+  "mState": "TN",
+  "mZip": "37615",
+  "orgId": 123,
+  "orgParentName": "PropertyManager Pro",
+  "ownerData": [
+    {
+      "oaddress": "33 North St",
+      "ocity": "Any City",
+      "ocountry": "US",
+      "odriverstate": "CA",
+      "ostate": "CA",
+      "ownerdob": "01/01/1990",
+      "ownerdriver": "CA6677778",
+      "owneremail": "example@email.com",
+      "ownername": "John Smith",
+      "ownerpercent": 25,
+      "ownerphone1": "555888111",
+      "ownerphone2": "555888111",
+      "ownerssn": "123456789",
+      "ownertitle": "CEO",
+      "ozip": "55555"
+    }
+  ],
+  "ownType": "Limited Liability Company",
+  "pageidentifier": "null",
+  "recipientEmailNotification": true,
+  "resumable": false,
+  "salesCode": "salesCode",
+  "serviceData": {
+    "ach": {
+      "acceptCCD": false,
+      "acceptPPD": false,
+      "acceptWeb": true
+    },
+    "card": {
+      "acceptAmex": true,
+      "acceptDiscover": false,
+      "acceptMastercard": true,
+      "acceptVisa": true
+    },
+    "odp": {
+      "allowAch": true,
+      "allowChecks": true,
+      "allowVCard": true,
+      "processing_region": "US",
+      "processor": "tysys",
+      "issuerNetworkSettingsId": "12345678901234"
+    }
+  },
+  "signer": {
+    "acceptance": false,
+    "address": "33 North St",
+    "address1": "STE 900",
+    "city": "Bristol",
+    "country": "US",
+    "dob": "01/01/1990",
+    "email": "example@email.com",
+    "name": "John Smith",
+    "phone": "555888111",
+    "signedDocumentReference": "signedDocumentReference",
+    "signerUuid": "54455d5d-34ff-416c-91e0-5bc87199999",
+    "ssn": "123456789",
+    "state": "TN",
+    "zip": "55555"
+  },
+  "taxfillname": "Sunshine LLC",
+  "templateId": 22,
+  "websiteAddress": "www.example.com",
+  "whencharged": "When Service Provided",
+  "whendelivered": "0-7 Days",
+  "whenProvided": "30 Days or Less",
+  "whenrefund": "Exchange Only"
+}

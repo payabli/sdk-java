@@ -1,0 +1,53 @@
+{
+  "Records": [
+    {
+      "Address": "1234 Bayou Road",
+      "Address1": "Suite 2",
+      "Balance": 0,
+      "City": "Lafayette",
+      "Company": "Boudreaux's Shop",
+      "Country": "US",
+      "Created": "2023-12-20T13:07:48Z",
+      "customerId": 2876,
+      "customerNumber": "425436530000",
+      "customerStatus": 0,
+      "customerSummary": {
+        "numberofTransactions": 30,
+        "totalAmountTransactions": 1500,
+        "totalNetAmountTransactions": 1500
+      },
+      "Email": "thibodeaux.hebert@bayoumail.com",
+      "externalPaypointID": "pay-10",
+      "Firstname": "Thibodeaux",
+      "IdentifierFields": [
+        "email"
+      ],
+      "Lastname": "Hebert",
+      "LastUpdated": "2023-12-20T13:07:48Z",
+      "MFA": false,
+      "MFAMode": 0,
+      "ParentOrgName": "SupplyPro",
+      "PaypointDbaname": "Global Factory LLC",
+      "PaypointEntryname": "4872acb376a",
+      "PaypointLegalname": "Global Factory LLC",
+      "Phone": "(504) 823-4566",
+      "ShippingAddress": "1234 Bayou Road",
+      "ShippingAddress1": "Suite 2",
+      "ShippingCity": "Lafayette",
+      "ShippingCountry": "US",
+      "ShippingState": "LA",
+      "ShippingZip": "70501",
+      "State": "LA",
+      "TimeZone": 0,
+      "Zip": "70501"
+    }
+  ],
+  "Summary": {
+    "pageIdentifier": "XXXXXXXXXXXXXX",
+    "pageSize": 20,
+    "totalAmount": 0,
+    "totalNetAmount": 0,
+    "totalPages": 26,
+    "totalRecords": 510
+  }
+}

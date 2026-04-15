@@ -1,0 +1,85 @@
+{
+  "Records": [
+    {
+      "invoiceId": 3674,
+      "customerId": 1323,
+      "paypointId": 10,
+      "invoiceNumber": "QA-1709680125",
+      "invoiceDate": "2025-03-05",
+      "invoiceDueDate": "2025-03-05",
+      "invoiceSentDate": "2025-03-05",
+      "invoiceEndDate": "2025-03-05",
+      "lastPaymentDate": null,
+      "createdAt": "2024-03-05T18:08:45Z",
+      "invoiceStatus": 1,
+      "invoiceType": 0,
+      "frequency": "onetime",
+      "paymentTerms": "N30",
+      "termsConditions": null,
+      "notes": null,
+      "tax": 0,
+      "discount": 0,
+      "invoiceAmount": 50,
+      "invoicePaidAmount": 0,
+      "freightAmount": 0,
+      "dutyAmount": 0,
+      "purchaseOrder": null,
+      "firstName": "Amirah",
+      "lastName": "Tan",
+      "company": null,
+      "shippingAddress1": "1234 Rainier Ave",
+      "shippingAddress2": "Apt 567",
+      "shippingCity": "Seattle",
+      "shippingState": "WA",
+      "shippingZip": "98101",
+      "shippingFromZip": "",
+      "shippingCountry": "US",
+      "shippingEmail": "amirah.tan@example.com",
+      "shippingPhone": "",
+      "summaryCommodityCode": null,
+      "items": [
+        {
+          "itemCost": 50,
+          "itemDescription": "service",
+          "itemProductName": "Internet",
+          "itemQty": 1
+        }
+      ],
+      "Customer": {
+        "AdditionalData": {
+          "key1": "value",
+          "key2": "value",
+          "key3": "value"
+        },
+        "BillingPhone": "1234567890",
+        "customerId": 1323
+      },
+      "paylinkId": "3674-cf15b881-f276-4b69-bdc8-841b2d123XXXXXX",
+      "billEvents": [
+        {
+          "description": "Invoice created",
+          "eventTime": "2024-03-05T23:08:45Z",
+          "refData": "00-802fa578504a7af6f3dd890a3802f7ef-61b4bedXXXX1234"
+        }
+      ],
+      "scheduledOptions": null,
+      "PaypointLegalname": "Emerald City LLC",
+      "PaypointDbaname": "Emerald City Trading",
+      "PaypointEntryname": "47a30009s",
+      "ParentOrgId": 123,
+      "ParentOrgName": "Emerald Enterprises",
+      "AdditionalData": null,
+      "DocumentsRef": null,
+      "externalPaypointID": "seattletrade01-10",
+      "pageIdentifier": null
+    }
+  ],
+  "Summary": {
+    "pageIdentifier": "null",
+    "pageSize": 20,
+    "totalAmount": 77.22,
+    "totalNetAmount": 77.22,
+    "totalPages": 2,
+    "totalRecords": 2
+  }
+}

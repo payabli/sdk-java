@@ -1,0 +1,129 @@
+{
+  "services": {
+    "ach": {},
+    "card": {
+      "acceptAmex": true,
+      "acceptDiscover": true,
+      "acceptMastercard": true,
+      "acceptVisa": true
+    }
+  },
+  "annualRevenue": 1000,
+  "averageBillSize": "500",
+  "averageMonthlyBill": "5650",
+  "avgmonthly": 1000,
+  "baddress": "123 Walnut Street",
+  "baddress1": "Suite 103",
+  "bankData": [
+    {
+      "accountNumber": "123123123",
+      "bankAccountFunction": 1,
+      "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
+      "bankAccountHolderType": "Business",
+      "bankName": "Test Bank",
+      "nickname": "Withdrawal Account",
+      "routingAccount": "123123123",
+      "typeAccount": "Checking",
+      "accountId": "123-456"
+    },
+    {
+      "accountNumber": "123123123",
+      "bankAccountFunction": 0,
+      "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
+      "bankAccountHolderType": "Business",
+      "bankName": "Test Bank",
+      "nickname": "Deposit Account",
+      "routingAccount": "123123123",
+      "typeAccount": "Checking",
+      "accountId": "123-456"
+    }
+  ],
+  "bcity": "New Vegas",
+  "bcountry": "US",
+  "binperson": 60,
+  "binphone": 20,
+  "binweb": 20,
+  "bstate": "FL",
+  "bsummary": "Brick and mortar store that sells office supplies",
+  "btype": "Limited Liability Company",
+  "bzip": "33000",
+  "contacts": [
+    {
+      "contactEmail": "herman@hermanscoatings.com",
+      "contactName": "Herman Martinez",
+      "contactPhone": "3055550000",
+      "contactTitle": "Owner"
+    }
+  ],
+  "creditLimit": "creditLimit",
+  "dbaName": "Sunshine Gutters",
+  "ein": "123456789",
+  "faxnumber": "1234567890",
+  "highticketamt": 1000,
+  "legalName": "Sunshine Services, LLC",
+  "license": "2222222FFG",
+  "licstate": "CA",
+  "maddress": "123 Walnut Street",
+  "maddress1": "STE 900",
+  "mcc": "7777",
+  "mcity": "Johnson City",
+  "mcountry": "US",
+  "mstate": "TN",
+  "mzip": "37615",
+  "orgId": 123,
+  "ownership": [
+    {
+      "oaddress": "33 North St",
+      "ocity": "Any City",
+      "ocountry": "US",
+      "odriverstate": "CA",
+      "ostate": "CA",
+      "ownerdob": "01/01/1990",
+      "ownerdriver": "CA6677778",
+      "owneremail": "test@email.com",
+      "ownername": "John Smith",
+      "ownerpercent": 100,
+      "ownerphone1": "555888111",
+      "ownerphone2": "555888111",
+      "ownerssn": "123456789",
+      "ownertitle": "CEO",
+      "ozip": "55555"
+    }
+  ],
+  "phonenumber": "1234567890",
+  "processingRegion": "US",
+  "recipientEmail": "josephray@example.com",
+  "recipientEmailNotification": true,
+  "resumable": true,
+  "signer": {
+    "address": "33 North St",
+    "address1": "STE 900",
+    "city": "Bristol",
+    "country": "US",
+    "dob": "01/01/1976",
+    "email": "test@email.com",
+    "name": "John Smith",
+    "phone": "555888111",
+    "ssn": "123456789",
+    "state": "TN",
+    "zip": "55555",
+    "pciAttestation": true,
+    "signedDocumentReference": "https://example.com/signed-document.pdf",
+    "attestationDate": "04/20/2025",
+    "signDate": "04/20/2025",
+    "additionalData": {
+      "deviceId": "499585-389fj484-3jcj8hj3",
+      "session": "fifji4-fiu443-fn4843",
+      "timeWithCompany": "6 Years"
+    }
+  },
+  "startdate": "01/01/1990",
+  "taxFillName": "Sunshine LLC",
+  "templateId": 22,
+  "ticketamt": 1000,
+  "website": "www.example.com",
+  "whenCharged": "When Service Provided",
+  "whenDelivered": "Over 30 Days",
+  "whenProvided": "30 Days or Less",
+  "whenRefunded": "30 Days or Less"
+}

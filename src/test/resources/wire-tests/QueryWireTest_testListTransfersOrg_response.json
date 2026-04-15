@@ -1,0 +1,55 @@
+{
+  "Records": [
+    {
+      "transferId": 79851,
+      "paypointId": 705,
+      "batchNumber": "split_705_gp_11-16-2024",
+      "batchCurrency": "USD",
+      "batchRecords": 1,
+      "transferIdentifier": "bbcbfed7-e535-45fe-8d62-000000",
+      "batchId": 111430,
+      "paypointEntryName": "47ae3de37",
+      "paypointLegalName": "Gruzya Outdoor Outfitters LLC",
+      "paypointDbaName": "Gruzya Outdoor Outfitters",
+      "paypointLogo": "https://example.com/logo.png",
+      "parentOrgName": "Pilgrim Planner",
+      "parentOrgId": 12345,
+      "parentOrgEntryName": "43aebc000",
+      "parentOrgLogo": "https://example.com/parent-logo.png",
+      "externalPaypointID": "ext-12345",
+      "bankAccount": {
+        "accountNumber": "****1234",
+        "routingNumber": "123456789",
+        "bankName": "Riverdale Community Bank"
+      },
+      "transferDate": "2024-11-17T08:20:07.288+00:00",
+      "processor": "gp",
+      "transferStatus": 2,
+      "grossAmount": 1029,
+      "chargeBackAmount": 25,
+      "returnedAmount": 0,
+      "holdAmount": 0,
+      "releasedAmount": 0,
+      "billingFeesAmount": 0,
+      "thirdPartyPaidAmount": 0,
+      "adjustmentsAmount": 0,
+      "netTransferAmount": 1004,
+      "splitAmount": 650.22,
+      "eventsData": [
+        {
+          "description": "Transfer Created",
+          "eventTime": "2024-11-16T08:15:33.4364067Z",
+          "refData": null,
+          "extraData": null,
+          "source": "worker"
+        }
+      ],
+      "messages": []
+    }
+  ],
+  "Summary": {
+    "totalPages": 1,
+    "totalRecords": 2,
+    "pageSize": 20
+  }
+}

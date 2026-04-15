@@ -1,0 +1,61 @@
+{
+  "records": [
+    {
+      "id": "pmd_7b4b3ca0f6b74f02853dfcee5ec090a3",
+      "type": "PaymentMethodDomains",
+      "entityId": 1147,
+      "entityType": "paypoint",
+      "domainName": "payment.example.com",
+      "applePay": {
+        "isEnabled": true
+      },
+      "googlePay": {
+        "isEnabled": true
+      },
+      "ownerEntityId": 1147,
+      "ownerEntityType": "paypoint",
+      "createdAt": "2025-02-13T18:31:07.023Z",
+      "updatedAt": "2025-03-18T13:48:39.056Z"
+    },
+    {
+      "id": "pmd_1f799c8ab7dd432dbc2052ce332c101c",
+      "type": "PaymentMethodDomains",
+      "entityId": 1147,
+      "entityType": "paypoint",
+      "domainName": "checkout.example.com",
+      "applePay": {
+        "isEnabled": true
+      },
+      "googlePay": {
+        "isEnabled": true
+      },
+      "ownerEntityId": 1147,
+      "ownerEntityType": "paypoint",
+      "createdAt": "2025-02-13T18:04:50.207Z",
+      "updatedAt": "2025-02-13T18:04:50.207Z"
+    },
+    {
+      "id": "pmd_135ac1be6fab4a97850aadbbba77ce1b",
+      "type": "PaymentMethodDomains",
+      "entityId": 1147,
+      "entityType": "paypoint",
+      "domainName": "pay.example.com",
+      "applePay": {
+        "isEnabled": true
+      },
+      "googlePay": {
+        "isEnabled": false
+      },
+      "ownerEntityId": 1147,
+      "ownerEntityType": "paypoint",
+      "createdAt": "2026-09-06T03:55:32.213Z",
+      "updatedAt": "2026-09-06T03:55:47.586Z"
+    }
+  ],
+  "summary": {
+    "pageIdentifier": "t.wlbQ4YZ3/JJkaP2/muAxibhlwdVz1Ve89QtI40H9KPhf...",
+    "pageSize": 20,
+    "totalPages": 1,
+    "totalRecords": 17
+  }
+}

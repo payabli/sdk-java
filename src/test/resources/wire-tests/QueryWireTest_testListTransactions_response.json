@@ -1,0 +1,181 @@
+{
+  "Records": [
+    {
+      "BatchAmount": 30.22,
+      "BatchNumber": "1234567",
+      "CfeeTransactions": [
+        {
+          "cFeeTransid": "string",
+          "feeAmount": 0,
+          "operation": "string",
+          "refundId": 0,
+          "settlementStatus": 0,
+          "transactionTime": "2019-08-24T14:15:22Z",
+          "transStatus": 0
+        }
+      ],
+      "ConnectorName": "gp",
+      "Customer": {
+        "AdditionalData": null,
+        "BillingAddress1": "1111 street",
+        "BillingAddress2": "string",
+        "BillingCity": "myCity",
+        "BillingCountry": "US",
+        "BillingEmail": "customer@mail.com",
+        "BillingPhone": "1234567890",
+        "BillingState": "CA",
+        "BillingZip": "45567",
+        "CompanyName": "Sunshine LLC",
+        "customerId": 34,
+        "CustomerNumber": "3456-7645A",
+        "FirstName": "John",
+        "LastName": "Doe",
+        "ShippingAddress1": "string",
+        "ShippingAddress2": "string",
+        "ShippingCity": "string",
+        "ShippingCountry": "string",
+        "ShippingState": "string",
+        "ShippingZip": "string"
+      },
+      "DeviceId": "6c361c7d-674c-44cc-b790-382b75d1xxx",
+      "EntrypageId": 0,
+      "ExternalProcessorInformation": " ",
+      "FeeAmount": 10.25,
+      "GatewayTransId": "string",
+      "InvoiceData": {
+        "attachments": [
+          {
+            "fContent": "TXkgdGVzdCBmaWxlHJ==...",
+            "filename": "my-doc.pdf",
+            "ftype": "pdf",
+            "furl": "https://mysite.com/my-doc.pdf"
+          }
+        ],
+        "company": "string",
+        "discount": 0,
+        "dutyAmount": 0,
+        "firstName": "string",
+        "freightAmount": 10,
+        "frequency": "onetime",
+        "invoiceAmount": 105,
+        "invoiceDate": "2026-01-01",
+        "invoiceDueDate": "2026-01-15",
+        "invoiceEndDate": "2026-01-15",
+        "invoiceNumber": "INV-2345",
+        "invoiceStatus": 0,
+        "invoiceType": 0,
+        "items": [
+          {
+            "itemCategories": [
+              "string"
+            ],
+            "itemCommodityCode": "string",
+            "itemCost": 1,
+            "itemDescription": "string",
+            "itemMode": 0,
+            "itemProductCode": "string",
+            "itemProductName": "product 01",
+            "itemQty": 1,
+            "itemTaxAmount": 0,
+            "itemTaxRate": 0,
+            "itemTotalAmount": 0,
+            "itemUnitOfMeasure": "U"
+          }
+        ],
+        "lastName": "string",
+        "notes": "string",
+        "paymentTerms": "PIA",
+        "purchaseOrder": "string",
+        "shippingAddress1": "string",
+        "shippingAddress2": "string",
+        "shippingCity": "string",
+        "shippingCountry": "string",
+        "shippingEmail": "string",
+        "shippingFromZip": "string",
+        "shippingPhone": "string",
+        "shippingState": "string",
+        "shippingZip": "string",
+        "summaryCommodityCode": "string",
+        "tax": 2.05,
+        "termsConditions": "string"
+      },
+      "Method": "card",
+      "NetAmount": 100,
+      "Operation": "Sale",
+      "OrderId": "9876543",
+      "OrgId": 2,
+      "ParentOrgName": "Payabli",
+      "PaymentData": {
+        "AccountExp": "0426",
+        "AccountType": "visa",
+        "binData": {
+          "binMatchedLength": "6",
+          "binCardBrand": "VISA",
+          "binCardType": "DEBIT",
+          "binCardCategory": "CLASSIC",
+          "binCardIssuer": "CONOTOXIA SP. Z O.O",
+          "binCardIssuerCountry": "POLAND",
+          "binCardIssuerCountryCodeA2": "PL",
+          "binCardIssuerCountryNumber": "616",
+          "binCardIsRegulated": "true",
+          "binCardUseCategory": "Consumer",
+          "binCardIssuerCountryCodeA3": "POL"
+        },
+        "HolderName": "Billy J Franks",
+        "Initiator": "payor",
+        "MaskedAccount": "411111XXXXXX1111",
+        "paymentDetails": {
+          "totalAmount": 100
+        },
+        "Sequence": "first",
+        "StoredId": "675b43c1-9867-463c-8dc7-3d6ddb68554b-12812",
+        "StoredMethodUsageType": "unscheduled"
+      },
+      "PaymentTransId": "2345667-ddd-fff",
+      "PayorId": 55,
+      "PaypointDbaname": "Sunshine LLC",
+      "PaypointEntryname": "7acda8200",
+      "PaypointId": 2,
+      "PaypointLegalname": "Sunshine LLC",
+      "PendingFeeAmount": 2,
+      "RefundId": 0,
+      "ResponseData": {
+        "authcode": "123456",
+        "avsresponse": "N",
+        "avsresponse_text": "No address or ZIP match only",
+        "cvvresponse": "M",
+        "cvvresponse_text": "CVV2/CVC2 match",
+        "emv_auth_response_data": null,
+        "orderid": "10-bfcd5a17861d4a8690ca53c00000X",
+        "response": "Success",
+        "response_code": "100",
+        "response_code_text": "Transaction was approved.",
+        "responsetext": "SUCCESS",
+        "resultCode": "A0000",
+        "resultCodeText": "Approved",
+        "transactionid": "8082800000"
+      },
+      "ReturnedId": 0,
+      "ScheduleReference": 0,
+      "SettlementStatus": 0,
+      "Source": "vterminal",
+      "splitFundingInstructions": [
+        {}
+      ],
+      "TotalAmount": 110.25,
+      "TransactionEvents": [
+        {}
+      ],
+      "TransactionTime": "2019-08-24T14:15:22Z",
+      "TransStatus": 1
+    }
+  ],
+  "Summary": {
+    "pageIdentifier": "XXXXXXXXXXXXXXXXXXX",
+    "pageSize": 20,
+    "totalAmount": 177.22,
+    "totalNetAmount": 177.22,
+    "totalPages": 1,
+    "totalRecords": 2
+  }
+}

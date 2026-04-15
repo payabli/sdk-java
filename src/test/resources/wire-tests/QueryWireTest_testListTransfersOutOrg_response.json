@@ -1,0 +1,71 @@
+{
+  "Summary": {
+    "totalPages": 12,
+    "totalRecords": 234,
+    "pageSize": 20
+  },
+  "Records": [
+    {
+      "transferId": 4521,
+      "paypointId": 892,
+      "batchNumber": null,
+      "batchCurrency": null,
+      "batchRecords": null,
+      "transferIdentifier": null,
+      "batchId": null,
+      "batchNetAmount": null,
+      "batchStatus": null,
+      "paypointEntryName": "47cade237",
+      "paypointLegalName": "Solid Rock Concrete Coatings LLC",
+      "paypointDbaName": "Solid Rock Coatings",
+      "paypointLogo": "https://example.com/logos/solidrock.png",
+      "parentOrgName": "Premier Property Services",
+      "parentOrgId": 77,
+      "parentOrgLogo": "https://example.com/logos/premier.png",
+      "parentOrgEntryName": "premierps",
+      "externalPaypointID": "SR-892",
+      "bankAccount": {
+        "accountNumber": "4XXXXXX7231",
+        "routingNumber": "121000358",
+        "bankName": "Riverdale Community Bank"
+      },
+      "transferDate": "2025-01-15T14:30:00Z",
+      "processor": "BK",
+      "transferStatus": null,
+      "grossAmount": 2847.5,
+      "chargeBackAmount": null,
+      "returnedAmount": 0,
+      "holdAmount": 0,
+      "releasedAmount": 0,
+      "billingFeesAmount": 12.5,
+      "thirdPartyPaidAmount": null,
+      "adjustmentsAmount": null,
+      "netTransferAmount": 2835,
+      "splitAmount": null,
+      "eventsData": [
+        {
+          "description": "Payout funded",
+          "eventTime": "2025-01-15T14:28:45",
+          "refData": "",
+          "extraData": null,
+          "source": "system"
+        }
+      ],
+      "messages": [
+        {
+          "Id": 8842,
+          "RoomId": 1205,
+          "UserId": 334,
+          "UserName": "Maria Santos",
+          "Content": "Transfer processed successfully",
+          "CreatedAt": "2025-01-15T14:30:00",
+          "MessageType": 1,
+          "MessageProperties": {
+            "originalTransferStatus": "pending",
+            "currentTransferStatus": "completed"
+          }
+        }
+      ]
+    }
+  ]
+}

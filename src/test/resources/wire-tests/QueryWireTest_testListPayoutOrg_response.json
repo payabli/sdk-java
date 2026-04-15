@@ -1,0 +1,73 @@
+{
+  "Records": [
+    {
+      "BatchNumber": "BT-2024321",
+      "Bills": [
+        {}
+      ],
+      "CardToken": "CardToken",
+      "CheckNumber": "12345",
+      "Comments": "Deposit for materials",
+      "CreatedAt": "2022-07-01T15:00:01Z",
+      "EntryName": "d193cf9a46",
+      "Events": [
+        {}
+      ],
+      "externalPaypointID": "Paypoint-100",
+      "FeeAmount": 10.25,
+      "Gateway": "TSYS",
+      "IdOut": 236,
+      "LastUpdated": "2022-07-01T15:00:01Z",
+      "NetAmount": 3762.87,
+      "ParentOrgName": "PropertyManager Pro",
+      "PaymentData": {
+        "paymentDetails": {
+          "totalAmount": 100
+        }
+      },
+      "PaymentId": "12345678910",
+      "PaymentMethod": "ach",
+      "PaymentStatus": "Processed",
+      "PaypointDbaname": "Sunshine Gutters",
+      "PaypointLegalname": "Sunshine Services, LLC",
+      "Source": "api",
+      "Status": 1,
+      "TotalAmount": 110.25,
+      "Vendor": {
+        "additionalData": {
+          "key1": {
+            "key": "value"
+          },
+          "key2": {
+            "key": "value"
+          },
+          "key3": {
+            "key": "value"
+          }
+        },
+        "CreatedDate": "2022-07-01T15:00:01Z"
+      }
+    }
+  ],
+  "Summary": {
+    "totalPages": 391,
+    "totalRecords": 7803,
+    "totalAmount": 21435.95,
+    "totalNetAmount": 21435.95,
+    "totalPaid": 1,
+    "totalPaidAmount": 4,
+    "totalCanceled": 1743,
+    "totalCanceledAmount": 4515,
+    "totalCaptured": 138,
+    "totalCapturedAmount": 542,
+    "totalAuthorized": 4139,
+    "totalAuthorizedAmount": 11712.35,
+    "totalProcessing": 1780,
+    "totalProcessingAmount": 4660.6,
+    "totalOpen": 2,
+    "totalOpenAmount": 2,
+    "totalOnHold": 0,
+    "totalOnHoldAmount": 0,
+    "pageSize": 20
+  }
+}

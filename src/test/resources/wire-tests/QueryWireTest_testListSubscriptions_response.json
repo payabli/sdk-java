@@ -1,0 +1,132 @@
+{
+  "Records": [
+    {
+      "CreatedAt": "2023-12-14T08:51:10Z",
+      "Customer": {
+        "AdditionalData": null,
+        "BillingAddress1": "68 Golden Drive",
+        "BillingAddress2": "",
+        "BillingCity": "Johnson City",
+        "BillingCountry": "US",
+        "BillingEmail": "company@payabli.com",
+        "BillingPhone": "",
+        "BillingState": "TN",
+        "BillingZip": "37612",
+        "CompanyName": "Sunshine LLC",
+        "customerId": 1323,
+        "CustomerNumber": "1234",
+        "customerStatus": 1,
+        "FirstName": "Lisandra",
+        "Identifiers": [
+          "\\\"firstname\\\"",
+          "\\\"lastname\\\"",
+          "\\\"email\\\""
+        ],
+        "LastName": "Smitch",
+        "ShippingAddress1": "68 Golden Drive",
+        "ShippingCity": "Johnson City",
+        "ShippingCountry": "US",
+        "ShippingState": "TN",
+        "ShippingZip": "37612"
+      },
+      "EndDate": "2026-03-20T00:00:00Z",
+      "EntrypageId": 0,
+      "ExternalPaypointID": "f743aed24a-10",
+      "FeeAmount": 0,
+      "Frequency": "monthly",
+      "IdSub": 580,
+      "InvoiceData": {
+        "AdditionalData": null,
+        "frequency": "onetime",
+        "invoiceAmount": 100,
+        "invoiceNumber": "QA-1702561870",
+        "invoiceStatus": 1,
+        "invoiceType": 1,
+        "items": [
+          {
+            "itemCost": 10,
+            "itemDescription": "service",
+            "itemMode": 1,
+            "itemProductName": "Mat replacement",
+            "itemQty": 5,
+            "itemTotalAmount": 50
+          },
+          {
+            "itemCost": 5,
+            "itemDescription": "service",
+            "itemMode": 1,
+            "itemProductName": "Mat clean",
+            "itemQty": 10,
+            "itemTotalAmount": 50
+          }
+        ]
+      },
+      "LastRun": "2024-01-02T14:32:11Z",
+      "LastUpdated": "2023-12-14T08:51:10Z",
+      "LeftCycles": 20,
+      "Method": "card",
+      "NetAmount": 10,
+      "NextDate": "2024-07-20T00:00:00Z",
+      "ParentOrgName": "FitnessManager",
+      "PaymentData": {
+        "AccountExp": "0924",
+        "AccountType": "unknown",
+        "AccountZip": "90210",
+        "binData": {
+          "binMatchedLength": "6",
+          "binCardBrand": "Visa",
+          "binCardType": "Credit",
+          "binCardCategory": "PLATINUM",
+          "binCardIssuer": "Bank of Example",
+          "binCardIssuerCountry": "United States",
+          "binCardIssuerCountryCodeA2": "US",
+          "binCardIssuerCountryNumber": "840",
+          "binCardIsRegulated": "false",
+          "binCardUseCategory": "Consumer",
+          "binCardIssuerCountryCodeA3": "USA"
+        },
+        "HolderName": "Mr. Michael Abernathy",
+        "Initiator": "payor",
+        "MaskedAccount": "2222 4XXXXXX0010",
+        "paymentDetails": {
+          "currency": "USD",
+          "serviceFee": 0,
+          "totalAmount": 100
+        },
+        "Sequence": "subsequent",
+        "StoredMethodUsageType": "subscription"
+      },
+      "PaypointDbaname": "Athlete Factory LLC",
+      "PaypointEntryname": "473ac58b0",
+      "PaypointId": 10,
+      "PaypointLegalname": "Athlete Factory LLC",
+      "PlanId": 1,
+      "StartDate": "2024-07-20T00:00:00Z",
+      "SubEvents": [
+        {
+          "description": "created",
+          "eventTime": "2023-12-14T13:51:10Z",
+          "refData": "00-3470dfe2658b492811630255602f3fb5-d06fe0f72110000-00"
+        },
+        {
+          "description": "updated",
+          "eventTime": "2023-12-15T10:30:00Z",
+          "refData": "01-1234abcde6789fghij4567klmnopqr89-abcdefghi12345678-01",
+          "source": "web app"
+        }
+      ],
+      "SubStatus": 1,
+      "TotalAmount": 100,
+      "TotalCycles": 20,
+      "UntilCancelled": false
+    }
+  ],
+  "Summary": {
+    "pageIdentifier": "XXXXXXXXXXXXXXXXXXX",
+    "pageSize": 20,
+    "totalAmount": 150.22,
+    "totalNetAmount": 150.22,
+    "totalPages": 1,
+    "totalRecords": 2
+  }
+}

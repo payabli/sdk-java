@@ -1,0 +1,64 @@
+{
+  "addPrice": true,
+  "boardingLinks": [
+    {
+      "acceptOauth": false,
+      "acceptRegister": false,
+      "entryAttributes": "entryAttributes",
+      "id": 91,
+      "lastUpdated": "2022-07-01T15:00:01Z",
+      "orgParentName": "PropertyManager Pro",
+      "referenceName": "payabli-00710",
+      "referenceTemplateId": 1830,
+      "templateCode": "templateCode",
+      "templateName": "SMB"
+    }
+  ],
+  "createdAt": "2022-07-01T15:00:01Z",
+  "idTemplate": 1000000,
+  "isRoot": false,
+  "orgParentName": "PropertyManager Pro",
+  "recipientEmailNotification": true,
+  "resumable": false,
+  "templateCode": "templateCode",
+  "templateContent": {
+    "businessData": {
+      "visible": true
+    },
+    "documentsData": {
+      "minimumDocuments": 1,
+      "subFooter": "subFooter",
+      "subHeader": "subHeader",
+      "uploadDocuments": true,
+      "visible": true
+    },
+    "ownershipData": {
+      "multipleContacts": true,
+      "multipleOwners": true,
+      "subFooter": "subFooter",
+      "subHeader": "subHeader",
+      "visible": true
+    },
+    "processingData": {
+      "subFooter": "subFooter",
+      "subHeader": "subHeader",
+      "visible": true
+    },
+    "salesData": {
+      "salesCode": "salesCode",
+      "salesCRM": "salesCRM"
+    },
+    "servicesData": {
+      "subFooter": "subFooter",
+      "subHeader": "subHeader",
+      "visible": true
+    },
+    "underwritingData": {
+      "method": "automatic",
+      "policyId": "J-itEyD6A7y5S5yYFjxOrb"
+    }
+  },
+  "templateDescription": "templateDescription",
+  "templateTitle": "templateTitle",
+  "usedBy": 1
+}

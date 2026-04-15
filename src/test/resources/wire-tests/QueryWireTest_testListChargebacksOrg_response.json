@@ -1,0 +1,52 @@
+{
+  "Records": [
+    {
+      "AccountType": "4XXXXXX0003",
+      "CaseNumber": "00001",
+      "ChargebackDate": "2023-02-08T00:00:00Z",
+      "CreatedAt": "2022-07-01T15:00:01Z",
+      "externalPaypointID": "Paypoint-100",
+      "Id": 578,
+      "LastFour": "4XXXXXX0003",
+      "Method": "card",
+      "NetAmount": 1.5,
+      "OrderId": "O-5140",
+      "pageidentifier": "null",
+      "ParentOrgName": "PropertyManager Pro",
+      "PaymentData": {
+        "paymentDetails": {
+          "totalAmount": 100
+        }
+      },
+      "PaymentTransId": "10-bfcd5a17861d4a8690ca53c142ca3810",
+      "PaypointDbaname": "Sunshine Gutters",
+      "PaypointEntryname": "d193cf9a46",
+      "PaypointLegalname": "Sunshine Services, LLC",
+      "Reason": "Testing",
+      "ReasonCode": "00001",
+      "ReferenceNumber": "10-bfcd5a17861d4a8690ca53c142ca3810",
+      "ReplyBy": "2022-07-11T15:00:01Z",
+      "Responses": "Responses",
+      "ScheduleReference": 0,
+      "Status": 3,
+      "Transaction": {
+        "EntrypageId": 0,
+        "FeeAmount": 1,
+        "PayorId": 1551,
+        "PaypointId": 226,
+        "SettlementStatus": 2,
+        "TotalAmount": 30.22,
+        "TransStatus": 1
+      },
+      "TransactionTime": "2024-01-15T09:30:00Z"
+    }
+  ],
+  "Summary": {
+    "pageIdentifier": "null",
+    "pageSize": 20,
+    "totalAmount": 77.22,
+    "totalNetAmount": 77.22,
+    "totalPages": 2,
+    "totalRecords": 2
+  }
+}

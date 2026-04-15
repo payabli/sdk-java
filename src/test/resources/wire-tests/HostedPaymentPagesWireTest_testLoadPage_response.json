@@ -1,0 +1,188 @@
+{
+  "AdditionalData": {
+    "key1": {
+      "key": "value"
+    },
+    "key2": {
+      "key": "value"
+    },
+    "key3": {
+      "key": "value"
+    }
+  },
+  "credentials": [
+    {
+      "accountId": "accountId",
+      "cfeeFix": 1.1,
+      "cfeeFloat": 1.1,
+      "cfeeMax": 1.1,
+      "cfeeMin": 1.1,
+      "maxticket": 1.1,
+      "minticket": 1.1,
+      "mode": 1,
+      "referenceId": 1000000,
+      "service": "service"
+    }
+  ],
+  "lastAccess": "2022-06-30T15:01:00Z",
+  "pageContent": {
+    "amount": {
+      "categories": [
+        {}
+      ],
+      "enabled": true,
+      "order": 1
+    },
+    "autopay": {
+      "enabled": true,
+      "frequencySelected": "frequencySelected",
+      "header": "header",
+      "order": 1,
+      "startDate": "1, 5-10"
+    },
+    "contactUs": {
+      "emailLabel": "emailLabel",
+      "enabled": true,
+      "header": "header",
+      "order": 1,
+      "paymentIcons": true,
+      "phoneLabel": "phoneLabel"
+    },
+    "entry": "entry",
+    "invoices": {
+      "enabled": true,
+      "invoiceLink": {
+        "enabled": true
+      },
+      "order": 1,
+      "viewInvoiceDetails": {
+        "enabled": true
+      }
+    },
+    "logo": {
+      "enabled": true,
+      "order": 1
+    },
+    "messageBeforePaying": {
+      "enabled": true,
+      "label": "label",
+      "order": 1
+    },
+    "name": "name",
+    "notes": {
+      "enabled": true,
+      "header": "header",
+      "order": 1,
+      "placeholder": "placeholder",
+      "value": "value"
+    },
+    "page": {
+      "description": "description",
+      "enabled": true,
+      "header": "header",
+      "order": 1
+    },
+    "paymentButton": {
+      "enabled": true,
+      "label": "label",
+      "order": 1
+    },
+    "paymentMethods": {
+      "allMethodsChecked": true,
+      "enabled": true,
+      "header": "header",
+      "methods": {
+        "amex": true,
+        "applePay": true,
+        "discover": false,
+        "eCheck": false,
+        "mastercard": true,
+        "visa": true
+      },
+      "order": 1
+    },
+    "payor": {
+      "enabled": true,
+      "fields": [
+        {}
+      ],
+      "header": "header",
+      "order": 1
+    },
+    "review": {
+      "enabled": true,
+      "header": "header",
+      "order": 1
+    },
+    "subdomain": "mypage-1"
+  },
+  "pageIdentifier": "null",
+  "pageSettings": {
+    "color": "color",
+    "customCssUrl": "customCssUrl",
+    "language": "language",
+    "pageLogo": {
+      "fContent": "TXkgdGVzdCBmaWxlHJ==...",
+      "filename": "my-doc.pdf",
+      "ftype": "pdf",
+      "furl": "https://mysite.com/my-doc.pdf"
+    },
+    "paymentButton": {
+      "label": "label",
+      "size": "sm"
+    },
+    "redirectAfterApprove": true,
+    "redirectAfterApproveUrl": "redirectAfterApproveUrl"
+  },
+  "published": 1,
+  "receiptContent": {
+    "amount": {
+      "enabled": true,
+      "order": 1
+    },
+    "contactUs": {
+      "enabled": true,
+      "order": 1
+    },
+    "details": {
+      "enabled": true,
+      "order": 1
+    },
+    "logo": {
+      "enabled": true,
+      "order": 1
+    },
+    "messageBeforeButton": {
+      "enabled": true,
+      "label": "label",
+      "order": 1
+    },
+    "page": {
+      "description": "description",
+      "enabled": true,
+      "header": "header",
+      "order": 1
+    },
+    "paymentButton": {
+      "enabled": true,
+      "label": "label",
+      "order": 1
+    },
+    "paymentInformation": {
+      "enabled": true,
+      "order": 1
+    },
+    "settings": {
+      "enabled": true,
+      "fields": [
+        {}
+      ],
+      "order": 1,
+      "sendAuto": true,
+      "sendManual": true
+    }
+  },
+  "subdomain": "mypage-1",
+  "totalAmount": 1.1,
+  "validationCode": "validationCode"
+}

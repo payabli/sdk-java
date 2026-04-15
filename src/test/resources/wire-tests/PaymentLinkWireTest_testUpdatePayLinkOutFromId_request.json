@@ -1,0 +1,60 @@
+{
+  "contactUs": {
+    "emailLabel": "Email",
+    "enabled": true,
+    "header": "Contact Us",
+    "order": 0,
+    "paymentIcons": true,
+    "phoneLabel": "Phone"
+  },
+  "logo": {
+    "enabled": true,
+    "order": 0
+  },
+  "messageBeforePaying": {
+    "enabled": true,
+    "label": "Please review your payment details",
+    "order": 0
+  },
+  "notes": {
+    "enabled": true,
+    "header": "Additional Notes",
+    "order": 0,
+    "placeholder": "Enter any additional notes here",
+    "value": ""
+  },
+  "page": {
+    "description": "Get paid securely",
+    "enabled": true,
+    "header": "Payment Page",
+    "order": 0
+  },
+  "paymentButton": {
+    "enabled": true,
+    "label": "Pay Now",
+    "order": 0
+  },
+  "paymentMethods": {
+    "allMethodsChecked": true,
+    "allowMultipleMethods": true,
+    "defaultMethod": "vcard",
+    "enabled": true,
+    "header": "Payment Methods",
+    "methods": {
+      "ach": true,
+      "check": true,
+      "vcard": true
+    },
+    "order": 0,
+    "showPreviewVirtualCard": true
+  },
+  "review": {
+    "enabled": true,
+    "header": "Review Payment",
+    "order": 0
+  },
+  "settings": {
+    "color": "#000000",
+    "language": "en"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "Records": [
+    {
+      "Id": 25048,
+      "Method": "ach",
+      "WalletType": null,
+      "SettledAmount": 0.5,
+      "Type": "credit",
+      "BatchNumber": "batch-100-20-2024",
+      "BatchAmount": 32,
+      "PaymentTransId": "245-9e4072eef77e45979ea0e49f680000X",
+      "PaymentTransStatus": 1,
+      "ScheduleReference": 0,
+      "GatewayTransId": "TRN_XXXXX",
+      "OrderId": "",
+      "TransMethod": "ach",
+      "PaymentData": {
+        "AccountType": "Checking",
+        "HolderName": "Lydia Marshall",
+        "MaskedAccount": "1XXXXXX5678",
+        "paymentDetails": {
+          "categories": [
+            {
+              "amount": 1000,
+              "label": "Deposit"
+            }
+          ],
+          "currency": "USD",
+          "serviceFee": 0,
+          "splitFunding": [
+            {}
+          ],
+          "totalAmount": 2
+        }
+      },
+      "NetAmount": 2,
+      "Operation": "Sale",
+      "Category": "auth",
+      "Source": "api",
+      "Status": 1,
+      "TransactionTime": "2024-11-19T15:58:01Z",
+      "Customer": {
+        "AdditionalData": null,
+        "BillingAddress1": "100 Golden Ridge Drive",
+        "BillingAddress2": "STE 100",
+        "BillingCity": "Mendota",
+        "BillingCountry": "US",
+        "BillingEmail": "lydia@example.com",
+        "BillingPhone": "+12345678",
+        "BillingState": "VA",
+        "BillingZip": "20147",
+        "customerId": 2707,
+        "CustomerNumber": "901102",
+        "customerStatus": 1,
+        "FirstName": "Lydia",
+        "LastName": "Marshall"
+      },
+      "SettlementDate": "2024-11-20T00:00:00Z",
+      "PaymentSettlementStatus": 1,
+      "BatchStatus": 1,
+      "DepositDate": "2024-11-22T00:00:00Z",
+      "ExpectedDepositDate": "2024-11-22T00:00:00Z",
+      "MaskedAccount": "1XXXXXX5678",
+      "CreatedAt": "2024-11-19T15:58:01Z",
+      "PaypointLegalname": "Gruzya Adventure Outfitters, LLC",
+      "ResponseData": {
+        "authcode": " ",
+        "avsresponse": " ",
+        "avsresponse_text": "",
+        "cvvresponse": " ",
+        "cvvresponse_text": " ",
+        "emv_auth_response_data": " ",
+        "orderid": null,
+        "response": "Success",
+        "response_code": "100",
+        "response_code_text": "Transaction was approved.",
+        "responsetext": "CAPTURED",
+        "resultCode": "A0000",
+        "resultCodeText": "Approved",
+        "transactionid": "TRN_xwCAjQorWAYX1nAhAoHZVfN8iYHbI0"
+      },
+      "PaypointDbaname": "Gruzya Adventure Outfitters, LLC",
+      "ParentOrgName": "Pilgrim Planner",
+      "ParentOrgId": 123,
+      "PaypointEntryname": "7f1a3816XX",
+      "DeviceId": "",
+      "RetrievalId": 0,
+      "ChargebackId": 0,
+      "AchHolderType": "personal",
+      "AchSecCode": "PPD",
+      "ConnectorName": "DefaultConnector",
+      "EntrypageId": 0,
+      "FeeAmount": 0,
+      "OrgId": 123,
+      "PayorId": 2707,
+      "PaypointId": 123,
+      "PendingFeeAmount": 0,
+      "RefundId": 0,
+      "ReturnedId": 0,
+      "splitFundingInstructions": [],
+      "TotalAmount": 2,
+      "CfeeTransactions": [],
+      "invoiceData": null,
+      "TransactionEvents": [
+        {
+          "EventTime": "2024-11-19T15:57:40Z",
+          "TransEvent": "Created"
+        },
+        {
+          "EventData": {
+            "account_id": "TRA_XXXXX",
+            "account_name": "123456",
+            "action": {
+              "app_id": "XXXXX",
+              "app_name": "PayAbli",
+              "id": "ACT_XXXXX",
+              "result_code": "SUCCESS",
+              "time_created": "2024-11-19T20:58:01.583Z",
+              "type": "AUTHORIZE"
+            },
+            "amount": "200",
+            "batch_id": "",
+            "capture_mode": "AUTO",
+            "channel": "CNP",
+            "country": "US",
+            "currency": "USD",
+            "fees": {
+              "amount": "0",
+              "rate": "0.00",
+              "total_amount": "0"
+            },
+            "id": "TRN_XXXXX",
+            "merchant_amount": "200",
+            "merchant_id": "MER_XXXXX",
+            "merchant_name": "Henriette97",
+            "order": {
+              "reference": ""
+            },
+            "payment_method": {
+              "bank_transfer": {
+                "account_type": "CHECKING",
+                "bank": {
+                  "name": ""
+                },
+                "masked_account_number_last4": "XXXX5678"
+              },
+              "entry_mode": "ECOM",
+              "message": "Success",
+              "narrative": "Lydia Marshall",
+              "result": "00"
+            },
+            "reference": "245-XXXXX",
+            "status": "CAPTURED",
+            "time_created": "2024-11-19T20:58:01.583Z",
+            "type": "SALE"
+          },
+          "EventTime": "2024-11-19T20:58:01Z",
+          "TransEvent": "Approved"
+        },
+        {
+          "EventTime": "2024-11-20T03:05:10Z",
+          "TransEvent": "ClosedBatch"
+        }
+      ],
+      "externalPaypointID": "ext-paypoint-123",
+      "isHold": 0
+    }
+  ],
+  "Summary": {
+    "serviceFees": 852.48,
+    "transferAmount": 0,
+    "refunds": -3521.85,
+    "heldAmount": 3.7,
+    "totalRecords": 21872,
+    "totalAmount": 61645.74,
+    "totalNetAmount": 61645.74,
+    "totalPages": 21872,
+    "pageSize": 0,
+    "pageidentifier": null
+  }
+}

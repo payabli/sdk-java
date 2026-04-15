@@ -1,0 +1,289 @@
+{
+  "Id": 201,
+  "ChargebackDate": "2022-06-25T00:00:00Z",
+  "CaseNumber": "TZ45678",
+  "ReasonCode": "reasonCode",
+  "Reason": "Buyer dispute",
+  "ReferenceNumber": "referenceNumber",
+  "LastFour": "6789",
+  "AccountType": "visa",
+  "Status": 1,
+  "Method": "card",
+  "CreatedAt": "2022-07-01T15:00:01Z",
+  "ReplyBy": "2022-07-15T23:59:59Z",
+  "PaymentTransId": "226-fe55ec0348e34702bd91b4be198ce7ec",
+  "ScheduleReference": 0,
+  "OrderId": "O-5140",
+  "NetAmount": 3762.87,
+  "TransactionTime": "2024-01-15T09:30:00Z",
+  "Customer": {
+    "AdditionalData": null,
+    "BillingAddress1": "1111 West 1st Street",
+    "BillingAddress2": "Suite 200",
+    "BillingCity": "Miami",
+    "BillingCountry": "US",
+    "BillingEmail": "example@email.com",
+    "BillingPhone": "5555555555",
+    "BillingState": "FL",
+    "BillingZip": "45567",
+    "CompanyName": "Sunshine LLC",
+    "customerId": 4440,
+    "CustomerNumber": "3456-7645A",
+    "customerStatus": 1,
+    "FirstName": "John",
+    "Identifiers": [
+      "firstname",
+      "lastname",
+      "email",
+      "customId"
+    ],
+    "LastName": "Doe",
+    "ShippingAddress1": "123 Walnut St",
+    "ShippingAddress2": "STE 900",
+    "ShippingCity": "Johnson City",
+    "ShippingCountry": "US",
+    "ShippingState": "TN",
+    "ShippingZip": "37619"
+  },
+  "PaymentData": {
+    "AccountExp": "11/29",
+    "accountId": "accountId",
+    "AccountType": "visa",
+    "AccountZip": "90210",
+    "binData": {
+      "binMatchedLength": "6",
+      "binCardBrand": "Visa",
+      "binCardType": "Credit",
+      "binCardCategory": "PLATINUM",
+      "binCardIssuer": "Bank of Example",
+      "binCardIssuerCountry": "United States",
+      "binCardIssuerCountryCodeA2": "US",
+      "binCardIssuerCountryNumber": "840",
+      "binCardIsRegulated": "false",
+      "binCardUseCategory": "Consumer",
+      "binCardIssuerCountryCodeA3": "USA"
+    },
+    "HolderName": "Chad Mercia",
+    "Initiator": "payor",
+    "MaskedAccount": "4XXXXXXXX1111",
+    "orderDescription": "Depost for materials for 123 Walnut St",
+    "paymentDetails": {
+      "categories": [
+        {
+          "amount": 1000,
+          "label": "Deposit"
+        }
+      ],
+      "checkImage": {
+        "key": "value"
+      },
+      "checkNumber": "107",
+      "currency": "USD",
+      "serviceFee": 0,
+      "splitFunding": [
+        {}
+      ],
+      "totalAmount": 100
+    },
+    "Sequence": "subsequent",
+    "SignatureData": "SignatureData",
+    "StoredId": "1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440",
+    "StoredMethodUsageType": "subscription"
+  },
+  "PaypointLegalname": "Sunshine Services, LLC",
+  "PaypointDbaname": "Sunshine Gutters",
+  "ParentOrgName": "PropertyManager Pro",
+  "ParentOrgId": 123,
+  "PaypointEntryname": "d193cf9a46",
+  "Responses": [
+    {
+      "contactEmail": "example@email.com",
+      "contactName": "John Doe",
+      "createdAt": "2022-07-01T15:00:01Z",
+      "id": 672,
+      "notes": "any note here"
+    }
+  ],
+  "Transaction": {
+    "AchHolderType": "personal",
+    "AchSecCode": "AchSecCode",
+    "BatchAmount": 30.22,
+    "BatchNumber": "batch_226_ach_12-30-2023",
+    "CfeeTransactions": [
+      {
+        "transactionTime": "2024-01-15T09:30:00Z"
+      }
+    ],
+    "ConnectorName": "gp",
+    "Customer": {
+      "AdditionalData": null,
+      "BillingAddress1": "1111 West 1st Street",
+      "BillingAddress2": "Suite 200",
+      "BillingCity": "Miami",
+      "BillingCountry": "US",
+      "BillingEmail": "example@email.com",
+      "BillingPhone": "5555555555",
+      "BillingState": "FL",
+      "BillingZip": "45567",
+      "CompanyName": "Sunshine LLC",
+      "customerId": 4440,
+      "CustomerNumber": "3456-7645A",
+      "customerStatus": 1,
+      "FirstName": "John",
+      "Identifiers": [
+        "firstname",
+        "lastname",
+        "email",
+        "customId"
+      ],
+      "LastName": "Doe",
+      "ShippingAddress1": "123 Walnut St",
+      "ShippingAddress2": "STE 900",
+      "ShippingCity": "Johnson City",
+      "ShippingCountry": "US",
+      "ShippingState": "TN",
+      "ShippingZip": "37619"
+    },
+    "DeviceId": "6c361c7d-674c-44cc-b790-382b75d1xxx",
+    "EntrypageId": 0,
+    "ExternalProcessorInformation": "[MER_xxxxxxxxxxxxxx]/[NNNNNNNNN]",
+    "FeeAmount": 1,
+    "GatewayTransId": "TRN_xwCAjQorWAYX1nAhAoHZVfN8iYHbI0",
+    "InvoiceData": {
+      "AdditionalData": null,
+      "attachments": [
+        {}
+      ],
+      "company": "ACME, INC",
+      "discount": 10,
+      "dutyAmount": 0,
+      "firstName": "Chad",
+      "freightAmount": 10,
+      "frequency": "onetime",
+      "invoiceAmount": 105,
+      "invoiceDate": "2025-07-01",
+      "invoiceDueDate": "2025-07-01",
+      "invoiceEndDate": "2025-07-01",
+      "invoiceNumber": "INV-2345",
+      "invoiceStatus": 1,
+      "invoiceType": 0,
+      "items": [
+        {
+          "itemCost": 5,
+          "itemProductName": "Materials deposit",
+          "itemQty": 1
+        }
+      ],
+      "lastName": "Mercia",
+      "notes": "Example notes.",
+      "paymentTerms": "PIA",
+      "purchaseOrder": "PO-345",
+      "shippingAddress1": "123 Walnut St",
+      "shippingAddress2": "STE 900",
+      "shippingCity": "Johnson City",
+      "shippingCountry": "US",
+      "shippingEmail": "example@email.com",
+      "shippingFromZip": "30040",
+      "shippingPhone": "5555555555",
+      "shippingState": "TN",
+      "shippingZip": "37619",
+      "summaryCommodityCode": "501718",
+      "tax": 2.05,
+      "termsConditions": "Must be paid before work scheduled."
+    },
+    "Method": "ach",
+    "NetAmount": 3762.87,
+    "Operation": "Sale",
+    "OrderId": "O-5140",
+    "OrgId": 123,
+    "ParentOrgName": "PropertyManager Pro",
+    "PaymentData": {
+      "AccountExp": "11/29",
+      "accountId": "accountId",
+      "AccountType": "visa",
+      "AccountZip": "90210",
+      "binData": {
+        "binMatchedLength": "6",
+        "binCardBrand": "Visa",
+        "binCardType": "Credit",
+        "binCardCategory": "PLATINUM",
+        "binCardIssuer": "Bank of Example",
+        "binCardIssuerCountry": "United States",
+        "binCardIssuerCountryCodeA2": "US",
+        "binCardIssuerCountryNumber": "840",
+        "binCardIsRegulated": "false",
+        "binCardUseCategory": "Consumer",
+        "binCardIssuerCountryCodeA3": "USA"
+      },
+      "HolderName": "Chad Mercia",
+      "Initiator": "payor",
+      "MaskedAccount": "4XXXXXXXX1111",
+      "orderDescription": "Depost for materials for 123 Walnut St",
+      "paymentDetails": {
+        "totalAmount": 100
+      },
+      "Sequence": "subsequent",
+      "SignatureData": "SignatureData",
+      "StoredId": "1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440",
+      "StoredMethodUsageType": "subscription"
+    },
+    "PaymentTransId": "226-fe55ec0348e34702bd91b4be198ce7ec",
+    "PayorId": 1551,
+    "PaypointDbaname": "Sunshine Gutters",
+    "PaypointEntryname": "d193cf9a46",
+    "PaypointId": 226,
+    "PaypointLegalname": "Sunshine Services, LLC",
+    "PendingFeeAmount": 2,
+    "RefundId": 0,
+    "ResponseData": {
+      "authcode": "authcode",
+      "avsresponse": "avsresponse",
+      "avsresponse_text": "avsresponse_text",
+      "cvvresponse": "cvvresponse",
+      "cvvresponse_text": "cvvresponse_text",
+      "emv_auth_response_data": "emv_auth_response_data",
+      "orderid": "O-5140",
+      "response": "response",
+      "response_code": "XXX",
+      "response_code_text": "Transaction was approved.",
+      "responsetext": "CAPTURED",
+      "transactionid": "TRN_XXXXXGOa87juzW",
+      "type": "type"
+    },
+    "ReturnedId": 0,
+    "ScheduleReference": 0,
+    "SettlementStatus": 2,
+    "Source": "api",
+    "splitFundingInstructions": [
+      {}
+    ],
+    "TotalAmount": 30.22,
+    "TransactionEvents": [
+      {}
+    ],
+    "TransactionTime": "2025-10-19T00:00:00Z",
+    "TransAdditionalData": {
+      "key": "value"
+    },
+    "TransStatus": 1
+  },
+  "externalPaypointID": null,
+  "pageidentifier": null,
+  "messages": [
+    {
+      "Id": 1,
+      "RoomId": 100,
+      "UserId": 555,
+      "UserName": "John Admin",
+      "Content": "Chargeback initiated by customer",
+      "CreatedAt": "2022-06-25T10:30:00Z",
+      "MessageType": 1,
+      "MessageProperties": {
+        "status": "initial"
+      }
+    }
+  ],
+  "ServiceGroup": " ",
+  "DisputeType": "chargeback",
+  "ProcessorName": "Global Payments"
+}
