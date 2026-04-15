@@ -81,7 +81,7 @@ public final class RequestCredit {
         return idempotencyKey;
     }
 
-    @JsonProperty("forceCustomerCreation")
+    @JsonIgnore
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }

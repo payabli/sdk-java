@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.statistic.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -49,7 +49,7 @@ public final class BasicStatsRequest {
      * <li>mm/dd/YYYY</li>
      * </ul>
      */
-    @JsonProperty("endDate")
+    @JsonIgnore
     public Optional<String> getEndDate() {
         return endDate;
     }
@@ -57,7 +57,7 @@ public final class BasicStatsRequest {
     /**
      * @return List of parameters.
      */
-    @JsonProperty("parameters")
+    @JsonIgnore
     public Optional<Map<String, Optional<String>>> getParameters() {
         return parameters;
     }
@@ -72,7 +72,7 @@ public final class BasicStatsRequest {
      * <li>mm/dd/YYYY</li>
      * </ul>
      */
-    @JsonProperty("startDate")
+    @JsonIgnore
     public Optional<String> getStartDate() {
         return startDate;
     }

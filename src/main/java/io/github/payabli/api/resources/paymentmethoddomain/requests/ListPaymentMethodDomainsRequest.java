@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.paymentmethoddomain.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -49,7 +49,7 @@ public final class ListPaymentMethodDomainsRequest {
      * <li>For organization, provide the organization ID - For paypoint, provide the paypoint ID</li>
      * </ul>
      */
-    @JsonProperty("entityId")
+    @JsonIgnore
     public Optional<Long> getEntityId() {
         return entityId;
     }
@@ -62,7 +62,7 @@ public final class ListPaymentMethodDomainsRequest {
      * <li>psp</li>
      * </ul>
      */
-    @JsonProperty("entityType")
+    @JsonIgnore
     public Optional<String> getEntityType() {
         return entityType;
     }
@@ -70,7 +70,7 @@ public final class ListPaymentMethodDomainsRequest {
     /**
      * @return Number of records to skip. Defaults to <code>0</code>.
      */
-    @JsonProperty("fromRecord")
+    @JsonIgnore
     public Optional<Integer> getFromRecord() {
         return fromRecord;
     }
@@ -78,7 +78,7 @@ public final class ListPaymentMethodDomainsRequest {
     /**
      * @return Max number of records for query response. Defaults to <code>20</code>.
      */
-    @JsonProperty("limitRecord")
+    @JsonIgnore
     public Optional<Integer> getLimitRecord() {
         return limitRecord;
     }

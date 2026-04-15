@@ -54,7 +54,7 @@ public final class PayLinkDataInvoice {
     /**
      * @return Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.
      */
-    @JsonProperty("amountFixed")
+    @JsonIgnore
     public Optional<Boolean> getAmountFixed() {
         return amountFixed;
     }
@@ -62,7 +62,7 @@ public final class PayLinkDataInvoice {
     /**
      * @return List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
      */
-    @JsonProperty("mail2")
+    @JsonIgnore
     public Optional<String> getMail2() {
         return mail2;
     }

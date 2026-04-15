@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.paymentlink.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -36,7 +36,7 @@ public final class SendPayLinkFromIdRequest {
     /**
      * @return When <code>true</code>, attaches a PDF version of invoice to the email.
      */
-    @JsonProperty("attachfile")
+    @JsonIgnore
     public Optional<Boolean> getAttachfile() {
         return attachfile;
     }
@@ -44,7 +44,7 @@ public final class SendPayLinkFromIdRequest {
     /**
      * @return List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
      */
-    @JsonProperty("mail2")
+    @JsonIgnore
     public Optional<String> getMail2() {
         return mail2;
     }

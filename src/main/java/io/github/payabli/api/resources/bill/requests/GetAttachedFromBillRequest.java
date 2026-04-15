@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.bill.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -32,7 +32,7 @@ public final class GetAttachedFromBillRequest {
     /**
      * @return When <code>true</code>, the request returns the file content as a Base64-encoded string.
      */
-    @JsonProperty("returnObject")
+    @JsonIgnore
     public Optional<Boolean> getReturnObject() {
         return returnObject;
     }

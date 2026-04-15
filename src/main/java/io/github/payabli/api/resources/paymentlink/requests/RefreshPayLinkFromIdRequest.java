@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.paymentlink.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -32,7 +32,7 @@ public final class RefreshPayLinkFromIdRequest {
     /**
      * @return Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.
      */
-    @JsonProperty("amountFixed")
+    @JsonIgnore
     public Optional<Boolean> getAmountFixed() {
         return amountFixed;
     }

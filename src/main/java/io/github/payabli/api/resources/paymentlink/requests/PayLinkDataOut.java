@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.paymentlink.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,7 +50,7 @@ public final class PayLinkDataOut {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("entryPoint")
+    @JsonIgnore
     public String getEntryPoint() {
         return entryPoint;
     }
@@ -57,7 +58,7 @@ public final class PayLinkDataOut {
     /**
      * @return The vendor number for the vendor being paid with this payment link.
      */
-    @JsonProperty("vendorNumber")
+    @JsonIgnore
     public String getVendorNumber() {
         return vendorNumber;
     }
@@ -65,7 +66,7 @@ public final class PayLinkDataOut {
     /**
      * @return List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
      */
-    @JsonProperty("mail2")
+    @JsonIgnore
     public Optional<String> getMail2() {
         return mail2;
     }
@@ -73,7 +74,7 @@ public final class PayLinkDataOut {
     /**
      * @return Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.
      */
-    @JsonProperty("amountFixed")
+    @JsonIgnore
     public Optional<String> getAmountFixed() {
         return amountFixed;
     }

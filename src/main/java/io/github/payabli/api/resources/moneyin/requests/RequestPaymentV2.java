@@ -63,12 +63,12 @@ public final class RequestPaymentV2 {
         return validationCode;
     }
 
-    @JsonProperty("achValidation")
+    @JsonIgnore
     public Optional<Boolean> getAchValidation() {
         return achValidation;
     }
 
-    @JsonProperty("forceCustomerCreation")
+    @JsonIgnore
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }

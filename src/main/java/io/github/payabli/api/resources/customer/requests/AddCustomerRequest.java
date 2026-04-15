@@ -54,7 +54,7 @@ public final class AddCustomerRequest {
     /**
      * @return When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.
      */
-    @JsonProperty("forceCustomerCreation")
+    @JsonIgnore
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }
@@ -62,7 +62,7 @@ public final class AddCustomerRequest {
     /**
      * @return Flag indicating to replace existing customer with a new record. Possible values: 0 (don't replace), 1 (replace). Default is <code>0</code>.
      */
-    @JsonProperty("replaceExisting")
+    @JsonIgnore
     public Optional<Integer> getReplaceExisting() {
         return replaceExisting;
     }

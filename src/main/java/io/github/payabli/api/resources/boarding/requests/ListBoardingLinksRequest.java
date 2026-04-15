@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.boarding.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -46,7 +46,7 @@ public final class ListBoardingLinksRequest {
     /**
      * @return The number of records to skip before starting to collect the result set.
      */
-    @JsonProperty("fromRecord")
+    @JsonIgnore
     public Optional<Integer> getFromRecord() {
         return fromRecord;
     }
@@ -54,7 +54,7 @@ public final class ListBoardingLinksRequest {
     /**
      * @return Max number of records to return for the query. Use <code>0</code> or negative value to return all records.
      */
-    @JsonProperty("limitRecord")
+    @JsonIgnore
     public Optional<Integer> getLimitRecord() {
         return limitRecord;
     }
@@ -93,7 +93,7 @@ public final class ListBoardingLinksRequest {
      * </ul>
      * <p>Example: templateName(ct)=hoa return all records with template title containing &quot;hoa&quot;</p>
      */
-    @JsonProperty("parameters")
+    @JsonIgnore
     public Optional<Map<String, Optional<String>>> getParameters() {
         return parameters;
     }
@@ -101,7 +101,7 @@ public final class ListBoardingLinksRequest {
     /**
      * @return The field name to use for sorting results. Use <code>desc(field_name)</code> to sort descending by <code>field_name</code>, and use <code>asc(field_name)</code> to sort ascending by <code>field_name</code>.
      */
-    @JsonProperty("sortBy")
+    @JsonIgnore
     public Optional<String> getSortBy() {
         return sortBy;
     }

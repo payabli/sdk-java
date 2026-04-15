@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.boarding.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -32,7 +32,7 @@ public final class GetExternalApplicationRequest {
     /**
      * @return If <code>true</code>, sends an email that includes the link to the application to the <code>mail2</code> address. Defaults to <code>false</code>.
      */
-    @JsonProperty("sendEmail")
+    @JsonIgnore
     public Optional<Boolean> getSendEmail() {
         return sendEmail;
     }

@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.moneyin.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -33,7 +33,7 @@ public final class SendReceipt2TransRequest {
      * @return Email address where the payment receipt should be sent.
      * <p>If not provided, the email address on file for the user owner of the transaction is used.</p>
      */
-    @JsonProperty("email")
+    @JsonIgnore
     public Optional<String> getEmail() {
         return email;
     }

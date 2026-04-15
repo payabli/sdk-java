@@ -49,7 +49,7 @@ public final class ReissueOutRequest {
     /**
      * @return The transaction ID of the payout to reissue.
      */
-    @JsonProperty("transId")
+    @JsonIgnore
     public String getTransId() {
         return transId;
     }
