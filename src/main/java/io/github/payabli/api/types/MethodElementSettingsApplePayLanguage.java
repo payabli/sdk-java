@@ -7,32 +7,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class MethodElementSettingsApplePayLanguage {
-    public static final MethodElementSettingsApplePayLanguage VI_VN =
-            new MethodElementSettingsApplePayLanguage(Value.VI_VN, "vi-VN");
+    public static final MethodElementSettingsApplePayLanguage ID_ID =
+            new MethodElementSettingsApplePayLanguage(Value.ID_ID, "id-ID");
 
     public static final MethodElementSettingsApplePayLanguage CA_ES =
             new MethodElementSettingsApplePayLanguage(Value.CA_ES, "ca-ES");
 
-    public static final MethodElementSettingsApplePayLanguage RU_RU =
-            new MethodElementSettingsApplePayLanguage(Value.RU_RU, "ru-RU");
+    public static final MethodElementSettingsApplePayLanguage JA_JP =
+            new MethodElementSettingsApplePayLanguage(Value.JA_JP, "ja-JP");
 
     public static final MethodElementSettingsApplePayLanguage ES_MX =
             new MethodElementSettingsApplePayLanguage(Value.ES_MX, "es-MX");
 
-    public static final MethodElementSettingsApplePayLanguage MS_MY =
-            new MethodElementSettingsApplePayLanguage(Value.MS_MY, "ms-MY");
-
     public static final MethodElementSettingsApplePayLanguage EN_AU =
             new MethodElementSettingsApplePayLanguage(Value.EN_AU, "en-AU");
 
-    public static final MethodElementSettingsApplePayLanguage ID_ID =
-            new MethodElementSettingsApplePayLanguage(Value.ID_ID, "id-ID");
+    public static final MethodElementSettingsApplePayLanguage MS_MY =
+            new MethodElementSettingsApplePayLanguage(Value.MS_MY, "ms-MY");
 
-    public static final MethodElementSettingsApplePayLanguage HI_IN =
-            new MethodElementSettingsApplePayLanguage(Value.HI_IN, "hi-IN");
+    public static final MethodElementSettingsApplePayLanguage RU_RU =
+            new MethodElementSettingsApplePayLanguage(Value.RU_RU, "ru-RU");
 
-    public static final MethodElementSettingsApplePayLanguage TH_TH =
-            new MethodElementSettingsApplePayLanguage(Value.TH_TH, "th-TH");
+    public static final MethodElementSettingsApplePayLanguage EL_GR =
+            new MethodElementSettingsApplePayLanguage(Value.EL_GR, "el-GR");
+
+    public static final MethodElementSettingsApplePayLanguage VI_VN =
+            new MethodElementSettingsApplePayLanguage(Value.VI_VN, "vi-VN");
 
     public static final MethodElementSettingsApplePayLanguage SK_SK =
             new MethodElementSettingsApplePayLanguage(Value.SK_SK, "sk-SK");
@@ -40,29 +40,32 @@ public final class MethodElementSettingsApplePayLanguage {
     public static final MethodElementSettingsApplePayLanguage ES_ES =
             new MethodElementSettingsApplePayLanguage(Value.ES_ES, "es-ES");
 
+    public static final MethodElementSettingsApplePayLanguage TH_TH =
+            new MethodElementSettingsApplePayLanguage(Value.TH_TH, "th-TH");
+
     public static final MethodElementSettingsApplePayLanguage UK_UA =
             new MethodElementSettingsApplePayLanguage(Value.UK_UA, "uk-UA");
 
-    public static final MethodElementSettingsApplePayLanguage HU_HU =
-            new MethodElementSettingsApplePayLanguage(Value.HU_HU, "hu-HU");
-
-    public static final MethodElementSettingsApplePayLanguage PT_PT =
-            new MethodElementSettingsApplePayLanguage(Value.PT_PT, "pt-PT");
-
-    public static final MethodElementSettingsApplePayLanguage RO_RO =
-            new MethodElementSettingsApplePayLanguage(Value.RO_RO, "ro-RO");
-
-    public static final MethodElementSettingsApplePayLanguage EN_US =
-            new MethodElementSettingsApplePayLanguage(Value.EN_US, "en-US");
-
-    public static final MethodElementSettingsApplePayLanguage CS_CZ =
-            new MethodElementSettingsApplePayLanguage(Value.CS_CZ, "cs-CZ");
+    public static final MethodElementSettingsApplePayLanguage HI_IN =
+            new MethodElementSettingsApplePayLanguage(Value.HI_IN, "hi-IN");
 
     public static final MethodElementSettingsApplePayLanguage DA_DK =
             new MethodElementSettingsApplePayLanguage(Value.DA_DK, "da-DK");
 
-    public static final MethodElementSettingsApplePayLanguage AR_AB =
-            new MethodElementSettingsApplePayLanguage(Value.AR_AB, "ar-AB");
+    public static final MethodElementSettingsApplePayLanguage PT_PT =
+            new MethodElementSettingsApplePayLanguage(Value.PT_PT, "pt-PT");
+
+    public static final MethodElementSettingsApplePayLanguage EN_US =
+            new MethodElementSettingsApplePayLanguage(Value.EN_US, "en-US");
+
+    public static final MethodElementSettingsApplePayLanguage HU_HU =
+            new MethodElementSettingsApplePayLanguage(Value.HU_HU, "hu-HU");
+
+    public static final MethodElementSettingsApplePayLanguage RO_RO =
+            new MethodElementSettingsApplePayLanguage(Value.RO_RO, "ro-RO");
+
+    public static final MethodElementSettingsApplePayLanguage CS_CZ =
+            new MethodElementSettingsApplePayLanguage(Value.CS_CZ, "cs-CZ");
 
     public static final MethodElementSettingsApplePayLanguage ZH_CN =
             new MethodElementSettingsApplePayLanguage(Value.ZH_CN, "zh-CN");
@@ -70,8 +73,8 @@ public final class MethodElementSettingsApplePayLanguage {
     public static final MethodElementSettingsApplePayLanguage DE_DE =
             new MethodElementSettingsApplePayLanguage(Value.DE_DE, "de-DE");
 
-    public static final MethodElementSettingsApplePayLanguage ZH_TW =
-            new MethodElementSettingsApplePayLanguage(Value.ZH_TW, "zh-TW");
+    public static final MethodElementSettingsApplePayLanguage AR_AB =
+            new MethodElementSettingsApplePayLanguage(Value.AR_AB, "ar-AB");
 
     public static final MethodElementSettingsApplePayLanguage FI_FI =
             new MethodElementSettingsApplePayLanguage(Value.FI_FI, "fi-FI");
@@ -79,11 +82,23 @@ public final class MethodElementSettingsApplePayLanguage {
     public static final MethodElementSettingsApplePayLanguage NB_NO =
             new MethodElementSettingsApplePayLanguage(Value.NB_NO, "nb-NO");
 
+    public static final MethodElementSettingsApplePayLanguage ZH_TW =
+            new MethodElementSettingsApplePayLanguage(Value.ZH_TW, "zh-TW");
+
     public static final MethodElementSettingsApplePayLanguage EN_GB =
             new MethodElementSettingsApplePayLanguage(Value.EN_GB, "en-GB");
 
+    public static final MethodElementSettingsApplePayLanguage HR_HR =
+            new MethodElementSettingsApplePayLanguage(Value.HR_HR, "hr-HR");
+
+    public static final MethodElementSettingsApplePayLanguage HE_IL =
+            new MethodElementSettingsApplePayLanguage(Value.HE_IL, "he-IL");
+
     public static final MethodElementSettingsApplePayLanguage FR_FR =
             new MethodElementSettingsApplePayLanguage(Value.FR_FR, "fr-FR");
+
+    public static final MethodElementSettingsApplePayLanguage IT_IT =
+            new MethodElementSettingsApplePayLanguage(Value.IT_IT, "it-IT");
 
     public static final MethodElementSettingsApplePayLanguage PL_PL =
             new MethodElementSettingsApplePayLanguage(Value.PL_PL, "pl-PL");
@@ -91,23 +106,8 @@ public final class MethodElementSettingsApplePayLanguage {
     public static final MethodElementSettingsApplePayLanguage NL_NL =
             new MethodElementSettingsApplePayLanguage(Value.NL_NL, "nl-NL");
 
-    public static final MethodElementSettingsApplePayLanguage HR_HR =
-            new MethodElementSettingsApplePayLanguage(Value.HR_HR, "hr-HR");
-
-    public static final MethodElementSettingsApplePayLanguage EL_GR =
-            new MethodElementSettingsApplePayLanguage(Value.EL_GR, "el-GR");
-
-    public static final MethodElementSettingsApplePayLanguage JA_JP =
-            new MethodElementSettingsApplePayLanguage(Value.JA_JP, "ja-JP");
-
-    public static final MethodElementSettingsApplePayLanguage SV_SE =
-            new MethodElementSettingsApplePayLanguage(Value.SV_SE, "sv-SE");
-
     public static final MethodElementSettingsApplePayLanguage ZH_HK =
             new MethodElementSettingsApplePayLanguage(Value.ZH_HK, "zh-HK");
-
-    public static final MethodElementSettingsApplePayLanguage HE_IL =
-            new MethodElementSettingsApplePayLanguage(Value.HE_IL, "he-IL");
 
     public static final MethodElementSettingsApplePayLanguage KO_KR =
             new MethodElementSettingsApplePayLanguage(Value.KO_KR, "ko-KR");
@@ -115,11 +115,11 @@ public final class MethodElementSettingsApplePayLanguage {
     public static final MethodElementSettingsApplePayLanguage TR_TR =
             new MethodElementSettingsApplePayLanguage(Value.TR_TR, "tr-TR");
 
+    public static final MethodElementSettingsApplePayLanguage SV_SE =
+            new MethodElementSettingsApplePayLanguage(Value.SV_SE, "sv-SE");
+
     public static final MethodElementSettingsApplePayLanguage FR_CA =
             new MethodElementSettingsApplePayLanguage(Value.FR_CA, "fr-CA");
-
-    public static final MethodElementSettingsApplePayLanguage IT_IT =
-            new MethodElementSettingsApplePayLanguage(Value.IT_IT, "it-IT");
 
     public static final MethodElementSettingsApplePayLanguage PT_BR =
             new MethodElementSettingsApplePayLanguage(Value.PT_BR, "pt-BR");
@@ -157,82 +157,82 @@ public final class MethodElementSettingsApplePayLanguage {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case VI_VN:
-                return visitor.visitViVn();
-            case CA_ES:
-                return visitor.visitCaEs();
-            case RU_RU:
-                return visitor.visitRuRu();
-            case ES_MX:
-                return visitor.visitEsMx();
-            case MS_MY:
-                return visitor.visitMsMy();
-            case EN_AU:
-                return visitor.visitEnAu();
             case ID_ID:
                 return visitor.visitIdId();
-            case HI_IN:
-                return visitor.visitHiIn();
-            case TH_TH:
-                return visitor.visitThTh();
+            case CA_ES:
+                return visitor.visitCaEs();
+            case JA_JP:
+                return visitor.visitJaJp();
+            case ES_MX:
+                return visitor.visitEsMx();
+            case EN_AU:
+                return visitor.visitEnAu();
+            case MS_MY:
+                return visitor.visitMsMy();
+            case RU_RU:
+                return visitor.visitRuRu();
+            case EL_GR:
+                return visitor.visitElGr();
+            case VI_VN:
+                return visitor.visitViVn();
             case SK_SK:
                 return visitor.visitSkSk();
             case ES_ES:
                 return visitor.visitEsEs();
+            case TH_TH:
+                return visitor.visitThTh();
             case UK_UA:
                 return visitor.visitUkUa();
-            case HU_HU:
-                return visitor.visitHuHu();
-            case PT_PT:
-                return visitor.visitPtPt();
-            case RO_RO:
-                return visitor.visitRoRo();
-            case EN_US:
-                return visitor.visitEnUs();
-            case CS_CZ:
-                return visitor.visitCsCz();
+            case HI_IN:
+                return visitor.visitHiIn();
             case DA_DK:
                 return visitor.visitDaDk();
-            case AR_AB:
-                return visitor.visitArAb();
+            case PT_PT:
+                return visitor.visitPtPt();
+            case EN_US:
+                return visitor.visitEnUs();
+            case HU_HU:
+                return visitor.visitHuHu();
+            case RO_RO:
+                return visitor.visitRoRo();
+            case CS_CZ:
+                return visitor.visitCsCz();
             case ZH_CN:
                 return visitor.visitZhCn();
             case DE_DE:
                 return visitor.visitDeDe();
-            case ZH_TW:
-                return visitor.visitZhTw();
+            case AR_AB:
+                return visitor.visitArAb();
             case FI_FI:
                 return visitor.visitFiFi();
             case NB_NO:
                 return visitor.visitNbNo();
+            case ZH_TW:
+                return visitor.visitZhTw();
             case EN_GB:
                 return visitor.visitEnGb();
+            case HR_HR:
+                return visitor.visitHrHr();
+            case HE_IL:
+                return visitor.visitHeIl();
             case FR_FR:
                 return visitor.visitFrFr();
+            case IT_IT:
+                return visitor.visitItIt();
             case PL_PL:
                 return visitor.visitPlPl();
             case NL_NL:
                 return visitor.visitNlNl();
-            case HR_HR:
-                return visitor.visitHrHr();
-            case EL_GR:
-                return visitor.visitElGr();
-            case JA_JP:
-                return visitor.visitJaJp();
-            case SV_SE:
-                return visitor.visitSvSe();
             case ZH_HK:
                 return visitor.visitZhHk();
-            case HE_IL:
-                return visitor.visitHeIl();
             case KO_KR:
                 return visitor.visitKoKr();
             case TR_TR:
                 return visitor.visitTrTr();
+            case SV_SE:
+                return visitor.visitSvSe();
             case FR_CA:
                 return visitor.visitFrCa();
-            case IT_IT:
-                return visitor.visitItIt();
             case PT_BR:
                 return visitor.visitPtBr();
             case UNKNOWN:
@@ -244,82 +244,82 @@ public final class MethodElementSettingsApplePayLanguage {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static MethodElementSettingsApplePayLanguage valueOf(String value) {
         switch (value) {
-            case "vi-VN":
-                return VI_VN;
-            case "ca-ES":
-                return CA_ES;
-            case "ru-RU":
-                return RU_RU;
-            case "es-MX":
-                return ES_MX;
-            case "ms-MY":
-                return MS_MY;
-            case "en-AU":
-                return EN_AU;
             case "id-ID":
                 return ID_ID;
-            case "hi-IN":
-                return HI_IN;
-            case "th-TH":
-                return TH_TH;
+            case "ca-ES":
+                return CA_ES;
+            case "ja-JP":
+                return JA_JP;
+            case "es-MX":
+                return ES_MX;
+            case "en-AU":
+                return EN_AU;
+            case "ms-MY":
+                return MS_MY;
+            case "ru-RU":
+                return RU_RU;
+            case "el-GR":
+                return EL_GR;
+            case "vi-VN":
+                return VI_VN;
             case "sk-SK":
                 return SK_SK;
             case "es-ES":
                 return ES_ES;
+            case "th-TH":
+                return TH_TH;
             case "uk-UA":
                 return UK_UA;
-            case "hu-HU":
-                return HU_HU;
-            case "pt-PT":
-                return PT_PT;
-            case "ro-RO":
-                return RO_RO;
-            case "en-US":
-                return EN_US;
-            case "cs-CZ":
-                return CS_CZ;
+            case "hi-IN":
+                return HI_IN;
             case "da-DK":
                 return DA_DK;
-            case "ar-AB":
-                return AR_AB;
+            case "pt-PT":
+                return PT_PT;
+            case "en-US":
+                return EN_US;
+            case "hu-HU":
+                return HU_HU;
+            case "ro-RO":
+                return RO_RO;
+            case "cs-CZ":
+                return CS_CZ;
             case "zh-CN":
                 return ZH_CN;
             case "de-DE":
                 return DE_DE;
-            case "zh-TW":
-                return ZH_TW;
+            case "ar-AB":
+                return AR_AB;
             case "fi-FI":
                 return FI_FI;
             case "nb-NO":
                 return NB_NO;
+            case "zh-TW":
+                return ZH_TW;
             case "en-GB":
                 return EN_GB;
+            case "hr-HR":
+                return HR_HR;
+            case "he-IL":
+                return HE_IL;
             case "fr-FR":
                 return FR_FR;
+            case "it-IT":
+                return IT_IT;
             case "pl-PL":
                 return PL_PL;
             case "nl-NL":
                 return NL_NL;
-            case "hr-HR":
-                return HR_HR;
-            case "el-GR":
-                return EL_GR;
-            case "ja-JP":
-                return JA_JP;
-            case "sv-SE":
-                return SV_SE;
             case "zh-HK":
                 return ZH_HK;
-            case "he-IL":
-                return HE_IL;
             case "ko-KR":
                 return KO_KR;
             case "tr-TR":
                 return TR_TR;
+            case "sv-SE":
+                return SV_SE;
             case "fr-CA":
                 return FR_CA;
-            case "it-IT":
-                return IT_IT;
             case "pt-BR":
                 return PT_BR;
             default:

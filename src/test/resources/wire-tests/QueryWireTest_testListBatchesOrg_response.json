@@ -22,7 +22,7 @@
         }
       ],
       "ConnectorName": "GP",
-      "BatchDate": "2025-08-25T20:00:00",
+      "BatchDate": "2025-08-25T20:00:00Z",
       "BatchAmount": 0,
       "BatchFeesAmount": 0,
       "BatchAuthAmount": 0,

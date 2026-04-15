@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class NotificationStandardRequestMethod {
+    public static final NotificationStandardRequestMethod WEB = new NotificationStandardRequestMethod(Value.WEB, "web");
+
     public static final NotificationStandardRequestMethod EMAIL =
             new NotificationStandardRequestMethod(Value.EMAIL, "email");
-
-    public static final NotificationStandardRequestMethod WEB = new NotificationStandardRequestMethod(Value.WEB, "web");
 
     public static final NotificationStandardRequestMethod SMS = new NotificationStandardRequestMethod(Value.SMS, "sms");
 
@@ -47,10 +47,10 @@ public final class NotificationStandardRequestMethod {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case EMAIL:
-                return visitor.visitEmail();
             case WEB:
                 return visitor.visitWeb();
+            case EMAIL:
+                return visitor.visitEmail();
             case SMS:
                 return visitor.visitSms();
             case UNKNOWN:
@@ -62,10 +62,10 @@ public final class NotificationStandardRequestMethod {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static NotificationStandardRequestMethod valueOf(String value) {
         switch (value) {
-            case "email":
-                return EMAIL;
             case "web":
                 return WEB;
+            case "email":
+                return EMAIL;
             case "sms":
                 return SMS;
             default:

@@ -45,7 +45,7 @@
       "eventsData": [
         {
           "description": "Payout funded",
-          "eventTime": "2025-01-15T14:28:45",
+          "eventTime": "2025-01-15T14:28:45Z",
           "refData": "",
           "extraData": null,
           "source": "system"
@@ -58,7 +58,7 @@
           "UserId": 334,
           "UserName": "Maria Santos",
           "Content": "Transfer processed successfully",
-          "CreatedAt": "2025-01-15T14:30:00",
+          "CreatedAt": "2025-01-15T14:30:00Z",
           "MessageType": 1,
           "MessageProperties": {
             "originalTransferStatus": "pending",

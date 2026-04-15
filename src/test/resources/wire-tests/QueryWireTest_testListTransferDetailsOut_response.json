@@ -39,7 +39,7 @@
       "adjustmentsAmount": 0,
       "netTransferAmount": 1245,
       "billingFeesDetails": null,
-      "CreatedAt": "2025-01-15T10:22:18",
+      "CreatedAt": "2025-01-15T10:22:18Z",
       "Comments": "Epoxy floor coating materials",
       "Vendor": {
         "VendorNumber": "V-CC-2847",
@@ -77,8 +77,8 @@
         "PaypointEntryname": "47cade237",
         "ParentOrgName": "Premier Property Services",
         "ParentOrgId": 77,
-        "CreatedDate": "2024-08-12T09:15:00",
-        "LastUpdated": "2025-01-10T14:30:22",
+        "CreatedDate": "2024-08-12T09:15:00Z",
+        "LastUpdated": "2025-01-10T14:30:22Z",
         "remitAddress1": "4200 Industrial Parkway",
         "remitAddress2": "Unit B",
         "remitCity": "Austin",
@@ -105,7 +105,7 @@
       "TransStatusDetail": null,
       "TransStatusName": null,
       "TransStatusCategory": null,
-      "LastUpdated": "2025-01-15T10:23:05",
+      "LastUpdated": "2025-01-15T10:23:05Z",
       "TotalAmount": 1250,
       "NetAmount": 1245,
       "FeeAmount": 5,
@@ -149,7 +149,7 @@
           "attachments": null,
           "invoiceNumber": "INV-2025-00892",
           "netAmount": "1250.00",
-          "invoiceDate": "2025-01-10T00:00:00",
+          "invoiceDate": "2025-01-10T00:00:00Z",
           "dueDate": "2025-02-09",
           "comments": "50 gal epoxy primer, 25 gal topcoat - Project Riverside Plaza",
           "identifier": null,
@@ -161,12 +161,12 @@
         {
           "TransEvent": "Risk Validated: PASSED",
           "EventData": "",
-          "EventTime": "2025-01-15T10:22:20"
+          "EventTime": "2025-01-15T10:22:20Z"
         },
         {
           "TransEvent": "Captured",
           "EventData": "0ABC123XYZ789:00000012",
-          "EventTime": "2025-01-15T10:22:25"
+          "EventTime": "2025-01-15T10:22:25Z"
         }
       ],
       "externalPaypointID": "SR-892",
@@ -180,7 +180,7 @@
       "SettlementStatusName": "",
       "SettlementDate": null,
       "RiskFlagged": false,
-      "RiskFlaggedOn": "2025-01-15T10:22:18",
+      "RiskFlaggedOn": "2025-01-15T10:22:18Z",
       "RiskStatus": "PASSED",
       "RiskReason": "",
       "RiskAction": "",

@@ -10,11 +10,11 @@ public final class NotificationReportRequestContentFileFormat {
     public static final NotificationReportRequestContentFileFormat CSV =
             new NotificationReportRequestContentFileFormat(Value.CSV, "csv");
 
-    public static final NotificationReportRequestContentFileFormat XLSX =
-            new NotificationReportRequestContentFileFormat(Value.XLSX, "xlsx");
-
     public static final NotificationReportRequestContentFileFormat JSON =
             new NotificationReportRequestContentFileFormat(Value.JSON, "json");
+
+    public static final NotificationReportRequestContentFileFormat XLSX =
+            new NotificationReportRequestContentFileFormat(Value.XLSX, "xlsx");
 
     private final Value value;
 
@@ -51,10 +51,10 @@ public final class NotificationReportRequestContentFileFormat {
         switch (value) {
             case CSV:
                 return visitor.visitCsv();
-            case XLSX:
-                return visitor.visitXlsx();
             case JSON:
                 return visitor.visitJson();
+            case XLSX:
+                return visitor.visitXlsx();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -66,10 +66,10 @@ public final class NotificationReportRequestContentFileFormat {
         switch (value) {
             case "csv":
                 return CSV;
-            case "xlsx":
-                return XLSX;
             case "json":
                 return JSON;
+            case "xlsx":
+                return XLSX;
             default:
                 return new NotificationReportRequestContentFileFormat(Value.UNKNOWN, value);
         }

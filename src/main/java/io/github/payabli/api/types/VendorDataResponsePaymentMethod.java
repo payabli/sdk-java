@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class VendorDataResponsePaymentMethod {
-    public static final VendorDataResponsePaymentMethod CHECK =
-            new VendorDataResponsePaymentMethod(Value.CHECK, "check");
-
     public static final VendorDataResponsePaymentMethod VCARD =
             new VendorDataResponsePaymentMethod(Value.VCARD, "vcard");
 
     public static final VendorDataResponsePaymentMethod ACH = new VendorDataResponsePaymentMethod(Value.ACH, "ach");
+
+    public static final VendorDataResponsePaymentMethod CHECK =
+            new VendorDataResponsePaymentMethod(Value.CHECK, "check");
 
     public static final VendorDataResponsePaymentMethod CARD = new VendorDataResponsePaymentMethod(Value.CARD, "card");
 
@@ -50,12 +50,12 @@ public final class VendorDataResponsePaymentMethod {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case CHECK:
-                return visitor.visitCheck();
             case VCARD:
                 return visitor.visitVcard();
             case ACH:
                 return visitor.visitAch();
+            case CHECK:
+                return visitor.visitCheck();
             case CARD:
                 return visitor.visitCard();
             case UNKNOWN:
@@ -67,12 +67,12 @@ public final class VendorDataResponsePaymentMethod {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static VendorDataResponsePaymentMethod valueOf(String value) {
         switch (value) {
-            case "check":
-                return CHECK;
             case "vcard":
                 return VCARD;
             case "ach":
                 return ACH;
+            case "check":
+                return CHECK;
             case "card":
                 return CARD;
             default:

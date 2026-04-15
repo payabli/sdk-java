@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class NotificationReportRequestMethod {
-    public static final NotificationReportRequestMethod REPORT_EMAIL =
-            new NotificationReportRequestMethod(Value.REPORT_EMAIL, "report-email");
-
     public static final NotificationReportRequestMethod REPORT_WEB =
             new NotificationReportRequestMethod(Value.REPORT_WEB, "report-web");
+
+    public static final NotificationReportRequestMethod REPORT_EMAIL =
+            new NotificationReportRequestMethod(Value.REPORT_EMAIL, "report-email");
 
     private final Value value;
 
@@ -46,10 +46,10 @@ public final class NotificationReportRequestMethod {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case REPORT_EMAIL:
-                return visitor.visitReportEmail();
             case REPORT_WEB:
                 return visitor.visitReportWeb();
+            case REPORT_EMAIL:
+                return visitor.visitReportEmail();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -59,10 +59,10 @@ public final class NotificationReportRequestMethod {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static NotificationReportRequestMethod valueOf(String value) {
         switch (value) {
-            case "report-email":
-                return REPORT_EMAIL;
             case "report-web":
                 return REPORT_WEB;
+            case "report-email":
+                return REPORT_EMAIL;
             default:
                 return new NotificationReportRequestMethod(Value.UNKNOWN, value);
         }

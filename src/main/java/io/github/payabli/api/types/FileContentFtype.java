@@ -13,8 +13,6 @@ public final class FileContentFtype {
 
     public static final FileContentFtype JPEG = new FileContentFtype(Value.JPEG, "jpeg");
 
-    public static final FileContentFtype PNG = new FileContentFtype(Value.PNG, "png");
-
     public static final FileContentFtype PDF = new FileContentFtype(Value.PDF, "pdf");
 
     public static final FileContentFtype GIF = new FileContentFtype(Value.GIF, "gif");
@@ -22,6 +20,8 @@ public final class FileContentFtype {
     public static final FileContentFtype DOCX = new FileContentFtype(Value.DOCX, "docx");
 
     public static final FileContentFtype TXT = new FileContentFtype(Value.TXT, "txt");
+
+    public static final FileContentFtype PNG = new FileContentFtype(Value.PNG, "png");
 
     private final Value value;
 
@@ -61,8 +61,6 @@ public final class FileContentFtype {
                 return visitor.visitDoc();
             case JPEG:
                 return visitor.visitJpeg();
-            case PNG:
-                return visitor.visitPng();
             case PDF:
                 return visitor.visitPdf();
             case GIF:
@@ -71,6 +69,8 @@ public final class FileContentFtype {
                 return visitor.visitDocx();
             case TXT:
                 return visitor.visitTxt();
+            case PNG:
+                return visitor.visitPng();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -86,8 +86,6 @@ public final class FileContentFtype {
                 return DOC;
             case "jpeg":
                 return JPEG;
-            case "png":
-                return PNG;
             case "pdf":
                 return PDF;
             case "gif":
@@ -96,6 +94,8 @@ public final class FileContentFtype {
                 return DOCX;
             case "txt":
                 return TXT;
+            case "png":
+                return PNG;
             default:
                 return new FileContentFtype(Value.UNKNOWN, value);
         }

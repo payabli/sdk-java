@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class NotificationReportRequestContentReportName {
+    public static final NotificationReportRequestContentReportName RETURNED =
+            new NotificationReportRequestContentReportName(Value.RETURNED, "Returned");
+
     public static final NotificationReportRequestContentReportName SETTLEMENT =
             new NotificationReportRequestContentReportName(Value.SETTLEMENT, "Settlement");
 
     public static final NotificationReportRequestContentReportName BOARDING =
             new NotificationReportRequestContentReportName(Value.BOARDING, "Boarding");
-
-    public static final NotificationReportRequestContentReportName RETURNED =
-            new NotificationReportRequestContentReportName(Value.RETURNED, "Returned");
 
     public static final NotificationReportRequestContentReportName TRANSACTION =
             new NotificationReportRequestContentReportName(Value.TRANSACTION, "Transaction");
@@ -52,12 +52,12 @@ public final class NotificationReportRequestContentReportName {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
+            case RETURNED:
+                return visitor.visitReturned();
             case SETTLEMENT:
                 return visitor.visitSettlement();
             case BOARDING:
                 return visitor.visitBoarding();
-            case RETURNED:
-                return visitor.visitReturned();
             case TRANSACTION:
                 return visitor.visitTransaction();
             case UNKNOWN:
@@ -69,12 +69,12 @@ public final class NotificationReportRequestContentReportName {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static NotificationReportRequestContentReportName valueOf(String value) {
         switch (value) {
+            case "Returned":
+                return RETURNED;
             case "Settlement":
                 return SETTLEMENT;
             case "Boarding":
                 return BOARDING;
-            case "Returned":
-                return RETURNED;
             case "Transaction":
                 return TRANSACTION;
             default:

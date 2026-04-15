@@ -98,7 +98,6 @@ public class Example {
                                     .builder()
                                     .cardexp("02/25")
                                     .cardnumber("4111111111111111")
-                                    .method("card")
                                     .cardcvv(Optional.of("123"))
                                     .cardHolder(Optional.of("John Cassian"))
                                     .cardzip(Optional.of("12345"))
@@ -303,7 +302,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:0.0.323'
+  implementation 'io.github.payabli:sdk-java:0.0.324'
 }
 ```
 
@@ -315,7 +314,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.323</version>
+  <version>0.0.324</version>
 </dependency>
 ```
 

@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Whenrefunded {
+    public static final Whenrefunded EXCHANGE_ONLY = new Whenrefunded(Value.EXCHANGE_ONLY, "Exchange Only");
+
     public static final Whenrefunded THIRTY_DAYS_OR_LESS =
             new Whenrefunded(Value.THIRTY_DAYS_OR_LESS, "30 Days or Less");
 
     public static final Whenrefunded NO_REFUND_OR_EXCHANGE =
             new Whenrefunded(Value.NO_REFUND_OR_EXCHANGE, "No Refund or Exchange");
-
-    public static final Whenrefunded EXCHANGE_ONLY = new Whenrefunded(Value.EXCHANGE_ONLY, "Exchange Only");
 
     public static final Whenrefunded MORE_THAN_30_DAYS = new Whenrefunded(Value.MORE_THAN_30_DAYS, "More than 30 days");
 
@@ -48,12 +48,12 @@ public final class Whenrefunded {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
+            case EXCHANGE_ONLY:
+                return visitor.visitExchangeOnly();
             case THIRTY_DAYS_OR_LESS:
                 return visitor.visitThirtyDaysOrLess();
             case NO_REFUND_OR_EXCHANGE:
                 return visitor.visitNoRefundOrExchange();
-            case EXCHANGE_ONLY:
-                return visitor.visitExchangeOnly();
             case MORE_THAN_30_DAYS:
                 return visitor.visitMoreThan30Days();
             case UNKNOWN:
@@ -65,12 +65,12 @@ public final class Whenrefunded {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Whenrefunded valueOf(String value) {
         switch (value) {
+            case "Exchange Only":
+                return EXCHANGE_ONLY;
             case "30 Days or Less":
                 return THIRTY_DAYS_OR_LESS;
             case "No Refund or Exchange":
                 return NO_REFUND_OR_EXCHANGE;
-            case "Exchange Only":
-                return EXCHANGE_ONLY;
             case "More than 30 days":
                 return MORE_THAN_30_DAYS;
             default:

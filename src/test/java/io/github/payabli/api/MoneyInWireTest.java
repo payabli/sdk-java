@@ -85,7 +85,6 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
-                                        .method("card")
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -566,7 +565,6 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
-                                        .method("card")
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -1261,7 +1259,6 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
-                                        .method("card")
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -1378,7 +1375,6 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
-                                        .method("card")
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -1724,7 +1720,9 @@ public class MoneyInWireTest {
             while (iter.hasNext()) {
                 java.util.Map.Entry<String, JsonNode> entry = iter.next();
                 JsonNode actualValue = actual.get(entry.getKey());
-                if (actualValue == null || !jsonEquals(entry.getValue(), actualValue)) return false;
+                if (actualValue == null) {
+                    if (!entry.getValue().isNull()) return false;
+                } else if (!jsonEquals(entry.getValue(), actualValue)) return false;
             }
             return true;
         }

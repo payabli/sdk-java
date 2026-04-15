@@ -105,7 +105,7 @@
       "OrgId": 9876,
       "RefundId": 0,
       "ReturnedId": 0,
-      "TransactionTime": "2024-01-05T12:15:30.11",
+      "TransactionTime": "2024-01-05T12:15:30.11Z",
       "Customer": {
         "Identifiers": [
           "customerId",

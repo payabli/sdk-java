@@ -111,7 +111,6 @@ public class SubscriptionWireTest {
                                 .paymentMethod(RequestSchedulePaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/25")
                                         .cardnumber("4111111111111111")
-                                        .method("card")
                                         .cardcvv(Optional.of("123"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("37615"))
@@ -374,7 +373,9 @@ public class SubscriptionWireTest {
             while (iter.hasNext()) {
                 java.util.Map.Entry<String, JsonNode> entry = iter.next();
                 JsonNode actualValue = actual.get(entry.getKey());
-                if (actualValue == null || !jsonEquals(entry.getValue(), actualValue)) return false;
+                if (actualValue == null) {
+                    if (!entry.getValue().isNull()) return false;
+                } else if (!jsonEquals(entry.getValue(), actualValue)) return false;
             }
             return true;
         }

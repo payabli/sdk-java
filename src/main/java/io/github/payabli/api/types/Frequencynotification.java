@@ -13,6 +13,10 @@ public final class Frequencynotification {
 
     public static final Frequencynotification QUARTERLY = new Frequencynotification(Value.QUARTERLY, "quarterly");
 
+    public static final Frequencynotification DAILY = new Frequencynotification(Value.DAILY, "daily");
+
+    public static final Frequencynotification WEEKLY = new Frequencynotification(Value.WEEKLY, "weekly");
+
     public static final Frequencynotification UNTILCANCELLED =
             new Frequencynotification(Value.UNTILCANCELLED, "untilcancelled");
 
@@ -22,10 +26,6 @@ public final class Frequencynotification {
             new Frequencynotification(Value.SEMIANNUALLY, "semiannually");
 
     public static final Frequencynotification ANNUALLY = new Frequencynotification(Value.ANNUALLY, "annually");
-
-    public static final Frequencynotification DAILY = new Frequencynotification(Value.DAILY, "daily");
-
-    public static final Frequencynotification WEEKLY = new Frequencynotification(Value.WEEKLY, "weekly");
 
     private final Value value;
 
@@ -66,6 +66,10 @@ public final class Frequencynotification {
                 return visitor.visitOneTime();
             case QUARTERLY:
                 return visitor.visitQuarterly();
+            case DAILY:
+                return visitor.visitDaily();
+            case WEEKLY:
+                return visitor.visitWeekly();
             case UNTILCANCELLED:
                 return visitor.visitUntilcancelled();
             case MONTHLY:
@@ -74,10 +78,6 @@ public final class Frequencynotification {
                 return visitor.visitSemiannually();
             case ANNUALLY:
                 return visitor.visitAnnually();
-            case DAILY:
-                return visitor.visitDaily();
-            case WEEKLY:
-                return visitor.visitWeekly();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -93,6 +93,10 @@ public final class Frequencynotification {
                 return ONE_TIME;
             case "quarterly":
                 return QUARTERLY;
+            case "daily":
+                return DAILY;
+            case "weekly":
+                return WEEKLY;
             case "untilcancelled":
                 return UNTILCANCELLED;
             case "monthly":
@@ -101,10 +105,6 @@ public final class Frequencynotification {
                 return SEMIANNUALLY;
             case "annually":
                 return ANNUALLY;
-            case "daily":
-                return DAILY;
-            case "weekly":
-                return WEEKLY;
             default:
                 return new Frequencynotification(Value.UNKNOWN, value);
         }

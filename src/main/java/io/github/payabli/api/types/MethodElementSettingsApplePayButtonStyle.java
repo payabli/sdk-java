@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class MethodElementSettingsApplePayButtonStyle {
-    public static final MethodElementSettingsApplePayButtonStyle WHITE =
-            new MethodElementSettingsApplePayButtonStyle(Value.WHITE, "white");
-
     public static final MethodElementSettingsApplePayButtonStyle BLACK =
             new MethodElementSettingsApplePayButtonStyle(Value.BLACK, "black");
+
+    public static final MethodElementSettingsApplePayButtonStyle WHITE =
+            new MethodElementSettingsApplePayButtonStyle(Value.WHITE, "white");
 
     public static final MethodElementSettingsApplePayButtonStyle WHITE_OUTLINE =
             new MethodElementSettingsApplePayButtonStyle(Value.WHITE_OUTLINE, "white-outline");
@@ -49,10 +49,10 @@ public final class MethodElementSettingsApplePayButtonStyle {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case WHITE:
-                return visitor.visitWhite();
             case BLACK:
                 return visitor.visitBlack();
+            case WHITE:
+                return visitor.visitWhite();
             case WHITE_OUTLINE:
                 return visitor.visitWhiteOutline();
             case UNKNOWN:
@@ -64,10 +64,10 @@ public final class MethodElementSettingsApplePayButtonStyle {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static MethodElementSettingsApplePayButtonStyle valueOf(String value) {
         switch (value) {
-            case "white":
-                return WHITE;
             case "black":
                 return BLACK;
+            case "white":
+                return WHITE;
             case "white-outline":
                 return WHITE_OUTLINE;
             default:

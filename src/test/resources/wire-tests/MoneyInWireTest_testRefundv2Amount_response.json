@@ -131,7 +131,7 @@
     "entrypageId": 0,
     "externalPaypointID": "",
     "isValidatedACH": false,
-    "transactionTime": "2025-12-01T09:50:03.559",
+    "transactionTime": "2025-12-01T09:50:03.559Z",
     "customer": {
       "identifiers": null,
       "firstName": "David",
@@ -166,24 +166,24 @@
         "operation": "Sale",
         "responseData": {},
         "refundId": 0,
-        "transactionTime": "2025-12-01T09:50:03.559"
+        "transactionTime": "2025-12-01T09:50:03.559Z"
       }
     ],
     "transactionEvents": [
       {
         "transEvent": "Created",
         "eventData": "0HNHD68HATSUC:00000001",
-        "eventTime": "2025-12-01T09:50:02.558651"
+        "eventTime": "2025-12-01T09:50:02.558651Z"
       },
       {
         "transEvent": "Approved",
         "eventData": "0HNHD68HATSUC:00000001",
-        "eventTime": "2025-12-01T09:50:03.609111"
+        "eventTime": "2025-12-01T09:50:03.609111Z"
       }
     ],
     "pendingFeeAmount": 0,
     "riskFlagged": false,
-    "riskFlaggedOn": "2025-12-01T09:50:02.5474568",
+    "riskFlaggedOn": "2025-12-01T09:50:02.5474568Z",
     "riskStatus": "PASSED",
     "riskReason": "",
     "riskAction": "",

@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class UnderWritingMethod {
     public static final UnderWritingMethod BYPASS = new UnderWritingMethod(Value.BYPASS, "bypass");
 
-    public static final UnderWritingMethod MANUAL = new UnderWritingMethod(Value.MANUAL, "manual");
-
     public static final UnderWritingMethod AUTOMATIC = new UnderWritingMethod(Value.AUTOMATIC, "automatic");
+
+    public static final UnderWritingMethod MANUAL = new UnderWritingMethod(Value.MANUAL, "manual");
 
     private final Value value;
 
@@ -47,10 +47,10 @@ public final class UnderWritingMethod {
         switch (value) {
             case BYPASS:
                 return visitor.visitBypass();
-            case MANUAL:
-                return visitor.visitManual();
             case AUTOMATIC:
                 return visitor.visitAutomatic();
+            case MANUAL:
+                return visitor.visitManual();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -62,10 +62,10 @@ public final class UnderWritingMethod {
         switch (value) {
             case "bypass":
                 return BYPASS;
-            case "manual":
-                return MANUAL;
             case "automatic":
                 return AUTOMATIC;
+            case "manual":
+                return MANUAL;
             default:
                 return new UnderWritingMethod(Value.UNKNOWN, value);
         }

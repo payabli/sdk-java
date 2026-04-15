@@ -9,17 +9,17 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class Frequency {
     public static final Frequency EVERY_2_WEEKS = new Frequency(Value.EVERY_2_WEEKS, "every2weeks");
 
-    public static final Frequency ONE_TIME = new Frequency(Value.ONE_TIME, "onetime");
-
-    public static final Frequency MONTHLY = new Frequency(Value.MONTHLY, "monthly");
-
-    public static final Frequency ANNUALLY = new Frequency(Value.ANNUALLY, "annually");
-
     public static final Frequency EVERY_6_MONTHS = new Frequency(Value.EVERY_6_MONTHS, "every6months");
 
     public static final Frequency EVERY_3_MONTHS = new Frequency(Value.EVERY_3_MONTHS, "every3months");
 
     public static final Frequency WEEKLY = new Frequency(Value.WEEKLY, "weekly");
+
+    public static final Frequency ONE_TIME = new Frequency(Value.ONE_TIME, "onetime");
+
+    public static final Frequency MONTHLY = new Frequency(Value.MONTHLY, "monthly");
+
+    public static final Frequency ANNUALLY = new Frequency(Value.ANNUALLY, "annually");
 
     private final Value value;
 
@@ -54,18 +54,18 @@ public final class Frequency {
         switch (value) {
             case EVERY_2_WEEKS:
                 return visitor.visitEvery2Weeks();
-            case ONE_TIME:
-                return visitor.visitOneTime();
-            case MONTHLY:
-                return visitor.visitMonthly();
-            case ANNUALLY:
-                return visitor.visitAnnually();
             case EVERY_6_MONTHS:
                 return visitor.visitEvery6Months();
             case EVERY_3_MONTHS:
                 return visitor.visitEvery3Months();
             case WEEKLY:
                 return visitor.visitWeekly();
+            case ONE_TIME:
+                return visitor.visitOneTime();
+            case MONTHLY:
+                return visitor.visitMonthly();
+            case ANNUALLY:
+                return visitor.visitAnnually();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -77,18 +77,18 @@ public final class Frequency {
         switch (value) {
             case "every2weeks":
                 return EVERY_2_WEEKS;
-            case "onetime":
-                return ONE_TIME;
-            case "monthly":
-                return MONTHLY;
-            case "annually":
-                return ANNUALLY;
             case "every6months":
                 return EVERY_6_MONTHS;
             case "every3months":
                 return EVERY_3_MONTHS;
             case "weekly":
                 return WEEKLY;
+            case "onetime":
+                return ONE_TIME;
+            case "monthly":
+                return MONTHLY;
+            case "annually":
+                return ANNUALLY;
             default:
                 return new Frequency(Value.UNKNOWN, value);
         }

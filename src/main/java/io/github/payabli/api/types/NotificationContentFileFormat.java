@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class NotificationContentFileFormat {
     public static final NotificationContentFileFormat CSV = new NotificationContentFileFormat(Value.CSV, "csv");
 
-    public static final NotificationContentFileFormat XLSX = new NotificationContentFileFormat(Value.XLSX, "xlsx");
-
     public static final NotificationContentFileFormat JSON = new NotificationContentFileFormat(Value.JSON, "json");
+
+    public static final NotificationContentFileFormat XLSX = new NotificationContentFileFormat(Value.XLSX, "xlsx");
 
     private final Value value;
 
@@ -48,10 +48,10 @@ public final class NotificationContentFileFormat {
         switch (value) {
             case CSV:
                 return visitor.visitCsv();
-            case XLSX:
-                return visitor.visitXlsx();
             case JSON:
                 return visitor.visitJson();
+            case XLSX:
+                return visitor.visitXlsx();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -63,10 +63,10 @@ public final class NotificationContentFileFormat {
         switch (value) {
             case "csv":
                 return CSV;
-            case "xlsx":
-                return XLSX;
             case "json":
                 return JSON;
+            case "xlsx":
+                return XLSX;
             default:
                 return new NotificationContentFileFormat(Value.UNKNOWN, value);
         }

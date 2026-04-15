@@ -9,10 +9,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class BillDataPaymentTerms {
     public static final BillDataPaymentTerms UR = new BillDataPaymentTerms(Value.UR, "UR");
 
-    public static final BillDataPaymentTerms TWENTY_MFI = new BillDataPaymentTerms(Value.TWENTY_MFI, "20MFI");
-
-    public static final BillDataPaymentTerms TEN_UF = new BillDataPaymentTerms(Value.TEN_UF, "10UF");
-
     public static final BillDataPaymentTerms FIFTY_UF = new BillDataPaymentTerms(Value.FIFTY_UF, "50UF");
 
     public static final BillDataPaymentTerms NET_20 = new BillDataPaymentTerms(Value.NET_20, "NET20");
@@ -21,13 +17,13 @@ public final class BillDataPaymentTerms {
 
     public static final BillDataPaymentTerms EOM = new BillDataPaymentTerms(Value.EOM, "EOM");
 
-    public static final BillDataPaymentTerms NET_60 = new BillDataPaymentTerms(Value.NET_60, "NET60");
+    public static final BillDataPaymentTerms TWENTY_MFI = new BillDataPaymentTerms(Value.TWENTY_MFI, "20MFI");
 
-    public static final BillDataPaymentTerms TEN_MFI = new BillDataPaymentTerms(Value.TEN_MFI, "10MFI");
+    public static final BillDataPaymentTerms TEN_UF = new BillDataPaymentTerms(Value.TEN_UF, "10UF");
 
     public static final BillDataPaymentTerms NET_10 = new BillDataPaymentTerms(Value.NET_10, "NET10");
 
-    public static final BillDataPaymentTerms TWO_10_NET_30 = new BillDataPaymentTerms(Value.TWO_10_NET_30, "2/10NET30");
+    public static final BillDataPaymentTerms NET_60 = new BillDataPaymentTerms(Value.NET_60, "NET60");
 
     public static final BillDataPaymentTerms PIA = new BillDataPaymentTerms(Value.PIA, "PIA");
 
@@ -35,19 +31,23 @@ public final class BillDataPaymentTerms {
 
     public static final BillDataPaymentTerms CIA = new BillDataPaymentTerms(Value.CIA, "CIA");
 
+    public static final BillDataPaymentTerms TWO_10_NET_30 = new BillDataPaymentTerms(Value.TWO_10_NET_30, "2/10NET30");
+
     public static final BillDataPaymentTerms NET_90 = new BillDataPaymentTerms(Value.NET_90, "NET90");
 
     public static final BillDataPaymentTerms TWENTY_FIVE_UF = new BillDataPaymentTerms(Value.TWENTY_FIVE_UF, "25UF");
 
-    public static final BillDataPaymentTerms MFI = new BillDataPaymentTerms(Value.MFI, "MFI");
+    public static final BillDataPaymentTerms TEN_MFI = new BillDataPaymentTerms(Value.TEN_MFI, "10MFI");
 
     public static final BillDataPaymentTerms TWENTY_UF = new BillDataPaymentTerms(Value.TWENTY_UF, "20UF");
+
+    public static final BillDataPaymentTerms MFI = new BillDataPaymentTerms(Value.MFI, "MFI");
+
+    public static final BillDataPaymentTerms UF = new BillDataPaymentTerms(Value.UF, "UF");
 
     public static final BillDataPaymentTerms FIFTEEN_MFI = new BillDataPaymentTerms(Value.FIFTEEN_MFI, "15MFI");
 
     public static final BillDataPaymentTerms NET_30 = new BillDataPaymentTerms(Value.NET_30, "NET30");
-
-    public static final BillDataPaymentTerms UF = new BillDataPaymentTerms(Value.UF, "UF");
 
     private final Value value;
 
@@ -83,10 +83,6 @@ public final class BillDataPaymentTerms {
         switch (value) {
             case UR:
                 return visitor.visitUr();
-            case TWENTY_MFI:
-                return visitor.visitTwentyMfi();
-            case TEN_UF:
-                return visitor.visitTenUf();
             case FIFTY_UF:
                 return visitor.visitFiftyUf();
             case NET_20:
@@ -95,34 +91,38 @@ public final class BillDataPaymentTerms {
                 return visitor.visitNet45();
             case EOM:
                 return visitor.visitEom();
-            case NET_60:
-                return visitor.visitNet60();
-            case TEN_MFI:
-                return visitor.visitTenMfi();
+            case TWENTY_MFI:
+                return visitor.visitTwentyMfi();
+            case TEN_UF:
+                return visitor.visitTenUf();
             case NET_10:
                 return visitor.visitNet10();
-            case TWO_10_NET_30:
-                return visitor.visitTwo10Net30();
+            case NET_60:
+                return visitor.visitNet60();
             case PIA:
                 return visitor.visitPia();
             case FIVE_MFI:
                 return visitor.visitFiveMfi();
             case CIA:
                 return visitor.visitCia();
+            case TWO_10_NET_30:
+                return visitor.visitTwo10Net30();
             case NET_90:
                 return visitor.visitNet90();
             case TWENTY_FIVE_UF:
                 return visitor.visitTwentyFiveUf();
-            case MFI:
-                return visitor.visitMfi();
+            case TEN_MFI:
+                return visitor.visitTenMfi();
             case TWENTY_UF:
                 return visitor.visitTwentyUf();
+            case MFI:
+                return visitor.visitMfi();
+            case UF:
+                return visitor.visitUf();
             case FIFTEEN_MFI:
                 return visitor.visitFifteenMfi();
             case NET_30:
                 return visitor.visitNet30();
-            case UF:
-                return visitor.visitUf();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -134,10 +134,6 @@ public final class BillDataPaymentTerms {
         switch (value) {
             case "UR":
                 return UR;
-            case "20MFI":
-                return TWENTY_MFI;
-            case "10UF":
-                return TEN_UF;
             case "50UF":
                 return FIFTY_UF;
             case "NET20":
@@ -146,34 +142,38 @@ public final class BillDataPaymentTerms {
                 return NET_45;
             case "EOM":
                 return EOM;
-            case "NET60":
-                return NET_60;
-            case "10MFI":
-                return TEN_MFI;
+            case "20MFI":
+                return TWENTY_MFI;
+            case "10UF":
+                return TEN_UF;
             case "NET10":
                 return NET_10;
-            case "2/10NET30":
-                return TWO_10_NET_30;
+            case "NET60":
+                return NET_60;
             case "PIA":
                 return PIA;
             case "5MFI":
                 return FIVE_MFI;
             case "CIA":
                 return CIA;
+            case "2/10NET30":
+                return TWO_10_NET_30;
             case "NET90":
                 return NET_90;
             case "25UF":
                 return TWENTY_FIVE_UF;
-            case "MFI":
-                return MFI;
+            case "10MFI":
+                return TEN_MFI;
             case "20UF":
                 return TWENTY_UF;
+            case "MFI":
+                return MFI;
+            case "UF":
+                return UF;
             case "15MFI":
                 return FIFTEEN_MFI;
             case "NET30":
                 return NET_30;
-            case "UF":
-                return UF;
             default:
                 return new BillDataPaymentTerms(Value.UNKNOWN, value);
         }

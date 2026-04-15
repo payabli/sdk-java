@@ -7,15 +7,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Methodnotification {
-    public static final Methodnotification EMAIL = new Methodnotification(Value.EMAIL, "email");
-
     public static final Methodnotification WEB = new Methodnotification(Value.WEB, "web");
+
+    public static final Methodnotification EMAIL = new Methodnotification(Value.EMAIL, "email");
 
     public static final Methodnotification SMS = new Methodnotification(Value.SMS, "sms");
 
-    public static final Methodnotification REPORT_EMAIL = new Methodnotification(Value.REPORT_EMAIL, "report-email");
-
     public static final Methodnotification REPORT_WEB = new Methodnotification(Value.REPORT_WEB, "report-web");
+
+    public static final Methodnotification REPORT_EMAIL = new Methodnotification(Value.REPORT_EMAIL, "report-email");
 
     private final Value value;
 
@@ -49,16 +49,16 @@ public final class Methodnotification {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case EMAIL:
-                return visitor.visitEmail();
             case WEB:
                 return visitor.visitWeb();
+            case EMAIL:
+                return visitor.visitEmail();
             case SMS:
                 return visitor.visitSms();
-            case REPORT_EMAIL:
-                return visitor.visitReportEmail();
             case REPORT_WEB:
                 return visitor.visitReportWeb();
+            case REPORT_EMAIL:
+                return visitor.visitReportEmail();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -68,16 +68,16 @@ public final class Methodnotification {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Methodnotification valueOf(String value) {
         switch (value) {
-            case "email":
-                return EMAIL;
             case "web":
                 return WEB;
+            case "email":
+                return EMAIL;
             case "sms":
                 return SMS;
-            case "report-email":
-                return REPORT_EMAIL;
             case "report-web":
                 return REPORT_WEB;
+            case "report-email":
+                return REPORT_EMAIL;
             default:
                 return new Methodnotification(Value.UNKNOWN, value);
         }

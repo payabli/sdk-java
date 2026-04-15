@@ -16,6 +16,12 @@ public final class NotificationReportRequestFrequency {
     public static final NotificationReportRequestFrequency QUARTERLY =
             new NotificationReportRequestFrequency(Value.QUARTERLY, "quarterly");
 
+    public static final NotificationReportRequestFrequency DAILY =
+            new NotificationReportRequestFrequency(Value.DAILY, "daily");
+
+    public static final NotificationReportRequestFrequency WEEKLY =
+            new NotificationReportRequestFrequency(Value.WEEKLY, "weekly");
+
     public static final NotificationReportRequestFrequency MONTHLY =
             new NotificationReportRequestFrequency(Value.MONTHLY, "monthly");
 
@@ -24,12 +30,6 @@ public final class NotificationReportRequestFrequency {
 
     public static final NotificationReportRequestFrequency ANNUALLY =
             new NotificationReportRequestFrequency(Value.ANNUALLY, "annually");
-
-    public static final NotificationReportRequestFrequency DAILY =
-            new NotificationReportRequestFrequency(Value.DAILY, "daily");
-
-    public static final NotificationReportRequestFrequency WEEKLY =
-            new NotificationReportRequestFrequency(Value.WEEKLY, "weekly");
 
     private final Value value;
 
@@ -70,16 +70,16 @@ public final class NotificationReportRequestFrequency {
                 return visitor.visitOneTime();
             case QUARTERLY:
                 return visitor.visitQuarterly();
+            case DAILY:
+                return visitor.visitDaily();
+            case WEEKLY:
+                return visitor.visitWeekly();
             case MONTHLY:
                 return visitor.visitMonthly();
             case SEMIANNUALLY:
                 return visitor.visitSemiannually();
             case ANNUALLY:
                 return visitor.visitAnnually();
-            case DAILY:
-                return visitor.visitDaily();
-            case WEEKLY:
-                return visitor.visitWeekly();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -95,16 +95,16 @@ public final class NotificationReportRequestFrequency {
                 return ONE_TIME;
             case "quarterly":
                 return QUARTERLY;
+            case "daily":
+                return DAILY;
+            case "weekly":
+                return WEEKLY;
             case "monthly":
                 return MONTHLY;
             case "semiannually":
                 return SEMIANNUALLY;
             case "annually":
                 return ANNUALLY;
-            case "daily":
-                return DAILY;
-            case "weekly":
-                return WEEKLY;
             default:
                 return new NotificationReportRequestFrequency(Value.UNKNOWN, value);
         }

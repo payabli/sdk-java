@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Whendelivered {
-    public static final Whendelivered FIFTEEN_30_DAYS = new Whendelivered(Value.FIFTEEN_30_DAYS, "15-30 Days");
-
-    public static final Whendelivered EIGHT_14_DAYS = new Whendelivered(Value.EIGHT_14_DAYS, "8-14 Days");
-
     public static final Whendelivered ZERO_7_DAYS = new Whendelivered(Value.ZERO_7_DAYS, "0-7 Days");
 
     public static final Whendelivered OVER_30_DAYS = new Whendelivered(Value.OVER_30_DAYS, "Over 30 Days");
+
+    public static final Whendelivered EIGHT_14_DAYS = new Whendelivered(Value.EIGHT_14_DAYS, "8-14 Days");
+
+    public static final Whendelivered FIFTEEN_30_DAYS = new Whendelivered(Value.FIFTEEN_30_DAYS, "15-30 Days");
 
     private final Value value;
 
@@ -47,14 +47,14 @@ public final class Whendelivered {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case FIFTEEN_30_DAYS:
-                return visitor.visitFifteen30Days();
-            case EIGHT_14_DAYS:
-                return visitor.visitEight14Days();
             case ZERO_7_DAYS:
                 return visitor.visitZero7Days();
             case OVER_30_DAYS:
                 return visitor.visitOver30Days();
+            case EIGHT_14_DAYS:
+                return visitor.visitEight14Days();
+            case FIFTEEN_30_DAYS:
+                return visitor.visitFifteen30Days();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -64,14 +64,14 @@ public final class Whendelivered {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Whendelivered valueOf(String value) {
         switch (value) {
-            case "15-30 Days":
-                return FIFTEEN_30_DAYS;
-            case "8-14 Days":
-                return EIGHT_14_DAYS;
             case "0-7 Days":
                 return ZERO_7_DAYS;
             case "Over 30 Days":
                 return OVER_30_DAYS;
+            case "8-14 Days":
+                return EIGHT_14_DAYS;
+            case "15-30 Days":
+                return FIFTEEN_30_DAYS;
             default:
                 return new Whendelivered(Value.UNKNOWN, value);
         }

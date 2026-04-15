@@ -11,18 +11,18 @@ public final class OwnType {
 
     public static final OwnType TAX_EXEMPT = new OwnType(Value.TAX_EXEMPT, "Tax Exempt");
 
-    public static final OwnType SOLE_PROPRIETOR = new OwnType(Value.SOLE_PROPRIETOR, "Sole Proprietor");
+    public static final OwnType PUBLIC_CORP = new OwnType(Value.PUBLIC_CORP, "Public Corp");
 
     public static final OwnType GOVERNMENT = new OwnType(Value.GOVERNMENT, "Government");
 
-    public static final OwnType PUBLIC_CORP = new OwnType(Value.PUBLIC_CORP, "Public Corp");
-
-    public static final OwnType NON_PROFIT_ORG = new OwnType(Value.NON_PROFIT_ORG, "Non-Profit Org");
+    public static final OwnType LIMITED_LIABILITY_COMPANY =
+            new OwnType(Value.LIMITED_LIABILITY_COMPANY, "Limited Liability Company");
 
     public static final OwnType PRIVATE_CORP = new OwnType(Value.PRIVATE_CORP, "Private Corp");
 
-    public static final OwnType LIMITED_LIABILITY_COMPANY =
-            new OwnType(Value.LIMITED_LIABILITY_COMPANY, "Limited Liability Company");
+    public static final OwnType SOLE_PROPRIETOR = new OwnType(Value.SOLE_PROPRIETOR, "Sole Proprietor");
+
+    public static final OwnType NON_PROFIT_ORG = new OwnType(Value.NON_PROFIT_ORG, "Non-Profit Org");
 
     private final Value value;
 
@@ -59,18 +59,18 @@ public final class OwnType {
                 return visitor.visitPartnership();
             case TAX_EXEMPT:
                 return visitor.visitTaxExempt();
-            case SOLE_PROPRIETOR:
-                return visitor.visitSoleProprietor();
-            case GOVERNMENT:
-                return visitor.visitGovernment();
             case PUBLIC_CORP:
                 return visitor.visitPublicCorp();
-            case NON_PROFIT_ORG:
-                return visitor.visitNonProfitOrg();
-            case PRIVATE_CORP:
-                return visitor.visitPrivateCorp();
+            case GOVERNMENT:
+                return visitor.visitGovernment();
             case LIMITED_LIABILITY_COMPANY:
                 return visitor.visitLimitedLiabilityCompany();
+            case PRIVATE_CORP:
+                return visitor.visitPrivateCorp();
+            case SOLE_PROPRIETOR:
+                return visitor.visitSoleProprietor();
+            case NON_PROFIT_ORG:
+                return visitor.visitNonProfitOrg();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -84,18 +84,18 @@ public final class OwnType {
                 return PARTNERSHIP;
             case "Tax Exempt":
                 return TAX_EXEMPT;
-            case "Sole Proprietor":
-                return SOLE_PROPRIETOR;
-            case "Government":
-                return GOVERNMENT;
             case "Public Corp":
                 return PUBLIC_CORP;
-            case "Non-Profit Org":
-                return NON_PROFIT_ORG;
-            case "Private Corp":
-                return PRIVATE_CORP;
+            case "Government":
+                return GOVERNMENT;
             case "Limited Liability Company":
                 return LIMITED_LIABILITY_COMPANY;
+            case "Private Corp":
+                return PRIVATE_CORP;
+            case "Sole Proprietor":
+                return SOLE_PROPRIETOR;
+            case "Non-Profit Org":
+                return NON_PROFIT_ORG;
             default:
                 return new OwnType(Value.UNKNOWN, value);
         }

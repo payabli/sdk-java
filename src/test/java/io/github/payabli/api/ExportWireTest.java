@@ -1559,7 +1559,9 @@ public class ExportWireTest {
             while (iter.hasNext()) {
                 java.util.Map.Entry<String, JsonNode> entry = iter.next();
                 JsonNode actualValue = actual.get(entry.getKey());
-                if (actualValue == null || !jsonEquals(entry.getValue(), actualValue)) return false;
+                if (actualValue == null) {
+                    if (!entry.getValue().isNull()) return false;
+                } else if (!jsonEquals(entry.getValue(), actualValue)) return false;
             }
             return true;
         }

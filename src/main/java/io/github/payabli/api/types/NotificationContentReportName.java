@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class NotificationContentReportName {
+    public static final NotificationContentReportName RETURNED =
+            new NotificationContentReportName(Value.RETURNED, "Returned");
+
     public static final NotificationContentReportName SETTLEMENT =
             new NotificationContentReportName(Value.SETTLEMENT, "Settlement");
 
     public static final NotificationContentReportName BOARDING =
             new NotificationContentReportName(Value.BOARDING, "Boarding");
-
-    public static final NotificationContentReportName RETURNED =
-            new NotificationContentReportName(Value.RETURNED, "Returned");
 
     public static final NotificationContentReportName TRANSACTION =
             new NotificationContentReportName(Value.TRANSACTION, "Transaction");
@@ -52,12 +52,12 @@ public final class NotificationContentReportName {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
+            case RETURNED:
+                return visitor.visitReturned();
             case SETTLEMENT:
                 return visitor.visitSettlement();
             case BOARDING:
                 return visitor.visitBoarding();
-            case RETURNED:
-                return visitor.visitReturned();
             case TRANSACTION:
                 return visitor.visitTransaction();
             case UNKNOWN:
@@ -69,12 +69,12 @@ public final class NotificationContentReportName {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static NotificationContentReportName valueOf(String value) {
         switch (value) {
+            case "Returned":
+                return RETURNED;
             case "Settlement":
                 return SETTLEMENT;
             case "Boarding":
                 return BOARDING;
-            case "Returned":
-                return RETURNED;
             case "Transaction":
                 return TRANSACTION;
             default:

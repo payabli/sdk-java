@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class BillQueryRecord2PaymentMethod {
+    public static final BillQueryRecord2PaymentMethod VCARD = new BillQueryRecord2PaymentMethod(Value.VCARD, "vcard");
+
+    public static final BillQueryRecord2PaymentMethod ACH = new BillQueryRecord2PaymentMethod(Value.ACH, "ach");
+
     public static final BillQueryRecord2PaymentMethod CHECK = new BillQueryRecord2PaymentMethod(Value.CHECK, "check");
 
     public static final BillQueryRecord2PaymentMethod MANAGED =
             new BillQueryRecord2PaymentMethod(Value.MANAGED, "managed");
-
-    public static final BillQueryRecord2PaymentMethod VCARD = new BillQueryRecord2PaymentMethod(Value.VCARD, "vcard");
-
-    public static final BillQueryRecord2PaymentMethod ACH = new BillQueryRecord2PaymentMethod(Value.ACH, "ach");
 
     public static final BillQueryRecord2PaymentMethod CARD = new BillQueryRecord2PaymentMethod(Value.CARD, "card");
 
@@ -51,14 +51,14 @@ public final class BillQueryRecord2PaymentMethod {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case CHECK:
-                return visitor.visitCheck();
-            case MANAGED:
-                return visitor.visitManaged();
             case VCARD:
                 return visitor.visitVcard();
             case ACH:
                 return visitor.visitAch();
+            case CHECK:
+                return visitor.visitCheck();
+            case MANAGED:
+                return visitor.visitManaged();
             case CARD:
                 return visitor.visitCard();
             case UNKNOWN:
@@ -70,14 +70,14 @@ public final class BillQueryRecord2PaymentMethod {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static BillQueryRecord2PaymentMethod valueOf(String value) {
         switch (value) {
-            case "check":
-                return CHECK;
-            case "managed":
-                return MANAGED;
             case "vcard":
                 return VCARD;
             case "ach":
                 return ACH;
+            case "check":
+                return CHECK;
+            case "managed":
+                return MANAGED;
             case "card":
                 return CARD;
             default:

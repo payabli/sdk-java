@@ -13,11 +13,11 @@ public final class MethodElementSettingsApplePayButtonType {
     public static final MethodElementSettingsApplePayButtonType CHECK_OUT =
             new MethodElementSettingsApplePayButtonType(Value.CHECK_OUT, "check-out");
 
-    public static final MethodElementSettingsApplePayButtonType BUY =
-            new MethodElementSettingsApplePayButtonType(Value.BUY, "buy");
-
     public static final MethodElementSettingsApplePayButtonType ORDER =
             new MethodElementSettingsApplePayButtonType(Value.ORDER, "order");
+
+    public static final MethodElementSettingsApplePayButtonType BUY =
+            new MethodElementSettingsApplePayButtonType(Value.BUY, "buy");
 
     public static final MethodElementSettingsApplePayButtonType PLAIN =
             new MethodElementSettingsApplePayButtonType(Value.PLAIN, "plain");
@@ -25,14 +25,14 @@ public final class MethodElementSettingsApplePayButtonType {
     public static final MethodElementSettingsApplePayButtonType RENT =
             new MethodElementSettingsApplePayButtonType(Value.RENT, "rent");
 
+    public static final MethodElementSettingsApplePayButtonType DONATE =
+            new MethodElementSettingsApplePayButtonType(Value.DONATE, "donate");
+
     public static final MethodElementSettingsApplePayButtonType TOP_UP =
             new MethodElementSettingsApplePayButtonType(Value.TOP_UP, "top-up");
 
     public static final MethodElementSettingsApplePayButtonType SUPPORT =
             new MethodElementSettingsApplePayButtonType(Value.SUPPORT, "support");
-
-    public static final MethodElementSettingsApplePayButtonType DONATE =
-            new MethodElementSettingsApplePayButtonType(Value.DONATE, "donate");
 
     public static final MethodElementSettingsApplePayButtonType TIP =
             new MethodElementSettingsApplePayButtonType(Value.TIP, "tip");
@@ -40,11 +40,11 @@ public final class MethodElementSettingsApplePayButtonType {
     public static final MethodElementSettingsApplePayButtonType PAY =
             new MethodElementSettingsApplePayButtonType(Value.PAY, "pay");
 
-    public static final MethodElementSettingsApplePayButtonType BOOK =
-            new MethodElementSettingsApplePayButtonType(Value.BOOK, "book");
-
     public static final MethodElementSettingsApplePayButtonType CONTINUE =
             new MethodElementSettingsApplePayButtonType(Value.CONTINUE, "continue");
+
+    public static final MethodElementSettingsApplePayButtonType BOOK =
+            new MethodElementSettingsApplePayButtonType(Value.BOOK, "book");
 
     private final Value value;
 
@@ -83,28 +83,28 @@ public final class MethodElementSettingsApplePayButtonType {
                 return visitor.visitContribute();
             case CHECK_OUT:
                 return visitor.visitCheckOut();
-            case BUY:
-                return visitor.visitBuy();
             case ORDER:
                 return visitor.visitOrder();
+            case BUY:
+                return visitor.visitBuy();
             case PLAIN:
                 return visitor.visitPlain();
             case RENT:
                 return visitor.visitRent();
+            case DONATE:
+                return visitor.visitDonate();
             case TOP_UP:
                 return visitor.visitTopUp();
             case SUPPORT:
                 return visitor.visitSupport();
-            case DONATE:
-                return visitor.visitDonate();
             case TIP:
                 return visitor.visitTip();
             case PAY:
                 return visitor.visitPay();
-            case BOOK:
-                return visitor.visitBook();
             case CONTINUE:
                 return visitor.visitContinue();
+            case BOOK:
+                return visitor.visitBook();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -118,28 +118,28 @@ public final class MethodElementSettingsApplePayButtonType {
                 return CONTRIBUTE;
             case "check-out":
                 return CHECK_OUT;
-            case "buy":
-                return BUY;
             case "order":
                 return ORDER;
+            case "buy":
+                return BUY;
             case "plain":
                 return PLAIN;
             case "rent":
                 return RENT;
+            case "donate":
+                return DONATE;
             case "top-up":
                 return TOP_UP;
             case "support":
                 return SUPPORT;
-            case "donate":
-                return DONATE;
             case "tip":
                 return TIP;
             case "pay":
                 return PAY;
-            case "book":
-                return BOOK;
             case "continue":
                 return CONTINUE;
+            case "book":
+                return BOOK;
             default:
                 return new MethodElementSettingsApplePayButtonType(Value.UNKNOWN, value);
         }

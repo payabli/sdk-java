@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Methodall {
-    public static final Methodall CHECK = new Methodall(Value.CHECK, "check");
-
     public static final Methodall ACH = new Methodall(Value.ACH, "ach");
+
+    public static final Methodall CHECK = new Methodall(Value.CHECK, "check");
 
     public static final Methodall CARD = new Methodall(Value.CARD, "card");
 
@@ -48,10 +48,10 @@ public final class Methodall {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case CHECK:
-                return visitor.visitCheck();
             case ACH:
                 return visitor.visitAch();
+            case CHECK:
+                return visitor.visitCheck();
             case CARD:
                 return visitor.visitCard();
             case CASH:
@@ -67,10 +67,10 @@ public final class Methodall {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Methodall valueOf(String value) {
         switch (value) {
-            case "check":
-                return CHECK;
             case "ach":
                 return ACH;
+            case "check":
+                return CHECK;
             case "card":
                 return CARD;
             case "cash":
