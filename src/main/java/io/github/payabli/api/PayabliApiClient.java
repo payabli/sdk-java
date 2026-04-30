@@ -17,6 +17,7 @@ import io.github.payabli.api.resources.hostedpaymentpages.HostedPaymentPagesClie
 import io.github.payabli.api.resources.import_.ImportClient;
 import io.github.payabli.api.resources.invoice.InvoiceClient;
 import io.github.payabli.api.resources.lineitem.LineItemClient;
+import io.github.payabli.api.resources.management.ManagementClient;
 import io.github.payabli.api.resources.moneyin.MoneyInClient;
 import io.github.payabli.api.resources.moneyout.MoneyOutClient;
 import io.github.payabli.api.resources.notification.NotificationClient;
@@ -63,6 +64,8 @@ public class PayabliApiClient {
     protected final Supplier<InvoiceClient> invoiceClient;
 
     protected final Supplier<LineItemClient> lineItemClient;
+
+    protected final Supplier<ManagementClient> managementClient;
 
     protected final Supplier<MoneyInClient> moneyInClient;
 
@@ -114,6 +117,7 @@ public class PayabliApiClient {
         this.importClient = Suppliers.memoize(() -> new ImportClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
+        this.managementClient = Suppliers.memoize(() -> new ManagementClient(clientOptions));
         this.moneyInClient = Suppliers.memoize(() -> new MoneyInClient(clientOptions));
         this.moneyOutClient = Suppliers.memoize(() -> new MoneyOutClient(clientOptions));
         this.notificationClient = Suppliers.memoize(() -> new NotificationClient(clientOptions));
@@ -180,6 +184,10 @@ public class PayabliApiClient {
 
     public LineItemClient lineItem() {
         return this.lineItemClient.get();
+    }
+
+    public ManagementClient management() {
+        return this.managementClient.get();
     }
 
     public MoneyInClient moneyIn() {

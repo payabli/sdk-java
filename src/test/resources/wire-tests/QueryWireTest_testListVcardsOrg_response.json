@@ -2,6 +2,7 @@
   "Records": [
     {
       "vcardSent": true,
+      "cardType": 0,
       "cardToken": "vcrd_5Ty8NrBzXjKuqHm9DwElfP",
       "cardNumber": "44XX XXXX XXXX 1234",
       "cvc": "XXX",

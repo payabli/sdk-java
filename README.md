@@ -64,9 +64,11 @@ Instantiate and use the client with the following:
 package com.example.usage;
 
 import io.github.payabli.api.PayabliApiClient;
-import io.github.payabli.api.resources.moneyin.requests.RequestPayment;
+import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
 import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
-import io.github.payabli.api.types.PayMethodCredit;
+import io.github.payabli.api.types.AchHolderType;
+import io.github.payabli.api.types.Achaccounttype;
+import io.github.payabli.api.types.PayMethodAch;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
@@ -79,8 +81,8 @@ public class Example {
             .apiKey("<value>")
             .build();
 
-        client.moneyIn().getpaid(
-            RequestPayment
+        client.moneyIn().getpaidv2(
+            RequestPaymentV2
                 .builder()
                 .body(
                     TransRequestBody
@@ -88,44 +90,31 @@ public class Example {
                         .paymentDetails(
                             PaymentDetail
                                 .builder()
-                                .totalAmount(1000.0)
+                                .totalAmount(100.0)
                                 .serviceFee(0.0)
                                 .build()
                         )
                         .paymentMethod(
                             PaymentMethod.of(
-                                PayMethodCredit
+                                PayMethodAch
                                     .builder()
-                                    .cardexp("02/25")
-                                    .cardnumber("4111111111111111")
-                                    .cardcvv(Optional.of("123"))
-                                    .cardHolder(Optional.of("John Cassian"))
-                                    .cardzip(Optional.of("12345"))
-                                    .initiator(Optional.of("payor"))
-                                    .saveIfSuccess(Optional.of(true))
+                                    .achAccount("123123123")
+                                    .achHolder("John Cassian")
+                                    .achRouting("123123123")
+                                    .achAccountType(Optional.of(Achaccounttype.CHECKING))
+                                    .achCode(Optional.of("WEB"))
+                                    .achHolderType(Optional.of(AchHolderType.PERSONAL))
                                     .build()
                             )
                         )
                         .customerData(
                             PayorDataRequest
                                 .builder()
-                                .billingAddress1("123 Walnut Street")
-                                .billingCity("Johnson City")
-                                .billingCountry("US")
-                                .billingEmail("john@email.com")
-                                .billingPhone("1234567890")
-                                .billingState("Johnson City")
-                                .billingZip("37615")
-                                .customerNumber("3456-7645A")
-                                .firstName("John")
-                                .lastName("Cassian")
+                                .customerId(4440L)
                                 .build()
                         )
                         .entryPoint("f743aed24a")
                         .ipaddress("255.255.255.255")
-                        .orderDescription("New customer package")
-                        .orderId("982-102")
-                        .source("web")
                         .build()
                 )
                 .build()
@@ -169,7 +158,7 @@ When the API returns a non-success status code (4xx or 5xx response), an API exc
 import io.github.payabli.api.core.PayabliApiApiException;
 
 try{
-    client.moneyIn().getpaid(...);
+    client.moneyIn().getpaidv2(...);
 } catch (PayabliApiApiException e){
     // Do something with the API exception...
 }
@@ -233,7 +222,7 @@ PayabliApiClient client = PayabliApiClient
     .build();
 
 // Request level
-client.moneyIn().getpaid(
+client.moneyIn().getpaidv2(
     ...,
     RequestOptions
         .builder()
@@ -259,7 +248,7 @@ PayabliApiClient client = PayabliApiClient
 ;
 
 // Request level
-client.moneyIn().getpaid(
+client.moneyIn().getpaidv2(
     ...,
     RequestOptions
         .builder()
@@ -275,7 +264,7 @@ The `withRawResponse()` method returns a raw client that wraps all responses wit
 (A normal client's `response` is identical to a raw client's `response.body()`.)
 
 ```java
-PayabliApiHttpResponse response = client.moneyIn().withRawResponse().getpaid(...);
+PayabliApiHttpResponse response = client.moneyIn().withRawResponse().getpaidv2(...);
 
 System.out.println(response.body());
 System.out.println(response.headers().get("X-My-Header"));
@@ -302,7 +291,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:0.0.324'
+  implementation 'io.github.payabli:sdk-java:0.0.325'
 }
 ```
 
@@ -314,7 +303,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.324</version>
+  <version>0.0.325</version>
 </dependency>
 ```
 

@@ -26,6 +26,8 @@ import io.github.payabli.api.resources.query.requests.ListChargebacksOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListChargebacksRequest;
 import io.github.payabli.api.resources.query.requests.ListCustomersOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListCustomersRequest;
+import io.github.payabli.api.resources.query.requests.ListDevicesOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListDevicesRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationReportsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationReportsRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationsOrgRequest;
@@ -57,6 +59,7 @@ import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
 import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryBatchesResponse;
+import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
@@ -1282,6 +1285,252 @@ public class AsyncRawQueryClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryCustomerResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(String entry) {
+        return listDevices(entry, ListDevicesRequest.builder().build());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(
+            String entry, RequestOptions requestOptions) {
+        return listDevices(entry, ListDevicesRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(
+            String entry, ListDevicesRequest request) {
+        return listDevices(entry, request, null);
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(
+            String entry, ListDevicesRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Query/devices")
+                .addPathSegment(entry);
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
+        if (request.getFromRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "fromRecord", request.getFromRecord().get(), false);
+        }
+        if (request.getLimitRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limitRecord", request.getLimitRecord().get(), false);
+        }
+        if (request.getParameters().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (request.getSortBy().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryDeviceResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(int orgId) {
+        return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(
+            int orgId, RequestOptions requestOptions) {
+        return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(
+            int orgId, ListDevicesOrgRequest request) {
+        return listDevicesOrg(orgId, request, null);
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(
+            int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Query/devices/org")
+                .addPathSegment(Integer.toString(orgId));
+        if (request.getExportFormat().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "exportFormat", request.getExportFormat().get(), false);
+        }
+        if (request.getFromRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "fromRecord", request.getFromRecord().get(), false);
+        }
+        if (request.getLimitRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limitRecord", request.getLimitRecord().get(), false);
+        }
+        if (request.getParameters().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (request.getSortBy().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryDeviceResponse.class),
                                 response));
                         return;
                     }

@@ -2452,6 +2452,8 @@ client.cloud().historyDevice("8cfec329267", "WXGDWB");
 <dl>
 <dd>
 
+Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+
 Get a list of cloud devices registered to an entrypoint.
 </dd>
 </dl>
@@ -9851,6 +9853,124 @@ client.lineItem().updateItem(
 </dl>
 </details>
 
+## Management
+<details><summary><code>client.management.verifyAccountDetails(entry, request) -> VerifyAccountDetailsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Verifies a bank account and returns detailed verification results from the verification network, including bank name, account status, and response codes. Unlike a pass/fail verification, this endpoint returns granular data to support decision-making and troubleshooting.
+
+When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
+
+Requires `inboundpayments_create` or `outboundpayments_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.management().verifyAccountDetails(
+    "entry752",
+    VerifyAccountDetailsRequest
+        .builder()
+        .routingNumber("122105278")
+        .accountNumber("0000000016")
+        .accountType("Checking")
+        .country("US")
+        .accountHolderType("personal")
+        .holderName("Jane Doe")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entry name identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `String` — The bank routing number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `String` — The bank account number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `Optional<String>` — The type of bank account, such as `Checking` or `Savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `Optional<String>` — The ISO country code for the bank account, such as `US`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountHolderType:** `Optional<String>` — The type of account holder. Accepted values are `personal` or `business`. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**holderName:** `Optional<String>` — The name of the bank account holder. For personal accounts, provide the holder's full name (for example, `Jane Doe`); the value is split on the first space into first and last name. For business accounts, provide the legal business name. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## MoneyIn
 <details><summary><code>client.moneyIn.authorize(request) -> AuthResponse</code></summary>
 <dl>
@@ -10476,7 +10596,7 @@ client.moneyIn().getpaid(
 <dl>
 <dd>
 
-A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
+A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the v1 API. For v2 transactions, check the transaction's settlement status and call v2 void or v2 refund based on the result.
 </dd>
 </dl>
 </dd>
@@ -18076,6 +18196,398 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
+<details><summary><code>client.query.listDevices(entry) -> QueryDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listDevices(
+    "8cfec329267",
+    ListDevicesRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .sortBy("desc(createdAt)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+
+Collection of field names, conditions, and values used to filter
+the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/8cfec329267?parameters=status=1&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/8cfec329267?status=1&limitRecord=20
+</Info>
+
+See [Filters and Conditions
+Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference)
+for more information.
+
+**List of field names accepted:**
+
+
+- `deviceId` (eq, ne, ct, nct)
+
+- `serialNumber` (eq, ne, ct, nct)
+
+- `friendlyName` (eq, ne, ct, nct)
+
+- `description` (eq, ne, ct, nct)
+
+- `model` (eq, ne, ct, nct)
+
+- `make` (eq, ne, ct, nct)
+
+- `macAddress` (eq, ne, ct, nct)
+
+- `registrationCode` (eq, ne, ct, nct)
+
+- `status` (eq, ne, in, nin)
+
+- `deviceType` (eq, ne, in, nin)
+
+- `deviceOs` (eq, ne, in, nin)
+
+- `activationAttempts` (eq, ne, gt, ge, lt, le)
+
+- `createdDate` (gt, ge, lt, le, eq, ne)
+
+- `updatedDate` (gt, ge, lt, le, eq, ne)
+
+- `lastHealthCheck` (gt, ge, lt, le, eq, ne)
+
+- `activationExpiry` (gt, ge, lt, le, eq, ne). This filter corresponds to the `activationCodeExpiry` response field.
+
+- `paypointId` (eq, ne)
+
+- `paypointDba` (eq, ne, ct, nct)
+
+- `paypointLegal` (eq, ne, ct, nct)
+
+- `paypointEntry` (eq, ne, ct, nct)
+
+- `externalPaypointId` (eq, ne, ct, nct)
+
+- `parentOrgId` (eq, ne)
+
+- `parentOrgName` (eq, ne, ct, nct)
+
+
+**List of comparison operators accepted:**
+
+- `eq` or empty => equal
+
+- `gt` => greater than
+
+- `ge` => greater or equal
+
+- `lt` => less than
+
+- `le` => less or equal
+
+- `ne` => not equal
+
+- `ct` => contains
+
+- `nct` => not contains
+
+- `in` => inside array
+
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.query.listDevicesOrg(orgId) -> QueryDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of cloud devices for a single organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.query().listDevicesOrg(
+    100,
+    ListDevicesOrgRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .sortBy("desc(createdAt)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+
+Collection of field names, conditions, and values used to filter
+the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&limitRecord=20
+</Info>
+
+See [Filters and Conditions
+Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference)
+for more information.
+
+**List of field names accepted:**
+
+
+- `deviceId` (eq, ne, ct, nct)
+
+- `serialNumber` (eq, ne, ct, nct)
+
+- `friendlyName` (eq, ne, ct, nct)
+
+- `description` (eq, ne, ct, nct)
+
+- `model` (eq, ne, ct, nct)
+
+- `make` (eq, ne, ct, nct)
+
+- `macAddress` (eq, ne, ct, nct)
+
+- `registrationCode` (eq, ne, ct, nct)
+
+- `status` (eq, ne, in, nin)
+
+- `deviceType` (eq, ne, in, nin)
+
+- `deviceOs` (eq, ne, in, nin)
+
+- `activationAttempts` (eq, ne, gt, ge, lt, le)
+
+- `createdDate` (gt, ge, lt, le, eq, ne)
+
+- `updatedDate` (gt, ge, lt, le, eq, ne)
+
+- `lastHealthCheck` (gt, ge, lt, le, eq, ne)
+
+- `activationExpiry` (gt, ge, lt, le, eq, ne). This filter corresponds to the `activationCodeExpiry` response field.
+
+- `paypointId` (eq, ne)
+
+- `paypointDba` (eq, ne, ct, nct)
+
+- `paypointLegal` (eq, ne, ct, nct)
+
+- `paypointEntry` (eq, ne, ct, nct)
+
+- `externalPaypointId` (eq, ne, ct, nct)
+
+- `parentOrgId` (eq, ne)
+
+- `parentOrgName` (eq, ne, ct, nct)
+
+
+**List of comparison operators accepted:**
+
+- `eq` or empty => equal
+
+- `gt` => greater than
+
+- `ge` => greater or equal
+
+- `lt` => less than
+
+- `le` => less or equal
+
+- `ne` => not equal
+
+- `ct` => contains
+
+- `nct` => not contains
+
+- `in` => inside array
+
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.query.listNotificationReports(entry) -> QueryResponseNotificationReports</code></summary>
 <dl>
 <dd>
@@ -22227,6 +22739,7 @@ List of field names accepted:
   - `orgName` (ne, eq, ct, nct)  
   - `externalPaypointId` (ct, nct, eq, ne)  
   - `paypointId` (in, nin, eq, ne)  
+  - `cardType` (eq)  
 
 List of comparison accepted - enclosed between parentheses:  
 
@@ -22376,6 +22889,7 @@ List of field names accepted:
   - `orgName` (ne, eq, ct, nct)  
   - `externalPaypointId` (ct, nct, eq, ne)  
   - `paypointId` (in, nin, eq, ne)  
+  - `cardType` (eq)  
 
 List of comparison accepted - enclosed between parentheses:  
 

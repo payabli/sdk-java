@@ -30,6 +30,8 @@ public final class TemplateElement {
 
     private final Optional<Boolean> visible;
 
+    private final Optional<Boolean> required;
+
     private final Map<String, Object> additionalProperties;
 
     private TemplateElement(
@@ -38,12 +40,14 @@ public final class TemplateElement {
             Optional<Boolean> readOnly,
             Optional<String> value,
             Optional<Boolean> visible,
+            Optional<Boolean> required,
             Map<String, Object> additionalProperties) {
         this.posCol = posCol;
         this.posRow = posRow;
         this.readOnly = readOnly;
         this.value = value;
         this.visible = visible;
+        this.required = required;
         this.additionalProperties = additionalProperties;
     }
 
@@ -72,6 +76,11 @@ public final class TemplateElement {
         return visible;
     }
 
+    @JsonProperty("required")
+    public Optional<Boolean> getRequired() {
+        return required;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -88,12 +97,13 @@ public final class TemplateElement {
                 && posRow.equals(other.posRow)
                 && readOnly.equals(other.readOnly)
                 && value.equals(other.value)
-                && visible.equals(other.visible);
+                && visible.equals(other.visible)
+                && required.equals(other.required);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.posCol, this.posRow, this.readOnly, this.value, this.visible);
+        return Objects.hash(this.posCol, this.posRow, this.readOnly, this.value, this.visible, this.required);
     }
 
     @java.lang.Override
@@ -117,6 +127,8 @@ public final class TemplateElement {
 
         private Optional<Boolean> visible = Optional.empty();
 
+        private Optional<Boolean> required = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -128,6 +140,7 @@ public final class TemplateElement {
             readOnly(other.getReadOnly());
             value(other.getValue());
             visible(other.getVisible());
+            required(other.getRequired());
             return this;
         }
 
@@ -186,8 +199,19 @@ public final class TemplateElement {
             return this;
         }
 
+        @JsonSetter(value = "required", nulls = Nulls.SKIP)
+        public Builder required(Optional<Boolean> required) {
+            this.required = required;
+            return this;
+        }
+
+        public Builder required(Boolean required) {
+            this.required = Optional.ofNullable(required);
+            return this;
+        }
+
         public TemplateElement build() {
-            return new TemplateElement(posCol, posRow, readOnly, value, visible, additionalProperties);
+            return new TemplateElement(posCol, posRow, readOnly, value, visible, required, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -308,7 +308,15 @@ public final class QueryChargebacksResponseRecordsItem {
     }
 
     /**
-     * @return Status of the transaction.
+     * @return Status of the chargeback or ACH return.
+     * <ul>
+     * <li>0: Open (chargebacks only)</li>
+     * <li>1: Pending (chargebacks only)</li>
+     * <li>2: ClosedWon (chargebacks only)</li>
+     * <li>3: ClosedLost (chargebacks only)</li>
+     * <li>4: ACH return (any Nacha return code except R29)</li>
+     * <li>5: AchDispute (R29 only — debit block)</li>
+     * </ul>
      */
     @JsonProperty("Status")
     public Optional<Integer> getStatus() {
@@ -816,7 +824,15 @@ public final class QueryChargebacksResponseRecordsItem {
         }
 
         /**
-         * <p>Status of the transaction.</p>
+         * <p>Status of the chargeback or ACH return.</p>
+         * <ul>
+         * <li>0: Open (chargebacks only)</li>
+         * <li>1: Pending (chargebacks only)</li>
+         * <li>2: ClosedWon (chargebacks only)</li>
+         * <li>3: ClosedLost (chargebacks only)</li>
+         * <li>4: ACH return (any Nacha return code except R29)</li>
+         * <li>5: AchDispute (R29 only — debit block)</li>
+         * </ul>
          */
         @JsonSetter(value = "Status", nulls = Nulls.SKIP)
         public Builder status(Optional<Integer> status) {

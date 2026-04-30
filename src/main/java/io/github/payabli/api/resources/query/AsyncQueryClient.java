@@ -16,6 +16,8 @@ import io.github.payabli.api.resources.query.requests.ListChargebacksOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListChargebacksRequest;
 import io.github.payabli.api.resources.query.requests.ListCustomersOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListCustomersRequest;
+import io.github.payabli.api.resources.query.requests.ListDevicesOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListDevicesRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationReportsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationReportsRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationsOrgRequest;
@@ -47,6 +49,7 @@ import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
 import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryBatchesResponse;
+import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
@@ -380,6 +383,64 @@ public class AsyncQueryClient {
     public CompletableFuture<QueryCustomerResponse> listCustomersOrg(
             int orgId, ListCustomersOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient.listCustomersOrg(orgId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevices(String entry) {
+        return this.rawClient.listDevices(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevices(String entry, RequestOptions requestOptions) {
+        return this.rawClient.listDevices(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevices(String entry, ListDevicesRequest request) {
+        return this.rawClient.listDevices(entry, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevices(
+            String entry, ListDevicesRequest request, RequestOptions requestOptions) {
+        return this.rawClient.listDevices(entry, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevicesOrg(int orgId) {
+        return this.rawClient.listDevicesOrg(orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevicesOrg(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listDevicesOrg(orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevicesOrg(int orgId, ListDevicesOrgRequest request) {
+        return this.rawClient.listDevicesOrg(orgId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     */
+    public CompletableFuture<QueryDeviceResponse> listDevicesOrg(
+            int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {
+        return this.rawClient.listDevicesOrg(orgId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**

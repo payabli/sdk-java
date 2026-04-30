@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = ListVcardsOrgRequest.Builder.class)
-public final class ListVcardsOrgRequest {
+@JsonDeserialize(builder = ListDevicesOrgRequest.Builder.class)
+public final class ListDevicesOrgRequest {
     private final Optional<ExportFormat> exportFormat;
 
     private final Optional<Integer> fromRecord;
@@ -33,7 +33,7 @@ public final class ListVcardsOrgRequest {
 
     private final Map<String, Object> additionalProperties;
 
-    private ListVcardsOrgRequest(
+    private ListDevicesOrgRequest(
             Optional<ExportFormat> exportFormat,
             Optional<Integer> fromRecord,
             Optional<Integer> limitRecord,
@@ -70,48 +70,123 @@ public final class ListVcardsOrgRequest {
     }
 
     /**
-     * @return Collection of field names, conditions, and values used to filter the query.
-     * &lt;Info&gt;
-     * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong>
+     * @return Collection of field names, conditions, and values used to filter
+     * the query.
+     * <p>&lt;Info&gt;
+     *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
      * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
      * <p>For example:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&amp;limitRecord=20</p>
      * <p>should become:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
-     * &lt;/Info&gt;
-     * List of field names accepted:</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&amp;limitRecord=20
+     * &lt;/Info&gt;</p>
+     * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions
+     * Reference</a>
+     * for more information.</p>
+     * <p><strong>List of field names accepted:</strong></p>
      * <ul>
-     * <li><code>status</code> (in, nin, eq, ne)</li>
-     * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
-     * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
-     * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
-     * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
-     * <li><code>payoutId</code> (ct, nct, eq, ne, in, nin)</li>
-     * <li><code>vendorId</code> (ct, nct, eq, ne, in, nin)</li>
-     * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
-     * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
-     * <li><code>currentUses</code> (gt, ge, lt, le, eq, ne)</li>
-     * <li><code>amount</code> (gt, ge, lt, le, eq, ne)</li>
-     * <li><code>balance</code> (gt, ge, lt, le, eq, ne)</li>
-     * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
-     * <li><code>paypointDba</code> (ne, eq, ct, nct)</li>
-     * <li><code>orgName</code> (ne, eq, ct, nct)</li>
-     * <li><code>externalPaypointId</code> (ct, nct, eq, ne)</li>
-     * <li><code>paypointId</code> (in, nin, eq, ne)</li>
-     * <li><code>cardType</code> (eq)</li>
+     * <li>
+     * <p><code>deviceId</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>serialNumber</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>friendlyName</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>description</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>model</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>make</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>macAddress</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>registrationCode</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>status</code> (eq, ne, in, nin)</p>
+     * </li>
+     * <li>
+     * <p><code>deviceType</code> (eq, ne, in, nin)</p>
+     * </li>
+     * <li>
+     * <p><code>deviceOs</code> (eq, ne, in, nin)</p>
+     * </li>
+     * <li>
+     * <p><code>activationAttempts</code> (eq, ne, gt, ge, lt, le)</p>
+     * </li>
+     * <li>
+     * <p><code>createdDate</code> (gt, ge, lt, le, eq, ne)</p>
+     * </li>
+     * <li>
+     * <p><code>updatedDate</code> (gt, ge, lt, le, eq, ne)</p>
+     * </li>
+     * <li>
+     * <p><code>lastHealthCheck</code> (gt, ge, lt, le, eq, ne)</p>
+     * </li>
+     * <li>
+     * <p><code>activationExpiry</code> (gt, ge, lt, le, eq, ne). This filter corresponds to the <code>activationCodeExpiry</code> response field.</p>
+     * </li>
+     * <li>
+     * <p><code>paypointId</code> (eq, ne)</p>
+     * </li>
+     * <li>
+     * <p><code>paypointDba</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>paypointLegal</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>paypointEntry</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>externalPaypointId</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>parentOrgId</code> (eq, ne)</p>
+     * </li>
+     * <li>
+     * <p><code>parentOrgName</code> (eq, ne, ct, nct)</p>
+     * </li>
      * </ul>
-     * <p>List of comparison accepted - enclosed between parentheses:</p>
+     * <p><strong>List of comparison operators accepted:</strong></p>
      * <ul>
-     * <li>eq or empty =&gt; equal</li>
-     * <li>gt =&gt; greater than</li>
-     * <li>ge =&gt; greater or equal</li>
-     * <li>lt =&gt; less than</li>
-     * <li>le =&gt; less or equal</li>
-     * <li>ne =&gt; not equal</li>
-     * <li>ct =&gt; contains</li>
-     * <li>nct =&gt; not contains</li>
-     * <li>in =&gt; inside array separated by &quot;|&quot;</li>
-     * <li>nin =&gt; not inside array separated by &quot;|&quot;</li>
+     * <li>
+     * <p><code>eq</code> or empty =&gt; equal</p>
+     * </li>
+     * <li>
+     * <p><code>gt</code> =&gt; greater than</p>
+     * </li>
+     * <li>
+     * <p><code>ge</code> =&gt; greater or equal</p>
+     * </li>
+     * <li>
+     * <p><code>lt</code> =&gt; less than</p>
+     * </li>
+     * <li>
+     * <p><code>le</code> =&gt; less or equal</p>
+     * </li>
+     * <li>
+     * <p><code>ne</code> =&gt; not equal</p>
+     * </li>
+     * <li>
+     * <p><code>ct</code> =&gt; contains</p>
+     * </li>
+     * <li>
+     * <p><code>nct</code> =&gt; not contains</p>
+     * </li>
+     * <li>
+     * <p><code>in</code> =&gt; inside array</p>
+     * </li>
+     * <li>
+     * <p><code>nin</code> =&gt; not inside array</p>
+     * </li>
      * </ul>
      */
     @JsonIgnore
@@ -130,7 +205,7 @@ public final class ListVcardsOrgRequest {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ListVcardsOrgRequest && equalTo((ListVcardsOrgRequest) other);
+        return other instanceof ListDevicesOrgRequest && equalTo((ListDevicesOrgRequest) other);
     }
 
     @JsonAnyGetter
@@ -138,7 +213,7 @@ public final class ListVcardsOrgRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ListVcardsOrgRequest other) {
+    private boolean equalTo(ListDevicesOrgRequest other) {
         return exportFormat.equals(other.exportFormat)
                 && fromRecord.equals(other.fromRecord)
                 && limitRecord.equals(other.limitRecord)
@@ -177,7 +252,7 @@ public final class ListVcardsOrgRequest {
 
         private Builder() {}
 
-        public Builder from(ListVcardsOrgRequest other) {
+        public Builder from(ListDevicesOrgRequest other) {
             exportFormat(other.getExportFormat());
             fromRecord(other.getFromRecord());
             limitRecord(other.getLimitRecord());
@@ -226,48 +301,123 @@ public final class ListVcardsOrgRequest {
         }
 
         /**
-         * <p>Collection of field names, conditions, and values used to filter the query.
-         * &lt;Info&gt;
-         * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong></p>
+         * <p>Collection of field names, conditions, and values used to filter
+         * the query.</p>
+         * <p>&lt;Info&gt;
+         *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
          * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
          * <p>For example:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&amp;limitRecord=20</p>
          * <p>should become:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
-         * &lt;/Info&gt;
-         * List of field names accepted:</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&amp;limitRecord=20
+         * &lt;/Info&gt;</p>
+         * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions
+         * Reference</a>
+         * for more information.</p>
+         * <p><strong>List of field names accepted:</strong></p>
          * <ul>
-         * <li><code>status</code> (in, nin, eq, ne)</li>
-         * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
-         * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
-         * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
-         * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
-         * <li><code>payoutId</code> (ct, nct, eq, ne, in, nin)</li>
-         * <li><code>vendorId</code> (ct, nct, eq, ne, in, nin)</li>
-         * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
-         * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
-         * <li><code>currentUses</code> (gt, ge, lt, le, eq, ne)</li>
-         * <li><code>amount</code> (gt, ge, lt, le, eq, ne)</li>
-         * <li><code>balance</code> (gt, ge, lt, le, eq, ne)</li>
-         * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
-         * <li><code>paypointDba</code> (ne, eq, ct, nct)</li>
-         * <li><code>orgName</code> (ne, eq, ct, nct)</li>
-         * <li><code>externalPaypointId</code> (ct, nct, eq, ne)</li>
-         * <li><code>paypointId</code> (in, nin, eq, ne)</li>
-         * <li><code>cardType</code> (eq)</li>
+         * <li>
+         * <p><code>deviceId</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>serialNumber</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>friendlyName</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>description</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>model</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>make</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>macAddress</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>registrationCode</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>status</code> (eq, ne, in, nin)</p>
+         * </li>
+         * <li>
+         * <p><code>deviceType</code> (eq, ne, in, nin)</p>
+         * </li>
+         * <li>
+         * <p><code>deviceOs</code> (eq, ne, in, nin)</p>
+         * </li>
+         * <li>
+         * <p><code>activationAttempts</code> (eq, ne, gt, ge, lt, le)</p>
+         * </li>
+         * <li>
+         * <p><code>createdDate</code> (gt, ge, lt, le, eq, ne)</p>
+         * </li>
+         * <li>
+         * <p><code>updatedDate</code> (gt, ge, lt, le, eq, ne)</p>
+         * </li>
+         * <li>
+         * <p><code>lastHealthCheck</code> (gt, ge, lt, le, eq, ne)</p>
+         * </li>
+         * <li>
+         * <p><code>activationExpiry</code> (gt, ge, lt, le, eq, ne). This filter corresponds to the <code>activationCodeExpiry</code> response field.</p>
+         * </li>
+         * <li>
+         * <p><code>paypointId</code> (eq, ne)</p>
+         * </li>
+         * <li>
+         * <p><code>paypointDba</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>paypointLegal</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>paypointEntry</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>externalPaypointId</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>parentOrgId</code> (eq, ne)</p>
+         * </li>
+         * <li>
+         * <p><code>parentOrgName</code> (eq, ne, ct, nct)</p>
+         * </li>
          * </ul>
-         * <p>List of comparison accepted - enclosed between parentheses:</p>
+         * <p><strong>List of comparison operators accepted:</strong></p>
          * <ul>
-         * <li>eq or empty =&gt; equal</li>
-         * <li>gt =&gt; greater than</li>
-         * <li>ge =&gt; greater or equal</li>
-         * <li>lt =&gt; less than</li>
-         * <li>le =&gt; less or equal</li>
-         * <li>ne =&gt; not equal</li>
-         * <li>ct =&gt; contains</li>
-         * <li>nct =&gt; not contains</li>
-         * <li>in =&gt; inside array separated by &quot;|&quot;</li>
-         * <li>nin =&gt; not inside array separated by &quot;|&quot;</li>
+         * <li>
+         * <p><code>eq</code> or empty =&gt; equal</p>
+         * </li>
+         * <li>
+         * <p><code>gt</code> =&gt; greater than</p>
+         * </li>
+         * <li>
+         * <p><code>ge</code> =&gt; greater or equal</p>
+         * </li>
+         * <li>
+         * <p><code>lt</code> =&gt; less than</p>
+         * </li>
+         * <li>
+         * <p><code>le</code> =&gt; less or equal</p>
+         * </li>
+         * <li>
+         * <p><code>ne</code> =&gt; not equal</p>
+         * </li>
+         * <li>
+         * <p><code>ct</code> =&gt; contains</p>
+         * </li>
+         * <li>
+         * <p><code>nct</code> =&gt; not contains</p>
+         * </li>
+         * <li>
+         * <p><code>in</code> =&gt; inside array</p>
+         * </li>
+         * <li>
+         * <p><code>nin</code> =&gt; not inside array</p>
+         * </li>
          * </ul>
          */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
@@ -295,8 +445,8 @@ public final class ListVcardsOrgRequest {
             return this;
         }
 
-        public ListVcardsOrgRequest build() {
-            return new ListVcardsOrgRequest(
+        public ListDevicesOrgRequest build() {
+            return new ListDevicesOrgRequest(
                     exportFormat, fromRecord, limitRecord, parameters, sortBy, additionalProperties);
         }
 

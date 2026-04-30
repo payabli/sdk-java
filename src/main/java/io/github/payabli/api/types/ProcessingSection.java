@@ -50,6 +50,16 @@ public final class ProcessingSection {
 
     private final Optional<TemplateElement> whenRefunded;
 
+    private final Optional<TemplateElement> combinedBatches;
+
+    private final Optional<TemplateElement> payoutAverageMonthlyVolume;
+
+    private final Optional<TemplateElement> payoutHighTicketAmount;
+
+    private final Optional<TemplateElement> payoutAverageTicketAmount;
+
+    private final Optional<TemplateElement> payoutCreditLimit;
+
     private final Map<String, Object> additionalProperties;
 
     private ProcessingSection(
@@ -68,6 +78,11 @@ public final class ProcessingSection {
             Optional<TemplateElement> whenDelivered,
             Optional<TemplateElement> whenProvided,
             Optional<TemplateElement> whenRefunded,
+            Optional<TemplateElement> combinedBatches,
+            Optional<TemplateElement> payoutAverageMonthlyVolume,
+            Optional<TemplateElement> payoutHighTicketAmount,
+            Optional<TemplateElement> payoutAverageTicketAmount,
+            Optional<TemplateElement> payoutCreditLimit,
             Map<String, Object> additionalProperties) {
         this.avgmonthly = avgmonthly;
         this.binperson = binperson;
@@ -84,6 +99,11 @@ public final class ProcessingSection {
         this.whenDelivered = whenDelivered;
         this.whenProvided = whenProvided;
         this.whenRefunded = whenRefunded;
+        this.combinedBatches = combinedBatches;
+        this.payoutAverageMonthlyVolume = payoutAverageMonthlyVolume;
+        this.payoutHighTicketAmount = payoutHighTicketAmount;
+        this.payoutAverageTicketAmount = payoutAverageTicketAmount;
+        this.payoutCreditLimit = payoutCreditLimit;
         this.additionalProperties = additionalProperties;
     }
 
@@ -162,6 +182,31 @@ public final class ProcessingSection {
         return whenRefunded;
     }
 
+    @JsonProperty("CombinedBatches")
+    public Optional<TemplateElement> getCombinedBatches() {
+        return combinedBatches;
+    }
+
+    @JsonProperty("payoutAverageMonthlyVolume")
+    public Optional<TemplateElement> getPayoutAverageMonthlyVolume() {
+        return payoutAverageMonthlyVolume;
+    }
+
+    @JsonProperty("payoutHighTicketAmount")
+    public Optional<TemplateElement> getPayoutHighTicketAmount() {
+        return payoutHighTicketAmount;
+    }
+
+    @JsonProperty("payoutAverageTicketAmount")
+    public Optional<TemplateElement> getPayoutAverageTicketAmount() {
+        return payoutAverageTicketAmount;
+    }
+
+    @JsonProperty("payoutCreditLimit")
+    public Optional<TemplateElement> getPayoutCreditLimit() {
+        return payoutCreditLimit;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -188,7 +233,12 @@ public final class ProcessingSection {
                 && whenCharged.equals(other.whenCharged)
                 && whenDelivered.equals(other.whenDelivered)
                 && whenProvided.equals(other.whenProvided)
-                && whenRefunded.equals(other.whenRefunded);
+                && whenRefunded.equals(other.whenRefunded)
+                && combinedBatches.equals(other.combinedBatches)
+                && payoutAverageMonthlyVolume.equals(other.payoutAverageMonthlyVolume)
+                && payoutHighTicketAmount.equals(other.payoutHighTicketAmount)
+                && payoutAverageTicketAmount.equals(other.payoutAverageTicketAmount)
+                && payoutCreditLimit.equals(other.payoutCreditLimit);
     }
 
     @java.lang.Override
@@ -208,7 +258,12 @@ public final class ProcessingSection {
                 this.whenCharged,
                 this.whenDelivered,
                 this.whenProvided,
-                this.whenRefunded);
+                this.whenRefunded,
+                this.combinedBatches,
+                this.payoutAverageMonthlyVolume,
+                this.payoutHighTicketAmount,
+                this.payoutAverageTicketAmount,
+                this.payoutCreditLimit);
     }
 
     @java.lang.Override
@@ -252,6 +307,16 @@ public final class ProcessingSection {
 
         private Optional<TemplateElement> whenRefunded = Optional.empty();
 
+        private Optional<TemplateElement> combinedBatches = Optional.empty();
+
+        private Optional<TemplateElement> payoutAverageMonthlyVolume = Optional.empty();
+
+        private Optional<TemplateElement> payoutHighTicketAmount = Optional.empty();
+
+        private Optional<TemplateElement> payoutAverageTicketAmount = Optional.empty();
+
+        private Optional<TemplateElement> payoutCreditLimit = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -273,6 +338,11 @@ public final class ProcessingSection {
             whenDelivered(other.getWhenDelivered());
             whenProvided(other.getWhenProvided());
             whenRefunded(other.getWhenRefunded());
+            combinedBatches(other.getCombinedBatches());
+            payoutAverageMonthlyVolume(other.getPayoutAverageMonthlyVolume());
+            payoutHighTicketAmount(other.getPayoutHighTicketAmount());
+            payoutAverageTicketAmount(other.getPayoutAverageTicketAmount());
+            payoutCreditLimit(other.getPayoutCreditLimit());
             return this;
         }
 
@@ -441,6 +511,61 @@ public final class ProcessingSection {
             return this;
         }
 
+        @JsonSetter(value = "CombinedBatches", nulls = Nulls.SKIP)
+        public Builder combinedBatches(Optional<TemplateElement> combinedBatches) {
+            this.combinedBatches = combinedBatches;
+            return this;
+        }
+
+        public Builder combinedBatches(TemplateElement combinedBatches) {
+            this.combinedBatches = Optional.ofNullable(combinedBatches);
+            return this;
+        }
+
+        @JsonSetter(value = "payoutAverageMonthlyVolume", nulls = Nulls.SKIP)
+        public Builder payoutAverageMonthlyVolume(Optional<TemplateElement> payoutAverageMonthlyVolume) {
+            this.payoutAverageMonthlyVolume = payoutAverageMonthlyVolume;
+            return this;
+        }
+
+        public Builder payoutAverageMonthlyVolume(TemplateElement payoutAverageMonthlyVolume) {
+            this.payoutAverageMonthlyVolume = Optional.ofNullable(payoutAverageMonthlyVolume);
+            return this;
+        }
+
+        @JsonSetter(value = "payoutHighTicketAmount", nulls = Nulls.SKIP)
+        public Builder payoutHighTicketAmount(Optional<TemplateElement> payoutHighTicketAmount) {
+            this.payoutHighTicketAmount = payoutHighTicketAmount;
+            return this;
+        }
+
+        public Builder payoutHighTicketAmount(TemplateElement payoutHighTicketAmount) {
+            this.payoutHighTicketAmount = Optional.ofNullable(payoutHighTicketAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "payoutAverageTicketAmount", nulls = Nulls.SKIP)
+        public Builder payoutAverageTicketAmount(Optional<TemplateElement> payoutAverageTicketAmount) {
+            this.payoutAverageTicketAmount = payoutAverageTicketAmount;
+            return this;
+        }
+
+        public Builder payoutAverageTicketAmount(TemplateElement payoutAverageTicketAmount) {
+            this.payoutAverageTicketAmount = Optional.ofNullable(payoutAverageTicketAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "payoutCreditLimit", nulls = Nulls.SKIP)
+        public Builder payoutCreditLimit(Optional<TemplateElement> payoutCreditLimit) {
+            this.payoutCreditLimit = payoutCreditLimit;
+            return this;
+        }
+
+        public Builder payoutCreditLimit(TemplateElement payoutCreditLimit) {
+            this.payoutCreditLimit = Optional.ofNullable(payoutCreditLimit);
+            return this;
+        }
+
         public ProcessingSection build() {
             return new ProcessingSection(
                     avgmonthly,
@@ -458,6 +583,11 @@ public final class ProcessingSection {
                     whenDelivered,
                     whenProvided,
                     whenRefunded,
+                    combinedBatches,
+                    payoutAverageMonthlyVolume,
+                    payoutHighTicketAmount,
+                    payoutAverageTicketAmount,
+                    payoutCreditLimit,
                     additionalProperties);
         }
 

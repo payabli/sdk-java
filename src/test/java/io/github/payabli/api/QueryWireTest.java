@@ -14,6 +14,8 @@ import io.github.payabli.api.resources.query.requests.ListChargebacksOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListChargebacksRequest;
 import io.github.payabli.api.resources.query.requests.ListCustomersOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListCustomersRequest;
+import io.github.payabli.api.resources.query.requests.ListDevicesOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListDevicesRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationReportsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationReportsRequest;
 import io.github.payabli.api.resources.query.requests.ListNotificationsOrgRequest;
@@ -45,6 +47,7 @@ import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
 import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryBatchesResponse;
+import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
@@ -590,6 +593,190 @@ public class QueryWireTest {
         String actualResponseJson = objectMapper.writeValueAsString(response);
         String expectedResponseBody =
                 TestResources.loadResource("/wire-tests/QueryWireTest_testListCustomersOrg_response.json");
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testListDevices() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"Summary\":{\"pageIdentifier\":null,\"pageSize\":20,\"totalAmount\":0,\"totalNetAmount\":0,\"totalPages\":2,\"totalRecords\":28},\"Records\":[{\"deviceId\":\"DEV-A1B2C3D4\",\"idCloud\":142,\"description\":\"Front Counter Terminal\",\"serialNumber\":\"SN-90210-XR\",\"friendlyName\":\"Front Counter Terminal\",\"make\":\"Ingenico\",\"model\":\"LK2500\",\"deviceType\":1,\"deviceStatus\":1,\"deviceOs\":null,\"macAddress\":\"1A2B3C4D5E6F\",\"lastHealthCheck\":\"2026-04-09T14:49:42Z\",\"registrationCode\":\"REG-A1B2C3D4\",\"activationAttempts\":0,\"activationCodeExpiry\":\"2026-04-09T14:49:42Z\",\"createdAt\":\"2026-04-09T01:14:37Z\",\"updatedAt\":\"2026-04-09T14:49:42Z\",\"paypointId\":12345,\"paypointDba\":\"Gruzya Adventure Outfitters\",\"paypointLegal\":\"Gruzya Adventure Outfitters, LLC\",\"paypointEntry\":\"8cfec329267\",\"externalPaypointId\":\"GRUZYA-01\",\"parentOrgId\":100,\"parentOrgName\":\"Example Corp\"}]}"));
+        QueryDeviceResponse response = client.query()
+                .listDevices(
+                        "8cfec329267",
+                        ListDevicesRequest.builder()
+                                .fromRecord(0)
+                                .limitRecord(20)
+                                .sortBy("desc(createdAt)")
+                                .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"Summary\": {\n"
+                + "    \"pageIdentifier\": null,\n"
+                + "    \"pageSize\": 20,\n"
+                + "    \"totalAmount\": 0,\n"
+                + "    \"totalNetAmount\": 0,\n"
+                + "    \"totalPages\": 2,\n"
+                + "    \"totalRecords\": 28\n"
+                + "  },\n"
+                + "  \"Records\": [\n"
+                + "    {\n"
+                + "      \"deviceId\": \"DEV-A1B2C3D4\",\n"
+                + "      \"idCloud\": 142,\n"
+                + "      \"description\": \"Front Counter Terminal\",\n"
+                + "      \"serialNumber\": \"SN-90210-XR\",\n"
+                + "      \"friendlyName\": \"Front Counter Terminal\",\n"
+                + "      \"make\": \"Ingenico\",\n"
+                + "      \"model\": \"LK2500\",\n"
+                + "      \"deviceType\": 1,\n"
+                + "      \"deviceStatus\": 1,\n"
+                + "      \"deviceOs\": null,\n"
+                + "      \"macAddress\": \"1A2B3C4D5E6F\",\n"
+                + "      \"lastHealthCheck\": \"2026-04-09T14:49:42Z\",\n"
+                + "      \"registrationCode\": \"REG-A1B2C3D4\",\n"
+                + "      \"activationAttempts\": 0,\n"
+                + "      \"activationCodeExpiry\": \"2026-04-09T14:49:42Z\",\n"
+                + "      \"createdAt\": \"2026-04-09T01:14:37Z\",\n"
+                + "      \"updatedAt\": \"2026-04-09T14:49:42Z\",\n"
+                + "      \"paypointId\": 12345,\n"
+                + "      \"paypointDba\": \"Gruzya Adventure Outfitters\",\n"
+                + "      \"paypointLegal\": \"Gruzya Adventure Outfitters, LLC\",\n"
+                + "      \"paypointEntry\": \"8cfec329267\",\n"
+                + "      \"externalPaypointId\": \"GRUZYA-01\",\n"
+                + "      \"parentOrgId\": 100,\n"
+                + "      \"parentOrgName\": \"Example Corp\"\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testListDevicesOrg() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"Summary\":{\"pageIdentifier\":null,\"pageSize\":20,\"totalAmount\":0,\"totalNetAmount\":0,\"totalPages\":2,\"totalRecords\":28},\"Records\":[{\"deviceId\":\"DEV-A1B2C3D4\",\"idCloud\":142,\"description\":\"Front Counter Terminal\",\"serialNumber\":\"SN-90210-XR\",\"friendlyName\":\"Front Counter Terminal\",\"make\":\"Ingenico\",\"model\":\"LK2500\",\"deviceType\":1,\"deviceStatus\":1,\"deviceOs\":null,\"macAddress\":\"1A2B3C4D5E6F\",\"lastHealthCheck\":\"2026-04-09T14:49:42Z\",\"registrationCode\":\"REG-A1B2C3D4\",\"activationAttempts\":0,\"activationCodeExpiry\":\"2026-04-09T14:49:42Z\",\"createdAt\":\"2026-04-09T01:14:37Z\",\"updatedAt\":\"2026-04-09T14:49:42Z\",\"paypointId\":12345,\"paypointDba\":\"Gruzya Adventure Outfitters\",\"paypointLegal\":\"Gruzya Adventure Outfitters, LLC\",\"paypointEntry\":\"8cfec329267\",\"externalPaypointId\":\"GRUZYA-01\",\"parentOrgId\":100,\"parentOrgName\":\"Example Corp\"}]}"));
+        QueryDeviceResponse response = client.query()
+                .listDevicesOrg(
+                        100,
+                        ListDevicesOrgRequest.builder()
+                                .fromRecord(0)
+                                .limitRecord(20)
+                                .sortBy("desc(createdAt)")
+                                .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"Summary\": {\n"
+                + "    \"pageIdentifier\": null,\n"
+                + "    \"pageSize\": 20,\n"
+                + "    \"totalAmount\": 0,\n"
+                + "    \"totalNetAmount\": 0,\n"
+                + "    \"totalPages\": 2,\n"
+                + "    \"totalRecords\": 28\n"
+                + "  },\n"
+                + "  \"Records\": [\n"
+                + "    {\n"
+                + "      \"deviceId\": \"DEV-A1B2C3D4\",\n"
+                + "      \"idCloud\": 142,\n"
+                + "      \"description\": \"Front Counter Terminal\",\n"
+                + "      \"serialNumber\": \"SN-90210-XR\",\n"
+                + "      \"friendlyName\": \"Front Counter Terminal\",\n"
+                + "      \"make\": \"Ingenico\",\n"
+                + "      \"model\": \"LK2500\",\n"
+                + "      \"deviceType\": 1,\n"
+                + "      \"deviceStatus\": 1,\n"
+                + "      \"deviceOs\": null,\n"
+                + "      \"macAddress\": \"1A2B3C4D5E6F\",\n"
+                + "      \"lastHealthCheck\": \"2026-04-09T14:49:42Z\",\n"
+                + "      \"registrationCode\": \"REG-A1B2C3D4\",\n"
+                + "      \"activationAttempts\": 0,\n"
+                + "      \"activationCodeExpiry\": \"2026-04-09T14:49:42Z\",\n"
+                + "      \"createdAt\": \"2026-04-09T01:14:37Z\",\n"
+                + "      \"updatedAt\": \"2026-04-09T14:49:42Z\",\n"
+                + "      \"paypointId\": 12345,\n"
+                + "      \"paypointDba\": \"Gruzya Adventure Outfitters\",\n"
+                + "      \"paypointLegal\": \"Gruzya Adventure Outfitters, LLC\",\n"
+                + "      \"paypointEntry\": \"8cfec329267\",\n"
+                + "      \"externalPaypointId\": \"GRUZYA-01\",\n"
+                + "      \"parentOrgId\": 100,\n"
+                + "      \"parentOrgName\": \"Example Corp\"\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

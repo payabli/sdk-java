@@ -98,6 +98,7 @@ public final class ListVcardsRequest {
      * <li><code>orgName</code> (ne, eq, ct, nct)</li>
      * <li><code>externalPaypointId</code> (ct, nct, eq, ne)</li>
      * <li><code>paypointId</code> (in, nin, eq, ne)</li>
+     * <li><code>cardType</code> (eq)</li>
      * </ul>
      * <p>List of comparison accepted - enclosed between parentheses:</p>
      * <ul>
@@ -253,6 +254,7 @@ public final class ListVcardsRequest {
          * <li><code>orgName</code> (ne, eq, ct, nct)</li>
          * <li><code>externalPaypointId</code> (ct, nct, eq, ne)</li>
          * <li><code>paypointId</code> (in, nin, eq, ne)</li>
+         * <li><code>cardType</code> (eq)</li>
          * </ul>
          * <p>List of comparison accepted - enclosed between parentheses:</p>
          * <ul>

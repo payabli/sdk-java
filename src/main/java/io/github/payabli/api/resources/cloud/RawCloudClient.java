@@ -196,28 +196,32 @@ public class RawCloudClient {
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(String entry) {
         return listDevice(entry, ListDeviceRequest.builder().build());
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(String entry, RequestOptions requestOptions) {
         return listDevice(entry, ListDeviceRequest.builder().build(), requestOptions);
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(String entry, ListDeviceRequest request) {
         return listDevice(entry, request, null);
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(
             String entry, ListDeviceRequest request, RequestOptions requestOptions) {

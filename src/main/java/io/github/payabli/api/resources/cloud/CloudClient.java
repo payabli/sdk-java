@@ -71,28 +71,32 @@ public class CloudClient {
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public CloudQueryApiResponse listDevice(String entry) {
         return this.rawClient.listDevice(entry).body();
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public CloudQueryApiResponse listDevice(String entry, RequestOptions requestOptions) {
         return this.rawClient.listDevice(entry, requestOptions).body();
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public CloudQueryApiResponse listDevice(String entry, ListDeviceRequest request) {
         return this.rawClient.listDevice(entry, request).body();
     }
 
     /**
-     * Get a list of cloud devices registered to an entrypoint.
+     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public CloudQueryApiResponse listDevice(String entry, ListDeviceRequest request, RequestOptions requestOptions) {
         return this.rawClient.listDevice(entry, request, requestOptions).body();

@@ -23,6 +23,8 @@ import java.util.Optional;
 public final class VCardRecord {
     private final Optional<Boolean> vcardSent;
 
+    private final Optional<Integer> cardType;
+
     private final Optional<String> cardToken;
 
     private final Optional<String> cardNumber;
@@ -79,6 +81,7 @@ public final class VCardRecord {
 
     private VCardRecord(
             Optional<Boolean> vcardSent,
+            Optional<Integer> cardType,
             Optional<String> cardToken,
             Optional<String> cardNumber,
             Optional<String> cvc,
@@ -107,6 +110,7 @@ public final class VCardRecord {
             Optional<Integer> paypointId,
             Map<String, Object> additionalProperties) {
         this.vcardSent = vcardSent;
+        this.cardType = cardType;
         this.cardToken = cardToken;
         this.cardNumber = cardNumber;
         this.cvc = cvc;
@@ -142,6 +146,11 @@ public final class VCardRecord {
     @JsonProperty("vcardSent")
     public Optional<Boolean> getVcardSent() {
         return vcardSent;
+    }
+
+    @JsonProperty("cardType")
+    public Optional<Integer> getCardType() {
+        return cardType;
     }
 
     @JsonProperty("cardToken")
@@ -326,6 +335,7 @@ public final class VCardRecord {
 
     private boolean equalTo(VCardRecord other) {
         return vcardSent.equals(other.vcardSent)
+                && cardType.equals(other.cardType)
                 && cardToken.equals(other.cardToken)
                 && cardNumber.equals(other.cardNumber)
                 && cvc.equals(other.cvc)
@@ -358,6 +368,7 @@ public final class VCardRecord {
     public int hashCode() {
         return Objects.hash(
                 this.vcardSent,
+                this.cardType,
                 this.cardToken,
                 this.cardNumber,
                 this.cvc,
@@ -398,6 +409,8 @@ public final class VCardRecord {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
         private Optional<Boolean> vcardSent = Optional.empty();
+
+        private Optional<Integer> cardType = Optional.empty();
 
         private Optional<String> cardToken = Optional.empty();
 
@@ -458,6 +471,7 @@ public final class VCardRecord {
 
         public Builder from(VCardRecord other) {
             vcardSent(other.getVcardSent());
+            cardType(other.getCardType());
             cardToken(other.getCardToken());
             cardNumber(other.getCardNumber());
             cvc(other.getCvc());
@@ -498,6 +512,17 @@ public final class VCardRecord {
 
         public Builder vcardSent(Boolean vcardSent) {
             this.vcardSent = Optional.ofNullable(vcardSent);
+            return this;
+        }
+
+        @JsonSetter(value = "cardType", nulls = Nulls.SKIP)
+        public Builder cardType(Optional<Integer> cardType) {
+            this.cardType = cardType;
+            return this;
+        }
+
+        public Builder cardType(Integer cardType) {
+            this.cardType = Optional.ofNullable(cardType);
             return this;
         }
 
@@ -829,6 +854,7 @@ public final class VCardRecord {
         public VCardRecord build() {
             return new VCardRecord(
                     vcardSent,
+                    cardType,
                     cardToken,
                     cardNumber,
                     cvc,

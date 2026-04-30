@@ -91,7 +91,8 @@ public final class BinData {
     }
 
     /**
-     * @return The type of card: Credit or Debit.
+     * @return The type of card: <code>Credit</code> or <code>Debit</code>. Case can vary between
+     * processors, so compare this value case-insensitively.
      */
     @JsonProperty("binCardType")
     public Optional<String> getBinCardType() {
@@ -290,7 +291,8 @@ public final class BinData {
         }
 
         /**
-         * <p>The type of card: Credit or Debit.</p>
+         * <p>The type of card: <code>Credit</code> or <code>Debit</code>. Case can vary between
+         * processors, so compare this value case-insensitively.</p>
          */
         @JsonSetter(value = "binCardType", nulls = Nulls.SKIP)
         public Builder binCardType(Optional<String> binCardType) {

@@ -41,7 +41,7 @@ public final class TransactionDetailPaymentData {
 
     private final Optional<String> sequence;
 
-    private final String orderDescription;
+    private final Optional<String> orderDescription;
 
     private final Optional<String> accountId;
 
@@ -62,7 +62,7 @@ public final class TransactionDetailPaymentData {
             Optional<String> initiator,
             Optional<String> storedMethodUsageType,
             Optional<String> sequence,
-            String orderDescription,
+            Optional<String> orderDescription,
             Optional<String> accountId,
             Optional<String> signatureData,
             Optional<BinData> binData,
@@ -139,8 +139,11 @@ public final class TransactionDetailPaymentData {
         return sequence;
     }
 
-    @JsonProperty("orderDescription")
-    public String getOrderDescription() {
+    @JsonIgnore
+    public Optional<String> getOrderDescription() {
+        if (orderDescription == null) {
+            return Optional.empty();
+        }
         return orderDescription;
     }
 
@@ -201,6 +204,12 @@ public final class TransactionDetailPaymentData {
     @JsonProperty("sequence")
     private Optional<String> _getSequence() {
         return sequence;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("orderDescription")
+    private Optional<String> _getOrderDescription() {
+        return orderDescription;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -286,11 +295,7 @@ public final class TransactionDetailPaymentData {
     }
 
     public interface HolderNameStage {
-        OrderDescriptionStage holderName(@NotNull String holderName);
-    }
-
-    public interface OrderDescriptionStage {
-        PaymentDetailsStage orderDescription(@NotNull String orderDescription);
+        PaymentDetailsStage holderName(@NotNull String holderName);
     }
 
     public interface PaymentDetailsStage {
@@ -334,6 +339,12 @@ public final class TransactionDetailPaymentData {
 
         _FinalStage sequence(Nullable<String> sequence);
 
+        _FinalStage orderDescription(Optional<String> orderDescription);
+
+        _FinalStage orderDescription(String orderDescription);
+
+        _FinalStage orderDescription(Nullable<String> orderDescription);
+
         _FinalStage accountId(Optional<String> accountId);
 
         _FinalStage accountId(String accountId);
@@ -355,19 +366,12 @@ public final class TransactionDetailPaymentData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements MaskedAccountStage,
-                    AccountTypeStage,
-                    HolderNameStage,
-                    OrderDescriptionStage,
-                    PaymentDetailsStage,
-                    _FinalStage {
+            implements MaskedAccountStage, AccountTypeStage, HolderNameStage, PaymentDetailsStage, _FinalStage {
         private String maskedAccount;
 
         private String accountType;
 
         private String holderName;
-
-        private String orderDescription;
 
         private TransactionDetailPaymentDetails paymentDetails;
 
@@ -376,6 +380,8 @@ public final class TransactionDetailPaymentData {
         private Optional<String> signatureData = Optional.empty();
 
         private Optional<String> accountId = Optional.empty();
+
+        private Optional<String> orderDescription = Optional.empty();
 
         private Optional<String> sequence = Optional.empty();
 
@@ -426,15 +432,8 @@ public final class TransactionDetailPaymentData {
 
         @java.lang.Override
         @JsonSetter("holderName")
-        public OrderDescriptionStage holderName(@NotNull String holderName) {
+        public PaymentDetailsStage holderName(@NotNull String holderName) {
             this.holderName = Objects.requireNonNull(holderName, "holderName must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("orderDescription")
-        public PaymentDetailsStage orderDescription(@NotNull String orderDescription) {
-            this.orderDescription = Objects.requireNonNull(orderDescription, "orderDescription must not be null");
             return this;
         }
 
@@ -517,6 +516,31 @@ public final class TransactionDetailPaymentData {
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
         public _FinalStage accountId(Optional<String> accountId) {
             this.accountId = accountId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage orderDescription(Nullable<String> orderDescription) {
+            if (orderDescription.isNull()) {
+                this.orderDescription = null;
+            } else if (orderDescription.isEmpty()) {
+                this.orderDescription = Optional.empty();
+            } else {
+                this.orderDescription = Optional.of(orderDescription.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage orderDescription(String orderDescription) {
+            this.orderDescription = Optional.ofNullable(orderDescription);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "orderDescription", nulls = Nulls.SKIP)
+        public _FinalStage orderDescription(Optional<String> orderDescription) {
+            this.orderDescription = orderDescription;
             return this;
         }
 

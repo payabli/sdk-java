@@ -17,6 +17,7 @@ import io.github.payabli.api.resources.hostedpaymentpages.AsyncHostedPaymentPage
 import io.github.payabli.api.resources.import_.AsyncImportClient;
 import io.github.payabli.api.resources.invoice.AsyncInvoiceClient;
 import io.github.payabli.api.resources.lineitem.AsyncLineItemClient;
+import io.github.payabli.api.resources.management.AsyncManagementClient;
 import io.github.payabli.api.resources.moneyin.AsyncMoneyInClient;
 import io.github.payabli.api.resources.moneyout.AsyncMoneyOutClient;
 import io.github.payabli.api.resources.notification.AsyncNotificationClient;
@@ -63,6 +64,8 @@ public class AsyncPayabliApiClient {
     protected final Supplier<AsyncInvoiceClient> invoiceClient;
 
     protected final Supplier<AsyncLineItemClient> lineItemClient;
+
+    protected final Supplier<AsyncManagementClient> managementClient;
 
     protected final Supplier<AsyncMoneyInClient> moneyInClient;
 
@@ -114,6 +117,7 @@ public class AsyncPayabliApiClient {
         this.importClient = Suppliers.memoize(() -> new AsyncImportClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new AsyncLineItemClient(clientOptions));
+        this.managementClient = Suppliers.memoize(() -> new AsyncManagementClient(clientOptions));
         this.moneyInClient = Suppliers.memoize(() -> new AsyncMoneyInClient(clientOptions));
         this.moneyOutClient = Suppliers.memoize(() -> new AsyncMoneyOutClient(clientOptions));
         this.notificationClient = Suppliers.memoize(() -> new AsyncNotificationClient(clientOptions));
@@ -180,6 +184,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncLineItemClient lineItem() {
         return this.lineItemClient.get();
+    }
+
+    public AsyncManagementClient management() {
+        return this.managementClient.get();
     }
 
     public AsyncMoneyInClient moneyIn() {
