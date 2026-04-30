@@ -48,7 +48,7 @@ java {
 
 group = 'io.github.payabli'
 
-version = '0.0.325'
+version = '0.0.326'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
@@ -79,7 +79,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'io.github.payabli'
             artifactId = 'sdk-java'
-            version = '0.0.325'
+            version = '0.0.326'
             from components.java
             pom {
                 name = 'Payabli Docs Team'

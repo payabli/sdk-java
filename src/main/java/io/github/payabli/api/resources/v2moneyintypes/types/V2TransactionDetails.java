@@ -98,7 +98,7 @@ public final class V2TransactionDetails {
 
     private final long entrypageId;
 
-    private final String externalPaypointId;
+    private final Optional<String> externalPaypointId;
 
     private final boolean isValidatedAch;
 
@@ -173,7 +173,7 @@ public final class V2TransactionDetails {
             Optional<Object> transAdditionalData,
             TransactionDetailInvoiceData invoiceData,
             long entrypageId,
-            String externalPaypointId,
+            Optional<String> externalPaypointId,
             boolean isValidatedAch,
             String transactionTime,
             TransactionDetailCustomer customer,
@@ -439,8 +439,11 @@ public final class V2TransactionDetails {
         return entrypageId;
     }
 
-    @JsonProperty("externalPaypointID")
-    public String getExternalPaypointId() {
+    @JsonIgnore
+    public Optional<String> getExternalPaypointId() {
+        if (externalPaypointId == null) {
+            return Optional.empty();
+        }
         return externalPaypointId;
     }
 
@@ -567,6 +570,12 @@ public final class V2TransactionDetails {
     @JsonProperty("transAdditionalData")
     private Optional<Object> _getTransAdditionalData() {
         return transAdditionalData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("externalPaypointID")
+    private Optional<String> _getExternalPaypointId() {
+        return externalPaypointId;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -856,11 +865,7 @@ public final class V2TransactionDetails {
     }
 
     public interface EntrypageIdStage {
-        ExternalPaypointIdStage entrypageId(long entrypageId);
-    }
-
-    public interface ExternalPaypointIdStage {
-        IsValidatedAchStage externalPaypointId(@NotNull String externalPaypointId);
+        IsValidatedAchStage entrypageId(long entrypageId);
     }
 
     public interface IsValidatedAchStage {
@@ -934,6 +939,12 @@ public final class V2TransactionDetails {
         _FinalStage transAdditionalData(Object transAdditionalData);
 
         _FinalStage transAdditionalData(Nullable<Object> transAdditionalData);
+
+        _FinalStage externalPaypointId(Optional<String> externalPaypointId);
+
+        _FinalStage externalPaypointId(String externalPaypointId);
+
+        _FinalStage externalPaypointId(Nullable<String> externalPaypointId);
 
         _FinalStage splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions);
 
@@ -1011,7 +1022,6 @@ public final class V2TransactionDetails {
                     RetrievalIdStage,
                     InvoiceDataStage,
                     EntrypageIdStage,
-                    ExternalPaypointIdStage,
                     IsValidatedAchStage,
                     TransactionTimeStage,
                     CustomerStage,
@@ -1084,8 +1094,6 @@ public final class V2TransactionDetails {
 
         private long entrypageId;
 
-        private String externalPaypointId;
-
         private boolean isValidatedAch;
 
         private String transactionTime;
@@ -1123,6 +1131,8 @@ public final class V2TransactionDetails {
         private List<QueryCFeeTransaction> cfeeTransactions = new ArrayList<>();
 
         private Optional<List<SplitFundingContent>> splitFundingInstructions = Optional.empty();
+
+        private Optional<String> externalPaypointId = Optional.empty();
 
         private Optional<Object> transAdditionalData = Optional.empty();
 
@@ -1436,15 +1446,8 @@ public final class V2TransactionDetails {
 
         @java.lang.Override
         @JsonSetter("entrypageId")
-        public ExternalPaypointIdStage entrypageId(long entrypageId) {
+        public IsValidatedAchStage entrypageId(long entrypageId) {
             this.entrypageId = entrypageId;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("externalPaypointID")
-        public IsValidatedAchStage externalPaypointId(@NotNull String externalPaypointId) {
-            this.externalPaypointId = Objects.requireNonNull(externalPaypointId, "externalPaypointId must not be null");
             return this;
         }
 
@@ -1698,6 +1701,31 @@ public final class V2TransactionDetails {
         @JsonSetter(value = "splitFundingInstructions", nulls = Nulls.SKIP)
         public _FinalStage splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions) {
             this.splitFundingInstructions = splitFundingInstructions;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage externalPaypointId(Nullable<String> externalPaypointId) {
+            if (externalPaypointId.isNull()) {
+                this.externalPaypointId = null;
+            } else if (externalPaypointId.isEmpty()) {
+                this.externalPaypointId = Optional.empty();
+            } else {
+                this.externalPaypointId = Optional.of(externalPaypointId.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
+        public _FinalStage externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
             return this;
         }
 

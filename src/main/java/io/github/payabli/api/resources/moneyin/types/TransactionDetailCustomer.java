@@ -31,37 +31,37 @@ public final class TransactionDetailCustomer {
 
     private final String lastName;
 
-    private final String companyName;
+    private final Optional<String> companyName;
 
-    private final String billingAddress1;
+    private final Optional<String> billingAddress1;
 
-    private final String billingAddress2;
+    private final Optional<String> billingAddress2;
 
-    private final String billingCity;
+    private final Optional<String> billingCity;
 
-    private final String billingState;
+    private final Optional<String> billingState;
 
-    private final String billingZip;
+    private final Optional<String> billingZip;
 
-    private final String billingCountry;
+    private final Optional<String> billingCountry;
 
-    private final String billingPhone;
+    private final Optional<String> billingPhone;
 
-    private final String billingEmail;
+    private final Optional<String> billingEmail;
 
-    private final String customerNumber;
+    private final Optional<String> customerNumber;
 
-    private final String shippingAddress1;
+    private final Optional<String> shippingAddress1;
 
-    private final String shippingAddress2;
+    private final Optional<String> shippingAddress2;
 
-    private final String shippingCity;
+    private final Optional<String> shippingCity;
 
-    private final String shippingState;
+    private final Optional<String> shippingState;
 
-    private final String shippingZip;
+    private final Optional<String> shippingZip;
 
-    private final String shippingCountry;
+    private final Optional<String> shippingCountry;
 
     private final long customerId;
 
@@ -75,22 +75,22 @@ public final class TransactionDetailCustomer {
             Optional<List<Optional<String>>> identifiers,
             String firstName,
             String lastName,
-            String companyName,
-            String billingAddress1,
-            String billingAddress2,
-            String billingCity,
-            String billingState,
-            String billingZip,
-            String billingCountry,
-            String billingPhone,
-            String billingEmail,
-            String customerNumber,
-            String shippingAddress1,
-            String shippingAddress2,
-            String shippingCity,
-            String shippingState,
-            String shippingZip,
-            String shippingCountry,
+            Optional<String> companyName,
+            Optional<String> billingAddress1,
+            Optional<String> billingAddress2,
+            Optional<String> billingCity,
+            Optional<String> billingState,
+            Optional<String> billingZip,
+            Optional<String> billingCountry,
+            Optional<String> billingPhone,
+            Optional<String> billingEmail,
+            Optional<String> customerNumber,
+            Optional<String> shippingAddress1,
+            Optional<String> shippingAddress2,
+            Optional<String> shippingCity,
+            Optional<String> shippingState,
+            Optional<String> shippingZip,
+            Optional<String> shippingCountry,
             long customerId,
             int customerStatus,
             Optional<Map<String, String>> additionalData,
@@ -138,83 +138,131 @@ public final class TransactionDetailCustomer {
         return lastName;
     }
 
-    @JsonProperty("companyName")
-    public String getCompanyName() {
+    @JsonIgnore
+    public Optional<String> getCompanyName() {
+        if (companyName == null) {
+            return Optional.empty();
+        }
         return companyName;
     }
 
-    @JsonProperty("billingAddress1")
-    public String getBillingAddress1() {
+    @JsonIgnore
+    public Optional<String> getBillingAddress1() {
+        if (billingAddress1 == null) {
+            return Optional.empty();
+        }
         return billingAddress1;
     }
 
-    @JsonProperty("billingAddress2")
-    public String getBillingAddress2() {
+    @JsonIgnore
+    public Optional<String> getBillingAddress2() {
+        if (billingAddress2 == null) {
+            return Optional.empty();
+        }
         return billingAddress2;
     }
 
-    @JsonProperty("billingCity")
-    public String getBillingCity() {
+    @JsonIgnore
+    public Optional<String> getBillingCity() {
+        if (billingCity == null) {
+            return Optional.empty();
+        }
         return billingCity;
     }
 
-    @JsonProperty("billingState")
-    public String getBillingState() {
+    @JsonIgnore
+    public Optional<String> getBillingState() {
+        if (billingState == null) {
+            return Optional.empty();
+        }
         return billingState;
     }
 
-    @JsonProperty("billingZip")
-    public String getBillingZip() {
+    @JsonIgnore
+    public Optional<String> getBillingZip() {
+        if (billingZip == null) {
+            return Optional.empty();
+        }
         return billingZip;
     }
 
-    @JsonProperty("billingCountry")
-    public String getBillingCountry() {
+    @JsonIgnore
+    public Optional<String> getBillingCountry() {
+        if (billingCountry == null) {
+            return Optional.empty();
+        }
         return billingCountry;
     }
 
-    @JsonProperty("billingPhone")
-    public String getBillingPhone() {
+    @JsonIgnore
+    public Optional<String> getBillingPhone() {
+        if (billingPhone == null) {
+            return Optional.empty();
+        }
         return billingPhone;
     }
 
-    @JsonProperty("billingEmail")
-    public String getBillingEmail() {
+    @JsonIgnore
+    public Optional<String> getBillingEmail() {
+        if (billingEmail == null) {
+            return Optional.empty();
+        }
         return billingEmail;
     }
 
-    @JsonProperty("customerNumber")
-    public String getCustomerNumber() {
+    @JsonIgnore
+    public Optional<String> getCustomerNumber() {
+        if (customerNumber == null) {
+            return Optional.empty();
+        }
         return customerNumber;
     }
 
-    @JsonProperty("shippingAddress1")
-    public String getShippingAddress1() {
+    @JsonIgnore
+    public Optional<String> getShippingAddress1() {
+        if (shippingAddress1 == null) {
+            return Optional.empty();
+        }
         return shippingAddress1;
     }
 
-    @JsonProperty("shippingAddress2")
-    public String getShippingAddress2() {
+    @JsonIgnore
+    public Optional<String> getShippingAddress2() {
+        if (shippingAddress2 == null) {
+            return Optional.empty();
+        }
         return shippingAddress2;
     }
 
-    @JsonProperty("shippingCity")
-    public String getShippingCity() {
+    @JsonIgnore
+    public Optional<String> getShippingCity() {
+        if (shippingCity == null) {
+            return Optional.empty();
+        }
         return shippingCity;
     }
 
-    @JsonProperty("shippingState")
-    public String getShippingState() {
+    @JsonIgnore
+    public Optional<String> getShippingState() {
+        if (shippingState == null) {
+            return Optional.empty();
+        }
         return shippingState;
     }
 
-    @JsonProperty("shippingZip")
-    public String getShippingZip() {
+    @JsonIgnore
+    public Optional<String> getShippingZip() {
+        if (shippingZip == null) {
+            return Optional.empty();
+        }
         return shippingZip;
     }
 
-    @JsonProperty("shippingCountry")
-    public String getShippingCountry() {
+    @JsonIgnore
+    public Optional<String> getShippingCountry() {
+        if (shippingCountry == null) {
+            return Optional.empty();
+        }
         return shippingCountry;
     }
 
@@ -240,6 +288,102 @@ public final class TransactionDetailCustomer {
     @JsonProperty("identifiers")
     private Optional<List<Optional<String>>> _getIdentifiers() {
         return identifiers;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("companyName")
+    private Optional<String> _getCompanyName() {
+        return companyName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingAddress1")
+    private Optional<String> _getBillingAddress1() {
+        return billingAddress1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingAddress2")
+    private Optional<String> _getBillingAddress2() {
+        return billingAddress2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingCity")
+    private Optional<String> _getBillingCity() {
+        return billingCity;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingState")
+    private Optional<String> _getBillingState() {
+        return billingState;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingZip")
+    private Optional<String> _getBillingZip() {
+        return billingZip;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingCountry")
+    private Optional<String> _getBillingCountry() {
+        return billingCountry;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingPhone")
+    private Optional<String> _getBillingPhone() {
+        return billingPhone;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billingEmail")
+    private Optional<String> _getBillingEmail() {
+        return billingEmail;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerNumber")
+    private Optional<String> _getCustomerNumber() {
+        return customerNumber;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("shippingAddress1")
+    private Optional<String> _getShippingAddress1() {
+        return shippingAddress1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("shippingAddress2")
+    private Optional<String> _getShippingAddress2() {
+        return shippingAddress2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("shippingCity")
+    private Optional<String> _getShippingCity() {
+        return shippingCity;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("shippingState")
+    private Optional<String> _getShippingState() {
+        return shippingState;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("shippingZip")
+    private Optional<String> _getShippingZip() {
+        return shippingZip;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("shippingCountry")
+    private Optional<String> _getShippingCountry() {
+        return shippingCountry;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -327,71 +471,7 @@ public final class TransactionDetailCustomer {
     }
 
     public interface LastNameStage {
-        CompanyNameStage lastName(@NotNull String lastName);
-    }
-
-    public interface CompanyNameStage {
-        BillingAddress1Stage companyName(@NotNull String companyName);
-    }
-
-    public interface BillingAddress1Stage {
-        BillingAddress2Stage billingAddress1(@NotNull String billingAddress1);
-    }
-
-    public interface BillingAddress2Stage {
-        BillingCityStage billingAddress2(@NotNull String billingAddress2);
-    }
-
-    public interface BillingCityStage {
-        BillingStateStage billingCity(@NotNull String billingCity);
-    }
-
-    public interface BillingStateStage {
-        BillingZipStage billingState(@NotNull String billingState);
-    }
-
-    public interface BillingZipStage {
-        BillingCountryStage billingZip(@NotNull String billingZip);
-    }
-
-    public interface BillingCountryStage {
-        BillingPhoneStage billingCountry(@NotNull String billingCountry);
-    }
-
-    public interface BillingPhoneStage {
-        BillingEmailStage billingPhone(@NotNull String billingPhone);
-    }
-
-    public interface BillingEmailStage {
-        CustomerNumberStage billingEmail(@NotNull String billingEmail);
-    }
-
-    public interface CustomerNumberStage {
-        ShippingAddress1Stage customerNumber(@NotNull String customerNumber);
-    }
-
-    public interface ShippingAddress1Stage {
-        ShippingAddress2Stage shippingAddress1(@NotNull String shippingAddress1);
-    }
-
-    public interface ShippingAddress2Stage {
-        ShippingCityStage shippingAddress2(@NotNull String shippingAddress2);
-    }
-
-    public interface ShippingCityStage {
-        ShippingStateStage shippingCity(@NotNull String shippingCity);
-    }
-
-    public interface ShippingStateStage {
-        ShippingZipStage shippingState(@NotNull String shippingState);
-    }
-
-    public interface ShippingZipStage {
-        ShippingCountryStage shippingZip(@NotNull String shippingZip);
-    }
-
-    public interface ShippingCountryStage {
-        CustomerIdStage shippingCountry(@NotNull String shippingCountry);
+        CustomerIdStage lastName(@NotNull String lastName);
     }
 
     public interface CustomerIdStage {
@@ -415,6 +495,102 @@ public final class TransactionDetailCustomer {
 
         _FinalStage identifiers(Nullable<List<Optional<String>>> identifiers);
 
+        _FinalStage companyName(Optional<String> companyName);
+
+        _FinalStage companyName(String companyName);
+
+        _FinalStage companyName(Nullable<String> companyName);
+
+        _FinalStage billingAddress1(Optional<String> billingAddress1);
+
+        _FinalStage billingAddress1(String billingAddress1);
+
+        _FinalStage billingAddress1(Nullable<String> billingAddress1);
+
+        _FinalStage billingAddress2(Optional<String> billingAddress2);
+
+        _FinalStage billingAddress2(String billingAddress2);
+
+        _FinalStage billingAddress2(Nullable<String> billingAddress2);
+
+        _FinalStage billingCity(Optional<String> billingCity);
+
+        _FinalStage billingCity(String billingCity);
+
+        _FinalStage billingCity(Nullable<String> billingCity);
+
+        _FinalStage billingState(Optional<String> billingState);
+
+        _FinalStage billingState(String billingState);
+
+        _FinalStage billingState(Nullable<String> billingState);
+
+        _FinalStage billingZip(Optional<String> billingZip);
+
+        _FinalStage billingZip(String billingZip);
+
+        _FinalStage billingZip(Nullable<String> billingZip);
+
+        _FinalStage billingCountry(Optional<String> billingCountry);
+
+        _FinalStage billingCountry(String billingCountry);
+
+        _FinalStage billingCountry(Nullable<String> billingCountry);
+
+        _FinalStage billingPhone(Optional<String> billingPhone);
+
+        _FinalStage billingPhone(String billingPhone);
+
+        _FinalStage billingPhone(Nullable<String> billingPhone);
+
+        _FinalStage billingEmail(Optional<String> billingEmail);
+
+        _FinalStage billingEmail(String billingEmail);
+
+        _FinalStage billingEmail(Nullable<String> billingEmail);
+
+        _FinalStage customerNumber(Optional<String> customerNumber);
+
+        _FinalStage customerNumber(String customerNumber);
+
+        _FinalStage customerNumber(Nullable<String> customerNumber);
+
+        _FinalStage shippingAddress1(Optional<String> shippingAddress1);
+
+        _FinalStage shippingAddress1(String shippingAddress1);
+
+        _FinalStage shippingAddress1(Nullable<String> shippingAddress1);
+
+        _FinalStage shippingAddress2(Optional<String> shippingAddress2);
+
+        _FinalStage shippingAddress2(String shippingAddress2);
+
+        _FinalStage shippingAddress2(Nullable<String> shippingAddress2);
+
+        _FinalStage shippingCity(Optional<String> shippingCity);
+
+        _FinalStage shippingCity(String shippingCity);
+
+        _FinalStage shippingCity(Nullable<String> shippingCity);
+
+        _FinalStage shippingState(Optional<String> shippingState);
+
+        _FinalStage shippingState(String shippingState);
+
+        _FinalStage shippingState(Nullable<String> shippingState);
+
+        _FinalStage shippingZip(Optional<String> shippingZip);
+
+        _FinalStage shippingZip(String shippingZip);
+
+        _FinalStage shippingZip(Nullable<String> shippingZip);
+
+        _FinalStage shippingCountry(Optional<String> shippingCountry);
+
+        _FinalStage shippingCountry(String shippingCountry);
+
+        _FinalStage shippingCountry(Nullable<String> shippingCountry);
+
         _FinalStage additionalData(Optional<Map<String, String>> additionalData);
 
         _FinalStage additionalData(Map<String, String> additionalData);
@@ -424,68 +600,48 @@ public final class TransactionDetailCustomer {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements FirstNameStage,
-                    LastNameStage,
-                    CompanyNameStage,
-                    BillingAddress1Stage,
-                    BillingAddress2Stage,
-                    BillingCityStage,
-                    BillingStateStage,
-                    BillingZipStage,
-                    BillingCountryStage,
-                    BillingPhoneStage,
-                    BillingEmailStage,
-                    CustomerNumberStage,
-                    ShippingAddress1Stage,
-                    ShippingAddress2Stage,
-                    ShippingCityStage,
-                    ShippingStateStage,
-                    ShippingZipStage,
-                    ShippingCountryStage,
-                    CustomerIdStage,
-                    CustomerStatusStage,
-                    _FinalStage {
+            implements FirstNameStage, LastNameStage, CustomerIdStage, CustomerStatusStage, _FinalStage {
         private String firstName;
 
         private String lastName;
-
-        private String companyName;
-
-        private String billingAddress1;
-
-        private String billingAddress2;
-
-        private String billingCity;
-
-        private String billingState;
-
-        private String billingZip;
-
-        private String billingCountry;
-
-        private String billingPhone;
-
-        private String billingEmail;
-
-        private String customerNumber;
-
-        private String shippingAddress1;
-
-        private String shippingAddress2;
-
-        private String shippingCity;
-
-        private String shippingState;
-
-        private String shippingZip;
-
-        private String shippingCountry;
 
         private long customerId;
 
         private int customerStatus;
 
         private Optional<Map<String, String>> additionalData = Optional.empty();
+
+        private Optional<String> shippingCountry = Optional.empty();
+
+        private Optional<String> shippingZip = Optional.empty();
+
+        private Optional<String> shippingState = Optional.empty();
+
+        private Optional<String> shippingCity = Optional.empty();
+
+        private Optional<String> shippingAddress2 = Optional.empty();
+
+        private Optional<String> shippingAddress1 = Optional.empty();
+
+        private Optional<String> customerNumber = Optional.empty();
+
+        private Optional<String> billingEmail = Optional.empty();
+
+        private Optional<String> billingPhone = Optional.empty();
+
+        private Optional<String> billingCountry = Optional.empty();
+
+        private Optional<String> billingZip = Optional.empty();
+
+        private Optional<String> billingState = Optional.empty();
+
+        private Optional<String> billingCity = Optional.empty();
+
+        private Optional<String> billingAddress2 = Optional.empty();
+
+        private Optional<String> billingAddress1 = Optional.empty();
+
+        private Optional<String> companyName = Optional.empty();
 
         private Optional<List<Optional<String>>> identifiers = Optional.empty();
 
@@ -530,120 +686,8 @@ public final class TransactionDetailCustomer {
 
         @java.lang.Override
         @JsonSetter("lastName")
-        public CompanyNameStage lastName(@NotNull String lastName) {
+        public CustomerIdStage lastName(@NotNull String lastName) {
             this.lastName = Objects.requireNonNull(lastName, "lastName must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("companyName")
-        public BillingAddress1Stage companyName(@NotNull String companyName) {
-            this.companyName = Objects.requireNonNull(companyName, "companyName must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingAddress1")
-        public BillingAddress2Stage billingAddress1(@NotNull String billingAddress1) {
-            this.billingAddress1 = Objects.requireNonNull(billingAddress1, "billingAddress1 must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingAddress2")
-        public BillingCityStage billingAddress2(@NotNull String billingAddress2) {
-            this.billingAddress2 = Objects.requireNonNull(billingAddress2, "billingAddress2 must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingCity")
-        public BillingStateStage billingCity(@NotNull String billingCity) {
-            this.billingCity = Objects.requireNonNull(billingCity, "billingCity must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingState")
-        public BillingZipStage billingState(@NotNull String billingState) {
-            this.billingState = Objects.requireNonNull(billingState, "billingState must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingZip")
-        public BillingCountryStage billingZip(@NotNull String billingZip) {
-            this.billingZip = Objects.requireNonNull(billingZip, "billingZip must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingCountry")
-        public BillingPhoneStage billingCountry(@NotNull String billingCountry) {
-            this.billingCountry = Objects.requireNonNull(billingCountry, "billingCountry must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingPhone")
-        public BillingEmailStage billingPhone(@NotNull String billingPhone) {
-            this.billingPhone = Objects.requireNonNull(billingPhone, "billingPhone must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("billingEmail")
-        public CustomerNumberStage billingEmail(@NotNull String billingEmail) {
-            this.billingEmail = Objects.requireNonNull(billingEmail, "billingEmail must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("customerNumber")
-        public ShippingAddress1Stage customerNumber(@NotNull String customerNumber) {
-            this.customerNumber = Objects.requireNonNull(customerNumber, "customerNumber must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("shippingAddress1")
-        public ShippingAddress2Stage shippingAddress1(@NotNull String shippingAddress1) {
-            this.shippingAddress1 = Objects.requireNonNull(shippingAddress1, "shippingAddress1 must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("shippingAddress2")
-        public ShippingCityStage shippingAddress2(@NotNull String shippingAddress2) {
-            this.shippingAddress2 = Objects.requireNonNull(shippingAddress2, "shippingAddress2 must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("shippingCity")
-        public ShippingStateStage shippingCity(@NotNull String shippingCity) {
-            this.shippingCity = Objects.requireNonNull(shippingCity, "shippingCity must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("shippingState")
-        public ShippingZipStage shippingState(@NotNull String shippingState) {
-            this.shippingState = Objects.requireNonNull(shippingState, "shippingState must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("shippingZip")
-        public ShippingCountryStage shippingZip(@NotNull String shippingZip) {
-            this.shippingZip = Objects.requireNonNull(shippingZip, "shippingZip must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("shippingCountry")
-        public CustomerIdStage shippingCountry(@NotNull String shippingCountry) {
-            this.shippingCountry = Objects.requireNonNull(shippingCountry, "shippingCountry must not be null");
             return this;
         }
 
@@ -683,6 +727,406 @@ public final class TransactionDetailCustomer {
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
         public _FinalStage additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingCountry(Nullable<String> shippingCountry) {
+            if (shippingCountry.isNull()) {
+                this.shippingCountry = null;
+            } else if (shippingCountry.isEmpty()) {
+                this.shippingCountry = Optional.empty();
+            } else {
+                this.shippingCountry = Optional.of(shippingCountry.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingCountry(String shippingCountry) {
+            this.shippingCountry = Optional.ofNullable(shippingCountry);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingCountry", nulls = Nulls.SKIP)
+        public _FinalStage shippingCountry(Optional<String> shippingCountry) {
+            this.shippingCountry = shippingCountry;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingZip(Nullable<String> shippingZip) {
+            if (shippingZip.isNull()) {
+                this.shippingZip = null;
+            } else if (shippingZip.isEmpty()) {
+                this.shippingZip = Optional.empty();
+            } else {
+                this.shippingZip = Optional.of(shippingZip.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingZip(String shippingZip) {
+            this.shippingZip = Optional.ofNullable(shippingZip);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingZip", nulls = Nulls.SKIP)
+        public _FinalStage shippingZip(Optional<String> shippingZip) {
+            this.shippingZip = shippingZip;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingState(Nullable<String> shippingState) {
+            if (shippingState.isNull()) {
+                this.shippingState = null;
+            } else if (shippingState.isEmpty()) {
+                this.shippingState = Optional.empty();
+            } else {
+                this.shippingState = Optional.of(shippingState.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingState(String shippingState) {
+            this.shippingState = Optional.ofNullable(shippingState);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingState", nulls = Nulls.SKIP)
+        public _FinalStage shippingState(Optional<String> shippingState) {
+            this.shippingState = shippingState;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingCity(Nullable<String> shippingCity) {
+            if (shippingCity.isNull()) {
+                this.shippingCity = null;
+            } else if (shippingCity.isEmpty()) {
+                this.shippingCity = Optional.empty();
+            } else {
+                this.shippingCity = Optional.of(shippingCity.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingCity(String shippingCity) {
+            this.shippingCity = Optional.ofNullable(shippingCity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingCity", nulls = Nulls.SKIP)
+        public _FinalStage shippingCity(Optional<String> shippingCity) {
+            this.shippingCity = shippingCity;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingAddress2(Nullable<String> shippingAddress2) {
+            if (shippingAddress2.isNull()) {
+                this.shippingAddress2 = null;
+            } else if (shippingAddress2.isEmpty()) {
+                this.shippingAddress2 = Optional.empty();
+            } else {
+                this.shippingAddress2 = Optional.of(shippingAddress2.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingAddress2(String shippingAddress2) {
+            this.shippingAddress2 = Optional.ofNullable(shippingAddress2);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingAddress2", nulls = Nulls.SKIP)
+        public _FinalStage shippingAddress2(Optional<String> shippingAddress2) {
+            this.shippingAddress2 = shippingAddress2;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingAddress1(Nullable<String> shippingAddress1) {
+            if (shippingAddress1.isNull()) {
+                this.shippingAddress1 = null;
+            } else if (shippingAddress1.isEmpty()) {
+                this.shippingAddress1 = Optional.empty();
+            } else {
+                this.shippingAddress1 = Optional.of(shippingAddress1.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage shippingAddress1(String shippingAddress1) {
+            this.shippingAddress1 = Optional.ofNullable(shippingAddress1);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingAddress1", nulls = Nulls.SKIP)
+        public _FinalStage shippingAddress1(Optional<String> shippingAddress1) {
+            this.shippingAddress1 = shippingAddress1;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customerNumber(Nullable<String> customerNumber) {
+            if (customerNumber.isNull()) {
+                this.customerNumber = null;
+            } else if (customerNumber.isEmpty()) {
+                this.customerNumber = Optional.empty();
+            } else {
+                this.customerNumber = Optional.of(customerNumber.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customerNumber(String customerNumber) {
+            this.customerNumber = Optional.ofNullable(customerNumber);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customerNumber", nulls = Nulls.SKIP)
+        public _FinalStage customerNumber(Optional<String> customerNumber) {
+            this.customerNumber = customerNumber;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingEmail(Nullable<String> billingEmail) {
+            if (billingEmail.isNull()) {
+                this.billingEmail = null;
+            } else if (billingEmail.isEmpty()) {
+                this.billingEmail = Optional.empty();
+            } else {
+                this.billingEmail = Optional.of(billingEmail.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingEmail(String billingEmail) {
+            this.billingEmail = Optional.ofNullable(billingEmail);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingEmail", nulls = Nulls.SKIP)
+        public _FinalStage billingEmail(Optional<String> billingEmail) {
+            this.billingEmail = billingEmail;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingPhone(Nullable<String> billingPhone) {
+            if (billingPhone.isNull()) {
+                this.billingPhone = null;
+            } else if (billingPhone.isEmpty()) {
+                this.billingPhone = Optional.empty();
+            } else {
+                this.billingPhone = Optional.of(billingPhone.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingPhone(String billingPhone) {
+            this.billingPhone = Optional.ofNullable(billingPhone);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingPhone", nulls = Nulls.SKIP)
+        public _FinalStage billingPhone(Optional<String> billingPhone) {
+            this.billingPhone = billingPhone;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingCountry(Nullable<String> billingCountry) {
+            if (billingCountry.isNull()) {
+                this.billingCountry = null;
+            } else if (billingCountry.isEmpty()) {
+                this.billingCountry = Optional.empty();
+            } else {
+                this.billingCountry = Optional.of(billingCountry.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingCountry(String billingCountry) {
+            this.billingCountry = Optional.ofNullable(billingCountry);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingCountry", nulls = Nulls.SKIP)
+        public _FinalStage billingCountry(Optional<String> billingCountry) {
+            this.billingCountry = billingCountry;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingZip(Nullable<String> billingZip) {
+            if (billingZip.isNull()) {
+                this.billingZip = null;
+            } else if (billingZip.isEmpty()) {
+                this.billingZip = Optional.empty();
+            } else {
+                this.billingZip = Optional.of(billingZip.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingZip(String billingZip) {
+            this.billingZip = Optional.ofNullable(billingZip);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingZip", nulls = Nulls.SKIP)
+        public _FinalStage billingZip(Optional<String> billingZip) {
+            this.billingZip = billingZip;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingState(Nullable<String> billingState) {
+            if (billingState.isNull()) {
+                this.billingState = null;
+            } else if (billingState.isEmpty()) {
+                this.billingState = Optional.empty();
+            } else {
+                this.billingState = Optional.of(billingState.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingState(String billingState) {
+            this.billingState = Optional.ofNullable(billingState);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingState", nulls = Nulls.SKIP)
+        public _FinalStage billingState(Optional<String> billingState) {
+            this.billingState = billingState;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingCity(Nullable<String> billingCity) {
+            if (billingCity.isNull()) {
+                this.billingCity = null;
+            } else if (billingCity.isEmpty()) {
+                this.billingCity = Optional.empty();
+            } else {
+                this.billingCity = Optional.of(billingCity.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingCity(String billingCity) {
+            this.billingCity = Optional.ofNullable(billingCity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingCity", nulls = Nulls.SKIP)
+        public _FinalStage billingCity(Optional<String> billingCity) {
+            this.billingCity = billingCity;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingAddress2(Nullable<String> billingAddress2) {
+            if (billingAddress2.isNull()) {
+                this.billingAddress2 = null;
+            } else if (billingAddress2.isEmpty()) {
+                this.billingAddress2 = Optional.empty();
+            } else {
+                this.billingAddress2 = Optional.of(billingAddress2.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingAddress2(String billingAddress2) {
+            this.billingAddress2 = Optional.ofNullable(billingAddress2);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingAddress2", nulls = Nulls.SKIP)
+        public _FinalStage billingAddress2(Optional<String> billingAddress2) {
+            this.billingAddress2 = billingAddress2;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingAddress1(Nullable<String> billingAddress1) {
+            if (billingAddress1.isNull()) {
+                this.billingAddress1 = null;
+            } else if (billingAddress1.isEmpty()) {
+                this.billingAddress1 = Optional.empty();
+            } else {
+                this.billingAddress1 = Optional.of(billingAddress1.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingAddress1(String billingAddress1) {
+            this.billingAddress1 = Optional.ofNullable(billingAddress1);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "billingAddress1", nulls = Nulls.SKIP)
+        public _FinalStage billingAddress1(Optional<String> billingAddress1) {
+            this.billingAddress1 = billingAddress1;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage companyName(Nullable<String> companyName) {
+            if (companyName.isNull()) {
+                this.companyName = null;
+            } else if (companyName.isEmpty()) {
+                this.companyName = Optional.empty();
+            } else {
+                this.companyName = Optional.of(companyName.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage companyName(String companyName) {
+            this.companyName = Optional.ofNullable(companyName);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "companyName", nulls = Nulls.SKIP)
+        public _FinalStage companyName(Optional<String> companyName) {
+            this.companyName = companyName;
             return this;
         }
 
