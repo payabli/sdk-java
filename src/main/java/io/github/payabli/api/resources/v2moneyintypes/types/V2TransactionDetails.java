@@ -130,7 +130,7 @@ public final class V2TransactionDetails {
 
     private final String achSecCode;
 
-    private final AchHolderType achHolderType;
+    private final Optional<AchHolderType> achHolderType;
 
     private final String ipAddress;
 
@@ -189,7 +189,7 @@ public final class V2TransactionDetails {
             Optional<Integer> riskActionCode,
             String deviceId,
             String achSecCode,
-            AchHolderType achHolderType,
+            Optional<AchHolderType> achHolderType,
             String ipAddress,
             boolean isSameDayAch,
             Optional<String> walletType,
@@ -531,8 +531,11 @@ public final class V2TransactionDetails {
         return achSecCode;
     }
 
-    @JsonProperty("achHolderType")
-    public AchHolderType getAchHolderType() {
+    @JsonIgnore
+    public Optional<AchHolderType> getAchHolderType() {
+        if (achHolderType == null) {
+            return Optional.empty();
+        }
         return achHolderType;
     }
 
@@ -582,6 +585,12 @@ public final class V2TransactionDetails {
     @JsonProperty("splitFundingInstructions")
     private Optional<List<SplitFundingContent>> _getSplitFundingInstructions() {
         return splitFundingInstructions;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("achHolderType")
+    private Optional<AchHolderType> _getAchHolderType() {
+        return achHolderType;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -903,11 +912,7 @@ public final class V2TransactionDetails {
     }
 
     public interface AchSecCodeStage {
-        AchHolderTypeStage achSecCode(@NotNull String achSecCode);
-    }
-
-    public interface AchHolderTypeStage {
-        IpAddressStage achHolderType(@NotNull AchHolderType achHolderType);
+        IpAddressStage achSecCode(@NotNull String achSecCode);
     }
 
     public interface IpAddressStage {
@@ -980,6 +985,12 @@ public final class V2TransactionDetails {
 
         _FinalStage riskActionCode(Integer riskActionCode);
 
+        _FinalStage achHolderType(Optional<AchHolderType> achHolderType);
+
+        _FinalStage achHolderType(AchHolderType achHolderType);
+
+        _FinalStage achHolderType(Nullable<AchHolderType> achHolderType);
+
         /**
          * <p>Digital wallet type if applicable.</p>
          */
@@ -1030,7 +1041,6 @@ public final class V2TransactionDetails {
                     RiskActionStage,
                     DeviceIdStage,
                     AchSecCodeStage,
-                    AchHolderTypeStage,
                     IpAddressStage,
                     IsSameDayAchStage,
                     _FinalStage {
@@ -1110,13 +1120,13 @@ public final class V2TransactionDetails {
 
         private String achSecCode;
 
-        private AchHolderType achHolderType;
-
         private String ipAddress;
 
         private boolean isSameDayAch;
 
         private Optional<String> walletType = Optional.empty();
+
+        private Optional<AchHolderType> achHolderType = Optional.empty();
 
         private Optional<Integer> riskActionCode = Optional.empty();
 
@@ -1512,15 +1522,8 @@ public final class V2TransactionDetails {
 
         @java.lang.Override
         @JsonSetter("achSecCode")
-        public AchHolderTypeStage achSecCode(@NotNull String achSecCode) {
+        public IpAddressStage achSecCode(@NotNull String achSecCode) {
             this.achSecCode = Objects.requireNonNull(achSecCode, "achSecCode must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("achHolderType")
-        public IpAddressStage achHolderType(@NotNull AchHolderType achHolderType) {
-            this.achHolderType = Objects.requireNonNull(achHolderType, "achHolderType must not be null");
             return this;
         }
 
@@ -1576,6 +1579,31 @@ public final class V2TransactionDetails {
         @JsonSetter(value = "walletType", nulls = Nulls.SKIP)
         public _FinalStage walletType(Optional<String> walletType) {
             this.walletType = walletType;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage achHolderType(Nullable<AchHolderType> achHolderType) {
+            if (achHolderType.isNull()) {
+                this.achHolderType = null;
+            } else if (achHolderType.isEmpty()) {
+                this.achHolderType = Optional.empty();
+            } else {
+                this.achHolderType = Optional.of(achHolderType.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage achHolderType(AchHolderType achHolderType) {
+            this.achHolderType = Optional.ofNullable(achHolderType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "achHolderType", nulls = Nulls.SKIP)
+        public _FinalStage achHolderType(Optional<AchHolderType> achHolderType) {
+            this.achHolderType = achHolderType;
             return this;
         }
 

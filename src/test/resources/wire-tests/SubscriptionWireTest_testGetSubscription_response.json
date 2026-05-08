@@ -35,7 +35,7 @@
   "FeeAmount": 3,
   "Frequency": "monthly",
   "IdSub": 396,
-  "InvoiceData": {
+  "invoiceData": {
     "AdditionalData": null,
     "attachments": [
       {}

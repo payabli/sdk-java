@@ -10,6 +10,8 @@ import io.github.payabli.api.resources.boarding.requests.ListApplicationsRequest
 import io.github.payabli.api.resources.boarding.requests.ListBoardingLinksRequest;
 import io.github.payabli.api.resources.boarding.requests.RequestAppByAuth;
 import io.github.payabli.api.resources.boarding.types.AddApplicationRequest;
+import io.github.payabli.api.resources.boarding.types.CreateApplicationFromPaypointRequest;
+import io.github.payabli.api.resources.boarding.types.CreateApplicationFromPaypointResponse;
 import io.github.payabli.api.types.ApplicationData;
 import io.github.payabli.api.types.ApplicationDetailsRecord;
 import io.github.payabli.api.types.ApplicationQueryRecord;
@@ -274,5 +276,39 @@ public class BoardingClient {
     public PayabliApiResponse00Responsedatanonobject updateApplication(
             int appId, ApplicationData request, RequestOptions requestOptions) {
         return this.rawClient.updateApplication(appId, request, requestOptions).body();
+    }
+
+    /**
+     * Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
+     */
+    public CreateApplicationFromPaypointResponse addServiceToPaypointFromApp(
+            CreateApplicationFromPaypointRequest request) {
+        return this.rawClient.addServiceToPaypointFromApp(request).body();
+    }
+
+    /**
+     * Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
+     */
+    public CreateApplicationFromPaypointResponse addServiceToPaypointFromApp(
+            CreateApplicationFromPaypointRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .addServiceToPaypointFromApp(request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
+     */
+    public QueryBoardingAppsListResponse getApplicationsByPaypointId(long paypointId) {
+        return this.rawClient.getApplicationsByPaypointId(paypointId).body();
+    }
+
+    /**
+     * Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
+     */
+    public QueryBoardingAppsListResponse getApplicationsByPaypointId(long paypointId, RequestOptions requestOptions) {
+        return this.rawClient
+                .getApplicationsByPaypointId(paypointId, requestOptions)
+                .body();
     }
 }

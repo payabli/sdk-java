@@ -206,7 +206,7 @@ public final class SubscriptionQueryRecords {
         return idSub;
     }
 
-    @JsonProperty("InvoiceData")
+    @JsonProperty("invoiceData")
     public Optional<BillData> getInvoiceData() {
         return invoiceData;
     }
@@ -694,7 +694,7 @@ public final class SubscriptionQueryRecords {
             return this;
         }
 
-        @JsonSetter(value = "InvoiceData", nulls = Nulls.SKIP)
+        @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
         public Builder invoiceData(Optional<BillData> invoiceData) {
             this.invoiceData = invoiceData;
             return this;

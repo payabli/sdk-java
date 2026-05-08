@@ -102,8 +102,8 @@
     }
   ],
   "customerSummary": {
-    "numberofTransactions": 30,
-    "recentTransactions": [
+    "NumberofTransactions": 30,
+    "RecentTransactions": [
       {
         "EntrypageId": 0,
         "FeeAmount": 1,
@@ -114,8 +114,8 @@
         "TransStatus": 1
       }
     ],
-    "totalAmountTransactions": 1500,
-    "totalNetAmountTransactions": 1500
+    "TotalAmountTransactions": 1500,
+    "TotalNetAmountTransactions": 1500
   },
   "PaypointLegalname": "Sunshine Services, LLC",
   "PaypointDbaname": "Sunshine Gutters",

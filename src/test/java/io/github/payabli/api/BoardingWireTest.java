@@ -8,6 +8,8 @@ import io.github.payabli.api.resources.boarding.requests.ListApplicationsRequest
 import io.github.payabli.api.resources.boarding.requests.ListBoardingLinksRequest;
 import io.github.payabli.api.resources.boarding.requests.RequestAppByAuth;
 import io.github.payabli.api.resources.boarding.types.AddApplicationRequest;
+import io.github.payabli.api.resources.boarding.types.CreateApplicationFromPaypointRequest;
+import io.github.payabli.api.resources.boarding.types.CreateApplicationFromPaypointResponse;
 import io.github.payabli.api.types.ApplicationData;
 import io.github.payabli.api.types.ApplicationDataPayIn;
 import io.github.payabli.api.types.ApplicationDataPayInContactsItem;
@@ -904,6 +906,201 @@ public class BoardingWireTest {
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": 3625,\n"
                 + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testAddServiceToPaypointFromApp() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":66594,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"appId\":66594,\"boardingLink\":\"https://boarding-sandbox.payabli.com/boarding/externalapp/load/10422?mode=25&email=merchant@example.com&referenceId=YpYNRPDOcGsm\"}}"));
+        CreateApplicationFromPaypointResponse response = client.boarding()
+                .addServiceToPaypointFromApp(CreateApplicationFromPaypointRequest.builder()
+                        .paypointId(123L)
+                        .templateId(456L)
+                        .recipientEmail("merchant@example.com")
+                        .returnBoardingAccessInfoInLine(true)
+                        .onCreate(Optional.of(Arrays.asList("submitApplication")))
+                        .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("POST", request.getMethod());
+        // Validate request body
+        String actualRequestBody = request.getBody().readUtf8();
+        String expectedRequestBody = ""
+                + "{\n"
+                + "  \"paypointId\": 123,\n"
+                + "  \"templateId\": 456,\n"
+                + "  \"recipientEmail\": \"merchant@example.com\",\n"
+                + "  \"returnBoardingAccessInfoInLine\": true,\n"
+                + "  \"onCreate\": [\n"
+                + "    \"submitApplication\"\n"
+                + "  ]\n"
+                + "}";
+        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
+        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
+        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
+        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
+            String discriminator = null;
+            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
+            else if (actualJson.has("_type"))
+                discriminator = actualJson.get("_type").asText();
+            else if (actualJson.has("kind"))
+                discriminator = actualJson.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualJson.isNull()) {
+            Assertions.assertTrue(
+                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
+                    "request should be a valid JSON value");
+        }
+
+        if (actualJson.isArray()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
+        }
+        if (actualJson.isObject()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
+        }
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"pageIdentifier\": null,\n"
+                + "  \"roomId\": 66594,\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"responseData\": {\n"
+                + "    \"appId\": 66594,\n"
+                + "    \"boardingLink\": \"https://boarding-sandbox.payabli.com/boarding/externalapp/load/10422?mode=25&email=merchant@example.com&referenceId=YpYNRPDOcGsm\"\n"
+                + "  }\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testGetApplicationsByPaypointId() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"Records\":[{\"idApplication\":68388,\"orgId\":3125,\"dbaName\":\"Meadowbrook Phase II HOA A\",\"legalName\":\"Meadowbrook Phase II HOA B\",\"ein\":\"601907058\",\"boardingStatus\":7,\"boardingSubStatus\":0,\"templateId\":8233,\"boardingLinkId\":6344,\"contactData\":[{\"contactName\":\"Gary Heaney\",\"contactEmail\":\"hello@meadowbrookphaseii.com\",\"contactTitle\":\"Human Group Designer\",\"contactPhone\":\"7863078875\"}],\"generalEvents\":[{\"description\":\"Created\",\"eventTime\":\"2026-03-17T18:56:39.8854072Z\"},{\"description\":\"Linked to paypoint 6257\",\"eventTime\":\"2026-03-17T18:56:39.885413Z\"},{\"description\":\"Updated Status: 7, 0\",\"eventTime\":\"2026-03-18T19:32:39.4012114Z\"}]}],\"Summary\":{\"pageIdentifier\":\"null\",\"pageSize\":0,\"totalAmount\":0,\"totalNetAmount\":0,\"totalPages\":0,\"totalRecords\":1}}"));
+        QueryBoardingAppsListResponse response = client.boarding().getApplicationsByPaypointId(12345L);
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"Records\": [\n"
+                + "    {\n"
+                + "      \"idApplication\": 68388,\n"
+                + "      \"orgId\": 3125,\n"
+                + "      \"dbaName\": \"Meadowbrook Phase II HOA A\",\n"
+                + "      \"legalName\": \"Meadowbrook Phase II HOA B\",\n"
+                + "      \"ein\": \"601907058\",\n"
+                + "      \"boardingStatus\": 7,\n"
+                + "      \"boardingSubStatus\": 0,\n"
+                + "      \"templateId\": 8233,\n"
+                + "      \"boardingLinkId\": 6344,\n"
+                + "      \"contactData\": [\n"
+                + "        {\n"
+                + "          \"contactName\": \"Gary Heaney\",\n"
+                + "          \"contactEmail\": \"hello@meadowbrookphaseii.com\",\n"
+                + "          \"contactTitle\": \"Human Group Designer\",\n"
+                + "          \"contactPhone\": \"7863078875\"\n"
+                + "        }\n"
+                + "      ],\n"
+                + "      \"generalEvents\": [\n"
+                + "        {\n"
+                + "          \"description\": \"Created\",\n"
+                + "          \"eventTime\": \"2026-03-17T18:56:39.8854072Z\"\n"
+                + "        },\n"
+                + "        {\n"
+                + "          \"description\": \"Linked to paypoint 6257\",\n"
+                + "          \"eventTime\": \"2026-03-17T18:56:39.885413Z\"\n"
+                + "        },\n"
+                + "        {\n"
+                + "          \"description\": \"Updated Status: 7, 0\",\n"
+                + "          \"eventTime\": \"2026-03-18T19:32:39.4012114Z\"\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    }\n"
+                + "  ],\n"
+                + "  \"Summary\": {\n"
+                + "    \"pageIdentifier\": \"null\",\n"
+                + "    \"pageSize\": 0,\n"
+                + "    \"totalAmount\": 0,\n"
+                + "    \"totalNetAmount\": 0,\n"
+                + "    \"totalPages\": 0,\n"
+                + "    \"totalRecords\": 1\n"
+                + "  }\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);

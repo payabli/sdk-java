@@ -42,7 +42,7 @@
       "ExternalProcessorInformation": " ",
       "FeeAmount": 10.25,
       "GatewayTransId": "string",
-      "InvoiceData": {
+      "invoiceData": {
         "attachments": [
           {
             "fContent": "TXkgdGVzdCBmaWxlHJ==...",

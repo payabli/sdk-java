@@ -12,9 +12,9 @@
       "customerNumber": "425436530000",
       "customerStatus": 0,
       "customerSummary": {
-        "numberofTransactions": 30,
-        "totalAmountTransactions": 1500,
-        "totalNetAmountTransactions": 1500
+        "NumberofTransactions": 30,
+        "TotalAmountTransactions": 1500,
+        "TotalNetAmountTransactions": 1500
       },
       "Email": "thibodeaux.hebert@bayoumail.com",
       "externalPaypointID": "pay-10",

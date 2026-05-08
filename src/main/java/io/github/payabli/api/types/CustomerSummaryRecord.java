@@ -47,7 +47,7 @@ public final class CustomerSummaryRecord {
     /**
      * @return Number total of transactions or payments
      */
-    @JsonProperty("numberofTransactions")
+    @JsonProperty("NumberofTransactions")
     public Optional<Integer> getNumberofTransactions() {
         return numberofTransactions;
     }
@@ -55,7 +55,7 @@ public final class CustomerSummaryRecord {
     /**
      * @return List of more recent 5 transactions belonging to the customer
      */
-    @JsonProperty("recentTransactions")
+    @JsonProperty("RecentTransactions")
     public Optional<List<TransactionQueryRecords>> getRecentTransactions() {
         return recentTransactions;
     }
@@ -63,7 +63,7 @@ public final class CustomerSummaryRecord {
     /**
      * @return Total amount in transactions
      */
-    @JsonProperty("totalAmountTransactions")
+    @JsonProperty("TotalAmountTransactions")
     public Optional<Double> getTotalAmountTransactions() {
         return totalAmountTransactions;
     }
@@ -71,7 +71,7 @@ public final class CustomerSummaryRecord {
     /**
      * @return Total net amount in transactions
      */
-    @JsonProperty("totalNetAmountTransactions")
+    @JsonProperty("TotalNetAmountTransactions")
     public Optional<Double> getTotalNetAmountTransactions() {
         return totalNetAmountTransactions;
     }
@@ -138,7 +138,7 @@ public final class CustomerSummaryRecord {
         /**
          * <p>Number total of transactions or payments</p>
          */
-        @JsonSetter(value = "numberofTransactions", nulls = Nulls.SKIP)
+        @JsonSetter(value = "NumberofTransactions", nulls = Nulls.SKIP)
         public Builder numberofTransactions(Optional<Integer> numberofTransactions) {
             this.numberofTransactions = numberofTransactions;
             return this;
@@ -152,7 +152,7 @@ public final class CustomerSummaryRecord {
         /**
          * <p>List of more recent 5 transactions belonging to the customer</p>
          */
-        @JsonSetter(value = "recentTransactions", nulls = Nulls.SKIP)
+        @JsonSetter(value = "RecentTransactions", nulls = Nulls.SKIP)
         public Builder recentTransactions(Optional<List<TransactionQueryRecords>> recentTransactions) {
             this.recentTransactions = recentTransactions;
             return this;
@@ -166,7 +166,7 @@ public final class CustomerSummaryRecord {
         /**
          * <p>Total amount in transactions</p>
          */
-        @JsonSetter(value = "totalAmountTransactions", nulls = Nulls.SKIP)
+        @JsonSetter(value = "TotalAmountTransactions", nulls = Nulls.SKIP)
         public Builder totalAmountTransactions(Optional<Double> totalAmountTransactions) {
             this.totalAmountTransactions = totalAmountTransactions;
             return this;
@@ -180,7 +180,7 @@ public final class CustomerSummaryRecord {
         /**
          * <p>Total net amount in transactions</p>
          */
-        @JsonSetter(value = "totalNetAmountTransactions", nulls = Nulls.SKIP)
+        @JsonSetter(value = "TotalNetAmountTransactions", nulls = Nulls.SKIP)
         public Builder totalNetAmountTransactions(Optional<Double> totalNetAmountTransactions) {
             this.totalNetAmountTransactions = totalNetAmountTransactions;
             return this;
