@@ -54,6 +54,8 @@ import io.github.payabli.api.resources.query.requests.ListUsersOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListUsersPaypointRequest;
 import io.github.payabli.api.resources.query.requests.ListVcardsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVcardsRequest;
+import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
 import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
@@ -63,6 +65,7 @@ import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
+import io.github.payabli.api.resources.querytypes.types.VCardTransactionQueryResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.QueryBatchesOutResponse;
 import io.github.payabli.api.types.QueryChargebacksResponse;
@@ -4899,6 +4902,252 @@ public class AsyncRawQueryClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardQueryResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+            String entry) {
+        return listVcardsTransactions(
+                entry, ListVcardsTransactionsRequest.builder().build());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+            String entry, RequestOptions requestOptions) {
+        return listVcardsTransactions(
+                entry, ListVcardsTransactionsRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+            String entry, ListVcardsTransactionsRequest request) {
+        return listVcardsTransactions(entry, request, null);
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+            String entry, ListVcardsTransactionsRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Query/vcardsTransactions")
+                .addPathSegment(entry);
+        if (request.getFromRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "fromRecord", request.getFromRecord().get(), false);
+        }
+        if (request.getLimitRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limitRecord", request.getLimitRecord().get(), false);
+        }
+        if (request.getParameters().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (request.getSortBy().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, VCardTransactionQueryResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+            int orgId) {
+        return listVcardsTransactionsOrg(
+                orgId, ListVcardsTransactionsOrgRequest.builder().build());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+            int orgId, RequestOptions requestOptions) {
+        return listVcardsTransactionsOrg(
+                orgId, ListVcardsTransactionsOrgRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+            int orgId, ListVcardsTransactionsOrgRequest request) {
+        return listVcardsTransactionsOrg(orgId, request, null);
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+            int orgId, ListVcardsTransactionsOrgRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Query/vcardsTransactions/org")
+                .addPathSegment(Integer.toString(orgId));
+        if (request.getFromRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "fromRecord", request.getFromRecord().get(), false);
+        }
+        if (request.getLimitRecord().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limitRecord", request.getLimitRecord().get(), false);
+        }
+        if (request.getParameters().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "parameters", request.getParameters().get(), false);
+        }
+        if (request.getSortBy().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "sortBy", request.getSortBy().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, VCardTransactionQueryResponse.class),
                                 response));
                         return;
                     }

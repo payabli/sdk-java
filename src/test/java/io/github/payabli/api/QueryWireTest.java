@@ -42,6 +42,8 @@ import io.github.payabli.api.resources.query.requests.ListUsersOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListUsersPaypointRequest;
 import io.github.payabli.api.resources.query.requests.ListVcardsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVcardsRequest;
+import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
 import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
@@ -51,6 +53,7 @@ import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
+import io.github.payabli.api.resources.querytypes.types.VCardTransactionQueryResponse;
 import io.github.payabli.api.types.QueryBatchesOutResponse;
 import io.github.payabli.api.types.QueryChargebacksResponse;
 import io.github.payabli.api.types.QueryCustomerResponse;
@@ -2467,6 +2470,196 @@ public class QueryWireTest {
         String actualResponseJson = objectMapper.writeValueAsString(response);
         String expectedResponseBody =
                 TestResources.loadResource("/wire-tests/QueryWireTest_testListVcards_response.json");
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testListVcardsTransactions() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"Summary\":{\"totalPages\":20,\"totalRecords\":393,\"totalAmount\":231.58,\"totalactive\":388,\"totalamountactive\":219.58,\"totalbalanceactive\":-213.83},\"Records\":[{\"Identifier\":\"7HQ2P9B4XD\",\"CardToken\":\"5RJ8MN2KC4\",\"LastFour\":\"1234\",\"ExpirationDate\":\"06-30-2029\",\"Mcc\":\"5943\",\"PayoutId\":84210,\"CustomerId\":1542,\"VendorId\":9821,\"MiscData1\":\"Invoice #12345\",\"MiscData2\":\"Project: Office Supplies\",\"CurrentUses\":1,\"Amount\":500,\"Balance\":425.5,\"PaypointId\":236,\"PaypointLegal\":\"Global Factory LLC\",\"PaypointDba\":\"Global Factory\",\"ExternalPaypointID\":\"pay-10\",\"OrgName\":\"SupplyPro\",\"Type\":\"AUTHORIZATION\",\"Status\":\"AUTHORIZATION\",\"CreatedOn\":\"2026-05-05 03:28:53.082830\",\"TransactionAmount\":\"74.500\",\"PostedAmount\":\"0.000\",\"PostedOn\":null,\"MerchantName\":\"Office Supply Co.\",\"AuthorizationStatus\":\"AUTHORIZATION\",\"ReasonToDecline\":null}]}"));
+        VCardTransactionQueryResponse response = client.query()
+                .listVcardsTransactions(
+                        "8cfec329267",
+                        ListVcardsTransactionsRequest.builder()
+                                .fromRecord(0)
+                                .limitRecord(20)
+                                .sortBy("desc(CreatedOn)")
+                                .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"Summary\": {\n"
+                + "    \"totalPages\": 20,\n"
+                + "    \"totalRecords\": 393,\n"
+                + "    \"totalAmount\": 231.58,\n"
+                + "    \"totalactive\": 388,\n"
+                + "    \"totalamountactive\": 219.58,\n"
+                + "    \"totalbalanceactive\": -213.83\n"
+                + "  },\n"
+                + "  \"Records\": [\n"
+                + "    {\n"
+                + "      \"Identifier\": \"7HQ2P9B4XD\",\n"
+                + "      \"CardToken\": \"5RJ8MN2KC4\",\n"
+                + "      \"LastFour\": \"1234\",\n"
+                + "      \"ExpirationDate\": \"06-30-2029\",\n"
+                + "      \"Mcc\": \"5943\",\n"
+                + "      \"PayoutId\": 84210,\n"
+                + "      \"CustomerId\": 1542,\n"
+                + "      \"VendorId\": 9821,\n"
+                + "      \"MiscData1\": \"Invoice #12345\",\n"
+                + "      \"MiscData2\": \"Project: Office Supplies\",\n"
+                + "      \"CurrentUses\": 1,\n"
+                + "      \"Amount\": 500,\n"
+                + "      \"Balance\": 425.5,\n"
+                + "      \"PaypointId\": 236,\n"
+                + "      \"PaypointLegal\": \"Global Factory LLC\",\n"
+                + "      \"PaypointDba\": \"Global Factory\",\n"
+                + "      \"ExternalPaypointID\": \"pay-10\",\n"
+                + "      \"OrgName\": \"SupplyPro\",\n"
+                + "      \"Type\": \"AUTHORIZATION\",\n"
+                + "      \"Status\": \"AUTHORIZATION\",\n"
+                + "      \"CreatedOn\": \"2026-05-05 03:28:53.082830\",\n"
+                + "      \"TransactionAmount\": \"74.500\",\n"
+                + "      \"PostedAmount\": \"0.000\",\n"
+                + "      \"PostedOn\": null,\n"
+                + "      \"MerchantName\": \"Office Supply Co.\",\n"
+                + "      \"AuthorizationStatus\": \"AUTHORIZATION\",\n"
+                + "      \"ReasonToDecline\": null\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testListVcardsTransactionsOrg() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"Summary\":{\"totalPages\":20,\"totalRecords\":393,\"totalAmount\":231.58,\"totalactive\":388,\"totalamountactive\":219.58,\"totalbalanceactive\":-213.83},\"Records\":[{\"Identifier\":\"7HQ2P9B4XD\",\"CardToken\":\"5RJ8MN2KC4\",\"LastFour\":\"1234\",\"ExpirationDate\":\"06-30-2029\",\"Mcc\":\"5943\",\"PayoutId\":84210,\"CustomerId\":1542,\"VendorId\":9821,\"MiscData1\":\"Invoice #12345\",\"MiscData2\":\"Project: Office Supplies\",\"CurrentUses\":1,\"Amount\":500,\"Balance\":425.5,\"PaypointId\":236,\"PaypointLegal\":\"Global Factory LLC\",\"PaypointDba\":\"Global Factory\",\"ExternalPaypointID\":\"pay-10\",\"OrgName\":\"SupplyPro\",\"Type\":\"AUTHORIZATION\",\"Status\":\"AUTHORIZATION\",\"CreatedOn\":\"2026-05-05 03:28:53.082830\",\"TransactionAmount\":\"74.500\",\"PostedAmount\":\"0.000\",\"PostedOn\":null,\"MerchantName\":\"Office Supply Co.\",\"AuthorizationStatus\":\"AUTHORIZATION\",\"ReasonToDecline\":null}]}"));
+        VCardTransactionQueryResponse response = client.query()
+                .listVcardsTransactionsOrg(
+                        123,
+                        ListVcardsTransactionsOrgRequest.builder()
+                                .fromRecord(0)
+                                .limitRecord(20)
+                                .sortBy("desc(CreatedOn)")
+                                .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"Summary\": {\n"
+                + "    \"totalPages\": 20,\n"
+                + "    \"totalRecords\": 393,\n"
+                + "    \"totalAmount\": 231.58,\n"
+                + "    \"totalactive\": 388,\n"
+                + "    \"totalamountactive\": 219.58,\n"
+                + "    \"totalbalanceactive\": -213.83\n"
+                + "  },\n"
+                + "  \"Records\": [\n"
+                + "    {\n"
+                + "      \"Identifier\": \"7HQ2P9B4XD\",\n"
+                + "      \"CardToken\": \"5RJ8MN2KC4\",\n"
+                + "      \"LastFour\": \"1234\",\n"
+                + "      \"ExpirationDate\": \"06-30-2029\",\n"
+                + "      \"Mcc\": \"5943\",\n"
+                + "      \"PayoutId\": 84210,\n"
+                + "      \"CustomerId\": 1542,\n"
+                + "      \"VendorId\": 9821,\n"
+                + "      \"MiscData1\": \"Invoice #12345\",\n"
+                + "      \"MiscData2\": \"Project: Office Supplies\",\n"
+                + "      \"CurrentUses\": 1,\n"
+                + "      \"Amount\": 500,\n"
+                + "      \"Balance\": 425.5,\n"
+                + "      \"PaypointId\": 236,\n"
+                + "      \"PaypointLegal\": \"Global Factory LLC\",\n"
+                + "      \"PaypointDba\": \"Global Factory\",\n"
+                + "      \"ExternalPaypointID\": \"pay-10\",\n"
+                + "      \"OrgName\": \"SupplyPro\",\n"
+                + "      \"Type\": \"AUTHORIZATION\",\n"
+                + "      \"Status\": \"AUTHORIZATION\",\n"
+                + "      \"CreatedOn\": \"2026-05-05 03:28:53.082830\",\n"
+                + "      \"TransactionAmount\": \"74.500\",\n"
+                + "      \"PostedAmount\": \"0.000\",\n"
+                + "      \"PostedOn\": null,\n"
+                + "      \"MerchantName\": \"Office Supply Co.\",\n"
+                + "      \"AuthorizationStatus\": \"AUTHORIZATION\",\n"
+                + "      \"ReasonToDecline\": null\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

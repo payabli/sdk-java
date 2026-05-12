@@ -179,6 +179,7 @@
   "ScheduleReference": 0,
   "SettlementStatus": 1,
   "Source": "web",
+  "splitCount": 0,
   "TotalAmount": 1000.5,
   "TransactionEvents": [
     {

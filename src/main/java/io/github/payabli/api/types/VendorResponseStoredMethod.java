@@ -44,7 +44,7 @@ public final class VendorResponseStoredMethod {
 
     private final Optional<String> bin;
 
-    private final Optional<String> binData;
+    private final Optional<BinData> binData;
 
     private final Optional<String> aba;
 
@@ -69,7 +69,7 @@ public final class VendorResponseStoredMethod {
             Optional<String> achHolderType,
             Optional<Boolean> isValidatedAch,
             Optional<String> bin,
-            Optional<String> binData,
+            Optional<BinData> binData,
             Optional<String> aba,
             Optional<String> postalCode,
             Optional<String> methodType,
@@ -176,7 +176,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
-    public Optional<String> getBinData() {
+    public Optional<BinData> getBinData() {
         if (binData == null) {
             return Optional.empty();
         }
@@ -285,7 +285,7 @@ public final class VendorResponseStoredMethod {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("binData")
-    private Optional<String> _getBinData() {
+    private Optional<BinData> _getBinData() {
         return binData;
     }
 
@@ -401,7 +401,7 @@ public final class VendorResponseStoredMethod {
 
         private Optional<String> bin = Optional.empty();
 
-        private Optional<String> binData = Optional.empty();
+        private Optional<BinData> binData = Optional.empty();
 
         private Optional<String> aba = Optional.empty();
 
@@ -659,17 +659,17 @@ public final class VendorResponseStoredMethod {
         }
 
         @JsonSetter(value = "binData", nulls = Nulls.SKIP)
-        public Builder binData(Optional<String> binData) {
+        public Builder binData(Optional<BinData> binData) {
             this.binData = binData;
             return this;
         }
 
-        public Builder binData(String binData) {
+        public Builder binData(BinData binData) {
             this.binData = Optional.ofNullable(binData);
             return this;
         }
 
-        public Builder binData(Nullable<String> binData) {
+        public Builder binData(Nullable<BinData> binData) {
             if (binData.isNull()) {
                 this.binData = null;
             } else if (binData.isEmpty()) {

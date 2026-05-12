@@ -127,6 +127,7 @@
         "ScheduleReference": 0,
         "SettlementStatus": 0,
         "Source": "api",
+        "splitCount": 0,
         "TotalAmount": 1.56,
         "TransactionEvents": [
           {

@@ -44,6 +44,8 @@ import io.github.payabli.api.resources.query.requests.ListUsersOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListUsersPaypointRequest;
 import io.github.payabli.api.resources.query.requests.ListVcardsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVcardsRequest;
+import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsOrgRequest;
+import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
 import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
@@ -53,6 +55,7 @@ import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
 import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
 import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
+import io.github.payabli.api.resources.querytypes.types.VCardTransactionQueryResponse;
 import io.github.payabli.api.types.QueryBatchesOutResponse;
 import io.github.payabli.api.types.QueryChargebacksResponse;
 import io.github.payabli.api.types.QueryCustomerResponse;
@@ -1322,6 +1325,72 @@ public class AsyncQueryClient {
     public CompletableFuture<VCardQueryResponse> listVcards(
             String entry, ListVcardsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listVcards(entry, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactions(String entry) {
+        return this.rawClient.listVcardsTransactions(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactions(
+            String entry, RequestOptions requestOptions) {
+        return this.rawClient.listVcardsTransactions(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactions(
+            String entry, ListVcardsTransactionsRequest request) {
+        return this.rawClient.listVcardsTransactions(entry, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactions(
+            String entry, ListVcardsTransactionsRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .listVcardsTransactions(entry, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactionsOrg(int orgId) {
+        return this.rawClient.listVcardsTransactionsOrg(orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
+            int orgId, RequestOptions requestOptions) {
+        return this.rawClient.listVcardsTransactionsOrg(orgId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
+            int orgId, ListVcardsTransactionsOrgRequest request) {
+        return this.rawClient.listVcardsTransactionsOrg(orgId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+     */
+    public CompletableFuture<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
+            int orgId, ListVcardsTransactionsOrgRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .listVcardsTransactionsOrg(orgId, request, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**

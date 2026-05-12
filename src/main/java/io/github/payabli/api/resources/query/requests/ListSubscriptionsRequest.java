@@ -120,6 +120,7 @@ public final class ListSubscriptionsRequest {
      * <li><code>orgName</code> (ne, eq, ct, nct)</li>
      * <li><code>externalPaypointId</code> (ct, nct, ne, eq)</li>
      * <li><code>subId</code> (eq, ne)</li>
+     * <li><code>idPmethod</code> (eq, ne, ct, nct, in, nin). Filters by the subscription's linked stored method identifier (the value returned in <code>StoredMethod.IdPmethod</code>). Case-insensitive. Subscriptions without a linked stored method are excluded from matches. Example: <code>idPmethod(eq,6edcbb56-9c0e-4003-b3d1-99abf149ba0e)</code>.</li>
      * <li><code>orderDescription</code> (ct, nct)</li>
      * <li><code>cycles</code> (eq, ne, gt, ge, lt, le)</li>
      * <li><code>leftcycles</code> (eq, ne, gt, ge, lt, le)</li>
@@ -304,6 +305,7 @@ public final class ListSubscriptionsRequest {
          * <li><code>orgName</code> (ne, eq, ct, nct)</li>
          * <li><code>externalPaypointId</code> (ct, nct, ne, eq)</li>
          * <li><code>subId</code> (eq, ne)</li>
+         * <li><code>idPmethod</code> (eq, ne, ct, nct, in, nin). Filters by the subscription's linked stored method identifier (the value returned in <code>StoredMethod.IdPmethod</code>). Case-insensitive. Subscriptions without a linked stored method are excluded from matches. Example: <code>idPmethod(eq,6edcbb56-9c0e-4003-b3d1-99abf149ba0e)</code>.</li>
          * <li><code>orderDescription</code> (ct, nct)</li>
          * <li><code>cycles</code> (eq, ne, gt, ge, lt, le)</li>
          * <li><code>leftcycles</code> (eq, ne, gt, ge, lt, le)</li>

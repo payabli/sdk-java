@@ -51,6 +51,8 @@ public final class QueryTransferSummary {
 
     private final Optional<Double> heldAmount;
 
+    private final Optional<Double> cardRejectedAmount;
+
     private final Optional<Integer> totalRecords;
 
     private final Optional<Double> totalAmount;
@@ -80,6 +82,7 @@ public final class QueryTransferSummary {
             Optional<Double> transferAmount,
             Optional<Double> refunds,
             Optional<Double> heldAmount,
+            Optional<Double> cardRejectedAmount,
             Optional<Integer> totalRecords,
             Optional<Double> totalAmount,
             Optional<Double> totalNetAmount,
@@ -101,6 +104,7 @@ public final class QueryTransferSummary {
         this.transferAmount = transferAmount;
         this.refunds = refunds;
         this.heldAmount = heldAmount;
+        this.cardRejectedAmount = cardRejectedAmount;
         this.totalRecords = totalRecords;
         this.totalAmount = totalAmount;
         this.totalNetAmount = totalNetAmount;
@@ -266,6 +270,17 @@ public final class QueryTransferSummary {
     }
 
     /**
+     * @return Total amount rejected by card networks or issuing banks after authorization or settling. This value is the sum of all rejected amounts for transactions in the transfer.
+     */
+    @JsonIgnore
+    public Optional<Double> getCardRejectedAmount() {
+        if (cardRejectedAmount == null) {
+            return Optional.empty();
+        }
+        return cardRejectedAmount;
+    }
+
+    /**
      * @return Number of records in the response.
      */
     @JsonIgnore
@@ -416,6 +431,12 @@ public final class QueryTransferSummary {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cardRejectedAmount")
+    private Optional<Double> _getCardRejectedAmount() {
+        return cardRejectedAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("totalRecords")
     private Optional<Integer> _getTotalRecords() {
         return totalRecords;
@@ -477,6 +498,7 @@ public final class QueryTransferSummary {
                 && transferAmount.equals(other.transferAmount)
                 && refunds.equals(other.refunds)
                 && heldAmount.equals(other.heldAmount)
+                && cardRejectedAmount.equals(other.cardRejectedAmount)
                 && totalRecords.equals(other.totalRecords)
                 && totalAmount.equals(other.totalAmount)
                 && totalNetAmount.equals(other.totalNetAmount)
@@ -502,6 +524,7 @@ public final class QueryTransferSummary {
                 this.transferAmount,
                 this.refunds,
                 this.heldAmount,
+                this.cardRejectedAmount,
                 this.totalRecords,
                 this.totalAmount,
                 this.totalNetAmount,
@@ -549,6 +572,8 @@ public final class QueryTransferSummary {
 
         private Optional<Double> heldAmount = Optional.empty();
 
+        private Optional<Double> cardRejectedAmount = Optional.empty();
+
         private Optional<Integer> totalRecords = Optional.empty();
 
         private Optional<Double> totalAmount = Optional.empty();
@@ -581,6 +606,7 @@ public final class QueryTransferSummary {
             transferAmount(other.getTransferAmount());
             refunds(other.getRefunds());
             heldAmount(other.getHeldAmount());
+            cardRejectedAmount(other.getCardRejectedAmount());
             totalRecords(other.getTotalRecords());
             totalAmount(other.getTotalAmount());
             totalNetAmount(other.getTotalNetAmount());
@@ -942,6 +968,31 @@ public final class QueryTransferSummary {
         }
 
         /**
+         * <p>Total amount rejected by card networks or issuing banks after authorization or settling. This value is the sum of all rejected amounts for transactions in the transfer.</p>
+         */
+        @JsonSetter(value = "cardRejectedAmount", nulls = Nulls.SKIP)
+        public Builder cardRejectedAmount(Optional<Double> cardRejectedAmount) {
+            this.cardRejectedAmount = cardRejectedAmount;
+            return this;
+        }
+
+        public Builder cardRejectedAmount(Double cardRejectedAmount) {
+            this.cardRejectedAmount = Optional.ofNullable(cardRejectedAmount);
+            return this;
+        }
+
+        public Builder cardRejectedAmount(Nullable<Double> cardRejectedAmount) {
+            if (cardRejectedAmount.isNull()) {
+                this.cardRejectedAmount = null;
+            } else if (cardRejectedAmount.isEmpty()) {
+                this.cardRejectedAmount = Optional.empty();
+            } else {
+                this.cardRejectedAmount = Optional.of(cardRejectedAmount.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>Number of records in the response.</p>
          */
         @JsonSetter(value = "totalRecords", nulls = Nulls.SKIP)
@@ -1107,6 +1158,7 @@ public final class QueryTransferSummary {
                     transferAmount,
                     refunds,
                     heldAmount,
+                    cardRejectedAmount,
                     totalRecords,
                     totalAmount,
                     totalNetAmount,

@@ -26,13 +26,15 @@ public final class VCardSummary {
 
     private final double totalAmount;
 
+    private final Optional<Double> totalNetAmount;
+
     private final int totalactive;
 
-    private final double totalamounteactive;
+    private final double totalamountactive;
 
     private final double totalbalanceactive;
 
-    private final Optional<String> pageIdentifier;
+    private final Optional<String> pageidentifier;
 
     private final Optional<Integer> pageSize;
 
@@ -42,19 +44,21 @@ public final class VCardSummary {
             int totalPages,
             int totalRecords,
             double totalAmount,
+            Optional<Double> totalNetAmount,
             int totalactive,
-            double totalamounteactive,
+            double totalamountactive,
             double totalbalanceactive,
-            Optional<String> pageIdentifier,
+            Optional<String> pageidentifier,
             Optional<Integer> pageSize,
             Map<String, Object> additionalProperties) {
         this.totalPages = totalPages;
         this.totalRecords = totalRecords;
         this.totalAmount = totalAmount;
+        this.totalNetAmount = totalNetAmount;
         this.totalactive = totalactive;
-        this.totalamounteactive = totalamounteactive;
+        this.totalamountactive = totalamountactive;
         this.totalbalanceactive = totalbalanceactive;
-        this.pageIdentifier = pageIdentifier;
+        this.pageidentifier = pageidentifier;
         this.pageSize = pageSize;
         this.additionalProperties = additionalProperties;
     }
@@ -78,6 +82,14 @@ public final class VCardSummary {
     }
 
     /**
+     * @return Total net amount for the records.
+     */
+    @JsonProperty("totalNetAmount")
+    public Optional<Double> getTotalNetAmount() {
+        return totalNetAmount;
+    }
+
+    /**
      * @return Total number of active vCards.
      */
     @JsonProperty("totalactive")
@@ -88,9 +100,9 @@ public final class VCardSummary {
     /**
      * @return Total amount of active vCards.
      */
-    @JsonProperty("totalamounteactive")
-    public double getTotalamounteactive() {
-        return totalamounteactive;
+    @JsonProperty("totalamountactive")
+    public double getTotalamountactive() {
+        return totalamountactive;
     }
 
     /**
@@ -101,9 +113,9 @@ public final class VCardSummary {
         return totalbalanceactive;
     }
 
-    @JsonProperty("pageIdentifier")
-    public Optional<String> getPageIdentifier() {
-        return pageIdentifier;
+    @JsonProperty("pageidentifier")
+    public Optional<String> getPageidentifier() {
+        return pageidentifier;
     }
 
     @JsonProperty("pageSize")
@@ -126,10 +138,11 @@ public final class VCardSummary {
         return totalPages == other.totalPages
                 && totalRecords == other.totalRecords
                 && totalAmount == other.totalAmount
+                && totalNetAmount.equals(other.totalNetAmount)
                 && totalactive == other.totalactive
-                && totalamounteactive == other.totalamounteactive
+                && totalamountactive == other.totalamountactive
                 && totalbalanceactive == other.totalbalanceactive
-                && pageIdentifier.equals(other.pageIdentifier)
+                && pageidentifier.equals(other.pageidentifier)
                 && pageSize.equals(other.pageSize);
     }
 
@@ -139,10 +152,11 @@ public final class VCardSummary {
                 this.totalPages,
                 this.totalRecords,
                 this.totalAmount,
+                this.totalNetAmount,
                 this.totalactive,
-                this.totalamounteactive,
+                this.totalamountactive,
                 this.totalbalanceactive,
-                this.pageIdentifier,
+                this.pageidentifier,
                 this.pageSize);
     }
 
@@ -176,14 +190,14 @@ public final class VCardSummary {
         /**
          * <p>Total number of active vCards.</p>
          */
-        TotalamounteactiveStage totalactive(int totalactive);
+        TotalamountactiveStage totalactive(int totalactive);
     }
 
-    public interface TotalamounteactiveStage {
+    public interface TotalamountactiveStage {
         /**
          * <p>Total amount of active vCards.</p>
          */
-        TotalbalanceactiveStage totalamounteactive(double totalamounteactive);
+        TotalbalanceactiveStage totalamountactive(double totalamountactive);
     }
 
     public interface TotalbalanceactiveStage {
@@ -200,9 +214,16 @@ public final class VCardSummary {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
-        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+        /**
+         * <p>Total net amount for the records.</p>
+         */
+        _FinalStage totalNetAmount(Optional<Double> totalNetAmount);
 
-        _FinalStage pageIdentifier(String pageIdentifier);
+        _FinalStage totalNetAmount(Double totalNetAmount);
+
+        _FinalStage pageidentifier(Optional<String> pageidentifier);
+
+        _FinalStage pageidentifier(String pageidentifier);
 
         _FinalStage pageSize(Optional<Integer> pageSize);
 
@@ -215,7 +236,7 @@ public final class VCardSummary {
                     TotalRecordsStage,
                     TotalAmountStage,
                     TotalactiveStage,
-                    TotalamounteactiveStage,
+                    TotalamountactiveStage,
                     TotalbalanceactiveStage,
                     _FinalStage {
         private int totalPages;
@@ -226,13 +247,15 @@ public final class VCardSummary {
 
         private int totalactive;
 
-        private double totalamounteactive;
+        private double totalamountactive;
 
         private double totalbalanceactive;
 
         private Optional<Integer> pageSize = Optional.empty();
 
-        private Optional<String> pageIdentifier = Optional.empty();
+        private Optional<String> pageidentifier = Optional.empty();
+
+        private Optional<Double> totalNetAmount = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -244,10 +267,11 @@ public final class VCardSummary {
             totalPages(other.getTotalPages());
             totalRecords(other.getTotalRecords());
             totalAmount(other.getTotalAmount());
+            totalNetAmount(other.getTotalNetAmount());
             totalactive(other.getTotalactive());
-            totalamounteactive(other.getTotalamounteactive());
+            totalamountactive(other.getTotalamountactive());
             totalbalanceactive(other.getTotalbalanceactive());
-            pageIdentifier(other.getPageIdentifier());
+            pageidentifier(other.getPageidentifier());
             pageSize(other.getPageSize());
             return this;
         }
@@ -285,7 +309,7 @@ public final class VCardSummary {
          */
         @java.lang.Override
         @JsonSetter("totalactive")
-        public TotalamounteactiveStage totalactive(int totalactive) {
+        public TotalamountactiveStage totalactive(int totalactive) {
             this.totalactive = totalactive;
             return this;
         }
@@ -296,9 +320,9 @@ public final class VCardSummary {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("totalamounteactive")
-        public TotalbalanceactiveStage totalamounteactive(double totalamounteactive) {
-            this.totalamounteactive = totalamounteactive;
+        @JsonSetter("totalamountactive")
+        public TotalbalanceactiveStage totalamountactive(double totalamountactive) {
+            this.totalamountactive = totalamountactive;
             return this;
         }
 
@@ -328,15 +352,35 @@ public final class VCardSummary {
         }
 
         @java.lang.Override
-        public _FinalStage pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+        public _FinalStage pageidentifier(String pageidentifier) {
+            this.pageidentifier = Optional.ofNullable(pageidentifier);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
+        @JsonSetter(value = "pageidentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageidentifier(Optional<String> pageidentifier) {
+            this.pageidentifier = pageidentifier;
+            return this;
+        }
+
+        /**
+         * <p>Total net amount for the records.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage totalNetAmount(Double totalNetAmount) {
+            this.totalNetAmount = Optional.ofNullable(totalNetAmount);
+            return this;
+        }
+
+        /**
+         * <p>Total net amount for the records.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "totalNetAmount", nulls = Nulls.SKIP)
+        public _FinalStage totalNetAmount(Optional<Double> totalNetAmount) {
+            this.totalNetAmount = totalNetAmount;
             return this;
         }
 
@@ -346,10 +390,11 @@ public final class VCardSummary {
                     totalPages,
                     totalRecords,
                     totalAmount,
+                    totalNetAmount,
                     totalactive,
-                    totalamounteactive,
+                    totalamountactive,
                     totalbalanceactive,
-                    pageIdentifier,
+                    pageidentifier,
                     pageSize,
                     additionalProperties);
         }

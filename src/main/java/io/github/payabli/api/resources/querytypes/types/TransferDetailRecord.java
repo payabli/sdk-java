@@ -68,6 +68,8 @@ public final class TransferDetailRecord {
 
     private final Optional<Double> splitFundingAmount;
 
+    private final Optional<Double> cardRejectedAmount;
+
     private final Optional<List<BillingFeeDetail>> billingFeesDetails;
 
     private final Optional<String> parentOrgName;
@@ -194,6 +196,7 @@ public final class TransferDetailRecord {
             Optional<Double> adjustmentsAmount,
             Optional<Double> netTransferAmount,
             Optional<Double> splitFundingAmount,
+            Optional<Double> cardRejectedAmount,
             Optional<List<BillingFeeDetail>> billingFeesDetails,
             Optional<String> parentOrgName,
             Optional<String> paypointDbaname,
@@ -265,6 +268,7 @@ public final class TransferDetailRecord {
         this.adjustmentsAmount = adjustmentsAmount;
         this.netTransferAmount = netTransferAmount;
         this.splitFundingAmount = splitFundingAmount;
+        this.cardRejectedAmount = cardRejectedAmount;
         this.billingFeesDetails = billingFeesDetails;
         this.parentOrgName = parentOrgName;
         this.paypointDbaname = paypointDbaname;
@@ -506,6 +510,17 @@ public final class TransferDetailRecord {
             return Optional.empty();
         }
         return splitFundingAmount;
+    }
+
+    /**
+     * @return Total amount rejected by card networks or issuing banks after authorization or settling in this transaction
+     */
+    @JsonIgnore
+    public Optional<Double> getCardRejectedAmount() {
+        if (cardRejectedAmount == null) {
+            return Optional.empty();
+        }
+        return cardRejectedAmount;
     }
 
     @JsonIgnore
@@ -1091,6 +1106,12 @@ public final class TransferDetailRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cardRejectedAmount")
+    private Optional<Double> _getCardRejectedAmount() {
+        return cardRejectedAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("billingFeesDetails")
     private Optional<List<BillingFeeDetail>> _getBillingFeesDetails() {
         return billingFeesDetails;
@@ -1437,6 +1458,7 @@ public final class TransferDetailRecord {
                 && adjustmentsAmount.equals(other.adjustmentsAmount)
                 && netTransferAmount.equals(other.netTransferAmount)
                 && splitFundingAmount.equals(other.splitFundingAmount)
+                && cardRejectedAmount.equals(other.cardRejectedAmount)
                 && billingFeesDetails.equals(other.billingFeesDetails)
                 && parentOrgName.equals(other.parentOrgName)
                 && paypointDbaname.equals(other.paypointDbaname)
@@ -1512,6 +1534,7 @@ public final class TransferDetailRecord {
                 this.adjustmentsAmount,
                 this.netTransferAmount,
                 this.splitFundingAmount,
+                this.cardRejectedAmount,
                 this.billingFeesDetails,
                 this.parentOrgName,
                 this.paypointDbaname,
@@ -1611,6 +1634,8 @@ public final class TransferDetailRecord {
         private Optional<Double> netTransferAmount = Optional.empty();
 
         private Optional<Double> splitFundingAmount = Optional.empty();
+
+        private Optional<Double> cardRejectedAmount = Optional.empty();
 
         private Optional<List<BillingFeeDetail>> billingFeesDetails = Optional.empty();
 
@@ -1741,6 +1766,7 @@ public final class TransferDetailRecord {
             adjustmentsAmount(other.getAdjustmentsAmount());
             netTransferAmount(other.getNetTransferAmount());
             splitFundingAmount(other.getSplitFundingAmount());
+            cardRejectedAmount(other.getCardRejectedAmount());
             billingFeesDetails(other.getBillingFeesDetails());
             parentOrgName(other.getParentOrgName());
             paypointDbaname(other.getPaypointDbaname());
@@ -2218,6 +2244,31 @@ public final class TransferDetailRecord {
                 this.splitFundingAmount = Optional.empty();
             } else {
                 this.splitFundingAmount = Optional.of(splitFundingAmount.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Total amount rejected by card networks or issuing banks after authorization or settling in this transaction</p>
+         */
+        @JsonSetter(value = "cardRejectedAmount", nulls = Nulls.SKIP)
+        public Builder cardRejectedAmount(Optional<Double> cardRejectedAmount) {
+            this.cardRejectedAmount = cardRejectedAmount;
+            return this;
+        }
+
+        public Builder cardRejectedAmount(Double cardRejectedAmount) {
+            this.cardRejectedAmount = Optional.ofNullable(cardRejectedAmount);
+            return this;
+        }
+
+        public Builder cardRejectedAmount(Nullable<Double> cardRejectedAmount) {
+            if (cardRejectedAmount.isNull()) {
+                this.cardRejectedAmount = null;
+            } else if (cardRejectedAmount.isEmpty()) {
+                this.cardRejectedAmount = Optional.empty();
+            } else {
+                this.cardRejectedAmount = Optional.of(cardRejectedAmount.get());
             }
             return this;
         }
@@ -3463,6 +3514,7 @@ public final class TransferDetailRecord {
                     adjustmentsAmount,
                     netTransferAmount,
                     splitFundingAmount,
+                    cardRejectedAmount,
                     billingFeesDetails,
                     parentOrgName,
                     paypointDbaname,

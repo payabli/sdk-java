@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import io.github.payabli.api.core.ObjectMappers;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonDeserialize(using = PaymentMethod.Deserializer.class)
@@ -121,33 +122,51 @@ public final class PaymentMethod {
         @java.lang.Override
         public PaymentMethod deserialize(JsonParser p, DeserializationContext context) throws IOException {
             Object value = p.readValueAs(Object.class);
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCredit.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("cardexp")
+                    && ((Map<?, ?>) value).containsKey("cardnumber")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCredit.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodAch.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("achAccount")
+                    && ((Map<?, ?>) value).containsKey("achHolder")
+                    && ((Map<?, ?>) value).containsKey("achRouting")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodAch.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodStoredMethod.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("method")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodStoredMethod.class));
+                } catch (RuntimeException e) {
+                }
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCloud.class));
             } catch (RuntimeException e) {
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, Check.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("achHolder")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, Check.class));
+                } catch (RuntimeException e) {
+                }
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, Cash.class));
             } catch (RuntimeException e) {
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodBodyAllFields.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("achAccount")
+                    && ((Map<?, ?>) value).containsKey("achHolder")
+                    && ((Map<?, ?>) value).containsKey("achRouting")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodBodyAllFields.class));
+                } catch (RuntimeException e) {
+                }
             }
             throw new JsonParseException(p, "Failed to deserialize");
         }

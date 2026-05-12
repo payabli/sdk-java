@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import io.github.payabli.api.core.ObjectMappers;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonDeserialize(using = RequestTokenStoragePaymentMethod.Deserializer.class)
@@ -90,17 +91,34 @@ public final class RequestTokenStoragePaymentMethod {
         public RequestTokenStoragePaymentMethod deserialize(JsonParser p, DeserializationContext context)
                 throws IOException {
             Object value = p.readValueAs(Object.class);
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, TokenizeCard.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("method")
+                    && ((Map<?, ?>) value).containsKey("cardexp")
+                    && ((Map<?, ?>) value).containsKey("cardHolder")
+                    && ((Map<?, ?>) value).containsKey("cardnumber")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, TokenizeCard.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, TokenizeAch.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("method")
+                    && ((Map<?, ?>) value).containsKey("achAccount")
+                    && ((Map<?, ?>) value).containsKey("achAccountType")
+                    && ((Map<?, ?>) value).containsKey("achHolder")
+                    && ((Map<?, ?>) value).containsKey("achRouting")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, TokenizeAch.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, ConvertToken.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("method")
+                    && ((Map<?, ?>) value).containsKey("tokenId")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, ConvertToken.class));
+                } catch (RuntimeException e) {
+                }
             }
             throw new JsonParseException(p, "Failed to deserialize");
         }

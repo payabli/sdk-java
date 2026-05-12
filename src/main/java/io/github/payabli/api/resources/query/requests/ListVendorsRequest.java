@@ -90,6 +90,7 @@ public final class ListVendorsRequest {
      * <li><code>ein</code> (ct, nct, eq, ne)</li>
      * <li><code>phone</code> (ct, nct, eq, ne)</li>
      * <li><code>email</code> (ct, nct, eq, ne)</li>
+     * <li><code>remitEmail</code> (ct, nct, eq, ne)</li>
      * <li><code>address</code> (ct, nct, eq, ne)</li>
      * <li><code>city</code> (ct, nct, eq, ne)</li>
      * <li><code>state</code> (ct, nct, eq, ne)</li>
@@ -254,6 +255,7 @@ public final class ListVendorsRequest {
          * <li><code>ein</code> (ct, nct, eq, ne)</li>
          * <li><code>phone</code> (ct, nct, eq, ne)</li>
          * <li><code>email</code> (ct, nct, eq, ne)</li>
+         * <li><code>remitEmail</code> (ct, nct, eq, ne)</li>
          * <li><code>address</code> (ct, nct, eq, ne)</li>
          * <li><code>city</code> (ct, nct, eq, ne)</li>
          * <li><code>state</code> (ct, nct, eq, ne)</li>

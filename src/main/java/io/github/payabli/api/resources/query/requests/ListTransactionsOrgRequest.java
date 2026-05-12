@@ -89,6 +89,7 @@ public final class ListTransactionsOrgRequest {
      * <li><code>scheduleId</code> (ne, eq)</li>
      * <li><code>returnId</code> (ne, eq)</li>
      * <li><code>refundId</code> (ne, eq)</li>
+     * <li><code>rejectId</code> (ne, eq)</li>
      * <li><code>idTrans</code> (ne, eq)</li>
      * <li><code>orgId</code> (ne, eq)</li>
      * <li><code>paypointId</code> (ne, eq)</li>
@@ -280,6 +281,7 @@ public final class ListTransactionsOrgRequest {
          * <li><code>scheduleId</code> (ne, eq)</li>
          * <li><code>returnId</code> (ne, eq)</li>
          * <li><code>refundId</code> (ne, eq)</li>
+         * <li><code>rejectId</code> (ne, eq)</li>
          * <li><code>idTrans</code> (ne, eq)</li>
          * <li><code>orgId</code> (ne, eq)</li>
          * <li><code>paypointId</code> (ne, eq)</li>

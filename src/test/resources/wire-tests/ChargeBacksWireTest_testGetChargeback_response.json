@@ -257,6 +257,7 @@
     "splitFundingInstructions": [
       {}
     ],
+    "splitCount": 0,
     "TotalAmount": 30.22,
     "TransactionEvents": [
       {}

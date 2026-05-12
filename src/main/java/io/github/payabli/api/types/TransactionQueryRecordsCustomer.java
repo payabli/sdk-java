@@ -93,6 +93,8 @@ public final class TransactionQueryRecordsCustomer {
 
     private final Optional<List<SplitFundingContent>> splitFundingInstructions;
 
+    private final int splitCount;
+
     private final Optional<Double> totalAmount;
 
     private final Optional<List<QueryTransactionEvents>> transactionEvents;
@@ -140,6 +142,7 @@ public final class TransactionQueryRecordsCustomer {
             Optional<Integer> settlementStatus,
             Optional<String> source,
             Optional<List<SplitFundingContent>> splitFundingInstructions,
+            int splitCount,
             Optional<Double> totalAmount,
             Optional<List<QueryTransactionEvents>> transactionEvents,
             Optional<OffsetDateTime> transactionTime,
@@ -180,6 +183,7 @@ public final class TransactionQueryRecordsCustomer {
         this.settlementStatus = settlementStatus;
         this.source = source;
         this.splitFundingInstructions = splitFundingInstructions;
+        this.splitCount = splitCount;
         this.totalAmount = totalAmount;
         this.transactionEvents = transactionEvents;
         this.transactionTime = transactionTime;
@@ -400,6 +404,11 @@ public final class TransactionQueryRecordsCustomer {
         return splitFundingInstructions;
     }
 
+    @JsonProperty("splitCount")
+    public int getSplitCount() {
+        return splitCount;
+    }
+
     /**
      * @return Transaction total amount (including service fee or sub-charge)
      */
@@ -492,6 +501,7 @@ public final class TransactionQueryRecordsCustomer {
                 && settlementStatus.equals(other.settlementStatus)
                 && source.equals(other.source)
                 && splitFundingInstructions.equals(other.splitFundingInstructions)
+                && splitCount == other.splitCount
                 && totalAmount.equals(other.totalAmount)
                 && transactionEvents.equals(other.transactionEvents)
                 && transactionTime.equals(other.transactionTime)
@@ -536,6 +546,7 @@ public final class TransactionQueryRecordsCustomer {
                 this.settlementStatus,
                 this.source,
                 this.splitFundingInstructions,
+                this.splitCount,
                 this.totalAmount,
                 this.transactionEvents,
                 this.transactionTime,
@@ -548,95 +559,324 @@ public final class TransactionQueryRecordsCustomer {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static SplitCountStage builder() {
         return new Builder();
     }
 
+    public interface SplitCountStage {
+        _FinalStage splitCount(int splitCount);
+
+        Builder from(TransactionQueryRecordsCustomer other);
+    }
+
+    public interface _FinalStage {
+        TransactionQueryRecordsCustomer build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        _FinalStage achHolderType(Optional<AchHolderType> achHolderType);
+
+        _FinalStage achHolderType(AchHolderType achHolderType);
+
+        _FinalStage achSecCode(Optional<String> achSecCode);
+
+        _FinalStage achSecCode(String achSecCode);
+
+        /**
+         * <p>Batch amount.</p>
+         */
+        _FinalStage batchAmount(Optional<Double> batchAmount);
+
+        _FinalStage batchAmount(Double batchAmount);
+
+        _FinalStage batchNumber(Optional<String> batchNumber);
+
+        _FinalStage batchNumber(String batchNumber);
+
+        /**
+         * <p>Service Fee or sub-charge transaction associated to the main transaction.</p>
+         */
+        _FinalStage cfeeTransactions(Optional<List<QueryCFeeTransaction>> cfeeTransactions);
+
+        _FinalStage cfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions);
+
+        /**
+         * <p>Connector used for transaction.</p>
+         */
+        _FinalStage connectorName(Optional<String> connectorName);
+
+        _FinalStage connectorName(String connectorName);
+
+        _FinalStage customer(Optional<QueryTransactionPayorDataCustomer> customer);
+
+        _FinalStage customer(QueryTransactionPayorDataCustomer customer);
+
+        _FinalStage deviceId(Optional<String> deviceId);
+
+        _FinalStage deviceId(String deviceId);
+
+        _FinalStage entrypageId(Optional<Long> entrypageId);
+
+        _FinalStage entrypageId(Long entrypageId);
+
+        _FinalStage externalProcessorInformation(Optional<String> externalProcessorInformation);
+
+        _FinalStage externalProcessorInformation(String externalProcessorInformation);
+
+        _FinalStage feeAmount(Optional<Double> feeAmount);
+
+        _FinalStage feeAmount(Double feeAmount);
+
+        /**
+         * <p>Internal identifier used for processing.</p>
+         */
+        _FinalStage gatewayTransId(Optional<String> gatewayTransId);
+
+        _FinalStage gatewayTransId(String gatewayTransId);
+
+        _FinalStage invoiceData(Optional<BillData> invoiceData);
+
+        _FinalStage invoiceData(BillData invoiceData);
+
+        /**
+         * <p>Payment method used: card, ach, or wallet.</p>
+         */
+        _FinalStage method(Optional<String> method);
+
+        _FinalStage method(String method);
+
+        /**
+         * <p>Net amount paid.</p>
+         */
+        _FinalStage netAmount(Optional<Double> netAmount);
+
+        _FinalStage netAmount(Double netAmount);
+
+        _FinalStage operation(Optional<String> operation);
+
+        _FinalStage operation(String operation);
+
+        _FinalStage orderId(Optional<String> orderId);
+
+        _FinalStage orderId(String orderId);
+
+        /**
+         * <p>ID of immediate parent organization.</p>
+         */
+        _FinalStage orgId(Optional<Long> orgId);
+
+        _FinalStage orgId(Long orgId);
+
+        _FinalStage parentOrgName(Optional<String> parentOrgName);
+
+        _FinalStage parentOrgName(String parentOrgName);
+
+        _FinalStage paymentData(Optional<QueryPaymentData> paymentData);
+
+        _FinalStage paymentData(QueryPaymentData paymentData);
+
+        /**
+         * <p>Unique Transaction ID.</p>
+         */
+        _FinalStage paymentTransId(Optional<String> paymentTransId);
+
+        _FinalStage paymentTransId(String paymentTransId);
+
+        _FinalStage payorId(Optional<Long> payorId);
+
+        _FinalStage payorId(Long payorId);
+
+        /**
+         * <p>Paypoint's DBA name.</p>
+         */
+        _FinalStage paypointDbaname(Optional<String> paypointDbaname);
+
+        _FinalStage paypointDbaname(String paypointDbaname);
+
+        /**
+         * <p>Paypoint's entryname.</p>
+         */
+        _FinalStage paypointEntryname(Optional<String> paypointEntryname);
+
+        _FinalStage paypointEntryname(String paypointEntryname);
+
+        /**
+         * <p>InternalId for paypoint.</p>
+         */
+        _FinalStage paypointId(Optional<Long> paypointId);
+
+        _FinalStage paypointId(Long paypointId);
+
+        /**
+         * <p>Paypoint's legal name.</p>
+         */
+        _FinalStage paypointLegalname(Optional<String> paypointLegalname);
+
+        _FinalStage paypointLegalname(String paypointLegalname);
+
+        _FinalStage pendingFeeAmount(Optional<Double> pendingFeeAmount);
+
+        _FinalStage pendingFeeAmount(Double pendingFeeAmount);
+
+        _FinalStage refundId(Optional<Long> refundId);
+
+        _FinalStage refundId(Long refundId);
+
+        _FinalStage responseData(Optional<QueryResponseData> responseData);
+
+        _FinalStage responseData(QueryResponseData responseData);
+
+        _FinalStage returnedId(Optional<Long> returnedId);
+
+        _FinalStage returnedId(Long returnedId);
+
+        /**
+         * <p>Reference to the subscription that originated the transaction.</p>
+         */
+        _FinalStage scheduleReference(Optional<Long> scheduleReference);
+
+        _FinalStage scheduleReference(Long scheduleReference);
+
+        /**
+         * <p>Settlement status for transaction. See <a href="/developers/references/money-in-statuses#payment-funding-status">the docs</a> for a full reference.</p>
+         */
+        _FinalStage settlementStatus(Optional<Integer> settlementStatus);
+
+        _FinalStage settlementStatus(Integer settlementStatus);
+
+        _FinalStage source(Optional<String> source);
+
+        _FinalStage source(String source);
+
+        _FinalStage splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions);
+
+        _FinalStage splitFundingInstructions(List<SplitFundingContent> splitFundingInstructions);
+
+        /**
+         * <p>Transaction total amount (including service fee or sub-charge)</p>
+         */
+        _FinalStage totalAmount(Optional<Double> totalAmount);
+
+        _FinalStage totalAmount(Double totalAmount);
+
+        /**
+         * <p>Events associated with this transaction.</p>
+         */
+        _FinalStage transactionEvents(Optional<List<QueryTransactionEvents>> transactionEvents);
+
+        _FinalStage transactionEvents(List<QueryTransactionEvents> transactionEvents);
+
+        /**
+         * <p>Transaction date and time, in UTC.</p>
+         */
+        _FinalStage transactionTime(Optional<OffsetDateTime> transactionTime);
+
+        _FinalStage transactionTime(OffsetDateTime transactionTime);
+
+        _FinalStage transactionTime(Nullable<OffsetDateTime> transactionTime);
+
+        _FinalStage transAdditionalData(Optional<Object> transAdditionalData);
+
+        _FinalStage transAdditionalData(Object transAdditionalData);
+
+        /**
+         * <p>Status of transaction. See <a href="/developers/references/money-in-statuses#money-in-transaction-status">the docs</a> for a full reference.</p>
+         */
+        _FinalStage transStatus(Optional<Integer> transStatus);
+
+        _FinalStage transStatus(Integer transStatus);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<AchHolderType> achHolderType = Optional.empty();
+    public static final class Builder implements SplitCountStage, _FinalStage {
+        private int splitCount;
 
-        private Optional<String> achSecCode = Optional.empty();
-
-        private Optional<Double> batchAmount = Optional.empty();
-
-        private Optional<String> batchNumber = Optional.empty();
-
-        private Optional<List<QueryCFeeTransaction>> cfeeTransactions = Optional.empty();
-
-        private Optional<String> connectorName = Optional.empty();
-
-        private Optional<QueryTransactionPayorDataCustomer> customer = Optional.empty();
-
-        private Optional<String> deviceId = Optional.empty();
-
-        private Optional<Long> entrypageId = Optional.empty();
-
-        private Optional<String> externalProcessorInformation = Optional.empty();
-
-        private Optional<Double> feeAmount = Optional.empty();
-
-        private Optional<String> gatewayTransId = Optional.empty();
-
-        private Optional<BillData> invoiceData = Optional.empty();
-
-        private Optional<String> method = Optional.empty();
-
-        private Optional<Double> netAmount = Optional.empty();
-
-        private Optional<String> operation = Optional.empty();
-
-        private Optional<String> orderId = Optional.empty();
-
-        private Optional<Long> orgId = Optional.empty();
-
-        private Optional<String> parentOrgName = Optional.empty();
-
-        private Optional<QueryPaymentData> paymentData = Optional.empty();
-
-        private Optional<String> paymentTransId = Optional.empty();
-
-        private Optional<Long> payorId = Optional.empty();
-
-        private Optional<String> paypointDbaname = Optional.empty();
-
-        private Optional<String> paypointEntryname = Optional.empty();
-
-        private Optional<Long> paypointId = Optional.empty();
-
-        private Optional<String> paypointLegalname = Optional.empty();
-
-        private Optional<Double> pendingFeeAmount = Optional.empty();
-
-        private Optional<Long> refundId = Optional.empty();
-
-        private Optional<QueryResponseData> responseData = Optional.empty();
-
-        private Optional<Long> returnedId = Optional.empty();
-
-        private Optional<Long> scheduleReference = Optional.empty();
-
-        private Optional<Integer> settlementStatus = Optional.empty();
-
-        private Optional<String> source = Optional.empty();
-
-        private Optional<List<SplitFundingContent>> splitFundingInstructions = Optional.empty();
-
-        private Optional<Double> totalAmount = Optional.empty();
-
-        private Optional<List<QueryTransactionEvents>> transactionEvents = Optional.empty();
-
-        private Optional<OffsetDateTime> transactionTime = Optional.empty();
+        private Optional<Integer> transStatus = Optional.empty();
 
         private Optional<Object> transAdditionalData = Optional.empty();
 
-        private Optional<Integer> transStatus = Optional.empty();
+        private Optional<OffsetDateTime> transactionTime = Optional.empty();
+
+        private Optional<List<QueryTransactionEvents>> transactionEvents = Optional.empty();
+
+        private Optional<Double> totalAmount = Optional.empty();
+
+        private Optional<List<SplitFundingContent>> splitFundingInstructions = Optional.empty();
+
+        private Optional<String> source = Optional.empty();
+
+        private Optional<Integer> settlementStatus = Optional.empty();
+
+        private Optional<Long> scheduleReference = Optional.empty();
+
+        private Optional<Long> returnedId = Optional.empty();
+
+        private Optional<QueryResponseData> responseData = Optional.empty();
+
+        private Optional<Long> refundId = Optional.empty();
+
+        private Optional<Double> pendingFeeAmount = Optional.empty();
+
+        private Optional<String> paypointLegalname = Optional.empty();
+
+        private Optional<Long> paypointId = Optional.empty();
+
+        private Optional<String> paypointEntryname = Optional.empty();
+
+        private Optional<String> paypointDbaname = Optional.empty();
+
+        private Optional<Long> payorId = Optional.empty();
+
+        private Optional<String> paymentTransId = Optional.empty();
+
+        private Optional<QueryPaymentData> paymentData = Optional.empty();
+
+        private Optional<String> parentOrgName = Optional.empty();
+
+        private Optional<Long> orgId = Optional.empty();
+
+        private Optional<String> orderId = Optional.empty();
+
+        private Optional<String> operation = Optional.empty();
+
+        private Optional<Double> netAmount = Optional.empty();
+
+        private Optional<String> method = Optional.empty();
+
+        private Optional<BillData> invoiceData = Optional.empty();
+
+        private Optional<String> gatewayTransId = Optional.empty();
+
+        private Optional<Double> feeAmount = Optional.empty();
+
+        private Optional<String> externalProcessorInformation = Optional.empty();
+
+        private Optional<Long> entrypageId = Optional.empty();
+
+        private Optional<String> deviceId = Optional.empty();
+
+        private Optional<QueryTransactionPayorDataCustomer> customer = Optional.empty();
+
+        private Optional<String> connectorName = Optional.empty();
+
+        private Optional<List<QueryCFeeTransaction>> cfeeTransactions = Optional.empty();
+
+        private Optional<String> batchNumber = Optional.empty();
+
+        private Optional<Double> batchAmount = Optional.empty();
+
+        private Optional<String> achSecCode = Optional.empty();
+
+        private Optional<AchHolderType> achHolderType = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(TransactionQueryRecordsCustomer other) {
             achHolderType(other.getAchHolderType());
             achSecCode(other.getAchSecCode());
@@ -672,6 +912,7 @@ public final class TransactionQueryRecordsCustomer {
             settlementStatus(other.getSettlementStatus());
             source(other.getSource());
             splitFundingInstructions(other.getSplitFundingInstructions());
+            splitCount(other.getSplitCount());
             totalAmount(other.getTotalAmount());
             transactionEvents(other.getTransactionEvents());
             transactionTime(other.getTransactionTime());
@@ -680,465 +921,52 @@ public final class TransactionQueryRecordsCustomer {
             return this;
         }
 
-        @JsonSetter(value = "AchHolderType", nulls = Nulls.SKIP)
-        public Builder achHolderType(Optional<AchHolderType> achHolderType) {
-            this.achHolderType = achHolderType;
-            return this;
-        }
-
-        public Builder achHolderType(AchHolderType achHolderType) {
-            this.achHolderType = Optional.ofNullable(achHolderType);
-            return this;
-        }
-
-        @JsonSetter(value = "AchSecCode", nulls = Nulls.SKIP)
-        public Builder achSecCode(Optional<String> achSecCode) {
-            this.achSecCode = achSecCode;
-            return this;
-        }
-
-        public Builder achSecCode(String achSecCode) {
-            this.achSecCode = Optional.ofNullable(achSecCode);
+        @java.lang.Override
+        @JsonSetter("splitCount")
+        public _FinalStage splitCount(int splitCount) {
+            this.splitCount = splitCount;
             return this;
         }
 
         /**
-         * <p>Batch amount.</p>
+         * <p>Status of transaction. See <a href="/developers/references/money-in-statuses#money-in-transaction-status">the docs</a> for a full reference.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "BatchAmount", nulls = Nulls.SKIP)
-        public Builder batchAmount(Optional<Double> batchAmount) {
-            this.batchAmount = batchAmount;
-            return this;
-        }
-
-        public Builder batchAmount(Double batchAmount) {
-            this.batchAmount = Optional.ofNullable(batchAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "BatchNumber", nulls = Nulls.SKIP)
-        public Builder batchNumber(Optional<String> batchNumber) {
-            this.batchNumber = batchNumber;
-            return this;
-        }
-
-        public Builder batchNumber(String batchNumber) {
-            this.batchNumber = Optional.ofNullable(batchNumber);
+        @java.lang.Override
+        public _FinalStage transStatus(Integer transStatus) {
+            this.transStatus = Optional.ofNullable(transStatus);
             return this;
         }
 
         /**
-         * <p>Service Fee or sub-charge transaction associated to the main transaction.</p>
+         * <p>Status of transaction. See <a href="/developers/references/money-in-statuses#money-in-transaction-status">the docs</a> for a full reference.</p>
          */
-        @JsonSetter(value = "CfeeTransactions", nulls = Nulls.SKIP)
-        public Builder cfeeTransactions(Optional<List<QueryCFeeTransaction>> cfeeTransactions) {
-            this.cfeeTransactions = cfeeTransactions;
+        @java.lang.Override
+        @JsonSetter(value = "TransStatus", nulls = Nulls.SKIP)
+        public _FinalStage transStatus(Optional<Integer> transStatus) {
+            this.transStatus = transStatus;
             return this;
         }
 
-        public Builder cfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions) {
-            this.cfeeTransactions = Optional.ofNullable(cfeeTransactions);
+        @java.lang.Override
+        public _FinalStage transAdditionalData(Object transAdditionalData) {
+            this.transAdditionalData = Optional.ofNullable(transAdditionalData);
             return this;
         }
 
-        /**
-         * <p>Connector used for transaction.</p>
-         */
-        @JsonSetter(value = "ConnectorName", nulls = Nulls.SKIP)
-        public Builder connectorName(Optional<String> connectorName) {
-            this.connectorName = connectorName;
-            return this;
-        }
-
-        public Builder connectorName(String connectorName) {
-            this.connectorName = Optional.ofNullable(connectorName);
-            return this;
-        }
-
-        @JsonSetter(value = "Customer", nulls = Nulls.SKIP)
-        public Builder customer(Optional<QueryTransactionPayorDataCustomer> customer) {
-            this.customer = customer;
-            return this;
-        }
-
-        public Builder customer(QueryTransactionPayorDataCustomer customer) {
-            this.customer = Optional.ofNullable(customer);
-            return this;
-        }
-
-        @JsonSetter(value = "DeviceId", nulls = Nulls.SKIP)
-        public Builder deviceId(Optional<String> deviceId) {
-            this.deviceId = deviceId;
-            return this;
-        }
-
-        public Builder deviceId(String deviceId) {
-            this.deviceId = Optional.ofNullable(deviceId);
-            return this;
-        }
-
-        @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
-        public Builder entrypageId(Optional<Long> entrypageId) {
-            this.entrypageId = entrypageId;
-            return this;
-        }
-
-        public Builder entrypageId(Long entrypageId) {
-            this.entrypageId = Optional.ofNullable(entrypageId);
-            return this;
-        }
-
-        @JsonSetter(value = "ExternalProcessorInformation", nulls = Nulls.SKIP)
-        public Builder externalProcessorInformation(Optional<String> externalProcessorInformation) {
-            this.externalProcessorInformation = externalProcessorInformation;
-            return this;
-        }
-
-        public Builder externalProcessorInformation(String externalProcessorInformation) {
-            this.externalProcessorInformation = Optional.ofNullable(externalProcessorInformation);
-            return this;
-        }
-
-        @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
-        public Builder feeAmount(Optional<Double> feeAmount) {
-            this.feeAmount = feeAmount;
-            return this;
-        }
-
-        public Builder feeAmount(Double feeAmount) {
-            this.feeAmount = Optional.ofNullable(feeAmount);
-            return this;
-        }
-
-        /**
-         * <p>Internal identifier used for processing.</p>
-         */
-        @JsonSetter(value = "GatewayTransId", nulls = Nulls.SKIP)
-        public Builder gatewayTransId(Optional<String> gatewayTransId) {
-            this.gatewayTransId = gatewayTransId;
-            return this;
-        }
-
-        public Builder gatewayTransId(String gatewayTransId) {
-            this.gatewayTransId = Optional.ofNullable(gatewayTransId);
-            return this;
-        }
-
-        @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
-        public Builder invoiceData(Optional<BillData> invoiceData) {
-            this.invoiceData = invoiceData;
-            return this;
-        }
-
-        public Builder invoiceData(BillData invoiceData) {
-            this.invoiceData = Optional.ofNullable(invoiceData);
-            return this;
-        }
-
-        /**
-         * <p>Payment method used: card, ach, or wallet.</p>
-         */
-        @JsonSetter(value = "Method", nulls = Nulls.SKIP)
-        public Builder method(Optional<String> method) {
-            this.method = method;
-            return this;
-        }
-
-        public Builder method(String method) {
-            this.method = Optional.ofNullable(method);
-            return this;
-        }
-
-        /**
-         * <p>Net amount paid.</p>
-         */
-        @JsonSetter(value = "NetAmount", nulls = Nulls.SKIP)
-        public Builder netAmount(Optional<Double> netAmount) {
-            this.netAmount = netAmount;
-            return this;
-        }
-
-        public Builder netAmount(Double netAmount) {
-            this.netAmount = Optional.ofNullable(netAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "Operation", nulls = Nulls.SKIP)
-        public Builder operation(Optional<String> operation) {
-            this.operation = operation;
-            return this;
-        }
-
-        public Builder operation(String operation) {
-            this.operation = Optional.ofNullable(operation);
-            return this;
-        }
-
-        @JsonSetter(value = "OrderId", nulls = Nulls.SKIP)
-        public Builder orderId(Optional<String> orderId) {
-            this.orderId = orderId;
-            return this;
-        }
-
-        public Builder orderId(String orderId) {
-            this.orderId = Optional.ofNullable(orderId);
-            return this;
-        }
-
-        /**
-         * <p>ID of immediate parent organization.</p>
-         */
-        @JsonSetter(value = "OrgId", nulls = Nulls.SKIP)
-        public Builder orgId(Optional<Long> orgId) {
-            this.orgId = orgId;
-            return this;
-        }
-
-        public Builder orgId(Long orgId) {
-            this.orgId = Optional.ofNullable(orgId);
-            return this;
-        }
-
-        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
-        public Builder parentOrgName(Optional<String> parentOrgName) {
-            this.parentOrgName = parentOrgName;
-            return this;
-        }
-
-        public Builder parentOrgName(String parentOrgName) {
-            this.parentOrgName = Optional.ofNullable(parentOrgName);
-            return this;
-        }
-
-        @JsonSetter(value = "PaymentData", nulls = Nulls.SKIP)
-        public Builder paymentData(Optional<QueryPaymentData> paymentData) {
-            this.paymentData = paymentData;
-            return this;
-        }
-
-        public Builder paymentData(QueryPaymentData paymentData) {
-            this.paymentData = Optional.ofNullable(paymentData);
-            return this;
-        }
-
-        /**
-         * <p>Unique Transaction ID.</p>
-         */
-        @JsonSetter(value = "PaymentTransId", nulls = Nulls.SKIP)
-        public Builder paymentTransId(Optional<String> paymentTransId) {
-            this.paymentTransId = paymentTransId;
-            return this;
-        }
-
-        public Builder paymentTransId(String paymentTransId) {
-            this.paymentTransId = Optional.ofNullable(paymentTransId);
-            return this;
-        }
-
-        @JsonSetter(value = "PayorId", nulls = Nulls.SKIP)
-        public Builder payorId(Optional<Long> payorId) {
-            this.payorId = payorId;
-            return this;
-        }
-
-        public Builder payorId(Long payorId) {
-            this.payorId = Optional.ofNullable(payorId);
-            return this;
-        }
-
-        /**
-         * <p>Paypoint's DBA name.</p>
-         */
-        @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
-        public Builder paypointDbaname(Optional<String> paypointDbaname) {
-            this.paypointDbaname = paypointDbaname;
-            return this;
-        }
-
-        public Builder paypointDbaname(String paypointDbaname) {
-            this.paypointDbaname = Optional.ofNullable(paypointDbaname);
-            return this;
-        }
-
-        /**
-         * <p>Paypoint's entryname.</p>
-         */
-        @JsonSetter(value = "PaypointEntryname", nulls = Nulls.SKIP)
-        public Builder paypointEntryname(Optional<String> paypointEntryname) {
-            this.paypointEntryname = paypointEntryname;
-            return this;
-        }
-
-        public Builder paypointEntryname(String paypointEntryname) {
-            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
-            return this;
-        }
-
-        /**
-         * <p>InternalId for paypoint.</p>
-         */
-        @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
-        public Builder paypointId(Optional<Long> paypointId) {
-            this.paypointId = paypointId;
-            return this;
-        }
-
-        public Builder paypointId(Long paypointId) {
-            this.paypointId = Optional.ofNullable(paypointId);
-            return this;
-        }
-
-        /**
-         * <p>Paypoint's legal name.</p>
-         */
-        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
-        public Builder paypointLegalname(Optional<String> paypointLegalname) {
-            this.paypointLegalname = paypointLegalname;
-            return this;
-        }
-
-        public Builder paypointLegalname(String paypointLegalname) {
-            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
-            return this;
-        }
-
-        @JsonSetter(value = "PendingFeeAmount", nulls = Nulls.SKIP)
-        public Builder pendingFeeAmount(Optional<Double> pendingFeeAmount) {
-            this.pendingFeeAmount = pendingFeeAmount;
-            return this;
-        }
-
-        public Builder pendingFeeAmount(Double pendingFeeAmount) {
-            this.pendingFeeAmount = Optional.ofNullable(pendingFeeAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "RefundId", nulls = Nulls.SKIP)
-        public Builder refundId(Optional<Long> refundId) {
-            this.refundId = refundId;
-            return this;
-        }
-
-        public Builder refundId(Long refundId) {
-            this.refundId = Optional.ofNullable(refundId);
-            return this;
-        }
-
-        @JsonSetter(value = "ResponseData", nulls = Nulls.SKIP)
-        public Builder responseData(Optional<QueryResponseData> responseData) {
-            this.responseData = responseData;
-            return this;
-        }
-
-        public Builder responseData(QueryResponseData responseData) {
-            this.responseData = Optional.ofNullable(responseData);
-            return this;
-        }
-
-        @JsonSetter(value = "ReturnedId", nulls = Nulls.SKIP)
-        public Builder returnedId(Optional<Long> returnedId) {
-            this.returnedId = returnedId;
-            return this;
-        }
-
-        public Builder returnedId(Long returnedId) {
-            this.returnedId = Optional.ofNullable(returnedId);
-            return this;
-        }
-
-        /**
-         * <p>Reference to the subscription that originated the transaction.</p>
-         */
-        @JsonSetter(value = "ScheduleReference", nulls = Nulls.SKIP)
-        public Builder scheduleReference(Optional<Long> scheduleReference) {
-            this.scheduleReference = scheduleReference;
-            return this;
-        }
-
-        public Builder scheduleReference(Long scheduleReference) {
-            this.scheduleReference = Optional.ofNullable(scheduleReference);
-            return this;
-        }
-
-        /**
-         * <p>Settlement status for transaction. See <a href="/developers/references/money-in-statuses#payment-funding-status">the docs</a> for a full reference.</p>
-         */
-        @JsonSetter(value = "SettlementStatus", nulls = Nulls.SKIP)
-        public Builder settlementStatus(Optional<Integer> settlementStatus) {
-            this.settlementStatus = settlementStatus;
-            return this;
-        }
-
-        public Builder settlementStatus(Integer settlementStatus) {
-            this.settlementStatus = Optional.ofNullable(settlementStatus);
-            return this;
-        }
-
-        @JsonSetter(value = "Source", nulls = Nulls.SKIP)
-        public Builder source(Optional<String> source) {
-            this.source = source;
-            return this;
-        }
-
-        public Builder source(String source) {
-            this.source = Optional.ofNullable(source);
-            return this;
-        }
-
-        @JsonSetter(value = "splitFundingInstructions", nulls = Nulls.SKIP)
-        public Builder splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions) {
-            this.splitFundingInstructions = splitFundingInstructions;
-            return this;
-        }
-
-        public Builder splitFundingInstructions(List<SplitFundingContent> splitFundingInstructions) {
-            this.splitFundingInstructions = Optional.ofNullable(splitFundingInstructions);
-            return this;
-        }
-
-        /**
-         * <p>Transaction total amount (including service fee or sub-charge)</p>
-         */
-        @JsonSetter(value = "TotalAmount", nulls = Nulls.SKIP)
-        public Builder totalAmount(Optional<Double> totalAmount) {
-            this.totalAmount = totalAmount;
-            return this;
-        }
-
-        public Builder totalAmount(Double totalAmount) {
-            this.totalAmount = Optional.ofNullable(totalAmount);
-            return this;
-        }
-
-        /**
-         * <p>Events associated with this transaction.</p>
-         */
-        @JsonSetter(value = "TransactionEvents", nulls = Nulls.SKIP)
-        public Builder transactionEvents(Optional<List<QueryTransactionEvents>> transactionEvents) {
-            this.transactionEvents = transactionEvents;
-            return this;
-        }
-
-        public Builder transactionEvents(List<QueryTransactionEvents> transactionEvents) {
-            this.transactionEvents = Optional.ofNullable(transactionEvents);
+        @java.lang.Override
+        @JsonSetter(value = "TransAdditionalData", nulls = Nulls.SKIP)
+        public _FinalStage transAdditionalData(Optional<Object> transAdditionalData) {
+            this.transAdditionalData = transAdditionalData;
             return this;
         }
 
         /**
          * <p>Transaction date and time, in UTC.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "TransactionTime", nulls = Nulls.SKIP)
-        public Builder transactionTime(Optional<OffsetDateTime> transactionTime) {
-            this.transactionTime = transactionTime;
-            return this;
-        }
-
-        public Builder transactionTime(OffsetDateTime transactionTime) {
-            this.transactionTime = Optional.ofNullable(transactionTime);
-            return this;
-        }
-
-        public Builder transactionTime(Nullable<OffsetDateTime> transactionTime) {
+        @java.lang.Override
+        public _FinalStage transactionTime(Nullable<OffsetDateTime> transactionTime) {
             if (transactionTime.isNull()) {
                 this.transactionTime = null;
             } else if (transactionTime.isEmpty()) {
@@ -1149,31 +977,607 @@ public final class TransactionQueryRecordsCustomer {
             return this;
         }
 
-        @JsonSetter(value = "TransAdditionalData", nulls = Nulls.SKIP)
-        public Builder transAdditionalData(Optional<Object> transAdditionalData) {
-            this.transAdditionalData = transAdditionalData;
-            return this;
-        }
-
-        public Builder transAdditionalData(Object transAdditionalData) {
-            this.transAdditionalData = Optional.ofNullable(transAdditionalData);
+        /**
+         * <p>Transaction date and time, in UTC.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactionTime(OffsetDateTime transactionTime) {
+            this.transactionTime = Optional.ofNullable(transactionTime);
             return this;
         }
 
         /**
-         * <p>Status of transaction. See <a href="/developers/references/money-in-statuses#money-in-transaction-status">the docs</a> for a full reference.</p>
+         * <p>Transaction date and time, in UTC.</p>
          */
-        @JsonSetter(value = "TransStatus", nulls = Nulls.SKIP)
-        public Builder transStatus(Optional<Integer> transStatus) {
-            this.transStatus = transStatus;
+        @java.lang.Override
+        @JsonSetter(value = "TransactionTime", nulls = Nulls.SKIP)
+        public _FinalStage transactionTime(Optional<OffsetDateTime> transactionTime) {
+            this.transactionTime = transactionTime;
             return this;
         }
 
-        public Builder transStatus(Integer transStatus) {
-            this.transStatus = Optional.ofNullable(transStatus);
+        /**
+         * <p>Events associated with this transaction.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactionEvents(List<QueryTransactionEvents> transactionEvents) {
+            this.transactionEvents = Optional.ofNullable(transactionEvents);
             return this;
         }
 
+        /**
+         * <p>Events associated with this transaction.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "TransactionEvents", nulls = Nulls.SKIP)
+        public _FinalStage transactionEvents(Optional<List<QueryTransactionEvents>> transactionEvents) {
+            this.transactionEvents = transactionEvents;
+            return this;
+        }
+
+        /**
+         * <p>Transaction total amount (including service fee or sub-charge)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage totalAmount(Double totalAmount) {
+            this.totalAmount = Optional.ofNullable(totalAmount);
+            return this;
+        }
+
+        /**
+         * <p>Transaction total amount (including service fee or sub-charge)</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "TotalAmount", nulls = Nulls.SKIP)
+        public _FinalStage totalAmount(Optional<Double> totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage splitFundingInstructions(List<SplitFundingContent> splitFundingInstructions) {
+            this.splitFundingInstructions = Optional.ofNullable(splitFundingInstructions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "splitFundingInstructions", nulls = Nulls.SKIP)
+        public _FinalStage splitFundingInstructions(Optional<List<SplitFundingContent>> splitFundingInstructions) {
+            this.splitFundingInstructions = splitFundingInstructions;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage source(String source) {
+            this.source = Optional.ofNullable(source);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Source", nulls = Nulls.SKIP)
+        public _FinalStage source(Optional<String> source) {
+            this.source = source;
+            return this;
+        }
+
+        /**
+         * <p>Settlement status for transaction. See <a href="/developers/references/money-in-statuses#payment-funding-status">the docs</a> for a full reference.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage settlementStatus(Integer settlementStatus) {
+            this.settlementStatus = Optional.ofNullable(settlementStatus);
+            return this;
+        }
+
+        /**
+         * <p>Settlement status for transaction. See <a href="/developers/references/money-in-statuses#payment-funding-status">the docs</a> for a full reference.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "SettlementStatus", nulls = Nulls.SKIP)
+        public _FinalStage settlementStatus(Optional<Integer> settlementStatus) {
+            this.settlementStatus = settlementStatus;
+            return this;
+        }
+
+        /**
+         * <p>Reference to the subscription that originated the transaction.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage scheduleReference(Long scheduleReference) {
+            this.scheduleReference = Optional.ofNullable(scheduleReference);
+            return this;
+        }
+
+        /**
+         * <p>Reference to the subscription that originated the transaction.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "ScheduleReference", nulls = Nulls.SKIP)
+        public _FinalStage scheduleReference(Optional<Long> scheduleReference) {
+            this.scheduleReference = scheduleReference;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage returnedId(Long returnedId) {
+            this.returnedId = Optional.ofNullable(returnedId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ReturnedId", nulls = Nulls.SKIP)
+        public _FinalStage returnedId(Optional<Long> returnedId) {
+            this.returnedId = returnedId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage responseData(QueryResponseData responseData) {
+            this.responseData = Optional.ofNullable(responseData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ResponseData", nulls = Nulls.SKIP)
+        public _FinalStage responseData(Optional<QueryResponseData> responseData) {
+            this.responseData = responseData;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage refundId(Long refundId) {
+            this.refundId = Optional.ofNullable(refundId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "RefundId", nulls = Nulls.SKIP)
+        public _FinalStage refundId(Optional<Long> refundId) {
+            this.refundId = refundId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage pendingFeeAmount(Double pendingFeeAmount) {
+            this.pendingFeeAmount = Optional.ofNullable(pendingFeeAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "PendingFeeAmount", nulls = Nulls.SKIP)
+        public _FinalStage pendingFeeAmount(Optional<Double> pendingFeeAmount) {
+            this.pendingFeeAmount = pendingFeeAmount;
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's legal name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLegalname(String paypointLegalname) {
+            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's legal name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
+        public _FinalStage paypointLegalname(Optional<String> paypointLegalname) {
+            this.paypointLegalname = paypointLegalname;
+            return this;
+        }
+
+        /**
+         * <p>InternalId for paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointId(Long paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
+        /**
+         * <p>InternalId for paypoint.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
+        public _FinalStage paypointId(Optional<Long> paypointId) {
+            this.paypointId = paypointId;
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointEntryname(String paypointEntryname) {
+            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's entryname.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaypointEntryname", nulls = Nulls.SKIP)
+        public _FinalStage paypointEntryname(Optional<String> paypointEntryname) {
+            this.paypointEntryname = paypointEntryname;
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's DBA name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointDbaname(String paypointDbaname) {
+            this.paypointDbaname = Optional.ofNullable(paypointDbaname);
+            return this;
+        }
+
+        /**
+         * <p>Paypoint's DBA name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
+        public _FinalStage paypointDbaname(Optional<String> paypointDbaname) {
+            this.paypointDbaname = paypointDbaname;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payorId(Long payorId) {
+            this.payorId = Optional.ofNullable(payorId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "PayorId", nulls = Nulls.SKIP)
+        public _FinalStage payorId(Optional<Long> payorId) {
+            this.payorId = payorId;
+            return this;
+        }
+
+        /**
+         * <p>Unique Transaction ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentTransId(String paymentTransId) {
+            this.paymentTransId = Optional.ofNullable(paymentTransId);
+            return this;
+        }
+
+        /**
+         * <p>Unique Transaction ID.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaymentTransId", nulls = Nulls.SKIP)
+        public _FinalStage paymentTransId(Optional<String> paymentTransId) {
+            this.paymentTransId = paymentTransId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paymentData(QueryPaymentData paymentData) {
+            this.paymentData = Optional.ofNullable(paymentData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "PaymentData", nulls = Nulls.SKIP)
+        public _FinalStage paymentData(Optional<QueryPaymentData> paymentData) {
+            this.paymentData = paymentData;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage parentOrgName(String parentOrgName) {
+            this.parentOrgName = Optional.ofNullable(parentOrgName);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
+        public _FinalStage parentOrgName(Optional<String> parentOrgName) {
+            this.parentOrgName = parentOrgName;
+            return this;
+        }
+
+        /**
+         * <p>ID of immediate parent organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage orgId(Long orgId) {
+            this.orgId = Optional.ofNullable(orgId);
+            return this;
+        }
+
+        /**
+         * <p>ID of immediate parent organization.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "OrgId", nulls = Nulls.SKIP)
+        public _FinalStage orgId(Optional<Long> orgId) {
+            this.orgId = orgId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage orderId(String orderId) {
+            this.orderId = Optional.ofNullable(orderId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "OrderId", nulls = Nulls.SKIP)
+        public _FinalStage orderId(Optional<String> orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage operation(String operation) {
+            this.operation = Optional.ofNullable(operation);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Operation", nulls = Nulls.SKIP)
+        public _FinalStage operation(Optional<String> operation) {
+            this.operation = operation;
+            return this;
+        }
+
+        /**
+         * <p>Net amount paid.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage netAmount(Double netAmount) {
+            this.netAmount = Optional.ofNullable(netAmount);
+            return this;
+        }
+
+        /**
+         * <p>Net amount paid.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "NetAmount", nulls = Nulls.SKIP)
+        public _FinalStage netAmount(Optional<Double> netAmount) {
+            this.netAmount = netAmount;
+            return this;
+        }
+
+        /**
+         * <p>Payment method used: card, ach, or wallet.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage method(String method) {
+            this.method = Optional.ofNullable(method);
+            return this;
+        }
+
+        /**
+         * <p>Payment method used: card, ach, or wallet.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "Method", nulls = Nulls.SKIP)
+        public _FinalStage method(Optional<String> method) {
+            this.method = method;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage invoiceData(BillData invoiceData) {
+            this.invoiceData = Optional.ofNullable(invoiceData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
+        public _FinalStage invoiceData(Optional<BillData> invoiceData) {
+            this.invoiceData = invoiceData;
+            return this;
+        }
+
+        /**
+         * <p>Internal identifier used for processing.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage gatewayTransId(String gatewayTransId) {
+            this.gatewayTransId = Optional.ofNullable(gatewayTransId);
+            return this;
+        }
+
+        /**
+         * <p>Internal identifier used for processing.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "GatewayTransId", nulls = Nulls.SKIP)
+        public _FinalStage gatewayTransId(Optional<String> gatewayTransId) {
+            this.gatewayTransId = gatewayTransId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage feeAmount(Double feeAmount) {
+            this.feeAmount = Optional.ofNullable(feeAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
+        public _FinalStage feeAmount(Optional<Double> feeAmount) {
+            this.feeAmount = feeAmount;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage externalProcessorInformation(String externalProcessorInformation) {
+            this.externalProcessorInformation = Optional.ofNullable(externalProcessorInformation);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ExternalProcessorInformation", nulls = Nulls.SKIP)
+        public _FinalStage externalProcessorInformation(Optional<String> externalProcessorInformation) {
+            this.externalProcessorInformation = externalProcessorInformation;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage entrypageId(Long entrypageId) {
+            this.entrypageId = Optional.ofNullable(entrypageId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "EntrypageId", nulls = Nulls.SKIP)
+        public _FinalStage entrypageId(Optional<Long> entrypageId) {
+            this.entrypageId = entrypageId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage deviceId(String deviceId) {
+            this.deviceId = Optional.ofNullable(deviceId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "DeviceId", nulls = Nulls.SKIP)
+        public _FinalStage deviceId(Optional<String> deviceId) {
+            this.deviceId = deviceId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customer(QueryTransactionPayorDataCustomer customer) {
+            this.customer = Optional.ofNullable(customer);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Customer", nulls = Nulls.SKIP)
+        public _FinalStage customer(Optional<QueryTransactionPayorDataCustomer> customer) {
+            this.customer = customer;
+            return this;
+        }
+
+        /**
+         * <p>Connector used for transaction.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage connectorName(String connectorName) {
+            this.connectorName = Optional.ofNullable(connectorName);
+            return this;
+        }
+
+        /**
+         * <p>Connector used for transaction.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "ConnectorName", nulls = Nulls.SKIP)
+        public _FinalStage connectorName(Optional<String> connectorName) {
+            this.connectorName = connectorName;
+            return this;
+        }
+
+        /**
+         * <p>Service Fee or sub-charge transaction associated to the main transaction.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage cfeeTransactions(List<QueryCFeeTransaction> cfeeTransactions) {
+            this.cfeeTransactions = Optional.ofNullable(cfeeTransactions);
+            return this;
+        }
+
+        /**
+         * <p>Service Fee or sub-charge transaction associated to the main transaction.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "CfeeTransactions", nulls = Nulls.SKIP)
+        public _FinalStage cfeeTransactions(Optional<List<QueryCFeeTransaction>> cfeeTransactions) {
+            this.cfeeTransactions = cfeeTransactions;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage batchNumber(String batchNumber) {
+            this.batchNumber = Optional.ofNullable(batchNumber);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "BatchNumber", nulls = Nulls.SKIP)
+        public _FinalStage batchNumber(Optional<String> batchNumber) {
+            this.batchNumber = batchNumber;
+            return this;
+        }
+
+        /**
+         * <p>Batch amount.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchAmount(Double batchAmount) {
+            this.batchAmount = Optional.ofNullable(batchAmount);
+            return this;
+        }
+
+        /**
+         * <p>Batch amount.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "BatchAmount", nulls = Nulls.SKIP)
+        public _FinalStage batchAmount(Optional<Double> batchAmount) {
+            this.batchAmount = batchAmount;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage achSecCode(String achSecCode) {
+            this.achSecCode = Optional.ofNullable(achSecCode);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "AchSecCode", nulls = Nulls.SKIP)
+        public _FinalStage achSecCode(Optional<String> achSecCode) {
+            this.achSecCode = achSecCode;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage achHolderType(AchHolderType achHolderType) {
+            this.achHolderType = Optional.ofNullable(achHolderType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "AchHolderType", nulls = Nulls.SKIP)
+        public _FinalStage achHolderType(Optional<AchHolderType> achHolderType) {
+            this.achHolderType = achHolderType;
+            return this;
+        }
+
+        @java.lang.Override
         public TransactionQueryRecordsCustomer build() {
             return new TransactionQueryRecordsCustomer(
                     achHolderType,
@@ -1210,6 +1614,7 @@ public final class TransactionQueryRecordsCustomer {
                     settlementStatus,
                     source,
                     splitFundingInstructions,
+                    splitCount,
                     totalAmount,
                     transactionEvents,
                     transactionTime,
@@ -1218,11 +1623,13 @@ public final class TransactionQueryRecordsCustomer {
                     additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

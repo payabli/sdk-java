@@ -12,17 +12,14 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.types.ExportFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = ListVendorsOrgRequest.Builder.class)
-public final class ListVendorsOrgRequest {
-    private final Optional<ExportFormat> exportFormat;
-
+@JsonDeserialize(builder = ListVcardsTransactionsRequest.Builder.class)
+public final class ListVcardsTransactionsRequest {
     private final Optional<Integer> fromRecord;
 
     private final Optional<Integer> limitRecord;
@@ -33,24 +30,17 @@ public final class ListVendorsOrgRequest {
 
     private final Map<String, Object> additionalProperties;
 
-    private ListVendorsOrgRequest(
-            Optional<ExportFormat> exportFormat,
+    private ListVcardsTransactionsRequest(
             Optional<Integer> fromRecord,
             Optional<Integer> limitRecord,
             Optional<Map<String, Optional<String>>> parameters,
             Optional<String> sortBy,
             Map<String, Object> additionalProperties) {
-        this.exportFormat = exportFormat;
         this.fromRecord = fromRecord;
         this.limitRecord = limitRecord;
         this.parameters = parameters;
         this.sortBy = sortBy;
         this.additionalProperties = additionalProperties;
-    }
-
-    @JsonIgnore
-    public Optional<ExportFormat> getExportFormat() {
-        return exportFormat;
     }
 
     /**
@@ -70,38 +60,39 @@ public final class ListVendorsOrgRequest {
     }
 
     /**
-     * @return Collection of field names, conditions, and values used to filter the query
-     * &lt;Info&gt;
-     * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong>
+     * @return Collection of field names, conditions, and values used to filter the query.
+     * <p>&lt;Info&gt;
+     *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
      * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
      * <p>For example:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
      * <p>should become:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
-     * &lt;/Info&gt;
-     * See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?transactionAmount(gt)=100&amp;limitRecord=20
+     * &lt;/Info&gt;</p>
      * <p>List of field names accepted:</p>
      * <ul>
-     * <li><code>method</code> (in, nin, eq, ne)</li>
-     * <li><code>enrollmentStatus</code> (in,nin, eq, ne)</li>
-     * <li><code>status</code> (in, nin, eq, ne)</li>
-     * <li><code>vendorNumber</code> (ct, nct, eq, ne)</li>
-     * <li><code>name</code> (ct, nct, eq, ne)</li>
-     * <li><code>ein</code> (ct, nct, eq, ne)</li>
-     * <li><code>phone</code> (ct, nct, eq, ne)</li>
-     * <li><code>email</code> (ct, nct, eq, ne)</li>
-     * <li><code>remitEmail</code> (ct, nct, eq, ne)</li>
-     * <li><code>address</code> (ct, nct, eq, ne)</li>
-     * <li><code>city</code> (ct, nct, eq, ne)</li>
-     * <li><code>state</code> (ct, nct, eq, ne)</li>
-     * <li><code>country</code> (ct, nct, eq, ne)</li>
-     * <li><code>zip</code> (ct, nct, eq, ne)</li>
+     * <li><code>identifier</code> (eq, ne, ct, nct)</li>
+     * <li><code>transactionType</code> (eq, ne, ct, nct)</li>
+     * <li><code>transactionStatus</code> (eq, ne, ct, nct, in, nin)</li>
+     * <li><code>transactionAmount</code> (eq, ne, gt, ge, lt, le, ct, nct)</li>
+     * <li><code>transactionCreatedOn</code> (eq, ne, gt, ge, lt, le)</li>
+     * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
+     * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
+     * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
      * <li><code>mcc</code> (ct, nct, eq, ne)</li>
-     * <li><code>locationCode</code> (ct, nct, eq, ne)</li>
+     * <li><code>payoutId</code> (gt, lt, eq, ne)</li>
+     * <li><code>customerId</code> (gt, lt, eq, ne)</li>
+     * <li><code>vendorId</code> (gt, lt, eq, ne)</li>
+     * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
+     * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
+     * <li><code>currentUses</code> (gt, ge, lt, le, eq, ne)</li>
+     * <li><code>amount</code> (gt, ge, lt, le, eq, ne)</li>
+     * <li><code>balance</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
      * <li><code>paypointDba</code> (ne, eq, ct, nct)</li>
-     * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
-     * <li><code>orgName</code> (ne, eq, ct, nct)</li>
+     * <li><code>orgName</code> (ne, eq, ct, nct, in, nin)</li>
+     * <li><code>externalPaypointID</code> (ct, nct, eq, ne)</li>
+     * <li><code>paypointId</code> (gt, lt, eq, ne)</li>
      * </ul>
      * <p>List of comparison accepted - enclosed between parentheses:</p>
      * <ul>
@@ -116,12 +107,6 @@ public final class ListVendorsOrgRequest {
      * <li>in =&gt; inside array separated by &quot;|&quot;</li>
      * <li>nin =&gt; not inside array separated by &quot;|&quot;</li>
      * </ul>
-     * <p>List of parameters accepted:</p>
-     * <ul>
-     * <li>limitRecord : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
-     * <li>fromRecord : initial record in query</li>
-     * </ul>
-     * <p>Example: <code>netAmount(gt)=20</code> returns all records with a <code>netAmount</code> greater than 20.00</p>
      */
     @JsonIgnore
     public Optional<Map<String, Optional<String>>> getParameters() {
@@ -139,7 +124,7 @@ public final class ListVendorsOrgRequest {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ListVendorsOrgRequest && equalTo((ListVendorsOrgRequest) other);
+        return other instanceof ListVcardsTransactionsRequest && equalTo((ListVcardsTransactionsRequest) other);
     }
 
     @JsonAnyGetter
@@ -147,9 +132,8 @@ public final class ListVendorsOrgRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ListVendorsOrgRequest other) {
-        return exportFormat.equals(other.exportFormat)
-                && fromRecord.equals(other.fromRecord)
+    private boolean equalTo(ListVcardsTransactionsRequest other) {
+        return fromRecord.equals(other.fromRecord)
                 && limitRecord.equals(other.limitRecord)
                 && parameters.equals(other.parameters)
                 && sortBy.equals(other.sortBy);
@@ -157,7 +141,7 @@ public final class ListVendorsOrgRequest {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.exportFormat, this.fromRecord, this.limitRecord, this.parameters, this.sortBy);
+        return Objects.hash(this.fromRecord, this.limitRecord, this.parameters, this.sortBy);
     }
 
     @java.lang.Override
@@ -171,8 +155,6 @@ public final class ListVendorsOrgRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<ExportFormat> exportFormat = Optional.empty();
-
         private Optional<Integer> fromRecord = Optional.empty();
 
         private Optional<Integer> limitRecord = Optional.empty();
@@ -186,23 +168,11 @@ public final class ListVendorsOrgRequest {
 
         private Builder() {}
 
-        public Builder from(ListVendorsOrgRequest other) {
-            exportFormat(other.getExportFormat());
+        public Builder from(ListVcardsTransactionsRequest other) {
             fromRecord(other.getFromRecord());
             limitRecord(other.getLimitRecord());
             parameters(other.getParameters());
             sortBy(other.getSortBy());
-            return this;
-        }
-
-        @JsonSetter(value = "exportFormat", nulls = Nulls.SKIP)
-        public Builder exportFormat(Optional<ExportFormat> exportFormat) {
-            this.exportFormat = exportFormat;
-            return this;
-        }
-
-        public Builder exportFormat(ExportFormat exportFormat) {
-            this.exportFormat = Optional.ofNullable(exportFormat);
             return this;
         }
 
@@ -235,38 +205,39 @@ public final class ListVendorsOrgRequest {
         }
 
         /**
-         * <p>Collection of field names, conditions, and values used to filter the query
-         * &lt;Info&gt;
-         * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong></p>
+         * <p>Collection of field names, conditions, and values used to filter the query.</p>
+         * <p>&lt;Info&gt;
+         *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
          * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
          * <p>For example:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
          * <p>should become:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
-         * &lt;/Info&gt;
-         * See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?transactionAmount(gt)=100&amp;limitRecord=20
+         * &lt;/Info&gt;</p>
          * <p>List of field names accepted:</p>
          * <ul>
-         * <li><code>method</code> (in, nin, eq, ne)</li>
-         * <li><code>enrollmentStatus</code> (in,nin, eq, ne)</li>
-         * <li><code>status</code> (in, nin, eq, ne)</li>
-         * <li><code>vendorNumber</code> (ct, nct, eq, ne)</li>
-         * <li><code>name</code> (ct, nct, eq, ne)</li>
-         * <li><code>ein</code> (ct, nct, eq, ne)</li>
-         * <li><code>phone</code> (ct, nct, eq, ne)</li>
-         * <li><code>email</code> (ct, nct, eq, ne)</li>
-         * <li><code>remitEmail</code> (ct, nct, eq, ne)</li>
-         * <li><code>address</code> (ct, nct, eq, ne)</li>
-         * <li><code>city</code> (ct, nct, eq, ne)</li>
-         * <li><code>state</code> (ct, nct, eq, ne)</li>
-         * <li><code>country</code> (ct, nct, eq, ne)</li>
-         * <li><code>zip</code> (ct, nct, eq, ne)</li>
+         * <li><code>identifier</code> (eq, ne, ct, nct)</li>
+         * <li><code>transactionType</code> (eq, ne, ct, nct)</li>
+         * <li><code>transactionStatus</code> (eq, ne, ct, nct, in, nin)</li>
+         * <li><code>transactionAmount</code> (eq, ne, gt, ge, lt, le, ct, nct)</li>
+         * <li><code>transactionCreatedOn</code> (eq, ne, gt, ge, lt, le)</li>
+         * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
+         * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
+         * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
          * <li><code>mcc</code> (ct, nct, eq, ne)</li>
-         * <li><code>locationCode</code> (ct, nct, eq, ne)</li>
+         * <li><code>payoutId</code> (gt, lt, eq, ne)</li>
+         * <li><code>customerId</code> (gt, lt, eq, ne)</li>
+         * <li><code>vendorId</code> (gt, lt, eq, ne)</li>
+         * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
+         * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
+         * <li><code>currentUses</code> (gt, ge, lt, le, eq, ne)</li>
+         * <li><code>amount</code> (gt, ge, lt, le, eq, ne)</li>
+         * <li><code>balance</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
          * <li><code>paypointDba</code> (ne, eq, ct, nct)</li>
-         * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
-         * <li><code>orgName</code> (ne, eq, ct, nct)</li>
+         * <li><code>orgName</code> (ne, eq, ct, nct, in, nin)</li>
+         * <li><code>externalPaypointID</code> (ct, nct, eq, ne)</li>
+         * <li><code>paypointId</code> (gt, lt, eq, ne)</li>
          * </ul>
          * <p>List of comparison accepted - enclosed between parentheses:</p>
          * <ul>
@@ -281,12 +252,6 @@ public final class ListVendorsOrgRequest {
          * <li>in =&gt; inside array separated by &quot;|&quot;</li>
          * <li>nin =&gt; not inside array separated by &quot;|&quot;</li>
          * </ul>
-         * <p>List of parameters accepted:</p>
-         * <ul>
-         * <li>limitRecord : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
-         * <li>fromRecord : initial record in query</li>
-         * </ul>
-         * <p>Example: <code>netAmount(gt)=20</code> returns all records with a <code>netAmount</code> greater than 20.00</p>
          */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
         public Builder parameters(Optional<Map<String, Optional<String>>> parameters) {
@@ -313,9 +278,8 @@ public final class ListVendorsOrgRequest {
             return this;
         }
 
-        public ListVendorsOrgRequest build() {
-            return new ListVendorsOrgRequest(
-                    exportFormat, fromRecord, limitRecord, parameters, sortBy, additionalProperties);
+        public ListVcardsTransactionsRequest build() {
+            return new ListVcardsTransactionsRequest(fromRecord, limitRecord, parameters, sortBy, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

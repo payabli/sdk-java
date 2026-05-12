@@ -71,7 +71,7 @@
       "PaymentData": {
         "AccountExp": "0924",
         "AccountType": "unknow",
-        "AccountZip": "90210",
+        "AccountZip": "37612",
         "binData": {
           "binMatchedLength": "6",
           "binCardBrand": "Visa",
@@ -85,7 +85,7 @@
           "binCardUseCategory": "Consumer",
           "binCardIssuerCountryCodeA3": "USA"
         },
-        "HolderName": "Mr. Michael Abernathy",
+        "HolderName": "Lisandra Smitch",
         "Initiator": "payor",
         "MaskedAccount": "2222 4XXXXXX0010",
         "paymentDetails": {
@@ -102,6 +102,36 @@
       "PaypointLegalname": "Athlete Factory LLC",
       "PlanId": 1,
       "StartDate": "2024-07-20T00:00:00Z",
+      "StoredMethod": {
+        "IdPmethod": "6edcbb56-9c0e-4003-b3d1-99abf149ba0e",
+        "Method": "card",
+        "Descriptor": "Visa for subscriptions",
+        "MaskedAccount": "4XXXXXXX0010",
+        "ExpDate": "0924",
+        "HolderName": "Lisandra Smitch",
+        "AchSecCode": null,
+        "AchHolderType": null,
+        "IsValidatedACH": false,
+        "BIN": "",
+        "binData": {
+          "binMatchedLength": "6",
+          "binCardBrand": "Visa",
+          "binCardType": "Credit",
+          "binCardCategory": "PLATINUM",
+          "binCardIssuer": "Bank of Example",
+          "binCardIssuerCountry": "United States",
+          "binCardIssuerCountryCodeA2": "US",
+          "binCardIssuerCountryNumber": "840",
+          "binCardIsRegulated": "false",
+          "binCardUseCategory": "Consumer",
+          "binCardIssuerCountryCodeA3": "USA"
+        },
+        "ABA": "",
+        "PostalCode": "37612",
+        "MethodType": "Single Merchant",
+        "LastUpdated": "2023-12-14T08:51:10Z",
+        "CardUpdatedOn": null
+      },
       "SubEvents": [
         {
           "description": "created",

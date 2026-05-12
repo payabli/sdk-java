@@ -41,11 +41,12 @@
     }
   ],
   "Summary": {
-    "pageIdentifier": "XXXXXXXXXXXXXX",
+    "pageidentifier": "XXXXXXXXXXXXXX",
     "pageSize": 20,
     "totalAmount": 2500,
+    "totalNetAmount": 0,
     "totalactive": 5,
-    "totalamounteactive": 2500,
+    "totalamountactive": 2500,
     "totalbalanceactive": 1875.25,
     "totalPages": 1,
     "totalRecords": 5

@@ -73,6 +73,8 @@ public final class SubscriptionQueryRecords {
 
     private final Optional<OffsetDateTime> startDate;
 
+    private final Optional<VendorResponseStoredMethod> storedMethod;
+
     private final Optional<List<GeneralEvents>> subEvents;
 
     private final Optional<Integer> subStatus;
@@ -110,6 +112,7 @@ public final class SubscriptionQueryRecords {
             Optional<Integer> planId,
             Optional<String> source,
             Optional<OffsetDateTime> startDate,
+            Optional<VendorResponseStoredMethod> storedMethod,
             Optional<List<GeneralEvents>> subEvents,
             Optional<Integer> subStatus,
             Optional<Double> totalAmount,
@@ -140,6 +143,7 @@ public final class SubscriptionQueryRecords {
         this.planId = planId;
         this.source = source;
         this.startDate = startDate;
+        this.storedMethod = storedMethod;
         this.subEvents = subEvents;
         this.subStatus = subStatus;
         this.totalAmount = totalAmount;
@@ -329,6 +333,22 @@ public final class SubscriptionQueryRecords {
     }
 
     /**
+     * @return The full stored payment method record linked to the subscription
+     * and charged on each billing cycle. Returned as <code>null</code> for legacy
+     * subscriptions that don't have a linked stored method.
+     * <p>The shape is the same across payment vehicles (card, ACH, check).
+     * Only the populated fields differ. For example, <code>ABA</code> is populated
+     * for ACH, while <code>ExpDate</code> and <code>binData</code> are populated for card.</p>
+     */
+    @JsonIgnore
+    public Optional<VendorResponseStoredMethod> getStoredMethod() {
+        if (storedMethod == null) {
+            return Optional.empty();
+        }
+        return storedMethod;
+    }
+
+    /**
      * @return Events associated with the subscription.
      */
     @JsonProperty("SubEvents")
@@ -396,6 +416,12 @@ public final class SubscriptionQueryRecords {
         return startDate;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StoredMethod")
+    private Optional<VendorResponseStoredMethod> _getStoredMethod() {
+        return storedMethod;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -432,6 +458,7 @@ public final class SubscriptionQueryRecords {
                 && planId.equals(other.planId)
                 && source.equals(other.source)
                 && startDate.equals(other.startDate)
+                && storedMethod.equals(other.storedMethod)
                 && subEvents.equals(other.subEvents)
                 && subStatus.equals(other.subStatus)
                 && totalAmount.equals(other.totalAmount)
@@ -466,6 +493,7 @@ public final class SubscriptionQueryRecords {
                 this.planId,
                 this.source,
                 this.startDate,
+                this.storedMethod,
                 this.subEvents,
                 this.subStatus,
                 this.totalAmount,
@@ -532,6 +560,8 @@ public final class SubscriptionQueryRecords {
 
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
+        private Optional<VendorResponseStoredMethod> storedMethod = Optional.empty();
+
         private Optional<List<GeneralEvents>> subEvents = Optional.empty();
 
         private Optional<Integer> subStatus = Optional.empty();
@@ -572,6 +602,7 @@ public final class SubscriptionQueryRecords {
             planId(other.getPlanId());
             source(other.getSource());
             startDate(other.getStartDate());
+            storedMethod(other.getStoredMethod());
             subEvents(other.getSubEvents());
             subStatus(other.getSubStatus());
             totalAmount(other.getTotalAmount());
@@ -937,6 +968,36 @@ public final class SubscriptionQueryRecords {
         }
 
         /**
+         * <p>The full stored payment method record linked to the subscription
+         * and charged on each billing cycle. Returned as <code>null</code> for legacy
+         * subscriptions that don't have a linked stored method.</p>
+         * <p>The shape is the same across payment vehicles (card, ACH, check).
+         * Only the populated fields differ. For example, <code>ABA</code> is populated
+         * for ACH, while <code>ExpDate</code> and <code>binData</code> are populated for card.</p>
+         */
+        @JsonSetter(value = "StoredMethod", nulls = Nulls.SKIP)
+        public Builder storedMethod(Optional<VendorResponseStoredMethod> storedMethod) {
+            this.storedMethod = storedMethod;
+            return this;
+        }
+
+        public Builder storedMethod(VendorResponseStoredMethod storedMethod) {
+            this.storedMethod = Optional.ofNullable(storedMethod);
+            return this;
+        }
+
+        public Builder storedMethod(Nullable<VendorResponseStoredMethod> storedMethod) {
+            if (storedMethod.isNull()) {
+                this.storedMethod = null;
+            } else if (storedMethod.isEmpty()) {
+                this.storedMethod = Optional.empty();
+            } else {
+                this.storedMethod = Optional.of(storedMethod.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>Events associated with the subscription.</p>
          */
         @JsonSetter(value = "SubEvents", nulls = Nulls.SKIP)
@@ -1036,6 +1097,7 @@ public final class SubscriptionQueryRecords {
                     planId,
                     source,
                     startDate,
+                    storedMethod,
                     subEvents,
                     subStatus,
                     totalAmount,

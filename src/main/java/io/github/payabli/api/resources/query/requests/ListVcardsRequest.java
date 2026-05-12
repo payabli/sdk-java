@@ -81,13 +81,13 @@ public final class ListVcardsRequest {
      * &lt;/Info&gt;
      * List of field names accepted:</p>
      * <ul>
-     * <li><code>status</code> (in, nin, eq, ne)</li>
+     * <li><code>status</code> (eq, ne, ct, nct, sw, ew)</li>
      * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
      * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
      * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
-     * <li><code>payoutId</code> (ct, nct, eq, ne, in, nin)</li>
-     * <li><code>vendorId</code> (ct, nct, eq, ne, in, nin)</li>
+     * <li><code>payoutId</code> (eq, ne, gt, ge, lt, le)</li>
+     * <li><code>vendorId</code> (eq, ne, gt, ge, lt, le)</li>
      * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
      * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
      * <li><code>currentUses</code> (gt, ge, lt, le, eq, ne)</li>
@@ -95,10 +95,10 @@ public final class ListVcardsRequest {
      * <li><code>balance</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
      * <li><code>paypointDba</code> (ne, eq, ct, nct)</li>
-     * <li><code>orgName</code> (ne, eq, ct, nct)</li>
+     * <li><code>orgName</code> (eq, ne, ct, nct, sw, ew)</li>
      * <li><code>externalPaypointId</code> (ct, nct, eq, ne)</li>
-     * <li><code>paypointId</code> (in, nin, eq, ne)</li>
-     * <li><code>cardType</code> (eq)</li>
+     * <li><code>paypointId</code> (eq, ne, gt, ge, lt, le)</li>
+     * <li><code>cardType</code> (eq, ne, gt, ge, lt, le)</li>
      * </ul>
      * <p>List of comparison accepted - enclosed between parentheses:</p>
      * <ul>
@@ -110,6 +110,8 @@ public final class ListVcardsRequest {
      * <li>ne =&gt; not equal</li>
      * <li>ct =&gt; contains</li>
      * <li>nct =&gt; not contains</li>
+     * <li>sw =&gt; starts with</li>
+     * <li>ew =&gt; ends with</li>
      * <li>in =&gt; inside array separated by &quot;|&quot;</li>
      * <li>nin =&gt; not inside array separated by &quot;|&quot;</li>
      * </ul>
@@ -237,13 +239,13 @@ public final class ListVcardsRequest {
          * &lt;/Info&gt;
          * List of field names accepted:</p>
          * <ul>
-         * <li><code>status</code> (in, nin, eq, ne)</li>
+         * <li><code>status</code> (eq, ne, ct, nct, sw, ew)</li>
          * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>cardToken</code> (ct, nct, eq, ne)</li>
          * <li><code>lastFour</code> (ct, nct, eq, ne)</li>
          * <li><code>expirationDate</code> (ct, nct, eq, ne)</li>
-         * <li><code>payoutId</code> (ct, nct, eq, ne, in, nin)</li>
-         * <li><code>vendorId</code> (ct, nct, eq, ne, in, nin)</li>
+         * <li><code>payoutId</code> (eq, ne, gt, ge, lt, le)</li>
+         * <li><code>vendorId</code> (eq, ne, gt, ge, lt, le)</li>
          * <li><code>miscData1</code> (ct, nct, eq, ne)</li>
          * <li><code>miscData2</code> (ct, nct, eq, ne)</li>
          * <li><code>currentUses</code> (gt, ge, lt, le, eq, ne)</li>
@@ -251,10 +253,10 @@ public final class ListVcardsRequest {
          * <li><code>balance</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
          * <li><code>paypointDba</code> (ne, eq, ct, nct)</li>
-         * <li><code>orgName</code> (ne, eq, ct, nct)</li>
+         * <li><code>orgName</code> (eq, ne, ct, nct, sw, ew)</li>
          * <li><code>externalPaypointId</code> (ct, nct, eq, ne)</li>
-         * <li><code>paypointId</code> (in, nin, eq, ne)</li>
-         * <li><code>cardType</code> (eq)</li>
+         * <li><code>paypointId</code> (eq, ne, gt, ge, lt, le)</li>
+         * <li><code>cardType</code> (eq, ne, gt, ge, lt, le)</li>
          * </ul>
          * <p>List of comparison accepted - enclosed between parentheses:</p>
          * <ul>
@@ -266,6 +268,8 @@ public final class ListVcardsRequest {
          * <li>ne =&gt; not equal</li>
          * <li>ct =&gt; contains</li>
          * <li>nct =&gt; not contains</li>
+         * <li>sw =&gt; starts with</li>
+         * <li>ew =&gt; ends with</li>
          * <li>in =&gt; inside array separated by &quot;|&quot;</li>
          * <li>nin =&gt; not inside array separated by &quot;|&quot;</li>
          * </ul>
