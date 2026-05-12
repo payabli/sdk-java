@@ -8380,7 +8380,6 @@ Import a list of bills from a CSV file. See the [Import Guide](/developers/devel
 ```java
 client.import_().importBills(
     "8cfec329267",
-    null,
     ImportBillsRequest
         .builder()
         .build()
@@ -8440,7 +8439,6 @@ Import a list of customers from a CSV file. See the [Import Guide](/developers/d
 ```java
 client.import_().importCustomer(
     "8cfec329267",
-    null,
     ImportCustomerRequest
         .builder()
         .build()
@@ -8508,7 +8506,6 @@ Import a list of vendors from a CSV file. See the [Import Guide](/developers/dev
 ```java
 client.import_().importVendor(
     "8cfec329267",
-    null,
     ImportVendorRequest
         .builder()
         .build()
