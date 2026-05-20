@@ -47,7 +47,7 @@ public final class AddInvoiceRequest {
         return idempotencyKey;
     }
 
-    @JsonIgnore
+    @JsonProperty("forceCustomerCreation")
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }

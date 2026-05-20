@@ -5,7 +5,6 @@ package io.github.payabli.api.resources.notificationlogs.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,7 +41,7 @@ public final class SearchNotificationLogsRequest {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonIgnore
+    @JsonProperty("PageSize")
     public Optional<Integer> getPageSize() {
         return pageSize;
     }
@@ -50,7 +49,7 @@ public final class SearchNotificationLogsRequest {
     /**
      * @return The page number to retrieve. Defaults to 1 if not provided.
      */
-    @JsonIgnore
+    @JsonProperty("Page")
     public Optional<Integer> getPage() {
         return page;
     }

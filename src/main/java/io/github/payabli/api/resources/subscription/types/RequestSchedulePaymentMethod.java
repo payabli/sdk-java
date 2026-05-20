@@ -13,6 +13,7 @@ import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.types.PayMethodAch;
 import io.github.payabli.api.types.PayMethodCredit;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonDeserialize(using = RequestSchedulePaymentMethod.Deserializer.class)
@@ -92,13 +93,22 @@ public final class RequestSchedulePaymentMethod {
         public RequestSchedulePaymentMethod deserialize(JsonParser p, DeserializationContext context)
                 throws IOException {
             Object value = p.readValueAs(Object.class);
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCredit.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("cardexp")
+                    && ((Map<?, ?>) value).containsKey("cardnumber")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCredit.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodAch.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("achAccount")
+                    && ((Map<?, ?>) value).containsKey("achHolder")
+                    && ((Map<?, ?>) value).containsKey("achRouting")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodAch.class));
+                } catch (RuntimeException e) {
+                }
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, RequestSchedulePaymentMethodInitiator.class));

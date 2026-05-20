@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.query.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -48,7 +48,7 @@ public final class ListBatchDetailsOrgRequest {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonIgnore
+    @JsonProperty("exportFormat")
     public Optional<ExportFormat> getExportFormat() {
         return exportFormat;
     }
@@ -56,7 +56,7 @@ public final class ListBatchDetailsOrgRequest {
     /**
      * @return The number of records to skip before starting to collect the result set.
      */
-    @JsonIgnore
+    @JsonProperty("fromRecord")
     public Optional<Integer> getFromRecord() {
         return fromRecord;
     }
@@ -64,7 +64,7 @@ public final class ListBatchDetailsOrgRequest {
     /**
      * @return Max number of records to return for the query. Use <code>0</code> or negative value to return all records.
      */
-    @JsonIgnore
+    @JsonProperty("limitRecord")
     public Optional<Integer> getLimitRecord() {
         return limitRecord;
     }
@@ -140,7 +140,7 @@ public final class ListBatchDetailsOrgRequest {
      * </ul>
      * <p>Example: <code>settledAmount(gt)=20</code> returns all records with a <code>settledAmount</code> greater than 20.00.</p>
      */
-    @JsonIgnore
+    @JsonProperty("parameters")
     public Optional<Map<String, Optional<String>>> getParameters() {
         return parameters;
     }
@@ -148,7 +148,7 @@ public final class ListBatchDetailsOrgRequest {
     /**
      * @return The field name to use for sorting results. Use <code>desc(field_name)</code> to sort descending by <code>field_name</code>, and use <code>asc(field_name)</code> to sort ascending by <code>field_name</code>.
      */
-    @JsonIgnore
+    @JsonProperty("sortBy")
     public Optional<String> getSortBy() {
         return sortBy;
     }

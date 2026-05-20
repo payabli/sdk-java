@@ -25,7 +25,7 @@ public final class GeneralEvents {
 
     private final Optional<OffsetDateTime> eventTime;
 
-    private final Optional<Map<String, Object>> extraData;
+    private final Optional<String> extraData;
 
     private final Optional<String> refData;
 
@@ -36,7 +36,7 @@ public final class GeneralEvents {
     private GeneralEvents(
             Optional<String> description,
             Optional<OffsetDateTime> eventTime,
-            Optional<Map<String, Object>> extraData,
+            Optional<String> extraData,
             Optional<String> refData,
             Optional<String> source,
             Map<String, Object> additionalProperties) {
@@ -68,7 +68,7 @@ public final class GeneralEvents {
      * @return Extra data.
      */
     @JsonProperty("extraData")
-    public Optional<Map<String, Object>> getExtraData() {
+    public Optional<String> getExtraData() {
         return extraData;
     }
 
@@ -127,7 +127,7 @@ public final class GeneralEvents {
 
         private Optional<OffsetDateTime> eventTime = Optional.empty();
 
-        private Optional<Map<String, Object>> extraData = Optional.empty();
+        private Optional<String> extraData = Optional.empty();
 
         private Optional<String> refData = Optional.empty();
 
@@ -179,12 +179,12 @@ public final class GeneralEvents {
          * <p>Extra data.</p>
          */
         @JsonSetter(value = "extraData", nulls = Nulls.SKIP)
-        public Builder extraData(Optional<Map<String, Object>> extraData) {
+        public Builder extraData(Optional<String> extraData) {
             this.extraData = extraData;
             return this;
         }
 
-        public Builder extraData(Map<String, Object> extraData) {
+        public Builder extraData(String extraData) {
             this.extraData = Optional.ofNullable(extraData);
             return this;
         }

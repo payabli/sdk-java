@@ -58,7 +58,7 @@ public final class MoneyOutTypesRequestOutAuthorize {
     /**
      * @return When <code>true</code>, the authorization bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout authorization for a bill, like a split payment.
      */
-    @JsonIgnore
+    @JsonProperty("allowDuplicatedBills")
     public Optional<Boolean> getAllowDuplicatedBills() {
         return allowDuplicatedBills;
     }
@@ -66,7 +66,7 @@ public final class MoneyOutTypesRequestOutAuthorize {
     /**
      * @return When <code>true</code>, Payabli won't automatically create a bill for this payout transaction.
      */
-    @JsonIgnore
+    @JsonProperty("doNotCreateBills")
     public Optional<Boolean> getDoNotCreateBills() {
         return doNotCreateBills;
     }
@@ -74,7 +74,7 @@ public final class MoneyOutTypesRequestOutAuthorize {
     /**
      * @return When <code>true</code>, the request creates a new vendor record, regardless of whether the vendor already exists.
      */
-    @JsonIgnore
+    @JsonProperty("forceVendorCreation")
     public Optional<Boolean> getForceVendorCreation() {
         return forceVendorCreation;
     }

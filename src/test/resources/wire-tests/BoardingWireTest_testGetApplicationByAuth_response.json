@@ -73,9 +73,7 @@
     {
       "description": "TransferCreated",
       "eventTime": "2023-07-05T22:31:06Z",
-      "extraData": {
-        "key": "value"
-      },
+      "extraData": null,
       "refData": "refData",
       "source": "api"
     }

@@ -66,9 +66,7 @@ package com.example.usage;
 import io.github.payabli.api.PayabliApiClient;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
 import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
-import io.github.payabli.api.types.AchHolderType;
-import io.github.payabli.api.types.Achaccounttype;
-import io.github.payabli.api.types.PayMethodAch;
+import io.github.payabli.api.types.PayMethodCredit;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
@@ -96,14 +94,14 @@ public class Example {
                         )
                         .paymentMethod(
                             PaymentMethod.of(
-                                PayMethodAch
+                                PayMethodCredit
                                     .builder()
-                                    .achAccount("123123123")
-                                    .achHolder("John Cassian")
-                                    .achRouting("123123123")
-                                    .achAccountType(Optional.of(Achaccounttype.CHECKING))
-                                    .achCode(Optional.of("WEB"))
-                                    .achHolderType(Optional.of(AchHolderType.PERSONAL))
+                                    .cardexp("02/27")
+                                    .cardnumber("4111111111111111")
+                                    .cardcvv(Optional.of("999"))
+                                    .cardHolder(Optional.of("John Cassian"))
+                                    .cardzip(Optional.of("12345"))
+                                    .initiator(Optional.of("payor"))
                                     .build()
                             )
                         )
@@ -191,11 +189,19 @@ retry limit (default: 2). Before defaulting to exponential backoff, the SDK will
 the `Retry-After` header (as either in seconds or as an HTTP date), and then the `X-RateLimit-Reset` header
 (as a Unix timestamp in epoch seconds); failing both of those, it will fall back to exponential backoff.
 
-A request is deemed retryable when any of the following HTTP status codes is returned:
+Which status codes are retried depends on the `retry-status-codes` generator configuration:
 
+**`legacy`** (current default): retries on
 - [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
 - [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) (Internal Server Errors)
+- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
+
+**`recommended`**: retries on
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [502](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502) (Bad Gateway)
+- [503](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) (Service Unavailable)
+- [504](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504) (Gateway Timeout)
 
 Use the `maxRetries` client option to configure this behavior.
 
@@ -291,7 +297,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:0.0.329'
+  implementation 'io.github.payabli:sdk-java:0.0.330'
 }
 ```
 
@@ -303,7 +309,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.329</version>
+  <version>0.0.330</version>
 </dependency>
 ```
 

@@ -59,22 +59,22 @@ public final class AddMethodRequest {
         return idempotencyKey;
     }
 
-    @JsonIgnore
+    @JsonProperty("achValidation")
     public Optional<Boolean> getAchValidation() {
         return achValidation;
     }
 
-    @JsonIgnore
+    @JsonProperty("createAnonymous")
     public Optional<Boolean> getCreateAnonymous() {
         return createAnonymous;
     }
 
-    @JsonIgnore
+    @JsonProperty("forceCustomerCreation")
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }
 
-    @JsonIgnore
+    @JsonProperty("temporary")
     public Optional<Boolean> getTemporary() {
         return temporary;
     }

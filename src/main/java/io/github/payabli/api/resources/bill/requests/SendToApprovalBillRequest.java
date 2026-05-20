@@ -50,7 +50,7 @@ public final class SendToApprovalBillRequest {
     /**
      * @return Automatically create the target user for approval if they don't exist.
      */
-    @JsonIgnore
+    @JsonProperty("autocreateUser")
     public Optional<Boolean> getAutocreateUser() {
         return autocreateUser;
     }

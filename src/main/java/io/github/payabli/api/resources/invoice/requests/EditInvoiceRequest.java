@@ -5,7 +5,6 @@ package io.github.payabli.api.resources.invoice.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,7 +40,7 @@ public final class EditInvoiceRequest {
     /**
      * @return When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.
      */
-    @JsonIgnore
+    @JsonProperty("forceCustomerCreation")
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }

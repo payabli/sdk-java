@@ -67,12 +67,12 @@ public final class RequestPayment {
         return validationCode;
     }
 
-    @JsonIgnore
+    @JsonProperty("achValidation")
     public Optional<Boolean> getAchValidation() {
         return achValidation;
     }
 
-    @JsonIgnore
+    @JsonProperty("forceCustomerCreation")
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }
@@ -80,7 +80,7 @@ public final class RequestPayment {
     /**
      * @return When <code>true</code>, transactionDetails object is returned in the response. See a full example of the <code>transactionDetails</code> object in the <a href="/developers/developer-guides/money-in-transaction-add#includedetailstrue-response">Transaction integration guide</a>.
      */
-    @JsonIgnore
+    @JsonProperty("includeDetails")
     public Optional<Boolean> getIncludeDetails() {
         return includeDetails;
     }

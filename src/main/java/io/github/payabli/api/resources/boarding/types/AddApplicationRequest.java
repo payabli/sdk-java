@@ -15,6 +15,7 @@ import io.github.payabli.api.types.ApplicationDataManaged;
 import io.github.payabli.api.types.ApplicationDataOdp;
 import io.github.payabli.api.types.ApplicationDataPayIn;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonDeserialize(using = AddApplicationRequest.Deserializer.class)
@@ -101,17 +102,37 @@ public final class AddApplicationRequest {
         @java.lang.Override
         public AddApplicationRequest deserialize(JsonParser p, DeserializationContext context) throws IOException {
             Object value = p.readValueAs(Object.class);
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationDataPayIn.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("services")
+                    && ((Map<?, ?>) value).containsKey("bankData")
+                    && ((Map<?, ?>) value).containsKey("phonenumber")
+                    && ((Map<?, ?>) value).containsKey("processingRegion")
+                    && ((Map<?, ?>) value).containsKey("signer")
+                    && ((Map<?, ?>) value).containsKey("whenCharged")
+                    && ((Map<?, ?>) value).containsKey("whenDelivered")
+                    && ((Map<?, ?>) value).containsKey("whenProvided")
+                    && ((Map<?, ?>) value).containsKey("whenRefunded")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationDataPayIn.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationDataManaged.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("signer")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationDataManaged.class));
+                } catch (RuntimeException e) {
+                }
             }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationDataOdp.class));
-            } catch (RuntimeException e) {
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("payoutAverageMonthlyVolume")
+                    && ((Map<?, ?>) value).containsKey("payoutAverageTicketAmount")
+                    && ((Map<?, ?>) value).containsKey("payoutCreditLimit")
+                    && ((Map<?, ?>) value).containsKey("payoutHighTicketAmount")
+                    && ((Map<?, ?>) value).containsKey("signer")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationDataOdp.class));
+                } catch (RuntimeException e) {
+                }
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, ApplicationData.class));

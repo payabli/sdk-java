@@ -5,9 +5,9 @@ package io.github.payabli.api.resources.export.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -43,7 +43,7 @@ public final class ExportPayoutRequest {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonIgnore
+    @JsonProperty("columnsExport")
     public Optional<String> getColumnsExport() {
         return columnsExport;
     }
@@ -51,7 +51,7 @@ public final class ExportPayoutRequest {
     /**
      * @return The number of records to skip before starting to collect the result set.
      */
-    @JsonIgnore
+    @JsonProperty("fromRecord")
     public Optional<Integer> getFromRecord() {
         return fromRecord;
     }
@@ -59,7 +59,7 @@ public final class ExportPayoutRequest {
     /**
      * @return The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
      */
-    @JsonIgnore
+    @JsonProperty("limitRecord")
     public Optional<Integer> getLimitRecord() {
         return limitRecord;
     }
@@ -110,7 +110,7 @@ public final class ExportPayoutRequest {
      * </ul>
      * <p>Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00</p>
      */
-    @JsonIgnore
+    @JsonProperty("parameters")
     public Optional<Map<String, Optional<String>>> getParameters() {
         return parameters;
     }
