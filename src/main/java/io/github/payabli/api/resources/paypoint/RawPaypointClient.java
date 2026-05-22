@@ -259,14 +259,14 @@ public class RawPaypointClient {
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public PayabliApiHttpResponse<PayabliPages> getPage(String entry, String subdomain) {
         return getPage(entry, subdomain, null);
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public PayabliApiHttpResponse<PayabliPages> getPage(String entry, String subdomain, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -482,14 +482,14 @@ public class RawPaypointClient {
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public PayabliApiHttpResponse<SettingsQueryRecord> settingsPage(String entry) {
         return settingsPage(entry, null);
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public PayabliApiHttpResponse<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -590,6 +590,25 @@ public class RawPaypointClient {
                 return new PayabliApiHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MigratePaypointResponse.class),
                         response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(

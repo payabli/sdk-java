@@ -54,7 +54,7 @@ public final class GooglePayPaypointRegistrationData {
     }
 
     /**
-     * @return The wallet type. In this context it will always be <code>googlePay</code>.
+     * @return The wallet type. In this context it will always be <code>googlepay</code>.
      */
     @JsonProperty("walletType")
     public Optional<String> getWalletType() {
@@ -144,7 +144,7 @@ public final class GooglePayPaypointRegistrationData {
         }
 
         /**
-         * <p>The wallet type. In this context it will always be <code>googlePay</code>.</p>
+         * <p>The wallet type. In this context it will always be <code>googlepay</code>.</p>
          */
         @JsonSetter(value = "walletType", nulls = Nulls.SKIP)
         public Builder walletType(Optional<String> walletType) {

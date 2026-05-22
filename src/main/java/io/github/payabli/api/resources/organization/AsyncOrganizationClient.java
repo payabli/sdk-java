@@ -105,14 +105,14 @@ public class AsyncOrganizationClient {
     }
 
     /**
-     * Gets an organizations basic details by org ID.
+     * Gets an organization's basic details by org ID.
      */
     public CompletableFuture<OrganizationQueryRecord> getBasicOrganizationById(int orgId) {
         return this.rawClient.getBasicOrganizationById(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Gets an organizations basic details by org ID.
+     * Gets an organization's basic details by org ID.
      */
     public CompletableFuture<OrganizationQueryRecord> getBasicOrganizationById(
             int orgId, RequestOptions requestOptions) {

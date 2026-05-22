@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,8 +83,17 @@ public final class ConfigureApplePaypointApiResponse {
     /**
      * @return Field not in use on this endpoint
      */
-    @JsonProperty("roomId")
+    @JsonIgnore
     public Optional<Long> getRoomId() {
+        if (roomId == null) {
+            return Optional.empty();
+        }
+        return roomId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("roomId")
+    private Optional<Long> _getRoomId() {
         return roomId;
     }
 
@@ -160,6 +172,8 @@ public final class ConfigureApplePaypointApiResponse {
         _FinalStage roomId(Optional<Long> roomId);
 
         _FinalStage roomId(Long roomId);
+
+        _FinalStage roomId(Nullable<Long> roomId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -196,6 +210,22 @@ public final class ConfigureApplePaypointApiResponse {
         @JsonSetter("responseText")
         public _FinalStage responseText(@NotNull String responseText) {
             this.responseText = Objects.requireNonNull(responseText, "responseText must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Field not in use on this endpoint</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage roomId(Nullable<Long> roomId) {
+            if (roomId.isNull()) {
+                this.roomId = null;
+            } else if (roomId.isEmpty()) {
+                this.roomId = Optional.empty();
+            } else {
+                this.roomId = Optional.of(roomId.get());
+            }
             return this;
         }
 

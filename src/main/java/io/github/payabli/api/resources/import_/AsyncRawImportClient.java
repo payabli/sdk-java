@@ -601,6 +601,33 @@ public class AsyncRawImportClient {
                                 response));
                         return;
                     }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
@@ -646,6 +673,33 @@ public class AsyncRawImportClient {
                                 response));
                         return;
                     }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
@@ -690,6 +744,33 @@ public class AsyncRawImportClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseImport.class),
                                 response));
                         return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
@@ -744,6 +825,33 @@ public class AsyncRawImportClient {
                                 response));
                         return;
                     }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
@@ -796,6 +904,33 @@ public class AsyncRawImportClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseImport.class),
                                 response));
                         return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(

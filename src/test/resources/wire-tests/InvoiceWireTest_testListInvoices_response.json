@@ -14,7 +14,7 @@
       "invoiceStatus": 1,
       "invoiceType": 0,
       "frequency": "onetime",
-      "paymentTerms": "N30",
+      "paymentTerms": "NET30",
       "termsConditions": null,
       "notes": null,
       "tax": 0,

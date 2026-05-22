@@ -159,9 +159,8 @@ public class GhostCardWireTest {
 
     @Test
     public void testUpdateCard() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody("{\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":null}"));
+        server.enqueue(
+                new MockResponse().setResponseCode(200).setBody("{\"isSuccess\":true,\"responseText\":\"Success\"}"));
         PayabliApiResponse response = client.ghostCard()
                 .updateCard(
                         "8cfec2e0fa",
@@ -206,12 +205,8 @@ public class GhostCardWireTest {
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"responseData\": null\n"
-                + "}";
+        String expectedResponseBody =
+                "" + "{\n" + "  \"isSuccess\": true,\n" + "  \"responseText\": \"Success\"\n" + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

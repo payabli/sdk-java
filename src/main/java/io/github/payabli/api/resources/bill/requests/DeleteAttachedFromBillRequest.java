@@ -30,7 +30,7 @@ public final class DeleteAttachedFromBillRequest {
     }
 
     /**
-     * @return When <code>true</code>, the request returns the file content as a Base64-encoded string.
+     * @return When <code>true</code>, the response includes the full bill object.
      */
     @JsonProperty("returnObject")
     public Optional<Boolean> getReturnObject() {
@@ -81,7 +81,7 @@ public final class DeleteAttachedFromBillRequest {
         }
 
         /**
-         * <p>When <code>true</code>, the request returns the file content as a Base64-encoded string.</p>
+         * <p>When <code>true</code>, the response includes the full bill object.</p>
          */
         @JsonSetter(value = "returnObject", nulls = Nulls.SKIP)
         public Builder returnObject(Optional<Boolean> returnObject) {

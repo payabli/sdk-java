@@ -67,7 +67,7 @@ public final class NotificationStandardRequest {
     }
 
     /**
-     * @return Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on key those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.
+     * @return Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.
      */
     @JsonProperty("method")
     public NotificationStandardRequestMethod getMethod() {
@@ -146,7 +146,7 @@ public final class NotificationStandardRequest {
 
     public interface MethodStage {
         /**
-         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on key those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
+         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
          */
         OwnerTypeStage method(@NotNull NotificationStandardRequestMethod method);
     }
@@ -228,8 +228,8 @@ public final class NotificationStandardRequest {
         }
 
         /**
-         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on key those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
-         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on key those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
+         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
+         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

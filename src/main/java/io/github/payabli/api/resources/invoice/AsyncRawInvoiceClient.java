@@ -177,7 +177,7 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteAttachedFromInvoice(
             int idInvoice, String filename) {
@@ -185,7 +185,7 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {

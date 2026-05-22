@@ -94,7 +94,7 @@
       "PaypointLegalname": "MiCasa Sports LLC",
       "Source": "web",
       "Status": 2,
-      "Terms": "Net30",
+      "Terms": "NET30",
       "TotalAmount": 200,
       "Transaction": null,
       "Vendor": {

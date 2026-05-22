@@ -149,7 +149,7 @@ public class RawInvoiceClient {
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
             int idInvoice, String filename) {
@@ -157,7 +157,7 @@ public class RawInvoiceClient {
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {

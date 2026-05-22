@@ -67,7 +67,7 @@ public final class AddMethodResponseResponseData {
 
     /**
      * @return Internal unique ID of customer owner of the stored method.
-     * <p>Returns <code>0</code> if the method wasn't assigned to an existing customer or no customer was created.&quot;</p>
+     * <p>Returns <code>0</code> if the method wasn't assigned to an existing customer or no customer was created.</p>
      */
     @JsonProperty("customerId")
     public Optional<Long> getCustomerId() {
@@ -177,7 +177,7 @@ public final class AddMethodResponseResponseData {
 
         /**
          * <p>Internal unique ID of customer owner of the stored method.</p>
-         * <p>Returns <code>0</code> if the method wasn't assigned to an existing customer or no customer was created.&quot;</p>
+         * <p>Returns <code>0</code> if the method wasn't assigned to an existing customer or no customer was created.</p>
          */
         @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
         public Builder customerId(Optional<Long> customerId) {

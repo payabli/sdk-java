@@ -49,7 +49,7 @@
       "ParentOrgName": "Emerald Enterprises",
       "ParentOrgId": 123,
       "paylinkId": "3674-cf15b881-f276-4b69-bdc8-841b2d123XXXXXX",
-      "paymentTerms": "N30",
+      "paymentTerms": "NET30",
       "PaypointDbaname": "Emerald City Trading",
       "PaypointEntryname": "47a30009s",
       "paypointId": 10,

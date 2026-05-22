@@ -81,7 +81,7 @@ public final class NotificationReportRequestContent {
     }
 
     /**
-     * @return The kind report to generate.
+     * @return The kind of report to generate.
      */
     @JsonProperty("reportName")
     public Optional<NotificationReportRequestContentReportName> getReportName() {
@@ -226,7 +226,7 @@ public final class NotificationReportRequestContent {
         }
 
         /**
-         * <p>The kind report to generate.</p>
+         * <p>The kind of report to generate.</p>
          */
         @JsonSetter(value = "reportName", nulls = Nulls.SKIP)
         public Builder reportName(Optional<NotificationReportRequestContentReportName> reportName) {

@@ -188,22 +188,9 @@ client.bill().deleteAttachedFromBill(
 
 **filename:** `String` 
 
-The filename in Payabli. Filename is `zipName` in response to a
-request to `/api/Invoice/{idInvoice}`. Here, the filename is
-`0_Bill.pdf`. 
-
-```json
-  "DocumentsRef": {
-    "zipfile": "inva_269.zip",
-    "filelist": [
-      {
-        "originalName": "Bill.pdf",
-        "zipName": "0_Bill.pdf",
-        "descriptor": null
-      }
-    ]
-  }
-  ```
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -211,7 +198,7 @@ request to `/api/Invoice/{idInvoice}`. Here, the filename is
 <dl>
 <dd>
 
-**returnObject:** `Optional<Boolean>` — When `true`, the request returns the file content as a Base64-encoded string.
+**returnObject:** `Optional<Boolean>` — When `true`, the response includes the full bill object.
     
 </dd>
 </dl>
@@ -405,17 +392,9 @@ client.bill().getAttachedFromBill(
 
 **filename:** `String` 
 
-The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
-"DocumentsRef": {
-  "zipfile": "inva_269.zip",
-  "filelist": [
-    {
-      "originalName": "Bill.pdf",
-      "zipName": "0_Bill.pdf",
-      "descriptor": null
-    }
-  ]
-}
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -810,7 +789,7 @@ Modify the list of users the bill is sent to for approval.
 ```java
 client.bill().modifyApprovalBill(
     285,
-    Arrays.asList("string")
+    Arrays.asList("approver1@example.com", "approver2@example.com")
 );
 ```
 </dd>
@@ -2246,7 +2225,7 @@ client.chargeBacks().getChargeback(1000000L);
 <dl>
 <dd>
 
-**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
+**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
     
 </dd>
 </dl>
@@ -8179,7 +8158,7 @@ client.hostedPaymentPages().loadPage("8cfec329267", "pay-your-fees-1");
 <dl>
 <dd>
 
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
     
 </dd>
 </dl>
@@ -8330,7 +8309,7 @@ client.hostedPaymentPages().savePage(
 <dl>
 <dd>
 
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
     
 </dd>
 </dl>
@@ -8683,7 +8662,7 @@ client.invoice().addInvoice(
 <dl>
 <dd>
 
-Deletes an invoice that's attached to a file.
+Deletes a file attached to an invoice.
 </dd>
 </dl>
 </dd>
@@ -8723,17 +8702,9 @@ client.invoice().deleteAttachedFromInvoice(23548884, "0_Bill.pdf");
 
 **filename:** `String` 
 
-The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
-"DocumentsRef": {
-  "zipfile": "inva_269.zip",
-  "filelist": [
-    {
-      "originalName": "Bill.pdf",
-      "zipName": "0_Bill.pdf",
-      "descriptor": null
-    }
-  ]
-}
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -8958,19 +8929,9 @@ client.invoice().getAttachedFileFromInvoice(
 
 **filename:** `String` 
 
-The filename in Payabli. Filename is `zipName` in the response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
-```
-  "DocumentsRef": {
-    "zipfile": "inva_269.zip",
-    "filelist": [
-      {
-        "originalName": "Bill.pdf",
-        "zipName": "0_Bill.pdf",
-        "descriptor": null
-      }
-    ]
-  }
-  ```
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -12620,7 +12581,7 @@ client.moneyOut().reissueOut(
 <dl>
 <dd>
 
-Create a new notification or autogenerated report. 
+Create a new notification or auto-generated report. 
 </dd>
 </dl>
 </dd>
@@ -12694,7 +12655,7 @@ client.notification().addNotification(
 <dl>
 <dd>
 
-Deletes a single notification or autogenerated report.
+Deletes a single notification or auto-generated report.
 </dd>
 </dl>
 </dd>
@@ -12748,7 +12709,7 @@ client.notification().deleteNotification("1717");
 <dl>
 <dd>
 
-Retrieves a single notification or autogenerated report's details.
+Retrieves a single notification or auto-generated report's details.
 </dd>
 </dl>
 </dd>
@@ -12802,7 +12763,7 @@ client.notification().getNotification("1717");
 <dl>
 <dd>
 
-Update a notification or autogenerated report. 
+Update a notification or auto-generated report. 
 </dd>
 </dl>
 </dd>
@@ -13934,7 +13895,7 @@ client.organization().getBasicOrganization("8cfec329267");
 <dl>
 <dd>
 
-Gets an organizations basic details by org ID.
+Gets an organization's basic details by org ID.
 </dd>
 </dl>
 </dd>
@@ -15995,7 +15956,7 @@ client.payoutSubscription().createPayoutSubscription(
                 .scheduleDetails(
                     PayoutScheduleDetail
                         .builder()
-                        .startDate("09/01/2025")
+                        .startDate("09/01/2027")
                         .endDate("09/01/2026")
                         .frequency(Frequency.MONTHLY)
                         .build()
@@ -16402,7 +16363,7 @@ client.paypoint().getEntryConfig(
 <dl>
 <dd>
 
-Gets the details for single payment page for a paypoint. 
+Gets the details for a single payment page for a paypoint. 
 </dd>
 </dl>
 </dd>
@@ -16440,7 +16401,7 @@ client.paypoint().getPage("8cfec329267", "pay-your-fees-1");
 <dl>
 <dd>
 
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
     
 </dd>
 </dl>
@@ -16502,7 +16463,7 @@ client.paypoint().removePage("8cfec329267", "pay-your-fees-1");
 <dl>
 <dd>
 
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
     
 </dd>
 </dl>
@@ -16593,7 +16554,7 @@ client.paypoint().saveLogo(
 <dl>
 <dd>
 
-Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
 </dd>
 </dl>
 </dd>
@@ -16893,7 +16854,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.query.listBatchDetailsOrg(orgId) -> QueryResponseSettlements</code></summary>
+<details><summary><code>client.query.listBatchDetailsOrg(orgId) -> QueryBatchesDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -23385,14 +23346,14 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 
 ```java
 client.statistic().basicStats(
-    "ytd",
+    "custom",
     "m",
-    1,
+    2,
     1000000L,
     BasicStatsRequest
         .builder()
-        .endDate("2025-11-01")
-        .startDate("2025-11-30")
+        .startDate("2025-11-01")
+        .endDate("2025-11-30")
         .build()
 );
 ```
@@ -23649,7 +23610,7 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 ```java
 client.statistic().subStats(
     "30",
-    1,
+    2,
     1000000L,
     SubStatsRequest
         .builder()
@@ -24176,7 +24137,7 @@ client.templates().deleteTemplate(80.0);
 <dl>
 <dd>
 
-**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -24230,7 +24191,7 @@ client.templates().getlinkTemplate(80.0, true);
 <dl>
 <dd>
 
-**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -24238,7 +24199,7 @@ client.templates().getlinkTemplate(80.0, true);
 <dl>
 <dd>
 
-**ignoreEmpty:** `Boolean` — Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
+**ignoreEmpty:** `Boolean` — Ignore read-only and empty fields. Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
     
 </dd>
 </dl>
@@ -24292,7 +24253,7 @@ client.templates().getTemplate(80.0);
 <dl>
 <dd>
 
-**templateId:** `Double` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateId:** `Double` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -25032,7 +24993,7 @@ client.user().authUser(
 <dl>
 <dd>
 
-**provider:** `String` — Auth provider. This fields is optional and defaults to null for the built-in provider.
+**provider:** `String` — Auth provider. Pass `null` to use the built-in provider.
     
 </dd>
 </dl>

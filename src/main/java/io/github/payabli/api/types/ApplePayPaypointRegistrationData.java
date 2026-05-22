@@ -54,7 +54,7 @@ public final class ApplePayPaypointRegistrationData {
     }
 
     /**
-     * @return The wallet type. In this context it will always be <code>applePay</code>.
+     * @return The wallet type. In this context it will always be <code>applepay</code>.
      */
     @JsonProperty("walletType")
     public Optional<String> getWalletType() {
@@ -144,7 +144,7 @@ public final class ApplePayPaypointRegistrationData {
         }
 
         /**
-         * <p>The wallet type. In this context it will always be <code>applePay</code>.</p>
+         * <p>The wallet type. In this context it will always be <code>applepay</code>.</p>
          */
         @JsonSetter(value = "walletType", nulls = Nulls.SKIP)
         public Builder walletType(Optional<String> walletType) {

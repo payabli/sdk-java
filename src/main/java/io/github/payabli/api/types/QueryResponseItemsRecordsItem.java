@@ -74,7 +74,7 @@ public final class QueryResponseItemsRecordsItem {
     }
 
     /**
-     * @return the Paypoint's legal name.
+     * @return The paypoint's legal name.
      */
     @JsonProperty("PaypointLegalname")
     public Optional<String> getPaypointLegalname() {
@@ -196,7 +196,7 @@ public final class QueryResponseItemsRecordsItem {
         }
 
         /**
-         * <p>the Paypoint's legal name.</p>
+         * <p>The paypoint's legal name.</p>
          */
         @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
         public Builder paypointLegalname(Optional<String> paypointLegalname) {

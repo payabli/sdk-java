@@ -63,7 +63,8 @@ public final class CaptureAllOutResponseResponseDataItem {
 
     /**
      * @return Text describing the result.
-     * If <code>ResultCode`` = 1, returns 'Authorized'. If</code>ResultCode` = 2 or 3, this contains the cause of the decline.
+     * If <code>ResultCode</code> = 1, returns 'Authorized'.
+     * If <code>ResultCode</code> = 2 or 3, this contains the cause of the decline.
      */
     @JsonProperty("ResultText")
     public Optional<String> getResultText() {
@@ -164,7 +165,8 @@ public final class CaptureAllOutResponseResponseDataItem {
 
         /**
          * <p>Text describing the result.
-         * If <code>ResultCode`` = 1, returns 'Authorized'. If</code>ResultCode` = 2 or 3, this contains the cause of the decline.</p>
+         * If <code>ResultCode</code> = 1, returns 'Authorized'.
+         * If <code>ResultCode</code> = 2 or 3, this contains the cause of the decline.</p>
          */
         @JsonSetter(value = "ResultText", nulls = Nulls.SKIP)
         public Builder resultText(Optional<String> resultText) {

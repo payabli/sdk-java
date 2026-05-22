@@ -152,7 +152,7 @@ public final class CardService {
     }
 
     /**
-     * @return Controls how to present the <code>batchCutoffTime</code> field on the application. If this field isn't sent, batch cut off time defaults to 5 ET.
+     * @return Controls how to present the <code>batchCutoffTime</code> field on the application. If this field isn't sent, batch cutoff time defaults to 5 ET.
      */
     @JsonProperty("batchCutoffTime")
     public Optional<TemplateElement> getBatchCutoffTime() {
@@ -504,7 +504,7 @@ public final class CardService {
         }
 
         /**
-         * <p>Controls how to present the <code>batchCutoffTime</code> field on the application. If this field isn't sent, batch cut off time defaults to 5 ET.</p>
+         * <p>Controls how to present the <code>batchCutoffTime</code> field on the application. If this field isn't sent, batch cutoff time defaults to 5 ET.</p>
          */
         @JsonSetter(value = "batchCutoffTime", nulls = Nulls.SKIP)
         public Builder batchCutoffTime(Optional<TemplateElement> batchCutoffTime) {

@@ -447,7 +447,7 @@ public final class StatBasicExtendedQueryRecord {
     }
 
     /**
-     * @return Inbound wallet transactions.
+     * @return Inbound wallet transactions volume.
      */
     @JsonProperty("inWalletVolume")
     public double getInWalletVolume() {
@@ -814,7 +814,7 @@ public final class StatBasicExtendedQueryRecord {
 
     public interface InWalletVolumeStage {
         /**
-         * <p>Inbound wallet transactions.</p>
+         * <p>Inbound wallet transactions volume.</p>
          */
         InCardChargeBackVolumeStage inWalletVolume(double inWalletVolume);
     }
@@ -1411,8 +1411,8 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound wallet transactions.</p>
-         * <p>Inbound wallet transactions.</p>
+         * <p>Inbound wallet transactions volume.</p>
+         * <p>Inbound wallet transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -192,7 +192,7 @@ public class LineItemWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"createdAt\":\"2022-07-01T15:00:01Z\",\"id\":45,\"itemCategories\":[\"itemCategories\"],\"itemCommodityCode\":\"010\",\"itemCost\":5,\"itemDescription\":\"Deposit for materials.\",\"itemMode\":0,\"itemProductCode\":\"M-DEPOSIT\",\"itemProductName\":\"Materials deposit\",\"itemQty\":1,\"itemUnitOfMeasure\":\"SqFt\",\"lastUpdated\":\"2022-07-01T15:00:01Z\",\"pageidentifier\":\"null\",\"ParentOrgName\":\"PropertyManager Pro\",\"PaypointDbaname\":\"Sunshine Gutters\",\"PaypointEntryname\":\"d193cf9a46\",\"PaypointLegalname\":\"Sunshine Services, LLC\"}"));
+                                "{\"createdAt\":\"2022-07-01T15:00:01Z\",\"id\":700,\"itemCategories\":[\"itemCategories\"],\"itemCommodityCode\":\"010\",\"itemCost\":5,\"itemDescription\":\"Deposit for materials.\",\"itemMode\":0,\"itemProductCode\":\"M-DEPOSIT\",\"itemProductName\":\"Materials deposit\",\"itemQty\":1,\"itemUnitOfMeasure\":\"SqFt\",\"lastUpdated\":\"2022-07-01T15:00:01Z\",\"pageidentifier\":\"null\",\"ParentOrgName\":\"PropertyManager Pro\",\"PaypointDbaname\":\"Sunshine Gutters\",\"PaypointEntryname\":\"d193cf9a46\",\"PaypointLegalname\":\"Sunshine Services, LLC\"}"));
         LineItemQueryRecord response = client.lineItem().getItem(700);
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -204,7 +204,7 @@ public class LineItemWireTest {
         String expectedResponseBody = ""
                 + "{\n"
                 + "  \"createdAt\": \"2022-07-01T15:00:01Z\",\n"
-                + "  \"id\": 45,\n"
+                + "  \"id\": 700,\n"
                 + "  \"itemCategories\": [\n"
                 + "    \"itemCategories\"\n"
                 + "  ],\n"

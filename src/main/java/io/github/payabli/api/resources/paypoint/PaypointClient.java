@@ -92,14 +92,14 @@ public class PaypointClient {
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public PayabliPages getPage(String entry, String subdomain) {
         return this.rawClient.getPage(entry, subdomain).body();
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public PayabliPages getPage(String entry, String subdomain, RequestOptions requestOptions) {
         return this.rawClient.getPage(entry, subdomain, requestOptions).body();
@@ -149,14 +149,14 @@ public class PaypointClient {
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public SettingsQueryRecord settingsPage(String entry) {
         return this.rawClient.settingsPage(entry).body();
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public SettingsQueryRecord settingsPage(String entry, RequestOptions requestOptions) {
         return this.rawClient.settingsPage(entry, requestOptions).body();

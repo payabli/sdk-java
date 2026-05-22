@@ -46,7 +46,7 @@ public final class NotificationRequest {
     }
 
     /**
-     * @return A dictionary of key-value pairs to be inserted in the header when the notification request is submitted
+     * @return List of key-value header parameters to include in the notification request
      */
     @JsonProperty("webHeaderParameters")
     public Optional<List<WebHeaderParameter>> getWebHeaderParameters() {
@@ -99,7 +99,7 @@ public final class NotificationRequest {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>A dictionary of key-value pairs to be inserted in the header when the notification request is submitted</p>
+         * <p>List of key-value header parameters to include in the notification request</p>
          */
         _FinalStage webHeaderParameters(Optional<List<WebHeaderParameter>> webHeaderParameters);
 
@@ -137,7 +137,7 @@ public final class NotificationRequest {
         }
 
         /**
-         * <p>A dictionary of key-value pairs to be inserted in the header when the notification request is submitted</p>
+         * <p>List of key-value header parameters to include in the notification request</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -147,7 +147,7 @@ public final class NotificationRequest {
         }
 
         /**
-         * <p>A dictionary of key-value pairs to be inserted in the header when the notification request is submitted</p>
+         * <p>List of key-value header parameters to include in the notification request</p>
          */
         @java.lang.Override
         @JsonSetter(value = "webHeaderParameters", nulls = Nulls.SKIP)

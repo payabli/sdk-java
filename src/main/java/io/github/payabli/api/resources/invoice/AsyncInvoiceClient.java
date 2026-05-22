@@ -69,14 +69,14 @@ public class AsyncInvoiceClient {
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(int idInvoice, String filename) {
         return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).thenApply(response -> response.body());
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {

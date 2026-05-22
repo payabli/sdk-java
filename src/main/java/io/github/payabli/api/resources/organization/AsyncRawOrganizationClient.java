@@ -429,14 +429,14 @@ public class AsyncRawOrganizationClient {
     }
 
     /**
-     * Gets an organizations basic details by org ID.
+     * Gets an organization's basic details by org ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<OrganizationQueryRecord>> getBasicOrganizationById(int orgId) {
         return getBasicOrganizationById(orgId, null);
     }
 
     /**
-     * Gets an organizations basic details by org ID.
+     * Gets an organization's basic details by org ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<OrganizationQueryRecord>> getBasicOrganizationById(
             int orgId, RequestOptions requestOptions) {
@@ -644,6 +644,33 @@ public class AsyncRawOrganizationClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SettingsQueryRecord.class),
                                 response));
                         return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(

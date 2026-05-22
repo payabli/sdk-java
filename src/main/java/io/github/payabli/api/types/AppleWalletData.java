@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -98,8 +101,11 @@ public final class AppleWalletData {
     /**
      * @return The paypoint URL.
      */
-    @JsonProperty("paypointUrl")
+    @JsonIgnore
     public Optional<String> getPaypointUrl() {
+        if (paypointUrl == null) {
+            return Optional.empty();
+        }
         return paypointUrl;
     }
 
@@ -135,6 +141,12 @@ public final class AppleWalletData {
     @JsonProperty("type")
     public Optional<String> getType() {
         return type;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paypointUrl")
+    private Optional<String> _getPaypointUrl() {
+        return paypointUrl;
     }
 
     @java.lang.Override
@@ -287,6 +299,17 @@ public final class AppleWalletData {
 
         public Builder paypointUrl(String paypointUrl) {
             this.paypointUrl = Optional.ofNullable(paypointUrl);
+            return this;
+        }
+
+        public Builder paypointUrl(Nullable<String> paypointUrl) {
+            if (paypointUrl.isNull()) {
+                this.paypointUrl = null;
+            } else if (paypointUrl.isEmpty()) {
+                this.paypointUrl = Optional.empty();
+            } else {
+                this.paypointUrl = Optional.of(paypointUrl.get());
+            }
             return this;
         }
 

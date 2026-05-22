@@ -124,28 +124,28 @@ public class QueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetailsOrg(int orgId) {
+    public QueryBatchesDetailResponse listBatchDetailsOrg(int orgId) {
         return this.rawClient.listBatchDetailsOrg(orgId).body();
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetailsOrg(int orgId, RequestOptions requestOptions) {
+    public QueryBatchesDetailResponse listBatchDetailsOrg(int orgId, RequestOptions requestOptions) {
         return this.rawClient.listBatchDetailsOrg(orgId, requestOptions).body();
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetailsOrg(int orgId, ListBatchDetailsOrgRequest request) {
+    public QueryBatchesDetailResponse listBatchDetailsOrg(int orgId, ListBatchDetailsOrgRequest request) {
         return this.rawClient.listBatchDetailsOrg(orgId, request).body();
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public QueryResponseSettlements listBatchDetailsOrg(
+    public QueryBatchesDetailResponse listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .listBatchDetailsOrg(orgId, request, requestOptions)

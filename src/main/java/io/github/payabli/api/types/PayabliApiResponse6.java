@@ -55,7 +55,7 @@ public final class PayabliApiResponse6 {
     }
 
     /**
-     * @return If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.
+     * @return If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason for the error.
      */
     @JsonProperty("responseData")
     public Optional<Responsedatanonobject> getResponseData() {
@@ -121,7 +121,7 @@ public final class PayabliApiResponse6 {
         _FinalStage pageIdentifier(String pageIdentifier);
 
         /**
-         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
          */
         _FinalStage responseData(Optional<Responsedatanonobject> responseData);
 
@@ -160,7 +160,7 @@ public final class PayabliApiResponse6 {
         }
 
         /**
-         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -170,7 +170,7 @@ public final class PayabliApiResponse6 {
         }
 
         /**
-         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason of the error.</p>
+         * <p>If <code>isSuccess</code> = true, this contains the line item identifier. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)

@@ -102,14 +102,14 @@ public class OrganizationClient {
     }
 
     /**
-     * Gets an organizations basic details by org ID.
+     * Gets an organization's basic details by org ID.
      */
     public OrganizationQueryRecord getBasicOrganizationById(int orgId) {
         return this.rawClient.getBasicOrganizationById(orgId).body();
     }
 
     /**
-     * Gets an organizations basic details by org ID.
+     * Gets an organization's basic details by org ID.
      */
     public OrganizationQueryRecord getBasicOrganizationById(int orgId, RequestOptions requestOptions) {
         return this.rawClient.getBasicOrganizationById(orgId, requestOptions).body();

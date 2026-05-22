@@ -77,7 +77,7 @@ public class PayoutSubscriptionWireTest {
                                         .netAmount("500")
                                         .build())))
                                 .scheduleDetails(PayoutScheduleDetail.builder()
-                                        .startDate("09/01/2025")
+                                        .startDate("09/01/2027")
                                         .endDate("09/01/2026")
                                         .frequency(Frequency.MONTHLY)
                                         .build())
@@ -115,7 +115,7 @@ public class PayoutSubscriptionWireTest {
                 + "    }\n"
                 + "  ],\n"
                 + "  \"scheduleDetails\": {\n"
-                + "    \"startDate\": \"09/01/2025\",\n"
+                + "    \"startDate\": \"09/01/2027\",\n"
                 + "    \"endDate\": \"09/01/2026\",\n"
                 + "    \"frequency\": \"monthly\"\n"
                 + "  }\n"

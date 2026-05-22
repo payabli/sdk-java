@@ -94,14 +94,14 @@ public class AsyncPaypointClient {
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public CompletableFuture<PayabliPages> getPage(String entry, String subdomain) {
         return this.rawClient.getPage(entry, subdomain).thenApply(response -> response.body());
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public CompletableFuture<PayabliPages> getPage(String entry, String subdomain, RequestOptions requestOptions) {
         return this.rawClient.getPage(entry, subdomain, requestOptions).thenApply(response -> response.body());
@@ -153,14 +153,14 @@ public class AsyncPaypointClient {
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public CompletableFuture<SettingsQueryRecord> settingsPage(String entry) {
         return this.rawClient.settingsPage(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public CompletableFuture<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
         return this.rawClient.settingsPage(entry, requestOptions).thenApply(response -> response.body());

@@ -331,14 +331,14 @@ public class AsyncRawPaypointClient {
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliPages>> getPage(String entry, String subdomain) {
         return getPage(entry, subdomain, null);
     }
 
     /**
-     * Gets the details for single payment page for a paypoint.
+     * Gets the details for a single payment page for a paypoint.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliPages>> getPage(
             String entry, String subdomain, RequestOptions requestOptions) {
@@ -621,14 +621,14 @@ public class AsyncRawPaypointClient {
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public CompletableFuture<PayabliApiHttpResponse<SettingsQueryRecord>> settingsPage(String entry) {
         return settingsPage(entry, null);
     }
 
     /**
-     * Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
     public CompletableFuture<PayabliApiHttpResponse<SettingsQueryRecord>> settingsPage(
             String entry, RequestOptions requestOptions) {
@@ -756,6 +756,33 @@ public class AsyncRawPaypointClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MigratePaypointResponse.class),
                                 response));
                         return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(
+                                                responseBodyString, PayabliApiResponse.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(

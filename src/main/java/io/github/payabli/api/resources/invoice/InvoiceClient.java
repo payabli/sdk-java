@@ -67,14 +67,14 @@ public class InvoiceClient {
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public InvoiceResponseWithoutData deleteAttachedFromInvoice(int idInvoice, String filename) {
         return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).body();
     }
 
     /**
-     * Deletes an invoice that's attached to a file.
+     * Deletes a file attached to an invoice.
      */
     public InvoiceResponseWithoutData deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {

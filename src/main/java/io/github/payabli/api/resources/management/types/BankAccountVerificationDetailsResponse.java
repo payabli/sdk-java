@@ -5,12 +5,15 @@ package io.github.payabli.api.resources.management.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,8 +109,11 @@ public final class BankAccountVerificationDetailsResponse {
     /**
      * @return Error message if the verification request failed.
      */
-    @JsonProperty("errorMessage")
+    @JsonIgnore
     public Optional<String> getErrorMessage() {
+        if (errorMessage == null) {
+            return Optional.empty();
+        }
         return errorMessage;
     }
 
@@ -146,40 +152,91 @@ public final class BankAccountVerificationDetailsResponse {
     /**
      * @return Name of the bank associated with the routing number.
      */
-    @JsonProperty("bankName")
+    @JsonIgnore
     public Optional<String> getBankName() {
+        if (bankName == null) {
+            return Optional.empty();
+        }
         return bankName;
     }
 
     /**
      * @return Account type as reported by the verification network, such as <code>Checking</code> or <code>Savings</code>.
      */
-    @JsonProperty("reportedAccountType")
+    @JsonIgnore
     public Optional<String> getReportedAccountType() {
+        if (reportedAccountType == null) {
+            return Optional.empty();
+        }
         return reportedAccountType;
     }
 
     /**
      * @return Date the account was first seen by the verification network (ISO 8601 format).
      */
-    @JsonProperty("accountAddedDate")
+    @JsonIgnore
     public Optional<String> getAccountAddedDate() {
+        if (accountAddedDate == null) {
+            return Optional.empty();
+        }
         return accountAddedDate;
     }
 
     /**
      * @return Date the account record was last updated in the verification network (ISO 8601 format).
      */
-    @JsonProperty("accountLastUpdatedDate")
+    @JsonIgnore
     public Optional<String> getAccountLastUpdatedDate() {
+        if (accountLastUpdatedDate == null) {
+            return Optional.empty();
+        }
         return accountLastUpdatedDate;
     }
 
     /**
      * @return Date the account was closed, if applicable (ISO 8601 format).
      */
-    @JsonProperty("accountClosedDate")
+    @JsonIgnore
     public Optional<String> getAccountClosedDate() {
+        if (accountClosedDate == null) {
+            return Optional.empty();
+        }
+        return accountClosedDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("errorMessage")
+    private Optional<String> _getErrorMessage() {
+        return errorMessage;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("bankName")
+    private Optional<String> _getBankName() {
+        return bankName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("reportedAccountType")
+    private Optional<String> _getReportedAccountType() {
+        return reportedAccountType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("accountAddedDate")
+    private Optional<String> _getAccountAddedDate() {
+        return accountAddedDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("accountLastUpdatedDate")
+    private Optional<String> _getAccountLastUpdatedDate() {
+        return accountLastUpdatedDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("accountClosedDate")
+    private Optional<String> _getAccountClosedDate() {
         return accountClosedDate;
     }
 
@@ -275,6 +332,8 @@ public final class BankAccountVerificationDetailsResponse {
 
         _FinalStage errorMessage(String errorMessage);
 
+        _FinalStage errorMessage(Nullable<String> errorMessage);
+
         /**
          * <p>Overall verification outcome. Possible values include <code>Pass</code>, <code>Verified</code>, <code>Declined</code>, <code>NoData</code>, <code>Bypassed</code>, and <code>Error</code>.</p>
          */
@@ -310,12 +369,16 @@ public final class BankAccountVerificationDetailsResponse {
 
         _FinalStage bankName(String bankName);
 
+        _FinalStage bankName(Nullable<String> bankName);
+
         /**
          * <p>Account type as reported by the verification network, such as <code>Checking</code> or <code>Savings</code>.</p>
          */
         _FinalStage reportedAccountType(Optional<String> reportedAccountType);
 
         _FinalStage reportedAccountType(String reportedAccountType);
+
+        _FinalStage reportedAccountType(Nullable<String> reportedAccountType);
 
         /**
          * <p>Date the account was first seen by the verification network (ISO 8601 format).</p>
@@ -324,6 +387,8 @@ public final class BankAccountVerificationDetailsResponse {
 
         _FinalStage accountAddedDate(String accountAddedDate);
 
+        _FinalStage accountAddedDate(Nullable<String> accountAddedDate);
+
         /**
          * <p>Date the account record was last updated in the verification network (ISO 8601 format).</p>
          */
@@ -331,12 +396,16 @@ public final class BankAccountVerificationDetailsResponse {
 
         _FinalStage accountLastUpdatedDate(String accountLastUpdatedDate);
 
+        _FinalStage accountLastUpdatedDate(Nullable<String> accountLastUpdatedDate);
+
         /**
          * <p>Date the account was closed, if applicable (ISO 8601 format).</p>
          */
         _FinalStage accountClosedDate(Optional<String> accountClosedDate);
 
         _FinalStage accountClosedDate(String accountClosedDate);
+
+        _FinalStage accountClosedDate(Nullable<String> accountClosedDate);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -407,6 +476,22 @@ public final class BankAccountVerificationDetailsResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage accountClosedDate(Nullable<String> accountClosedDate) {
+            if (accountClosedDate.isNull()) {
+                this.accountClosedDate = null;
+            } else if (accountClosedDate.isEmpty()) {
+                this.accountClosedDate = Optional.empty();
+            } else {
+                this.accountClosedDate = Optional.of(accountClosedDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Date the account was closed, if applicable (ISO 8601 format).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage accountClosedDate(String accountClosedDate) {
             this.accountClosedDate = Optional.ofNullable(accountClosedDate);
             return this;
@@ -419,6 +504,22 @@ public final class BankAccountVerificationDetailsResponse {
         @JsonSetter(value = "accountClosedDate", nulls = Nulls.SKIP)
         public _FinalStage accountClosedDate(Optional<String> accountClosedDate) {
             this.accountClosedDate = accountClosedDate;
+            return this;
+        }
+
+        /**
+         * <p>Date the account record was last updated in the verification network (ISO 8601 format).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountLastUpdatedDate(Nullable<String> accountLastUpdatedDate) {
+            if (accountLastUpdatedDate.isNull()) {
+                this.accountLastUpdatedDate = null;
+            } else if (accountLastUpdatedDate.isEmpty()) {
+                this.accountLastUpdatedDate = Optional.empty();
+            } else {
+                this.accountLastUpdatedDate = Optional.of(accountLastUpdatedDate.get());
+            }
             return this;
         }
 
@@ -447,6 +548,22 @@ public final class BankAccountVerificationDetailsResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage accountAddedDate(Nullable<String> accountAddedDate) {
+            if (accountAddedDate.isNull()) {
+                this.accountAddedDate = null;
+            } else if (accountAddedDate.isEmpty()) {
+                this.accountAddedDate = Optional.empty();
+            } else {
+                this.accountAddedDate = Optional.of(accountAddedDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Date the account was first seen by the verification network (ISO 8601 format).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage accountAddedDate(String accountAddedDate) {
             this.accountAddedDate = Optional.ofNullable(accountAddedDate);
             return this;
@@ -467,6 +584,22 @@ public final class BankAccountVerificationDetailsResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
+        public _FinalStage reportedAccountType(Nullable<String> reportedAccountType) {
+            if (reportedAccountType.isNull()) {
+                this.reportedAccountType = null;
+            } else if (reportedAccountType.isEmpty()) {
+                this.reportedAccountType = Optional.empty();
+            } else {
+                this.reportedAccountType = Optional.of(reportedAccountType.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Account type as reported by the verification network, such as <code>Checking</code> or <code>Savings</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage reportedAccountType(String reportedAccountType) {
             this.reportedAccountType = Optional.ofNullable(reportedAccountType);
             return this;
@@ -479,6 +612,22 @@ public final class BankAccountVerificationDetailsResponse {
         @JsonSetter(value = "reportedAccountType", nulls = Nulls.SKIP)
         public _FinalStage reportedAccountType(Optional<String> reportedAccountType) {
             this.reportedAccountType = reportedAccountType;
+            return this;
+        }
+
+        /**
+         * <p>Name of the bank associated with the routing number.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage bankName(Nullable<String> bankName) {
+            if (bankName.isNull()) {
+                this.bankName = null;
+            } else if (bankName.isEmpty()) {
+                this.bankName = Optional.empty();
+            } else {
+                this.bankName = Optional.of(bankName.get());
+            }
             return this;
         }
 
@@ -579,6 +728,22 @@ public final class BankAccountVerificationDetailsResponse {
         @JsonSetter(value = "verificationResponse", nulls = Nulls.SKIP)
         public _FinalStage verificationResponse(Optional<String> verificationResponse) {
             this.verificationResponse = verificationResponse;
+            return this;
+        }
+
+        /**
+         * <p>Error message if the verification request failed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage errorMessage(Nullable<String> errorMessage) {
+            if (errorMessage.isNull()) {
+                this.errorMessage = null;
+            } else if (errorMessage.isEmpty()) {
+                this.errorMessage = Optional.empty();
+            } else {
+                this.errorMessage = Optional.of(errorMessage.get());
+            }
             return this;
         }
 

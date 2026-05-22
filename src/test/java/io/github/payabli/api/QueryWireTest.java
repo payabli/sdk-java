@@ -155,7 +155,7 @@ public class QueryWireTest {
                 .setResponseCode(200)
                 .setBody(
                         TestResources.loadResource("/wire-tests/QueryWireTest_testListBatchDetailsOrg_response.json")));
-        QueryResponseSettlements response = client.query()
+        QueryBatchesDetailResponse response = client.query()
                 .listBatchDetailsOrg(
                         123,
                         ListBatchDetailsOrgRequest.builder()

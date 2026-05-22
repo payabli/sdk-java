@@ -66,7 +66,7 @@
     "HolderName": "Chad Mercia",
     "Initiator": "payor",
     "MaskedAccount": "4XXXXXXXX1111",
-    "orderDescription": "Depost for materials for 123 Walnut St",
+    "orderDescription": "Deposit for materials for 123 Walnut St",
     "paymentDetails": {
       "categories": [
         {
@@ -218,7 +218,7 @@
       "HolderName": "Chad Mercia",
       "Initiator": "payor",
       "MaskedAccount": "4XXXXXXXX1111",
-      "orderDescription": "Depost for materials for 123 Walnut St",
+      "orderDescription": "Deposit for materials for 123 Walnut St",
       "paymentDetails": {
         "totalAmount": 100
       },

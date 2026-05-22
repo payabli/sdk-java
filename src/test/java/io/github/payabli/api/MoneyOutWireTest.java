@@ -193,7 +193,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseCode\":1,\"responseData\":[{\"CustomerId\":1000000,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"},{\"CustomerId\":1000000,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":1000000,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"},{\"CustomerId\":1000000,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"}],\"responseText\":\"Success\"}"));
         CaptureAllOutResponse response = client.moneyOut().cancelAllOut(Arrays.asList("2-29", "2-28", "2-27"));
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -234,7 +234,7 @@ public class MoneyOutWireTest {
         String expectedResponseBody = ""
                 + "{\n"
                 + "  \"isSuccess\": true,\n"
-                + "  \"pageIdentifier\": \"null\",\n"
+                + "  \"pageIdentifier\": null,\n"
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": [\n"
                 + "    {\n"
@@ -413,7 +413,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseCode\":1,\"responseData\":[{\"CustomerId\":1000000,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Captured\"},{\"CustomerId\":1000000,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Captured\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":1000000,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Captured\"},{\"CustomerId\":1000000,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Captured\"}],\"responseText\":\"Success\"}"));
         CaptureAllOutResponse response = client.moneyOut()
                 .captureAllOut(CaptureAllOutRequest.builder()
                         .body(Arrays.asList("2-29", "2-28", "2-27"))
@@ -457,7 +457,7 @@ public class MoneyOutWireTest {
         String expectedResponseBody = ""
                 + "{\n"
                 + "  \"isSuccess\": true,\n"
-                + "  \"pageIdentifier\": \"null\",\n"
+                + "  \"pageIdentifier\": null,\n"
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": [\n"
                 + "    {\n"
@@ -750,7 +750,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "\"%PDF-1.7\\n%����\\n123 0 obj\\n<</Linearized 1/L 123456/O 125/E 78901/N 1/T 123450/H [ 800 200]>>\\nendobj\\n\\n124 0 obj\\n<</DecodeParms<</Columns 4/Predictor 12>>/Filter/FlateDecode/ID[<AB123C4567EF890123456789ABCDEF01><12345678ABCDEF9876543210FEDCBA98>]/Index[123 100]/Info 122 0 R/Length 128/Prev 123450/Root 125 0 R/Size 223/Type/XRef/W[1 3 1]>>stream\\nh�bbd```b``�\\n\\\"x�a7�r�H~�����A�D���2����m�f��L`v6�H����D���J[@����H8�I��)0��q� XD��`��a���P�`�`��\\\"�A$������r���p�$�Ip������a� �\""));
+                                "\"JVBERi0xLjcKJeLjz9MKMTIzIDAgb2JqCjwvTGluZWFyaXplZCAxL0wgMTIzNDU2L08gMTI1L0UgNzg5MDEvTiAxL1QgMTIzNDUwL0ggWyA4MDAgMjAwXT4+CmVuZG9iagouLi4=\""));
         String response = client.moneyOut().getCheckImage("check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -760,7 +760,7 @@ public class MoneyOutWireTest {
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
         String expectedResponseBody = ""
-                + "\"%PDF-1.7\\n%����\\n123 0 obj\\n<</Linearized 1/L 123456/O 125/E 78901/N 1/T 123450/H [ 800 200]>>\\nendobj\\n\\n124 0 obj\\n<</DecodeParms<</Columns 4/Predictor 12>>/Filter/FlateDecode/ID[<AB123C4567EF890123456789ABCDEF01><12345678ABCDEF9876543210FEDCBA98>]/Index[123 100]/Info 122 0 R/Length 128/Prev 123450/Root 125 0 R/Size 223/Type/XRef/W[1 3 1]>>stream\\nh�bbd```b``�\\n\\\"x�a7�r�H~�����A�D���2����m�f��L`v6�H����D���J[@����H8�I��)0��q� XD��`��a���P�`�`��\\\"�A$������r���p�$�Ip������a� �\"";
+                + "\"JVBERi0xLjcKJeLjz9MKMTIzIDAgb2JqCjwvTGluZWFyaXplZCAxL0wgMTIzNDU2L08gMTI1L0UgNzg5MDEvTiAxL1QgMTIzNDUwL0ggWyA4MDAgMjAwXT4+CmVuZG9iagouLi4=\"";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

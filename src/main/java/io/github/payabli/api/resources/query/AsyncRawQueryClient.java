@@ -231,14 +231,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listBatchDetailsOrg(int orgId) {
+    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(int orgId) {
         return listBatchDetailsOrg(orgId, ListBatchDetailsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listBatchDetailsOrg(
+    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
             int orgId, RequestOptions requestOptions) {
         return listBatchDetailsOrg(orgId, ListBatchDetailsOrgRequest.builder().build(), requestOptions);
     }
@@ -246,7 +246,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listBatchDetailsOrg(
+    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request) {
         return listBatchDetailsOrg(orgId, request, null);
     }
@@ -254,7 +254,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listBatchDetailsOrg(
+    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -295,7 +295,7 @@ public class AsyncRawQueryClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -303,7 +303,8 @@ public class AsyncRawQueryClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseSettlements.class),
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, QueryBatchesDetailResponse.class),
                                 response));
                         return;
                     }

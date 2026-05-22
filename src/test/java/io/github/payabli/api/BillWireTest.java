@@ -634,13 +634,15 @@ public class BillWireTest {
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody("{\"isSuccess\":true,\"responseData\":6101,\"responseText\":\"Success\"}"));
-        ModifyApprovalBillResponse response = client.bill().modifyApprovalBill(285, Arrays.asList("string"));
+        ModifyApprovalBillResponse response =
+                client.bill().modifyApprovalBill(285, Arrays.asList("approver1@example.com", "approver2@example.com"));
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("PUT", request.getMethod());
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
-        String expectedRequestBody = "" + "[\n" + "  \"string\"\n" + "]";
+        String expectedRequestBody =
+                "" + "[\n" + "  \"approver1@example.com\",\n" + "  \"approver2@example.com\"\n" + "]";
         JsonNode actualJson = objectMapper.readTree(actualRequestBody);
         JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
         Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");

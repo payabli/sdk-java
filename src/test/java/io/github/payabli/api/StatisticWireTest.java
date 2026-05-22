@@ -49,13 +49,13 @@ public class StatisticWireTest {
                                 "[{\"outCustomers\":18196,\"outNewCustomers\":1089,\"outTransactions\":3319,\"outSubscriptionsPaid\":0,\"outCardTransactions\":0,\"outVCardTransactions\":0,\"outACHTransactions\":0,\"outCheckTransactions\":0,\"outPendingMethodTransactions\":22,\"outTransactionsVolume\":13111741.78,\"outSubscriptionsPaidVolume\":0,\"outCardVolume\":0,\"outVCardVolume\":0,\"outACHVolume\":0,\"outCheckVolume\":0,\"outPendingMethodVolume\":82,\"statX\":\"2025-11\",\"inTransactions\":168204,\"inSubscriptionsPaid\":311,\"inCustomers\":2561522,\"inNewCustomers\":44846,\"inCardTransactions\":115059,\"inACHTransactions\":53153,\"inCheckTransactions\":0,\"inCashTransactions\":15,\"inWalletTransactions\":0,\"inCardChargeBacks\":17,\"inACHReturns\":0,\"inTransactionsVolume\":104795896.94,\"inSubscriptionsPaidVolume\":81569.32,\"inCardVolume\":41085285.13,\"inACHVolume\":63706101.81,\"inCheckVolume\":0,\"inCashVolume\":4510,\"inWalletVolume\":0,\"inCardChargeBackVolume\":15455.75,\"inACHReturnsVolume\":0}]"));
         List<StatBasicExtendedQueryRecord> response = client.statistic()
                 .basicStats(
-                        "ytd",
+                        "custom",
                         "m",
-                        1,
+                        2,
                         1000000L,
                         BasicStatsRequest.builder()
-                                .endDate("2025-11-01")
-                                .startDate("2025-11-30")
+                                .startDate("2025-11-01")
+                                .endDate("2025-11-30")
                                 .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -199,7 +199,7 @@ public class StatisticWireTest {
                         .setBody(
                                 "[{\"statX\":\"2023-03\",\"inTransactions\":150,\"inTransactionsVolume\":25000.5,\"inWalletTransactions\":10,\"inWalletVolume\":1000.5}]"));
         List<StatBasicQueryRecord> response = client.statistic()
-                .subStats("30", 1, 1000000L, SubStatsRequest.builder().build());
+                .subStats("30", 2, 1000000L, SubStatsRequest.builder().build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
