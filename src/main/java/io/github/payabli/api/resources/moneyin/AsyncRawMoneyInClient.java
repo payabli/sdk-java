@@ -14,6 +14,7 @@ import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
+import io.github.payabli.api.errors.PaymentRequiredError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.moneyin.requests.RequestCredit;
@@ -24,33 +25,23 @@ import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentValidate;
 import io.github.payabli.api.resources.moneyin.requests.RequestRefund;
 import io.github.payabli.api.resources.moneyin.requests.SendReceipt2TransRequest;
-import io.github.payabli.api.resources.moneyin.types.AuthResponse;
-import io.github.payabli.api.resources.moneyin.types.CaptureRequest;
-import io.github.payabli.api.resources.moneyin.types.CaptureResponse;
-import io.github.payabli.api.resources.moneyin.types.PayabliApiResponseGetPaid;
-import io.github.payabli.api.resources.moneyin.types.ReceiptResponse;
-import io.github.payabli.api.resources.moneyin.types.RefundResponse;
-import io.github.payabli.api.resources.moneyin.types.RefundWithInstructionsResponse;
-import io.github.payabli.api.resources.moneyin.types.ReverseResponse;
-import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
-import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
-import io.github.payabli.api.resources.moneyin.types.VoidResponse;
-import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestAuthResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestCaptureResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestRefundResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.BadRequestVoidResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedAuthResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedCaptureResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedRefundResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.DeclinedVoidResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.errors.InternalServerResponseErrorV2;
-import io.github.payabli.api.resources.v2moneyintypes.types.V2BadRequestError;
-import io.github.payabli.api.resources.v2moneyintypes.types.V2DeclinedTransactionResponseWrapper;
-import io.github.payabli.api.resources.v2moneyintypes.types.V2InternalServerError;
-import io.github.payabli.api.resources.v2moneyintypes.types.V2TransactionResponseWrapper;
+import io.github.payabli.api.types.AuthResponse;
+import io.github.payabli.api.types.CaptureRequest;
+import io.github.payabli.api.types.CaptureResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
+import io.github.payabli.api.types.PayabliApiResponseGetPaid;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.ReceiptResponse;
+import io.github.payabli.api.types.RefundResponse;
+import io.github.payabli.api.types.RefundWithInstructionsResponse;
+import io.github.payabli.api.types.ReverseResponse;
+import io.github.payabli.api.types.TransRequestBody;
 import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
+import io.github.payabli.api.types.V2DeclinedTransactionResponseWrapper;
+import io.github.payabli.api.types.V2TransactionResponseWrapper;
+import io.github.payabli.api.types.ValidateResponse;
+import io.github.payabli.api.types.VoidResponse;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
@@ -171,7 +162,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -181,8 +172,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -267,7 +257,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -277,8 +267,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -371,7 +360,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -381,8 +370,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -478,7 +466,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -488,8 +476,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -566,7 +553,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -576,8 +563,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -711,7 +697,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -721,8 +707,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -799,7 +784,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -809,8 +794,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -893,7 +877,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -903,8 +887,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1010,7 +993,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1020,8 +1003,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1097,7 +1079,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1107,8 +1089,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1204,7 +1185,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1214,8 +1195,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1302,7 +1282,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1312,8 +1292,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1394,7 +1373,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1404,8 +1383,7 @@ public class AsyncRawMoneyInClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1517,26 +1495,24 @@ public class AsyncRawMoneyInClient {
                     try {
                         switch (response.code()) {
                             case 400:
-                                future.completeExceptionally(new BadRequestAuthResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2BadRequestError.class),
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 402:
-                                future.completeExceptionally(new DeclinedAuthResponseErrorV2(
+                                future.completeExceptionally(new PaymentRequiredError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, V2DeclinedTransactionResponseWrapper.class),
                                         response));
                                 return;
                             case 500:
-                                future.completeExceptionally(new InternalServerResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2InternalServerError.class),
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                         }
@@ -1645,26 +1621,24 @@ public class AsyncRawMoneyInClient {
                     try {
                         switch (response.code()) {
                             case 400:
-                                future.completeExceptionally(new BadRequestAuthResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2BadRequestError.class),
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 402:
-                                future.completeExceptionally(new DeclinedAuthResponseErrorV2(
+                                future.completeExceptionally(new PaymentRequiredError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, V2DeclinedTransactionResponseWrapper.class),
                                         response));
                                 return;
                             case 500:
-                                future.completeExceptionally(new InternalServerResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2InternalServerError.class),
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                         }
@@ -1744,26 +1718,24 @@ public class AsyncRawMoneyInClient {
                     try {
                         switch (response.code()) {
                             case 400:
-                                future.completeExceptionally(new BadRequestCaptureResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2BadRequestError.class),
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 402:
-                                future.completeExceptionally(new DeclinedCaptureResponseErrorV2(
+                                future.completeExceptionally(new PaymentRequiredError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, V2DeclinedTransactionResponseWrapper.class),
                                         response));
                                 return;
                             case 500:
-                                future.completeExceptionally(new InternalServerResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2InternalServerError.class),
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                         }
@@ -1836,26 +1808,24 @@ public class AsyncRawMoneyInClient {
                     try {
                         switch (response.code()) {
                             case 400:
-                                future.completeExceptionally(new BadRequestRefundResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2BadRequestError.class),
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 402:
-                                future.completeExceptionally(new DeclinedRefundResponseErrorV2(
+                                future.completeExceptionally(new PaymentRequiredError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, V2DeclinedTransactionResponseWrapper.class),
                                         response));
                                 return;
                             case 500:
-                                future.completeExceptionally(new InternalServerResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2InternalServerError.class),
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                         }
@@ -1930,26 +1900,24 @@ public class AsyncRawMoneyInClient {
                     try {
                         switch (response.code()) {
                             case 400:
-                                future.completeExceptionally(new BadRequestRefundResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2BadRequestError.class),
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 402:
-                                future.completeExceptionally(new DeclinedRefundResponseErrorV2(
+                                future.completeExceptionally(new PaymentRequiredError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, V2DeclinedTransactionResponseWrapper.class),
                                         response));
                                 return;
                             case 500:
-                                future.completeExceptionally(new InternalServerResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2InternalServerError.class),
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                         }
@@ -2020,26 +1988,24 @@ public class AsyncRawMoneyInClient {
                     try {
                         switch (response.code()) {
                             case 400:
-                                future.completeExceptionally(new BadRequestVoidResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2BadRequestError.class),
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 402:
-                                future.completeExceptionally(new DeclinedVoidResponseErrorV2(
+                                future.completeExceptionally(new PaymentRequiredError(
                                         ObjectMappers.JSON_MAPPER.readValue(
                                                 responseBodyString, V2DeclinedTransactionResponseWrapper.class),
                                         response));
                                 return;
                             case 500:
-                                future.completeExceptionally(new InternalServerResponseErrorV2(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, V2InternalServerError.class),
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                         }

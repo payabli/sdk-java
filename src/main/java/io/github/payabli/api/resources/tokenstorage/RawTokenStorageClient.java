@@ -19,11 +19,11 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.tokenstorage.requests.AddMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
-import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.AddMethodResponse;
+import io.github.payabli.api.types.GetMethodResponse;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.RequestTokenStorage;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -130,13 +130,14 @@ public class RawTokenStorageClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -220,80 +221,14 @@ public class RawTokenStorageClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Deletes a saved payment method.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(String methodId) {
-        return removeMethod(methodId, null);
-    }
-
-    /**
-     * Deletes a saved payment method.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(
-            String methodId, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("TokenStorage")
-                .addPathSegment(methodId);
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl.build())
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(
-                                responseBodyString, PayabliApiResponsePaymethodDelete.class),
-                        response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -375,6 +310,74 @@ public class RawTokenStorageClient {
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponsePaymethodDelete.class),
                         response);
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Deletes a saved payment method.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(String methodId) {
+        return removeMethod(methodId, null);
+    }
+
+    /**
+     * Deletes a saved payment method.
+     */
+    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(
+            String methodId, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("TokenStorage")
+                .addPathSegment(methodId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("DELETE", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, PayabliApiResponsePaymethodDelete.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(

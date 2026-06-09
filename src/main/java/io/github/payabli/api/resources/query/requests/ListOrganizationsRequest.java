@@ -48,6 +48,9 @@ public final class ListOrganizationsRequest {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return Export format for file downloads. When specified, returns data as a file instead of JSON.
+     */
     @JsonProperty("exportFormat")
     public Optional<ExportFormat> getExportFormat() {
         return exportFormat;
@@ -190,6 +193,9 @@ public final class ListOrganizationsRequest {
             return this;
         }
 
+        /**
+         * <p>Export format for file downloads. When specified, returns data as a file instead of JSON.</p>
+         */
         @JsonSetter(value = "exportFormat", nulls = Nulls.SKIP)
         public Builder exportFormat(Optional<ExportFormat> exportFormat) {
             this.exportFormat = exportFormat;

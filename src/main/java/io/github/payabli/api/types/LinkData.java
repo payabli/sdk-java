@@ -56,18 +56,18 @@ public final class LinkData {
     /**
      * @return The type of validation applied to the field. Available values:
      * <ul>
-     * <li>text</li>
-     * <li>alpha</li>
-     * <li>ein</li>
-     * <li>url</li>
-     * <li>phone</li>
-     * <li>alphanumeric</li>
-     * <li>zipcode</li>
-     * <li>numbers</li>
-     * <li>float</li>
-     * <li>ssn</li>
-     * <li>email</li>
-     * <li>routing</li>
+     * <li><code>text</code></li>
+     * <li><code>alpha</code></li>
+     * <li><code>ein</code></li>
+     * <li><code>url</code></li>
+     * <li><code>phone</code></li>
+     * <li><code>alphanumeric</code></li>
+     * <li><code>zipcode</code></li>
+     * <li><code>numbers</code></li>
+     * <li><code>float</code></li>
+     * <li><code>ssn</code></li>
+     * <li><code>email</code></li>
+     * <li><code>routing</code></li>
      * </ul>
      */
     @JsonProperty("validator")
@@ -160,18 +160,18 @@ public final class LinkData {
         /**
          * <p>The type of validation applied to the field. Available values:</p>
          * <ul>
-         * <li>text</li>
-         * <li>alpha</li>
-         * <li>ein</li>
-         * <li>url</li>
-         * <li>phone</li>
-         * <li>alphanumeric</li>
-         * <li>zipcode</li>
-         * <li>numbers</li>
-         * <li>float</li>
-         * <li>ssn</li>
-         * <li>email</li>
-         * <li>routing</li>
+         * <li><code>text</code></li>
+         * <li><code>alpha</code></li>
+         * <li><code>ein</code></li>
+         * <li><code>url</code></li>
+         * <li><code>phone</code></li>
+         * <li><code>alphanumeric</code></li>
+         * <li><code>zipcode</code></li>
+         * <li><code>numbers</code></li>
+         * <li><code>float</code></li>
+         * <li><code>ssn</code></li>
+         * <li><code>email</code></li>
+         * <li><code>routing</code></li>
          * </ul>
          */
         @JsonSetter(value = "validator", nulls = Nulls.SKIP)

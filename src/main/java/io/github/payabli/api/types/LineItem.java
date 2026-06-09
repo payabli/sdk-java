@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = LineItem.Builder.class)
 public final class LineItem {
-    private final Optional<List<Optional<String>>> itemCategories;
+    private final Optional<List<String>> itemCategories;
 
     private final Optional<String> itemCommodityCode;
 
@@ -42,7 +42,7 @@ public final class LineItem {
     private final Map<String, Object> additionalProperties;
 
     private LineItem(
-            Optional<List<Optional<String>>> itemCategories,
+            Optional<List<String>> itemCategories,
             Optional<String> itemCommodityCode,
             double itemCost,
             Optional<String> itemDescription,
@@ -68,7 +68,7 @@ public final class LineItem {
      * @return Array of tags classifying item or product.
      */
     @JsonProperty("itemCategories")
-    public Optional<List<Optional<String>>> getItemCategories() {
+    public Optional<List<String>> getItemCategories() {
         return itemCategories;
     }
 
@@ -193,9 +193,9 @@ public final class LineItem {
         /**
          * <p>Array of tags classifying item or product.</p>
          */
-        _FinalStage itemCategories(Optional<List<Optional<String>>> itemCategories);
+        _FinalStage itemCategories(Optional<List<String>> itemCategories);
 
-        _FinalStage itemCategories(List<Optional<String>> itemCategories);
+        _FinalStage itemCategories(List<String> itemCategories);
 
         _FinalStage itemCommodityCode(Optional<String> itemCommodityCode);
 
@@ -243,7 +243,7 @@ public final class LineItem {
 
         private Optional<String> itemCommodityCode = Optional.empty();
 
-        private Optional<List<Optional<String>>> itemCategories = Optional.empty();
+        private Optional<List<String>> itemCategories = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -378,7 +378,7 @@ public final class LineItem {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage itemCategories(List<Optional<String>> itemCategories) {
+        public _FinalStage itemCategories(List<String> itemCategories) {
             this.itemCategories = Optional.ofNullable(itemCategories);
             return this;
         }
@@ -388,7 +388,7 @@ public final class LineItem {
          */
         @java.lang.Override
         @JsonSetter(value = "itemCategories", nulls = Nulls.SKIP)
-        public _FinalStage itemCategories(Optional<List<Optional<String>>> itemCategories) {
+        public _FinalStage itemCategories(Optional<List<String>> itemCategories) {
             this.itemCategories = itemCategories;
             return this;
         }

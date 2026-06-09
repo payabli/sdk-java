@@ -10,10 +10,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.payoutsubscription.types.PayoutSubscriptionRequestBody;
+import io.github.payabli.api.types.AuthorizePaymentMethod;
+import io.github.payabli.api.types.BillPayOutDataRequest;
+import io.github.payabli.api.types.PayoutPaymentDetail;
+import io.github.payabli.api.types.PayoutScheduleDetail;
+import io.github.payabli.api.types.RequestOutAuthorizeVendorData;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,27 +30,126 @@ import org.jetbrains.annotations.NotNull;
 public final class RequestPayoutSchedule {
     private final Optional<String> idempotencyKey;
 
-    private final PayoutSubscriptionRequestBody body;
+    private final String entryPoint;
+
+    private final Optional<String> subdomain;
+
+    private final Optional<String> accountId;
+
+    private final Optional<String> source;
+
+    private final Optional<Boolean> setPause;
+
+    private final AuthorizePaymentMethod paymentMethod;
+
+    private final Optional<PayoutPaymentDetail> paymentDetails;
+
+    private final RequestOutAuthorizeVendorData vendorData;
+
+    private final Optional<List<BillPayOutDataRequest>> billData;
+
+    private final Optional<PayoutScheduleDetail> scheduleDetails;
 
     private final Map<String, Object> additionalProperties;
 
     private RequestPayoutSchedule(
             Optional<String> idempotencyKey,
-            PayoutSubscriptionRequestBody body,
+            String entryPoint,
+            Optional<String> subdomain,
+            Optional<String> accountId,
+            Optional<String> source,
+            Optional<Boolean> setPause,
+            AuthorizePaymentMethod paymentMethod,
+            Optional<PayoutPaymentDetail> paymentDetails,
+            RequestOutAuthorizeVendorData vendorData,
+            Optional<List<BillPayOutDataRequest>> billData,
+            Optional<PayoutScheduleDetail> scheduleDetails,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
-        this.body = body;
+        this.entryPoint = entryPoint;
+        this.subdomain = subdomain;
+        this.accountId = accountId;
+        this.source = source;
+        this.setPause = setPause;
+        this.paymentMethod = paymentMethod;
+        this.paymentDetails = paymentDetails;
+        this.vendorData = vendorData;
+        this.billData = billData;
+        this.scheduleDetails = scheduleDetails;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return <em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+     */
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
     }
 
-    @JsonProperty("body")
-    public PayoutSubscriptionRequestBody getBody() {
-        return body;
+    @JsonProperty("entryPoint")
+    public String getEntryPoint() {
+        return entryPoint;
+    }
+
+    @JsonProperty("subdomain")
+    public Optional<String> getSubdomain() {
+        return subdomain;
+    }
+
+    @JsonProperty("accountId")
+    public Optional<String> getAccountId() {
+        return accountId;
+    }
+
+    @JsonProperty("source")
+    public Optional<String> getSource() {
+        return source;
+    }
+
+    @JsonProperty("setPause")
+    public Optional<Boolean> getSetPause() {
+        return setPause;
+    }
+
+    /**
+     * @return Payment method for the payout subscription. Supports <code>ach</code>, <code>vcard</code>, and <code>check</code>. The <code>managed</code> method isn't supported for payout subscriptions.
+     */
+    @JsonProperty("paymentMethod")
+    public AuthorizePaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    /**
+     * @return Object describing details of the payout.
+     */
+    @JsonProperty("paymentDetails")
+    public Optional<PayoutPaymentDetail> getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    /**
+     * @return Object identifying the vendor for this subscription. Only a <code>vendorId</code> or <code>vendorNumber</code> is needed to link to an existing vendor.
+     */
+    @JsonProperty("vendorData")
+    public RequestOutAuthorizeVendorData getVendorData() {
+        return vendorData;
+    }
+
+    /**
+     * @return Array of bills associated with the payout subscription. If omitted and <code>doNotCreateBills</code> isn't set to <code>true</code>, the system creates a bill automatically.
+     */
+    @JsonProperty("billData")
+    public Optional<List<BillPayOutDataRequest>> getBillData() {
+        return billData;
+    }
+
+    /**
+     * @return Object describing the schedule for the payout subscription.
+     */
+    @JsonProperty("scheduleDetails")
+    public Optional<PayoutScheduleDetail> getScheduleDetails() {
+        return scheduleDetails;
     }
 
     @java.lang.Override
@@ -59,12 +164,33 @@ public final class RequestPayoutSchedule {
     }
 
     private boolean equalTo(RequestPayoutSchedule other) {
-        return idempotencyKey.equals(other.idempotencyKey) && body.equals(other.body);
+        return idempotencyKey.equals(other.idempotencyKey)
+                && entryPoint.equals(other.entryPoint)
+                && subdomain.equals(other.subdomain)
+                && accountId.equals(other.accountId)
+                && source.equals(other.source)
+                && setPause.equals(other.setPause)
+                && paymentMethod.equals(other.paymentMethod)
+                && paymentDetails.equals(other.paymentDetails)
+                && vendorData.equals(other.vendorData)
+                && billData.equals(other.billData)
+                && scheduleDetails.equals(other.scheduleDetails);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey, this.body);
+        return Objects.hash(
+                this.idempotencyKey,
+                this.entryPoint,
+                this.subdomain,
+                this.accountId,
+                this.source,
+                this.setPause,
+                this.paymentMethod,
+                this.paymentDetails,
+                this.vendorData,
+                this.billData,
+                this.scheduleDetails);
     }
 
     @java.lang.Override
@@ -72,14 +198,28 @@ public final class RequestPayoutSchedule {
         return ObjectMappers.stringify(this);
     }
 
-    public static BodyStage builder() {
+    public static EntryPointStage builder() {
         return new Builder();
     }
 
-    public interface BodyStage {
-        _FinalStage body(@NotNull PayoutSubscriptionRequestBody body);
+    public interface EntryPointStage {
+        PaymentMethodStage entryPoint(@NotNull String entryPoint);
 
         Builder from(RequestPayoutSchedule other);
+    }
+
+    public interface PaymentMethodStage {
+        /**
+         * <p>Payment method for the payout subscription. Supports <code>ach</code>, <code>vcard</code>, and <code>check</code>. The <code>managed</code> method isn't supported for payout subscriptions.</p>
+         */
+        VendorDataStage paymentMethod(@NotNull AuthorizePaymentMethod paymentMethod);
+    }
+
+    public interface VendorDataStage {
+        /**
+         * <p>Object identifying the vendor for this subscription. Only a <code>vendorId</code> or <code>vendorNumber</code> is needed to link to an existing vendor.</p>
+         */
+        _FinalStage vendorData(@NotNull RequestOutAuthorizeVendorData vendorData);
     }
 
     public interface _FinalStage {
@@ -89,14 +229,72 @@ public final class RequestPayoutSchedule {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
+
+        _FinalStage subdomain(Optional<String> subdomain);
+
+        _FinalStage subdomain(String subdomain);
+
+        _FinalStage accountId(Optional<String> accountId);
+
+        _FinalStage accountId(String accountId);
+
+        _FinalStage source(Optional<String> source);
+
+        _FinalStage source(String source);
+
+        _FinalStage setPause(Optional<Boolean> setPause);
+
+        _FinalStage setPause(Boolean setPause);
+
+        /**
+         * <p>Object describing details of the payout.</p>
+         */
+        _FinalStage paymentDetails(Optional<PayoutPaymentDetail> paymentDetails);
+
+        _FinalStage paymentDetails(PayoutPaymentDetail paymentDetails);
+
+        /**
+         * <p>Array of bills associated with the payout subscription. If omitted and <code>doNotCreateBills</code> isn't set to <code>true</code>, the system creates a bill automatically.</p>
+         */
+        _FinalStage billData(Optional<List<BillPayOutDataRequest>> billData);
+
+        _FinalStage billData(List<BillPayOutDataRequest> billData);
+
+        /**
+         * <p>Object describing the schedule for the payout subscription.</p>
+         */
+        _FinalStage scheduleDetails(Optional<PayoutScheduleDetail> scheduleDetails);
+
+        _FinalStage scheduleDetails(PayoutScheduleDetail scheduleDetails);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements BodyStage, _FinalStage {
-        private PayoutSubscriptionRequestBody body;
+    public static final class Builder implements EntryPointStage, PaymentMethodStage, VendorDataStage, _FinalStage {
+        private String entryPoint;
+
+        private AuthorizePaymentMethod paymentMethod;
+
+        private RequestOutAuthorizeVendorData vendorData;
+
+        private Optional<PayoutScheduleDetail> scheduleDetails = Optional.empty();
+
+        private Optional<List<BillPayOutDataRequest>> billData = Optional.empty();
+
+        private Optional<PayoutPaymentDetail> paymentDetails = Optional.empty();
+
+        private Optional<Boolean> setPause = Optional.empty();
+
+        private Optional<String> source = Optional.empty();
+
+        private Optional<String> accountId = Optional.empty();
+
+        private Optional<String> subdomain = Optional.empty();
 
         private Optional<String> idempotencyKey = Optional.empty();
 
@@ -108,23 +306,175 @@ public final class RequestPayoutSchedule {
         @java.lang.Override
         public Builder from(RequestPayoutSchedule other) {
             idempotencyKey(other.getIdempotencyKey());
-            body(other.getBody());
+            entryPoint(other.getEntryPoint());
+            subdomain(other.getSubdomain());
+            accountId(other.getAccountId());
+            source(other.getSource());
+            setPause(other.getSetPause());
+            paymentMethod(other.getPaymentMethod());
+            paymentDetails(other.getPaymentDetails());
+            vendorData(other.getVendorData());
+            billData(other.getBillData());
+            scheduleDetails(other.getScheduleDetails());
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter("body")
-        public _FinalStage body(@NotNull PayoutSubscriptionRequestBody body) {
-            this.body = Objects.requireNonNull(body, "body must not be null");
+        @JsonSetter("entryPoint")
+        public PaymentMethodStage entryPoint(@NotNull String entryPoint) {
+            this.entryPoint = Objects.requireNonNull(entryPoint, "entryPoint must not be null");
             return this;
         }
 
+        /**
+         * <p>Payment method for the payout subscription. Supports <code>ach</code>, <code>vcard</code>, and <code>check</code>. The <code>managed</code> method isn't supported for payout subscriptions.</p>
+         * <p>Payment method for the payout subscription. Supports <code>ach</code>, <code>vcard</code>, and <code>check</code>. The <code>managed</code> method isn't supported for payout subscriptions.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("paymentMethod")
+        public VendorDataStage paymentMethod(@NotNull AuthorizePaymentMethod paymentMethod) {
+            this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Object identifying the vendor for this subscription. Only a <code>vendorId</code> or <code>vendorNumber</code> is needed to link to an existing vendor.</p>
+         * <p>Object identifying the vendor for this subscription. Only a <code>vendorId</code> or <code>vendorNumber</code> is needed to link to an existing vendor.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("vendorData")
+        public _FinalStage vendorData(@NotNull RequestOutAuthorizeVendorData vendorData) {
+            this.vendorData = Objects.requireNonNull(vendorData, "vendorData must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Object describing the schedule for the payout subscription.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage scheduleDetails(PayoutScheduleDetail scheduleDetails) {
+            this.scheduleDetails = Optional.ofNullable(scheduleDetails);
+            return this;
+        }
+
+        /**
+         * <p>Object describing the schedule for the payout subscription.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "scheduleDetails", nulls = Nulls.SKIP)
+        public _FinalStage scheduleDetails(Optional<PayoutScheduleDetail> scheduleDetails) {
+            this.scheduleDetails = scheduleDetails;
+            return this;
+        }
+
+        /**
+         * <p>Array of bills associated with the payout subscription. If omitted and <code>doNotCreateBills</code> isn't set to <code>true</code>, the system creates a bill automatically.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage billData(List<BillPayOutDataRequest> billData) {
+            this.billData = Optional.ofNullable(billData);
+            return this;
+        }
+
+        /**
+         * <p>Array of bills associated with the payout subscription. If omitted and <code>doNotCreateBills</code> isn't set to <code>true</code>, the system creates a bill automatically.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "billData", nulls = Nulls.SKIP)
+        public _FinalStage billData(Optional<List<BillPayOutDataRequest>> billData) {
+            this.billData = billData;
+            return this;
+        }
+
+        /**
+         * <p>Object describing details of the payout.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentDetails(PayoutPaymentDetail paymentDetails) {
+            this.paymentDetails = Optional.ofNullable(paymentDetails);
+            return this;
+        }
+
+        /**
+         * <p>Object describing details of the payout.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paymentDetails", nulls = Nulls.SKIP)
+        public _FinalStage paymentDetails(Optional<PayoutPaymentDetail> paymentDetails) {
+            this.paymentDetails = paymentDetails;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage setPause(Boolean setPause) {
+            this.setPause = Optional.ofNullable(setPause);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "setPause", nulls = Nulls.SKIP)
+        public _FinalStage setPause(Optional<Boolean> setPause) {
+            this.setPause = setPause;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage source(String source) {
+            this.source = Optional.ofNullable(source);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "source", nulls = Nulls.SKIP)
+        public _FinalStage source(Optional<String> source) {
+            this.source = source;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage accountId(String accountId) {
+            this.accountId = Optional.ofNullable(accountId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
+        public _FinalStage accountId(Optional<String> accountId) {
+            this.accountId = accountId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage subdomain(String subdomain) {
+            this.subdomain = Optional.ofNullable(subdomain);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "subdomain", nulls = Nulls.SKIP)
+        public _FinalStage subdomain(Optional<String> subdomain) {
+            this.subdomain = subdomain;
+            return this;
+        }
+
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = Optional.ofNullable(idempotencyKey);
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
@@ -133,7 +483,19 @@ public final class RequestPayoutSchedule {
 
         @java.lang.Override
         public RequestPayoutSchedule build() {
-            return new RequestPayoutSchedule(idempotencyKey, body, additionalProperties);
+            return new RequestPayoutSchedule(
+                    idempotencyKey,
+                    entryPoint,
+                    subdomain,
+                    accountId,
+                    source,
+                    setPause,
+                    paymentMethod,
+                    paymentDetails,
+                    vendorData,
+                    billData,
+                    scheduleDetails,
+                    additionalProperties);
         }
 
         @java.lang.Override

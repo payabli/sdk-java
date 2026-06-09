@@ -8,9 +8,9 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.AddPaymentMethodDomainRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.ListPaymentMethodDomainsRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.UpdatePaymentMethodDomainRequest;
-import io.github.payabli.api.resources.paymentmethoddomain.types.DeletePaymentMethodDomainResponse;
-import io.github.payabli.api.resources.paymentmethoddomain.types.ListPaymentMethodDomainsResponse;
 import io.github.payabli.api.types.AddPaymentMethodDomainApiResponse;
+import io.github.payabli.api.types.DeletePaymentMethodDomainResponse;
+import io.github.payabli.api.types.ListPaymentMethodDomainsResponse;
 import io.github.payabli.api.types.PaymentMethodDomainApiResponse;
 import io.github.payabli.api.types.PaymentMethodDomainGeneralResponse;
 
@@ -78,22 +78,6 @@ public class PaymentMethodDomainClient {
     }
 
     /**
-     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-     */
-    public DeletePaymentMethodDomainResponse deletePaymentMethodDomain(String domainId) {
-        return this.rawClient.deletePaymentMethodDomain(domainId).body();
-    }
-
-    /**
-     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-     */
-    public DeletePaymentMethodDomainResponse deletePaymentMethodDomain(String domainId, RequestOptions requestOptions) {
-        return this.rawClient
-                .deletePaymentMethodDomain(domainId, requestOptions)
-                .body();
-    }
-
-    /**
      * Get the details for a payment method domain.
      */
     public PaymentMethodDomainApiResponse getPaymentMethodDomain(String domainId) {
@@ -108,32 +92,19 @@ public class PaymentMethodDomainClient {
     }
 
     /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
      */
-    public ListPaymentMethodDomainsResponse listPaymentMethodDomains() {
-        return this.rawClient.listPaymentMethodDomains().body();
+    public DeletePaymentMethodDomainResponse deletePaymentMethodDomain(String domainId) {
+        return this.rawClient.deletePaymentMethodDomain(domainId).body();
     }
 
     /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
      */
-    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(RequestOptions requestOptions) {
-        return this.rawClient.listPaymentMethodDomains(requestOptions).body();
-    }
-
-    /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
-     */
-    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(ListPaymentMethodDomainsRequest request) {
-        return this.rawClient.listPaymentMethodDomains(request).body();
-    }
-
-    /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
-     */
-    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(
-            ListPaymentMethodDomainsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listPaymentMethodDomains(request, requestOptions).body();
+    public DeletePaymentMethodDomainResponse deletePaymentMethodDomain(String domainId, RequestOptions requestOptions) {
+        return this.rawClient
+                .deletePaymentMethodDomain(domainId, requestOptions)
+                .body();
     }
 
     /**
@@ -169,6 +140,35 @@ public class PaymentMethodDomainClient {
         return this.rawClient
                 .updatePaymentMethodDomain(domainId, request, requestOptions)
                 .body();
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public ListPaymentMethodDomainsResponse listPaymentMethodDomains() {
+        return this.rawClient.listPaymentMethodDomains().body();
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(RequestOptions requestOptions) {
+        return this.rawClient.listPaymentMethodDomains(requestOptions).body();
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(ListPaymentMethodDomainsRequest request) {
+        return this.rawClient.listPaymentMethodDomains(request).body();
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public ListPaymentMethodDomainsResponse listPaymentMethodDomains(
+            ListPaymentMethodDomainsRequest request, RequestOptions requestOptions) {
+        return this.rawClient.listPaymentMethodDomains(request, requestOptions).body();
     }
 
     /**

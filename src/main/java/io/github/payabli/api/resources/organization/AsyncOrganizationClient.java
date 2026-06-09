@@ -7,9 +7,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.organization.requests.AddOrganizationRequest;
 import io.github.payabli.api.resources.organization.requests.OrganizationData;
-import io.github.payabli.api.resources.organization.types.AddOrganizationResponse;
-import io.github.payabli.api.resources.organization.types.DeleteOrganizationResponse;
-import io.github.payabli.api.resources.organization.types.EditOrganizationResponse;
+import io.github.payabli.api.types.AddOrganizationResponse;
+import io.github.payabli.api.types.DeleteOrganizationResponse;
+import io.github.payabli.api.types.EditOrganizationResponse;
 import io.github.payabli.api.types.OrganizationQueryRecord;
 import io.github.payabli.api.types.SettingsQueryRecord;
 import java.util.concurrent.CompletableFuture;
@@ -47,20 +47,6 @@ public class AsyncOrganizationClient {
     }
 
     /**
-     * Delete an organization by ID.
-     */
-    public CompletableFuture<DeleteOrganizationResponse> deleteOrganization(int orgId) {
-        return this.rawClient.deleteOrganization(orgId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Delete an organization by ID.
-     */
-    public CompletableFuture<DeleteOrganizationResponse> deleteOrganization(int orgId, RequestOptions requestOptions) {
-        return this.rawClient.deleteOrganization(orgId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Updates an organization's details by ID.
      */
     public CompletableFuture<EditOrganizationResponse> editOrganization(int orgId) {
@@ -87,6 +73,20 @@ public class AsyncOrganizationClient {
     public CompletableFuture<EditOrganizationResponse> editOrganization(
             int orgId, OrganizationData request, RequestOptions requestOptions) {
         return this.rawClient.editOrganization(orgId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Delete an organization by ID.
+     */
+    public CompletableFuture<DeleteOrganizationResponse> deleteOrganization(int orgId) {
+        return this.rawClient.deleteOrganization(orgId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Delete an organization by ID.
+     */
+    public CompletableFuture<DeleteOrganizationResponse> deleteOrganization(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.deleteOrganization(orgId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

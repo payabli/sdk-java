@@ -68,9 +68,9 @@ public final class CustomerData {
 
     private final Optional<Integer> timeZone;
 
-    private final Optional<Map<String, Optional<String>>> additionalFields;
+    private final Optional<Map<String, String>> additionalFields;
 
-    private final Optional<List<Optional<String>>> identifierFields;
+    private final Optional<List<String>> identifierFields;
 
     private final Optional<OffsetDateTime> createdAt;
 
@@ -100,8 +100,8 @@ public final class CustomerData {
             Optional<String> shippingCountry,
             Optional<Double> balance,
             Optional<Integer> timeZone,
-            Optional<Map<String, Optional<String>>> additionalFields,
-            Optional<List<Optional<String>>> identifierFields,
+            Optional<Map<String, String>> additionalFields,
+            Optional<List<String>> identifierFields,
             Optional<OffsetDateTime> createdAt,
             Map<String, Object> additionalProperties) {
         this.customerNumber = customerNumber;
@@ -294,12 +294,12 @@ public final class CustomerData {
      * @return Additional Custom fields in format &quot;key&quot;:&quot;value&quot;.
      */
     @JsonProperty("additionalFields")
-    public Optional<Map<String, Optional<String>>> getAdditionalFields() {
+    public Optional<Map<String, String>> getAdditionalFields() {
         return additionalFields;
     }
 
     @JsonProperty("identifierFields")
-    public Optional<List<Optional<String>>> getIdentifierFields() {
+    public Optional<List<String>> getIdentifierFields() {
         return identifierFields;
     }
 
@@ -436,9 +436,9 @@ public final class CustomerData {
 
         private Optional<Integer> timeZone = Optional.empty();
 
-        private Optional<Map<String, Optional<String>>> additionalFields = Optional.empty();
+        private Optional<Map<String, String>> additionalFields = Optional.empty();
 
-        private Optional<List<Optional<String>>> identifierFields = Optional.empty();
+        private Optional<List<String>> identifierFields = Optional.empty();
 
         private Optional<OffsetDateTime> createdAt = Optional.empty();
 
@@ -776,23 +776,23 @@ public final class CustomerData {
          * <p>Additional Custom fields in format &quot;key&quot;:&quot;value&quot;.</p>
          */
         @JsonSetter(value = "additionalFields", nulls = Nulls.SKIP)
-        public Builder additionalFields(Optional<Map<String, Optional<String>>> additionalFields) {
+        public Builder additionalFields(Optional<Map<String, String>> additionalFields) {
             this.additionalFields = additionalFields;
             return this;
         }
 
-        public Builder additionalFields(Map<String, Optional<String>> additionalFields) {
+        public Builder additionalFields(Map<String, String> additionalFields) {
             this.additionalFields = Optional.ofNullable(additionalFields);
             return this;
         }
 
         @JsonSetter(value = "identifierFields", nulls = Nulls.SKIP)
-        public Builder identifierFields(Optional<List<Optional<String>>> identifierFields) {
+        public Builder identifierFields(Optional<List<String>> identifierFields) {
             this.identifierFields = identifierFields;
             return this;
         }
 
-        public Builder identifierFields(List<Optional<String>> identifierFields) {
+        public Builder identifierFields(List<String> identifierFields) {
             this.identifierFields = Optional.ofNullable(identifierFields);
             return this;
         }

@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorOutData.Builder.class)
 public final class VendorOutData {
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> address1;
 
@@ -85,7 +85,7 @@ public final class VendorOutData {
     private final Map<String, Object> additionalProperties;
 
     private VendorOutData(
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<String> address1,
             Optional<String> address2,
             Optional<BillingData> billingData,
@@ -150,7 +150,7 @@ public final class VendorOutData {
     }
 
     @JsonProperty("additionalData")
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
@@ -493,9 +493,9 @@ public final class VendorOutData {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
-        _FinalStage additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData);
+        _FinalStage additionalData(Optional<Map<String, Map<String, Object>>> additionalData);
 
-        _FinalStage additionalData(Map<String, Optional<Map<String, Object>>> additionalData);
+        _FinalStage additionalData(Map<String, Map<String, Object>> additionalData);
 
         /**
          * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
@@ -674,7 +674,7 @@ public final class VendorOutData {
 
         private Optional<String> address1 = Optional.empty();
 
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -1150,14 +1150,14 @@ public final class VendorOutData {
         }
 
         @java.lang.Override
-        public _FinalStage additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public _FinalStage additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public _FinalStage additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public _FinalStage additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }

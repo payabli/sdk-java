@@ -2,7 +2,7 @@
   "isSuccess": true,
   "responseCode": 1,
   "responseData": {
-    "EntryName": "abc123def",
+    "EntryName": "8cfec329267",
     "EntryPages": [
       {
         "AdditionalData": {
@@ -20,37 +20,37 @@
     ],
     "IdEntry": 11111,
     "Paypoint": {
-      "address1": "123 Ocean Drive",
-      "address2": "Suite 400",
-      "bankData": [
+      "Address1": "123 Ocean Drive",
+      "Address2": "Suite 400",
+      "BankData": [
         {
           "bankAccountFunction": 0,
           "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
           "nickname": "Business Checking 1234"
         }
       ],
-      "boardingId": 340,
-      "city": "Bristol",
-      "contacts": [
+      "BoardingId": 340,
+      "City": "Bristol",
+      "Contacts": [
         {}
       ],
-      "country": "US",
-      "credentials": [
+      "Country": "US",
+      "Credentials": [
         {}
       ],
-      "dbaName": "Sunshine Gutters",
+      "DbaName": "Sunshine Gutters",
       "externalPaypointID": "",
-      "fax": "5555555555",
-      "idPaypoint": 1000000,
-      "legalName": "Sunshine Services, LLC",
-      "parentOrg": {
+      "Fax": "5555555555",
+      "IdPaypoint": 1000000,
+      "LegalName": "Sunshine Services, LLC",
+      "ParentOrg": {
         "orgName": "Pilgrim Planner",
         "orgStatus": 1,
         "orgType": 0
       },
-      "paypointStatus": 1,
-      "phone": "5555555555",
-      "state": "GA",
+      "PaypointStatus": 1,
+      "Phone": "5555555555",
+      "State": "GA",
       "summary": {
         "amountSubs": 0,
         "amountTx": 0,
@@ -58,9 +58,9 @@
         "countTx": 0,
         "customers": 1
       },
-      "timeZone": -5,
-      "websiteAddress": "www.example.com",
-      "zip": "31113"
+      "TimeZone": -5,
+      "WebsiteAddress": "www.example.com",
+      "Zip": "31113"
     }
   },
   "responseText": "Success"

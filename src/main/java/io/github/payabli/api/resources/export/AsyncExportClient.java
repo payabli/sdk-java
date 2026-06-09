@@ -34,7 +34,7 @@ import io.github.payabli.api.resources.export.requests.ExportTransferDetailsRequ
 import io.github.payabli.api.resources.export.requests.ExportTransfersRequest;
 import io.github.payabli.api.resources.export.requests.ExportVendorsOrgRequest;
 import io.github.payabli.api.resources.export.requests.ExportVendorsRequest;
-import io.github.payabli.api.resources.export.types.ExportFormat1;
+import io.github.payabli.api.types.ExportFormat1;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -56,6 +56,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportApplications(ExportFormat1 format, int orgId) {
@@ -63,6 +66,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportApplications(
@@ -71,6 +77,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportApplications(
@@ -79,6 +88,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportApplications(
@@ -89,14 +101,20 @@ public class AsyncExportClient {
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details](/developers/api-reference/query/get-list-of-batchdetails-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetails(ExportFormat1 format, String entry) {
         return this.rawClient.exportBatchDetails(format, entry).thenApply(response -> response.body());
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details](/developers/api-reference/query/get-list-of-batchdetails-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetails(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
@@ -104,7 +122,10 @@ public class AsyncExportClient {
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details](/developers/api-reference/query/get-list-of-batchdetails-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetails(
             ExportFormat1 format, String entry, ExportBatchDetailsRequest request) {
@@ -112,7 +133,10 @@ public class AsyncExportClient {
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details](/developers/api-reference/query/get-list-of-batchdetails-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetails(
             ExportFormat1 format, String entry, ExportBatchDetailsRequest request, RequestOptions requestOptions) {
@@ -122,14 +146,20 @@ public class AsyncExportClient {
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details for org](/developers/api-reference/query/get-list-of-batchdetails-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetailsOrg(ExportFormat1 format, int orgId) {
         return this.rawClient.exportBatchDetailsOrg(format, orgId).thenApply(response -> response.body());
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details for org](/developers/api-reference/query/get-list-of-batchdetails-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
@@ -139,7 +169,10 @@ public class AsyncExportClient {
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details for org](/developers/api-reference/query/get-list-of-batchdetails-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request) {
@@ -147,7 +180,10 @@ public class AsyncExportClient {
     }
 
     /**
-     * This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batch details for org](/developers/api-reference/query/get-list-of-batchdetails-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export batch details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request, RequestOptions requestOptions) {
@@ -157,6 +193,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for paypoint](/developers/api-reference/query/get-list-of-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatches(ExportFormat1 format, String entry) {
@@ -164,6 +203,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for paypoint](/developers/api-reference/query/get-list-of-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatches(
@@ -172,6 +214,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for paypoint](/developers/api-reference/query/get-list-of-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatches(
@@ -180,6 +225,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for paypoint](/developers/api-reference/query/get-list-of-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatches(
@@ -190,6 +238,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for org](/developers/api-reference/query/get-list-of-batches-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOrg(ExportFormat1 format, int orgId) {
@@ -197,6 +248,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for org](/developers/api-reference/query/get-list-of-batches-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOrg(
@@ -205,6 +259,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for org](/developers/api-reference/query/get-list-of-batches-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOrg(
@@ -213,6 +270,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List batches for org](/developers/api-reference/query/get-list-of-batches-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOrg(
@@ -223,6 +283,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for paypoint](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOut(ExportFormat1 format, String entry) {
@@ -230,6 +293,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for paypoint](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOut(
@@ -238,6 +304,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for paypoint](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOut(
@@ -246,6 +315,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for paypoint](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOut(
@@ -256,6 +328,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for org](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOutOrg(ExportFormat1 format, int orgId) {
@@ -263,6 +338,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for org](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOutOrg(
@@ -271,6 +349,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for org](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOutOrg(
@@ -279,6 +360,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payout batches for org](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBatchesOutOrg(
@@ -289,6 +373,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by paypoint](/developers/api-reference/bill/get-list-of-bills-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBills(ExportFormat1 format, String entry) {
@@ -296,6 +383,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by paypoint](/developers/api-reference/bill/get-list-of-bills-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBills(
@@ -304,6 +394,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by paypoint](/developers/api-reference/bill/get-list-of-bills-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBills(
@@ -312,6 +405,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by paypoint](/developers/api-reference/bill/get-list-of-bills-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBills(
@@ -322,6 +418,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by organization](/developers/api-reference/bill/get-list-of-bills-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBillsOrg(ExportFormat1 format, int orgId) {
@@ -329,6 +428,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by organization](/developers/api-reference/bill/get-list-of-bills-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBillsOrg(
@@ -337,6 +439,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by organization](/developers/api-reference/bill/get-list-of-bills-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBillsOrg(
@@ -345,6 +450,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List bills by organization](/developers/api-reference/bill/get-list-of-bills-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportBillsOrg(
@@ -355,6 +463,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by paypoint](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacks(ExportFormat1 format, String entry) {
@@ -362,6 +473,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by paypoint](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacks(
@@ -370,6 +484,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by paypoint](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacks(
@@ -378,6 +495,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by paypoint](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacks(
@@ -388,6 +508,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by organization](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacksOrg(ExportFormat1 format, int orgId) {
@@ -395,6 +518,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by organization](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacksOrg(
@@ -405,6 +531,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by organization](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacksOrg(
@@ -413,6 +542,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List disputes by organization](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportChargebacksOrg(
@@ -423,6 +555,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by paypoint](/developers/api-reference/customer/get-list-of-customers-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomers(ExportFormat1 format, String entry) {
@@ -430,6 +565,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by paypoint](/developers/api-reference/customer/get-list-of-customers-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomers(
@@ -438,6 +576,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by paypoint](/developers/api-reference/customer/get-list-of-customers-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomers(
@@ -446,6 +587,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by paypoint](/developers/api-reference/customer/get-list-of-customers-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomers(
@@ -456,6 +600,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by organization](/developers/api-reference/customer/get-list-of-customers-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomersOrg(ExportFormat1 format, int orgId) {
@@ -463,6 +610,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by organization](/developers/api-reference/customer/get-list-of-customers-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomersOrg(
@@ -471,6 +621,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by organization](/developers/api-reference/customer/get-list-of-customers-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomersOrg(
@@ -479,6 +632,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List customers by organization](/developers/api-reference/customer/get-list-of-customers-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportCustomersOrg(
@@ -489,6 +645,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by paypoint](/developers/api-reference/invoice/get-list-of-invoices-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoices(ExportFormat1 format, String entry) {
@@ -496,6 +655,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by paypoint](/developers/api-reference/invoice/get-list-of-invoices-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoices(
@@ -504,6 +666,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by paypoint](/developers/api-reference/invoice/get-list-of-invoices-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoices(
@@ -512,6 +677,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by paypoint](/developers/api-reference/invoice/get-list-of-invoices-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoices(
@@ -522,6 +690,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by organization](/developers/api-reference/invoice/get-list-of-invoices-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoicesOrg(ExportFormat1 format, int orgId) {
@@ -529,6 +700,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by organization](/developers/api-reference/invoice/get-list-of-invoices-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoicesOrg(
@@ -537,6 +711,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by organization](/developers/api-reference/invoice/get-list-of-invoices-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoicesOrg(
@@ -545,6 +722,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List invoices by organization](/developers/api-reference/invoice/get-list-of-invoices-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportInvoicesOrg(
@@ -555,6 +735,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List suborganizations by organization](/developers/api-reference/organization/get-list-of-organizations-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public CompletableFuture<Map<String, Object>> exportOrganizations(ExportFormat1 format, int orgId) {
@@ -562,6 +745,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List suborganizations by organization](/developers/api-reference/organization/get-list-of-organizations-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public CompletableFuture<Map<String, Object>> exportOrganizations(
@@ -570,6 +756,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List suborganizations by organization](/developers/api-reference/organization/get-list-of-organizations-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public CompletableFuture<Map<String, Object>> exportOrganizations(
@@ -578,6 +767,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List suborganizations by organization](/developers/api-reference/organization/get-list-of-organizations-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
     public CompletableFuture<Map<String, Object>> exportOrganizations(
@@ -588,6 +780,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by paypoint](/developers/api-reference/query/get-list-of-payouts-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayout(ExportFormat1 format, String entry) {
@@ -595,6 +790,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by paypoint](/developers/api-reference/query/get-list-of-payouts-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayout(
@@ -603,6 +801,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by paypoint](/developers/api-reference/query/get-list-of-payouts-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayout(
@@ -611,6 +812,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by paypoint](/developers/api-reference/query/get-list-of-payouts-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayout(
@@ -621,6 +825,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by org](/developers/api-reference/query/get-list-of-payouts-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayoutOrg(ExportFormat1 format, int orgId) {
@@ -628,6 +835,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by org](/developers/api-reference/query/get-list-of-payouts-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayoutOrg(
@@ -636,6 +846,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by org](/developers/api-reference/query/get-list-of-payouts-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayoutOrg(
@@ -644,6 +857,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List payouts by org](/developers/api-reference/query/get-list-of-payouts-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPayoutOrg(
@@ -654,6 +870,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List paypoints by organization](/developers/api-reference/paypoint/get-list-of-paypoints-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPaypoints(ExportFormat1 format, int orgId) {
@@ -661,6 +880,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List paypoints by organization](/developers/api-reference/paypoint/get-list-of-paypoints-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPaypoints(
@@ -669,6 +891,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List paypoints by organization](/developers/api-reference/paypoint/get-list-of-paypoints-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPaypoints(
@@ -677,6 +902,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List paypoints by organization](/developers/api-reference/paypoint/get-list-of-paypoints-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportPaypoints(
@@ -687,6 +915,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for paypoint](/developers/api-reference/query/get-list-of-settled-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlements(ExportFormat1 format, String entry) {
@@ -694,6 +925,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for paypoint](/developers/api-reference/query/get-list-of-settled-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlements(
@@ -702,6 +936,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for paypoint](/developers/api-reference/query/get-list-of-settled-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlements(
@@ -710,6 +947,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for paypoint](/developers/api-reference/query/get-list-of-settled-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlements(
@@ -720,6 +960,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for org](/developers/api-reference/query/get-list-of-settled-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlementsOrg(ExportFormat1 format, int orgId) {
@@ -727,6 +970,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for org](/developers/api-reference/query/get-list-of-settled-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlementsOrg(
@@ -737,6 +983,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for org](/developers/api-reference/query/get-list-of-settled-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlementsOrg(
@@ -745,6 +994,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List settled transactions for org](/developers/api-reference/query/get-list-of-settled-transactions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSettlementsOrg(
@@ -755,6 +1007,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by paypoint](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptions(ExportFormat1 format, String entry) {
@@ -762,6 +1017,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by paypoint](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptions(
@@ -770,6 +1028,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by paypoint](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptions(
@@ -778,6 +1039,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by paypoint](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptions(
@@ -788,6 +1052,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by organization](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptionsOrg(ExportFormat1 format, int orgId) {
@@ -795,6 +1062,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by organization](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptionsOrg(
@@ -805,6 +1075,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by organization](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptionsOrg(
@@ -813,6 +1086,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List subscriptions by organization](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-org) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportSubscriptionsOrg(
@@ -823,14 +1099,20 @@ public class AsyncExportClient {
     }
 
     /**
-     * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for paypoint](/developers/api-reference/query/get-list-of-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactions(ExportFormat1 format, String entry) {
         return this.rawClient.exportTransactions(format, entry).thenApply(response -> response.body());
     }
 
     /**
-     * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for paypoint](/developers/api-reference/query/get-list-of-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactions(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
@@ -838,7 +1120,10 @@ public class AsyncExportClient {
     }
 
     /**
-     * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for paypoint](/developers/api-reference/query/get-list-of-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactions(
             ExportFormat1 format, String entry, ExportTransactionsRequest request) {
@@ -846,7 +1131,10 @@ public class AsyncExportClient {
     }
 
     /**
-     * Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for paypoint](/developers/api-reference/query/get-list-of-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
+     * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactions(
             ExportFormat1 format, String entry, ExportTransactionsRequest request, RequestOptions requestOptions) {
@@ -856,6 +1144,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for org](/developers/api-reference/query/get-list-of-transactions-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactionsOrg(ExportFormat1 format, int orgId) {
@@ -863,6 +1154,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for org](/developers/api-reference/query/get-list-of-transactions-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactionsOrg(
@@ -873,6 +1167,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for org](/developers/api-reference/query/get-list-of-transactions-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactionsOrg(
@@ -881,6 +1178,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transactions for org](/developers/api-reference/query/get-list-of-transactions-for-an-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
     public CompletableFuture<Map<String, Object>> exportTransactionsOrg(
@@ -891,6 +1191,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [Get transfer details](/developers/api-reference/query/get-list-of-transfer-details) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransferDetails(
@@ -899,6 +1202,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [Get transfer details](/developers/api-reference/query/get-list-of-transfer-details) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransferDetails(
@@ -909,6 +1215,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [Get transfer details](/developers/api-reference/query/get-list-of-transfer-details) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransferDetails(
@@ -919,6 +1228,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [Get transfer details](/developers/api-reference/query/get-list-of-transfer-details) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransferDetails(
@@ -933,6 +1245,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transfers](/developers/api-reference/query/get-list-of-transfers) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransfers(String entry) {
@@ -940,6 +1255,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transfers](/developers/api-reference/query/get-list-of-transfers) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransfers(String entry, RequestOptions requestOptions) {
@@ -947,6 +1265,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transfers](/developers/api-reference/query/get-list-of-transfers) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransfers(String entry, ExportTransfersRequest request) {
@@ -954,6 +1275,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List transfers](/developers/api-reference/query/get-list-of-transfers) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportTransfers(
@@ -962,6 +1286,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by paypoint](/developers/api-reference/vendor/get-list-of-vendors-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendors(ExportFormat1 format, String entry) {
@@ -969,6 +1296,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by paypoint](/developers/api-reference/vendor/get-list-of-vendors-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendors(
@@ -977,6 +1307,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by paypoint](/developers/api-reference/vendor/get-list-of-vendors-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendors(
@@ -985,6 +1318,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by paypoint](/developers/api-reference/vendor/get-list-of-vendors-for-entrypoint) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendors(
@@ -995,6 +1331,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by organization](/developers/api-reference/vendor/get-list-of-vendors-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendorsOrg(ExportFormat1 format, int orgId) {
@@ -1002,6 +1341,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by organization](/developers/api-reference/vendor/get-list-of-vendors-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendorsOrg(
@@ -1010,6 +1352,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by organization](/developers/api-reference/vendor/get-list-of-vendors-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendorsOrg(
@@ -1018,6 +1363,9 @@ public class AsyncExportClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. To export this data, use [List vendors by organization](/developers/api-reference/vendor/get-list-of-vendors-for-organization) with the `exportFormat` query parameter instead.
+     * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
     public CompletableFuture<Map<String, Object>> exportVendorsOrg(

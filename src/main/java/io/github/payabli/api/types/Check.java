@@ -21,10 +21,13 @@ import org.jetbrains.annotations.NotNull;
 public final class Check {
     private final String achHolder;
 
+    private final CheckMethod method;
+
     private final Map<String, Object> additionalProperties;
 
-    private Check(String achHolder, Map<String, Object> additionalProperties) {
+    private Check(String achHolder, CheckMethod method, Map<String, Object> additionalProperties) {
         this.achHolder = achHolder;
+        this.method = method;
         this.additionalProperties = additionalProperties;
     }
 
@@ -40,8 +43,8 @@ public final class Check {
      * @return Method to use for the transaction. Use <code>check</code> for a paper check transaction. When the method is <code>check</code>, then <code>paymentDetails.checkNumber</code> is required.
      */
     @JsonProperty("method")
-    public String getMethod() {
-        return "check";
+    public CheckMethod getMethod() {
+        return method;
     }
 
     @java.lang.Override
@@ -56,12 +59,12 @@ public final class Check {
     }
 
     private boolean equalTo(Check other) {
-        return achHolder.equals(other.achHolder);
+        return achHolder.equals(other.achHolder) && method.equals(other.method);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.achHolder);
+        return Objects.hash(this.achHolder, this.method);
     }
 
     @java.lang.Override
@@ -77,9 +80,16 @@ public final class Check {
         /**
          * <p>The checking accountholder's name.</p>
          */
-        _FinalStage achHolder(@NotNull String achHolder);
+        MethodStage achHolder(@NotNull String achHolder);
 
         Builder from(Check other);
+    }
+
+    public interface MethodStage {
+        /**
+         * <p>Method to use for the transaction. Use <code>check</code> for a paper check transaction. When the method is <code>check</code>, then <code>paymentDetails.checkNumber</code> is required.</p>
+         */
+        _FinalStage method(@NotNull CheckMethod method);
     }
 
     public interface _FinalStage {
@@ -91,8 +101,10 @@ public final class Check {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements AchHolderStage, _FinalStage {
+    public static final class Builder implements AchHolderStage, MethodStage, _FinalStage {
         private String achHolder;
+
+        private CheckMethod method;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -102,6 +114,7 @@ public final class Check {
         @java.lang.Override
         public Builder from(Check other) {
             achHolder(other.getAchHolder());
+            method(other.getMethod());
             return this;
         }
 
@@ -112,14 +125,26 @@ public final class Check {
          */
         @java.lang.Override
         @JsonSetter("achHolder")
-        public _FinalStage achHolder(@NotNull String achHolder) {
+        public MethodStage achHolder(@NotNull String achHolder) {
             this.achHolder = Objects.requireNonNull(achHolder, "achHolder must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Method to use for the transaction. Use <code>check</code> for a paper check transaction. When the method is <code>check</code>, then <code>paymentDetails.checkNumber</code> is required.</p>
+         * <p>Method to use for the transaction. Use <code>check</code> for a paper check transaction. When the method is <code>check</code>, then <code>paymentDetails.checkNumber</code> is required.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull CheckMethod method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
             return this;
         }
 
         @java.lang.Override
         public Check build() {
-            return new Check(achHolder, additionalProperties);
+            return new Check(achHolder, method, additionalProperties);
         }
 
         @java.lang.Override

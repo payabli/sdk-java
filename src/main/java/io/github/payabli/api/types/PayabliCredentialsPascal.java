@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public final class PayabliCredentialsPascal {
 
     private final Optional<Boolean> acceptSameDayAch;
 
-    private final Optional<String> currency;
+    private final Optional<List<String>> currency;
 
     private final Optional<Boolean> greaterValueAllowed;
 
@@ -64,7 +65,7 @@ public final class PayabliCredentialsPascal {
             Optional<String> accountId,
             Optional<Long> referenceId,
             Optional<Boolean> acceptSameDayAch,
-            Optional<String> currency,
+            Optional<List<String>> currency,
             Optional<Boolean> greaterValueAllowed,
             Optional<Boolean> absorbDifference,
             Optional<Boolean> allowOverride,
@@ -155,7 +156,7 @@ public final class PayabliCredentialsPascal {
      * @return The default currency for the paypoint, either <code>USD</code> or <code>CAD</code>.
      */
     @JsonProperty("Currency")
-    public Optional<String> getCurrency() {
+    public Optional<List<String>> getCurrency() {
         return currency;
     }
 
@@ -256,7 +257,7 @@ public final class PayabliCredentialsPascal {
 
         private Optional<Boolean> acceptSameDayAch = Optional.empty();
 
-        private Optional<String> currency = Optional.empty();
+        private Optional<List<String>> currency = Optional.empty();
 
         private Optional<Boolean> greaterValueAllowed = Optional.empty();
 
@@ -422,12 +423,12 @@ public final class PayabliCredentialsPascal {
          * <p>The default currency for the paypoint, either <code>USD</code> or <code>CAD</code>.</p>
          */
         @JsonSetter(value = "Currency", nulls = Nulls.SKIP)
-        public Builder currency(Optional<String> currency) {
+        public Builder currency(Optional<List<String>> currency) {
             this.currency = currency;
             return this;
         }
 
-        public Builder currency(String currency) {
+        public Builder currency(List<String> currency) {
             this.currency = Optional.ofNullable(currency);
             return this;
         }

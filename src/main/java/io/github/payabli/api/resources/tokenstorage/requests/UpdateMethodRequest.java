@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
+import io.github.payabli.api.types.RequestTokenStorage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +35,9 @@ public final class UpdateMethodRequest {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+     */
     @JsonProperty("achValidation")
     public Optional<Boolean> getAchValidation() {
         return achValidation;
@@ -87,6 +90,9 @@ public final class UpdateMethodRequest {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p>When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.</p>
+         */
         _FinalStage achValidation(Optional<Boolean> achValidation);
 
         _FinalStage achValidation(Boolean achValidation);
@@ -117,12 +123,19 @@ public final class UpdateMethodRequest {
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage achValidation(Boolean achValidation) {
             this.achValidation = Optional.ofNullable(achValidation);
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "achValidation", nulls = Nulls.SKIP)
         public _FinalStage achValidation(Optional<Boolean> achValidation) {

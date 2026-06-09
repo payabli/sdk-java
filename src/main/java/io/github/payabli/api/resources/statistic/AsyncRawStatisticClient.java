@@ -20,11 +20,11 @@ import io.github.payabli.api.resources.statistic.requests.BasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.CustomerBasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.SubStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.VendorBasicStatsRequest;
-import io.github.payabli.api.resources.statistic.types.StatBasicExtendedQueryRecord;
-import io.github.payabli.api.resources.statistic.types.StatBasicQueryRecord;
-import io.github.payabli.api.resources.statistic.types.StatisticsVendorQueryRecord;
-import io.github.payabli.api.resources.statistic.types.SubscriptionStatsQueryRecord;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.StatBasicExtendedQueryRecord;
+import io.github.payabli.api.types.StatBasicQueryRecord;
+import io.github.payabli.api.types.StatisticsVendorQueryRecord;
+import io.github.payabli.api.types.SubscriptionStatsQueryRecord;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -138,7 +138,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -148,8 +148,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -256,7 +255,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -266,8 +265,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -367,7 +365,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -377,8 +375,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -480,7 +477,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -490,8 +487,7 @@ public class AsyncRawStatisticClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }

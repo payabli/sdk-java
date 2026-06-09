@@ -100,7 +100,7 @@ public final class AssociatedVendor {
 
     private final Optional<Long> internalReferenceId;
 
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> externalPaypointId;
 
@@ -146,7 +146,7 @@ public final class AssociatedVendor {
             Optional<String> customField2,
             Optional<String> customerVendorAccount,
             Optional<Long> internalReferenceId,
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<String> externalPaypointId,
             Map<String, Object> additionalProperties) {
         this.vendorNumber = vendorNumber;
@@ -431,7 +431,7 @@ public final class AssociatedVendor {
     }
 
     @JsonProperty("additionalData")
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
@@ -630,7 +630,7 @@ public final class AssociatedVendor {
 
         private Optional<Long> internalReferenceId = Optional.empty();
 
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
 
@@ -1156,12 +1156,12 @@ public final class AssociatedVendor {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

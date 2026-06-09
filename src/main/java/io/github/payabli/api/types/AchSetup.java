@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AchSetup.Builder.class)
-public final class AchSetup implements IAchSetup {
+public final class AchSetup {
     private final Optional<Boolean> acceptCcd;
 
     private final Optional<Boolean> acceptPpd;
@@ -40,28 +40,31 @@ public final class AchSetup implements IAchSetup {
     }
 
     /**
-     * @return CCD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Corporate Credit or Debit Entry. Options are: <code>true</code> and <code>false</code>
+     * @return CCD is an ACH SEC Code that can be used in ACH transactions by the
+     * user that indicates the transaction is a Corporate Credit or Debit
+     * Entry.
      */
     @JsonProperty("acceptCCD")
-    @java.lang.Override
     public Optional<Boolean> getAcceptCcd() {
         return acceptCcd;
     }
 
     /**
-     * @return PPD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Prearranged Payment and Deposit.
+     * @return PPD is an ACH SEC Code that can be used in ACH transactions by the
+     * user that indicates the transaction is a Prearranged Payment and
+     * Deposit.
      */
     @JsonProperty("acceptPPD")
-    @java.lang.Override
     public Optional<Boolean> getAcceptPpd() {
         return acceptPpd;
     }
 
     /**
-     * @return Web is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Internet Initiated/Mobile Entry Options are <code>true</code> and <code>false</code>.
+     * @return Web is an ACH SEC Code that can be used in ACH transactions by the
+     * user that indicates the transaction is an Internet-Initiated/Mobile
+     * Entry.
      */
     @JsonProperty("acceptWeb")
-    @java.lang.Override
     public Optional<Boolean> getAcceptWeb() {
         return acceptWeb;
     }
@@ -118,7 +121,9 @@ public final class AchSetup implements IAchSetup {
         }
 
         /**
-         * <p>CCD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Corporate Credit or Debit Entry. Options are: <code>true</code> and <code>false</code></p>
+         * <p>CCD is an ACH SEC Code that can be used in ACH transactions by the
+         * user that indicates the transaction is a Corporate Credit or Debit
+         * Entry.</p>
          */
         @JsonSetter(value = "acceptCCD", nulls = Nulls.SKIP)
         public Builder acceptCcd(Optional<Boolean> acceptCcd) {
@@ -132,7 +137,9 @@ public final class AchSetup implements IAchSetup {
         }
 
         /**
-         * <p>PPD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Prearranged Payment and Deposit.</p>
+         * <p>PPD is an ACH SEC Code that can be used in ACH transactions by the
+         * user that indicates the transaction is a Prearranged Payment and
+         * Deposit.</p>
          */
         @JsonSetter(value = "acceptPPD", nulls = Nulls.SKIP)
         public Builder acceptPpd(Optional<Boolean> acceptPpd) {
@@ -146,7 +153,9 @@ public final class AchSetup implements IAchSetup {
         }
 
         /**
-         * <p>Web is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Internet Initiated/Mobile Entry Options are <code>true</code> and <code>false</code>.</p>
+         * <p>Web is an ACH SEC Code that can be used in ACH transactions by the
+         * user that indicates the transaction is an Internet-Initiated/Mobile
+         * Entry.</p>
          */
         @JsonSetter(value = "acceptWeb", nulls = Nulls.SKIP)
         public Builder acceptWeb(Optional<Boolean> acceptWeb) {

@@ -11,13 +11,13 @@ import io.github.payabli.api.resources.invoice.requests.GetAttachedFileFromInvoi
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
-import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
-import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
-import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
-import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
-import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
-import io.github.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import io.github.payabli.api.types.FileContent;
+import io.github.payabli.api.types.GetInvoiceRecord;
+import io.github.payabli.api.types.InvoiceDataRequest;
+import io.github.payabli.api.types.InvoiceNumberResponse;
+import io.github.payabli.api.types.InvoiceResponseWithoutData;
+import io.github.payabli.api.types.QueryInvoiceResponse;
+import io.github.payabli.api.types.SendInvoiceResponse;
 import java.util.Map;
 
 public class InvoiceClient {
@@ -67,67 +67,6 @@ public class InvoiceClient {
     }
 
     /**
-     * Deletes a file attached to an invoice.
-     */
-    public InvoiceResponseWithoutData deleteAttachedFromInvoice(int idInvoice, String filename) {
-        return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).body();
-    }
-
-    /**
-     * Deletes a file attached to an invoice.
-     */
-    public InvoiceResponseWithoutData deleteAttachedFromInvoice(
-            int idInvoice, String filename, RequestOptions requestOptions) {
-        return this.rawClient
-                .deleteAttachedFromInvoice(idInvoice, filename, requestOptions)
-                .body();
-    }
-
-    /**
-     * Deletes a single invoice from an entrypoint.
-     */
-    public InvoiceResponseWithoutData deleteInvoice(int idInvoice) {
-        return this.rawClient.deleteInvoice(idInvoice).body();
-    }
-
-    /**
-     * Deletes a single invoice from an entrypoint.
-     */
-    public InvoiceResponseWithoutData deleteInvoice(int idInvoice, RequestOptions requestOptions) {
-        return this.rawClient.deleteInvoice(idInvoice, requestOptions).body();
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public InvoiceResponseWithoutData editInvoice(int idInvoice, InvoiceDataRequest body) {
-        return this.rawClient.editInvoice(idInvoice, body).body();
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public InvoiceResponseWithoutData editInvoice(
-            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
-        return this.rawClient.editInvoice(idInvoice, body, requestOptions).body();
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public InvoiceResponseWithoutData editInvoice(int idInvoice, EditInvoiceRequest request) {
-        return this.rawClient.editInvoice(idInvoice, request).body();
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public InvoiceResponseWithoutData editInvoice(
-            int idInvoice, EditInvoiceRequest request, RequestOptions requestOptions) {
-        return this.rawClient.editInvoice(idInvoice, request, requestOptions).body();
-    }
-
-    /**
      * Retrieves a file attached to an invoice.
      */
     public FileContent getAttachedFileFromInvoice(int idInvoice, String filename) {
@@ -164,6 +103,23 @@ public class InvoiceClient {
     }
 
     /**
+     * Deletes a file attached to an invoice.
+     */
+    public InvoiceResponseWithoutData deleteAttachedFromInvoice(int idInvoice, String filename) {
+        return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).body();
+    }
+
+    /**
+     * Deletes a file attached to an invoice.
+     */
+    public InvoiceResponseWithoutData deleteAttachedFromInvoice(
+            int idInvoice, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromInvoice(idInvoice, filename, requestOptions)
+                .body();
+    }
+
+    /**
      * Retrieves a single invoice by ID.
      */
     public GetInvoiceRecord getInvoice(int idInvoice) {
@@ -175,6 +131,50 @@ public class InvoiceClient {
      */
     public GetInvoiceRecord getInvoice(int idInvoice, RequestOptions requestOptions) {
         return this.rawClient.getInvoice(idInvoice, requestOptions).body();
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData editInvoice(int idInvoice, InvoiceDataRequest body) {
+        return this.rawClient.editInvoice(idInvoice, body).body();
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData editInvoice(
+            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return this.rawClient.editInvoice(idInvoice, body, requestOptions).body();
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData editInvoice(int idInvoice, EditInvoiceRequest request) {
+        return this.rawClient.editInvoice(idInvoice, request).body();
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public InvoiceResponseWithoutData editInvoice(
+            int idInvoice, EditInvoiceRequest request, RequestOptions requestOptions) {
+        return this.rawClient.editInvoice(idInvoice, request, requestOptions).body();
+    }
+
+    /**
+     * Deletes a single invoice from an entrypoint.
+     */
+    public InvoiceResponseWithoutData deleteInvoice(int idInvoice) {
+        return this.rawClient.deleteInvoice(idInvoice).body();
+    }
+
+    /**
+     * Deletes a single invoice from an entrypoint.
+     */
+    public InvoiceResponseWithoutData deleteInvoice(int idInvoice, RequestOptions requestOptions) {
+        return this.rawClient.deleteInvoice(idInvoice, requestOptions).body();
     }
 
     /**

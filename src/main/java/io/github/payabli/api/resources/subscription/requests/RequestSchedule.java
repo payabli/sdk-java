@@ -13,12 +13,16 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.subscription.types.SubscriptionRequestBody;
+import io.github.payabli.api.types.BillData;
+import io.github.payabli.api.types.PaymentDetail;
+import io.github.payabli.api.types.PayorDataRequest;
+import io.github.payabli.api.types.RequestSchedulePaymentMethod;
+import io.github.payabli.api.types.ScheduleDetail;
+import io.github.payabli.api.types.SubscriptionType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RequestSchedule.Builder.class)
@@ -27,34 +31,139 @@ public final class RequestSchedule {
 
     private final Optional<Boolean> forceCustomerCreation;
 
-    private final SubscriptionRequestBody body;
+    private final Optional<PayorDataRequest> customerData;
+
+    private final Optional<String> entryPoint;
+
+    private final Optional<BillData> invoiceData;
+
+    private final Optional<PaymentDetail> paymentDetails;
+
+    private final Optional<RequestSchedulePaymentMethod> paymentMethod;
+
+    private final Optional<ScheduleDetail> scheduleDetails;
+
+    private final Optional<Boolean> setPause;
+
+    private final Optional<String> source;
+
+    private final Optional<String> subdomain;
+
+    private final Optional<SubscriptionType> subscriptionType;
 
     private final Map<String, Object> additionalProperties;
 
     private RequestSchedule(
             Optional<String> idempotencyKey,
             Optional<Boolean> forceCustomerCreation,
-            SubscriptionRequestBody body,
+            Optional<PayorDataRequest> customerData,
+            Optional<String> entryPoint,
+            Optional<BillData> invoiceData,
+            Optional<PaymentDetail> paymentDetails,
+            Optional<RequestSchedulePaymentMethod> paymentMethod,
+            Optional<ScheduleDetail> scheduleDetails,
+            Optional<Boolean> setPause,
+            Optional<String> source,
+            Optional<String> subdomain,
+            Optional<SubscriptionType> subscriptionType,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.forceCustomerCreation = forceCustomerCreation;
-        this.body = body;
+        this.customerData = customerData;
+        this.entryPoint = entryPoint;
+        this.invoiceData = invoiceData;
+        this.paymentDetails = paymentDetails;
+        this.paymentMethod = paymentMethod;
+        this.scheduleDetails = scheduleDetails;
+        this.setPause = setPause;
+        this.source = source;
+        this.subdomain = subdomain;
+        this.subscriptionType = subscriptionType;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return <em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+     */
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
     }
 
-    @JsonProperty("forceCustomerCreation")
+    /**
+     * @return When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to <code>false</code>.
+     */
+    @JsonIgnore
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
     }
 
-    @JsonProperty("body")
-    public SubscriptionRequestBody getBody() {
-        return body;
+    /**
+     * @return Object describing the customer/payor.
+     */
+    @JsonProperty("customerData")
+    public Optional<PayorDataRequest> getCustomerData() {
+        return customerData;
+    }
+
+    @JsonProperty("entryPoint")
+    public Optional<String> getEntryPoint() {
+        return entryPoint;
+    }
+
+    /**
+     * @return Object describing an Invoice linked to the subscription.
+     */
+    @JsonProperty("invoiceData")
+    public Optional<BillData> getInvoiceData() {
+        return invoiceData;
+    }
+
+    /**
+     * @return Object describing details of the payment. For Regular subscriptions, skip a payment by setting <code>totalAmount</code> to 0; payments pause until you update it to a non-zero value, and <code>serviceFee</code> must also be 0 when <code>totalAmount</code> is 0. For BalanceDriven subscriptions, any <code>totalAmount</code> you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
+     */
+    @JsonProperty("paymentDetails")
+    public Optional<PaymentDetail> getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    /**
+     * @return Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
+     */
+    @JsonProperty("paymentMethod")
+    public Optional<RequestSchedulePaymentMethod> getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    /**
+     * @return Object describing the schedule for subscription.
+     */
+    @JsonProperty("scheduleDetails")
+    public Optional<ScheduleDetail> getScheduleDetails() {
+        return scheduleDetails;
+    }
+
+    @JsonProperty("setPause")
+    public Optional<Boolean> getSetPause() {
+        return setPause;
+    }
+
+    @JsonProperty("source")
+    public Optional<String> getSource() {
+        return source;
+    }
+
+    @JsonProperty("subdomain")
+    public Optional<String> getSubdomain() {
+        return subdomain;
+    }
+
+    /**
+     * @return Subscription type. Defaults to <code>Regular</code> when omitted. Can't be changed after the subscription is created. If you send it to the update endpoint, it's ignored.
+     */
+    @JsonProperty("subscriptionType")
+    public Optional<SubscriptionType> getSubscriptionType() {
+        return subscriptionType;
     }
 
     @java.lang.Override
@@ -71,12 +180,33 @@ public final class RequestSchedule {
     private boolean equalTo(RequestSchedule other) {
         return idempotencyKey.equals(other.idempotencyKey)
                 && forceCustomerCreation.equals(other.forceCustomerCreation)
-                && body.equals(other.body);
+                && customerData.equals(other.customerData)
+                && entryPoint.equals(other.entryPoint)
+                && invoiceData.equals(other.invoiceData)
+                && paymentDetails.equals(other.paymentDetails)
+                && paymentMethod.equals(other.paymentMethod)
+                && scheduleDetails.equals(other.scheduleDetails)
+                && setPause.equals(other.setPause)
+                && source.equals(other.source)
+                && subdomain.equals(other.subdomain)
+                && subscriptionType.equals(other.subscriptionType);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey, this.forceCustomerCreation, this.body);
+        return Objects.hash(
+                this.idempotencyKey,
+                this.forceCustomerCreation,
+                this.customerData,
+                this.entryPoint,
+                this.invoiceData,
+                this.paymentDetails,
+                this.paymentMethod,
+                this.scheduleDetails,
+                this.setPause,
+                this.source,
+                this.subdomain,
+                this.subscriptionType);
     }
 
     @java.lang.Override
@@ -84,97 +214,234 @@ public final class RequestSchedule {
         return ObjectMappers.stringify(this);
     }
 
-    public static BodyStage builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    public interface BodyStage {
-        _FinalStage body(@NotNull SubscriptionRequestBody body);
-
-        Builder from(RequestSchedule other);
-    }
-
-    public interface _FinalStage {
-        RequestSchedule build();
-
-        _FinalStage additionalProperty(String key, Object value);
-
-        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-        _FinalStage idempotencyKey(Optional<String> idempotencyKey);
-
-        _FinalStage idempotencyKey(String idempotencyKey);
-
-        _FinalStage forceCustomerCreation(Optional<Boolean> forceCustomerCreation);
-
-        _FinalStage forceCustomerCreation(Boolean forceCustomerCreation);
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements BodyStage, _FinalStage {
-        private SubscriptionRequestBody body;
+    public static final class Builder {
+        private Optional<String> idempotencyKey = Optional.empty();
 
         private Optional<Boolean> forceCustomerCreation = Optional.empty();
 
-        private Optional<String> idempotencyKey = Optional.empty();
+        private Optional<PayorDataRequest> customerData = Optional.empty();
+
+        private Optional<String> entryPoint = Optional.empty();
+
+        private Optional<BillData> invoiceData = Optional.empty();
+
+        private Optional<PaymentDetail> paymentDetails = Optional.empty();
+
+        private Optional<RequestSchedulePaymentMethod> paymentMethod = Optional.empty();
+
+        private Optional<ScheduleDetail> scheduleDetails = Optional.empty();
+
+        private Optional<Boolean> setPause = Optional.empty();
+
+        private Optional<String> source = Optional.empty();
+
+        private Optional<String> subdomain = Optional.empty();
+
+        private Optional<SubscriptionType> subscriptionType = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @java.lang.Override
         public Builder from(RequestSchedule other) {
             idempotencyKey(other.getIdempotencyKey());
             forceCustomerCreation(other.getForceCustomerCreation());
-            body(other.getBody());
+            customerData(other.getCustomerData());
+            entryPoint(other.getEntryPoint());
+            invoiceData(other.getInvoiceData());
+            paymentDetails(other.getPaymentDetails());
+            paymentMethod(other.getPaymentMethod());
+            scheduleDetails(other.getScheduleDetails());
+            setPause(other.getSetPause());
+            source(other.getSource());
+            subdomain(other.getSubdomain());
+            subscriptionType(other.getSubscriptionType());
             return this;
         }
 
-        @java.lang.Override
-        @JsonSetter("body")
-        public _FinalStage body(@NotNull SubscriptionRequestBody body) {
-            this.body = Objects.requireNonNull(body, "body must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage forceCustomerCreation(Boolean forceCustomerCreation) {
-            this.forceCustomerCreation = Optional.ofNullable(forceCustomerCreation);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "forceCustomerCreation", nulls = Nulls.SKIP)
-        public _FinalStage forceCustomerCreation(Optional<Boolean> forceCustomerCreation) {
-            this.forceCustomerCreation = forceCustomerCreation;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage idempotencyKey(String idempotencyKey) {
-            this.idempotencyKey = Optional.ofNullable(idempotencyKey);
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
+        public Builder idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
             return this;
         }
 
-        @java.lang.Override
-        public RequestSchedule build() {
-            return new RequestSchedule(idempotencyKey, forceCustomerCreation, body, additionalProperties);
+        public Builder idempotencyKey(String idempotencyKey) {
+            this.idempotencyKey = Optional.ofNullable(idempotencyKey);
+            return this;
         }
 
-        @java.lang.Override
+        /**
+         * <p>When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to <code>false</code>.</p>
+         */
+        @JsonSetter(value = "forceCustomerCreation", nulls = Nulls.SKIP)
+        public Builder forceCustomerCreation(Optional<Boolean> forceCustomerCreation) {
+            this.forceCustomerCreation = forceCustomerCreation;
+            return this;
+        }
+
+        public Builder forceCustomerCreation(Boolean forceCustomerCreation) {
+            this.forceCustomerCreation = Optional.ofNullable(forceCustomerCreation);
+            return this;
+        }
+
+        /**
+         * <p>Object describing the customer/payor.</p>
+         */
+        @JsonSetter(value = "customerData", nulls = Nulls.SKIP)
+        public Builder customerData(Optional<PayorDataRequest> customerData) {
+            this.customerData = customerData;
+            return this;
+        }
+
+        public Builder customerData(PayorDataRequest customerData) {
+            this.customerData = Optional.ofNullable(customerData);
+            return this;
+        }
+
+        @JsonSetter(value = "entryPoint", nulls = Nulls.SKIP)
+        public Builder entryPoint(Optional<String> entryPoint) {
+            this.entryPoint = entryPoint;
+            return this;
+        }
+
+        public Builder entryPoint(String entryPoint) {
+            this.entryPoint = Optional.ofNullable(entryPoint);
+            return this;
+        }
+
+        /**
+         * <p>Object describing an Invoice linked to the subscription.</p>
+         */
+        @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
+        public Builder invoiceData(Optional<BillData> invoiceData) {
+            this.invoiceData = invoiceData;
+            return this;
+        }
+
+        public Builder invoiceData(BillData invoiceData) {
+            this.invoiceData = Optional.ofNullable(invoiceData);
+            return this;
+        }
+
+        /**
+         * <p>Object describing details of the payment. For Regular subscriptions, skip a payment by setting <code>totalAmount</code> to 0; payments pause until you update it to a non-zero value, and <code>serviceFee</code> must also be 0 when <code>totalAmount</code> is 0. For BalanceDriven subscriptions, any <code>totalAmount</code> you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.</p>
+         */
+        @JsonSetter(value = "paymentDetails", nulls = Nulls.SKIP)
+        public Builder paymentDetails(Optional<PaymentDetail> paymentDetails) {
+            this.paymentDetails = paymentDetails;
+            return this;
+        }
+
+        public Builder paymentDetails(PaymentDetail paymentDetails) {
+            this.paymentDetails = Optional.ofNullable(paymentDetails);
+            return this;
+        }
+
+        /**
+         * <p>Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.</p>
+         */
+        @JsonSetter(value = "paymentMethod", nulls = Nulls.SKIP)
+        public Builder paymentMethod(Optional<RequestSchedulePaymentMethod> paymentMethod) {
+            this.paymentMethod = paymentMethod;
+            return this;
+        }
+
+        public Builder paymentMethod(RequestSchedulePaymentMethod paymentMethod) {
+            this.paymentMethod = Optional.ofNullable(paymentMethod);
+            return this;
+        }
+
+        /**
+         * <p>Object describing the schedule for subscription.</p>
+         */
+        @JsonSetter(value = "scheduleDetails", nulls = Nulls.SKIP)
+        public Builder scheduleDetails(Optional<ScheduleDetail> scheduleDetails) {
+            this.scheduleDetails = scheduleDetails;
+            return this;
+        }
+
+        public Builder scheduleDetails(ScheduleDetail scheduleDetails) {
+            this.scheduleDetails = Optional.ofNullable(scheduleDetails);
+            return this;
+        }
+
+        @JsonSetter(value = "setPause", nulls = Nulls.SKIP)
+        public Builder setPause(Optional<Boolean> setPause) {
+            this.setPause = setPause;
+            return this;
+        }
+
+        public Builder setPause(Boolean setPause) {
+            this.setPause = Optional.ofNullable(setPause);
+            return this;
+        }
+
+        @JsonSetter(value = "source", nulls = Nulls.SKIP)
+        public Builder source(Optional<String> source) {
+            this.source = source;
+            return this;
+        }
+
+        public Builder source(String source) {
+            this.source = Optional.ofNullable(source);
+            return this;
+        }
+
+        @JsonSetter(value = "subdomain", nulls = Nulls.SKIP)
+        public Builder subdomain(Optional<String> subdomain) {
+            this.subdomain = subdomain;
+            return this;
+        }
+
+        public Builder subdomain(String subdomain) {
+            this.subdomain = Optional.ofNullable(subdomain);
+            return this;
+        }
+
+        /**
+         * <p>Subscription type. Defaults to <code>Regular</code> when omitted. Can't be changed after the subscription is created. If you send it to the update endpoint, it's ignored.</p>
+         */
+        @JsonSetter(value = "subscriptionType", nulls = Nulls.SKIP)
+        public Builder subscriptionType(Optional<SubscriptionType> subscriptionType) {
+            this.subscriptionType = subscriptionType;
+            return this;
+        }
+
+        public Builder subscriptionType(SubscriptionType subscriptionType) {
+            this.subscriptionType = Optional.ofNullable(subscriptionType);
+            return this;
+        }
+
+        public RequestSchedule build() {
+            return new RequestSchedule(
+                    idempotencyKey,
+                    forceCustomerCreation,
+                    customerData,
+                    entryPoint,
+                    invoiceData,
+                    paymentDetails,
+                    paymentMethod,
+                    scheduleDetails,
+                    setPause,
+                    source,
+                    subdomain,
+                    subscriptionType,
+                    additionalProperties);
+        }
+
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
-        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

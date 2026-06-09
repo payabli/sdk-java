@@ -15,11 +15,11 @@ import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichRequest;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.resources.vendor.requests.VendorEnrichRequest;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
+import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.VendorData;
+import io.github.payabli.api.types.VendorEnrichResponse;
 import io.github.payabli.api.types.VendorQueryRecord;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -118,7 +118,7 @@ public class AsyncRawVendorClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -128,8 +128,7 @@ public class AsyncRawVendorClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -154,16 +153,16 @@ public class AsyncRawVendorClient {
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> deleteVendor(int idVendor) {
-        return deleteVendor(idVendor, null);
+    public CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> getVendor(int idVendor) {
+        return getVendor(idVendor, null);
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> deleteVendor(
+    public CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> getVendor(
             int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -176,7 +175,7 @@ public class AsyncRawVendorClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -184,7 +183,7 @@ public class AsyncRawVendorClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -192,37 +191,9 @@ public class AsyncRawVendorClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, PayabliApiResponseVendors.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class),
                                 response));
                         return;
-                    }
-                    try {
-                        switch (response.code()) {
-                            case 400:
-                                future.completeExceptionally(new BadRequestError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 401:
-                                future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 500:
-                                future.completeExceptionally(new InternalServerError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 503:
-                                future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
-                                        response));
-                                return;
-                        }
-                    } catch (JsonProcessingException ignored) {
-                        // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
@@ -318,7 +289,7 @@ public class AsyncRawVendorClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -328,8 +299,7 @@ public class AsyncRawVendorClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -354,16 +324,16 @@ public class AsyncRawVendorClient {
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> getVendor(int idVendor) {
-        return getVendor(idVendor, null);
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> deleteVendor(int idVendor) {
+        return deleteVendor(idVendor, null);
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> getVendor(
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> deleteVendor(
             int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -376,7 +346,7 @@ public class AsyncRawVendorClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("GET", null)
+                .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -384,7 +354,7 @@ public class AsyncRawVendorClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -392,9 +362,36 @@ public class AsyncRawVendorClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class),
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, PayabliApiResponseVendors.class),
                                 response));
                         return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
@@ -474,7 +471,7 @@ public class AsyncRawVendorClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -484,8 +481,7 @@ public class AsyncRawVendorClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }

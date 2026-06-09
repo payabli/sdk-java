@@ -11,33 +11,35 @@ import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentValidate;
 import io.github.payabli.api.resources.moneyin.requests.RequestRefund;
 import io.github.payabli.api.resources.moneyin.requests.SendReceipt2TransRequest;
-import io.github.payabli.api.resources.moneyin.types.AuthResponse;
-import io.github.payabli.api.resources.moneyin.types.CapturePaymentDetails;
-import io.github.payabli.api.resources.moneyin.types.CaptureRequest;
-import io.github.payabli.api.resources.moneyin.types.CaptureResponse;
-import io.github.payabli.api.resources.moneyin.types.PayabliApiResponseGetPaid;
-import io.github.payabli.api.resources.moneyin.types.ReceiptResponse;
-import io.github.payabli.api.resources.moneyin.types.RefundResponse;
-import io.github.payabli.api.resources.moneyin.types.RefundWithInstructionsResponse;
-import io.github.payabli.api.resources.moneyin.types.RequestCreditPaymentMethod;
-import io.github.payabli.api.resources.moneyin.types.RequestPaymentValidatePaymentMethod;
-import io.github.payabli.api.resources.moneyin.types.RequestPaymentValidatePaymentMethodMethod;
-import io.github.payabli.api.resources.moneyin.types.ReverseResponse;
-import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
-import io.github.payabli.api.resources.moneyin.types.ValidateResponse;
-import io.github.payabli.api.resources.moneyin.types.VoidResponse;
-import io.github.payabli.api.resources.v2moneyintypes.types.V2TransactionResponseWrapper;
 import io.github.payabli.api.types.Achaccounttype;
+import io.github.payabli.api.types.AuthResponse;
+import io.github.payabli.api.types.CapturePaymentDetails;
+import io.github.payabli.api.types.CaptureRequest;
+import io.github.payabli.api.types.CaptureResponse;
 import io.github.payabli.api.types.PayMethodCredit;
+import io.github.payabli.api.types.PayMethodCreditMethod;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponse0;
+import io.github.payabli.api.types.PayabliApiResponseGetPaid;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentDetailCredit;
 import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
+import io.github.payabli.api.types.ReceiptResponse;
 import io.github.payabli.api.types.RefundDetail;
+import io.github.payabli.api.types.RefundResponse;
+import io.github.payabli.api.types.RefundWithInstructionsResponse;
+import io.github.payabli.api.types.RequestCreditPaymentMethod;
+import io.github.payabli.api.types.RequestCreditPaymentMethodMethod;
+import io.github.payabli.api.types.RequestPaymentValidatePaymentMethod;
+import io.github.payabli.api.types.RequestPaymentValidatePaymentMethodMethod;
+import io.github.payabli.api.types.ReverseResponse;
 import io.github.payabli.api.types.SplitFundingRefundContent;
+import io.github.payabli.api.types.TransRequestBody;
 import io.github.payabli.api.types.TransactionQueryRecordsCustomer;
+import io.github.payabli.api.types.V2TransactionResponseWrapper;
+import io.github.payabli.api.types.ValidateResponse;
+import io.github.payabli.api.types.VoidResponse;
 import java.util.Arrays;
 import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
@@ -74,7 +76,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"pageIdentifier\":null,\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":\"No address or ZIP match only\",\"cvvResponseText\":\"CVV2/CVC2 no match\",\"customerId\":4440,\"methodReferenceId\":null}}"));
+                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"pageIdentifier\":null,\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":\"No address or ZIP match only\",\"cvvResponseText\":\"CVV2/CVC2 no match\",\"customerId\":4440,\"methodReferenceId\":null}}"));
         AuthResponse response = client.moneyIn()
                 .authorize(RequestPaymentAuthorize.builder()
                         .body(TransRequestBody.builder()
@@ -85,6 +87,7 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
+                                        .method(PayMethodCreditMethod.CARD)
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -93,7 +96,7 @@ public class MoneyInWireTest {
                                 .customerData(PayorDataRequest.builder()
                                         .customerId(4440L)
                                         .build())
-                                .entryPoint("f743aed24a")
+                                .entryPoint("8cfec329267")
                                 .ipaddress("255.255.255.255")
                                 .build())
                         .build());
@@ -107,7 +110,7 @@ public class MoneyInWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"customerId\": 4440\n"
                 + "  },\n"
-                + "  \"entryPoint\": \"f743aed24a\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"ipaddress\": \"255.255.255.255\",\n"
                 + "  \"paymentDetails\": {\n"
                 + "    \"serviceFee\": 0,\n"
@@ -160,7 +163,7 @@ public class MoneyInWireTest {
                 + "  \"pageIdentifier\": null,\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"123456\",\n"
-                + "    \"referenceId\": \"10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"Authorized\",\n"
                 + "    \"avsResponseText\": \"No address or ZIP match only\",\n"
@@ -206,7 +209,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13\",\"resultCode\":1,\"resultText\":\"SUCCESS\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"SUCCESS\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
         CaptureResponse response = client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -224,7 +227,7 @@ public class MoneyInWireTest {
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"123456\",\n"
-                + "    \"referenceId\": \"10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"SUCCESS\",\n"
                 + "    \"avsResponseText\": null,\n"
@@ -270,7 +273,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13\",\"resultCode\":1,\"resultText\":\"SUCCESS\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"SUCCESS\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
         CaptureResponse response = client.moneyIn()
                 .captureAuth(
                         "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
@@ -331,7 +334,7 @@ public class MoneyInWireTest {
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"123456\",\n"
-                + "    \"referenceId\": \"10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"SUCCESS\",\n"
                 + "    \"avsResponseText\": null,\n"
@@ -377,25 +380,26 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseData\":{\"AuthCode\":\"AuthCode\",\"CustomerId\":4440,\"methodReferenceId\":null,\"ReferenceId\":\"45-erre-324\",\"ResultCode\":1,\"ResultText\":\"Approved\"},\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseData\":{\"AuthCode\":\"AuthCode\",\"CustomerId\":4440,\"methodReferenceId\":null,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\"},\"responseText\":\"Success\"}"));
         PayabliApiResponse0 response = client.moneyIn()
                 .credit(RequestCredit.builder()
                         .customerData(PayorDataRequest.builder()
                                 .billingAddress1("5127 Linkwood ave")
-                                .customerNumber("100")
+                                .customerNumber("C-90010")
                                 .build())
                         .paymentDetails(PaymentDetailCredit.builder()
                                 .totalAmount(1.0)
                                 .serviceFee(0.0)
                                 .build())
                         .paymentMethod(RequestCreditPaymentMethod.builder()
+                                .method(RequestCreditPaymentMethodMethod.ACH)
                                 .achAccount("88354454")
                                 .achAccountType(Achaccounttype.CHECKING)
                                 .achHolder("John Smith")
                                 .achRouting("021000021")
                                 .build())
                         .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-                        .entrypoint("my-entrypoint")
+                        .entrypoint("8cfec329267")
                         .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -412,9 +416,9 @@ public class MoneyInWireTest {
                 + "{\n"
                 + "  \"customerData\": {\n"
                 + "    \"billingAddress1\": \"5127 Linkwood ave\",\n"
-                + "    \"customerNumber\": \"100\"\n"
+                + "    \"customerNumber\": \"C-90010\"\n"
                 + "  },\n"
-                + "  \"entrypoint\": \"my-entrypoint\",\n"
+                + "  \"entrypoint\": \"8cfec329267\",\n"
                 + "  \"paymentDetails\": {\n"
                 + "    \"serviceFee\": 0,\n"
                 + "    \"totalAmount\": 1\n"
@@ -465,7 +469,7 @@ public class MoneyInWireTest {
                 + "    \"AuthCode\": \"AuthCode\",\n"
                 + "    \"CustomerId\": 4440,\n"
                 + "    \"methodReferenceId\": null,\n"
-                + "    \"ReferenceId\": \"45-erre-324\",\n"
+                + "    \"ReferenceId\": \"129-219\",\n"
                 + "    \"ResultCode\": 1,\n"
                 + "    \"ResultText\": \"Approved\"\n"
                 + "  },\n"
@@ -554,7 +558,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"pageIdentifier\":null,\"responseData\":{\"authCode\":\"VTLMC1\",\"referenceId\":\"575-c490247af7ed403d86ba583507be61b0\",\"resultCode\":1,\"resultText\":\"Approved\",\"avsResponseText\":\"Exact match, Street address and 5-digit ZIP code both match\",\"cvvResponseText\":\"Not processed. Indicates that the expiration date was not provided with the request, or that the card does not have a valid CVV2 code. If the expiration date was not included with the request, resubmit the request with the expiration date.\",\"customerId\":41892,\"methodReferenceId\":null}}"));
+                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"pageIdentifier\":null,\"responseData\":{\"authCode\":\"VTLMC1\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Approved\",\"avsResponseText\":\"Exact match, Street address and 5-digit ZIP code both match\",\"cvvResponseText\":\"Not processed. Indicates that the expiration date was not provided with the request, or that the card does not have a valid CVV2 code. If the expiration date was not included with the request, resubmit the request with the expiration date.\",\"customerId\":4440,\"methodReferenceId\":null}}"));
         PayabliApiResponseGetPaid response = client.moneyIn()
                 .getpaid(RequestPayment.builder()
                         .body(TransRequestBody.builder()
@@ -565,6 +569,7 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
+                                        .method(PayMethodCreditMethod.CARD)
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -573,7 +578,7 @@ public class MoneyInWireTest {
                                 .customerData(PayorDataRequest.builder()
                                         .customerId(4440L)
                                         .build())
-                                .entryPoint("f743aed24a")
+                                .entryPoint("8cfec329267")
                                 .ipaddress("255.255.255.255")
                                 .build())
                         .build());
@@ -587,7 +592,7 @@ public class MoneyInWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"customerId\": 4440\n"
                 + "  },\n"
-                + "  \"entryPoint\": \"f743aed24a\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"ipaddress\": \"255.255.255.255\",\n"
                 + "  \"paymentDetails\": {\n"
                 + "    \"serviceFee\": 0,\n"
@@ -640,12 +645,12 @@ public class MoneyInWireTest {
                 + "  \"pageIdentifier\": null,\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"VTLMC1\",\n"
-                + "    \"referenceId\": \"575-c490247af7ed403d86ba583507be61b0\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"Approved\",\n"
                 + "    \"avsResponseText\": \"Exact match, Street address and 5-digit ZIP code both match\",\n"
                 + "    \"cvvResponseText\": \"Not processed. Indicates that the expiration date was not provided with the request, or that the card does not have a valid CVV2 code. If the expiration date was not included with the request, resubmit the request with the expiration date.\",\n"
-                + "    \"customerId\": 41892,\n"
+                + "    \"customerId\": 4440,\n"
                 + "    \"methodReferenceId\": null\n"
                 + "  }\n"
                 + "}";
@@ -686,7 +691,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"A0000\",\"referenceId\":\"255-fb61db4171334aa79224b019f090e4c5\",\"resultCode\":1,\"resultText\":\"REVERSED\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"A0000\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"REVERSED\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
         ReverseResponse response = client.moneyIn().reverse("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -704,7 +709,7 @@ public class MoneyInWireTest {
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"A0000\",\n"
-                + "    \"referenceId\": \"255-fb61db4171334aa79224b019f090e4c5\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"REVERSED\",\n"
                 + "    \"avsResponseText\": null,\n"
@@ -750,7 +755,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":{\"authCode\":\"A0000\",\"expectedProcessingDateTime\":\"2025-02-15T10:30:00Z\",\"referenceId\":\"10-3ffa27df-b171-44e0-b251-e95fbfc7a723\",\"resultCode\":10,\"resultText\":\"INITIATED\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null},\"pageidentifier\":null}"));
+                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":{\"authCode\":\"A0000\",\"expectedProcessingDateTime\":\"2025-02-15 10:30:00+00:00\",\"referenceId\":\"129-219\",\"resultCode\":10,\"resultText\":\"INITIATED\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null},\"pageidentifier\":null}"));
         RefundResponse response = client.moneyIn().refund("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -765,8 +770,8 @@ public class MoneyInWireTest {
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"A0000\",\n"
-                + "    \"expectedProcessingDateTime\": \"2025-02-15T10:30:00Z\",\n"
-                + "    \"referenceId\": \"10-3ffa27df-b171-44e0-b251-e95fbfc7a723\",\n"
+                + "    \"expectedProcessingDateTime\": \"2025-02-15 10:30:00+00:00\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 10,\n"
                 + "    \"resultText\": \"INITIATED\",\n"
                 + "    \"avsResponseText\": null,\n"
@@ -813,7 +818,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":{\"authCode\":\"\",\"referenceId\":\"288-a1192b75-99e9-4d43-8af1-7ae9ab7da4f4\",\"resultCode\":1,\"resultText\":\"CAPTURED\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null},\"pageidentifier\":null}"));
+                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":{\"authCode\":\"\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"CAPTURED\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null},\"pageidentifier\":null}"));
         RefundWithInstructionsResponse response = client.moneyIn()
                 .refundWithInstructions(
                         "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
@@ -907,7 +912,7 @@ public class MoneyInWireTest {
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"\",\n"
-                + "    \"referenceId\": \"288-a1192b75-99e9-4d43-8af1-7ae9ab7da4f4\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"CAPTURED\",\n"
                 + "    \"avsResponseText\": null,\n"
@@ -954,7 +959,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseData\":{\"authCode\":null,\"avsResponseText\":null,\"customerId\":4440,\"cvvResponseText\":null,\"referenceId\":\"148-7e1528b9b7ab56d0bf3b837237b84479\",\"resultCode\":1,\"resultText\":\"transaction processed.\"},\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"responseData\":{\"authCode\":null,\"avsResponseText\":null,\"customerId\":4440,\"cvvResponseText\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"transaction processed.\"},\"responseText\":\"Success\"}"));
         PayabliApiResponse response = client.moneyIn().reverseCredit("45-as456777hhhhhhhhhh77777777-324");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -971,7 +976,7 @@ public class MoneyInWireTest {
                 + "    \"avsResponseText\": null,\n"
                 + "    \"customerId\": 4440,\n"
                 + "    \"cvvResponseText\": null,\n"
-                + "    \"referenceId\": \"148-7e1528b9b7ab56d0bf3b837237b84479\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"transaction processed.\"\n"
                 + "  },\n"
@@ -1069,10 +1074,10 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseData\":{\"authCode\":\"\",\"referenceId\":\"\",\"resultCode\":1,\"resultText\":\"Validated\",\"avsResponseText\":\"Zip code provided\",\"cvvResponseText\":\"\",\"customerId\":0,\"methodReferenceId\":null},\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"responseData\":{\"authCode\":\"\",\"referenceId\":\"\",\"resultCode\":1,\"resultText\":\"Validated\",\"avsResponseText\":\"Zip code provided\",\"cvvResponseText\":\"\",\"customerId\":4440,\"methodReferenceId\":null},\"responseText\":\"Success\"}"));
         ValidateResponse response = client.moneyIn()
                 .validate(RequestPaymentValidate.builder()
-                        .entryPoint("entry132")
+                        .entryPoint("8cfec329267")
                         .paymentMethod(RequestPaymentValidatePaymentMethod.builder()
                                 .method(RequestPaymentValidatePaymentMethodMethod.CARD)
                                 .cardnumber("4360000001000005")
@@ -1095,7 +1100,7 @@ public class MoneyInWireTest {
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
                 + "{\n"
-                + "  \"entryPoint\": \"entry132\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"paymentMethod\": {\n"
                 + "    \"method\": \"card\",\n"
                 + "    \"cardnumber\": \"4360000001000005\",\n"
@@ -1144,7 +1149,7 @@ public class MoneyInWireTest {
                 + "    \"resultText\": \"Validated\",\n"
                 + "    \"avsResponseText\": \"Zip code provided\",\n"
                 + "    \"cvvResponseText\": \"\",\n"
-                + "    \"customerId\": 0,\n"
+                + "    \"customerId\": 4440,\n"
                 + "    \"methodReferenceId\": null\n"
                 + "  },\n"
                 + "  \"responseText\": \"Success\"\n"
@@ -1186,7 +1191,7 @@ public class MoneyInWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"132-9eab3dfe958146639944aebcab3e9e28\",\"resultCode\":1,\"resultText\":\"Transaction Void Successful\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":\"123456\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Transaction Void Successful\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"methodReferenceId\":null}}"));
         VoidResponse response = client.moneyIn().void_("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -1204,7 +1209,7 @@ public class MoneyInWireTest {
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"responseData\": {\n"
                 + "    \"authCode\": \"123456\",\n"
-                + "    \"referenceId\": \"132-9eab3dfe958146639944aebcab3e9e28\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"Transaction Void Successful\",\n"
                 + "    \"avsResponseText\": null,\n"
@@ -1259,6 +1264,7 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
+                                        .method(PayMethodCreditMethod.CARD)
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -1267,7 +1273,7 @@ public class MoneyInWireTest {
                                 .customerData(PayorDataRequest.builder()
                                         .customerId(4440L)
                                         .build())
-                                .entryPoint("f743aed24a")
+                                .entryPoint("8cfec329267")
                                 .ipaddress("255.255.255.255")
                                 .build())
                         .build());
@@ -1281,7 +1287,7 @@ public class MoneyInWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"customerId\": 4440\n"
                 + "  },\n"
-                + "  \"entryPoint\": \"f743aed24a\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"ipaddress\": \"255.255.255.255\",\n"
                 + "  \"paymentDetails\": {\n"
                 + "    \"serviceFee\": 0,\n"
@@ -1375,6 +1381,7 @@ public class MoneyInWireTest {
                                 .paymentMethod(PaymentMethod.of(PayMethodCredit.builder()
                                         .cardexp("02/27")
                                         .cardnumber("4111111111111111")
+                                        .method(PayMethodCreditMethod.CARD)
                                         .cardcvv(Optional.of("999"))
                                         .cardHolder(Optional.of("John Cassian"))
                                         .cardzip(Optional.of("12345"))
@@ -1383,7 +1390,7 @@ public class MoneyInWireTest {
                                 .customerData(PayorDataRequest.builder()
                                         .customerId(4440L)
                                         .build())
-                                .entryPoint("f743aed24a")
+                                .entryPoint("8cfec329267")
                                 .ipaddress("255.255.255.255")
                                 .build())
                         .build());
@@ -1397,7 +1404,7 @@ public class MoneyInWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"customerId\": 4440\n"
                 + "  },\n"
-                + "  \"entryPoint\": \"f743aed24a\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"ipaddress\": \"255.255.255.255\",\n"
                 + "  \"paymentDetails\": {\n"
                 + "    \"serviceFee\": 0,\n"

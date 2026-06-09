@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationReportRequestContent.Builder.class)
 public final class NotificationReportRequestContent {
-    private final Optional<String> eventType;
+    private final Optional<NotificationReportRequestContentEventType> eventType;
 
     private final Optional<NotificationReportRequestContentFileFormat> fileFormat;
 
@@ -38,7 +38,7 @@ public final class NotificationReportRequestContent {
     private final Map<String, Object> additionalProperties;
 
     private NotificationReportRequestContent(
-            Optional<String> eventType,
+            Optional<NotificationReportRequestContentEventType> eventType,
             Optional<NotificationReportRequestContentFileFormat> fileFormat,
             Optional<List<KeyValueDuo>> internalData,
             Optional<NotificationReportRequestContentReportName> reportName,
@@ -60,7 +60,7 @@ public final class NotificationReportRequestContent {
      * @return The notification's event name.
      */
     @JsonProperty("eventType")
-    public Optional<String> getEventType() {
+    public Optional<NotificationReportRequestContentEventType> getEventType() {
         return eventType;
     }
 
@@ -153,7 +153,7 @@ public final class NotificationReportRequestContent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> eventType = Optional.empty();
+        private Optional<NotificationReportRequestContentEventType> eventType = Optional.empty();
 
         private Optional<NotificationReportRequestContentFileFormat> fileFormat = Optional.empty();
 
@@ -187,12 +187,12 @@ public final class NotificationReportRequestContent {
          * <p>The notification's event name.</p>
          */
         @JsonSetter(value = "eventType", nulls = Nulls.SKIP)
-        public Builder eventType(Optional<String> eventType) {
+        public Builder eventType(Optional<NotificationReportRequestContentEventType> eventType) {
             this.eventType = eventType;
             return this;
         }
 
-        public Builder eventType(String eventType) {
+        public Builder eventType(NotificationReportRequestContentEventType eventType) {
             this.eventType = Optional.ofNullable(eventType);
             return this;
         }

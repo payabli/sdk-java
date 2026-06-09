@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.ghostcard.requests.CreateGhostCardRequestBody;
 import io.github.payabli.api.resources.ghostcard.requests.UpdateCardRequestBody;
-import io.github.payabli.api.resources.ghostcard.types.CardStatus;
-import io.github.payabli.api.resources.ghostcard.types.CreateGhostCardResponse;
+import io.github.payabli.api.types.CardStatus;
+import io.github.payabli.api.types.CreateGhostCardResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -42,12 +42,12 @@ public class GhostCardWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"ReferenceId\":\"gc_abc123def456\",\"ResultCode\":1,\"ResultText\":\"Ghost Card created\"}}"));
+                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Ghost Card created\"}}"));
         CreateGhostCardResponse response = client.ghostCard()
                 .createGhostCard(
-                        "8cfec2e0fa",
+                        "8cfec329267",
                         CreateGhostCardRequestBody.builder()
-                                .vendorId(42L)
+                                .vendorId(456L)
                                 .expenseLimit(500.0)
                                 .amount(500.0)
                                 .maxNumberOfUses(3)
@@ -70,7 +70,7 @@ public class GhostCardWireTest {
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
                 + "{\n"
-                + "  \"vendorId\": 42,\n"
+                + "  \"vendorId\": 456,\n"
                 + "  \"expenseLimit\": 500,\n"
                 + "  \"amount\": 500,\n"
                 + "  \"maxNumberOfUses\": 3,\n"
@@ -121,7 +121,7 @@ public class GhostCardWireTest {
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"responseData\": {\n"
-                + "    \"ReferenceId\": \"gc_abc123def456\",\n"
+                + "    \"ReferenceId\": \"129-219\",\n"
                 + "    \"ResultCode\": 1,\n"
                 + "    \"ResultText\": \"Ghost Card created\"\n"
                 + "  }\n"
@@ -163,7 +163,7 @@ public class GhostCardWireTest {
                 new MockResponse().setResponseCode(200).setBody("{\"isSuccess\":true,\"responseText\":\"Success\"}"));
         PayabliApiResponse response = client.ghostCard()
                 .updateCard(
-                        "8cfec2e0fa",
+                        "8cfec329267",
                         UpdateCardRequestBody.builder()
                                 .cardToken("gc_abc123def456")
                                 .status(CardStatus.CANCELLED)

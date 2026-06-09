@@ -27,7 +27,7 @@ public final class ApplePayOrganizationUpdateData {
 
     private final Optional<String> jobId;
 
-    private final Optional<String> jobStatus;
+    private final Optional<JobStatus> jobStatus;
 
     private final Optional<Long> organizationId;
 
@@ -43,7 +43,7 @@ public final class ApplePayOrganizationUpdateData {
             Optional<OffsetDateTime> createdAt,
             Optional<String> id,
             Optional<String> jobId,
-            Optional<String> jobStatus,
+            Optional<JobStatus> jobStatus,
             Optional<Long> organizationId,
             Optional<String> type,
             Optional<OffsetDateTime> updatedAt,
@@ -79,7 +79,7 @@ public final class ApplePayOrganizationUpdateData {
     }
 
     @JsonProperty("jobStatus")
-    public Optional<String> getJobStatus() {
+    public Optional<JobStatus> getJobStatus() {
         return jobStatus;
     }
 
@@ -158,7 +158,7 @@ public final class ApplePayOrganizationUpdateData {
 
         private Optional<String> jobId = Optional.empty();
 
-        private Optional<String> jobStatus = Optional.empty();
+        private Optional<JobStatus> jobStatus = Optional.empty();
 
         private Optional<Long> organizationId = Optional.empty();
 
@@ -222,12 +222,12 @@ public final class ApplePayOrganizationUpdateData {
         }
 
         @JsonSetter(value = "jobStatus", nulls = Nulls.SKIP)
-        public Builder jobStatus(Optional<String> jobStatus) {
+        public Builder jobStatus(Optional<JobStatus> jobStatus) {
             this.jobStatus = jobStatus;
             return this;
         }
 
-        public Builder jobStatus(String jobStatus) {
+        public Builder jobStatus(JobStatus jobStatus) {
             this.jobStatus = Optional.ofNullable(jobStatus);
             return this;
         }

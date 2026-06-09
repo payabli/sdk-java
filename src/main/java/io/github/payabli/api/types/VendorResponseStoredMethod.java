@@ -52,6 +52,8 @@ public final class VendorResponseStoredMethod {
 
     private final Optional<String> methodType;
 
+    private final Optional<String> walletType;
+
     private final Optional<OffsetDateTime> lastUpdated;
 
     private final Optional<OffsetDateTime> cardUpdatedOn;
@@ -73,6 +75,7 @@ public final class VendorResponseStoredMethod {
             Optional<String> aba,
             Optional<String> postalCode,
             Optional<String> methodType,
+            Optional<String> walletType,
             Optional<OffsetDateTime> lastUpdated,
             Optional<OffsetDateTime> cardUpdatedOn,
             Map<String, Object> additionalProperties) {
@@ -90,6 +93,7 @@ public final class VendorResponseStoredMethod {
         this.aba = aba;
         this.postalCode = postalCode;
         this.methodType = methodType;
+        this.walletType = walletType;
         this.lastUpdated = lastUpdated;
         this.cardUpdatedOn = cardUpdatedOn;
         this.additionalProperties = additionalProperties;
@@ -207,6 +211,17 @@ public final class VendorResponseStoredMethod {
         return methodType;
     }
 
+    /**
+     * @return Digital wallet type if applicable.
+     */
+    @JsonIgnore
+    public Optional<String> getWalletType() {
+        if (walletType == null) {
+            return Optional.empty();
+        }
+        return walletType;
+    }
+
     @JsonIgnore
     public Optional<OffsetDateTime> getLastUpdated() {
         if (lastUpdated == null) {
@@ -215,6 +230,9 @@ public final class VendorResponseStoredMethod {
         return lastUpdated;
     }
 
+    /**
+     * @return Date and time the card was last updated.
+     */
     @JsonIgnore
     public Optional<OffsetDateTime> getCardUpdatedOn() {
         if (cardUpdatedOn == null) {
@@ -308,6 +326,12 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("WalletType")
+    private Optional<String> _getWalletType() {
+        return walletType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("LastUpdated")
     private Optional<OffsetDateTime> _getLastUpdated() {
         return lastUpdated;
@@ -345,6 +369,7 @@ public final class VendorResponseStoredMethod {
                 && aba.equals(other.aba)
                 && postalCode.equals(other.postalCode)
                 && methodType.equals(other.methodType)
+                && walletType.equals(other.walletType)
                 && lastUpdated.equals(other.lastUpdated)
                 && cardUpdatedOn.equals(other.cardUpdatedOn);
     }
@@ -366,6 +391,7 @@ public final class VendorResponseStoredMethod {
                 this.aba,
                 this.postalCode,
                 this.methodType,
+                this.walletType,
                 this.lastUpdated,
                 this.cardUpdatedOn);
     }
@@ -409,6 +435,8 @@ public final class VendorResponseStoredMethod {
 
         private Optional<String> methodType = Optional.empty();
 
+        private Optional<String> walletType = Optional.empty();
+
         private Optional<OffsetDateTime> lastUpdated = Optional.empty();
 
         private Optional<OffsetDateTime> cardUpdatedOn = Optional.empty();
@@ -433,6 +461,7 @@ public final class VendorResponseStoredMethod {
             aba(other.getAba());
             postalCode(other.getPostalCode());
             methodType(other.getMethodType());
+            walletType(other.getWalletType());
             lastUpdated(other.getLastUpdated());
             cardUpdatedOn(other.getCardUpdatedOn());
             return this;
@@ -746,6 +775,31 @@ public final class VendorResponseStoredMethod {
             return this;
         }
 
+        /**
+         * <p>Digital wallet type if applicable.</p>
+         */
+        @JsonSetter(value = "WalletType", nulls = Nulls.SKIP)
+        public Builder walletType(Optional<String> walletType) {
+            this.walletType = walletType;
+            return this;
+        }
+
+        public Builder walletType(String walletType) {
+            this.walletType = Optional.ofNullable(walletType);
+            return this;
+        }
+
+        public Builder walletType(Nullable<String> walletType) {
+            if (walletType.isNull()) {
+                this.walletType = null;
+            } else if (walletType.isEmpty()) {
+                this.walletType = Optional.empty();
+            } else {
+                this.walletType = Optional.of(walletType.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
         public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
             this.lastUpdated = lastUpdated;
@@ -768,6 +822,9 @@ public final class VendorResponseStoredMethod {
             return this;
         }
 
+        /**
+         * <p>Date and time the card was last updated.</p>
+         */
         @JsonSetter(value = "CardUpdatedOn", nulls = Nulls.SKIP)
         public Builder cardUpdatedOn(Optional<OffsetDateTime> cardUpdatedOn) {
             this.cardUpdatedOn = cardUpdatedOn;
@@ -806,6 +863,7 @@ public final class VendorResponseStoredMethod {
                     aba,
                     postalCode,
                     methodType,
+                    walletType,
                     lastUpdated,
                     cardUpdatedOn,
                     additionalProperties);

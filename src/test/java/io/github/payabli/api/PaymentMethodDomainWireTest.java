@@ -6,14 +6,14 @@ import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.AddPaymentMethodDomainRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.ListPaymentMethodDomainsRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.UpdatePaymentMethodDomainRequest;
-import io.github.payabli.api.resources.paymentmethoddomain.types.AddPaymentMethodDomainRequestApplePay;
-import io.github.payabli.api.resources.paymentmethoddomain.types.AddPaymentMethodDomainRequestGooglePay;
-import io.github.payabli.api.resources.paymentmethoddomain.types.DeletePaymentMethodDomainResponse;
-import io.github.payabli.api.resources.paymentmethoddomain.types.ListPaymentMethodDomainsResponse;
-import io.github.payabli.api.resources.paymentmethoddomain.types.UpdatePaymentMethodDomainRequestWallet;
 import io.github.payabli.api.types.AddPaymentMethodDomainApiResponse;
+import io.github.payabli.api.types.AddPaymentMethodDomainRequestApplePay;
+import io.github.payabli.api.types.AddPaymentMethodDomainRequestGooglePay;
+import io.github.payabli.api.types.DeletePaymentMethodDomainResponse;
+import io.github.payabli.api.types.ListPaymentMethodDomainsResponse;
 import io.github.payabli.api.types.PaymentMethodDomainApiResponse;
 import io.github.payabli.api.types.PaymentMethodDomainGeneralResponse;
+import io.github.payabli.api.types.UpdatePaymentMethodDomainRequestWallet;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -269,60 +269,6 @@ public class PaymentMethodDomainWireTest {
     }
 
     @Test
-    public void testDeletePaymentMethodDomain() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseData\":\"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\"responseText\":\"Success\"}"));
-        DeletePaymentMethodDomainResponse response =
-                client.paymentMethodDomain().deletePaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"pageIdentifier\": \"null\",\n"
-                + "  \"responseData\": \"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
     public void testGetPaymentMethodDomain() throws Exception {
         server.enqueue(
                 new MockResponse()
@@ -398,25 +344,28 @@ public class PaymentMethodDomainWireTest {
     }
 
     @Test
-    public void testListPaymentMethodDomains() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(TestResources.loadResource(
-                        "/wire-tests/PaymentMethodDomainWireTest_testListPaymentMethodDomains_response.json")));
-        ListPaymentMethodDomainsResponse response = client.paymentMethodDomain()
-                .listPaymentMethodDomains(ListPaymentMethodDomainsRequest.builder()
-                        .entityId(1147L)
-                        .entityType("paypoint")
-                        .build());
+    public void testDeletePaymentMethodDomain() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseData\":\"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\"responseText\":\"Success\"}"));
+        DeletePaymentMethodDomainResponse response =
+                client.paymentMethodDomain().deletePaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
-        Assertions.assertEquals("GET", request.getMethod());
+        Assertions.assertEquals("DELETE", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = TestResources.loadResource(
-                "/wire-tests/PaymentMethodDomainWireTest_testListPaymentMethodDomains_response.json");
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"pageIdentifier\": \"null\",\n"
+                + "  \"responseData\": \"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(
@@ -544,6 +493,57 @@ public class PaymentMethodDomainWireTest {
                 + "  },\n"
                 + "  \"responseText\": \"Success\"\n"
                 + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testListPaymentMethodDomains() throws Exception {
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody(TestResources.loadResource(
+                        "/wire-tests/PaymentMethodDomainWireTest_testListPaymentMethodDomains_response.json")));
+        ListPaymentMethodDomainsResponse response = client.paymentMethodDomain()
+                .listPaymentMethodDomains(ListPaymentMethodDomainsRequest.builder()
+                        .entityId(1147L)
+                        .entityType("paypoint")
+                        .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = TestResources.loadResource(
+                "/wire-tests/PaymentMethodDomainWireTest_testListPaymentMethodDomains_response.json");
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

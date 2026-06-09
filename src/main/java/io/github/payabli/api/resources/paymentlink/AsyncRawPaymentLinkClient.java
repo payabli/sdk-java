@@ -16,18 +16,17 @@ import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
+import io.github.payabli.api.resources.paymentlink.requests.PatchOutPaymentLinkRequest;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkDataBill;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkDataInvoice;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkDataOut;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
-import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
-import io.github.payabli.api.resources.paymentlink.types.PatchOutPaymentLinkRequest;
-import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.GetPayLinkFromIdResponse;
+import io.github.payabli.api.types.PayabliApiResponsePaymentLinks;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.PaymentPageRequestBodyOut;
 import io.github.payabli.api.types.PushPayLinkRequest;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -53,18 +52,16 @@ public class AsyncRawPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromInvoice(
-            int idInvoice, PaymentPageRequestBody body) {
-        return addPayLinkFromInvoice(
-                idInvoice, PayLinkDataInvoice.builder().body(body).build());
+            int idInvoice) {
+        return addPayLinkFromInvoice(idInvoice, PayLinkDataInvoice.builder().build());
     }
 
     /**
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymentLinks>> addPayLinkFromInvoice(
-            int idInvoice, PaymentPageRequestBody body, RequestOptions requestOptions) {
-        return addPayLinkFromInvoice(
-                idInvoice, PayLinkDataInvoice.builder().body(body).build(), requestOptions);
+            int idInvoice, RequestOptions requestOptions) {
+        return addPayLinkFromInvoice(idInvoice, PayLinkDataInvoice.builder().build(), requestOptions);
     }
 
     /**
@@ -100,7 +97,7 @@ public class AsyncRawPaymentLinkClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -141,7 +138,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -151,8 +148,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -266,7 +262,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -276,8 +272,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -355,7 +350,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -365,8 +360,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -442,7 +436,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -452,8 +446,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -539,7 +532,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -549,8 +542,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -650,7 +642,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -660,8 +652,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -763,7 +754,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -773,8 +764,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -876,7 +866,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -886,8 +876,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1071,7 +1060,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1081,8 +1070,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1186,7 +1174,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1196,8 +1184,7 @@ public class AsyncRawPaymentLinkClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }

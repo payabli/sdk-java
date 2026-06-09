@@ -48,7 +48,7 @@ public final class ApplicationDataOdp {
 
     private final Optional<String> bzip;
 
-    private final Optional<List<ApplicationDataOdpContactsItem>> contacts;
+    private final Optional<List<Contacts>> contacts;
 
     private final Optional<String> dbaname;
 
@@ -80,7 +80,7 @@ public final class ApplicationDataOdp {
 
     private final Optional<Long> orgId;
 
-    private final Optional<List<ApplicationDataOdpOwnershipItem>> ownership;
+    private final Optional<List<Owners>> ownership;
 
     private final double payoutAverageMonthlyVolume;
 
@@ -132,7 +132,7 @@ public final class ApplicationDataOdp {
             Optional<String> bsummary,
             Optional<OwnType> btype,
             Optional<String> bzip,
-            Optional<List<ApplicationDataOdpContactsItem>> contacts,
+            Optional<List<Contacts>> contacts,
             Optional<String> dbaname,
             Optional<String> ein,
             Optional<String> faxnumber,
@@ -148,7 +148,7 @@ public final class ApplicationDataOdp {
             Optional<String> mstate,
             Optional<String> mzip,
             Optional<Long> orgId,
-            Optional<List<ApplicationDataOdpOwnershipItem>> ownership,
+            Optional<List<Owners>> ownership,
             double payoutAverageMonthlyVolume,
             double payoutAverageTicketAmount,
             double payoutCreditLimit,
@@ -292,7 +292,7 @@ public final class ApplicationDataOdp {
      * @return List of contacts for the business.
      */
     @JsonProperty("contacts")
-    public Optional<List<ApplicationDataOdpContactsItem>> getContacts() {
+    public Optional<List<Contacts>> getContacts() {
         return contacts;
     }
 
@@ -375,7 +375,7 @@ public final class ApplicationDataOdp {
      * @return List of Owners with at least a 25% ownership.
      */
     @JsonProperty("ownership")
-    public Optional<List<ApplicationDataOdpOwnershipItem>> getOwnership() {
+    public Optional<List<Owners>> getOwnership() {
         return ownership;
     }
 
@@ -682,9 +682,9 @@ public final class ApplicationDataOdp {
         /**
          * <p>List of contacts for the business.</p>
          */
-        _FinalStage contacts(Optional<List<ApplicationDataOdpContactsItem>> contacts);
+        _FinalStage contacts(Optional<List<Contacts>> contacts);
 
-        _FinalStage contacts(List<ApplicationDataOdpContactsItem> contacts);
+        _FinalStage contacts(List<Contacts> contacts);
 
         _FinalStage dbaname(Optional<String> dbaname);
 
@@ -749,9 +749,9 @@ public final class ApplicationDataOdp {
         /**
          * <p>List of Owners with at least a 25% ownership.</p>
          */
-        _FinalStage ownership(Optional<List<ApplicationDataOdpOwnershipItem>> ownership);
+        _FinalStage ownership(Optional<List<Owners>> ownership);
 
-        _FinalStage ownership(List<ApplicationDataOdpOwnershipItem> ownership);
+        _FinalStage ownership(List<Owners> ownership);
 
         _FinalStage phonenumber(Optional<String> phonenumber);
 
@@ -850,7 +850,7 @@ public final class ApplicationDataOdp {
 
         private Optional<String> phonenumber = Optional.empty();
 
-        private Optional<List<ApplicationDataOdpOwnershipItem>> ownership = Optional.empty();
+        private Optional<List<Owners>> ownership = Optional.empty();
 
         private Optional<Long> orgId = Optional.empty();
 
@@ -882,7 +882,7 @@ public final class ApplicationDataOdp {
 
         private Optional<String> dbaname = Optional.empty();
 
-        private Optional<List<ApplicationDataOdpContactsItem>> contacts = Optional.empty();
+        private Optional<List<Contacts>> contacts = Optional.empty();
 
         private Optional<String> bzip = Optional.empty();
 
@@ -1177,7 +1177,7 @@ public final class ApplicationDataOdp {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage ownership(List<ApplicationDataOdpOwnershipItem> ownership) {
+        public _FinalStage ownership(List<Owners> ownership) {
             this.ownership = Optional.ofNullable(ownership);
             return this;
         }
@@ -1187,7 +1187,7 @@ public final class ApplicationDataOdp {
          */
         @java.lang.Override
         @JsonSetter(value = "ownership", nulls = Nulls.SKIP)
-        public _FinalStage ownership(Optional<List<ApplicationDataOdpOwnershipItem>> ownership) {
+        public _FinalStage ownership(Optional<List<Owners>> ownership) {
             this.ownership = ownership;
             return this;
         }
@@ -1392,7 +1392,7 @@ public final class ApplicationDataOdp {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage contacts(List<ApplicationDataOdpContactsItem> contacts) {
+        public _FinalStage contacts(List<Contacts> contacts) {
             this.contacts = Optional.ofNullable(contacts);
             return this;
         }
@@ -1402,7 +1402,7 @@ public final class ApplicationDataOdp {
          */
         @java.lang.Override
         @JsonSetter(value = "contacts", nulls = Nulls.SKIP)
-        public _FinalStage contacts(Optional<List<ApplicationDataOdpContactsItem>> contacts) {
+        public _FinalStage contacts(Optional<List<Contacts>> contacts) {
             this.contacts = contacts;
             return this;
         }

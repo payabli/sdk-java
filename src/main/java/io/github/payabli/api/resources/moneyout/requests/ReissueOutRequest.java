@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutBody;
+import io.github.payabli.api.types.ReissuePaymentMethod;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,21 +26,24 @@ public final class ReissueOutRequest {
 
     private final String transId;
 
-    private final ReissuePayoutBody body;
+    private final ReissuePaymentMethod paymentMethod;
 
     private final Map<String, Object> additionalProperties;
 
     private ReissueOutRequest(
             Optional<String> idempotencyKey,
             String transId,
-            ReissuePayoutBody body,
+            ReissuePaymentMethod paymentMethod,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.transId = transId;
-        this.body = body;
+        this.paymentMethod = paymentMethod;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return <em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+     */
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
@@ -49,14 +52,14 @@ public final class ReissueOutRequest {
     /**
      * @return The transaction ID of the payout to reissue.
      */
-    @JsonProperty("transId")
+    @JsonIgnore
     public String getTransId() {
         return transId;
     }
 
-    @JsonProperty("body")
-    public ReissuePayoutBody getBody() {
-        return body;
+    @JsonProperty("paymentMethod")
+    public ReissuePaymentMethod getPaymentMethod() {
+        return paymentMethod;
     }
 
     @java.lang.Override
@@ -71,12 +74,14 @@ public final class ReissueOutRequest {
     }
 
     private boolean equalTo(ReissueOutRequest other) {
-        return idempotencyKey.equals(other.idempotencyKey) && transId.equals(other.transId) && body.equals(other.body);
+        return idempotencyKey.equals(other.idempotencyKey)
+                && transId.equals(other.transId)
+                && paymentMethod.equals(other.paymentMethod);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey, this.transId, this.body);
+        return Objects.hash(this.idempotencyKey, this.transId, this.paymentMethod);
     }
 
     @java.lang.Override
@@ -92,13 +97,13 @@ public final class ReissueOutRequest {
         /**
          * <p>The transaction ID of the payout to reissue.</p>
          */
-        BodyStage transId(@NotNull String transId);
+        PaymentMethodStage transId(@NotNull String transId);
 
         Builder from(ReissueOutRequest other);
     }
 
-    public interface BodyStage {
-        _FinalStage body(@NotNull ReissuePayoutBody body);
+    public interface PaymentMethodStage {
+        _FinalStage paymentMethod(@NotNull ReissuePaymentMethod paymentMethod);
     }
 
     public interface _FinalStage {
@@ -108,16 +113,19 @@ public final class ReissueOutRequest {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TransIdStage, BodyStage, _FinalStage {
+    public static final class Builder implements TransIdStage, PaymentMethodStage, _FinalStage {
         private String transId;
 
-        private ReissuePayoutBody body;
+        private ReissuePaymentMethod paymentMethod;
 
         private Optional<String> idempotencyKey = Optional.empty();
 
@@ -130,7 +138,7 @@ public final class ReissueOutRequest {
         public Builder from(ReissueOutRequest other) {
             idempotencyKey(other.getIdempotencyKey());
             transId(other.getTransId());
-            body(other.getBody());
+            paymentMethod(other.getPaymentMethod());
             return this;
         }
 
@@ -141,24 +149,31 @@ public final class ReissueOutRequest {
          */
         @java.lang.Override
         @JsonSetter("transId")
-        public BodyStage transId(@NotNull String transId) {
+        public PaymentMethodStage transId(@NotNull String transId) {
             this.transId = Objects.requireNonNull(transId, "transId must not be null");
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter("body")
-        public _FinalStage body(@NotNull ReissuePayoutBody body) {
-            this.body = Objects.requireNonNull(body, "body must not be null");
+        @JsonSetter("paymentMethod")
+        public _FinalStage paymentMethod(@NotNull ReissuePaymentMethod paymentMethod) {
+            this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = Optional.ofNullable(idempotencyKey);
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
@@ -167,7 +182,7 @@ public final class ReissueOutRequest {
 
         @java.lang.Override
         public ReissueOutRequest build() {
-            return new ReissueOutRequest(idempotencyKey, transId, body, additionalProperties);
+            return new ReissueOutRequest(idempotencyKey, transId, paymentMethod, additionalProperties);
         }
 
         @java.lang.Override

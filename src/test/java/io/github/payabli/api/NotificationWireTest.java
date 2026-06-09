@@ -3,8 +3,7 @@ package io.github.payabli.api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.notification.types.AddNotificationRequest;
-import io.github.payabli.api.resources.notification.types.UpdateNotificationRequest;
+import io.github.payabli.api.types.AddNotificationRequest;
 import io.github.payabli.api.types.NotificationQueryRecord;
 import io.github.payabli.api.types.NotificationStandardRequest;
 import io.github.payabli.api.types.NotificationStandardRequestContent;
@@ -12,6 +11,7 @@ import io.github.payabli.api.types.NotificationStandardRequestContentEventType;
 import io.github.payabli.api.types.NotificationStandardRequestFrequency;
 import io.github.payabli.api.types.NotificationStandardRequestMethod;
 import io.github.payabli.api.types.PayabliApiResponseNotifications;
+import io.github.payabli.api.types.UpdateNotificationRequest;
 import java.util.Map;
 import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
@@ -102,57 +102,6 @@ public class NotificationWireTest {
         if (actualJson.isObject()) {
             Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
         }
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"responseData\": 1717,\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testDeleteNotification() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody("{\"isSuccess\":true,\"responseCode\":1,\"responseData\":1717,\"responseText\":\"Success\"}"));
-        PayabliApiResponseNotifications response = client.notification().deleteNotification("1717");
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -321,6 +270,57 @@ public class NotificationWireTest {
         if (actualJson.isObject()) {
             Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
         }
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": 1717,\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testDeleteNotification() throws Exception {
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"isSuccess\":true,\"responseCode\":1,\"responseData\":1717,\"responseText\":\"Success\"}"));
+        PayabliApiResponseNotifications response = client.notification().deleteNotification("1717");
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

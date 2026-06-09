@@ -7,11 +7,10 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.subscription.requests.RequestSchedule;
 import io.github.payabli.api.resources.subscription.requests.RequestUpdateSchedule;
-import io.github.payabli.api.resources.subscription.types.AddSubscriptionResponse;
-import io.github.payabli.api.resources.subscription.types.RemoveSubscriptionResponse;
-import io.github.payabli.api.resources.subscription.types.SubscriptionRequestBody;
-import io.github.payabli.api.resources.subscription.types.UpdateSubscriptionResponse;
+import io.github.payabli.api.types.AddSubscriptionResponse;
+import io.github.payabli.api.types.RemoveSubscriptionResponse;
 import io.github.payabli.api.types.SubscriptionQueryRecords;
+import io.github.payabli.api.types.UpdateSubscriptionResponse;
 
 public class SubscriptionClient {
     protected final ClientOptions clientOptions;
@@ -45,48 +44,6 @@ public class SubscriptionClient {
     }
 
     /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public AddSubscriptionResponse newSubscription(SubscriptionRequestBody body) {
-        return this.rawClient.newSubscription(body).body();
-    }
-
-    /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public AddSubscriptionResponse newSubscription(SubscriptionRequestBody body, RequestOptions requestOptions) {
-        return this.rawClient.newSubscription(body, requestOptions).body();
-    }
-
-    /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public AddSubscriptionResponse newSubscription(RequestSchedule request) {
-        return this.rawClient.newSubscription(request).body();
-    }
-
-    /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public AddSubscriptionResponse newSubscription(RequestSchedule request, RequestOptions requestOptions) {
-        return this.rawClient.newSubscription(request, requestOptions).body();
-    }
-
-    /**
-     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
-     */
-    public RemoveSubscriptionResponse removeSubscription(int subId) {
-        return this.rawClient.removeSubscription(subId).body();
-    }
-
-    /**
-     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
-     */
-    public RemoveSubscriptionResponse removeSubscription(int subId, RequestOptions requestOptions) {
-        return this.rawClient.removeSubscription(subId, requestOptions).body();
-    }
-
-    /**
      * Updates a subscription's details.
      */
     public UpdateSubscriptionResponse updateSubscription(int subId) {
@@ -113,5 +70,47 @@ public class SubscriptionClient {
     public UpdateSubscriptionResponse updateSubscription(
             int subId, RequestUpdateSchedule request, RequestOptions requestOptions) {
         return this.rawClient.updateSubscription(subId, request, requestOptions).body();
+    }
+
+    /**
+     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
+     */
+    public RemoveSubscriptionResponse removeSubscription(int subId) {
+        return this.rawClient.removeSubscription(subId).body();
+    }
+
+    /**
+     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
+     */
+    public RemoveSubscriptionResponse removeSubscription(int subId, RequestOptions requestOptions) {
+        return this.rawClient.removeSubscription(subId, requestOptions).body();
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public AddSubscriptionResponse newSubscription() {
+        return this.rawClient.newSubscription().body();
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public AddSubscriptionResponse newSubscription(RequestOptions requestOptions) {
+        return this.rawClient.newSubscription(requestOptions).body();
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public AddSubscriptionResponse newSubscription(RequestSchedule request) {
+        return this.rawClient.newSubscription(request).body();
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public AddSubscriptionResponse newSubscription(RequestSchedule request, RequestOptions requestOptions) {
+        return this.rawClient.newSubscription(request, requestOptions).body();
     }
 }

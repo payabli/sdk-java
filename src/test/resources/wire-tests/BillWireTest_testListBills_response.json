@@ -120,8 +120,8 @@
         "Name2": "Elena",
         "Phone": "517-555-0123",
         "State": "MI",
-        "VendorId": 8723,
-        "VendorNumber": "MI-vendor-2024031926",
+        "VendorId": 456,
+        "VendorNumber": "VEN-123",
         "VendorStatus": 1,
         "Zip": "48201"
       }

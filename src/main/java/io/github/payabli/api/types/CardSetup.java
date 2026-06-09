@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CardSetup.Builder.class)
-public final class CardSetup implements ICardSetup {
+public final class CardSetup {
     private final Optional<Boolean> acceptAmex;
 
     private final Optional<Boolean> acceptDiscover;
@@ -47,7 +47,6 @@ public final class CardSetup implements ICardSetup {
      * @return Determines whether American Express is accepted.
      */
     @JsonProperty("acceptAmex")
-    @java.lang.Override
     public Optional<Boolean> getAcceptAmex() {
         return acceptAmex;
     }
@@ -56,7 +55,6 @@ public final class CardSetup implements ICardSetup {
      * @return Determines whether Discover is accepted.
      */
     @JsonProperty("acceptDiscover")
-    @java.lang.Override
     public Optional<Boolean> getAcceptDiscover() {
         return acceptDiscover;
     }
@@ -65,7 +63,6 @@ public final class CardSetup implements ICardSetup {
      * @return Determines whether Mastercard is accepted.
      */
     @JsonProperty("acceptMastercard")
-    @java.lang.Override
     public Optional<Boolean> getAcceptMastercard() {
         return acceptMastercard;
     }
@@ -74,7 +71,6 @@ public final class CardSetup implements ICardSetup {
      * @return Determines whether Visa is accepted.
      */
     @JsonProperty("acceptVisa")
-    @java.lang.Override
     public Optional<Boolean> getAcceptVisa() {
         return acceptVisa;
     }

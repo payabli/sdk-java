@@ -2,9 +2,9 @@
   "Records": [
     {
       "invoiceId": 3674,
-      "customerId": 1323,
-      "paypointId": 10,
-      "invoiceNumber": "QA-1709680125",
+      "customerId": 4440,
+      "paypointId": 3040,
+      "invoiceNumber": "INV-2345",
       "invoiceDate": "2025-03-05",
       "invoiceDueDate": "2025-03-05",
       "invoiceSentDate": "2025-03-05",
@@ -52,9 +52,9 @@
           "key3": "value"
         },
         "BillingPhone": "1234567890",
-        "customerId": 1323
+        "customerId": 4440
       },
-      "paylinkId": "3674-cf15b881-f276-4b69-bdc8-841b2d123XXXXXX",
+      "paylinkId": "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
       "billEvents": [
         {
           "description": "Invoice created",

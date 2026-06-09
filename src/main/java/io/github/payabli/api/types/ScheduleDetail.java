@@ -45,6 +45,7 @@ public final class ScheduleDetail {
 
     /**
      * @return Subscription end date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY or the value <code>untilcancelled</code> to indicate a scheduled payment with infinite cycle.
+     * <p>Not applicable for <code>BalanceDriven</code> subscriptions, which run until cancelled.</p>
      */
     @JsonProperty("endDate")
     public Optional<String> getEndDate() {
@@ -53,6 +54,7 @@ public final class ScheduleDetail {
 
     /**
      * @return Frequency of the subscription.
+     * <p><code>BalanceDriven</code> subscriptions only accept the monthly cadences <code>firstofmonth</code>, <code>fifteenthofmonth</code>, and <code>endofmonth</code>.</p>
      */
     @JsonProperty("frequency")
     public Optional<Frequency> getFrequency() {
@@ -69,6 +71,7 @@ public final class ScheduleDetail {
 
     /**
      * @return Subscription start date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY. This must be a future date.
+     * <p>Not applicable for <code>BalanceDriven</code> subscriptions, where the start date is calculated automatically from <code>frequency</code>.</p>
      */
     @JsonProperty("startDate")
     public Optional<String> getStartDate() {
@@ -132,6 +135,7 @@ public final class ScheduleDetail {
 
         /**
          * <p>Subscription end date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY or the value <code>untilcancelled</code> to indicate a scheduled payment with infinite cycle.</p>
+         * <p>Not applicable for <code>BalanceDriven</code> subscriptions, which run until cancelled.</p>
          */
         @JsonSetter(value = "endDate", nulls = Nulls.SKIP)
         public Builder endDate(Optional<String> endDate) {
@@ -146,6 +150,7 @@ public final class ScheduleDetail {
 
         /**
          * <p>Frequency of the subscription.</p>
+         * <p><code>BalanceDriven</code> subscriptions only accept the monthly cadences <code>firstofmonth</code>, <code>fifteenthofmonth</code>, and <code>endofmonth</code>.</p>
          */
         @JsonSetter(value = "frequency", nulls = Nulls.SKIP)
         public Builder frequency(Optional<Frequency> frequency) {
@@ -174,6 +179,7 @@ public final class ScheduleDetail {
 
         /**
          * <p>Subscription start date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY. This must be a future date.</p>
+         * <p>Not applicable for <code>BalanceDriven</code> subscriptions, where the start date is calculated automatically from <code>frequency</code>.</p>
          */
         @JsonSetter(value = "startDate", nulls = Nulls.SKIP)
         public Builder startDate(Optional<String> startDate) {

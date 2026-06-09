@@ -5,17 +5,16 @@ package io.github.payabli.api.resources.paymentlink;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
+import io.github.payabli.api.resources.paymentlink.requests.PatchOutPaymentLinkRequest;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkDataBill;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkDataInvoice;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkDataOut;
 import io.github.payabli.api.resources.paymentlink.requests.PayLinkUpdateData;
 import io.github.payabli.api.resources.paymentlink.requests.RefreshPayLinkFromIdRequest;
 import io.github.payabli.api.resources.paymentlink.requests.SendPayLinkFromIdRequest;
-import io.github.payabli.api.resources.paymentlink.types.GetPayLinkFromIdResponse;
-import io.github.payabli.api.resources.paymentlink.types.PatchOutPaymentLinkRequest;
-import io.github.payabli.api.resources.paymentlink.types.PayabliApiResponsePaymentLinks;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
+import io.github.payabli.api.types.GetPayLinkFromIdResponse;
+import io.github.payabli.api.types.PayabliApiResponsePaymentLinks;
+import io.github.payabli.api.types.PaymentPageRequestBodyOut;
 import io.github.payabli.api.types.PushPayLinkRequest;
 import java.util.concurrent.CompletableFuture;
 
@@ -39,19 +38,16 @@ public class AsyncPaymentLinkClient {
     /**
      * Generates a payment link for an invoice from the invoice ID.
      */
-    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
-            int idInvoice, PaymentPageRequestBody body) {
-        return this.rawClient.addPayLinkFromInvoice(idInvoice, body).thenApply(response -> response.body());
+    public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(int idInvoice) {
+        return this.rawClient.addPayLinkFromInvoice(idInvoice).thenApply(response -> response.body());
     }
 
     /**
      * Generates a payment link for an invoice from the invoice ID.
      */
     public CompletableFuture<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
-            int idInvoice, PaymentPageRequestBody body, RequestOptions requestOptions) {
-        return this.rawClient
-                .addPayLinkFromInvoice(idInvoice, body, requestOptions)
-                .thenApply(response -> response.body());
+            int idInvoice, RequestOptions requestOptions) {
+        return this.rawClient.addPayLinkFromInvoice(idInvoice, requestOptions).thenApply(response -> response.body());
     }
 
     /**

@@ -44,7 +44,8 @@ public final class FileContent {
     }
 
     /**
-     * @return Content of file, Base64-encoded. Ignored if furl is specified. Max upload size is 30 MB.
+     * @return Content of file, Base64-encoded. Ignored if <code>furl</code> is specified. Max
+     * upload size is 30 MB.
      */
     @JsonProperty("fContent")
     public Optional<String> getFContent() {
@@ -59,16 +60,13 @@ public final class FileContent {
         return filename;
     }
 
-    /**
-     * @return The MIME type of the file (if content is provided)
-     */
     @JsonProperty("ftype")
     public Optional<FileContentFtype> getFtype() {
         return ftype;
     }
 
     /**
-     * @return Optional URL provided to show or download the file remotely
+     * @return Optional URL provided to show or download the file remotely.
      */
     @JsonProperty("furl")
     public Optional<String> getFurl() {
@@ -131,7 +129,8 @@ public final class FileContent {
         }
 
         /**
-         * <p>Content of file, Base64-encoded. Ignored if furl is specified. Max upload size is 30 MB.</p>
+         * <p>Content of file, Base64-encoded. Ignored if <code>furl</code> is specified. Max
+         * upload size is 30 MB.</p>
          */
         @JsonSetter(value = "fContent", nulls = Nulls.SKIP)
         public Builder fContent(Optional<String> fContent) {
@@ -158,9 +157,6 @@ public final class FileContent {
             return this;
         }
 
-        /**
-         * <p>The MIME type of the file (if content is provided)</p>
-         */
         @JsonSetter(value = "ftype", nulls = Nulls.SKIP)
         public Builder ftype(Optional<FileContentFtype> ftype) {
             this.ftype = ftype;
@@ -173,7 +169,7 @@ public final class FileContent {
         }
 
         /**
-         * <p>Optional URL provided to show or download the file remotely</p>
+         * <p>Optional URL provided to show or download the file remotely.</p>
          */
         @JsonSetter(value = "furl", nulls = Nulls.SKIP)
         public Builder furl(Optional<String> furl) {

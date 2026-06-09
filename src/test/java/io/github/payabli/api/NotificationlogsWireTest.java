@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLog;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogDetail;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
+import io.github.payabli.api.types.NotificationLog;
+import io.github.payabli.api.types.NotificationLogDetail;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -45,17 +43,15 @@ public class NotificationlogsWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "[{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":12345,\"paypointId\":67890,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false}]"));
+                                "[{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":123,\"paypointId\":3040,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false}]"));
         List<NotificationLog> response = client.notificationlogs()
                 .searchNotificationLogs(SearchNotificationLogsRequest.builder()
-                        .body(NotificationLogSearchRequest.builder()
-                                .startDate(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
-                                .endDate(OffsetDateTime.parse("2024-01-31T23:59:59Z"))
-                                .notificationEvent("ActivatedMerchant")
-                                .succeeded(true)
-                                .orgId(12345L)
-                                .build())
+                        .startDate(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
+                        .endDate(OffsetDateTime.parse("2024-01-31T23:59:59Z"))
                         .pageSize(20)
+                        .notificationEvent("ActivatedMerchant")
+                        .succeeded(true)
+                        .orgId(123L)
                         .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -66,7 +62,7 @@ public class NotificationlogsWireTest {
                 + "{\n"
                 + "  \"startDate\": \"2024-01-01T00:00:00Z\",\n"
                 + "  \"endDate\": \"2024-01-31T23:59:59Z\",\n"
-                + "  \"orgId\": 12345,\n"
+                + "  \"orgId\": 123,\n"
                 + "  \"notificationEvent\": \"ActivatedMerchant\",\n"
                 + "  \"succeeded\": true\n"
                 + "}";
@@ -104,8 +100,8 @@ public class NotificationlogsWireTest {
                 + "[\n"
                 + "  {\n"
                 + "    \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n"
-                + "    \"orgId\": 12345,\n"
-                + "    \"paypointId\": 67890,\n"
+                + "    \"orgId\": 123,\n"
+                + "    \"paypointId\": 3040,\n"
                 + "    \"notificationEvent\": \"ActivatedMerchant\",\n"
                 + "    \"target\": \"https://webhook.example.com/payments\",\n"
                 + "    \"responseStatus\": \"200\",\n"
@@ -154,9 +150,9 @@ public class NotificationlogsWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":12345,\"paypointId\":67890,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false,\"webHeaders\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"},{\"key\":\"User-Agent\",\"value\":\"PaymentSystem/1.0\"}],\"responseHeaders\":[{\"key\":\"Content-Type\",\"value\":[\"application/json\"]},{\"key\":\"X-Request-ID\",\"value\":[\"req_abc123\"]}],\"responseContent\":\"{\\\"status\\\":\\\"received\\\",\\\"id\\\":\\\"wh_123\\\"}\"}"));
+                                "{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":123,\"paypointId\":3040,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false,\"webHeaders\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"},{\"key\":\"User-Agent\",\"value\":\"PaymentSystem/1.0\"}],\"responseHeaders\":[{\"key\":\"Content-Type\",\"value\":[\"application/json\"]},{\"key\":\"X-Request-ID\",\"value\":[\"req_abc123\"]}],\"responseContent\":\"{\\\"status\\\":\\\"received\\\",\\\"id\\\":\\\"wh_123\\\"}\"}"));
         NotificationLogDetail response =
-                client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+                client.notificationlogs().getNotificationLog("550e8400-e29b-41d4-a716-446655440000");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
@@ -167,8 +163,8 @@ public class NotificationlogsWireTest {
         String expectedResponseBody = ""
                 + "{\n"
                 + "  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n"
-                + "  \"orgId\": 12345,\n"
-                + "  \"paypointId\": 67890,\n"
+                + "  \"orgId\": 123,\n"
+                + "  \"paypointId\": 3040,\n"
                 + "  \"notificationEvent\": \"ActivatedMerchant\",\n"
                 + "  \"target\": \"https://webhook.example.com/payments\",\n"
                 + "  \"responseStatus\": \"200\",\n"
@@ -241,9 +237,9 @@ public class NotificationlogsWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":12345,\"paypointId\":67890,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false,\"webHeaders\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"}],\"responseHeaders\":[{\"key\":\"Content-Type\",\"value\":[\"application/json\"]}],\"responseContent\":\"{\\\"status\\\":\\\"received\\\",\\\"id\\\":\\\"wh_123\\\"}\"}"));
+                                "{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":123,\"paypointId\":3040,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false,\"webHeaders\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"}],\"responseHeaders\":[{\"key\":\"Content-Type\",\"value\":[\"application/json\"]}],\"responseContent\":\"{\\\"status\\\":\\\"received\\\",\\\"id\\\":\\\"wh_123\\\"}\"}"));
         NotificationLogDetail response =
-                client.notificationlogs().retryNotificationLog(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+                client.notificationlogs().retryNotificationLog("550e8400-e29b-41d4-a716-446655440000");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
@@ -254,8 +250,8 @@ public class NotificationlogsWireTest {
         String expectedResponseBody = ""
                 + "{\n"
                 + "  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n"
-                + "  \"orgId\": 12345,\n"
-                + "  \"paypointId\": 67890,\n"
+                + "  \"orgId\": 123,\n"
+                + "  \"paypointId\": 3040,\n"
                 + "  \"notificationEvent\": \"ActivatedMerchant\",\n"
                 + "  \"target\": \"https://webhook.example.com/payments\",\n"
                 + "  \"responseStatus\": \"200\",\n"
@@ -317,9 +313,9 @@ public class NotificationlogsWireTest {
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
         client.notificationlogs()
                 .bulkRetryNotificationLogs(Arrays.asList(
-                        UUID.fromString("550e8400-e29b-41d4-a716-446655440000"),
-                        UUID.fromString("550e8400-e29b-41d4-a716-446655440001"),
-                        UUID.fromString("550e8400-e29b-41d4-a716-446655440002")));
+                        "550e8400-e29b-41d4-a716-446655440000",
+                        "550e8400-e29b-41d4-a716-446655440001",
+                        "550e8400-e29b-41d4-a716-446655440002"));
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());

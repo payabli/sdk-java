@@ -7,9 +7,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.cloud.requests.DeviceEntry;
 import io.github.payabli.api.resources.cloud.requests.ListDeviceRequest;
-import io.github.payabli.api.resources.cloud.types.AddDeviceResponse;
-import io.github.payabli.api.resources.cloud.types.RemoveDeviceResponse;
+import io.github.payabli.api.types.AddDeviceResponse;
 import io.github.payabli.api.types.CloudQueryApiResponse;
+import io.github.payabli.api.types.RemoveDeviceResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncCloudClient {
@@ -59,6 +59,21 @@ public class AsyncCloudClient {
     }
 
     /**
+     * Remove a cloud device from an entrypoint.
+     */
+    public CompletableFuture<RemoveDeviceResponse> removeDevice(String entry, String deviceId) {
+        return this.rawClient.removeDevice(entry, deviceId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Remove a cloud device from an entrypoint.
+     */
+    public CompletableFuture<RemoveDeviceResponse> removeDevice(
+            String entry, String deviceId, RequestOptions requestOptions) {
+        return this.rawClient.removeDevice(entry, deviceId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
      * Retrieve the registration history for a device.
      */
     public CompletableFuture<CloudQueryApiResponse> historyDevice(String entry, String deviceId) {
@@ -104,20 +119,5 @@ public class AsyncCloudClient {
     public CompletableFuture<CloudQueryApiResponse> listDevice(
             String entry, ListDeviceRequest request, RequestOptions requestOptions) {
         return this.rawClient.listDevice(entry, request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Remove a cloud device from an entrypoint.
-     */
-    public CompletableFuture<RemoveDeviceResponse> removeDevice(String entry, String deviceId) {
-        return this.rawClient.removeDevice(entry, deviceId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Remove a cloud device from an entrypoint.
-     */
-    public CompletableFuture<RemoveDeviceResponse> removeDevice(
-            String entry, String deviceId, RequestOptions requestOptions) {
-        return this.rawClient.removeDevice(entry, deviceId, requestOptions).thenApply(response -> response.body());
     }
 }

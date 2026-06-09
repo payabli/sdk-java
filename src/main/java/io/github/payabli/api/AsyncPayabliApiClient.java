@@ -43,211 +43,195 @@ public class AsyncPayabliApiClient {
 
     protected final Supplier<AsyncBillClient> billClient;
 
-    protected final Supplier<AsyncBoardingClient> boardingClient;
-
-    protected final Supplier<AsyncChargeBacksClient> chargeBacksClient;
+    protected final Supplier<AsyncCustomerClient> customerClient;
 
     protected final Supplier<AsyncCheckCaptureClient> checkCaptureClient;
 
-    protected final Supplier<AsyncCloudClient> cloudClient;
-
-    protected final Supplier<AsyncCustomerClient> customerClient;
-
-    protected final Supplier<AsyncExportClient> exportClient;
-
-    protected final Supplier<AsyncGhostCardClient> ghostCardClient;
-
-    protected final Supplier<AsyncHostedPaymentPagesClient> hostedPaymentPagesClient;
-
-    protected final Supplier<AsyncImportClient> importClient;
-
-    protected final Supplier<AsyncInvoiceClient> invoiceClient;
-
-    protected final Supplier<AsyncLineItemClient> lineItemClient;
-
-    protected final Supplier<AsyncManagementClient> managementClient;
-
     protected final Supplier<AsyncMoneyInClient> moneyInClient;
-
-    protected final Supplier<AsyncMoneyOutClient> moneyOutClient;
-
-    protected final Supplier<AsyncNotificationClient> notificationClient;
-
-    protected final Supplier<AsyncNotificationlogsClient> notificationlogsClient;
-
-    protected final Supplier<AsyncOcrClient> ocrClient;
-
-    protected final Supplier<AsyncOrganizationClient> organizationClient;
-
-    protected final Supplier<AsyncPaymentLinkClient> paymentLinkClient;
-
-    protected final Supplier<AsyncPaymentMethodDomainClient> paymentMethodDomainClient;
-
-    protected final Supplier<AsyncPayoutSubscriptionClient> payoutSubscriptionClient;
-
-    protected final Supplier<AsyncPaypointClient> paypointClient;
-
-    protected final Supplier<AsyncQueryClient> queryClient;
-
-    protected final Supplier<AsyncStatisticClient> statisticClient;
 
     protected final Supplier<AsyncSubscriptionClient> subscriptionClient;
 
-    protected final Supplier<AsyncTemplatesClient> templatesClient;
+    protected final Supplier<AsyncInvoiceClient> invoiceClient;
+
+    protected final Supplier<AsyncPaymentLinkClient> paymentLinkClient;
 
     protected final Supplier<AsyncTokenStorageClient> tokenStorageClient;
+
+    protected final Supplier<AsyncPaypointClient> paypointClient;
+
+    protected final Supplier<AsyncHostedPaymentPagesClient> hostedPaymentPagesClient;
+
+    protected final Supplier<AsyncPaymentMethodDomainClient> paymentMethodDomainClient;
+
+    protected final Supplier<AsyncImportClient> importClient;
+
+    protected final Supplier<AsyncQueryClient> queryClient;
+
+    protected final Supplier<AsyncOcrClient> ocrClient;
+
+    protected final Supplier<AsyncNotificationlogsClient> notificationlogsClient;
+
+    protected final Supplier<AsyncCloudClient> cloudClient;
+
+    protected final Supplier<AsyncLineItemClient> lineItemClient;
+
+    protected final Supplier<AsyncBoardingClient> boardingClient;
+
+    protected final Supplier<AsyncTemplatesClient> templatesClient;
+
+    protected final Supplier<AsyncExportClient> exportClient;
+
+    protected final Supplier<AsyncOrganizationClient> organizationClient;
+
+    protected final Supplier<AsyncManagementClient> managementClient;
+
+    protected final Supplier<AsyncStatisticClient> statisticClient;
+
+    protected final Supplier<AsyncNotificationClient> notificationClient;
 
     protected final Supplier<AsyncUserClient> userClient;
 
     protected final Supplier<AsyncVendorClient> vendorClient;
 
+    protected final Supplier<AsyncGhostCardClient> ghostCardClient;
+
+    protected final Supplier<AsyncMoneyOutClient> moneyOutClient;
+
     protected final Supplier<AsyncWalletClient> walletClient;
+
+    protected final Supplier<AsyncPayoutSubscriptionClient> payoutSubscriptionClient;
+
+    protected final Supplier<AsyncChargeBacksClient> chargeBacksClient;
 
     public AsyncPayabliApiClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.billClient = Suppliers.memoize(() -> new AsyncBillClient(clientOptions));
-        this.boardingClient = Suppliers.memoize(() -> new AsyncBoardingClient(clientOptions));
-        this.chargeBacksClient = Suppliers.memoize(() -> new AsyncChargeBacksClient(clientOptions));
-        this.checkCaptureClient = Suppliers.memoize(() -> new AsyncCheckCaptureClient(clientOptions));
-        this.cloudClient = Suppliers.memoize(() -> new AsyncCloudClient(clientOptions));
         this.customerClient = Suppliers.memoize(() -> new AsyncCustomerClient(clientOptions));
-        this.exportClient = Suppliers.memoize(() -> new AsyncExportClient(clientOptions));
-        this.ghostCardClient = Suppliers.memoize(() -> new AsyncGhostCardClient(clientOptions));
-        this.hostedPaymentPagesClient = Suppliers.memoize(() -> new AsyncHostedPaymentPagesClient(clientOptions));
-        this.importClient = Suppliers.memoize(() -> new AsyncImportClient(clientOptions));
-        this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
-        this.lineItemClient = Suppliers.memoize(() -> new AsyncLineItemClient(clientOptions));
-        this.managementClient = Suppliers.memoize(() -> new AsyncManagementClient(clientOptions));
+        this.checkCaptureClient = Suppliers.memoize(() -> new AsyncCheckCaptureClient(clientOptions));
         this.moneyInClient = Suppliers.memoize(() -> new AsyncMoneyInClient(clientOptions));
-        this.moneyOutClient = Suppliers.memoize(() -> new AsyncMoneyOutClient(clientOptions));
-        this.notificationClient = Suppliers.memoize(() -> new AsyncNotificationClient(clientOptions));
-        this.notificationlogsClient = Suppliers.memoize(() -> new AsyncNotificationlogsClient(clientOptions));
-        this.ocrClient = Suppliers.memoize(() -> new AsyncOcrClient(clientOptions));
-        this.organizationClient = Suppliers.memoize(() -> new AsyncOrganizationClient(clientOptions));
-        this.paymentLinkClient = Suppliers.memoize(() -> new AsyncPaymentLinkClient(clientOptions));
-        this.paymentMethodDomainClient = Suppliers.memoize(() -> new AsyncPaymentMethodDomainClient(clientOptions));
-        this.payoutSubscriptionClient = Suppliers.memoize(() -> new AsyncPayoutSubscriptionClient(clientOptions));
-        this.paypointClient = Suppliers.memoize(() -> new AsyncPaypointClient(clientOptions));
-        this.queryClient = Suppliers.memoize(() -> new AsyncQueryClient(clientOptions));
-        this.statisticClient = Suppliers.memoize(() -> new AsyncStatisticClient(clientOptions));
         this.subscriptionClient = Suppliers.memoize(() -> new AsyncSubscriptionClient(clientOptions));
-        this.templatesClient = Suppliers.memoize(() -> new AsyncTemplatesClient(clientOptions));
+        this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
+        this.paymentLinkClient = Suppliers.memoize(() -> new AsyncPaymentLinkClient(clientOptions));
         this.tokenStorageClient = Suppliers.memoize(() -> new AsyncTokenStorageClient(clientOptions));
+        this.paypointClient = Suppliers.memoize(() -> new AsyncPaypointClient(clientOptions));
+        this.hostedPaymentPagesClient = Suppliers.memoize(() -> new AsyncHostedPaymentPagesClient(clientOptions));
+        this.paymentMethodDomainClient = Suppliers.memoize(() -> new AsyncPaymentMethodDomainClient(clientOptions));
+        this.importClient = Suppliers.memoize(() -> new AsyncImportClient(clientOptions));
+        this.queryClient = Suppliers.memoize(() -> new AsyncQueryClient(clientOptions));
+        this.ocrClient = Suppliers.memoize(() -> new AsyncOcrClient(clientOptions));
+        this.notificationlogsClient = Suppliers.memoize(() -> new AsyncNotificationlogsClient(clientOptions));
+        this.cloudClient = Suppliers.memoize(() -> new AsyncCloudClient(clientOptions));
+        this.lineItemClient = Suppliers.memoize(() -> new AsyncLineItemClient(clientOptions));
+        this.boardingClient = Suppliers.memoize(() -> new AsyncBoardingClient(clientOptions));
+        this.templatesClient = Suppliers.memoize(() -> new AsyncTemplatesClient(clientOptions));
+        this.exportClient = Suppliers.memoize(() -> new AsyncExportClient(clientOptions));
+        this.organizationClient = Suppliers.memoize(() -> new AsyncOrganizationClient(clientOptions));
+        this.managementClient = Suppliers.memoize(() -> new AsyncManagementClient(clientOptions));
+        this.statisticClient = Suppliers.memoize(() -> new AsyncStatisticClient(clientOptions));
+        this.notificationClient = Suppliers.memoize(() -> new AsyncNotificationClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new AsyncUserClient(clientOptions));
         this.vendorClient = Suppliers.memoize(() -> new AsyncVendorClient(clientOptions));
+        this.ghostCardClient = Suppliers.memoize(() -> new AsyncGhostCardClient(clientOptions));
+        this.moneyOutClient = Suppliers.memoize(() -> new AsyncMoneyOutClient(clientOptions));
         this.walletClient = Suppliers.memoize(() -> new AsyncWalletClient(clientOptions));
+        this.payoutSubscriptionClient = Suppliers.memoize(() -> new AsyncPayoutSubscriptionClient(clientOptions));
+        this.chargeBacksClient = Suppliers.memoize(() -> new AsyncChargeBacksClient(clientOptions));
     }
 
     public AsyncBillClient bill() {
         return this.billClient.get();
     }
 
-    public AsyncBoardingClient boarding() {
-        return this.boardingClient.get();
-    }
-
-    public AsyncChargeBacksClient chargeBacks() {
-        return this.chargeBacksClient.get();
+    public AsyncCustomerClient customer() {
+        return this.customerClient.get();
     }
 
     public AsyncCheckCaptureClient checkCapture() {
         return this.checkCaptureClient.get();
     }
 
-    public AsyncCloudClient cloud() {
-        return this.cloudClient.get();
-    }
-
-    public AsyncCustomerClient customer() {
-        return this.customerClient.get();
-    }
-
-    public AsyncExportClient export() {
-        return this.exportClient.get();
-    }
-
-    public AsyncGhostCardClient ghostCard() {
-        return this.ghostCardClient.get();
-    }
-
-    public AsyncHostedPaymentPagesClient hostedPaymentPages() {
-        return this.hostedPaymentPagesClient.get();
-    }
-
-    public AsyncImportClient import_() {
-        return this.importClient.get();
-    }
-
-    public AsyncInvoiceClient invoice() {
-        return this.invoiceClient.get();
-    }
-
-    public AsyncLineItemClient lineItem() {
-        return this.lineItemClient.get();
-    }
-
-    public AsyncManagementClient management() {
-        return this.managementClient.get();
-    }
-
     public AsyncMoneyInClient moneyIn() {
         return this.moneyInClient.get();
-    }
-
-    public AsyncMoneyOutClient moneyOut() {
-        return this.moneyOutClient.get();
-    }
-
-    public AsyncNotificationClient notification() {
-        return this.notificationClient.get();
-    }
-
-    public AsyncNotificationlogsClient notificationlogs() {
-        return this.notificationlogsClient.get();
-    }
-
-    public AsyncOcrClient ocr() {
-        return this.ocrClient.get();
-    }
-
-    public AsyncOrganizationClient organization() {
-        return this.organizationClient.get();
-    }
-
-    public AsyncPaymentLinkClient paymentLink() {
-        return this.paymentLinkClient.get();
-    }
-
-    public AsyncPaymentMethodDomainClient paymentMethodDomain() {
-        return this.paymentMethodDomainClient.get();
-    }
-
-    public AsyncPayoutSubscriptionClient payoutSubscription() {
-        return this.payoutSubscriptionClient.get();
-    }
-
-    public AsyncPaypointClient paypoint() {
-        return this.paypointClient.get();
-    }
-
-    public AsyncQueryClient query() {
-        return this.queryClient.get();
-    }
-
-    public AsyncStatisticClient statistic() {
-        return this.statisticClient.get();
     }
 
     public AsyncSubscriptionClient subscription() {
         return this.subscriptionClient.get();
     }
 
-    public AsyncTemplatesClient templates() {
-        return this.templatesClient.get();
+    public AsyncInvoiceClient invoice() {
+        return this.invoiceClient.get();
+    }
+
+    public AsyncPaymentLinkClient paymentLink() {
+        return this.paymentLinkClient.get();
     }
 
     public AsyncTokenStorageClient tokenStorage() {
         return this.tokenStorageClient.get();
+    }
+
+    public AsyncPaypointClient paypoint() {
+        return this.paypointClient.get();
+    }
+
+    public AsyncHostedPaymentPagesClient hostedPaymentPages() {
+        return this.hostedPaymentPagesClient.get();
+    }
+
+    public AsyncPaymentMethodDomainClient paymentMethodDomain() {
+        return this.paymentMethodDomainClient.get();
+    }
+
+    public AsyncImportClient import_() {
+        return this.importClient.get();
+    }
+
+    public AsyncQueryClient query() {
+        return this.queryClient.get();
+    }
+
+    public AsyncOcrClient ocr() {
+        return this.ocrClient.get();
+    }
+
+    public AsyncNotificationlogsClient notificationlogs() {
+        return this.notificationlogsClient.get();
+    }
+
+    public AsyncCloudClient cloud() {
+        return this.cloudClient.get();
+    }
+
+    public AsyncLineItemClient lineItem() {
+        return this.lineItemClient.get();
+    }
+
+    public AsyncBoardingClient boarding() {
+        return this.boardingClient.get();
+    }
+
+    public AsyncTemplatesClient templates() {
+        return this.templatesClient.get();
+    }
+
+    public AsyncExportClient export() {
+        return this.exportClient.get();
+    }
+
+    public AsyncOrganizationClient organization() {
+        return this.organizationClient.get();
+    }
+
+    public AsyncManagementClient management() {
+        return this.managementClient.get();
+    }
+
+    public AsyncStatisticClient statistic() {
+        return this.statisticClient.get();
+    }
+
+    public AsyncNotificationClient notification() {
+        return this.notificationClient.get();
     }
 
     public AsyncUserClient user() {
@@ -258,8 +242,24 @@ public class AsyncPayabliApiClient {
         return this.vendorClient.get();
     }
 
+    public AsyncGhostCardClient ghostCard() {
+        return this.ghostCardClient.get();
+    }
+
+    public AsyncMoneyOutClient moneyOut() {
+        return this.moneyOutClient.get();
+    }
+
     public AsyncWalletClient wallet() {
         return this.walletClient.get();
+    }
+
+    public AsyncPayoutSubscriptionClient payoutSubscription() {
+        return this.payoutSubscriptionClient.get();
+    }
+
+    public AsyncChargeBacksClient chargeBacks() {
+        return this.chargeBacksClient.get();
     }
 
     public static AsyncPayabliApiClientBuilder builder() {

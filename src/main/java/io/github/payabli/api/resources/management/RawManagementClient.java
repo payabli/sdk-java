@@ -16,8 +16,8 @@ import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.management.requests.VerifyAccountDetailsRequest;
-import io.github.payabli.api.resources.management.types.VerifyAccountDetailsResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.VerifyAccountDetailsResponse;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -93,13 +93,14 @@ public class RawManagementClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {

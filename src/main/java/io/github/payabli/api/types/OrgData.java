@@ -73,8 +73,8 @@ public final class OrgData {
 
     /**
      * @return The paypoint's status.
-     * <p>Active - <code>1</code></p>
-     * <p>Inactive - 0</p>
+     * Active - <code>1</code>
+     * Inactive - 0
      */
     @JsonProperty("orgStatus")
     public Optional<Integer> getOrgStatus() {
@@ -194,9 +194,9 @@ public final class OrgData {
         }
 
         /**
-         * <p>The paypoint's status.</p>
-         * <p>Active - <code>1</code></p>
-         * <p>Inactive - 0</p>
+         * <p>The paypoint's status.
+         * Active - <code>1</code>
+         * Inactive - 0</p>
          */
         @JsonSetter(value = "orgStatus", nulls = Nulls.SKIP)
         public Builder orgStatus(Optional<Integer> orgStatus) {

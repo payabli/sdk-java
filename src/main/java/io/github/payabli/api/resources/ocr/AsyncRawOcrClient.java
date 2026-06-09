@@ -15,9 +15,9 @@ import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
-import io.github.payabli.api.resources.ocr.types.FileContentImageOnly;
-import io.github.payabli.api.resources.ocr.types.PayabliApiResponseOcr;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.FileContentImageOnly;
+import io.github.payabli.api.types.PayabliApiResponseOcr;
+import io.github.payabli.api.types.PayabliErrorBody;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
@@ -68,8 +68,7 @@ public class AsyncRawOcrClient {
             String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Import")
-                .addPathSegments("ocrDocumentForm")
+                .addPathSegments("Import/ocrDocumentForm")
                 .addPathSegment(typeResult);
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -115,7 +114,7 @@ public class AsyncRawOcrClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -125,8 +124,7 @@ public class AsyncRawOcrClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -180,8 +178,7 @@ public class AsyncRawOcrClient {
             String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Import")
-                .addPathSegments("ocrDocumentJson")
+                .addPathSegments("Import/ocrDocumentJson")
                 .addPathSegment(typeResult);
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {

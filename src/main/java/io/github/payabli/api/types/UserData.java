@@ -23,7 +23,7 @@ import java.util.Optional;
 public final class UserData {
     private final Optional<List<UsrAccess>> access;
 
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> email;
 
@@ -47,7 +47,7 @@ public final class UserData {
 
     private UserData(
             Optional<List<UsrAccess>> access,
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<String> email,
             Optional<String> language,
             Optional<MfaData> mfaData,
@@ -78,7 +78,7 @@ public final class UserData {
     }
 
     @JsonProperty("additionalData")
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
@@ -187,7 +187,7 @@ public final class UserData {
     public static final class Builder {
         private Optional<List<UsrAccess>> access = Optional.empty();
 
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         private Optional<String> email = Optional.empty();
 
@@ -239,12 +239,12 @@ public final class UserData {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

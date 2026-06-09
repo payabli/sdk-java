@@ -23,15 +23,15 @@ import io.github.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import io.github.payabli.api.resources.bill.requests.ListBillsRequest;
 import io.github.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import io.github.payabli.api.resources.bill.requests.SetApprovedBillRequest;
-import io.github.payabli.api.resources.bill.types.BillOutData;
-import io.github.payabli.api.resources.bill.types.BillResponse;
-import io.github.payabli.api.resources.bill.types.EditBillResponse;
-import io.github.payabli.api.resources.bill.types.GetBillResponse;
-import io.github.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
-import io.github.payabli.api.resources.bill.types.SetApprovedBillResponse;
+import io.github.payabli.api.types.BillOutData;
 import io.github.payabli.api.types.BillQueryResponse;
+import io.github.payabli.api.types.BillResponse;
+import io.github.payabli.api.types.EditBillResponse;
 import io.github.payabli.api.types.FileContent;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.GetBillResponse;
+import io.github.payabli.api.types.ModifyApprovalBillResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.SetApprovedBillResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -120,13 +120,14 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -141,104 +142,16 @@ public class RawBillClient {
     }
 
     /**
-     * Delete a file attached to a bill.
+     * Retrieves a bill by ID from an entrypoint.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
-        return deleteAttachedFromBill(
-                idBill, filename, DeleteAttachedFromBillRequest.builder().build());
+    public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill) {
+        return getBill(idBill, null);
     }
 
     /**
-     * Delete a file attached to a bill.
+     * Retrieves a bill by ID from an entrypoint.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
-            int idBill, String filename, RequestOptions requestOptions) {
-        return deleteAttachedFromBill(
-                idBill, filename, DeleteAttachedFromBillRequest.builder().build(), requestOptions);
-    }
-
-    /**
-     * Delete a file attached to a bill.
-     */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
-            int idBill, String filename, DeleteAttachedFromBillRequest request) {
-        return deleteAttachedFromBill(idBill, filename, request, null);
-    }
-
-    /**
-     * Delete a file attached to a bill.
-     */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
-            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Bill/attachedFileFromBill")
-                .addPathSegment(Integer.toString(idBill))
-                .addPathSegment(filename);
-        if (request.getReturnObject().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnObject", request.getReturnObject().get(), false);
-        }
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Deletes a bill by ID.
-     */
-    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill) {
-        return deleteBill(idBill, null);
-    }
-
-    /**
-     * Deletes a bill by ID.
-     */
-    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
@@ -250,7 +163,7 @@ public class RawBillClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -263,7 +176,7 @@ public class RawBillClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBillResponse.class), response);
             }
             try {
                 switch (response.code()) {
@@ -272,13 +185,14 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -359,13 +273,79 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Deletes a bill by ID.
+     */
+    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill) {
+        return deleteBill(idBill, null);
+    }
+
+    /**
+     * Deletes a bill by ID.
+     */
+    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Bill")
+                .addPathSegment(Integer.toString(idBill));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("DELETE", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -447,13 +427,14 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -468,29 +449,226 @@ public class RawBillClient {
     }
 
     /**
-     * Retrieves a bill by ID from an entrypoint.
+     * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill) {
-        return getBill(idBill, null);
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
+        return deleteAttachedFromBill(
+                idBill, filename, DeleteAttachedFromBillRequest.builder().build());
     }
 
     /**
-     * Retrieves a bill by ID from an entrypoint.
+     * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, RequestOptions requestOptions) {
+        return deleteAttachedFromBill(
+                idBill, filename, DeleteAttachedFromBillRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, DeleteAttachedFromBillRequest request) {
+        return deleteAttachedFromBill(idBill, filename, request, null);
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("Bill")
+                .addPathSegments("Bill/attachedFileFromBill")
+                .addPathSegment(Integer.toString(idBill))
+                .addPathSegment(filename);
+        if (request.getReturnObject().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnObject", request.getReturnObject().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("DELETE", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
+        return sendToApprovalBill(
+                idBill, SendToApprovalBillRequest.builder().body(body).build());
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
+            int idBill, List<String> body, RequestOptions requestOptions) {
+        return sendToApprovalBill(
+                idBill, SendToApprovalBillRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
+        return sendToApprovalBill(idBill, request, null);
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
+            int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Bill/approval")
+                .addPathSegment(Integer.toString(idBill));
+        if (request.getAutocreateUser().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "autocreateUser", request.getAutocreateUser().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        if (request.getIdempotencyKey().isPresent()) {
+            _requestBuilder.addHeader(
+                    "idempotencyKey", request.getIdempotencyKey().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Modify the list of users the bill is sent to for approval.
+     */
+    public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(int idBill, List<String> request) {
+        return modifyApprovalBill(idBill, request, null);
+    }
+
+    /**
+     * Modify the list of users the bill is sent to for approval.
+     */
+    public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(
+            int idBill, List<String> request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Bill/approval")
                 .addPathSegment(Integer.toString(idBill));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("GET", null)
+                .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
@@ -502,7 +680,8 @@ public class RawBillClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBillResponse.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ModifyApprovalBillResponse.class),
+                        response);
             }
             try {
                 switch (response.code()) {
@@ -511,13 +690,104 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
+        return setApprovedBill(
+                idBill, approved, SetApprovedBillRequest.builder().build());
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, RequestOptions requestOptions) {
+        return setApprovedBill(
+                idBill, approved, SetApprovedBillRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, SetApprovedBillRequest request) {
+        return setApprovedBill(idBill, approved, request, null);
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Bill/approval")
+                .addPathSegment(Integer.toString(idBill))
+                .addPathSegment(approved);
+        if (request.getEmail().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "email", request.getEmail().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SetApprovedBillResponse.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -610,13 +880,14 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -709,274 +980,14 @@ public class RawBillClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Modify the list of users the bill is sent to for approval.
-     */
-    public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(int idBill, List<String> request) {
-        return modifyApprovalBill(idBill, request, null);
-    }
-
-    /**
-     * Modify the list of users the bill is sent to for approval.
-     */
-    public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(
-            int idBill, List<String> request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Bill/approval")
-                .addPathSegment(Integer.toString(idBill));
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl.build())
-                .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ModifyApprovalBillResponse.class),
-                        response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
-        return sendToApprovalBill(
-                idBill, SendToApprovalBillRequest.builder().body(body).build());
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
-            int idBill, List<String> body, RequestOptions requestOptions) {
-        return sendToApprovalBill(
-                idBill, SendToApprovalBillRequest.builder().body(body).build(), requestOptions);
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
-        return sendToApprovalBill(idBill, request, null);
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
-            int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Bill/approval")
-                .addPathSegment(Integer.toString(idBill));
-        if (request.getAutocreateUser().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "autocreateUser", request.getAutocreateUser().get(), false);
-        }
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        if (request.getIdempotencyKey().isPresent()) {
-            _requestBuilder.addHeader(
-                    "idempotencyKey", request.getIdempotencyKey().get());
-        }
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
-        return setApprovedBill(
-                idBill, approved, SetApprovedBillRequest.builder().build());
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
-            int idBill, String approved, RequestOptions requestOptions) {
-        return setApprovedBill(
-                idBill, approved, SetApprovedBillRequest.builder().build(), requestOptions);
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
-            int idBill, String approved, SetApprovedBillRequest request) {
-        return setApprovedBill(idBill, approved, request, null);
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
-            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Bill/approval")
-                .addPathSegment(Integer.toString(idBill))
-                .addPathSegment(approved);
-        if (request.getEmail().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "email", request.getEmail().get(), false);
-        }
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SetApprovedBillResponse.class),
-                        response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {

@@ -62,20 +62,6 @@ public class CustomerClient {
     }
 
     /**
-     * Delete a customer record.
-     */
-    public PayabliApiResponse00Responsedatanonobject deleteCustomer(int customerId) {
-        return this.rawClient.deleteCustomer(customerId).body();
-    }
-
-    /**
-     * Delete a customer record.
-     */
-    public PayabliApiResponse00Responsedatanonobject deleteCustomer(int customerId, RequestOptions requestOptions) {
-        return this.rawClient.deleteCustomer(customerId, requestOptions).body();
-    }
-
-    /**
      * Retrieves a customer's record and details.
      */
     public CustomerQueryRecords getCustomer(int customerId) {
@@ -87,37 +73,6 @@ public class CustomerClient {
      */
     public CustomerQueryRecords getCustomer(int customerId, RequestOptions requestOptions) {
         return this.rawClient.getCustomer(customerId, requestOptions).body();
-    }
-
-    /**
-     * Links a customer to a transaction by ID.
-     */
-    public PayabliApiResponse00Responsedatanonobject linkCustomerTransaction(int customerId, String transId) {
-        return this.rawClient.linkCustomerTransaction(customerId, transId).body();
-    }
-
-    /**
-     * Links a customer to a transaction by ID.
-     */
-    public PayabliApiResponse00Responsedatanonobject linkCustomerTransaction(
-            int customerId, String transId, RequestOptions requestOptions) {
-        return this.rawClient
-                .linkCustomerTransaction(customerId, transId, requestOptions)
-                .body();
-    }
-
-    /**
-     * Sends the consent opt-in email to the customer email address in the customer record.
-     */
-    public PayabliApiResponse00Responsedatanonobject requestConsent(int customerId) {
-        return this.rawClient.requestConsent(customerId).body();
-    }
-
-    /**
-     * Sends the consent opt-in email to the customer email address in the customer record.
-     */
-    public PayabliApiResponse00Responsedatanonobject requestConsent(int customerId, RequestOptions requestOptions) {
-        return this.rawClient.requestConsent(customerId, requestOptions).body();
     }
 
     /**
@@ -148,6 +103,51 @@ public class CustomerClient {
             int customerId, CustomerData request, RequestOptions requestOptions) {
         return this.rawClient
                 .updateCustomer(customerId, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Delete a customer record.
+     */
+    public PayabliApiResponse00Responsedatanonobject deleteCustomer(int customerId) {
+        return this.rawClient.deleteCustomer(customerId).body();
+    }
+
+    /**
+     * Delete a customer record.
+     */
+    public PayabliApiResponse00Responsedatanonobject deleteCustomer(int customerId, RequestOptions requestOptions) {
+        return this.rawClient.deleteCustomer(customerId, requestOptions).body();
+    }
+
+    /**
+     * Sends the consent opt-in email to the customer email address in the customer record.
+     */
+    public PayabliApiResponse00Responsedatanonobject requestConsent(int customerId) {
+        return this.rawClient.requestConsent(customerId).body();
+    }
+
+    /**
+     * Sends the consent opt-in email to the customer email address in the customer record.
+     */
+    public PayabliApiResponse00Responsedatanonobject requestConsent(int customerId, RequestOptions requestOptions) {
+        return this.rawClient.requestConsent(customerId, requestOptions).body();
+    }
+
+    /**
+     * Links a customer to a transaction by ID.
+     */
+    public PayabliApiResponse00Responsedatanonobject linkCustomerTransaction(int customerId, String transId) {
+        return this.rawClient.linkCustomerTransaction(customerId, transId).body();
+    }
+
+    /**
+     * Links a customer to a transaction by ID.
+     */
+    public PayabliApiResponse00Responsedatanonobject linkCustomerTransaction(
+            int customerId, String transId, RequestOptions requestOptions) {
+        return this.rawClient
+                .linkCustomerTransaction(customerId, transId, requestOptions)
                 .body();
     }
 }

@@ -22,7 +22,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorQueryRecord.Builder.class)
 public final class VendorQueryRecord {
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> address1;
 
@@ -127,7 +127,7 @@ public final class VendorQueryRecord {
     private final Map<String, Object> additionalProperties;
 
     private VendorQueryRecord(
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<String> address1,
             Optional<String> address2,
             Optional<BillingDataResponse> billingData,
@@ -234,7 +234,7 @@ public final class VendorQueryRecord {
     }
 
     @JsonProperty("additionalData")
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
@@ -641,7 +641,7 @@ public final class VendorQueryRecord {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         private Optional<String> address1 = Optional.empty();
 
@@ -804,12 +804,12 @@ public final class VendorQueryRecord {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

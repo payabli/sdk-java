@@ -5,10 +5,10 @@ package io.github.payabli.api.resources.notification;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.resources.notification.types.AddNotificationRequest;
-import io.github.payabli.api.resources.notification.types.UpdateNotificationRequest;
+import io.github.payabli.api.types.AddNotificationRequest;
 import io.github.payabli.api.types.NotificationQueryRecord;
 import io.github.payabli.api.types.PayabliApiResponseNotifications;
+import io.github.payabli.api.types.UpdateNotificationRequest;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -45,21 +45,6 @@ public class AsyncNotificationClient {
     }
 
     /**
-     * Deletes a single notification or auto-generated report.
-     */
-    public CompletableFuture<PayabliApiResponseNotifications> deleteNotification(String nId) {
-        return this.rawClient.deleteNotification(nId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a single notification or auto-generated report.
-     */
-    public CompletableFuture<PayabliApiResponseNotifications> deleteNotification(
-            String nId, RequestOptions requestOptions) {
-        return this.rawClient.deleteNotification(nId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Retrieves a single notification or auto-generated report's details.
      */
     public CompletableFuture<NotificationQueryRecord> getNotification(String nId) {
@@ -87,6 +72,21 @@ public class AsyncNotificationClient {
     public CompletableFuture<PayabliApiResponseNotifications> updateNotification(
             String nId, UpdateNotificationRequest request, RequestOptions requestOptions) {
         return this.rawClient.updateNotification(nId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a single notification or auto-generated report.
+     */
+    public CompletableFuture<PayabliApiResponseNotifications> deleteNotification(String nId) {
+        return this.rawClient.deleteNotification(nId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a single notification or auto-generated report.
+     */
+    public CompletableFuture<PayabliApiResponseNotifications> deleteNotification(
+            String nId, RequestOptions requestOptions) {
+        return this.rawClient.deleteNotification(nId, requestOptions).thenApply(response -> response.body());
     }
 
     /**

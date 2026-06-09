@@ -19,7 +19,7 @@
   "dateCreated": "2023-12-06T20:25:31.077Z",
   "dateModified": "2023-12-06T00:00:00Z",
   "associatedVendor": {
-    "VendorNumber": "VENDOR123456",
+    "VendorNumber": "VEN-123",
     "Name1": "Smith Industries",
     "Name2": "John Smith",
     "EIN": "12-3456789",
@@ -60,7 +60,7 @@
     },
     "PaymentMethod": "vcard",
     "VendorStatus": 1,
-    "VendorId": 339,
+    "VendorId": 456,
     "EnrollmentStatus": null,
     "Summary": {
       "ActiveBills": 1,
@@ -109,5 +109,5 @@
   "PaypointLegalname": "Athlete Factory LLC",
   "PaypointEntryname": "47acde49",
   "externalPaypointID": null,
-  "paypointId": 12345
+  "paypointId": 3040
 }

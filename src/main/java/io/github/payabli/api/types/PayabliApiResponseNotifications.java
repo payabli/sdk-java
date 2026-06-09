@@ -50,7 +50,7 @@ public final class PayabliApiResponseNotifications {
 
     /**
      * @return If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.
-     * <p>If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
+     * If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.
      */
     @JsonProperty("isSuccess")
     public Optional<Boolean> getIsSuccess() {
@@ -128,8 +128,8 @@ public final class PayabliApiResponseNotifications {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.</p>
-         * <p>If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
+         * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.
+         * If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
          */
         _FinalStage isSuccess(Optional<Boolean> isSuccess);
 
@@ -232,8 +232,8 @@ public final class PayabliApiResponseNotifications {
         }
 
         /**
-         * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.</p>
-         * <p>If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
+         * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.
+         * If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -243,8 +243,8 @@ public final class PayabliApiResponseNotifications {
         }
 
         /**
-         * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.</p>
-         * <p>If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
+         * <p>If <code>isSuccess</code> = true, <code>responseData</code> contains the notification identifier.
+         * If <code>isSuccess</code> = false, <code>responseData</code> contains the reason for the error.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "isSuccess", nulls = Nulls.SKIP)

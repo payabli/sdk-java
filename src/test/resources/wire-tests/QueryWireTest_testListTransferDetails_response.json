@@ -24,7 +24,7 @@
   "Records": [
     {
       "transferDetailId": 654321,
-      "transferId": 12345,
+      "transferId": 4521,
       "transactionId": "txn-4321hg6543fe",
       "type": "credit",
       "category": "sale",
@@ -102,7 +102,7 @@
       },
       "Source": "web",
       "ScheduleReference": 0,
-      "OrgId": 9876,
+      "OrgId": 123,
       "RefundId": 0,
       "ReturnedId": 0,
       "TransactionTime": "2024-01-05T12:15:30.11Z",
@@ -120,13 +120,13 @@
         "BillingZip": "21230",
         "BillingCountry": "US",
         "BillingEmail": "ara.karapetyan@electronics.com",
-        "CustomerNumber": "0010",
-        "customerId": 7890
+        "CustomerNumber": "C-90010",
+        "customerId": 4440
       },
       "transactionNumber": null,
       "billingFeesDetails": [],
       "ExternalProcessorInformation": null,
-      "PaypointId": 1357,
+      "PaypointId": 3040,
       "ChargebackId": null,
       "RetrievalId": null,
       "TransAdditionalData": null,

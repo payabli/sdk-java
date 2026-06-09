@@ -11,6 +11,8 @@ public final class PayMethodStoredMethodMethod {
 
     public static final PayMethodStoredMethodMethod CARD = new PayMethodStoredMethodMethod(Value.CARD, "card");
 
+    public static final PayMethodStoredMethodMethod WALLET = new PayMethodStoredMethodMethod(Value.WALLET, "wallet");
+
     private final Value value;
 
     private final String string;
@@ -48,6 +50,8 @@ public final class PayMethodStoredMethodMethod {
                 return visitor.visitAch();
             case CARD:
                 return visitor.visitCard();
+            case WALLET:
+                return visitor.visitWallet();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -61,6 +65,8 @@ public final class PayMethodStoredMethodMethod {
                 return ACH;
             case "card":
                 return CARD;
+            case "wallet":
+                return WALLET;
             default:
                 return new PayMethodStoredMethodMethod(Value.UNKNOWN, value);
         }
@@ -71,6 +77,8 @@ public final class PayMethodStoredMethodMethod {
 
         ACH,
 
+        WALLET,
+
         UNKNOWN
     }
 
@@ -78,6 +86,8 @@ public final class PayMethodStoredMethodMethod {
         T visitCard();
 
         T visitAch();
+
+        T visitWallet();
 
         T visitUnknown(String unknownType);
     }

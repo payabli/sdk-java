@@ -26,7 +26,7 @@ public final class LineItemQueryRecord {
 
     private final Optional<Long> id;
 
-    private final Optional<List<Optional<String>>> itemCategories;
+    private final Optional<List<String>> itemCategories;
 
     private final Optional<String> itemCommodityCode;
 
@@ -61,7 +61,7 @@ public final class LineItemQueryRecord {
     private LineItemQueryRecord(
             Optional<OffsetDateTime> createdAt,
             Optional<Long> id,
-            Optional<List<Optional<String>>> itemCategories,
+            Optional<List<String>> itemCategories,
             Optional<String> itemCommodityCode,
             double itemCost,
             Optional<String> itemDescription,
@@ -117,7 +117,7 @@ public final class LineItemQueryRecord {
      * @return Array of tags classifying item or product.
      */
     @JsonProperty("itemCategories")
-    public Optional<List<Optional<String>>> getItemCategories() {
+    public Optional<List<String>> getItemCategories() {
         return itemCategories;
     }
 
@@ -317,9 +317,9 @@ public final class LineItemQueryRecord {
         /**
          * <p>Array of tags classifying item or product.</p>
          */
-        _FinalStage itemCategories(Optional<List<Optional<String>>> itemCategories);
+        _FinalStage itemCategories(Optional<List<String>> itemCategories);
 
-        _FinalStage itemCategories(List<Optional<String>> itemCategories);
+        _FinalStage itemCategories(List<String> itemCategories);
 
         _FinalStage itemCommodityCode(Optional<String> itemCommodityCode);
 
@@ -418,7 +418,7 @@ public final class LineItemQueryRecord {
 
         private Optional<String> itemCommodityCode = Optional.empty();
 
-        private Optional<List<Optional<String>>> itemCategories = Optional.empty();
+        private Optional<List<String>> itemCategories = Optional.empty();
 
         private Optional<Long> id = Optional.empty();
 
@@ -678,7 +678,7 @@ public final class LineItemQueryRecord {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage itemCategories(List<Optional<String>> itemCategories) {
+        public _FinalStage itemCategories(List<String> itemCategories) {
             this.itemCategories = Optional.ofNullable(itemCategories);
             return this;
         }
@@ -688,7 +688,7 @@ public final class LineItemQueryRecord {
          */
         @java.lang.Override
         @JsonSetter(value = "itemCategories", nulls = Nulls.SKIP)
-        public _FinalStage itemCategories(Optional<List<Optional<String>>> itemCategories) {
+        public _FinalStage itemCategories(Optional<List<String>> itemCategories) {
             this.itemCategories = itemCategories;
             return this;
         }

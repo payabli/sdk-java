@@ -79,6 +79,8 @@ public final class SubscriptionQueryRecords {
 
     private final Optional<Integer> subStatus;
 
+    private final Optional<SubscriptionType> subscriptionType;
+
     private final Optional<Double> totalAmount;
 
     private final Optional<Integer> totalCycles;
@@ -115,6 +117,7 @@ public final class SubscriptionQueryRecords {
             Optional<VendorResponseStoredMethod> storedMethod,
             Optional<List<GeneralEvents>> subEvents,
             Optional<Integer> subStatus,
+            Optional<SubscriptionType> subscriptionType,
             Optional<Double> totalAmount,
             Optional<Integer> totalCycles,
             Optional<Boolean> untilCancelled,
@@ -146,6 +149,7 @@ public final class SubscriptionQueryRecords {
         this.storedMethod = storedMethod;
         this.subEvents = subEvents;
         this.subStatus = subStatus;
+        this.subscriptionType = subscriptionType;
         this.totalAmount = totalAmount;
         this.totalCycles = totalCycles;
         this.untilCancelled = untilCancelled;
@@ -336,9 +340,9 @@ public final class SubscriptionQueryRecords {
      * @return The full stored payment method record linked to the subscription
      * and charged on each billing cycle. Returned as <code>null</code> for legacy
      * subscriptions that don't have a linked stored method.
-     * <p>The shape is the same across payment vehicles (card, ACH, check).
+     * The shape is the same across payment vehicles (card, ACH, check).
      * Only the populated fields differ. For example, <code>ABA</code> is populated
-     * for ACH, while <code>ExpDate</code> and <code>binData</code> are populated for card.</p>
+     * for ACH, while <code>ExpDate</code> and <code>binData</code> are populated for card.
      */
     @JsonIgnore
     public Optional<VendorResponseStoredMethod> getStoredMethod() {
@@ -366,6 +370,17 @@ public final class SubscriptionQueryRecords {
     @JsonProperty("SubStatus")
     public Optional<Integer> getSubStatus() {
         return subStatus;
+    }
+
+    /**
+     * @return Subscription type or category. Returns <code>null</code> when no type is assigned.
+     */
+    @JsonIgnore
+    public Optional<SubscriptionType> getSubscriptionType() {
+        if (subscriptionType == null) {
+            return Optional.empty();
+        }
+        return subscriptionType;
     }
 
     /**
@@ -422,6 +437,12 @@ public final class SubscriptionQueryRecords {
         return storedMethod;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("SubscriptionType")
+    private Optional<SubscriptionType> _getSubscriptionType() {
+        return subscriptionType;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -461,6 +482,7 @@ public final class SubscriptionQueryRecords {
                 && storedMethod.equals(other.storedMethod)
                 && subEvents.equals(other.subEvents)
                 && subStatus.equals(other.subStatus)
+                && subscriptionType.equals(other.subscriptionType)
                 && totalAmount.equals(other.totalAmount)
                 && totalCycles.equals(other.totalCycles)
                 && untilCancelled.equals(other.untilCancelled);
@@ -496,6 +518,7 @@ public final class SubscriptionQueryRecords {
                 this.storedMethod,
                 this.subEvents,
                 this.subStatus,
+                this.subscriptionType,
                 this.totalAmount,
                 this.totalCycles,
                 this.untilCancelled);
@@ -566,6 +589,8 @@ public final class SubscriptionQueryRecords {
 
         private Optional<Integer> subStatus = Optional.empty();
 
+        private Optional<SubscriptionType> subscriptionType = Optional.empty();
+
         private Optional<Double> totalAmount = Optional.empty();
 
         private Optional<Integer> totalCycles = Optional.empty();
@@ -605,6 +630,7 @@ public final class SubscriptionQueryRecords {
             storedMethod(other.getStoredMethod());
             subEvents(other.getSubEvents());
             subStatus(other.getSubStatus());
+            subscriptionType(other.getSubscriptionType());
             totalAmount(other.getTotalAmount());
             totalCycles(other.getTotalCycles());
             untilCancelled(other.getUntilCancelled());
@@ -970,8 +996,8 @@ public final class SubscriptionQueryRecords {
         /**
          * <p>The full stored payment method record linked to the subscription
          * and charged on each billing cycle. Returned as <code>null</code> for legacy
-         * subscriptions that don't have a linked stored method.</p>
-         * <p>The shape is the same across payment vehicles (card, ACH, check).
+         * subscriptions that don't have a linked stored method.
+         * The shape is the same across payment vehicles (card, ACH, check).
          * Only the populated fields differ. For example, <code>ABA</code> is populated
          * for ACH, while <code>ExpDate</code> and <code>binData</code> are populated for card.</p>
          */
@@ -1026,6 +1052,31 @@ public final class SubscriptionQueryRecords {
 
         public Builder subStatus(Integer subStatus) {
             this.subStatus = Optional.ofNullable(subStatus);
+            return this;
+        }
+
+        /**
+         * <p>Subscription type or category. Returns <code>null</code> when no type is assigned.</p>
+         */
+        @JsonSetter(value = "SubscriptionType", nulls = Nulls.SKIP)
+        public Builder subscriptionType(Optional<SubscriptionType> subscriptionType) {
+            this.subscriptionType = subscriptionType;
+            return this;
+        }
+
+        public Builder subscriptionType(SubscriptionType subscriptionType) {
+            this.subscriptionType = Optional.ofNullable(subscriptionType);
+            return this;
+        }
+
+        public Builder subscriptionType(Nullable<SubscriptionType> subscriptionType) {
+            if (subscriptionType.isNull()) {
+                this.subscriptionType = null;
+            } else if (subscriptionType.isEmpty()) {
+                this.subscriptionType = Optional.empty();
+            } else {
+                this.subscriptionType = Optional.of(subscriptionType.get());
+            }
             return this;
         }
 
@@ -1100,6 +1151,7 @@ public final class SubscriptionQueryRecords {
                     storedMethod,
                     subEvents,
                     subStatus,
+                    subscriptionType,
                     totalAmount,
                     totalCycles,
                     untilCancelled,

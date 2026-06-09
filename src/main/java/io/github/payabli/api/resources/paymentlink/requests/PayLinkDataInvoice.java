@@ -13,12 +13,20 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBody;
+import io.github.payabli.api.types.ContactElement;
+import io.github.payabli.api.types.Element;
+import io.github.payabli.api.types.HeaderElement;
+import io.github.payabli.api.types.InvoiceElement;
+import io.github.payabli.api.types.LabelElement;
+import io.github.payabli.api.types.MethodElement;
+import io.github.payabli.api.types.NoteElement;
+import io.github.payabli.api.types.PageElement;
+import io.github.payabli.api.types.PagelinkSetting;
+import io.github.payabli.api.types.PayorElement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayLinkDataInvoice.Builder.class)
@@ -29,7 +37,27 @@ public final class PayLinkDataInvoice {
 
     private final Optional<String> mail2;
 
-    private final PaymentPageRequestBody body;
+    private final Optional<ContactElement> contactUs;
+
+    private final Optional<InvoiceElement> invoices;
+
+    private final Optional<Element> logo;
+
+    private final Optional<LabelElement> messageBeforePaying;
+
+    private final Optional<NoteElement> notes;
+
+    private final Optional<PageElement> page;
+
+    private final Optional<LabelElement> paymentButton;
+
+    private final Optional<MethodElement> paymentMethods;
+
+    private final Optional<PayorElement> payor;
+
+    private final Optional<HeaderElement> review;
+
+    private final Optional<PagelinkSetting> settings;
 
     private final Map<String, Object> additionalProperties;
 
@@ -37,15 +65,38 @@ public final class PayLinkDataInvoice {
             Optional<String> idempotencyKey,
             Optional<Boolean> amountFixed,
             Optional<String> mail2,
-            PaymentPageRequestBody body,
+            Optional<ContactElement> contactUs,
+            Optional<InvoiceElement> invoices,
+            Optional<Element> logo,
+            Optional<LabelElement> messageBeforePaying,
+            Optional<NoteElement> notes,
+            Optional<PageElement> page,
+            Optional<LabelElement> paymentButton,
+            Optional<MethodElement> paymentMethods,
+            Optional<PayorElement> payor,
+            Optional<HeaderElement> review,
+            Optional<PagelinkSetting> settings,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.amountFixed = amountFixed;
         this.mail2 = mail2;
-        this.body = body;
+        this.contactUs = contactUs;
+        this.invoices = invoices;
+        this.logo = logo;
+        this.messageBeforePaying = messageBeforePaying;
+        this.notes = notes;
+        this.page = page;
+        this.paymentButton = paymentButton;
+        this.paymentMethods = paymentMethods;
+        this.payor = payor;
+        this.review = review;
+        this.settings = settings;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return <em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+     */
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
@@ -54,7 +105,7 @@ public final class PayLinkDataInvoice {
     /**
      * @return Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.
      */
-    @JsonProperty("amountFixed")
+    @JsonIgnore
     public Optional<Boolean> getAmountFixed() {
         return amountFixed;
     }
@@ -62,14 +113,97 @@ public final class PayLinkDataInvoice {
     /**
      * @return List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
      */
-    @JsonProperty("mail2")
+    @JsonIgnore
     public Optional<String> getMail2() {
         return mail2;
     }
 
-    @JsonProperty("body")
-    public PaymentPageRequestBody getBody() {
-        return body;
+    /**
+     * @return ContactUs section of payment link page
+     */
+    @JsonProperty("contactUs")
+    public Optional<ContactElement> getContactUs() {
+        return contactUs;
+    }
+
+    /**
+     * @return Invoices section of payment link page
+     */
+    @JsonProperty("invoices")
+    public Optional<InvoiceElement> getInvoices() {
+        return invoices;
+    }
+
+    /**
+     * @return Logo section of payment link page
+     */
+    @JsonProperty("logo")
+    public Optional<Element> getLogo() {
+        return logo;
+    }
+
+    /**
+     * @return Message section of payment link page
+     */
+    @JsonProperty("messageBeforePaying")
+    public Optional<LabelElement> getMessageBeforePaying() {
+        return messageBeforePaying;
+    }
+
+    /**
+     * @return Notes section of payment link page
+     */
+    @JsonProperty("notes")
+    public Optional<NoteElement> getNotes() {
+        return notes;
+    }
+
+    /**
+     * @return Page header section of payment link page
+     */
+    @JsonProperty("page")
+    public Optional<PageElement> getPage() {
+        return page;
+    }
+
+    /**
+     * @return Payment button section of payment link page
+     */
+    @JsonProperty("paymentButton")
+    public Optional<LabelElement> getPaymentButton() {
+        return paymentButton;
+    }
+
+    /**
+     * @return Payment methods section of payment link page
+     */
+    @JsonProperty("paymentMethods")
+    public Optional<MethodElement> getPaymentMethods() {
+        return paymentMethods;
+    }
+
+    /**
+     * @return Customer/Payor section of payment link page
+     */
+    @JsonProperty("payor")
+    public Optional<PayorElement> getPayor() {
+        return payor;
+    }
+
+    /**
+     * @return Review section of payment link page
+     */
+    @JsonProperty("review")
+    public Optional<HeaderElement> getReview() {
+        return review;
+    }
+
+    /**
+     * @return Settings section of payment link page
+     */
+    @JsonProperty("settings")
+    public Optional<PagelinkSetting> getSettings() {
+        return settings;
     }
 
     @java.lang.Override
@@ -87,12 +221,36 @@ public final class PayLinkDataInvoice {
         return idempotencyKey.equals(other.idempotencyKey)
                 && amountFixed.equals(other.amountFixed)
                 && mail2.equals(other.mail2)
-                && body.equals(other.body);
+                && contactUs.equals(other.contactUs)
+                && invoices.equals(other.invoices)
+                && logo.equals(other.logo)
+                && messageBeforePaying.equals(other.messageBeforePaying)
+                && notes.equals(other.notes)
+                && page.equals(other.page)
+                && paymentButton.equals(other.paymentButton)
+                && paymentMethods.equals(other.paymentMethods)
+                && payor.equals(other.payor)
+                && review.equals(other.review)
+                && settings.equals(other.settings);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey, this.amountFixed, this.mail2, this.body);
+        return Objects.hash(
+                this.idempotencyKey,
+                this.amountFixed,
+                this.mail2,
+                this.contactUs,
+                this.invoices,
+                this.logo,
+                this.messageBeforePaying,
+                this.notes,
+                this.page,
+                this.paymentButton,
+                this.paymentMethods,
+                this.payor,
+                this.review,
+                this.settings);
     }
 
     @java.lang.Override
@@ -100,137 +258,282 @@ public final class PayLinkDataInvoice {
         return ObjectMappers.stringify(this);
     }
 
-    public static BodyStage builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    public interface BodyStage {
-        _FinalStage body(@NotNull PaymentPageRequestBody body);
-
-        Builder from(PayLinkDataInvoice other);
-    }
-
-    public interface _FinalStage {
-        PayLinkDataInvoice build();
-
-        _FinalStage additionalProperty(String key, Object value);
-
-        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-        _FinalStage idempotencyKey(Optional<String> idempotencyKey);
-
-        _FinalStage idempotencyKey(String idempotencyKey);
-
-        /**
-         * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
-         */
-        _FinalStage amountFixed(Optional<Boolean> amountFixed);
-
-        _FinalStage amountFixed(Boolean amountFixed);
-
-        /**
-         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
-         */
-        _FinalStage mail2(Optional<String> mail2);
-
-        _FinalStage mail2(String mail2);
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements BodyStage, _FinalStage {
-        private PaymentPageRequestBody body;
-
-        private Optional<String> mail2 = Optional.empty();
+    public static final class Builder {
+        private Optional<String> idempotencyKey = Optional.empty();
 
         private Optional<Boolean> amountFixed = Optional.empty();
 
-        private Optional<String> idempotencyKey = Optional.empty();
+        private Optional<String> mail2 = Optional.empty();
+
+        private Optional<ContactElement> contactUs = Optional.empty();
+
+        private Optional<InvoiceElement> invoices = Optional.empty();
+
+        private Optional<Element> logo = Optional.empty();
+
+        private Optional<LabelElement> messageBeforePaying = Optional.empty();
+
+        private Optional<NoteElement> notes = Optional.empty();
+
+        private Optional<PageElement> page = Optional.empty();
+
+        private Optional<LabelElement> paymentButton = Optional.empty();
+
+        private Optional<MethodElement> paymentMethods = Optional.empty();
+
+        private Optional<PayorElement> payor = Optional.empty();
+
+        private Optional<HeaderElement> review = Optional.empty();
+
+        private Optional<PagelinkSetting> settings = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @java.lang.Override
         public Builder from(PayLinkDataInvoice other) {
             idempotencyKey(other.getIdempotencyKey());
             amountFixed(other.getAmountFixed());
             mail2(other.getMail2());
-            body(other.getBody());
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("body")
-        public _FinalStage body(@NotNull PaymentPageRequestBody body) {
-            this.body = Objects.requireNonNull(body, "body must not be null");
-            return this;
-        }
-
-        /**
-         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage mail2(String mail2) {
-            this.mail2 = Optional.ofNullable(mail2);
+            contactUs(other.getContactUs());
+            invoices(other.getInvoices());
+            logo(other.getLogo());
+            messageBeforePaying(other.getMessageBeforePaying());
+            notes(other.getNotes());
+            page(other.getPage());
+            paymentButton(other.getPaymentButton());
+            paymentMethods(other.getPaymentMethods());
+            payor(other.getPayor());
+            review(other.getReview());
+            settings(other.getSettings());
             return this;
         }
 
         /**
-         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
          */
-        @java.lang.Override
-        @JsonSetter(value = "mail2", nulls = Nulls.SKIP)
-        public _FinalStage mail2(Optional<String> mail2) {
-            this.mail2 = mail2;
+        public Builder idempotencyKey(Optional<String> idempotencyKey) {
+            this.idempotencyKey = idempotencyKey;
+            return this;
+        }
+
+        public Builder idempotencyKey(String idempotencyKey) {
+            this.idempotencyKey = Optional.ofNullable(idempotencyKey);
             return this;
         }
 
         /**
          * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @java.lang.Override
-        public _FinalStage amountFixed(Boolean amountFixed) {
+        @JsonSetter(value = "amountFixed", nulls = Nulls.SKIP)
+        public Builder amountFixed(Optional<Boolean> amountFixed) {
+            this.amountFixed = amountFixed;
+            return this;
+        }
+
+        public Builder amountFixed(Boolean amountFixed) {
             this.amountFixed = Optional.ofNullable(amountFixed);
             return this;
         }
 
         /**
-         * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
+         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
          */
-        @java.lang.Override
-        @JsonSetter(value = "amountFixed", nulls = Nulls.SKIP)
-        public _FinalStage amountFixed(Optional<Boolean> amountFixed) {
-            this.amountFixed = amountFixed;
+        @JsonSetter(value = "mail2", nulls = Nulls.SKIP)
+        public Builder mail2(Optional<String> mail2) {
+            this.mail2 = mail2;
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage idempotencyKey(String idempotencyKey) {
-            this.idempotencyKey = Optional.ofNullable(idempotencyKey);
+        public Builder mail2(String mail2) {
+            this.mail2 = Optional.ofNullable(mail2);
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
-            this.idempotencyKey = idempotencyKey;
+        /**
+         * <p>ContactUs section of payment link page</p>
+         */
+        @JsonSetter(value = "contactUs", nulls = Nulls.SKIP)
+        public Builder contactUs(Optional<ContactElement> contactUs) {
+            this.contactUs = contactUs;
             return this;
         }
 
-        @java.lang.Override
+        public Builder contactUs(ContactElement contactUs) {
+            this.contactUs = Optional.ofNullable(contactUs);
+            return this;
+        }
+
+        /**
+         * <p>Invoices section of payment link page</p>
+         */
+        @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
+        public Builder invoices(Optional<InvoiceElement> invoices) {
+            this.invoices = invoices;
+            return this;
+        }
+
+        public Builder invoices(InvoiceElement invoices) {
+            this.invoices = Optional.ofNullable(invoices);
+            return this;
+        }
+
+        /**
+         * <p>Logo section of payment link page</p>
+         */
+        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
+        public Builder logo(Optional<Element> logo) {
+            this.logo = logo;
+            return this;
+        }
+
+        public Builder logo(Element logo) {
+            this.logo = Optional.ofNullable(logo);
+            return this;
+        }
+
+        /**
+         * <p>Message section of payment link page</p>
+         */
+        @JsonSetter(value = "messageBeforePaying", nulls = Nulls.SKIP)
+        public Builder messageBeforePaying(Optional<LabelElement> messageBeforePaying) {
+            this.messageBeforePaying = messageBeforePaying;
+            return this;
+        }
+
+        public Builder messageBeforePaying(LabelElement messageBeforePaying) {
+            this.messageBeforePaying = Optional.ofNullable(messageBeforePaying);
+            return this;
+        }
+
+        /**
+         * <p>Notes section of payment link page</p>
+         */
+        @JsonSetter(value = "notes", nulls = Nulls.SKIP)
+        public Builder notes(Optional<NoteElement> notes) {
+            this.notes = notes;
+            return this;
+        }
+
+        public Builder notes(NoteElement notes) {
+            this.notes = Optional.ofNullable(notes);
+            return this;
+        }
+
+        /**
+         * <p>Page header section of payment link page</p>
+         */
+        @JsonSetter(value = "page", nulls = Nulls.SKIP)
+        public Builder page(Optional<PageElement> page) {
+            this.page = page;
+            return this;
+        }
+
+        public Builder page(PageElement page) {
+            this.page = Optional.ofNullable(page);
+            return this;
+        }
+
+        /**
+         * <p>Payment button section of payment link page</p>
+         */
+        @JsonSetter(value = "paymentButton", nulls = Nulls.SKIP)
+        public Builder paymentButton(Optional<LabelElement> paymentButton) {
+            this.paymentButton = paymentButton;
+            return this;
+        }
+
+        public Builder paymentButton(LabelElement paymentButton) {
+            this.paymentButton = Optional.ofNullable(paymentButton);
+            return this;
+        }
+
+        /**
+         * <p>Payment methods section of payment link page</p>
+         */
+        @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
+        public Builder paymentMethods(Optional<MethodElement> paymentMethods) {
+            this.paymentMethods = paymentMethods;
+            return this;
+        }
+
+        public Builder paymentMethods(MethodElement paymentMethods) {
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
+            return this;
+        }
+
+        /**
+         * <p>Customer/Payor section of payment link page</p>
+         */
+        @JsonSetter(value = "payor", nulls = Nulls.SKIP)
+        public Builder payor(Optional<PayorElement> payor) {
+            this.payor = payor;
+            return this;
+        }
+
+        public Builder payor(PayorElement payor) {
+            this.payor = Optional.ofNullable(payor);
+            return this;
+        }
+
+        /**
+         * <p>Review section of payment link page</p>
+         */
+        @JsonSetter(value = "review", nulls = Nulls.SKIP)
+        public Builder review(Optional<HeaderElement> review) {
+            this.review = review;
+            return this;
+        }
+
+        public Builder review(HeaderElement review) {
+            this.review = Optional.ofNullable(review);
+            return this;
+        }
+
+        /**
+         * <p>Settings section of payment link page</p>
+         */
+        @JsonSetter(value = "settings", nulls = Nulls.SKIP)
+        public Builder settings(Optional<PagelinkSetting> settings) {
+            this.settings = settings;
+            return this;
+        }
+
+        public Builder settings(PagelinkSetting settings) {
+            this.settings = Optional.ofNullable(settings);
+            return this;
+        }
+
         public PayLinkDataInvoice build() {
-            return new PayLinkDataInvoice(idempotencyKey, amountFixed, mail2, body, additionalProperties);
+            return new PayLinkDataInvoice(
+                    idempotencyKey,
+                    amountFixed,
+                    mail2,
+                    contactUs,
+                    invoices,
+                    logo,
+                    messageBeforePaying,
+                    notes,
+                    page,
+                    paymentButton,
+                    paymentMethods,
+                    payor,
+                    review,
+                    settings,
+                    additionalProperties);
         }
 
-        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
-        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

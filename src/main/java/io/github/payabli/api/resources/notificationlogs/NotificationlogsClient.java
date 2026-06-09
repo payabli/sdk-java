@@ -6,11 +6,9 @@ package io.github.payabli.api.resources.notificationlogs;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLog;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogDetail;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
+import io.github.payabli.api.types.NotificationLog;
+import io.github.payabli.api.types.NotificationLogDetail;
 import java.util.List;
-import java.util.UUID;
 
 public class NotificationlogsClient {
     protected final ClientOptions clientOptions;
@@ -27,31 +25,6 @@ public class NotificationlogsClient {
      */
     public RawNotificationlogsClient withRawResponse() {
         return this.rawClient;
-    }
-
-    /**
-     * Search notification logs with filtering and pagination.
-     * <ul>
-     * <li>Start date and end date cannot be more than 30 days apart</li>
-     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
-     * </ul>
-     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
-     */
-    public List<NotificationLog> searchNotificationLogs(NotificationLogSearchRequest body) {
-        return this.rawClient.searchNotificationLogs(body).body();
-    }
-
-    /**
-     * Search notification logs with filtering and pagination.
-     * <ul>
-     * <li>Start date and end date cannot be more than 30 days apart</li>
-     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
-     * </ul>
-     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
-     */
-    public List<NotificationLog> searchNotificationLogs(
-            NotificationLogSearchRequest body, RequestOptions requestOptions) {
-        return this.rawClient.searchNotificationLogs(body, requestOptions).body();
     }
 
     /**
@@ -83,7 +56,7 @@ public class NotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public NotificationLogDetail getNotificationLog(UUID uuid) {
+    public NotificationLogDetail getNotificationLog(String uuid) {
         return this.rawClient.getNotificationLog(uuid).body();
     }
 
@@ -91,7 +64,7 @@ public class NotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public NotificationLogDetail getNotificationLog(UUID uuid, RequestOptions requestOptions) {
+    public NotificationLogDetail getNotificationLog(String uuid, RequestOptions requestOptions) {
         return this.rawClient.getNotificationLog(uuid, requestOptions).body();
     }
 
@@ -99,7 +72,7 @@ public class NotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public NotificationLogDetail retryNotificationLog(UUID uuid) {
+    public NotificationLogDetail retryNotificationLog(String uuid) {
         return this.rawClient.retryNotificationLog(uuid).body();
     }
 
@@ -107,7 +80,7 @@ public class NotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public NotificationLogDetail retryNotificationLog(UUID uuid, RequestOptions requestOptions) {
+    public NotificationLogDetail retryNotificationLog(String uuid, RequestOptions requestOptions) {
         return this.rawClient.retryNotificationLog(uuid, requestOptions).body();
     }
 
@@ -116,7 +89,7 @@ public class NotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public void bulkRetryNotificationLogs(List<UUID> request) {
+    public void bulkRetryNotificationLogs(List<String> request) {
         this.rawClient.bulkRetryNotificationLogs(request).body();
     }
 
@@ -125,7 +98,7 @@ public class NotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public void bulkRetryNotificationLogs(List<UUID> request, RequestOptions requestOptions) {
+    public void bulkRetryNotificationLogs(List<String> request, RequestOptions requestOptions) {
         this.rawClient.bulkRetryNotificationLogs(request, requestOptions).body();
     }
 }

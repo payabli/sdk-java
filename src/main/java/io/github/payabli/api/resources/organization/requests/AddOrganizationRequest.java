@@ -114,6 +114,9 @@ public final class AddOrganizationRequest {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return <em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+     */
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
@@ -303,6 +306,9 @@ public final class AddOrganizationRequest {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
@@ -673,12 +679,19 @@ public final class AddOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = Optional.ofNullable(idempotencyKey);
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;

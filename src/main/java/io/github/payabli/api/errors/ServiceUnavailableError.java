@@ -4,21 +4,21 @@
 package io.github.payabli.api.errors;
 
 import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
 import okhttp3.Response;
 
 public final class ServiceUnavailableError extends PayabliApiApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final PayabliApiResponse body;
+    private final PayabliErrorBody body;
 
-    public ServiceUnavailableError(PayabliApiResponse body) {
+    public ServiceUnavailableError(PayabliErrorBody body) {
         super("ServiceUnavailableError", 503, body);
         this.body = body;
     }
 
-    public ServiceUnavailableError(PayabliApiResponse body, Response rawResponse) {
+    public ServiceUnavailableError(PayabliErrorBody body, Response rawResponse) {
         super("ServiceUnavailableError", 503, body, rawResponse);
         this.body = body;
     }
@@ -27,7 +27,7 @@ public final class ServiceUnavailableError extends PayabliApiApiException {
      * @return the body
      */
     @java.lang.Override
-    public PayabliApiResponse body() {
+    public PayabliErrorBody body() {
         return this.body;
     }
 }

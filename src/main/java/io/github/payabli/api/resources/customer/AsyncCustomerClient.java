@@ -64,21 +64,6 @@ public class AsyncCustomerClient {
     }
 
     /**
-     * Delete a customer record.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> deleteCustomer(int customerId) {
-        return this.rawClient.deleteCustomer(customerId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Delete a customer record.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> deleteCustomer(
-            int customerId, RequestOptions requestOptions) {
-        return this.rawClient.deleteCustomer(customerId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Retrieves a customer's record and details.
      */
     public CompletableFuture<CustomerQueryRecords> getCustomer(int customerId) {
@@ -90,39 +75,6 @@ public class AsyncCustomerClient {
      */
     public CompletableFuture<CustomerQueryRecords> getCustomer(int customerId, RequestOptions requestOptions) {
         return this.rawClient.getCustomer(customerId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Links a customer to a transaction by ID.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
-            int customerId, String transId) {
-        return this.rawClient.linkCustomerTransaction(customerId, transId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Links a customer to a transaction by ID.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
-            int customerId, String transId, RequestOptions requestOptions) {
-        return this.rawClient
-                .linkCustomerTransaction(customerId, transId, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Sends the consent opt-in email to the customer email address in the customer record.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> requestConsent(int customerId) {
-        return this.rawClient.requestConsent(customerId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Sends the consent opt-in email to the customer email address in the customer record.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> requestConsent(
-            int customerId, RequestOptions requestOptions) {
-        return this.rawClient.requestConsent(customerId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -155,6 +107,54 @@ public class AsyncCustomerClient {
             int customerId, CustomerData request, RequestOptions requestOptions) {
         return this.rawClient
                 .updateCustomer(customerId, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Delete a customer record.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> deleteCustomer(int customerId) {
+        return this.rawClient.deleteCustomer(customerId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Delete a customer record.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> deleteCustomer(
+            int customerId, RequestOptions requestOptions) {
+        return this.rawClient.deleteCustomer(customerId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Sends the consent opt-in email to the customer email address in the customer record.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> requestConsent(int customerId) {
+        return this.rawClient.requestConsent(customerId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Sends the consent opt-in email to the customer email address in the customer record.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> requestConsent(
+            int customerId, RequestOptions requestOptions) {
+        return this.rawClient.requestConsent(customerId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Links a customer to a transaction by ID.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
+            int customerId, String transId) {
+        return this.rawClient.linkCustomerTransaction(customerId, transId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Links a customer to a transaction by ID.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
+            int customerId, String transId, RequestOptions requestOptions) {
+        return this.rawClient
+                .linkCustomerTransaction(customerId, transId, requestOptions)
                 .thenApply(response -> response.body());
     }
 }

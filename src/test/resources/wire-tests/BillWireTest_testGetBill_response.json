@@ -39,7 +39,7 @@
     "Source": null,
     "AdditionalData": null,
     "Vendor": {
-      "VendorNumber": "1234",
+      "VendorNumber": "VEN-123",
       "Name1": "Herman's Coatings and Masonry",
       "Name2": "",
       "EIN": "XXXX6789",
@@ -80,7 +80,7 @@
       },
       "PaymentMethod": "vcard",
       "VendorStatus": 1,
-      "VendorId": 1234,
+      "VendorId": 456,
       "EnrollmentStatus": null,
       "Summary": {
         "ActiveBills": 5,

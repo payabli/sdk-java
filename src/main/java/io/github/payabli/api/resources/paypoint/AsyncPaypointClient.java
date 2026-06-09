@@ -6,12 +6,12 @@ package io.github.payabli.api.resources.paypoint;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.paypoint.requests.GetEntryConfigRequest;
-import io.github.payabli.api.resources.paypoint.types.GetBasicEntryByIdResponse;
-import io.github.payabli.api.resources.paypoint.types.GetBasicEntryResponse;
-import io.github.payabli.api.resources.paypoint.types.GetEntryConfigResponse;
-import io.github.payabli.api.resources.paypoint.types.MigratePaypointResponse;
-import io.github.payabli.api.resources.paypoint.types.PaypointMoveRequest;
+import io.github.payabli.api.resources.paypoint.requests.PaypointMoveRequest;
 import io.github.payabli.api.types.FileContent;
+import io.github.payabli.api.types.GetBasicEntryByIdResponse;
+import io.github.payabli.api.types.GetBasicEntryResponse;
+import io.github.payabli.api.types.GetEntryConfigResponse;
+import io.github.payabli.api.types.MigratePaypointResponse;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.PayabliApiResponseGeneric2Part;
 import io.github.payabli.api.types.PayabliPages;
@@ -62,6 +62,65 @@ public class AsyncPaypointClient {
     public CompletableFuture<GetBasicEntryByIdResponse> getBasicEntryById(
             String idPaypoint, RequestOptions requestOptions) {
         return this.rawClient.getBasicEntryById(idPaypoint, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry) {
+        return this.rawClient.saveLogo(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(
+            String entry, RequestOptions requestOptions) {
+        return this.rawClient.saveLogo(entry, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry, FileContent request) {
+        return this.rawClient.saveLogo(entry, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(
+            String entry, FileContent request, RequestOptions requestOptions) {
+        return this.rawClient.saveLogo(entry, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Migrates a paypoint to a new parent organization.
+     */
+    public CompletableFuture<MigratePaypointResponse> migrate(PaypointMoveRequest request) {
+        return this.rawClient.migrate(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Migrates a paypoint to a new parent organization.
+     */
+    public CompletableFuture<MigratePaypointResponse> migrate(
+            PaypointMoveRequest request, RequestOptions requestOptions) {
+        return this.rawClient.migrate(request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     */
+    public CompletableFuture<SettingsQueryRecord> settingsPage(String entry) {
+        return this.rawClient.settingsPage(entry).thenApply(response -> response.body());
+    }
+
+    /**
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     */
+    public CompletableFuture<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
+        return this.rawClient.settingsPage(entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -120,64 +179,5 @@ public class AsyncPaypointClient {
     public CompletableFuture<PayabliApiResponseGeneric2Part> removePage(
             String entry, String subdomain, RequestOptions requestOptions) {
         return this.rawClient.removePage(entry, subdomain, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry) {
-        return this.rawClient.saveLogo(entry).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(
-            String entry, RequestOptions requestOptions) {
-        return this.rawClient.saveLogo(entry, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry, FileContent request) {
-        return this.rawClient.saveLogo(entry, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public CompletableFuture<PayabliApiResponse00Responsedatanonobject> saveLogo(
-            String entry, FileContent request, RequestOptions requestOptions) {
-        return this.rawClient.saveLogo(entry, request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
-     */
-    public CompletableFuture<SettingsQueryRecord> settingsPage(String entry) {
-        return this.rawClient.settingsPage(entry).thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
-     */
-    public CompletableFuture<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
-        return this.rawClient.settingsPage(entry, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Migrates a paypoint to a new parent organization.
-     */
-    public CompletableFuture<MigratePaypointResponse> migrate(PaypointMoveRequest request) {
-        return this.rawClient.migrate(request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Migrates a paypoint to a new parent organization.
-     */
-    public CompletableFuture<MigratePaypointResponse> migrate(
-            PaypointMoveRequest request, RequestOptions requestOptions) {
-        return this.rawClient.migrate(request, requestOptions).thenApply(response -> response.body());
     }
 }

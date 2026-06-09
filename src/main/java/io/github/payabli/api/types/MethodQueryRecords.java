@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -21,53 +24,157 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MethodQueryRecords.Builder.class)
 public final class MethodQueryRecords {
-    private final Optional<String> bin;
+    private final Optional<String> idPmethod;
 
-    private final Optional<BinData> binData;
+    private final Optional<String> method;
 
     private final Optional<String> descriptor;
+
+    private final Optional<String> maskedAccount;
 
     private final Optional<String> expDate;
 
     private final Optional<String> holderName;
 
-    private final Optional<String> idPmethod;
+    private final Optional<String> achSecCode;
+
+    private final Optional<String> achHolderType;
+
+    private final Optional<Boolean> isValidatedAch;
+
+    private final Optional<String> bin;
+
+    private final Optional<BinData> binData;
+
+    private final Optional<String> aba;
+
+    private final Optional<String> postalCode;
+
+    private final Optional<String> methodType;
+
+    private final Optional<String> walletType;
 
     private final Optional<OffsetDateTime> lastUpdated;
 
-    private final Optional<String> maskedAccount;
-
-    private final Optional<String> method;
+    private final Optional<OffsetDateTime> cardUpdatedOn;
 
     private final Map<String, Object> additionalProperties;
 
     private MethodQueryRecords(
-            Optional<String> bin,
-            Optional<BinData> binData,
+            Optional<String> idPmethod,
+            Optional<String> method,
             Optional<String> descriptor,
+            Optional<String> maskedAccount,
             Optional<String> expDate,
             Optional<String> holderName,
-            Optional<String> idPmethod,
+            Optional<String> achSecCode,
+            Optional<String> achHolderType,
+            Optional<Boolean> isValidatedAch,
+            Optional<String> bin,
+            Optional<BinData> binData,
+            Optional<String> aba,
+            Optional<String> postalCode,
+            Optional<String> methodType,
+            Optional<String> walletType,
             Optional<OffsetDateTime> lastUpdated,
-            Optional<String> maskedAccount,
-            Optional<String> method,
+            Optional<OffsetDateTime> cardUpdatedOn,
             Map<String, Object> additionalProperties) {
-        this.bin = bin;
-        this.binData = binData;
+        this.idPmethod = idPmethod;
+        this.method = method;
         this.descriptor = descriptor;
+        this.maskedAccount = maskedAccount;
         this.expDate = expDate;
         this.holderName = holderName;
-        this.idPmethod = idPmethod;
+        this.achSecCode = achSecCode;
+        this.achHolderType = achHolderType;
+        this.isValidatedAch = isValidatedAch;
+        this.bin = bin;
+        this.binData = binData;
+        this.aba = aba;
+        this.postalCode = postalCode;
+        this.methodType = methodType;
+        this.walletType = walletType;
         this.lastUpdated = lastUpdated;
-        this.maskedAccount = maskedAccount;
-        this.method = method;
+        this.cardUpdatedOn = cardUpdatedOn;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Method internal ID
+     */
+    @JsonProperty("IdPmethod")
+    public Optional<String> getIdPmethod() {
+        return idPmethod;
+    }
+
+    /**
+     * @return Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>
+     */
+    @JsonProperty("Method")
+    public Optional<String> getMethod() {
+        return method;
+    }
+
+    @JsonProperty("Descriptor")
+    public Optional<String> getDescriptor() {
+        return descriptor;
+    }
+
+    @JsonProperty("MaskedAccount")
+    public Optional<String> getMaskedAccount() {
+        return maskedAccount;
+    }
+
+    /**
+     * @return Expiration date associated to the method (only for card) in format MMYY.
+     */
+    @JsonProperty("ExpDate")
+    public Optional<String> getExpDate() {
+        return expDate;
+    }
+
+    @JsonProperty("HolderName")
+    public Optional<String> getHolderName() {
+        return holderName;
+    }
+
+    /**
+     * @return Standard Entry Class (SEC) code for the ACH transaction.
+     */
+    @JsonIgnore
+    public Optional<String> getAchSecCode() {
+        if (achSecCode == null) {
+            return Optional.empty();
+        }
+        return achSecCode;
+    }
+
+    /**
+     * @return Bank accountholder type: <code>personal</code> or <code>business</code>.
+     */
+    @JsonIgnore
+    public Optional<String> getAchHolderType() {
+        if (achHolderType == null) {
+            return Optional.empty();
+        }
+        return achHolderType;
+    }
+
+    /**
+     * @return Whether the ACH account has been validated.
+     */
+    @JsonIgnore
+    public Optional<Boolean> getIsValidatedAch() {
+        if (isValidatedAch == null) {
+            return Optional.empty();
+        }
+        return isValidatedAch;
     }
 
     /**
      * @return The bank identification number (BIN). Null when method is ACH.
      */
-    @JsonProperty("bin")
+    @JsonProperty("BIN")
     public Optional<String> getBin() {
         return bin;
     }
@@ -77,51 +184,115 @@ public final class MethodQueryRecords {
         return binData;
     }
 
-    @JsonProperty("descriptor")
-    public Optional<String> getDescriptor() {
-        return descriptor;
+    /**
+     * @return Bank routing number.
+     */
+    @JsonIgnore
+    public Optional<String> getAba() {
+        if (aba == null) {
+            return Optional.empty();
+        }
+        return aba;
     }
 
     /**
-     * @return Expiration date associated to the method (only for card) in format MMYY.
+     * @return The payment method postal code.
      */
-    @JsonProperty("expDate")
-    public Optional<String> getExpDate() {
-        return expDate;
-    }
-
-    @JsonProperty("holderName")
-    public Optional<String> getHolderName() {
-        return holderName;
+    @JsonIgnore
+    public Optional<String> getPostalCode() {
+        if (postalCode == null) {
+            return Optional.empty();
+        }
+        return postalCode;
     }
 
     /**
-     * @return Method internal ID
+     * @return The payment method's token type.
      */
-    @JsonProperty("idPmethod")
-    public Optional<String> getIdPmethod() {
-        return idPmethod;
+    @JsonIgnore
+    public Optional<String> getMethodType() {
+        if (methodType == null) {
+            return Optional.empty();
+        }
+        return methodType;
+    }
+
+    /**
+     * @return Digital wallet type if applicable.
+     */
+    @JsonIgnore
+    public Optional<String> getWalletType() {
+        if (walletType == null) {
+            return Optional.empty();
+        }
+        return walletType;
     }
 
     /**
      * @return Date of last update
      */
-    @JsonProperty("lastUpdated")
+    @JsonProperty("LastUpdated")
     public Optional<OffsetDateTime> getLastUpdated() {
         return lastUpdated;
     }
 
-    @JsonProperty("maskedAccount")
-    public Optional<String> getMaskedAccount() {
-        return maskedAccount;
+    /**
+     * @return Date and time the card was last updated.
+     */
+    @JsonIgnore
+    public Optional<OffsetDateTime> getCardUpdatedOn() {
+        if (cardUpdatedOn == null) {
+            return Optional.empty();
+        }
+        return cardUpdatedOn;
     }
 
-    /**
-     * @return Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>
-     */
-    @JsonProperty("method")
-    public Optional<String> getMethod() {
-        return method;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AchSecCode")
+    private Optional<String> _getAchSecCode() {
+        return achSecCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AchHolderType")
+    private Optional<String> _getAchHolderType() {
+        return achHolderType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("IsValidatedACH")
+    private Optional<Boolean> _getIsValidatedAch() {
+        return isValidatedAch;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("ABA")
+    private Optional<String> _getAba() {
+        return aba;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PostalCode")
+    private Optional<String> _getPostalCode() {
+        return postalCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("MethodType")
+    private Optional<String> _getMethodType() {
+        return methodType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("WalletType")
+    private Optional<String> _getWalletType() {
+        return walletType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("CardUpdatedOn")
+    private Optional<OffsetDateTime> _getCardUpdatedOn() {
+        return cardUpdatedOn;
     }
 
     @java.lang.Override
@@ -136,29 +307,45 @@ public final class MethodQueryRecords {
     }
 
     private boolean equalTo(MethodQueryRecords other) {
-        return bin.equals(other.bin)
-                && binData.equals(other.binData)
+        return idPmethod.equals(other.idPmethod)
+                && method.equals(other.method)
                 && descriptor.equals(other.descriptor)
+                && maskedAccount.equals(other.maskedAccount)
                 && expDate.equals(other.expDate)
                 && holderName.equals(other.holderName)
-                && idPmethod.equals(other.idPmethod)
+                && achSecCode.equals(other.achSecCode)
+                && achHolderType.equals(other.achHolderType)
+                && isValidatedAch.equals(other.isValidatedAch)
+                && bin.equals(other.bin)
+                && binData.equals(other.binData)
+                && aba.equals(other.aba)
+                && postalCode.equals(other.postalCode)
+                && methodType.equals(other.methodType)
+                && walletType.equals(other.walletType)
                 && lastUpdated.equals(other.lastUpdated)
-                && maskedAccount.equals(other.maskedAccount)
-                && method.equals(other.method);
+                && cardUpdatedOn.equals(other.cardUpdatedOn);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.bin,
-                this.binData,
+                this.idPmethod,
+                this.method,
                 this.descriptor,
+                this.maskedAccount,
                 this.expDate,
                 this.holderName,
-                this.idPmethod,
+                this.achSecCode,
+                this.achHolderType,
+                this.isValidatedAch,
+                this.bin,
+                this.binData,
+                this.aba,
+                this.postalCode,
+                this.methodType,
+                this.walletType,
                 this.lastUpdated,
-                this.maskedAccount,
-                this.method);
+                this.cardUpdatedOn);
     }
 
     @java.lang.Override
@@ -172,23 +359,39 @@ public final class MethodQueryRecords {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> bin = Optional.empty();
+        private Optional<String> idPmethod = Optional.empty();
 
-        private Optional<BinData> binData = Optional.empty();
+        private Optional<String> method = Optional.empty();
 
         private Optional<String> descriptor = Optional.empty();
+
+        private Optional<String> maskedAccount = Optional.empty();
 
         private Optional<String> expDate = Optional.empty();
 
         private Optional<String> holderName = Optional.empty();
 
-        private Optional<String> idPmethod = Optional.empty();
+        private Optional<String> achSecCode = Optional.empty();
+
+        private Optional<String> achHolderType = Optional.empty();
+
+        private Optional<Boolean> isValidatedAch = Optional.empty();
+
+        private Optional<String> bin = Optional.empty();
+
+        private Optional<BinData> binData = Optional.empty();
+
+        private Optional<String> aba = Optional.empty();
+
+        private Optional<String> postalCode = Optional.empty();
+
+        private Optional<String> methodType = Optional.empty();
+
+        private Optional<String> walletType = Optional.empty();
 
         private Optional<OffsetDateTime> lastUpdated = Optional.empty();
 
-        private Optional<String> maskedAccount = Optional.empty();
-
-        private Optional<String> method = Optional.empty();
+        private Optional<OffsetDateTime> cardUpdatedOn = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -196,22 +399,180 @@ public final class MethodQueryRecords {
         private Builder() {}
 
         public Builder from(MethodQueryRecords other) {
-            bin(other.getBin());
-            binData(other.getBinData());
+            idPmethod(other.getIdPmethod());
+            method(other.getMethod());
             descriptor(other.getDescriptor());
+            maskedAccount(other.getMaskedAccount());
             expDate(other.getExpDate());
             holderName(other.getHolderName());
-            idPmethod(other.getIdPmethod());
+            achSecCode(other.getAchSecCode());
+            achHolderType(other.getAchHolderType());
+            isValidatedAch(other.getIsValidatedAch());
+            bin(other.getBin());
+            binData(other.getBinData());
+            aba(other.getAba());
+            postalCode(other.getPostalCode());
+            methodType(other.getMethodType());
+            walletType(other.getWalletType());
             lastUpdated(other.getLastUpdated());
-            maskedAccount(other.getMaskedAccount());
-            method(other.getMethod());
+            cardUpdatedOn(other.getCardUpdatedOn());
+            return this;
+        }
+
+        /**
+         * <p>Method internal ID</p>
+         */
+        @JsonSetter(value = "IdPmethod", nulls = Nulls.SKIP)
+        public Builder idPmethod(Optional<String> idPmethod) {
+            this.idPmethod = idPmethod;
+            return this;
+        }
+
+        public Builder idPmethod(String idPmethod) {
+            this.idPmethod = Optional.ofNullable(idPmethod);
+            return this;
+        }
+
+        /**
+         * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong></p>
+         */
+        @JsonSetter(value = "Method", nulls = Nulls.SKIP)
+        public Builder method(Optional<String> method) {
+            this.method = method;
+            return this;
+        }
+
+        public Builder method(String method) {
+            this.method = Optional.ofNullable(method);
+            return this;
+        }
+
+        @JsonSetter(value = "Descriptor", nulls = Nulls.SKIP)
+        public Builder descriptor(Optional<String> descriptor) {
+            this.descriptor = descriptor;
+            return this;
+        }
+
+        public Builder descriptor(String descriptor) {
+            this.descriptor = Optional.ofNullable(descriptor);
+            return this;
+        }
+
+        @JsonSetter(value = "MaskedAccount", nulls = Nulls.SKIP)
+        public Builder maskedAccount(Optional<String> maskedAccount) {
+            this.maskedAccount = maskedAccount;
+            return this;
+        }
+
+        public Builder maskedAccount(String maskedAccount) {
+            this.maskedAccount = Optional.ofNullable(maskedAccount);
+            return this;
+        }
+
+        /**
+         * <p>Expiration date associated to the method (only for card) in format MMYY.</p>
+         */
+        @JsonSetter(value = "ExpDate", nulls = Nulls.SKIP)
+        public Builder expDate(Optional<String> expDate) {
+            this.expDate = expDate;
+            return this;
+        }
+
+        public Builder expDate(String expDate) {
+            this.expDate = Optional.ofNullable(expDate);
+            return this;
+        }
+
+        @JsonSetter(value = "HolderName", nulls = Nulls.SKIP)
+        public Builder holderName(Optional<String> holderName) {
+            this.holderName = holderName;
+            return this;
+        }
+
+        public Builder holderName(String holderName) {
+            this.holderName = Optional.ofNullable(holderName);
+            return this;
+        }
+
+        /**
+         * <p>Standard Entry Class (SEC) code for the ACH transaction.</p>
+         */
+        @JsonSetter(value = "AchSecCode", nulls = Nulls.SKIP)
+        public Builder achSecCode(Optional<String> achSecCode) {
+            this.achSecCode = achSecCode;
+            return this;
+        }
+
+        public Builder achSecCode(String achSecCode) {
+            this.achSecCode = Optional.ofNullable(achSecCode);
+            return this;
+        }
+
+        public Builder achSecCode(Nullable<String> achSecCode) {
+            if (achSecCode.isNull()) {
+                this.achSecCode = null;
+            } else if (achSecCode.isEmpty()) {
+                this.achSecCode = Optional.empty();
+            } else {
+                this.achSecCode = Optional.of(achSecCode.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Bank accountholder type: <code>personal</code> or <code>business</code>.</p>
+         */
+        @JsonSetter(value = "AchHolderType", nulls = Nulls.SKIP)
+        public Builder achHolderType(Optional<String> achHolderType) {
+            this.achHolderType = achHolderType;
+            return this;
+        }
+
+        public Builder achHolderType(String achHolderType) {
+            this.achHolderType = Optional.ofNullable(achHolderType);
+            return this;
+        }
+
+        public Builder achHolderType(Nullable<String> achHolderType) {
+            if (achHolderType.isNull()) {
+                this.achHolderType = null;
+            } else if (achHolderType.isEmpty()) {
+                this.achHolderType = Optional.empty();
+            } else {
+                this.achHolderType = Optional.of(achHolderType.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Whether the ACH account has been validated.</p>
+         */
+        @JsonSetter(value = "IsValidatedACH", nulls = Nulls.SKIP)
+        public Builder isValidatedAch(Optional<Boolean> isValidatedAch) {
+            this.isValidatedAch = isValidatedAch;
+            return this;
+        }
+
+        public Builder isValidatedAch(Boolean isValidatedAch) {
+            this.isValidatedAch = Optional.ofNullable(isValidatedAch);
+            return this;
+        }
+
+        public Builder isValidatedAch(Nullable<Boolean> isValidatedAch) {
+            if (isValidatedAch.isNull()) {
+                this.isValidatedAch = null;
+            } else if (isValidatedAch.isEmpty()) {
+                this.isValidatedAch = Optional.empty();
+            } else {
+                this.isValidatedAch = Optional.of(isValidatedAch.get());
+            }
             return this;
         }
 
         /**
          * <p>The bank identification number (BIN). Null when method is ACH.</p>
          */
-        @JsonSetter(value = "bin", nulls = Nulls.SKIP)
+        @JsonSetter(value = "BIN", nulls = Nulls.SKIP)
         public Builder bin(Optional<String> bin) {
             this.bin = bin;
             return this;
@@ -233,60 +594,110 @@ public final class MethodQueryRecords {
             return this;
         }
 
-        @JsonSetter(value = "descriptor", nulls = Nulls.SKIP)
-        public Builder descriptor(Optional<String> descriptor) {
-            this.descriptor = descriptor;
+        /**
+         * <p>Bank routing number.</p>
+         */
+        @JsonSetter(value = "ABA", nulls = Nulls.SKIP)
+        public Builder aba(Optional<String> aba) {
+            this.aba = aba;
             return this;
         }
 
-        public Builder descriptor(String descriptor) {
-            this.descriptor = Optional.ofNullable(descriptor);
+        public Builder aba(String aba) {
+            this.aba = Optional.ofNullable(aba);
+            return this;
+        }
+
+        public Builder aba(Nullable<String> aba) {
+            if (aba.isNull()) {
+                this.aba = null;
+            } else if (aba.isEmpty()) {
+                this.aba = Optional.empty();
+            } else {
+                this.aba = Optional.of(aba.get());
+            }
             return this;
         }
 
         /**
-         * <p>Expiration date associated to the method (only for card) in format MMYY.</p>
+         * <p>The payment method postal code.</p>
          */
-        @JsonSetter(value = "expDate", nulls = Nulls.SKIP)
-        public Builder expDate(Optional<String> expDate) {
-            this.expDate = expDate;
+        @JsonSetter(value = "PostalCode", nulls = Nulls.SKIP)
+        public Builder postalCode(Optional<String> postalCode) {
+            this.postalCode = postalCode;
             return this;
         }
 
-        public Builder expDate(String expDate) {
-            this.expDate = Optional.ofNullable(expDate);
+        public Builder postalCode(String postalCode) {
+            this.postalCode = Optional.ofNullable(postalCode);
             return this;
         }
 
-        @JsonSetter(value = "holderName", nulls = Nulls.SKIP)
-        public Builder holderName(Optional<String> holderName) {
-            this.holderName = holderName;
-            return this;
-        }
-
-        public Builder holderName(String holderName) {
-            this.holderName = Optional.ofNullable(holderName);
+        public Builder postalCode(Nullable<String> postalCode) {
+            if (postalCode.isNull()) {
+                this.postalCode = null;
+            } else if (postalCode.isEmpty()) {
+                this.postalCode = Optional.empty();
+            } else {
+                this.postalCode = Optional.of(postalCode.get());
+            }
             return this;
         }
 
         /**
-         * <p>Method internal ID</p>
+         * <p>The payment method's token type.</p>
          */
-        @JsonSetter(value = "idPmethod", nulls = Nulls.SKIP)
-        public Builder idPmethod(Optional<String> idPmethod) {
-            this.idPmethod = idPmethod;
+        @JsonSetter(value = "MethodType", nulls = Nulls.SKIP)
+        public Builder methodType(Optional<String> methodType) {
+            this.methodType = methodType;
             return this;
         }
 
-        public Builder idPmethod(String idPmethod) {
-            this.idPmethod = Optional.ofNullable(idPmethod);
+        public Builder methodType(String methodType) {
+            this.methodType = Optional.ofNullable(methodType);
+            return this;
+        }
+
+        public Builder methodType(Nullable<String> methodType) {
+            if (methodType.isNull()) {
+                this.methodType = null;
+            } else if (methodType.isEmpty()) {
+                this.methodType = Optional.empty();
+            } else {
+                this.methodType = Optional.of(methodType.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Digital wallet type if applicable.</p>
+         */
+        @JsonSetter(value = "WalletType", nulls = Nulls.SKIP)
+        public Builder walletType(Optional<String> walletType) {
+            this.walletType = walletType;
+            return this;
+        }
+
+        public Builder walletType(String walletType) {
+            this.walletType = Optional.ofNullable(walletType);
+            return this;
+        }
+
+        public Builder walletType(Nullable<String> walletType) {
+            if (walletType.isNull()) {
+                this.walletType = null;
+            } else if (walletType.isEmpty()) {
+                this.walletType = Optional.empty();
+            } else {
+                this.walletType = Optional.of(walletType.get());
+            }
             return this;
         }
 
         /**
          * <p>Date of last update</p>
          */
-        @JsonSetter(value = "lastUpdated", nulls = Nulls.SKIP)
+        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
         public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
             this.lastUpdated = lastUpdated;
             return this;
@@ -297,42 +708,50 @@ public final class MethodQueryRecords {
             return this;
         }
 
-        @JsonSetter(value = "maskedAccount", nulls = Nulls.SKIP)
-        public Builder maskedAccount(Optional<String> maskedAccount) {
-            this.maskedAccount = maskedAccount;
-            return this;
-        }
-
-        public Builder maskedAccount(String maskedAccount) {
-            this.maskedAccount = Optional.ofNullable(maskedAccount);
-            return this;
-        }
-
         /**
-         * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong></p>
+         * <p>Date and time the card was last updated.</p>
          */
-        @JsonSetter(value = "method", nulls = Nulls.SKIP)
-        public Builder method(Optional<String> method) {
-            this.method = method;
+        @JsonSetter(value = "CardUpdatedOn", nulls = Nulls.SKIP)
+        public Builder cardUpdatedOn(Optional<OffsetDateTime> cardUpdatedOn) {
+            this.cardUpdatedOn = cardUpdatedOn;
             return this;
         }
 
-        public Builder method(String method) {
-            this.method = Optional.ofNullable(method);
+        public Builder cardUpdatedOn(OffsetDateTime cardUpdatedOn) {
+            this.cardUpdatedOn = Optional.ofNullable(cardUpdatedOn);
+            return this;
+        }
+
+        public Builder cardUpdatedOn(Nullable<OffsetDateTime> cardUpdatedOn) {
+            if (cardUpdatedOn.isNull()) {
+                this.cardUpdatedOn = null;
+            } else if (cardUpdatedOn.isEmpty()) {
+                this.cardUpdatedOn = Optional.empty();
+            } else {
+                this.cardUpdatedOn = Optional.of(cardUpdatedOn.get());
+            }
             return this;
         }
 
         public MethodQueryRecords build() {
             return new MethodQueryRecords(
-                    bin,
-                    binData,
+                    idPmethod,
+                    method,
                     descriptor,
+                    maskedAccount,
                     expDate,
                     holderName,
-                    idPmethod,
+                    achSecCode,
+                    achHolderType,
+                    isValidatedAch,
+                    bin,
+                    binData,
+                    aba,
+                    postalCode,
+                    methodType,
+                    walletType,
                     lastUpdated,
-                    maskedAccount,
-                    method,
+                    cardUpdatedOn,
                     additionalProperties);
         }
 

@@ -29,7 +29,7 @@ public final class BillQueryRecord2 {
 
     private final Optional<String> accountingField2;
 
-    private final Optional<Map<String, String>> additionalData;
+    private final Optional<Map<String, Optional<String>>> additionalData;
 
     private final Optional<String> batchNumber;
 
@@ -91,7 +91,7 @@ public final class BillQueryRecord2 {
 
     private final Optional<Integer> status;
 
-    private final Optional<String> terms;
+    private final Optional<Terms> terms;
 
     private final Optional<Double> totalAmount;
 
@@ -104,7 +104,7 @@ public final class BillQueryRecord2 {
     private BillQueryRecord2(
             Optional<String> accountingField1,
             Optional<String> accountingField2,
-            Optional<Map<String, String>> additionalData,
+            Optional<Map<String, Optional<String>>> additionalData,
             Optional<String> batchNumber,
             Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals,
             Optional<String> billDate,
@@ -135,7 +135,7 @@ public final class BillQueryRecord2 {
             Optional<String> paypointLegalname,
             Optional<String> source,
             Optional<Integer> status,
-            Optional<String> terms,
+            Optional<Terms> terms,
             Optional<Double> totalAmount,
             Optional<TransactionOutQueryRecord> transaction,
             Optional<VendorOutData> vendor,
@@ -200,7 +200,7 @@ public final class BillQueryRecord2 {
      * @return Additional data associated with the bill.
      */
     @JsonIgnore
-    public Optional<Map<String, String>> getAdditionalData() {
+    public Optional<Map<String, Optional<String>>> getAdditionalData() {
         if (additionalData == null) {
             return Optional.empty();
         }
@@ -526,7 +526,7 @@ public final class BillQueryRecord2 {
      * @return The payment terms for invoice. If no terms were defined initially, then response data for this field will default to <code>N30</code>.
      */
     @JsonIgnore
-    public Optional<String> getTerms() {
+    public Optional<Terms> getTerms() {
         if (terms == null) {
             return Optional.empty();
         }
@@ -577,7 +577,7 @@ public final class BillQueryRecord2 {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("AdditionalData")
-    private Optional<Map<String, String>> _getAdditionalData() {
+    private Optional<Map<String, Optional<String>>> _getAdditionalData() {
         return additionalData;
     }
 
@@ -763,7 +763,7 @@ public final class BillQueryRecord2 {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("Terms")
-    private Optional<String> _getTerms() {
+    private Optional<Terms> _getTerms() {
         return terms;
     }
 
@@ -893,7 +893,7 @@ public final class BillQueryRecord2 {
 
         private Optional<String> accountingField2 = Optional.empty();
 
-        private Optional<Map<String, String>> additionalData = Optional.empty();
+        private Optional<Map<String, Optional<String>>> additionalData = Optional.empty();
 
         private Optional<String> batchNumber = Optional.empty();
 
@@ -955,7 +955,7 @@ public final class BillQueryRecord2 {
 
         private Optional<Integer> status = Optional.empty();
 
-        private Optional<String> terms = Optional.empty();
+        private Optional<Terms> terms = Optional.empty();
 
         private Optional<Double> totalAmount = Optional.empty();
 
@@ -1057,17 +1057,17 @@ public final class BillQueryRecord2 {
          * <p>Additional data associated with the bill.</p>
          */
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, String>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Optional<String>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, String> additionalData) {
+        public Builder additionalData(Map<String, Optional<String>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
 
-        public Builder additionalData(Nullable<Map<String, String>> additionalData) {
+        public Builder additionalData(Nullable<Map<String, Optional<String>>> additionalData) {
             if (additionalData.isNull()) {
                 this.additionalData = null;
             } else if (additionalData.isEmpty()) {
@@ -1817,17 +1817,17 @@ public final class BillQueryRecord2 {
          * <p>The payment terms for invoice. If no terms were defined initially, then response data for this field will default to <code>N30</code>.</p>
          */
         @JsonSetter(value = "Terms", nulls = Nulls.SKIP)
-        public Builder terms(Optional<String> terms) {
+        public Builder terms(Optional<Terms> terms) {
             this.terms = terms;
             return this;
         }
 
-        public Builder terms(String terms) {
+        public Builder terms(Terms terms) {
             this.terms = Optional.ofNullable(terms);
             return this;
         }
 
-        public Builder terms(Nullable<String> terms) {
+        public Builder terms(Nullable<Terms> terms) {
             if (terms.isNull()) {
                 this.terms = null;
             } else if (terms.isEmpty()) {

@@ -7,7 +7,7 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.lineitem.requests.AddItemRequest;
 import io.github.payabli.api.resources.lineitem.requests.ListLineItemsRequest;
-import io.github.payabli.api.resources.lineitem.types.DeleteItemResponse;
+import io.github.payabli.api.types.DeleteItemResponse;
 import io.github.payabli.api.types.LineItem;
 import io.github.payabli.api.types.LineItemQueryRecord;
 import io.github.payabli.api.types.PayabliApiResponse6;
@@ -59,20 +59,6 @@ public class LineItemClient {
     }
 
     /**
-     * Deletes an item.
-     */
-    public DeleteItemResponse deleteItem(int lineItemId) {
-        return this.rawClient.deleteItem(lineItemId).body();
-    }
-
-    /**
-     * Deletes an item.
-     */
-    public DeleteItemResponse deleteItem(int lineItemId, RequestOptions requestOptions) {
-        return this.rawClient.deleteItem(lineItemId, requestOptions).body();
-    }
-
-    /**
      * Gets an item by ID.
      */
     public LineItemQueryRecord getItem(int lineItemId) {
@@ -84,6 +70,34 @@ public class LineItemClient {
      */
     public LineItemQueryRecord getItem(int lineItemId, RequestOptions requestOptions) {
         return this.rawClient.getItem(lineItemId, requestOptions).body();
+    }
+
+    /**
+     * Updates an item.
+     */
+    public PayabliApiResponse6 updateItem(int lineItemId, LineItem request) {
+        return this.rawClient.updateItem(lineItemId, request).body();
+    }
+
+    /**
+     * Updates an item.
+     */
+    public PayabliApiResponse6 updateItem(int lineItemId, LineItem request, RequestOptions requestOptions) {
+        return this.rawClient.updateItem(lineItemId, request, requestOptions).body();
+    }
+
+    /**
+     * Deletes an item.
+     */
+    public DeleteItemResponse deleteItem(int lineItemId) {
+        return this.rawClient.deleteItem(lineItemId).body();
+    }
+
+    /**
+     * Deletes an item.
+     */
+    public DeleteItemResponse deleteItem(int lineItemId, RequestOptions requestOptions) {
+        return this.rawClient.deleteItem(lineItemId, requestOptions).body();
     }
 
     /**
@@ -112,19 +126,5 @@ public class LineItemClient {
      */
     public QueryResponseItems listLineItems(String entry, ListLineItemsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listLineItems(entry, request, requestOptions).body();
-    }
-
-    /**
-     * Updates an item.
-     */
-    public PayabliApiResponse6 updateItem(int lineItemId, LineItem request) {
-        return this.rawClient.updateItem(lineItemId, request).body();
-    }
-
-    /**
-     * Updates an item.
-     */
-    public PayabliApiResponse6 updateItem(int lineItemId, LineItem request, RequestOptions requestOptions) {
-        return this.rawClient.updateItem(lineItemId, request, requestOptions).body();
     }
 }

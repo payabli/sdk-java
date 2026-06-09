@@ -42,7 +42,7 @@ public final class RequestUpdateSchedule {
     }
 
     /**
-     * @return Object describing details of the payment. To skip the payment, set the <code>totalAmount</code> to 0. Payments will be paused until the amount is updated to a non-zero value. When <code>totalAmount</code> is set to 0, the <code>serviceFee</code> must also be set to 0.
+     * @return Object describing details of the payment. For Regular subscriptions, skip a payment by setting <code>totalAmount</code> to 0; payments pause until you update it to a non-zero value, and <code>serviceFee</code> must also be 0 when <code>totalAmount</code> is 0. For BalanceDriven subscriptions, any <code>totalAmount</code> you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
      */
     @JsonProperty("paymentDetails")
     public Optional<PaymentDetail> getPaymentDetails() {
@@ -114,7 +114,7 @@ public final class RequestUpdateSchedule {
         }
 
         /**
-         * <p>Object describing details of the payment. To skip the payment, set the <code>totalAmount</code> to 0. Payments will be paused until the amount is updated to a non-zero value. When <code>totalAmount</code> is set to 0, the <code>serviceFee</code> must also be set to 0.</p>
+         * <p>Object describing details of the payment. For Regular subscriptions, skip a payment by setting <code>totalAmount</code> to 0; payments pause until you update it to a non-zero value, and <code>serviceFee</code> must also be 0 when <code>totalAmount</code> is 0. For BalanceDriven subscriptions, any <code>totalAmount</code> you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.</p>
          */
         @JsonSetter(value = "paymentDetails", nulls = Nulls.SKIP)
         public Builder paymentDetails(Optional<PaymentDetail> paymentDetails) {

@@ -9,7 +9,6 @@ import io.github.payabli.api.types.CustomerQueryRecords;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.PayabliApiResponseCustomerQuery;
 import java.util.Arrays;
-import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -48,7 +47,7 @@ public class CustomerWireTest {
                         "8cfec329267",
                         AddCustomerRequest.builder()
                                 .body(CustomerData.builder()
-                                        .customerNumber("12356ACB")
+                                        .customerNumber("C-90010")
                                         .firstname("Irene")
                                         .lastname("Canizales")
                                         .email("irene@canizalesconcrete.com")
@@ -58,7 +57,7 @@ public class CustomerWireTest {
                                         .zip("37612")
                                         .country("US")
                                         .timeZone(-5)
-                                        .identifierFields(Arrays.asList(Optional.of("email")))
+                                        .identifierFields(Arrays.asList("email"))
                                         .build())
                                 .build());
         RecordedRequest request = server.takeRequest();
@@ -68,7 +67,7 @@ public class CustomerWireTest {
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
                 + "{\n"
-                + "  \"customerNumber\": \"12356ACB\",\n"
+                + "  \"customerNumber\": \"C-90010\",\n"
                 + "  \"firstname\": \"Irene\",\n"
                 + "  \"lastname\": \"Canizales\",\n"
                 + "  \"address1\": \"123 Bishop's Trail\",\n"
@@ -146,66 +145,11 @@ public class CustomerWireTest {
     }
 
     @Test
-    public void testDeleteCustomer() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"responseCode\":1,\"isSuccess\":true,\"pageIdentifier\":\"null\",\"roomId\":0,\"responseData\":\" \",\"responseText\":\"Success\"}"));
-        PayabliApiResponse00Responsedatanonobject response = client.customer().deleteCustomer(998);
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"pageIdentifier\": \"null\",\n"
-                + "  \"roomId\": 0,\n"
-                + "  \"responseData\": \" \",\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
     public void testGetCustomer() throws Exception {
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(TestResources.loadResource("/wire-tests/CustomerWireTest_testGetCustomer_response.json")));
-        CustomerQueryRecords response = client.customer().getCustomer(998);
+        CustomerQueryRecords response = client.customer().getCustomer(4440);
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
@@ -247,116 +191,6 @@ public class CustomerWireTest {
     }
 
     @Test
-    public void testLinkCustomerTransaction() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":\"null\",\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":\" \"}"));
-        PayabliApiResponse00Responsedatanonobject response =
-                client.customer().linkCustomerTransaction(998, "45-as456777hhhhhhhhhh77777777-324");
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("GET", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"pageIdentifier\": \"null\",\n"
-                + "  \"roomId\": 0,\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"responseData\": \" \"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testRequestConsent() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseCode\":1,\"responseData\":\" \",\"responseText\":\"Success\"}"));
-        PayabliApiResponse00Responsedatanonobject response = client.customer().requestConsent(998);
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("POST", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"pageIdentifier\": \"null\",\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"responseData\": \" \",\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
     public void testUpdateCustomer() throws Exception {
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
@@ -364,7 +198,7 @@ public class CustomerWireTest {
                         "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":\" \",\"responseText\":\"Success\"}"));
         PayabliApiResponse00Responsedatanonobject response = client.customer()
                 .updateCustomer(
-                        998,
+                        4440,
                         CustomerData.builder()
                                 .firstname("Irene")
                                 .lastname("Canizales")
@@ -425,6 +259,171 @@ public class CustomerWireTest {
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": \" \",\n"
                 + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testDeleteCustomer() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseCode\":1,\"isSuccess\":true,\"pageIdentifier\":\"null\",\"roomId\":0,\"responseData\":\" \",\"responseText\":\"Success\"}"));
+        PayabliApiResponse00Responsedatanonobject response = client.customer().deleteCustomer(4440);
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"pageIdentifier\": \"null\",\n"
+                + "  \"roomId\": 0,\n"
+                + "  \"responseData\": \" \",\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testRequestConsent() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseCode\":1,\"responseData\":\" \",\"responseText\":\"Success\"}"));
+        PayabliApiResponse00Responsedatanonobject response = client.customer().requestConsent(4440);
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"pageIdentifier\": \"null\",\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": \" \",\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testLinkCustomerTransaction() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseCode\":1,\"pageIdentifier\":\"null\",\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":\" \"}"));
+        PayabliApiResponse00Responsedatanonobject response =
+                client.customer().linkCustomerTransaction(4440, "45-as456777hhhhhhhhhh77777777-324");
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"pageIdentifier\": \"null\",\n"
+                + "  \"roomId\": 0,\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"responseData\": \" \"\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);

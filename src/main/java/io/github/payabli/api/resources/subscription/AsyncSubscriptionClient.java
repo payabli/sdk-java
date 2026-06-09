@@ -7,11 +7,10 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.subscription.requests.RequestSchedule;
 import io.github.payabli.api.resources.subscription.requests.RequestUpdateSchedule;
-import io.github.payabli.api.resources.subscription.types.AddSubscriptionResponse;
-import io.github.payabli.api.resources.subscription.types.RemoveSubscriptionResponse;
-import io.github.payabli.api.resources.subscription.types.SubscriptionRequestBody;
-import io.github.payabli.api.resources.subscription.types.UpdateSubscriptionResponse;
+import io.github.payabli.api.types.AddSubscriptionResponse;
+import io.github.payabli.api.types.RemoveSubscriptionResponse;
 import io.github.payabli.api.types.SubscriptionQueryRecords;
+import io.github.payabli.api.types.UpdateSubscriptionResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncSubscriptionClient {
@@ -46,50 +45,6 @@ public class AsyncSubscriptionClient {
     }
 
     /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public CompletableFuture<AddSubscriptionResponse> newSubscription(SubscriptionRequestBody body) {
-        return this.rawClient.newSubscription(body).thenApply(response -> response.body());
-    }
-
-    /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public CompletableFuture<AddSubscriptionResponse> newSubscription(
-            SubscriptionRequestBody body, RequestOptions requestOptions) {
-        return this.rawClient.newSubscription(body, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public CompletableFuture<AddSubscriptionResponse> newSubscription(RequestSchedule request) {
-        return this.rawClient.newSubscription(request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Creates a subscription or scheduled payment to run at a specified time and frequency.
-     */
-    public CompletableFuture<AddSubscriptionResponse> newSubscription(
-            RequestSchedule request, RequestOptions requestOptions) {
-        return this.rawClient.newSubscription(request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
-     */
-    public CompletableFuture<RemoveSubscriptionResponse> removeSubscription(int subId) {
-        return this.rawClient.removeSubscription(subId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
-     */
-    public CompletableFuture<RemoveSubscriptionResponse> removeSubscription(int subId, RequestOptions requestOptions) {
-        return this.rawClient.removeSubscription(subId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Updates a subscription's details.
      */
     public CompletableFuture<UpdateSubscriptionResponse> updateSubscription(int subId) {
@@ -116,5 +71,48 @@ public class AsyncSubscriptionClient {
     public CompletableFuture<UpdateSubscriptionResponse> updateSubscription(
             int subId, RequestUpdateSchedule request, RequestOptions requestOptions) {
         return this.rawClient.updateSubscription(subId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
+     */
+    public CompletableFuture<RemoveSubscriptionResponse> removeSubscription(int subId) {
+        return this.rawClient.removeSubscription(subId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a subscription, autopay, or recurring payment and prevents future charges.
+     */
+    public CompletableFuture<RemoveSubscriptionResponse> removeSubscription(int subId, RequestOptions requestOptions) {
+        return this.rawClient.removeSubscription(subId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public CompletableFuture<AddSubscriptionResponse> newSubscription() {
+        return this.rawClient.newSubscription().thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public CompletableFuture<AddSubscriptionResponse> newSubscription(RequestOptions requestOptions) {
+        return this.rawClient.newSubscription(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public CompletableFuture<AddSubscriptionResponse> newSubscription(RequestSchedule request) {
+        return this.rawClient.newSubscription(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
+     */
+    public CompletableFuture<AddSubscriptionResponse> newSubscription(
+            RequestSchedule request, RequestOptions requestOptions) {
+        return this.rawClient.newSubscription(request, requestOptions).thenApply(response -> response.body());
     }
 }

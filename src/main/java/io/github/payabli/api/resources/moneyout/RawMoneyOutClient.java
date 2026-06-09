@@ -19,21 +19,19 @@ import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
-import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
-import io.github.payabli.api.resources.moneyouttypes.types.AllowedCheckPaymentStatus;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
-import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
-import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
+import io.github.payabli.api.types.AllowedCheckPaymentStatus;
+import io.github.payabli.api.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.types.BillDetailResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.CaptureAllOutResponse;
+import io.github.payabli.api.types.OperationResult;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
-import io.github.payabli.api.types.PayabliApiResponsePaylinks;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.ReissuePayoutResponse;
+import io.github.payabli.api.types.VCardGetResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -56,28 +54,7 @@ public class RawMoneyOutClient {
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
      */
-    public PayabliApiHttpResponse<AuthCapturePayoutResponse> authorizeOut(AuthorizePayoutBody body) {
-        return authorizeOut(
-                MoneyOutTypesRequestOutAuthorize.builder().body(body).build());
-    }
-
-    /**
-     * Authorizes a transaction for payout.
-     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
-     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
-     */
-    public PayabliApiHttpResponse<AuthCapturePayoutResponse> authorizeOut(
-            AuthorizePayoutBody body, RequestOptions requestOptions) {
-        return authorizeOut(
-                MoneyOutTypesRequestOutAuthorize.builder().body(body).build(), requestOptions);
-    }
-
-    /**
-     * Authorizes a transaction for payout.
-     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
-     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
-     */
-    public PayabliApiHttpResponse<AuthCapturePayoutResponse> authorizeOut(MoneyOutTypesRequestOutAuthorize request) {
+    public PayabliApiHttpResponse<AuthCapturePayoutResponse> authorizeOut(RequestOutAuthorize request) {
         return authorizeOut(request, null);
     }
 
@@ -87,7 +64,7 @@ public class RawMoneyOutClient {
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
      */
     public PayabliApiHttpResponse<AuthCapturePayoutResponse> authorizeOut(
-            MoneyOutTypesRequestOutAuthorize request, RequestOptions requestOptions) {
+            RequestOutAuthorize request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyOut/authorize");
@@ -117,7 +94,7 @@ public class RawMoneyOutClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -151,13 +128,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -223,13 +201,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -289,13 +268,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -355,13 +335,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -446,13 +427,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -531,13 +513,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -595,13 +578,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -659,13 +643,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -731,13 +716,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -799,13 +785,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -888,13 +875,14 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -936,7 +924,7 @@ public class RawMoneyOutClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -969,18 +957,18 @@ public class RawMoneyOutClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 403:
                         throw new ForbiddenError(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, PayabliApiResponsePaylinks.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {

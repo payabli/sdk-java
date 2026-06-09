@@ -40,7 +40,7 @@ public final class GooglePayMetadata {
     }
 
     /**
-     * @return The status code return by the domain verification URL.
+     * @return The status code returned by the domain verification URL.
      */
     @JsonProperty("statusCode")
     public Optional<Integer> getStatusCode() {
@@ -48,7 +48,11 @@ public final class GooglePayMetadata {
     }
 
     /**
-     * @return If the domain verification URL is redirected, this is the URL it's redirected to.  For example, www.partner.com could redirect to www.partners-new-home-page.com. In this case, you should add www.partners-new-home-page.com as a domain instead of www.partner.com.
+     * @return If the domain verification URL is redirected, this is the URL it's
+     * redirected to. For example, <code>www.partner.com</code> could redirect to
+     * <code>www.partners-new-home-page.com</code>. In this case, you should add
+     * <code>www.partners-new-home-page.com</code> as a domain instead of
+     * <code>www.partner.com</code>.
      */
     @JsonProperty("redirectUrl")
     public Optional<String> getRedirectUrl() {
@@ -115,7 +119,7 @@ public final class GooglePayMetadata {
         }
 
         /**
-         * <p>The status code return by the domain verification URL.</p>
+         * <p>The status code returned by the domain verification URL.</p>
          */
         @JsonSetter(value = "statusCode", nulls = Nulls.SKIP)
         public Builder statusCode(Optional<Integer> statusCode) {
@@ -129,7 +133,11 @@ public final class GooglePayMetadata {
         }
 
         /**
-         * <p>If the domain verification URL is redirected, this is the URL it's redirected to.  For example, www.partner.com could redirect to www.partners-new-home-page.com. In this case, you should add www.partners-new-home-page.com as a domain instead of www.partner.com.</p>
+         * <p>If the domain verification URL is redirected, this is the URL it's
+         * redirected to. For example, <code>www.partner.com</code> could redirect to
+         * <code>www.partners-new-home-page.com</code>. In this case, you should add
+         * <code>www.partners-new-home-page.com</code> as a domain instead of
+         * <code>www.partner.com</code>.</p>
          */
         @JsonSetter(value = "redirectUrl", nulls = Nulls.SKIP)
         public Builder redirectUrl(Optional<String> redirectUrl) {

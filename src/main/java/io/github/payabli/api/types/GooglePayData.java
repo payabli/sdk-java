@@ -34,16 +34,15 @@ public final class GooglePayData {
     }
 
     /**
-     * @return This object is only returned when the domain verification check fails. If a domain has failed validation, this object contains information about the failure.
+     * @return This object is only returned when the domain verification check
+     * fails. If a domain has failed validation, this object contains
+     * information about the failure.
      */
     @JsonProperty("data")
     public Optional<GooglePayStatusData> getData() {
         return data;
     }
 
-    /**
-     * @return When <code>true</code>, Google Pay is enabled.
-     */
     @JsonProperty("isEnabled")
     public Optional<Boolean> getIsEnabled() {
         return isEnabled;
@@ -96,7 +95,9 @@ public final class GooglePayData {
         }
 
         /**
-         * <p>This object is only returned when the domain verification check fails. If a domain has failed validation, this object contains information about the failure.</p>
+         * <p>This object is only returned when the domain verification check
+         * fails. If a domain has failed validation, this object contains
+         * information about the failure.</p>
          */
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public Builder data(Optional<GooglePayStatusData> data) {
@@ -109,9 +110,6 @@ public final class GooglePayData {
             return this;
         }
 
-        /**
-         * <p>When <code>true</code>, Google Pay is enabled.</p>
-         */
         @JsonSetter(value = "isEnabled", nulls = Nulls.SKIP)
         public Builder isEnabled(Optional<Boolean> isEnabled) {
             this.isEnabled = isEnabled;

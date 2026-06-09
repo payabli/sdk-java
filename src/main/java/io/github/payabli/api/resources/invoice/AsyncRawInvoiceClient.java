@@ -23,14 +23,14 @@ import io.github.payabli.api.resources.invoice.requests.GetAttachedFileFromInvoi
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
-import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
-import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
-import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
-import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
-import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
-import io.github.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import io.github.payabli.api.types.FileContent;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.GetInvoiceRecord;
+import io.github.payabli.api.types.InvoiceDataRequest;
+import io.github.payabli.api.types.InvoiceNumberResponse;
+import io.github.payabli.api.types.InvoiceResponseWithoutData;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.QueryInvoiceResponse;
+import io.github.payabli.api.types.SendInvoiceResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -141,7 +141,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -151,8 +151,116 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+            int idInvoice, String filename) {
+        return getAttachedFileFromInvoice(
+                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+            int idInvoice, String filename, RequestOptions requestOptions) {
+        return getAttachedFileFromInvoice(
+                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
+        return getAttachedFileFromInvoice(idInvoice, filename, request, null);
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Invoice/attachedFileFromInvoice")
+                .addPathSegment(Integer.toString(idInvoice))
+                .addPathSegment(filename);
+        if (request.getReturnObject().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnObject", request.getReturnObject().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<FileContent>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -231,7 +339,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -241,8 +349,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -267,16 +374,16 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Deletes a single invoice from an entrypoint.
+     * Retrieves a single invoice by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(int idInvoice) {
-        return deleteInvoice(idInvoice, null);
+    public CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> getInvoice(int idInvoice) {
+        return getInvoice(idInvoice, null);
     }
 
     /**
-     * Deletes a single invoice from an entrypoint.
+     * Retrieves a single invoice by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(
+    public CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> getInvoice(
             int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -289,7 +396,7 @@ public class AsyncRawInvoiceClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -297,7 +404,7 @@ public class AsyncRawInvoiceClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -305,8 +412,7 @@ public class AsyncRawInvoiceClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, InvoiceResponseWithoutData.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetInvoiceRecord.class),
                                 response));
                         return;
                     }
@@ -319,7 +425,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -329,8 +435,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -439,7 +544,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -449,8 +554,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -475,126 +579,16 @@ public class AsyncRawInvoiceClient {
     }
 
     /**
-     * Retrieves a file attached to an invoice.
+     * Deletes a single invoice from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
-            int idInvoice, String filename) {
-        return getAttachedFileFromInvoice(
-                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
+    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(int idInvoice) {
+        return deleteInvoice(idInvoice, null);
     }
 
     /**
-     * Retrieves a file attached to an invoice.
+     * Deletes a single invoice from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
-            int idInvoice, String filename, RequestOptions requestOptions) {
-        return getAttachedFileFromInvoice(
-                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
-    }
-
-    /**
-     * Retrieves a file attached to an invoice.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
-            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
-        return getAttachedFileFromInvoice(idInvoice, filename, request, null);
-    }
-
-    /**
-     * Retrieves a file attached to an invoice.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
-            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Invoice/attachedFileFromInvoice")
-                .addPathSegment(Integer.toString(idInvoice))
-                .addPathSegment(filename);
-        if (request.getReturnObject().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnObject", request.getReturnObject().get(), false);
-        }
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<PayabliApiHttpResponse<FileContent>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response));
-                        return;
-                    }
-                    try {
-                        switch (response.code()) {
-                            case 400:
-                                future.completeExceptionally(new BadRequestError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 401:
-                                future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 500:
-                                future.completeExceptionally(new InternalServerError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 503:
-                                future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
-                                        response));
-                                return;
-                        }
-                    } catch (JsonProcessingException ignored) {
-                        // unable to map error response, throwing generic error
-                    }
-                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(), response.code(), errorBody, response));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
-    }
-
-    /**
-     * Retrieves a single invoice by ID.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> getInvoice(int idInvoice) {
-        return getInvoice(idInvoice, null);
-    }
-
-    /**
-     * Retrieves a single invoice by ID.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> getInvoice(
+    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(
             int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -607,7 +601,7 @@ public class AsyncRawInvoiceClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("GET", null)
+                .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -615,7 +609,7 @@ public class AsyncRawInvoiceClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -623,7 +617,8 @@ public class AsyncRawInvoiceClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetInvoiceRecord.class),
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, InvoiceResponseWithoutData.class),
                                 response));
                         return;
                     }
@@ -636,7 +631,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -646,8 +641,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -723,7 +717,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -733,8 +727,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -846,7 +839,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -856,8 +849,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -969,7 +961,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -979,8 +971,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1080,7 +1071,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1090,8 +1081,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1168,7 +1158,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1178,8 +1168,7 @@ public class AsyncRawInvoiceClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }

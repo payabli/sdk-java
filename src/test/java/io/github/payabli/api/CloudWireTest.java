@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.cloud.requests.DeviceEntry;
 import io.github.payabli.api.resources.cloud.requests.ListDeviceRequest;
-import io.github.payabli.api.resources.cloud.types.AddDeviceResponse;
-import io.github.payabli.api.resources.cloud.types.RemoveDeviceResponse;
+import io.github.payabli.api.types.AddDeviceResponse;
 import io.github.payabli.api.types.CloudQueryApiResponse;
+import io.github.payabli.api.types.RemoveDeviceResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -125,13 +125,65 @@ public class CloudWireTest {
     }
 
     @Test
+    public void testRemoveDevice() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseData\":\"6c361c7d-674c-44cc-b790-382b75d1xxx\",\"responseText\":\"Success\"}"));
+        RemoveDeviceResponse response = client.cloud().removeDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseData\": \"6c361c7d-674c-44cc-b790-382b75d1xxx\",\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
     public void testHistoryDevice() throws Exception {
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseList\":[{\"connected\":true,\"dateRegistered\":\"2024-03-05T15:56:04Z\",\"deviceId\":\"36103e24-41d8-47c9-b5f7-119f0000000\",\"deviceNickName\":\"Front Desk POS\",\"make\":\"ingenico\",\"model\":\"LK2500\",\"registered\":true,\"serialNumber\":\"312345692080000000\"}],\"responseText\":\"Success\"}"));
-        CloudQueryApiResponse response = client.cloud().historyDevice("8cfec329267", "WXGDWB");
+                                "{\"isSuccess\":true,\"responseList\":[{\"connected\":true,\"dateRegistered\":\"2024-03-05T15:56:04Z\",\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"deviceNickName\":\"Front Desk POS\",\"make\":\"ingenico\",\"model\":\"LK2500\",\"registered\":true,\"serialNumber\":\"312345692080000000\"}],\"responseText\":\"Success\"}"));
+        CloudQueryApiResponse response = client.cloud().historyDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
@@ -146,7 +198,7 @@ public class CloudWireTest {
                 + "    {\n"
                 + "      \"connected\": true,\n"
                 + "      \"dateRegistered\": \"2024-03-05T15:56:04Z\",\n"
-                + "      \"deviceId\": \"36103e24-41d8-47c9-b5f7-119f0000000\",\n"
+                + "      \"deviceId\": \"499585-389fj484-3jcj8hj3\",\n"
                 + "      \"deviceNickName\": \"Front Desk POS\",\n"
                 + "      \"make\": \"ingenico\",\n"
                 + "      \"model\": \"LK2500\",\n"
@@ -193,7 +245,7 @@ public class CloudWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseList\":[{\"connected\":true,\"dateRegistered\":\"2024-03-05T15:56:04Z\",\"deviceId\":\"36103e24-41d8-47c9-b5f7-119f0000000\",\"deviceNickName\":\"Front Desk POS\",\"make\":\"ingenico\",\"model\":\"LK2500\",\"registered\":true,\"serialNumber\":\"312345692080000000\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"responseList\":[{\"connected\":true,\"dateRegistered\":\"2024-03-05T15:56:04Z\",\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"deviceNickName\":\"Front Desk POS\",\"make\":\"ingenico\",\"model\":\"LK2500\",\"registered\":true,\"serialNumber\":\"312345692080000000\"}],\"responseText\":\"Success\"}"));
         CloudQueryApiResponse response = client.cloud()
                 .listDevice("8cfec329267", ListDeviceRequest.builder().build());
         RecordedRequest request = server.takeRequest();
@@ -210,7 +262,7 @@ public class CloudWireTest {
                 + "    {\n"
                 + "      \"connected\": true,\n"
                 + "      \"dateRegistered\": \"2024-03-05T15:56:04Z\",\n"
-                + "      \"deviceId\": \"36103e24-41d8-47c9-b5f7-119f0000000\",\n"
+                + "      \"deviceId\": \"499585-389fj484-3jcj8hj3\",\n"
                 + "      \"deviceNickName\": \"Front Desk POS\",\n"
                 + "      \"make\": \"ingenico\",\n"
                 + "      \"model\": \"LK2500\",\n"
@@ -218,59 +270,6 @@ public class CloudWireTest {
                 + "      \"serialNumber\": \"312345692080000000\"\n"
                 + "    }\n"
                 + "  ],\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testRemoveDevice() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"responseData\":\"6c361c7d-674c-44cc-b790-382b75d1xxx\",\"responseText\":\"Success\"}"));
-        RemoveDeviceResponse response =
-                client.cloud().removeDevice("8cfec329267", "6c361c7d-674c-44cc-b790-382b75d1xxx");
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseData\": \"6c361c7d-674c-44cc-b790-382b75d1xxx\",\n"
                 + "  \"responseText\": \"Success\"\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);

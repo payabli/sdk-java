@@ -48,6 +48,9 @@ public final class ListSubscriptionsRequest {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return Export format for file downloads. When specified, returns data as a file instead of JSON.
+     */
     @JsonProperty("exportFormat")
     public Optional<ExportFormat> getExportFormat() {
         return exportFormat;
@@ -92,6 +95,7 @@ public final class ListSubscriptionsRequest {
      * <li><code>feeAmount</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>status</code> (in, nin, eq, ne)</li>
      * <li><code>untilcancelled</code> (eq, ne)</li>
+     * <li><code>subscriptionType</code> (eq, ne, in, nin). Filters by subscription type. Accepts <code>Regular</code> or <code>BalanceDriven</code>. Case-insensitive. Example: <code>subscriptionType(in)=Regular|BalanceDriven</code>.</li>
      * <li><code>payaccountLastfour</code> (nct, ct)</li>
      * <li><code>payaccountType</code> (ne, eq, in, nin)</li>
      * <li><code>payaccountCurrency</code> (ne, eq, in, nin)</li>
@@ -215,6 +219,9 @@ public final class ListSubscriptionsRequest {
             return this;
         }
 
+        /**
+         * <p>Export format for file downloads. When specified, returns data as a file instead of JSON.</p>
+         */
         @JsonSetter(value = "exportFormat", nulls = Nulls.SKIP)
         public Builder exportFormat(Optional<ExportFormat> exportFormat) {
             this.exportFormat = exportFormat;
@@ -277,6 +284,7 @@ public final class ListSubscriptionsRequest {
          * <li><code>feeAmount</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>status</code> (in, nin, eq, ne)</li>
          * <li><code>untilcancelled</code> (eq, ne)</li>
+         * <li><code>subscriptionType</code> (eq, ne, in, nin). Filters by subscription type. Accepts <code>Regular</code> or <code>BalanceDriven</code>. Case-insensitive. Example: <code>subscriptionType(in)=Regular|BalanceDriven</code>.</li>
          * <li><code>payaccountLastfour</code> (nct, ct)</li>
          * <li><code>payaccountType</code> (ne, eq, in, nin)</li>
          * <li><code>payaccountCurrency</code> (ne, eq, in, nin)</li>

@@ -12,14 +12,14 @@ import io.github.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import io.github.payabli.api.resources.bill.requests.ListBillsRequest;
 import io.github.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import io.github.payabli.api.resources.bill.requests.SetApprovedBillRequest;
-import io.github.payabli.api.resources.bill.types.BillOutData;
-import io.github.payabli.api.resources.bill.types.BillResponse;
-import io.github.payabli.api.resources.bill.types.EditBillResponse;
-import io.github.payabli.api.resources.bill.types.GetBillResponse;
-import io.github.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
-import io.github.payabli.api.resources.bill.types.SetApprovedBillResponse;
+import io.github.payabli.api.types.BillOutData;
 import io.github.payabli.api.types.BillQueryResponse;
+import io.github.payabli.api.types.BillResponse;
+import io.github.payabli.api.types.EditBillResponse;
 import io.github.payabli.api.types.FileContent;
+import io.github.payabli.api.types.GetBillResponse;
+import io.github.payabli.api.types.ModifyApprovalBillResponse;
+import io.github.payabli.api.types.SetApprovedBillResponse;
 import java.util.List;
 
 public class BillClient {
@@ -68,50 +68,17 @@ public class BillClient {
     }
 
     /**
-     * Delete a file attached to a bill.
+     * Retrieves a bill by ID from an entrypoint.
      */
-    public BillResponse deleteAttachedFromBill(int idBill, String filename) {
-        return this.rawClient.deleteAttachedFromBill(idBill, filename).body();
+    public GetBillResponse getBill(int idBill) {
+        return this.rawClient.getBill(idBill).body();
     }
 
     /**
-     * Delete a file attached to a bill.
+     * Retrieves a bill by ID from an entrypoint.
      */
-    public BillResponse deleteAttachedFromBill(int idBill, String filename, RequestOptions requestOptions) {
-        return this.rawClient
-                .deleteAttachedFromBill(idBill, filename, requestOptions)
-                .body();
-    }
-
-    /**
-     * Delete a file attached to a bill.
-     */
-    public BillResponse deleteAttachedFromBill(int idBill, String filename, DeleteAttachedFromBillRequest request) {
-        return this.rawClient.deleteAttachedFromBill(idBill, filename, request).body();
-    }
-
-    /**
-     * Delete a file attached to a bill.
-     */
-    public BillResponse deleteAttachedFromBill(
-            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .deleteAttachedFromBill(idBill, filename, request, requestOptions)
-                .body();
-    }
-
-    /**
-     * Deletes a bill by ID.
-     */
-    public BillResponse deleteBill(int idBill) {
-        return this.rawClient.deleteBill(idBill).body();
-    }
-
-    /**
-     * Deletes a bill by ID.
-     */
-    public BillResponse deleteBill(int idBill, RequestOptions requestOptions) {
-        return this.rawClient.deleteBill(idBill, requestOptions).body();
+    public GetBillResponse getBill(int idBill, RequestOptions requestOptions) {
+        return this.rawClient.getBill(idBill, requestOptions).body();
     }
 
     /**
@@ -140,6 +107,20 @@ public class BillClient {
      */
     public EditBillResponse editBill(int idBill, BillOutData request, RequestOptions requestOptions) {
         return this.rawClient.editBill(idBill, request, requestOptions).body();
+    }
+
+    /**
+     * Deletes a bill by ID.
+     */
+    public BillResponse deleteBill(int idBill) {
+        return this.rawClient.deleteBill(idBill).body();
+    }
+
+    /**
+     * Deletes a bill by ID.
+     */
+    public BillResponse deleteBill(int idBill, RequestOptions requestOptions) {
+        return this.rawClient.deleteBill(idBill, requestOptions).body();
     }
 
     /**
@@ -176,17 +157,115 @@ public class BillClient {
     }
 
     /**
-     * Retrieves a bill by ID from an entrypoint.
+     * Delete a file attached to a bill.
      */
-    public GetBillResponse getBill(int idBill) {
-        return this.rawClient.getBill(idBill).body();
+    public BillResponse deleteAttachedFromBill(int idBill, String filename) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename).body();
     }
 
     /**
-     * Retrieves a bill by ID from an entrypoint.
+     * Delete a file attached to a bill.
      */
-    public GetBillResponse getBill(int idBill, RequestOptions requestOptions) {
-        return this.rawClient.getBill(idBill, requestOptions).body();
+    public BillResponse deleteAttachedFromBill(int idBill, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromBill(idBill, filename, requestOptions)
+                .body();
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public BillResponse deleteAttachedFromBill(int idBill, String filename, DeleteAttachedFromBillRequest request) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename, request).body();
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public BillResponse deleteAttachedFromBill(
+            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromBill(idBill, filename, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public BillResponse sendToApprovalBill(int idBill, List<String> body) {
+        return this.rawClient.sendToApprovalBill(idBill, body).body();
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public BillResponse sendToApprovalBill(int idBill, List<String> body, RequestOptions requestOptions) {
+        return this.rawClient.sendToApprovalBill(idBill, body, requestOptions).body();
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public BillResponse sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
+        return this.rawClient.sendToApprovalBill(idBill, request).body();
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public BillResponse sendToApprovalBill(
+            int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .sendToApprovalBill(idBill, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Modify the list of users the bill is sent to for approval.
+     */
+    public ModifyApprovalBillResponse modifyApprovalBill(int idBill, List<String> request) {
+        return this.rawClient.modifyApprovalBill(idBill, request).body();
+    }
+
+    /**
+     * Modify the list of users the bill is sent to for approval.
+     */
+    public ModifyApprovalBillResponse modifyApprovalBill(
+            int idBill, List<String> request, RequestOptions requestOptions) {
+        return this.rawClient
+                .modifyApprovalBill(idBill, request, requestOptions)
+                .body();
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public SetApprovedBillResponse setApprovedBill(int idBill, String approved) {
+        return this.rawClient.setApprovedBill(idBill, approved).body();
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public SetApprovedBillResponse setApprovedBill(int idBill, String approved, RequestOptions requestOptions) {
+        return this.rawClient.setApprovedBill(idBill, approved, requestOptions).body();
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public SetApprovedBillResponse setApprovedBill(int idBill, String approved, SetApprovedBillRequest request) {
+        return this.rawClient.setApprovedBill(idBill, approved, request).body();
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public SetApprovedBillResponse setApprovedBill(
+            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .setApprovedBill(idBill, approved, request, requestOptions)
+                .body();
     }
 
     /**
@@ -243,84 +322,5 @@ public class BillClient {
      */
     public BillQueryResponse listBillsOrg(int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBillsOrg(orgId, request, requestOptions).body();
-    }
-
-    /**
-     * Modify the list of users the bill is sent to for approval.
-     */
-    public ModifyApprovalBillResponse modifyApprovalBill(int idBill, List<String> request) {
-        return this.rawClient.modifyApprovalBill(idBill, request).body();
-    }
-
-    /**
-     * Modify the list of users the bill is sent to for approval.
-     */
-    public ModifyApprovalBillResponse modifyApprovalBill(
-            int idBill, List<String> request, RequestOptions requestOptions) {
-        return this.rawClient
-                .modifyApprovalBill(idBill, request, requestOptions)
-                .body();
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public BillResponse sendToApprovalBill(int idBill, List<String> body) {
-        return this.rawClient.sendToApprovalBill(idBill, body).body();
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public BillResponse sendToApprovalBill(int idBill, List<String> body, RequestOptions requestOptions) {
-        return this.rawClient.sendToApprovalBill(idBill, body, requestOptions).body();
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public BillResponse sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
-        return this.rawClient.sendToApprovalBill(idBill, request).body();
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public BillResponse sendToApprovalBill(
-            int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .sendToApprovalBill(idBill, request, requestOptions)
-                .body();
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public SetApprovedBillResponse setApprovedBill(int idBill, String approved) {
-        return this.rawClient.setApprovedBill(idBill, approved).body();
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public SetApprovedBillResponse setApprovedBill(int idBill, String approved, RequestOptions requestOptions) {
-        return this.rawClient.setApprovedBill(idBill, approved, requestOptions).body();
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public SetApprovedBillResponse setApprovedBill(int idBill, String approved, SetApprovedBillRequest request) {
-        return this.rawClient.setApprovedBill(idBill, approved, request).body();
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public SetApprovedBillResponse setApprovedBill(
-            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .setApprovedBill(idBill, approved, request, requestOptions)
-                .body();
     }
 }

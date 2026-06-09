@@ -8,17 +8,23 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Cash.Builder.class)
 public final class Cash {
+    private final CashMethod method;
+
     private final Map<String, Object> additionalProperties;
 
-    private Cash(Map<String, Object> additionalProperties) {
+    private Cash(CashMethod method, Map<String, Object> additionalProperties) {
+        this.method = method;
         this.additionalProperties = additionalProperties;
     }
 
@@ -26,14 +32,14 @@ public final class Cash {
      * @return Method to use for the transaction. For cash transactions, use <code>cash</code>.
      */
     @JsonProperty("method")
-    public String getMethod() {
-        return "cash";
+    public CashMethod getMethod() {
+        return method;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof Cash;
+        return other instanceof Cash && equalTo((Cash) other);
     }
 
     @JsonAnyGetter
@@ -41,35 +47,80 @@ public final class Cash {
         return this.additionalProperties;
     }
 
+    private boolean equalTo(Cash other) {
+        return method.equals(other.method);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return Objects.hash(this.method);
+    }
+
     @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static MethodStage builder() {
         return new Builder();
     }
 
+    public interface MethodStage {
+        /**
+         * <p>Method to use for the transaction. For cash transactions, use <code>cash</code>.</p>
+         */
+        _FinalStage method(@NotNull CashMethod method);
+
+        Builder from(Cash other);
+    }
+
+    public interface _FinalStage {
+        Cash build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
+    public static final class Builder implements MethodStage, _FinalStage {
+        private CashMethod method;
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(Cash other) {
+            method(other.getMethod());
             return this;
         }
 
-        public Cash build() {
-            return new Cash(additionalProperties);
+        /**
+         * <p>Method to use for the transaction. For cash transactions, use <code>cash</code>.</p>
+         * <p>Method to use for the transaction. For cash transactions, use <code>cash</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull CashMethod method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
+            return this;
         }
 
+        @java.lang.Override
+        public Cash build() {
+            return new Cash(method, additionalProperties);
+        }
+
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

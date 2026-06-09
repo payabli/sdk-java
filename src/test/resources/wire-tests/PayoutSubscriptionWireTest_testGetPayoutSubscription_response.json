@@ -14,7 +14,7 @@
       }
     ],
     "vendor": {
-      "VendorNumber": "1234",
+      "VendorNumber": "VEN-123",
       "Name1": "Herman's Coatings",
       "Name2": "Herman's Coating Supply Company, LLC",
       "EIN": "123456789",
@@ -53,7 +53,7 @@
       },
       "PaymentMethod": null,
       "VendorStatus": 1,
-      "VendorId": 1,
+      "VendorId": 456,
       "EnrollmentStatus": null,
       "Summary": {
         "ActiveBills": 2,
@@ -105,8 +105,8 @@
     },
     "billData": [
       {
-        "billId": 3001,
-        "invoiceNumber": "INV-5001",
+        "billId": 54323,
+        "invoiceNumber": "INV-2345",
         "netAmount": "500",
         "invoiceDate": "2025-08-01",
         "dueDate": "2025-08-15"
@@ -114,7 +114,7 @@
     ],
     "externalPaypointID": "d193cf9a46-10",
     "method": "ach",
-    "paypointId": 255,
+    "paypointId": 3040,
     "totalAmount": 500,
     "netAmount": 500,
     "feeAmount": 0,

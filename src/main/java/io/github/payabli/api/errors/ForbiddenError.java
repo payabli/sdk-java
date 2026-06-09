@@ -4,21 +4,21 @@
 package io.github.payabli.api.errors;
 
 import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.types.PayabliApiResponsePaylinks;
+import io.github.payabli.api.types.PayabliErrorBody;
 import okhttp3.Response;
 
 public final class ForbiddenError extends PayabliApiApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final PayabliApiResponsePaylinks body;
+    private final PayabliErrorBody body;
 
-    public ForbiddenError(PayabliApiResponsePaylinks body) {
+    public ForbiddenError(PayabliErrorBody body) {
         super("ForbiddenError", 403, body);
         this.body = body;
     }
 
-    public ForbiddenError(PayabliApiResponsePaylinks body, Response rawResponse) {
+    public ForbiddenError(PayabliErrorBody body, Response rawResponse) {
         super("ForbiddenError", 403, body, rawResponse);
         this.body = body;
     }
@@ -27,7 +27,7 @@ public final class ForbiddenError extends PayabliApiApiException {
      * @return the body
      */
     @java.lang.Override
-    public PayabliApiResponsePaylinks body() {
+    public PayabliErrorBody body() {
         return this.body;
     }
 }

@@ -7,19 +7,18 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
-import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
-import io.github.payabli.api.resources.moneyouttypes.types.AllowedCheckPaymentStatus;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
-import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
-import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
+import io.github.payabli.api.types.AllowedCheckPaymentStatus;
+import io.github.payabli.api.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.types.BillDetailResponse;
+import io.github.payabli.api.types.CaptureAllOutResponse;
+import io.github.payabli.api.types.OperationResult;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
+import io.github.payabli.api.types.ReissuePayoutResponse;
+import io.github.payabli.api.types.VCardGetResponse;
 import java.util.List;
 
 public class MoneyOutClient {
@@ -44,25 +43,7 @@ public class MoneyOutClient {
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
      */
-    public AuthCapturePayoutResponse authorizeOut(AuthorizePayoutBody body) {
-        return this.rawClient.authorizeOut(body).body();
-    }
-
-    /**
-     * Authorizes a transaction for payout.
-     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
-     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
-     */
-    public AuthCapturePayoutResponse authorizeOut(AuthorizePayoutBody body, RequestOptions requestOptions) {
-        return this.rawClient.authorizeOut(body, requestOptions).body();
-    }
-
-    /**
-     * Authorizes a transaction for payout.
-     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
-     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
-     */
-    public AuthCapturePayoutResponse authorizeOut(MoneyOutTypesRequestOutAuthorize request) {
+    public AuthCapturePayoutResponse authorizeOut(RequestOutAuthorize request) {
         return this.rawClient.authorizeOut(request).body();
     }
 
@@ -71,8 +52,7 @@ public class MoneyOutClient {
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
      */
-    public AuthCapturePayoutResponse authorizeOut(
-            MoneyOutTypesRequestOutAuthorize request, RequestOptions requestOptions) {
+    public AuthCapturePayoutResponse authorizeOut(RequestOutAuthorize request, RequestOptions requestOptions) {
         return this.rawClient.authorizeOut(request, requestOptions).body();
     }
 

@@ -1,13 +1,13 @@
 {
   "Records": [
     {
-      "transferId": 79851,
-      "paypointId": 705,
+      "transferId": 4521,
+      "paypointId": 3040,
       "batchNumber": "split_705_gp_11-16-2024",
       "batchCurrency": "USD",
       "batchRecords": 1,
       "transferIdentifier": "bbcbfed7-e535-45fe-8d62-000000",
-      "batchId": 111430,
+      "batchId": 1049,
       "paypointEntryName": "47ae3de37",
       "paypointLegalName": "Gruzya Outdoor Outfitters LLC",
       "paypointDbaName": "Gruzya Outdoor Outfitters",

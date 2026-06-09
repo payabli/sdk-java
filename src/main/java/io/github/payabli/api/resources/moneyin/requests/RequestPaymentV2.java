@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
+import io.github.payabli.api.types.TransRequestBody;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -50,6 +50,9 @@ public final class RequestPaymentV2 {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return <em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+     */
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
@@ -63,11 +66,17 @@ public final class RequestPaymentV2 {
         return validationCode;
     }
 
+    /**
+     * @return When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+     */
     @JsonProperty("achValidation")
     public Optional<Boolean> getAchValidation() {
         return achValidation;
     }
 
+    /**
+     * @return When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to <code>false</code>.
+     */
     @JsonProperty("forceCustomerCreation")
     public Optional<Boolean> getForceCustomerCreation() {
         return forceCustomerCreation;
@@ -125,6 +134,9 @@ public final class RequestPaymentV2 {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
@@ -136,10 +148,16 @@ public final class RequestPaymentV2 {
 
         _FinalStage validationCode(String validationCode);
 
+        /**
+         * <p>When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.</p>
+         */
         _FinalStage achValidation(Optional<Boolean> achValidation);
 
         _FinalStage achValidation(Boolean achValidation);
 
+        /**
+         * <p>When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to <code>false</code>.</p>
+         */
         _FinalStage forceCustomerCreation(Optional<Boolean> forceCustomerCreation);
 
         _FinalStage forceCustomerCreation(Boolean forceCustomerCreation);
@@ -179,12 +197,19 @@ public final class RequestPaymentV2 {
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to <code>false</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage forceCustomerCreation(Boolean forceCustomerCreation) {
             this.forceCustomerCreation = Optional.ofNullable(forceCustomerCreation);
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to <code>false</code>.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "forceCustomerCreation", nulls = Nulls.SKIP)
         public _FinalStage forceCustomerCreation(Optional<Boolean> forceCustomerCreation) {
@@ -192,12 +217,19 @@ public final class RequestPaymentV2 {
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage achValidation(Boolean achValidation) {
             this.achValidation = Optional.ofNullable(achValidation);
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "achValidation", nulls = Nulls.SKIP)
         public _FinalStage achValidation(Optional<Boolean> achValidation) {
@@ -224,12 +256,19 @@ public final class RequestPaymentV2 {
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = Optional.ofNullable(idempotencyKey);
             return this;
         }
 
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
         @java.lang.Override
         public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
             this.idempotencyKey = idempotencyKey;

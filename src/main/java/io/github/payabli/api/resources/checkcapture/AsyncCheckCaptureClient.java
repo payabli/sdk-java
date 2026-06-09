@@ -6,7 +6,7 @@ package io.github.payabli.api.resources.checkcapture;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.checkcapture.requests.CheckCaptureRequestBody;
-import io.github.payabli.api.resources.checkcapture.types.CheckCaptureResponse;
+import io.github.payabli.api.types.CheckCaptureResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncCheckCaptureClient {

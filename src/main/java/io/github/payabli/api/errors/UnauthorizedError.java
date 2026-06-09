@@ -4,20 +4,21 @@
 package io.github.payabli.api.errors;
 
 import io.github.payabli.api.core.PayabliApiApiException;
+import io.github.payabli.api.types.PayabliErrorBody;
 import okhttp3.Response;
 
 public final class UnauthorizedError extends PayabliApiApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final Object body;
+    private final PayabliErrorBody body;
 
-    public UnauthorizedError(Object body) {
+    public UnauthorizedError(PayabliErrorBody body) {
         super("UnauthorizedError", 401, body);
         this.body = body;
     }
 
-    public UnauthorizedError(Object body, Response rawResponse) {
+    public UnauthorizedError(PayabliErrorBody body, Response rawResponse) {
         super("UnauthorizedError", 401, body, rawResponse);
         this.body = body;
     }
@@ -26,7 +27,7 @@ public final class UnauthorizedError extends PayabliApiApiException {
      * @return the body
      */
     @java.lang.Override
-    public Object body() {
+    public PayabliErrorBody body() {
         return this.body;
     }
 }

@@ -7,9 +7,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.cloud.requests.DeviceEntry;
 import io.github.payabli.api.resources.cloud.requests.ListDeviceRequest;
-import io.github.payabli.api.resources.cloud.types.AddDeviceResponse;
-import io.github.payabli.api.resources.cloud.types.RemoveDeviceResponse;
+import io.github.payabli.api.types.AddDeviceResponse;
 import io.github.payabli.api.types.CloudQueryApiResponse;
+import io.github.payabli.api.types.RemoveDeviceResponse;
 
 public class CloudClient {
     protected final ClientOptions clientOptions;
@@ -57,6 +57,20 @@ public class CloudClient {
     }
 
     /**
+     * Remove a cloud device from an entrypoint.
+     */
+    public RemoveDeviceResponse removeDevice(String entry, String deviceId) {
+        return this.rawClient.removeDevice(entry, deviceId).body();
+    }
+
+    /**
+     * Remove a cloud device from an entrypoint.
+     */
+    public RemoveDeviceResponse removeDevice(String entry, String deviceId, RequestOptions requestOptions) {
+        return this.rawClient.removeDevice(entry, deviceId, requestOptions).body();
+    }
+
+    /**
      * Retrieve the registration history for a device.
      */
     public CloudQueryApiResponse historyDevice(String entry, String deviceId) {
@@ -100,19 +114,5 @@ public class CloudClient {
      */
     public CloudQueryApiResponse listDevice(String entry, ListDeviceRequest request, RequestOptions requestOptions) {
         return this.rawClient.listDevice(entry, request, requestOptions).body();
-    }
-
-    /**
-     * Remove a cloud device from an entrypoint.
-     */
-    public RemoveDeviceResponse removeDevice(String entry, String deviceId) {
-        return this.rawClient.removeDevice(entry, deviceId).body();
-    }
-
-    /**
-     * Remove a cloud device from an entrypoint.
-     */
-    public RemoveDeviceResponse removeDevice(String entry, String deviceId, RequestOptions requestOptions) {
-        return this.rawClient.removeDevice(entry, deviceId, requestOptions).body();
     }
 }

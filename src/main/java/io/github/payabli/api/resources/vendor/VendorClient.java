@@ -5,10 +5,10 @@ package io.github.payabli.api.resources.vendor;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichRequest;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichResponse;
+import io.github.payabli.api.resources.vendor.requests.VendorEnrichRequest;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
 import io.github.payabli.api.types.VendorData;
+import io.github.payabli.api.types.VendorEnrichResponse;
 import io.github.payabli.api.types.VendorQueryRecord;
 
 public class VendorClient {
@@ -57,17 +57,17 @@ public class VendorClient {
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public PayabliApiResponseVendors deleteVendor(int idVendor) {
-        return this.rawClient.deleteVendor(idVendor).body();
+    public VendorQueryRecord getVendor(int idVendor) {
+        return this.rawClient.getVendor(idVendor).body();
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public PayabliApiResponseVendors deleteVendor(int idVendor, RequestOptions requestOptions) {
-        return this.rawClient.deleteVendor(idVendor, requestOptions).body();
+    public VendorQueryRecord getVendor(int idVendor, RequestOptions requestOptions) {
+        return this.rawClient.getVendor(idVendor, requestOptions).body();
     }
 
     /**
@@ -99,17 +99,17 @@ public class VendorClient {
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public VendorQueryRecord getVendor(int idVendor) {
-        return this.rawClient.getVendor(idVendor).body();
+    public PayabliApiResponseVendors deleteVendor(int idVendor) {
+        return this.rawClient.deleteVendor(idVendor).body();
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public VendorQueryRecord getVendor(int idVendor, RequestOptions requestOptions) {
-        return this.rawClient.getVendor(idVendor, requestOptions).body();
+    public PayabliApiResponseVendors deleteVendor(int idVendor, RequestOptions requestOptions) {
+        return this.rawClient.deleteVendor(idVendor, requestOptions).body();
     }
 
     /**

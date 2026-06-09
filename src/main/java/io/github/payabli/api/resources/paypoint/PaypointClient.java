@@ -6,12 +6,12 @@ package io.github.payabli.api.resources.paypoint;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.paypoint.requests.GetEntryConfigRequest;
-import io.github.payabli.api.resources.paypoint.types.GetBasicEntryByIdResponse;
-import io.github.payabli.api.resources.paypoint.types.GetBasicEntryResponse;
-import io.github.payabli.api.resources.paypoint.types.GetEntryConfigResponse;
-import io.github.payabli.api.resources.paypoint.types.MigratePaypointResponse;
-import io.github.payabli.api.resources.paypoint.types.PaypointMoveRequest;
+import io.github.payabli.api.resources.paypoint.requests.PaypointMoveRequest;
 import io.github.payabli.api.types.FileContent;
+import io.github.payabli.api.types.GetBasicEntryByIdResponse;
+import io.github.payabli.api.types.GetBasicEntryResponse;
+import io.github.payabli.api.types.GetEntryConfigResponse;
+import io.github.payabli.api.types.MigratePaypointResponse;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.PayabliApiResponseGeneric2Part;
 import io.github.payabli.api.types.PayabliPages;
@@ -60,6 +60,63 @@ public class PaypointClient {
      */
     public GetBasicEntryByIdResponse getBasicEntryById(String idPaypoint, RequestOptions requestOptions) {
         return this.rawClient.getBasicEntryById(idPaypoint, requestOptions).body();
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry) {
+        return this.rawClient.saveLogo(entry).body();
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry, RequestOptions requestOptions) {
+        return this.rawClient.saveLogo(entry, requestOptions).body();
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry, FileContent request) {
+        return this.rawClient.saveLogo(entry, request).body();
+    }
+
+    /**
+     * Updates a paypoint logo.
+     */
+    public PayabliApiResponse00Responsedatanonobject saveLogo(
+            String entry, FileContent request, RequestOptions requestOptions) {
+        return this.rawClient.saveLogo(entry, request, requestOptions).body();
+    }
+
+    /**
+     * Migrates a paypoint to a new parent organization.
+     */
+    public MigratePaypointResponse migrate(PaypointMoveRequest request) {
+        return this.rawClient.migrate(request).body();
+    }
+
+    /**
+     * Migrates a paypoint to a new parent organization.
+     */
+    public MigratePaypointResponse migrate(PaypointMoveRequest request, RequestOptions requestOptions) {
+        return this.rawClient.migrate(request, requestOptions).body();
+    }
+
+    /**
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     */
+    public SettingsQueryRecord settingsPage(String entry) {
+        return this.rawClient.settingsPage(entry).body();
+    }
+
+    /**
+     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+     */
+    public SettingsQueryRecord settingsPage(String entry, RequestOptions requestOptions) {
+        return this.rawClient.settingsPage(entry, requestOptions).body();
     }
 
     /**
@@ -117,62 +174,5 @@ public class PaypointClient {
      */
     public PayabliApiResponseGeneric2Part removePage(String entry, String subdomain, RequestOptions requestOptions) {
         return this.rawClient.removePage(entry, subdomain, requestOptions).body();
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry) {
-        return this.rawClient.saveLogo(entry).body();
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry, RequestOptions requestOptions) {
-        return this.rawClient.saveLogo(entry, requestOptions).body();
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public PayabliApiResponse00Responsedatanonobject saveLogo(String entry, FileContent request) {
-        return this.rawClient.saveLogo(entry, request).body();
-    }
-
-    /**
-     * Updates a paypoint logo.
-     */
-    public PayabliApiResponse00Responsedatanonobject saveLogo(
-            String entry, FileContent request, RequestOptions requestOptions) {
-        return this.rawClient.saveLogo(entry, request, requestOptions).body();
-    }
-
-    /**
-     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
-     */
-    public SettingsQueryRecord settingsPage(String entry) {
-        return this.rawClient.settingsPage(entry).body();
-    }
-
-    /**
-     * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
-     */
-    public SettingsQueryRecord settingsPage(String entry, RequestOptions requestOptions) {
-        return this.rawClient.settingsPage(entry, requestOptions).body();
-    }
-
-    /**
-     * Migrates a paypoint to a new parent organization.
-     */
-    public MigratePaypointResponse migrate(PaypointMoveRequest request) {
-        return this.rawClient.migrate(request).body();
-    }
-
-    /**
-     * Migrates a paypoint to a new parent organization.
-     */
-    public MigratePaypointResponse migrate(PaypointMoveRequest request, RequestOptions requestOptions) {
-        return this.rawClient.migrate(request, requestOptions).body();
     }
 }

@@ -6,11 +6,9 @@ package io.github.payabli.api.resources.notificationlogs;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLog;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogDetail;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
+import io.github.payabli.api.types.NotificationLog;
+import io.github.payabli.api.types.NotificationLogDetail;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncNotificationlogsClient {
@@ -28,31 +26,6 @@ public class AsyncNotificationlogsClient {
      */
     public AsyncRawNotificationlogsClient withRawResponse() {
         return this.rawClient;
-    }
-
-    /**
-     * Search notification logs with filtering and pagination.
-     * <ul>
-     * <li>Start date and end date cannot be more than 30 days apart</li>
-     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
-     * </ul>
-     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
-     */
-    public CompletableFuture<List<NotificationLog>> searchNotificationLogs(NotificationLogSearchRequest body) {
-        return this.rawClient.searchNotificationLogs(body).thenApply(response -> response.body());
-    }
-
-    /**
-     * Search notification logs with filtering and pagination.
-     * <ul>
-     * <li>Start date and end date cannot be more than 30 days apart</li>
-     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
-     * </ul>
-     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
-     */
-    public CompletableFuture<List<NotificationLog>> searchNotificationLogs(
-            NotificationLogSearchRequest body, RequestOptions requestOptions) {
-        return this.rawClient.searchNotificationLogs(body, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -84,7 +57,7 @@ public class AsyncNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public CompletableFuture<NotificationLogDetail> getNotificationLog(UUID uuid) {
+    public CompletableFuture<NotificationLogDetail> getNotificationLog(String uuid) {
         return this.rawClient.getNotificationLog(uuid).thenApply(response -> response.body());
     }
 
@@ -92,7 +65,7 @@ public class AsyncNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public CompletableFuture<NotificationLogDetail> getNotificationLog(UUID uuid, RequestOptions requestOptions) {
+    public CompletableFuture<NotificationLogDetail> getNotificationLog(String uuid, RequestOptions requestOptions) {
         return this.rawClient.getNotificationLog(uuid, requestOptions).thenApply(response -> response.body());
     }
 
@@ -100,7 +73,7 @@ public class AsyncNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<NotificationLogDetail> retryNotificationLog(UUID uuid) {
+    public CompletableFuture<NotificationLogDetail> retryNotificationLog(String uuid) {
         return this.rawClient.retryNotificationLog(uuid).thenApply(response -> response.body());
     }
 
@@ -108,7 +81,7 @@ public class AsyncNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<NotificationLogDetail> retryNotificationLog(UUID uuid, RequestOptions requestOptions) {
+    public CompletableFuture<NotificationLogDetail> retryNotificationLog(String uuid, RequestOptions requestOptions) {
         return this.rawClient.retryNotificationLog(uuid, requestOptions).thenApply(response -> response.body());
     }
 
@@ -117,7 +90,7 @@ public class AsyncNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<Void> bulkRetryNotificationLogs(List<UUID> request) {
+    public CompletableFuture<Void> bulkRetryNotificationLogs(List<String> request) {
         return this.rawClient.bulkRetryNotificationLogs(request).thenApply(response -> response.body());
     }
 
@@ -126,7 +99,7 @@ public class AsyncNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<Void> bulkRetryNotificationLogs(List<UUID> request, RequestOptions requestOptions) {
+    public CompletableFuture<Void> bulkRetryNotificationLogs(List<String> request, RequestOptions requestOptions) {
         return this.rawClient.bulkRetryNotificationLogs(request, requestOptions).thenApply(response -> response.body());
     }
 }

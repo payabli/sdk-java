@@ -10,7 +10,7 @@
       "key": "value"
     }
   },
-  "credentials": [
+  "Credentials": [
     {
       "accountId": "accountId",
       "cfeeFix": 1.1,
@@ -27,8 +27,8 @@
       "allowOverride": false
     }
   ],
-  "lastAccess": "2022-06-30T15:01:00Z",
-  "pageContent": {
+  "LastAccess": "2022-06-30T15:01:00Z",
+  "PageContent": {
     "amount": {
       "categories": [
         {}
@@ -51,7 +51,7 @@
       "paymentIcons": true,
       "phoneLabel": "phoneLabel"
     },
-    "entry": "entry",
+    "entry": "8cfec329267",
     "invoices": {
       "enabled": true,
       "invoiceLink": {
@@ -120,7 +120,7 @@
     "subdomain": "mypage-1"
   },
   "pageIdentifier": "null",
-  "pageSettings": {
+  "PageSettings": {
     "color": "color",
     "customCssUrl": "customCssUrl",
     "language": "language",
@@ -138,7 +138,7 @@
     "redirectAfterApproveUrl": "redirectAfterApproveUrl"
   },
   "published": 1,
-  "receiptContent": {
+  "ReceiptContent": {
     "amount": {
       "enabled": true,
       "order": 1
@@ -185,7 +185,7 @@
       "sendManual": true
     }
   },
-  "subdomain": "mypage-1",
+  "Subdomain": "mypage-1",
   "totalAmount": 1.1,
   "validationCode": "validationCode"
 }

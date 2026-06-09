@@ -10,12 +10,12 @@ import io.github.payabli.api.resources.user.requests.MfaValidationData;
 import io.github.payabli.api.resources.user.requests.UserAuthPswResetRequest;
 import io.github.payabli.api.resources.user.requests.UserAuthRequest;
 import io.github.payabli.api.resources.user.requests.UserAuthResetRequest;
-import io.github.payabli.api.resources.user.types.AddUserResponse;
-import io.github.payabli.api.resources.user.types.AuthResetUserResponse;
-import io.github.payabli.api.resources.user.types.ChangePswUserResponse;
-import io.github.payabli.api.resources.user.types.DeleteUserResponse;
-import io.github.payabli.api.resources.user.types.EditMfaUserResponse;
-import io.github.payabli.api.resources.user.types.LogoutUserResponse;
+import io.github.payabli.api.types.AddUserResponse;
+import io.github.payabli.api.types.AuthResetUserResponse;
+import io.github.payabli.api.types.ChangePswUserResponse;
+import io.github.payabli.api.types.DeleteUserResponse;
+import io.github.payabli.api.types.EditMfaUserResponse;
+import io.github.payabli.api.types.LogoutUserResponse;
 import io.github.payabli.api.types.MfaData;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponseMfaBasic;
@@ -69,6 +69,105 @@ public class UserClient {
     }
 
     /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public UserQueryRecord getUser(long userId) {
+        return this.rawClient.getUser(userId).body();
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public UserQueryRecord getUser(long userId, RequestOptions requestOptions) {
+        return this.rawClient.getUser(userId, requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public UserQueryRecord getUser(long userId, GetUserRequest request) {
+        return this.rawClient.getUser(userId, request).body();
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public UserQueryRecord getUser(long userId, GetUserRequest request, RequestOptions requestOptions) {
+        return this.rawClient.getUser(userId, request, requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
+    public PayabliApiResponse editUser(long userId) {
+        return this.rawClient.editUser(userId).body();
+    }
+
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
+    public PayabliApiResponse editUser(long userId, RequestOptions requestOptions) {
+        return this.rawClient.editUser(userId, requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
+    public PayabliApiResponse editUser(long userId, UserData request) {
+        return this.rawClient.editUser(userId, request).body();
+    }
+
+    /**
+     * Use this endpoint to modify the details of a specific user within an organization.
+     */
+    public PayabliApiResponse editUser(long userId, UserData request, RequestOptions requestOptions) {
+        return this.rawClient.editUser(userId, request, requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
+    public DeleteUserResponse deleteUser(long userId) {
+        return this.rawClient.deleteUser(userId).body();
+    }
+
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
+    public DeleteUserResponse deleteUser(long userId, RequestOptions requestOptions) {
+        return this.rawClient.deleteUser(userId, requestOptions).body();
+    }
+
+    /**
+     * This endpoint requires an application API token.
+     */
+    public PayabliApiResponseMfaBasic authUser(String provider) {
+        return this.rawClient.authUser(provider).body();
+    }
+
+    /**
+     * This endpoint requires an application API token.
+     */
+    public PayabliApiResponseMfaBasic authUser(String provider, RequestOptions requestOptions) {
+        return this.rawClient.authUser(provider, requestOptions).body();
+    }
+
+    /**
+     * This endpoint requires an application API token.
+     */
+    public PayabliApiResponseMfaBasic authUser(String provider, UserAuthRequest request) {
+        return this.rawClient.authUser(provider, request).body();
+    }
+
+    /**
+     * This endpoint requires an application API token.
+     */
+    public PayabliApiResponseMfaBasic authUser(
+            String provider, UserAuthRequest request, RequestOptions requestOptions) {
+        return this.rawClient.authUser(provider, request, requestOptions).body();
+    }
+
+    /**
      * Use this endpoint to refresh the authentication token for a user within an organization.
      */
     public PayabliApiResponseUserMfa authRefreshUser() {
@@ -111,35 +210,6 @@ public class UserClient {
     }
 
     /**
-     * This endpoint requires an application API token.
-     */
-    public PayabliApiResponseMfaBasic authUser(String provider) {
-        return this.rawClient.authUser(provider).body();
-    }
-
-    /**
-     * This endpoint requires an application API token.
-     */
-    public PayabliApiResponseMfaBasic authUser(String provider, RequestOptions requestOptions) {
-        return this.rawClient.authUser(provider, requestOptions).body();
-    }
-
-    /**
-     * This endpoint requires an application API token.
-     */
-    public PayabliApiResponseMfaBasic authUser(String provider, UserAuthRequest request) {
-        return this.rawClient.authUser(provider, request).body();
-    }
-
-    /**
-     * This endpoint requires an application API token.
-     */
-    public PayabliApiResponseMfaBasic authUser(
-            String provider, UserAuthRequest request, RequestOptions requestOptions) {
-        return this.rawClient.authUser(provider, request, requestOptions).body();
-    }
-
-    /**
      * Use this endpoint to change the password for a user within an organization.
      */
     public ChangePswUserResponse changePswUser() {
@@ -168,17 +238,45 @@ public class UserClient {
     }
 
     /**
-     * Use this endpoint to delete a specific user within an organization.
+     * Use this endpoint to log a user out from the system.
      */
-    public DeleteUserResponse deleteUser(long userId) {
-        return this.rawClient.deleteUser(userId).body();
+    public LogoutUserResponse logoutUser() {
+        return this.rawClient.logoutUser().body();
     }
 
     /**
-     * Use this endpoint to delete a specific user within an organization.
+     * Use this endpoint to log a user out from the system.
      */
-    public DeleteUserResponse deleteUser(long userId, RequestOptions requestOptions) {
-        return this.rawClient.deleteUser(userId, requestOptions).body();
+    public LogoutUserResponse logoutUser(RequestOptions requestOptions) {
+        return this.rawClient.logoutUser(requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public PayabliApiResponseUserMfa validateMfaUser() {
+        return this.rawClient.validateMfaUser().body();
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public PayabliApiResponseUserMfa validateMfaUser(RequestOptions requestOptions) {
+        return this.rawClient.validateMfaUser(requestOptions).body();
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public PayabliApiResponseUserMfa validateMfaUser(MfaValidationData request) {
+        return this.rawClient.validateMfaUser(request).body();
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public PayabliApiResponseUserMfa validateMfaUser(MfaValidationData request, RequestOptions requestOptions) {
+        return this.rawClient.validateMfaUser(request, requestOptions).body();
     }
 
     /**
@@ -210,76 +308,6 @@ public class UserClient {
     }
 
     /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public PayabliApiResponse editUser(long userId) {
-        return this.rawClient.editUser(userId).body();
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public PayabliApiResponse editUser(long userId, RequestOptions requestOptions) {
-        return this.rawClient.editUser(userId, requestOptions).body();
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public PayabliApiResponse editUser(long userId, UserData request) {
-        return this.rawClient.editUser(userId, request).body();
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public PayabliApiResponse editUser(long userId, UserData request, RequestOptions requestOptions) {
-        return this.rawClient.editUser(userId, request, requestOptions).body();
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public UserQueryRecord getUser(long userId) {
-        return this.rawClient.getUser(userId).body();
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public UserQueryRecord getUser(long userId, RequestOptions requestOptions) {
-        return this.rawClient.getUser(userId, requestOptions).body();
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public UserQueryRecord getUser(long userId, GetUserRequest request) {
-        return this.rawClient.getUser(userId, request).body();
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public UserQueryRecord getUser(long userId, GetUserRequest request, RequestOptions requestOptions) {
-        return this.rawClient.getUser(userId, request, requestOptions).body();
-    }
-
-    /**
-     * Use this endpoint to log a user out from the system.
-     */
-    public LogoutUserResponse logoutUser() {
-        return this.rawClient.logoutUser().body();
-    }
-
-    /**
-     * Use this endpoint to log a user out from the system.
-     */
-    public LogoutUserResponse logoutUser(RequestOptions requestOptions) {
-        return this.rawClient.logoutUser(requestOptions).body();
-    }
-
-    /**
      * Resends the MFA code to the user via the selected MFA mode (email or SMS).
      */
     public PayabliApiResponseMfaBasic resendMfaCode(String usrname, String entry, int entryType) {
@@ -294,33 +322,5 @@ public class UserClient {
         return this.rawClient
                 .resendMfaCode(usrname, entry, entryType, requestOptions)
                 .body();
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public PayabliApiResponseUserMfa validateMfaUser() {
-        return this.rawClient.validateMfaUser().body();
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public PayabliApiResponseUserMfa validateMfaUser(RequestOptions requestOptions) {
-        return this.rawClient.validateMfaUser(requestOptions).body();
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public PayabliApiResponseUserMfa validateMfaUser(MfaValidationData request) {
-        return this.rawClient.validateMfaUser(request).body();
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public PayabliApiResponseUserMfa validateMfaUser(MfaValidationData request, RequestOptions requestOptions) {
-        return this.rawClient.validateMfaUser(request, requestOptions).body();
     }
 }

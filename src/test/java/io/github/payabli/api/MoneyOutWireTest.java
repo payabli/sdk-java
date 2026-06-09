@@ -5,26 +5,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
-import io.github.payabli.api.resources.moneyout.requests.MoneyOutTypesRequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
-import io.github.payabli.api.resources.moneyouttypes.types.AllowedCheckPaymentStatus;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthCapturePayoutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePaymentMethod;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePayoutBody;
-import io.github.payabli.api.resources.moneyouttypes.types.CaptureAllOutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.OperationResult;
-import io.github.payabli.api.resources.moneyouttypes.types.ReissuePaymentMethod;
-import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutBody;
-import io.github.payabli.api.resources.moneyouttypes.types.ReissuePayoutResponse;
-import io.github.payabli.api.resources.moneyouttypes.types.RequestOutAuthorizeInvoiceData;
-import io.github.payabli.api.resources.moneyouttypes.types.RequestOutAuthorizePaymentDetails;
-import io.github.payabli.api.resources.moneyouttypes.types.RequestOutAuthorizeVendorData;
-import io.github.payabli.api.resources.moneyouttypes.types.VCardGetResponse;
 import io.github.payabli.api.types.AchHolderType;
+import io.github.payabli.api.types.AllowedCheckPaymentStatus;
+import io.github.payabli.api.types.AuthCapturePayoutResponse;
+import io.github.payabli.api.types.AuthorizePaymentMethod;
 import io.github.payabli.api.types.BillDetailResponse;
+import io.github.payabli.api.types.CaptureAllOutResponse;
+import io.github.payabli.api.types.OperationResult;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
+import io.github.payabli.api.types.ReissuePaymentMethod;
+import io.github.payabli.api.types.ReissuePayoutResponse;
+import io.github.payabli.api.types.RequestOutAuthorizeInvoiceData;
+import io.github.payabli.api.types.RequestOutAuthorizePaymentDetails;
+import io.github.payabli.api.types.RequestOutAuthorizeVendorData;
+import io.github.payabli.api.types.VCardGetResponse;
 import java.util.Arrays;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -60,27 +58,25 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":0,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":4440,\"methodReferenceId\":null}}"));
         AuthCapturePayoutResponse response = client.moneyOut()
-                .authorizeOut(MoneyOutTypesRequestOutAuthorize.builder()
-                        .body(AuthorizePayoutBody.builder()
-                                .entryPoint("48acde49")
-                                .paymentMethod(AuthorizePaymentMethod.builder()
-                                        .method("managed")
-                                        .build())
-                                .paymentDetails(RequestOutAuthorizePaymentDetails.builder()
-                                        .totalAmount(47.0)
-                                        .unbundled(false)
-                                        .build())
-                                .vendorData(RequestOutAuthorizeVendorData.builder()
-                                        .vendorNumber("7895433")
-                                        .build())
-                                .orderDescription("Window Painting")
-                                .invoiceData(Arrays.asList(RequestOutAuthorizeInvoiceData.builder()
-                                        .billId(54323L)
-                                        .build()))
-                                .autoCapture(true)
+                .authorizeOut(RequestOutAuthorize.builder()
+                        .entryPoint("8cfec329267")
+                        .paymentMethod(AuthorizePaymentMethod.builder()
+                                .method("managed")
                                 .build())
+                        .paymentDetails(RequestOutAuthorizePaymentDetails.builder()
+                                .totalAmount(47.0)
+                                .unbundled(false)
+                                .build())
+                        .vendorData(RequestOutAuthorizeVendorData.builder()
+                                .vendorNumber("VEN-123")
+                                .build())
+                        .invoiceData(Arrays.asList(RequestOutAuthorizeInvoiceData.builder()
+                                .billId(54323L)
+                                .build()))
+                        .orderDescription("Window Painting")
+                        .autoCapture(true)
                         .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -89,7 +85,7 @@ public class MoneyOutWireTest {
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
                 + "{\n"
-                + "  \"entryPoint\": \"48acde49\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"autoCapture\": true,\n"
                 + "  \"invoiceData\": [\n"
                 + "    {\n"
@@ -105,7 +101,7 @@ public class MoneyOutWireTest {
                 + "    \"method\": \"managed\"\n"
                 + "  },\n"
                 + "  \"vendorData\": {\n"
-                + "    \"vendorNumber\": \"7895433\"\n"
+                + "    \"vendorNumber\": \"VEN-123\"\n"
                 + "  }\n"
                 + "}";
         JsonNode actualJson = objectMapper.readTree(actualRequestBody);
@@ -152,7 +148,7 @@ public class MoneyOutWireTest {
                 + "    \"resultText\": \"Authorized\",\n"
                 + "    \"avsResponseText\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
-                + "    \"customerId\": 0,\n"
+                + "    \"customerId\": 4440,\n"
                 + "    \"methodReferenceId\": null\n"
                 + "  }\n"
                 + "}";
@@ -193,7 +189,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":1000000,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"},{\"CustomerId\":1000000,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":4440,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"},{\"CustomerId\":4440,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"}],\"responseText\":\"Success\"}"));
         CaptureAllOutResponse response = client.moneyOut().cancelAllOut(Arrays.asList("2-29", "2-28", "2-27"));
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -238,13 +234,13 @@ public class MoneyOutWireTest {
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": [\n"
                 + "    {\n"
-                + "      \"CustomerId\": 1000000,\n"
+                + "      \"CustomerId\": 4440,\n"
                 + "      \"ReferenceId\": \"129-230\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Cancelled\"\n"
                 + "    },\n"
                 + "    {\n"
-                + "      \"CustomerId\": 1000000,\n"
+                + "      \"CustomerId\": 4440,\n"
                 + "      \"ReferenceId\": \"129-219\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Cancelled\"\n"
@@ -289,7 +285,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":0,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
+                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":4440,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
         PayabliApiResponse0000 response = client.moneyOut().cancelOutGet("129-219");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -307,7 +303,7 @@ public class MoneyOutWireTest {
                 + "    \"ReferenceId\": \"129-219\",\n"
                 + "    \"ResultCode\": 1,\n"
                 + "    \"ResultText\": \"Approved\",\n"
-                + "    \"CustomerId\": 0,\n"
+                + "    \"CustomerId\": 4440,\n"
                 + "    \"AuthCode\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
                 + "    \"avsResponseText\": null,\n"
@@ -351,7 +347,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":0,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
+                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":4440,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
         PayabliApiResponse0000 response = client.moneyOut().cancelOutDelete("129-219");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -369,7 +365,7 @@ public class MoneyOutWireTest {
                 + "    \"ReferenceId\": \"129-219\",\n"
                 + "    \"ResultCode\": 1,\n"
                 + "    \"ResultText\": \"Approved\",\n"
-                + "    \"CustomerId\": 0,\n"
+                + "    \"CustomerId\": 4440,\n"
                 + "    \"AuthCode\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
                 + "    \"avsResponseText\": null,\n"
@@ -413,7 +409,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":1000000,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Captured\"},{\"CustomerId\":1000000,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Captured\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":4440,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Captured\"},{\"CustomerId\":4440,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Captured\"}],\"responseText\":\"Success\"}"));
         CaptureAllOutResponse response = client.moneyOut()
                 .captureAllOut(CaptureAllOutRequest.builder()
                         .body(Arrays.asList("2-29", "2-28", "2-27"))
@@ -461,13 +457,13 @@ public class MoneyOutWireTest {
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": [\n"
                 + "    {\n"
-                + "      \"CustomerId\": 1000000,\n"
+                + "      \"CustomerId\": 4440,\n"
                 + "      \"ReferenceId\": \"129-230\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Captured\"\n"
                 + "    },\n"
                 + "    {\n"
-                + "      \"CustomerId\": 1000000,\n"
+                + "      \"CustomerId\": 4440,\n"
                 + "      \"ReferenceId\": \"129-219\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Captured\"\n"
@@ -512,7 +508,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":0,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":4440,\"methodReferenceId\":null}}"));
         AuthCapturePayoutResponse response = client.moneyOut()
                 .captureOut("129-219", CaptureOutRequest.builder().build());
         RecordedRequest request = server.takeRequest();
@@ -536,7 +532,7 @@ public class MoneyOutWireTest {
                 + "    \"resultText\": \"Authorized\",\n"
                 + "    \"avsResponseText\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
-                + "    \"customerId\": 0,\n"
+                + "    \"customerId\": 4440,\n"
                 + "    \"methodReferenceId\": null\n"
                 + "  }\n"
                 + "}";
@@ -858,15 +854,13 @@ public class MoneyOutWireTest {
         ReissuePayoutResponse response = client.moneyOut()
                 .reissueOut(ReissueOutRequest.builder()
                         .transId("129-219")
-                        .body(ReissuePayoutBody.builder()
-                                .paymentMethod(ReissuePaymentMethod.builder()
-                                        .method("ach")
-                                        .achHolder("Acme Corp")
-                                        .achRouting("021000021")
-                                        .achAccount("9876543210")
-                                        .achAccountType("savings")
-                                        .achHolderType(AchHolderType.BUSINESS)
-                                        .build())
+                        .paymentMethod(ReissuePaymentMethod.builder()
+                                .method("ach")
+                                .achHolder("Acme Corp")
+                                .achRouting("021000021")
+                                .achAccount("9876543210")
+                                .achAccountType("savings")
+                                .achHolderType(AchHolderType.BUSINESS)
                                 .build())
                         .build());
         RecordedRequest request = server.takeRequest();

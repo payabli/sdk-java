@@ -46,7 +46,7 @@ public final class ApplicationDataManaged {
 
     private final Optional<String> bzip;
 
-    private final Optional<List<ApplicationDataManagedContactsItem>> contacts;
+    private final Optional<List<Contacts>> contacts;
 
     private final Optional<String> dbaname;
 
@@ -76,7 +76,7 @@ public final class ApplicationDataManaged {
 
     private final Optional<Long> orgId;
 
-    private final Optional<List<ApplicationDataManagedOwnershipItem>> ownership;
+    private final Optional<List<Owners>> ownership;
 
     private final Optional<String> phonenumber;
 
@@ -119,7 +119,7 @@ public final class ApplicationDataManaged {
             Optional<String> bsummary,
             Optional<OwnType> btype,
             Optional<String> bzip,
-            Optional<List<ApplicationDataManagedContactsItem>> contacts,
+            Optional<List<Contacts>> contacts,
             Optional<String> dbaname,
             Optional<String> ein,
             Optional<String> faxnumber,
@@ -134,7 +134,7 @@ public final class ApplicationDataManaged {
             Optional<String> mstate,
             Optional<String> mzip,
             Optional<Long> orgId,
-            Optional<List<ApplicationDataManagedOwnershipItem>> ownership,
+            Optional<List<Owners>> ownership,
             Optional<String> phonenumber,
             Optional<String> recipientEmail,
             Optional<Boolean> recipientEmailNotification,
@@ -263,7 +263,7 @@ public final class ApplicationDataManaged {
      * @return List of contacts for the business.
      */
     @JsonProperty("contacts")
-    public Optional<List<ApplicationDataManagedContactsItem>> getContacts() {
+    public Optional<List<Contacts>> getContacts() {
         return contacts;
     }
 
@@ -341,7 +341,7 @@ public final class ApplicationDataManaged {
      * @return List of Owners with at least a 25% ownership.
      */
     @JsonProperty("ownership")
-    public Optional<List<ApplicationDataManagedOwnershipItem>> getOwnership() {
+    public Optional<List<Owners>> getOwnership() {
         return ownership;
     }
 
@@ -596,9 +596,9 @@ public final class ApplicationDataManaged {
         /**
          * <p>List of contacts for the business.</p>
          */
-        _FinalStage contacts(Optional<List<ApplicationDataManagedContactsItem>> contacts);
+        _FinalStage contacts(Optional<List<Contacts>> contacts);
 
-        _FinalStage contacts(List<ApplicationDataManagedContactsItem> contacts);
+        _FinalStage contacts(List<Contacts> contacts);
 
         _FinalStage dbaname(Optional<String> dbaname);
 
@@ -659,9 +659,9 @@ public final class ApplicationDataManaged {
         /**
          * <p>List of Owners with at least a 25% ownership.</p>
          */
-        _FinalStage ownership(Optional<List<ApplicationDataManagedOwnershipItem>> ownership);
+        _FinalStage ownership(Optional<List<Owners>> ownership);
 
-        _FinalStage ownership(List<ApplicationDataManagedOwnershipItem> ownership);
+        _FinalStage ownership(List<Owners> ownership);
 
         _FinalStage phonenumber(Optional<String> phonenumber);
 
@@ -746,7 +746,7 @@ public final class ApplicationDataManaged {
 
         private Optional<String> phonenumber = Optional.empty();
 
-        private Optional<List<ApplicationDataManagedOwnershipItem>> ownership = Optional.empty();
+        private Optional<List<Owners>> ownership = Optional.empty();
 
         private Optional<Long> orgId = Optional.empty();
 
@@ -776,7 +776,7 @@ public final class ApplicationDataManaged {
 
         private Optional<String> dbaname = Optional.empty();
 
-        private Optional<List<ApplicationDataManagedContactsItem>> contacts = Optional.empty();
+        private Optional<List<Contacts>> contacts = Optional.empty();
 
         private Optional<String> bzip = Optional.empty();
 
@@ -1035,7 +1035,7 @@ public final class ApplicationDataManaged {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage ownership(List<ApplicationDataManagedOwnershipItem> ownership) {
+        public _FinalStage ownership(List<Owners> ownership) {
             this.ownership = Optional.ofNullable(ownership);
             return this;
         }
@@ -1045,7 +1045,7 @@ public final class ApplicationDataManaged {
          */
         @java.lang.Override
         @JsonSetter(value = "ownership", nulls = Nulls.SKIP)
-        public _FinalStage ownership(Optional<List<ApplicationDataManagedOwnershipItem>> ownership) {
+        public _FinalStage ownership(Optional<List<Owners>> ownership) {
             this.ownership = ownership;
             return this;
         }
@@ -1237,7 +1237,7 @@ public final class ApplicationDataManaged {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage contacts(List<ApplicationDataManagedContactsItem> contacts) {
+        public _FinalStage contacts(List<Contacts> contacts) {
             this.contacts = Optional.ofNullable(contacts);
             return this;
         }
@@ -1247,7 +1247,7 @@ public final class ApplicationDataManaged {
          */
         @java.lang.Override
         @JsonSetter(value = "contacts", nulls = Nulls.SKIP)
-        public _FinalStage contacts(Optional<List<ApplicationDataManagedContactsItem>> contacts) {
+        public _FinalStage contacts(Optional<List<Contacts>> contacts) {
             this.contacts = contacts;
             return this;
         }

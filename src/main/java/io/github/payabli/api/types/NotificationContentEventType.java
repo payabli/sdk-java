@@ -99,6 +99,9 @@ public final class NotificationContentEventType {
     public static final NotificationContentEventType PAY_OUT_PROCESSED =
             new NotificationContentEventType(Value.PAY_OUT_PROCESSED, "PayOutProcessed");
 
+    public static final NotificationContentEventType CARD_UPDATER_COMPLETE =
+            new NotificationContentEventType(Value.CARD_UPDATER_COMPLETE, "CardUpdaterComplete");
+
     public static final NotificationContentEventType INVOICE_SENT =
             new NotificationContentEventType(Value.INVOICE_SENT, "InvoiceSent");
 
@@ -335,6 +338,8 @@ public final class NotificationContentEventType {
                 return visitor.visitBillApproved();
             case PAY_OUT_PROCESSED:
                 return visitor.visitPayOutProcessed();
+            case CARD_UPDATER_COMPLETE:
+                return visitor.visitCardUpdaterComplete();
             case INVOICE_SENT:
                 return visitor.visitInvoiceSent();
             case APPROVED_PAYMENT:
@@ -500,6 +505,8 @@ public final class NotificationContentEventType {
                 return BILL_APPROVED;
             case "PayOutProcessed":
                 return PAY_OUT_PROCESSED;
+            case "CardUpdaterComplete":
+                return CARD_UPDATER_COMPLETE;
             case "InvoiceSent":
                 return INVOICE_SENT;
             case "ApprovedPayment":
@@ -649,6 +656,8 @@ public final class NotificationContentEventType {
         SEND_RECEIPT,
 
         RECOVERED_TRANSACTION,
+
+        CARD_UPDATER_COMPLETE,
 
         CREATED_APPLICATION,
 
@@ -809,6 +818,8 @@ public final class NotificationContentEventType {
         T visitSendReceipt();
 
         T visitRecoveredTransaction();
+
+        T visitCardUpdaterComplete();
 
         T visitCreatedApplication();
 

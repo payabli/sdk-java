@@ -82,7 +82,7 @@ public final class NotificationContent {
     }
 
     /**
-     * @return The kind of report to generate. For <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">automated reports</a> only.
+     * @return The kind report to generate. For <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">automated reports</a> only.
      */
     @JsonProperty("reportName")
     public Optional<NotificationContentReportName> getReportName() {
@@ -228,7 +228,7 @@ public final class NotificationContent {
         }
 
         /**
-         * <p>The kind of report to generate. For <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">automated reports</a> only.</p>
+         * <p>The kind report to generate. For <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">automated reports</a> only.</p>
          */
         @JsonSetter(value = "reportName", nulls = Nulls.SKIP)
         public Builder reportName(Optional<NotificationContentReportName> reportName) {

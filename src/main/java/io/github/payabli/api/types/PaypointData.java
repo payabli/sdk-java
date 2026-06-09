@@ -120,47 +120,47 @@ public final class PaypointData {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("address1")
+    @JsonProperty("Address1")
     public Optional<String> getAddress1() {
         return address1;
     }
 
-    @JsonProperty("address2")
+    @JsonProperty("Address2")
     public Optional<String> getAddress2() {
         return address2;
     }
 
-    @JsonProperty("bankData")
+    @JsonProperty("BankData")
     public Optional<List<Bank>> getBankData() {
         return bankData;
     }
 
-    @JsonProperty("boardingId")
+    @JsonProperty("BoardingId")
     public Optional<Long> getBoardingId() {
         return boardingId;
     }
 
-    @JsonProperty("city")
+    @JsonProperty("City")
     public Optional<String> getCity() {
         return city;
     }
 
-    @JsonProperty("contacts")
+    @JsonProperty("Contacts")
     public Optional<List<Contacts>> getContacts() {
         return contacts;
     }
 
-    @JsonProperty("country")
+    @JsonProperty("Country")
     public Optional<String> getCountry() {
         return country;
     }
 
-    @JsonProperty("credentials")
+    @JsonProperty("Credentials")
     public Optional<List<PayabliCredentialsPascal>> getCredentials() {
         return credentials;
     }
 
-    @JsonProperty("dbaName")
+    @JsonProperty("DbaName")
     public Optional<String> getDbaName() {
         return dbaName;
     }
@@ -173,42 +173,42 @@ public final class PaypointData {
     /**
      * @return Fax number
      */
-    @JsonProperty("fax")
+    @JsonProperty("Fax")
     public Optional<String> getFax() {
         return fax;
     }
 
-    @JsonProperty("idPaypoint")
+    @JsonProperty("IdPaypoint")
     public Optional<Long> getIdPaypoint() {
         return idPaypoint;
     }
 
-    @JsonProperty("legalName")
+    @JsonProperty("LegalName")
     public Optional<String> getLegalName() {
         return legalName;
     }
 
-    @JsonProperty("parentOrg")
+    @JsonProperty("ParentOrg")
     public Optional<OrgData> getParentOrg() {
         return parentOrg;
     }
 
-    @JsonProperty("paypointStatus")
+    @JsonProperty("PaypointStatus")
     public Optional<Integer> getPaypointStatus() {
         return paypointStatus;
     }
 
-    @JsonProperty("phone")
+    @JsonProperty("Phone")
     public Optional<String> getPhone() {
         return phone;
     }
 
-    @JsonProperty("serviceData")
+    @JsonProperty("ServiceData")
     public Optional<Services> getServiceData() {
         return serviceData;
     }
 
-    @JsonProperty("state")
+    @JsonProperty("State")
     public Optional<String> getState() {
         return state;
     }
@@ -218,17 +218,17 @@ public final class PaypointData {
         return summary;
     }
 
-    @JsonProperty("timeZone")
+    @JsonProperty("TimeZone")
     public Optional<Integer> getTimeZone() {
         return timeZone;
     }
 
-    @JsonProperty("websiteAddress")
+    @JsonProperty("WebsiteAddress")
     public Optional<String> getWebsiteAddress() {
         return websiteAddress;
     }
 
-    @JsonProperty("zip")
+    @JsonProperty("Zip")
     public Optional<String> getZip() {
         return zip;
     }
@@ -236,7 +236,7 @@ public final class PaypointData {
     /**
      * @return Configuration for billing statement email recipients and sender address. <code>null</code> if not configured.
      */
-    @JsonProperty("statementEmail")
+    @JsonProperty("StatementEmail")
     public Optional<StatementEmailConfig> getStatementEmail() {
         return statementEmail;
     }
@@ -395,7 +395,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "address1", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Address1", nulls = Nulls.SKIP)
         public Builder address1(Optional<String> address1) {
             this.address1 = address1;
             return this;
@@ -406,7 +406,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "address2", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Address2", nulls = Nulls.SKIP)
         public Builder address2(Optional<String> address2) {
             this.address2 = address2;
             return this;
@@ -417,7 +417,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "bankData", nulls = Nulls.SKIP)
+        @JsonSetter(value = "BankData", nulls = Nulls.SKIP)
         public Builder bankData(Optional<List<Bank>> bankData) {
             this.bankData = bankData;
             return this;
@@ -428,7 +428,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "boardingId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "BoardingId", nulls = Nulls.SKIP)
         public Builder boardingId(Optional<Long> boardingId) {
             this.boardingId = boardingId;
             return this;
@@ -439,7 +439,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "city", nulls = Nulls.SKIP)
+        @JsonSetter(value = "City", nulls = Nulls.SKIP)
         public Builder city(Optional<String> city) {
             this.city = city;
             return this;
@@ -450,7 +450,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "contacts", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
         public Builder contacts(Optional<List<Contacts>> contacts) {
             this.contacts = contacts;
             return this;
@@ -461,7 +461,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "country", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Country", nulls = Nulls.SKIP)
         public Builder country(Optional<String> country) {
             this.country = country;
             return this;
@@ -472,7 +472,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "credentials", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Credentials", nulls = Nulls.SKIP)
         public Builder credentials(Optional<List<PayabliCredentialsPascal>> credentials) {
             this.credentials = credentials;
             return this;
@@ -483,7 +483,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "dbaName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "DbaName", nulls = Nulls.SKIP)
         public Builder dbaName(Optional<String> dbaName) {
             this.dbaName = dbaName;
             return this;
@@ -508,7 +508,7 @@ public final class PaypointData {
         /**
          * <p>Fax number</p>
          */
-        @JsonSetter(value = "fax", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Fax", nulls = Nulls.SKIP)
         public Builder fax(Optional<String> fax) {
             this.fax = fax;
             return this;
@@ -519,7 +519,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "idPaypoint", nulls = Nulls.SKIP)
+        @JsonSetter(value = "IdPaypoint", nulls = Nulls.SKIP)
         public Builder idPaypoint(Optional<Long> idPaypoint) {
             this.idPaypoint = idPaypoint;
             return this;
@@ -530,7 +530,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "legalName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "LegalName", nulls = Nulls.SKIP)
         public Builder legalName(Optional<String> legalName) {
             this.legalName = legalName;
             return this;
@@ -541,7 +541,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "parentOrg", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ParentOrg", nulls = Nulls.SKIP)
         public Builder parentOrg(Optional<OrgData> parentOrg) {
             this.parentOrg = parentOrg;
             return this;
@@ -552,7 +552,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "paypointStatus", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PaypointStatus", nulls = Nulls.SKIP)
         public Builder paypointStatus(Optional<Integer> paypointStatus) {
             this.paypointStatus = paypointStatus;
             return this;
@@ -563,7 +563,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "phone", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Phone", nulls = Nulls.SKIP)
         public Builder phone(Optional<String> phone) {
             this.phone = phone;
             return this;
@@ -574,7 +574,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "serviceData", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ServiceData", nulls = Nulls.SKIP)
         public Builder serviceData(Optional<Services> serviceData) {
             this.serviceData = serviceData;
             return this;
@@ -585,7 +585,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "state", nulls = Nulls.SKIP)
+        @JsonSetter(value = "State", nulls = Nulls.SKIP)
         public Builder state(Optional<String> state) {
             this.state = state;
             return this;
@@ -607,7 +607,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "timeZone", nulls = Nulls.SKIP)
+        @JsonSetter(value = "TimeZone", nulls = Nulls.SKIP)
         public Builder timeZone(Optional<Integer> timeZone) {
             this.timeZone = timeZone;
             return this;
@@ -618,7 +618,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "websiteAddress", nulls = Nulls.SKIP)
+        @JsonSetter(value = "WebsiteAddress", nulls = Nulls.SKIP)
         public Builder websiteAddress(Optional<String> websiteAddress) {
             this.websiteAddress = websiteAddress;
             return this;
@@ -629,7 +629,7 @@ public final class PaypointData {
             return this;
         }
 
-        @JsonSetter(value = "zip", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Zip", nulls = Nulls.SKIP)
         public Builder zip(Optional<String> zip) {
             this.zip = zip;
             return this;
@@ -643,7 +643,7 @@ public final class PaypointData {
         /**
          * <p>Configuration for billing statement email recipients and sender address. <code>null</code> if not configured.</p>
          */
-        @JsonSetter(value = "statementEmail", nulls = Nulls.SKIP)
+        @JsonSetter(value = "StatementEmail", nulls = Nulls.SKIP)
         public Builder statementEmail(Optional<StatementEmailConfig> statementEmail) {
             this.statementEmail = statementEmail;
             return this;

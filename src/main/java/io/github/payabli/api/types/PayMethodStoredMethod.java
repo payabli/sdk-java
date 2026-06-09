@@ -50,7 +50,7 @@ public final class PayMethodStoredMethod {
     }
 
     /**
-     * @return Method to use for the transaction. Use either <code>card</code> or <code>ach</code>, depending on what kind of method was tokenized to use a saved payment method for this transaction.
+     * @return Method to use for the transaction. Use <code>card</code>, <code>ach</code>, or <code>wallet</code> depending on what kind of method was tokenized to use a saved payment method for this transaction.
      */
     @JsonProperty("method")
     public PayMethodStoredMethodMethod getMethod() {
@@ -104,7 +104,7 @@ public final class PayMethodStoredMethod {
 
     public interface MethodStage {
         /**
-         * <p>Method to use for the transaction. Use either <code>card</code> or <code>ach</code>, depending on what kind of method was tokenized to use a saved payment method for this transaction.</p>
+         * <p>Method to use for the transaction. Use <code>card</code>, <code>ach</code>, or <code>wallet</code> depending on what kind of method was tokenized to use a saved payment method for this transaction.</p>
          */
         _FinalStage method(@NotNull PayMethodStoredMethodMethod method);
 
@@ -159,8 +159,8 @@ public final class PayMethodStoredMethod {
         }
 
         /**
-         * <p>Method to use for the transaction. Use either <code>card</code> or <code>ach</code>, depending on what kind of method was tokenized to use a saved payment method for this transaction.</p>
-         * <p>Method to use for the transaction. Use either <code>card</code> or <code>ach</code>, depending on what kind of method was tokenized to use a saved payment method for this transaction.</p>
+         * <p>Method to use for the transaction. Use <code>card</code>, <code>ach</code>, or <code>wallet</code> depending on what kind of method was tokenized to use a saved payment method for this transaction.</p>
+         * <p>Method to use for the transaction. Use <code>card</code>, <code>ach</code>, or <code>wallet</code> depending on what kind of method was tokenized to use a saved payment method for this transaction.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

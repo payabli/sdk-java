@@ -7,7 +7,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Frequency {
+    public static final Frequency END_OF_MONTH = new Frequency(Value.END_OF_MONTH, "endofmonth");
+
     public static final Frequency EVERY_2_WEEKS = new Frequency(Value.EVERY_2_WEEKS, "every2weeks");
+
+    public static final Frequency FIRST_OF_MONTH = new Frequency(Value.FIRST_OF_MONTH, "firstofmonth");
 
     public static final Frequency EVERY_6_MONTHS = new Frequency(Value.EVERY_6_MONTHS, "every6months");
 
@@ -20,6 +24,8 @@ public final class Frequency {
     public static final Frequency MONTHLY = new Frequency(Value.MONTHLY, "monthly");
 
     public static final Frequency ANNUALLY = new Frequency(Value.ANNUALLY, "annually");
+
+    public static final Frequency FIFTEENTH_OF_MONTH = new Frequency(Value.FIFTEENTH_OF_MONTH, "fifteenthofmonth");
 
     private final Value value;
 
@@ -52,8 +58,12 @@ public final class Frequency {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
+            case END_OF_MONTH:
+                return visitor.visitEndOfMonth();
             case EVERY_2_WEEKS:
                 return visitor.visitEvery2Weeks();
+            case FIRST_OF_MONTH:
+                return visitor.visitFirstOfMonth();
             case EVERY_6_MONTHS:
                 return visitor.visitEvery6Months();
             case EVERY_3_MONTHS:
@@ -66,6 +76,8 @@ public final class Frequency {
                 return visitor.visitMonthly();
             case ANNUALLY:
                 return visitor.visitAnnually();
+            case FIFTEENTH_OF_MONTH:
+                return visitor.visitFifteenthOfMonth();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -75,8 +87,12 @@ public final class Frequency {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Frequency valueOf(String value) {
         switch (value) {
+            case "endofmonth":
+                return END_OF_MONTH;
             case "every2weeks":
                 return EVERY_2_WEEKS;
+            case "firstofmonth":
+                return FIRST_OF_MONTH;
             case "every6months":
                 return EVERY_6_MONTHS;
             case "every3months":
@@ -89,6 +105,8 @@ public final class Frequency {
                 return MONTHLY;
             case "annually":
                 return ANNUALLY;
+            case "fifteenthofmonth":
+                return FIFTEENTH_OF_MONTH;
             default:
                 return new Frequency(Value.UNKNOWN, value);
         }
@@ -109,6 +127,12 @@ public final class Frequency {
 
         ANNUALLY,
 
+        FIRST_OF_MONTH,
+
+        FIFTEENTH_OF_MONTH,
+
+        END_OF_MONTH,
+
         UNKNOWN
     }
 
@@ -126,6 +150,12 @@ public final class Frequency {
         T visitEvery3Months();
 
         T visitAnnually();
+
+        T visitFirstOfMonth();
+
+        T visitFifteenthOfMonth();
+
+        T visitEndOfMonth();
 
         T visitUnknown(String unknownType);
     }

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface IPayorDataRequest {
-    Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData();
+    Optional<Map<String, Map<String, Object>>> getAdditionalData();
 
     Optional<String> getBillingAddress1();
 
@@ -34,7 +34,7 @@ public interface IPayorDataRequest {
 
     Optional<String> getFirstName();
 
-    Optional<List<Optional<String>>> getIdentifierFields();
+    Optional<List<String>> getIdentifierFields();
 
     Optional<String> getLastName();
 

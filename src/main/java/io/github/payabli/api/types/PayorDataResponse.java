@@ -52,7 +52,7 @@ public final class PayorDataResponse {
 
     private final Optional<String> firstName;
 
-    private final Optional<List<Optional<String>>> identifiers;
+    private final Optional<List<String>> identifiers;
 
     private final Optional<String> lastName;
 
@@ -85,7 +85,7 @@ public final class PayorDataResponse {
             Optional<String> customerNumber,
             Optional<Integer> customerStatus,
             Optional<String> firstName,
-            Optional<List<Optional<String>>> identifiers,
+            Optional<List<String>> identifiers,
             Optional<String> lastName,
             Optional<String> shippingAddress1,
             Optional<String> shippingAddress2,
@@ -244,7 +244,7 @@ public final class PayorDataResponse {
     }
 
     @JsonIgnore
-    public Optional<List<Optional<String>>> getIdentifiers() {
+    public Optional<List<String>> getIdentifiers() {
         if (identifiers == null) {
             return Optional.empty();
         }
@@ -396,7 +396,7 @@ public final class PayorDataResponse {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("Identifiers")
-    private Optional<List<Optional<String>>> _getIdentifiers() {
+    private Optional<List<String>> _getIdentifiers() {
         return identifiers;
     }
 
@@ -544,7 +544,7 @@ public final class PayorDataResponse {
 
         private Optional<String> firstName = Optional.empty();
 
-        private Optional<List<Optional<String>>> identifiers = Optional.empty();
+        private Optional<List<String>> identifiers = Optional.empty();
 
         private Optional<String> lastName = Optional.empty();
 
@@ -912,17 +912,17 @@ public final class PayorDataResponse {
         }
 
         @JsonSetter(value = "Identifiers", nulls = Nulls.SKIP)
-        public Builder identifiers(Optional<List<Optional<String>>> identifiers) {
+        public Builder identifiers(Optional<List<String>> identifiers) {
             this.identifiers = identifiers;
             return this;
         }
 
-        public Builder identifiers(List<Optional<String>> identifiers) {
+        public Builder identifiers(List<String> identifiers) {
             this.identifiers = Optional.ofNullable(identifiers);
             return this;
         }
 
-        public Builder identifiers(Nullable<List<Optional<String>>> identifiers) {
+        public Builder identifiers(Nullable<List<String>> identifiers) {
             if (identifiers.isNull()) {
                 this.identifiers = null;
             } else if (identifiers.isEmpty()) {

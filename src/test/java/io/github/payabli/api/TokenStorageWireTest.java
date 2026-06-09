@@ -6,13 +6,13 @@ import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.tokenstorage.requests.AddMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
-import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStoragePaymentMethod;
-import io.github.payabli.api.resources.tokenstorage.types.TokenizeCard;
+import io.github.payabli.api.types.AddMethodResponse;
+import io.github.payabli.api.types.GetMethodResponse;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
 import io.github.payabli.api.types.PayorDataRequest;
+import io.github.payabli.api.types.RequestTokenStorage;
+import io.github.payabli.api.types.RequestTokenStoragePaymentMethod;
+import io.github.payabli.api.types.TokenizeCard;
 import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -48,14 +48,14 @@ public class TokenStorageWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseData\":{\"customerId\":4400,\"methodReferenceId\":\"1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440\",\"referenceId\":\"1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440\",\"resultCode\":1,\"resultText\":\"Approved\"},\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"responseData\":{\"customerId\":4440,\"methodReferenceId\":\"1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440\",\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Approved\"},\"responseText\":\"Success\"}"));
         AddMethodResponse response = client.tokenStorage()
                 .addMethod(AddMethodRequest.builder()
                         .body(RequestTokenStorage.builder()
                                 .customerData(PayorDataRequest.builder()
                                         .customerId(4440L)
                                         .build())
-                                .entryPoint("f743aed24a")
+                                .entryPoint("8cfec329267")
                                 .fallbackAuth(true)
                                 .fallbackAuthAmount(100)
                                 .methodDescription("Primary Visa card")
@@ -80,7 +80,7 @@ public class TokenStorageWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"customerId\": 4440\n"
                 + "  },\n"
-                + "  \"entryPoint\": \"f743aed24a\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"fallbackAuth\": true,\n"
                 + "  \"fallbackAuthAmount\": 100,\n"
                 + "  \"methodDescription\": \"Primary Visa card\",\n"
@@ -128,9 +128,9 @@ public class TokenStorageWireTest {
                 + "{\n"
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseData\": {\n"
-                + "    \"customerId\": 4400,\n"
+                + "    \"customerId\": 4440,\n"
                 + "    \"methodReferenceId\": \"1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440\",\n"
-                + "    \"referenceId\": \"1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-4440\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"Approved\"\n"
                 + "  },\n"
@@ -220,68 +220,12 @@ public class TokenStorageWireTest {
     }
 
     @Test
-    public void testRemoveMethod() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"responseData\":{\"referenceId\":\"32-8877drt65345632-678\",\"resultCode\":1,\"resultText\":\"Removed\"},\"responseText\":\"Success\"}"));
-        PayabliApiResponsePaymethodDelete response = client.tokenStorage().removeMethod("32-8877drt00045632-678");
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseData\": {\n"
-                + "    \"referenceId\": \"32-8877drt65345632-678\",\n"
-                + "    \"resultCode\": 1,\n"
-                + "    \"resultText\": \"Removed\"\n"
-                + "  },\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
     public void testUpdateMethod() throws Exception {
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseData\":{\"referenceId\":\"1b502b79-e319-4159-8c29-a9f8d9f105c8-1323\",\"resultCode\":1,\"resultText\":\"Updated\"},\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"responseData\":{\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Updated\"},\"responseText\":\"Success\"}"));
         PayabliApiResponsePaymethodDelete response = client.tokenStorage()
                 .updateMethod(
                         "32-8877drt00045632-678",
@@ -290,7 +234,7 @@ public class TokenStorageWireTest {
                                         .customerData(PayorDataRequest.builder()
                                                 .customerId(4440L)
                                                 .build())
-                                        .entryPoint("f743aed24a")
+                                        .entryPoint("8cfec329267")
                                         .fallbackAuth(true)
                                         .paymentMethod(RequestTokenStoragePaymentMethod.of(TokenizeCard.builder()
                                                 .method("card")
@@ -312,7 +256,7 @@ public class TokenStorageWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"customerId\": 4440\n"
                 + "  },\n"
-                + "  \"entryPoint\": \"f743aed24a\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"fallbackAuth\": true,\n"
                 + "  \"paymentMethod\": {\n"
                 + "    \"cardcvv\": \"123\",\n"
@@ -357,9 +301,65 @@ public class TokenStorageWireTest {
                 + "{\n"
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseData\": {\n"
-                + "    \"referenceId\": \"1b502b79-e319-4159-8c29-a9f8d9f105c8-1323\",\n"
+                + "    \"referenceId\": \"129-219\",\n"
                 + "    \"resultCode\": 1,\n"
                 + "    \"resultText\": \"Updated\"\n"
+                + "  },\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testRemoveMethod() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseData\":{\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Removed\"},\"responseText\":\"Success\"}"));
+        PayabliApiResponsePaymethodDelete response = client.tokenStorage().removeMethod("32-8877drt00045632-678");
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseData\": {\n"
+                + "    \"referenceId\": \"129-219\",\n"
+                + "    \"resultCode\": 1,\n"
+                + "    \"resultText\": \"Removed\"\n"
                 + "  },\n"
                 + "  \"responseText\": \"Success\"\n"
                 + "}";

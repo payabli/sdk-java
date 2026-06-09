@@ -9,17 +9,17 @@ import io.github.payabli.api.resources.invoice.requests.GetAttachedFileFromInvoi
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
-import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
-import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
-import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
-import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
-import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
-import io.github.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import io.github.payabli.api.types.BillData;
 import io.github.payabli.api.types.BillItem;
 import io.github.payabli.api.types.FileContent;
 import io.github.payabli.api.types.Frequency;
+import io.github.payabli.api.types.GetInvoiceRecord;
+import io.github.payabli.api.types.InvoiceDataRequest;
+import io.github.payabli.api.types.InvoiceNumberResponse;
+import io.github.payabli.api.types.InvoiceResponseWithoutData;
 import io.github.payabli.api.types.PayorDataRequest;
+import io.github.payabli.api.types.QueryInvoiceResponse;
+import io.github.payabli.api.types.SendInvoiceResponse;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -64,33 +64,34 @@ public class InvoiceWireTest {
                         AddInvoiceRequest.builder()
                                 .body(InvoiceDataRequest.builder()
                                         .customerData(PayorDataRequest.builder()
-                                                .customerNumber("3")
+                                                .customerNumber("C-90010")
                                                 .firstName("Tamara")
                                                 .lastName("Bagratoni")
                                                 .build())
                                         .invoiceData(BillData.builder()
                                                 .discount(10.0)
                                                 .frequency(Frequency.ONE_TIME)
-                                                .invoiceAmount(982.37)
+                                                .invoiceAmount(1082.37)
                                                 .invoiceDate("2025-10-19")
-                                                .invoiceNumber("INV-3")
+                                                .invoiceNumber("INV-2345")
                                                 .invoiceStatus(1)
                                                 .invoiceType(0)
                                                 .items(Optional.of(Arrays.asList(
                                                         BillItem.builder()
                                                                 .itemCost(100.0)
                                                                 .itemDescription("Consultation for Georgian tours")
-                                                                .itemMode(1)
+                                                                .itemMode(2)
                                                                 .itemProductName("Adventure Consult")
-                                                                .itemQty(1)
-                                                                .itemTotalAmount(1.0)
+                                                                .itemQty(2)
+                                                                .itemTotalAmount(200.0)
                                                                 .build(),
                                                         BillItem.builder()
                                                                 .itemCost(882.37)
                                                                 .itemDescription("Deposit for trip planning")
+                                                                .itemMode(2)
                                                                 .itemProductName("Deposit ")
                                                                 .itemQty(1)
-                                                                .itemTotalAmount(1.0)
+                                                                .itemTotalAmount(882.37)
                                                                 .build())))
                                                 .build())
                                         .build())
@@ -105,7 +106,7 @@ public class InvoiceWireTest {
                 + "  \"customerData\": {\n"
                 + "    \"firstName\": \"Tamara\",\n"
                 + "    \"lastName\": \"Bagratoni\",\n"
-                + "    \"customerNumber\": \"3\"\n"
+                + "    \"customerNumber\": \"C-90010\"\n"
                 + "  },\n"
                 + "  \"invoiceData\": {\n"
                 + "    \"items\": [\n"
@@ -113,25 +114,26 @@ public class InvoiceWireTest {
                 + "        \"itemProductName\": \"Adventure Consult\",\n"
                 + "        \"itemDescription\": \"Consultation for Georgian tours\",\n"
                 + "        \"itemCost\": 100,\n"
-                + "        \"itemQty\": 1,\n"
-                + "        \"itemMode\": 1,\n"
-                + "        \"itemTotalAmount\": 1\n"
+                + "        \"itemQty\": 2,\n"
+                + "        \"itemMode\": 2,\n"
+                + "        \"itemTotalAmount\": 200\n"
                 + "      },\n"
                 + "      {\n"
                 + "        \"itemProductName\": \"Deposit \",\n"
                 + "        \"itemDescription\": \"Deposit for trip planning\",\n"
                 + "        \"itemCost\": 882.37,\n"
                 + "        \"itemQty\": 1,\n"
-                + "        \"itemTotalAmount\": 1\n"
+                + "        \"itemMode\": 2,\n"
+                + "        \"itemTotalAmount\": 882.37\n"
                 + "      }\n"
                 + "    ],\n"
                 + "    \"invoiceDate\": \"2025-10-19\",\n"
                 + "    \"invoiceType\": 0,\n"
                 + "    \"invoiceStatus\": 1,\n"
                 + "    \"frequency\": \"onetime\",\n"
-                + "    \"invoiceAmount\": 982.37,\n"
+                + "    \"invoiceAmount\": 1082.37,\n"
                 + "    \"discount\": 10,\n"
-                + "    \"invoiceNumber\": \"INV-3\"\n"
+                + "    \"invoiceNumber\": \"INV-2345\"\n"
                 + "  }\n"
                 + "}";
         JsonNode actualJson = objectMapper.readTree(actualRequestBody);
@@ -169,232 +171,6 @@ public class InvoiceWireTest {
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": 3625,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"pageidentifier\": null,\n"
-                + "  \"roomId\": 0\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testDeleteAttachedFromInvoice() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\",\"pageidentifier\":null,\"roomId\":0}"));
-        InvoiceResponseWithoutData response = client.invoice().deleteAttachedFromInvoice(23548884, "0_Bill.pdf");
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"responseData\": 3625,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"pageidentifier\": null,\n"
-                + "  \"roomId\": 0\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testDeleteInvoice() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\",\"pageidentifier\":null,\"roomId\":0}"));
-        InvoiceResponseWithoutData response = client.invoice().deleteInvoice(23548884);
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"responseData\": 3625,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"pageidentifier\": null,\n"
-                + "  \"roomId\": 0\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testEditInvoice() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":332,\"responseText\":\"Success\",\"pageidentifier\":null,\"roomId\":0}"));
-        InvoiceResponseWithoutData response = client.invoice()
-                .editInvoice(
-                        332,
-                        EditInvoiceRequest.builder()
-                                .body(InvoiceDataRequest.builder()
-                                        .invoiceData(BillData.builder()
-                                                .invoiceAmount(982.37)
-                                                .invoiceDate("2025-10-19")
-                                                .invoiceNumber("INV-6")
-                                                .items(Optional.of(Arrays.asList(BillItem.builder()
-                                                        .itemCost(882.37)
-                                                        .itemDescription("Deposit for trip planning")
-                                                        .itemProductName("Deposit")
-                                                        .itemQty(1)
-                                                        .build())))
-                                                .build())
-                                        .build())
-                                .build());
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("PUT", request.getMethod());
-        // Validate request body
-        String actualRequestBody = request.getBody().readUtf8();
-        String expectedRequestBody = ""
-                + "{\n"
-                + "  \"invoiceData\": {\n"
-                + "    \"items\": [\n"
-                + "      {\n"
-                + "        \"itemProductName\": \"Deposit\",\n"
-                + "        \"itemDescription\": \"Deposit for trip planning\",\n"
-                + "        \"itemCost\": 882.37,\n"
-                + "        \"itemQty\": 1\n"
-                + "      }\n"
-                + "    ],\n"
-                + "    \"invoiceDate\": \"2025-10-19\",\n"
-                + "    \"invoiceAmount\": 982.37,\n"
-                + "    \"invoiceNumber\": \"INV-6\"\n"
-                + "  }\n"
-                + "}";
-        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
-        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
-        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
-        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
-            String discriminator = null;
-            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
-            else if (actualJson.has("_type"))
-                discriminator = actualJson.get("_type").asText();
-            else if (actualJson.has("kind"))
-                discriminator = actualJson.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualJson.isNull()) {
-            Assertions.assertTrue(
-                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
-                    "request should be a valid JSON value");
-        }
-
-        if (actualJson.isArray()) {
-            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
-        }
-        if (actualJson.isObject()) {
-            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
-        }
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"responseData\": 332,\n"
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"pageidentifier\": null,\n"
                 + "  \"roomId\": 0\n"
@@ -486,6 +262,61 @@ public class InvoiceWireTest {
     }
 
     @Test
+    public void testDeleteAttachedFromInvoice() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\",\"pageidentifier\":null,\"roomId\":0}"));
+        InvoiceResponseWithoutData response = client.invoice().deleteAttachedFromInvoice(23548884, "0_Bill.pdf");
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": 3625,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"pageidentifier\": null,\n"
+                + "  \"roomId\": 0\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
     public void testGetInvoice() throws Exception {
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
@@ -500,6 +331,177 @@ public class InvoiceWireTest {
         String actualResponseJson = objectMapper.writeValueAsString(response);
         String expectedResponseBody =
                 TestResources.loadResource("/wire-tests/InvoiceWireTest_testGetInvoice_response.json");
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testEditInvoice() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":332,\"responseText\":\"Success\",\"pageidentifier\":null,\"roomId\":0}"));
+        InvoiceResponseWithoutData response = client.invoice()
+                .editInvoice(
+                        23548884,
+                        EditInvoiceRequest.builder()
+                                .body(InvoiceDataRequest.builder()
+                                        .invoiceData(BillData.builder()
+                                                .invoiceAmount(982.37)
+                                                .invoiceDate("2025-10-19")
+                                                .invoiceNumber("INV-2345")
+                                                .items(Optional.of(Arrays.asList(BillItem.builder()
+                                                        .itemCost(882.37)
+                                                        .itemDescription("Deposit for trip planning")
+                                                        .itemProductName("Deposit")
+                                                        .itemQty(1)
+                                                        .build())))
+                                                .build())
+                                        .build())
+                                .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("PUT", request.getMethod());
+        // Validate request body
+        String actualRequestBody = request.getBody().readUtf8();
+        String expectedRequestBody = ""
+                + "{\n"
+                + "  \"invoiceData\": {\n"
+                + "    \"items\": [\n"
+                + "      {\n"
+                + "        \"itemProductName\": \"Deposit\",\n"
+                + "        \"itemDescription\": \"Deposit for trip planning\",\n"
+                + "        \"itemCost\": 882.37,\n"
+                + "        \"itemQty\": 1\n"
+                + "      }\n"
+                + "    ],\n"
+                + "    \"invoiceDate\": \"2025-10-19\",\n"
+                + "    \"invoiceAmount\": 982.37,\n"
+                + "    \"invoiceNumber\": \"INV-2345\"\n"
+                + "  }\n"
+                + "}";
+        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
+        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
+        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
+        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
+            String discriminator = null;
+            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
+            else if (actualJson.has("_type"))
+                discriminator = actualJson.get("_type").asText();
+            else if (actualJson.has("kind"))
+                discriminator = actualJson.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualJson.isNull()) {
+            Assertions.assertTrue(
+                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
+                    "request should be a valid JSON value");
+        }
+
+        if (actualJson.isArray()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
+        }
+        if (actualJson.isObject()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
+        }
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": 332,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"pageidentifier\": null,\n"
+                + "  \"roomId\": 0\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testDeleteInvoice() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\",\"pageidentifier\":null,\"roomId\":0}"));
+        InvoiceResponseWithoutData response = client.invoice().deleteInvoice(23548884);
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": 3625,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"pageidentifier\": null,\n"
+                + "  \"roomId\": 0\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

@@ -67,7 +67,7 @@ public final class NotificationReportRequest {
     }
 
     /**
-     * @return Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly report for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.
+     * @return Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly reports for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.
      */
     @JsonProperty("method")
     public NotificationReportRequestMethod getMethod() {
@@ -91,8 +91,8 @@ public final class NotificationReportRequest {
 
     /**
      * @return Specify the notification target.
-     * <p>For method=report-email the expected value is a list of email addresses separated by semicolon.</p>
-     * <p>For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
+     * For method=report-email the expected value is a list of email addresses separated by semicolon.
+     * For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.
      */
     @JsonProperty("target")
     public String getTarget() {
@@ -147,7 +147,7 @@ public final class NotificationReportRequest {
 
     public interface MethodStage {
         /**
-         * <p>Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly report for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.</p>
+         * <p>Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly reports for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.</p>
          */
         OwnerTypeStage method(@NotNull NotificationReportRequestMethod method);
     }
@@ -158,9 +158,9 @@ public final class NotificationReportRequest {
 
     public interface TargetStage {
         /**
-         * <p>Specify the notification target.</p>
-         * <p>For method=report-email the expected value is a list of email addresses separated by semicolon.</p>
-         * <p>For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
+         * <p>Specify the notification target.
+         * For method=report-email the expected value is a list of email addresses separated by semicolon.
+         * For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
          */
         _FinalStage target(@NotNull String target);
     }
@@ -230,8 +230,8 @@ public final class NotificationReportRequest {
         }
 
         /**
-         * <p>Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly report for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.</p>
-         * <p>Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly report for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.</p>
+         * <p>Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly reports for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.</p>
+         * <p>Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly reports for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#automated-reports">Automated Reports</a> for more.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -249,12 +249,12 @@ public final class NotificationReportRequest {
         }
 
         /**
-         * <p>Specify the notification target.</p>
-         * <p>For method=report-email the expected value is a list of email addresses separated by semicolon.</p>
-         * <p>For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
-         * <p>Specify the notification target.</p>
-         * <p>For method=report-email the expected value is a list of email addresses separated by semicolon.</p>
-         * <p>For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
+         * <p>Specify the notification target.
+         * For method=report-email the expected value is a list of email addresses separated by semicolon.
+         * For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
+         * <p>Specify the notification target.
+         * For method=report-email the expected value is a list of email addresses separated by semicolon.
+         * For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

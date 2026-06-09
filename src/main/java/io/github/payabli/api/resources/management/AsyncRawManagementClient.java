@@ -16,8 +16,8 @@ import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.management.requests.VerifyAccountDetailsRequest;
-import io.github.payabli.api.resources.management.types.VerifyAccountDetailsResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.VerifyAccountDetailsResponse;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
@@ -104,7 +104,7 @@ public class AsyncRawManagementClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -114,8 +114,7 @@ public class AsyncRawManagementClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }

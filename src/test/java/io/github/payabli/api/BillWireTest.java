@@ -10,18 +10,19 @@ import io.github.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import io.github.payabli.api.resources.bill.requests.ListBillsRequest;
 import io.github.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import io.github.payabli.api.resources.bill.requests.SetApprovedBillRequest;
-import io.github.payabli.api.resources.bill.types.BillOutData;
-import io.github.payabli.api.resources.bill.types.BillResponse;
-import io.github.payabli.api.resources.bill.types.EditBillResponse;
-import io.github.payabli.api.resources.bill.types.GetBillResponse;
-import io.github.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
-import io.github.payabli.api.resources.bill.types.SetApprovedBillResponse;
 import io.github.payabli.api.types.BillItem;
+import io.github.payabli.api.types.BillOutData;
+import io.github.payabli.api.types.BillOutDataVendor;
 import io.github.payabli.api.types.BillQueryResponse;
+import io.github.payabli.api.types.BillResponse;
+import io.github.payabli.api.types.EditBillResponse;
 import io.github.payabli.api.types.FileContent;
 import io.github.payabli.api.types.FileContentFtype;
 import io.github.payabli.api.types.Frequency;
-import io.github.payabli.api.types.VendorData;
+import io.github.payabli.api.types.GetBillResponse;
+import io.github.payabli.api.types.ModifyApprovalBillResponse;
+import io.github.payabli.api.types.SetApprovedBillResponse;
+import io.github.payabli.api.types.Terms;
 import java.util.Arrays;
 import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
@@ -72,9 +73,9 @@ public class BillWireTest {
                                                 .build()))
                                         .billDate("2024-07-01")
                                         .billItems(Arrays.asList(BillItem.builder()
-                                                .itemCost(5.0)
-                                                .itemCategories(Optional.of(Arrays.asList(Optional.of("deposits"))))
+                                                .itemCategories(Optional.of(Arrays.asList("deposits")))
                                                 .itemCommodityCode("010")
+                                                .itemCost(5.0)
                                                 .itemDescription("Deposit for materials")
                                                 .itemMode(0)
                                                 .itemProductCode("M-DEPOSIT")
@@ -92,10 +93,10 @@ public class BillWireTest {
                                         .frequency(Frequency.MONTHLY)
                                         .mode(0)
                                         .netAmount(3762.87)
-                                        .status(-99)
-                                        .terms("NET30")
-                                        .vendor(VendorData.builder()
-                                                .vendorNumber("1234-A")
+                                        .status(1)
+                                        .terms(Terms.NET_30)
+                                        .vendor(BillOutDataVendor.builder()
+                                                .vendorNumber("VEN-123")
                                                 .build())
                                         .build())
                                 .build());
@@ -132,12 +133,12 @@ public class BillWireTest {
                 + "  \"mode\": 0,\n"
                 + "  \"accountingField1\": \"MyInternalId\",\n"
                 + "  \"vendor\": {\n"
-                + "    \"vendorNumber\": \"1234-A\"\n"
+                + "    \"vendorNumber\": \"VEN-123\"\n"
                 + "  },\n"
                 + "  \"endDate\": \"2024-07-01\",\n"
                 + "  \"frequency\": \"monthly\",\n"
                 + "  \"terms\": \"NET30\",\n"
-                + "  \"status\": -99,\n"
+                + "  \"status\": 1,\n"
                 + "  \"attachments\": [\n"
                 + "    {\n"
                 + "      \"ftype\": \"pdf\",\n"
@@ -217,88 +218,19 @@ public class BillWireTest {
     }
 
     @Test
-    public void testDeleteAttachedFromBill() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":6101}"));
-        BillResponse response = client.bill()
-                .deleteAttachedFromBill(
-                        285,
-                        "0_Bill.pdf",
-                        DeleteAttachedFromBillRequest.builder().build());
+    public void testGetBill() throws Exception {
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody(TestResources.loadResource("/wire-tests/BillWireTest_testGetBill_response.json")));
+        GetBillResponse response = client.bill().getBill(285);
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
+        Assertions.assertEquals("GET", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"pageIdentifier\": null,\n"
-                + "  \"roomId\": 0,\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"responseData\": 6101\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testDeleteBill() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":6101}"));
-        BillResponse response = client.bill().deleteBill(285);
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("DELETE", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"pageIdentifier\": null,\n"
-                + "  \"roomId\": 0,\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"responseData\": 6101\n"
-                + "}";
+        String expectedResponseBody = TestResources.loadResource("/wire-tests/BillWireTest_testGetBill_response.json");
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(
@@ -422,6 +354,61 @@ public class BillWireTest {
     }
 
     @Test
+    public void testDeleteBill() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":6101}"));
+        BillResponse response = client.bill().deleteBill(285);
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"pageIdentifier\": null,\n"
+                + "  \"roomId\": 0,\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"responseData\": 6101\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
     public void testGetAttachedFromBill() throws Exception {
         server.enqueue(
                 new MockResponse()
@@ -479,19 +466,33 @@ public class BillWireTest {
     }
 
     @Test
-    public void testGetBill() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(TestResources.loadResource("/wire-tests/BillWireTest_testGetBill_response.json")));
-        GetBillResponse response = client.bill().getBill(285);
+    public void testDeleteAttachedFromBill() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":6101}"));
+        BillResponse response = client.bill()
+                .deleteAttachedFromBill(
+                        285,
+                        "0_Bill.pdf",
+                        DeleteAttachedFromBillRequest.builder().build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
-        Assertions.assertEquals("GET", request.getMethod());
+        Assertions.assertEquals("DELETE", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = TestResources.loadResource("/wire-tests/BillWireTest_testGetBill_response.json");
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"pageIdentifier\": null,\n"
+                + "  \"roomId\": 0,\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"responseData\": 6101\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(
@@ -524,80 +525,70 @@ public class BillWireTest {
     }
 
     @Test
-    public void testListBills() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(TestResources.loadResource("/wire-tests/BillWireTest_testListBills_response.json")));
-        BillQueryResponse response = client.bill()
-                .listBills(
-                        "8cfec329267",
-                        ListBillsRequest.builder()
-                                .fromRecord(251)
-                                .limitRecord(0)
-                                .sortBy("desc(field_name)")
+    public void testSendToApprovalBill() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":6101}"));
+        BillResponse response = client.bill()
+                .sendToApprovalBill(
+                        285,
+                        SendToApprovalBillRequest.builder()
+                                .body(Arrays.asList("approver@example.com"))
+                                .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
                                 .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
-        Assertions.assertEquals("GET", request.getMethod());
+        Assertions.assertEquals("POST", request.getMethod());
 
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody =
-                TestResources.loadResource("/wire-tests/BillWireTest_testListBills_response.json");
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+        // Validate headers
+        Assertions.assertEquals(
+                "6B29FC40-CA47-1067-B31D-00DD010662DA",
+                request.getHeader("idempotencyKey"),
+                "Header 'idempotencyKey' should match expected value");
+        // Validate request body
+        String actualRequestBody = request.getBody().readUtf8();
+        String expectedRequestBody = "" + "[\n" + "  \"approver@example.com\"\n" + "]";
+        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
+        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
+        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
+        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
             String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
+            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
+            else if (actualJson.has("_type"))
+                discriminator = actualJson.get("_type").asText();
+            else if (actualJson.has("kind"))
+                discriminator = actualJson.get("kind").asText();
             Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
             Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
         }
 
-        if (!actualResponseNode.isNull()) {
+        if (!actualJson.isNull()) {
             Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
+                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
+                    "request should be a valid JSON value");
         }
 
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        if (actualJson.isArray()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
         }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        if (actualJson.isObject()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
         }
-    }
-
-    @Test
-    public void testListBillsOrg() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(TestResources.loadResource("/wire-tests/BillWireTest_testListBillsOrg_response.json")));
-        BillQueryResponse response = client.bill()
-                .listBillsOrg(
-                        123,
-                        ListBillsOrgRequest.builder()
-                                .fromRecord(251)
-                                .limitRecord(0)
-                                .sortBy("desc(field_name)")
-                                .build());
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("GET", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody =
-                TestResources.loadResource("/wire-tests/BillWireTest_testListBillsOrg_response.json");
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"pageIdentifier\": null,\n"
+                + "  \"roomId\": 0,\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"responseData\": 6101\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(
@@ -711,69 +702,24 @@ public class BillWireTest {
     }
 
     @Test
-    public void testSendToApprovalBill() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":6101}"));
-        BillResponse response = client.bill()
-                .sendToApprovalBill(
-                        285,
-                        SendToApprovalBillRequest.builder()
-                                .body(Arrays.asList("string"))
-                                .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-                                .build());
+    public void testSetApprovedBill() throws Exception {
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"isSuccess\":true,\"responseData\":6101,\"responseText\":\"Success\"}"));
+        SetApprovedBillResponse response = client.bill()
+                .setApprovedBill(285, "true", SetApprovedBillRequest.builder().build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
-        Assertions.assertEquals("POST", request.getMethod());
-
-        // Validate headers
-        Assertions.assertEquals(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-                request.getHeader("idempotencyKey"),
-                "Header 'idempotencyKey' should match expected value");
-        // Validate request body
-        String actualRequestBody = request.getBody().readUtf8();
-        String expectedRequestBody = "" + "[\n" + "  \"string\"\n" + "]";
-        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
-        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
-        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
-        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
-            String discriminator = null;
-            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
-            else if (actualJson.has("_type"))
-                discriminator = actualJson.get("_type").asText();
-            else if (actualJson.has("kind"))
-                discriminator = actualJson.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualJson.isNull()) {
-            Assertions.assertTrue(
-                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
-                    "request should be a valid JSON value");
-        }
-
-        if (actualJson.isArray()) {
-            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
-        }
-        if (actualJson.isObject()) {
-            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
-        }
+        Assertions.assertEquals("GET", request.getMethod());
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
         String expectedResponseBody = ""
                 + "{\n"
-                + "  \"responseCode\": 1,\n"
-                + "  \"pageIdentifier\": null,\n"
-                + "  \"roomId\": 0,\n"
                 + "  \"isSuccess\": true,\n"
-                + "  \"responseText\": \"Success\",\n"
-                + "  \"responseData\": 6101\n"
+                + "  \"responseData\": 6101,\n"
+                + "  \"responseText\": \"Success\"\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
@@ -807,12 +753,18 @@ public class BillWireTest {
     }
 
     @Test
-    public void testSetApprovedBill() throws Exception {
+    public void testListBills() throws Exception {
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
-                .setBody("{\"isSuccess\":true,\"responseData\":6101,\"responseText\":\"Success\"}"));
-        SetApprovedBillResponse response = client.bill()
-                .setApprovedBill(285, "true", SetApprovedBillRequest.builder().build());
+                .setBody(TestResources.loadResource("/wire-tests/BillWireTest_testListBills_response.json")));
+        BillQueryResponse response = client.bill()
+                .listBills(
+                        "8cfec329267",
+                        ListBillsRequest.builder()
+                                .fromRecord(251)
+                                .limitRecord(0)
+                                .sortBy("desc(field_name)")
+                                .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
@@ -820,12 +772,61 @@ public class BillWireTest {
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseData\": 6101,\n"
-                + "  \"responseText\": \"Success\"\n"
-                + "}";
+        String expectedResponseBody =
+                TestResources.loadResource("/wire-tests/BillWireTest_testListBills_response.json");
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testListBillsOrg() throws Exception {
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody(TestResources.loadResource("/wire-tests/BillWireTest_testListBillsOrg_response.json")));
+        BillQueryResponse response = client.bill()
+                .listBillsOrg(
+                        123,
+                        ListBillsOrgRequest.builder()
+                                .fromRecord(251)
+                                .limitRecord(0)
+                                .sortBy("desc(field_name)")
+                                .build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody =
+                TestResources.loadResource("/wire-tests/BillWireTest_testListBillsOrg_response.json");
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

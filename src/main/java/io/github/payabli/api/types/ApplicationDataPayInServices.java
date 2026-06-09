@@ -21,19 +21,16 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApplicationDataPayInServices.Builder.class)
 public final class ApplicationDataPayInServices {
-    private final ApplicationDataPayInServicesAch ach;
+    private final AchSetup ach;
 
-    private final ApplicationDataPayInServicesCard card;
+    private final CardSetup card;
 
     private final Optional<OdpSetup> odp;
 
     private final Map<String, Object> additionalProperties;
 
     private ApplicationDataPayInServices(
-            ApplicationDataPayInServicesAch ach,
-            ApplicationDataPayInServicesCard card,
-            Optional<OdpSetup> odp,
-            Map<String, Object> additionalProperties) {
+            AchSetup ach, CardSetup card, Optional<OdpSetup> odp, Map<String, Object> additionalProperties) {
         this.ach = ach;
         this.card = card;
         this.odp = odp;
@@ -41,12 +38,12 @@ public final class ApplicationDataPayInServices {
     }
 
     @JsonProperty("ach")
-    public ApplicationDataPayInServicesAch getAch() {
+    public AchSetup getAch() {
         return ach;
     }
 
     @JsonProperty("card")
-    public ApplicationDataPayInServicesCard getCard() {
+    public CardSetup getCard() {
         return card;
     }
 
@@ -85,13 +82,13 @@ public final class ApplicationDataPayInServices {
     }
 
     public interface AchStage {
-        CardStage ach(@NotNull ApplicationDataPayInServicesAch ach);
+        CardStage ach(@NotNull AchSetup ach);
 
         Builder from(ApplicationDataPayInServices other);
     }
 
     public interface CardStage {
-        _FinalStage card(@NotNull ApplicationDataPayInServicesCard card);
+        _FinalStage card(@NotNull CardSetup card);
     }
 
     public interface _FinalStage {
@@ -108,9 +105,9 @@ public final class ApplicationDataPayInServices {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements AchStage, CardStage, _FinalStage {
-        private ApplicationDataPayInServicesAch ach;
+        private AchSetup ach;
 
-        private ApplicationDataPayInServicesCard card;
+        private CardSetup card;
 
         private Optional<OdpSetup> odp = Optional.empty();
 
@@ -129,14 +126,14 @@ public final class ApplicationDataPayInServices {
 
         @java.lang.Override
         @JsonSetter("ach")
-        public CardStage ach(@NotNull ApplicationDataPayInServicesAch ach) {
+        public CardStage ach(@NotNull AchSetup ach) {
             this.ach = Objects.requireNonNull(ach, "ach must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("card")
-        public _FinalStage card(@NotNull ApplicationDataPayInServicesCard card) {
+        public _FinalStage card(@NotNull CardSetup card) {
             this.card = Objects.requireNonNull(card, "card must not be null");
             return this;
         }

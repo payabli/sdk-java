@@ -7,9 +7,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.organization.requests.AddOrganizationRequest;
 import io.github.payabli.api.resources.organization.requests.OrganizationData;
-import io.github.payabli.api.resources.organization.types.AddOrganizationResponse;
-import io.github.payabli.api.resources.organization.types.DeleteOrganizationResponse;
-import io.github.payabli.api.resources.organization.types.EditOrganizationResponse;
+import io.github.payabli.api.types.AddOrganizationResponse;
+import io.github.payabli.api.types.DeleteOrganizationResponse;
+import io.github.payabli.api.types.EditOrganizationResponse;
 import io.github.payabli.api.types.OrganizationQueryRecord;
 import io.github.payabli.api.types.SettingsQueryRecord;
 
@@ -45,20 +45,6 @@ public class OrganizationClient {
     }
 
     /**
-     * Delete an organization by ID.
-     */
-    public DeleteOrganizationResponse deleteOrganization(int orgId) {
-        return this.rawClient.deleteOrganization(orgId).body();
-    }
-
-    /**
-     * Delete an organization by ID.
-     */
-    public DeleteOrganizationResponse deleteOrganization(int orgId, RequestOptions requestOptions) {
-        return this.rawClient.deleteOrganization(orgId, requestOptions).body();
-    }
-
-    /**
      * Updates an organization's details by ID.
      */
     public EditOrganizationResponse editOrganization(int orgId) {
@@ -85,6 +71,20 @@ public class OrganizationClient {
     public EditOrganizationResponse editOrganization(
             int orgId, OrganizationData request, RequestOptions requestOptions) {
         return this.rawClient.editOrganization(orgId, request, requestOptions).body();
+    }
+
+    /**
+     * Delete an organization by ID.
+     */
+    public DeleteOrganizationResponse deleteOrganization(int orgId) {
+        return this.rawClient.deleteOrganization(orgId).body();
+    }
+
+    /**
+     * Delete an organization by ID.
+     */
+    public DeleteOrganizationResponse deleteOrganization(int orgId, RequestOptions requestOptions) {
+        return this.rawClient.deleteOrganization(orgId, requestOptions).body();
     }
 
     /**

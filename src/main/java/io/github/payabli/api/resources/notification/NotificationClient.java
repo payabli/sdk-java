@@ -5,10 +5,10 @@ package io.github.payabli.api.resources.notification;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.resources.notification.types.AddNotificationRequest;
-import io.github.payabli.api.resources.notification.types.UpdateNotificationRequest;
+import io.github.payabli.api.types.AddNotificationRequest;
 import io.github.payabli.api.types.NotificationQueryRecord;
 import io.github.payabli.api.types.PayabliApiResponseNotifications;
+import io.github.payabli.api.types.UpdateNotificationRequest;
 import java.util.Map;
 
 public class NotificationClient {
@@ -44,20 +44,6 @@ public class NotificationClient {
     }
 
     /**
-     * Deletes a single notification or auto-generated report.
-     */
-    public PayabliApiResponseNotifications deleteNotification(String nId) {
-        return this.rawClient.deleteNotification(nId).body();
-    }
-
-    /**
-     * Deletes a single notification or auto-generated report.
-     */
-    public PayabliApiResponseNotifications deleteNotification(String nId, RequestOptions requestOptions) {
-        return this.rawClient.deleteNotification(nId, requestOptions).body();
-    }
-
-    /**
      * Retrieves a single notification or auto-generated report's details.
      */
     public NotificationQueryRecord getNotification(String nId) {
@@ -84,6 +70,20 @@ public class NotificationClient {
     public PayabliApiResponseNotifications updateNotification(
             String nId, UpdateNotificationRequest request, RequestOptions requestOptions) {
         return this.rawClient.updateNotification(nId, request, requestOptions).body();
+    }
+
+    /**
+     * Deletes a single notification or auto-generated report.
+     */
+    public PayabliApiResponseNotifications deleteNotification(String nId) {
+        return this.rawClient.deleteNotification(nId).body();
+    }
+
+    /**
+     * Deletes a single notification or auto-generated report.
+     */
+    public PayabliApiResponseNotifications deleteNotification(String nId, RequestOptions requestOptions) {
+        return this.rawClient.deleteNotification(nId, requestOptions).body();
     }
 
     /**

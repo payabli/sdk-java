@@ -6,7 +6,7 @@ package io.github.payabli.api.resources.management;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.management.requests.VerifyAccountDetailsRequest;
-import io.github.payabli.api.resources.management.types.VerifyAccountDetailsResponse;
+import io.github.payabli.api.types.VerifyAccountDetailsResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncManagementClient {

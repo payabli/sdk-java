@@ -22,11 +22,11 @@
       "dateCreated": "2023-01-15T09:30:00Z",
       "dateModified": "2023-02-20T14:15:22Z",
       "associatedVendor": {
-        "VendorNumber": "V-12345",
+        "VendorNumber": "VEN-123",
         "Name1": "Office Supply Co.",
         "EIN": "XXXXX6789",
         "Email": "billing@officesupply.example.com",
-        "VendorId": 1542
+        "VendorId": 456
       },
       "associatedCustomer": {
         "firstname": "Acme",
@@ -37,7 +37,7 @@
       "PaypointEntryname": "4872acb376a",
       "externalPaypointID": "pay-10",
       "ParentOrgName": "SupplyPro",
-      "paypointId": 236
+      "paypointId": 3040
     }
   ],
   "Summary": {

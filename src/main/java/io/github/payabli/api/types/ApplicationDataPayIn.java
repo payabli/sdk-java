@@ -59,7 +59,7 @@ public final class ApplicationDataPayIn {
 
     private final Optional<String> bzip;
 
-    private final Optional<List<ApplicationDataPayInContactsItem>> contacts;
+    private final Optional<List<Contacts>> contacts;
 
     private final Optional<String> creditLimit;
 
@@ -95,7 +95,7 @@ public final class ApplicationDataPayIn {
 
     private final Optional<Long> orgId;
 
-    private final Optional<List<ApplicationDataPayInOwnershipItem>> ownership;
+    private final Optional<List<Owners>> ownership;
 
     private final String phonenumber;
 
@@ -158,7 +158,7 @@ public final class ApplicationDataPayIn {
             Optional<String> bsummary,
             Optional<OwnType> btype,
             Optional<String> bzip,
-            Optional<List<ApplicationDataPayInContactsItem>> contacts,
+            Optional<List<Contacts>> contacts,
             Optional<String> creditLimit,
             Optional<String> dbaName,
             Optional<String> ein,
@@ -176,7 +176,7 @@ public final class ApplicationDataPayIn {
             Optional<String> mstate,
             Optional<String> mzip,
             Optional<Long> orgId,
-            Optional<List<ApplicationDataPayInOwnershipItem>> ownership,
+            Optional<List<Owners>> ownership,
             String phonenumber,
             String processingRegion,
             Optional<String> recipientEmail,
@@ -355,7 +355,7 @@ public final class ApplicationDataPayIn {
      * @return List of contacts for the business.
      */
     @JsonProperty("contacts")
-    public Optional<List<ApplicationDataPayInContactsItem>> getContacts() {
+    public Optional<List<Contacts>> getContacts() {
         return contacts;
     }
 
@@ -457,7 +457,7 @@ public final class ApplicationDataPayIn {
      * @return List of Owners with at least a 25% ownership.
      */
     @JsonProperty("ownership")
-    public Optional<List<ApplicationDataPayInOwnershipItem>> getOwnership() {
+    public Optional<List<Owners>> getOwnership() {
         return ownership;
     }
 
@@ -838,9 +838,9 @@ public final class ApplicationDataPayIn {
         /**
          * <p>List of contacts for the business.</p>
          */
-        _FinalStage contacts(Optional<List<ApplicationDataPayInContactsItem>> contacts);
+        _FinalStage contacts(Optional<List<Contacts>> contacts);
 
-        _FinalStage contacts(List<ApplicationDataPayInContactsItem> contacts);
+        _FinalStage contacts(List<Contacts> contacts);
 
         /**
          * <p>The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see <code>payoutCreditLimit</code>.</p>
@@ -922,9 +922,9 @@ public final class ApplicationDataPayIn {
         /**
          * <p>List of Owners with at least a 25% ownership.</p>
          */
-        _FinalStage ownership(Optional<List<ApplicationDataPayInOwnershipItem>> ownership);
+        _FinalStage ownership(Optional<List<Owners>> ownership);
 
-        _FinalStage ownership(List<ApplicationDataPayInOwnershipItem> ownership);
+        _FinalStage ownership(List<Owners> ownership);
 
         /**
          * <p>Email address for the applicant. This is used to send the applicant a boarding link.</p>
@@ -1038,7 +1038,7 @@ public final class ApplicationDataPayIn {
 
         private Optional<String> recipientEmail = Optional.empty();
 
-        private Optional<List<ApplicationDataPayInOwnershipItem>> ownership = Optional.empty();
+        private Optional<List<Owners>> ownership = Optional.empty();
 
         private Optional<Long> orgId = Optional.empty();
 
@@ -1074,7 +1074,7 @@ public final class ApplicationDataPayIn {
 
         private Optional<String> creditLimit = Optional.empty();
 
-        private Optional<List<ApplicationDataPayInContactsItem>> contacts = Optional.empty();
+        private Optional<List<Contacts>> contacts = Optional.empty();
 
         private Optional<String> bzip = Optional.empty();
 
@@ -1431,7 +1431,7 @@ public final class ApplicationDataPayIn {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage ownership(List<ApplicationDataPayInOwnershipItem> ownership) {
+        public _FinalStage ownership(List<Owners> ownership) {
             this.ownership = Optional.ofNullable(ownership);
             return this;
         }
@@ -1441,7 +1441,7 @@ public final class ApplicationDataPayIn {
          */
         @java.lang.Override
         @JsonSetter(value = "ownership", nulls = Nulls.SKIP)
-        public _FinalStage ownership(Optional<List<ApplicationDataPayInOwnershipItem>> ownership) {
+        public _FinalStage ownership(Optional<List<Owners>> ownership) {
             this.ownership = ownership;
             return this;
         }
@@ -1693,7 +1693,7 @@ public final class ApplicationDataPayIn {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage contacts(List<ApplicationDataPayInContactsItem> contacts) {
+        public _FinalStage contacts(List<Contacts> contacts) {
             this.contacts = Optional.ofNullable(contacts);
             return this;
         }
@@ -1703,7 +1703,7 @@ public final class ApplicationDataPayIn {
          */
         @java.lang.Override
         @JsonSetter(value = "contacts", nulls = Nulls.SKIP)
-        public _FinalStage contacts(Optional<List<ApplicationDataPayInContactsItem>> contacts) {
+        public _FinalStage contacts(Optional<List<Contacts>> contacts) {
             this.contacts = contacts;
             return this;
         }

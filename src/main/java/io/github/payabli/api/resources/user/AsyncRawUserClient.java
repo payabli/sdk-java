@@ -21,16 +21,17 @@ import io.github.payabli.api.resources.user.requests.MfaValidationData;
 import io.github.payabli.api.resources.user.requests.UserAuthPswResetRequest;
 import io.github.payabli.api.resources.user.requests.UserAuthRequest;
 import io.github.payabli.api.resources.user.requests.UserAuthResetRequest;
-import io.github.payabli.api.resources.user.types.AddUserResponse;
-import io.github.payabli.api.resources.user.types.AuthResetUserResponse;
-import io.github.payabli.api.resources.user.types.ChangePswUserResponse;
-import io.github.payabli.api.resources.user.types.DeleteUserResponse;
-import io.github.payabli.api.resources.user.types.EditMfaUserResponse;
-import io.github.payabli.api.resources.user.types.LogoutUserResponse;
+import io.github.payabli.api.types.AddUserResponse;
+import io.github.payabli.api.types.AuthResetUserResponse;
+import io.github.payabli.api.types.ChangePswUserResponse;
+import io.github.payabli.api.types.DeleteUserResponse;
+import io.github.payabli.api.types.EditMfaUserResponse;
+import io.github.payabli.api.types.LogoutUserResponse;
 import io.github.payabli.api.types.MfaData;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliApiResponseMfaBasic;
 import io.github.payabli.api.types.PayabliApiResponseUserMfa;
+import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.UserData;
 import io.github.payabli.api.types.UserQueryRecord;
 import java.io.IOException;
@@ -126,7 +127,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -136,8 +137,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -162,36 +162,60 @@ public class AsyncRawUserClient {
     }
 
     /**
-     * Use this endpoint to refresh the authentication token for a user within an organization.
+     * Use this endpoint to retrieve information about a specific user within an organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> authRefreshUser() {
-        return authRefreshUser(null);
+    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(long userId) {
+        return getUser(userId, GetUserRequest.builder().build());
     }
 
     /**
-     * Use this endpoint to refresh the authentication token for a user within an organization.
+     * Use this endpoint to retrieve information about a specific user within an organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> authRefreshUser(
-            RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(
+            long userId, RequestOptions requestOptions) {
+        return getUser(userId, GetUserRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(long userId, GetUserRequest request) {
+        return getUser(userId, request, null);
+    }
+
+    /**
+     * Use this endpoint to retrieve information about a specific user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(
+            long userId, GetUserRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/authrefresh");
+                .addPathSegments("User")
+                .addPathSegment(Long.toString(userId));
+        if (request.getEntry().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "entry", request.getEntry().get(), false);
+        }
+        if (request.getLevel().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "level", request.getLevel().get(), false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
-        Request okhttpRequest = new Request.Builder()
+        Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("POST", RequestBody.create("", null))
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -199,8 +223,7 @@ public class AsyncRawUserClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, PayabliApiResponseUserMfa.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UserQueryRecord.class),
                                 response));
                         return;
                     }
@@ -213,7 +236,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -223,8 +246,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -249,36 +271,36 @@ public class AsyncRawUserClient {
     }
 
     /**
-     * Use this endpoint to initiate a password reset for a user within an organization.
+     * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser() {
-        return authResetUser(UserAuthResetRequest.builder().build());
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(long userId) {
+        return editUser(userId, UserData.builder().build());
     }
 
     /**
-     * Use this endpoint to initiate a password reset for a user within an organization.
+     * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
-            RequestOptions requestOptions) {
-        return authResetUser(UserAuthResetRequest.builder().build(), requestOptions);
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(
+            long userId, RequestOptions requestOptions) {
+        return editUser(userId, UserData.builder().build(), requestOptions);
     }
 
     /**
-     * Use this endpoint to initiate a password reset for a user within an organization.
+     * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
-            UserAuthResetRequest request) {
-        return authResetUser(request, null);
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(long userId, UserData request) {
+        return editUser(userId, request, null);
     }
 
     /**
-     * Use this endpoint to initiate a password reset for a user within an organization.
+     * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
-            UserAuthResetRequest request, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(
+            long userId, UserData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User/authreset");
+                .addPathSegments("User")
+                .addPathSegment(Long.toString(userId));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -293,7 +315,7 @@ public class AsyncRawUserClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("POST", body)
+                .method("PUT", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
@@ -302,7 +324,7 @@ public class AsyncRawUserClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -310,7 +332,7 @@ public class AsyncRawUserClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthResetUserResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
                                 response));
                         return;
                     }
@@ -323,7 +345,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -333,8 +355,93 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> deleteUser(long userId) {
+        return deleteUser(userId, null);
+    }
+
+    /**
+     * Use this endpoint to delete a specific user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> deleteUser(
+            long userId, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("User")
+                .addPathSegment(Long.toString(userId));
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("DELETE", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, DeleteUserResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -435,7 +542,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -445,8 +552,202 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> authRefreshUser() {
+        return authRefreshUser(null);
+    }
+
+    /**
+     * Use this endpoint to refresh the authentication token for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> authRefreshUser(
+            RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("User/authrefresh");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, PayabliApiResponseUserMfa.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser() {
+        return authResetUser(UserAuthResetRequest.builder().build());
+    }
+
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
+            RequestOptions requestOptions) {
+        return authResetUser(UserAuthResetRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
+            UserAuthResetRequest request) {
+        return authResetUser(request, null);
+    }
+
+    /**
+     * Use this endpoint to initiate a password reset for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> authResetUser(
+            UserAuthResetRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("User/authreset");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<AuthResetUserResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthResetUserResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -545,7 +846,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -555,8 +856,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -581,21 +881,19 @@ public class AsyncRawUserClient {
     }
 
     /**
-     * Use this endpoint to delete a specific user within an organization.
+     * Use this endpoint to log a user out from the system.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> deleteUser(long userId) {
-        return deleteUser(userId, null);
+    public CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> logoutUser() {
+        return logoutUser(null);
     }
 
     /**
-     * Use this endpoint to delete a specific user within an organization.
+     * Use this endpoint to log a user out from the system.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> deleteUser(
-            long userId, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> logoutUser(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("User")
-                .addPathSegment(Long.toString(userId));
+                .addPathSegments("User/authlogout");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -603,7 +901,7 @@ public class AsyncRawUserClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -611,7 +909,7 @@ public class AsyncRawUserClient {
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
         }
-        CompletableFuture<PayabliApiHttpResponse<DeleteUserResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -619,7 +917,7 @@ public class AsyncRawUserClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, DeleteUserResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, LogoutUserResponse.class),
                                 response));
                         return;
                     }
@@ -632,7 +930,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -642,13 +940,96 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser() {
+        return validateMfaUser(MfaValidationData.builder().build());
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
+            RequestOptions requestOptions) {
+        return validateMfaUser(MfaValidationData.builder().build(), requestOptions);
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
+            MfaValidationData request) {
+        return validateMfaUser(request, null);
+    }
+
+    /**
+     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+     */
+    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
+            MfaValidationData request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("User/mfa");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, PayabliApiResponseUserMfa.class),
+                                response));
+                        return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(
@@ -742,7 +1123,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -752,313 +1133,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
-                                        response));
-                                return;
-                        }
-                    } catch (JsonProcessingException ignored) {
-                        // unable to map error response, throwing generic error
-                    }
-                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(), response.code(), errorBody, response));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(long userId) {
-        return editUser(userId, UserData.builder().build());
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(
-            long userId, RequestOptions requestOptions) {
-        return editUser(userId, UserData.builder().build(), requestOptions);
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(long userId, UserData request) {
-        return editUser(userId, request, null);
-    }
-
-    /**
-     * Use this endpoint to modify the details of a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> editUser(
-            long userId, UserData request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("User")
-                .addPathSegment(Long.toString(userId));
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl.build())
-                .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response));
-                        return;
-                    }
-                    try {
-                        switch (response.code()) {
-                            case 400:
-                                future.completeExceptionally(new BadRequestError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 401:
-                                future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 500:
-                                future.completeExceptionally(new InternalServerError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 503:
-                                future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
-                                        response));
-                                return;
-                        }
-                    } catch (JsonProcessingException ignored) {
-                        // unable to map error response, throwing generic error
-                    }
-                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(), response.code(), errorBody, response));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(long userId) {
-        return getUser(userId, GetUserRequest.builder().build());
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(
-            long userId, RequestOptions requestOptions) {
-        return getUser(userId, GetUserRequest.builder().build(), requestOptions);
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(long userId, GetUserRequest request) {
-        return getUser(userId, request, null);
-    }
-
-    /**
-     * Use this endpoint to retrieve information about a specific user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> getUser(
-            long userId, GetUserRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("User")
-                .addPathSegment(Long.toString(userId));
-        if (request.getEntry().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "entry", request.getEntry().get(), false);
-        }
-        if (request.getLevel().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "level", request.getLevel().get(), false);
-        }
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<PayabliApiHttpResponse<UserQueryRecord>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UserQueryRecord.class),
-                                response));
-                        return;
-                    }
-                    try {
-                        switch (response.code()) {
-                            case 400:
-                                future.completeExceptionally(new BadRequestError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 401:
-                                future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 500:
-                                future.completeExceptionally(new InternalServerError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 503:
-                                future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
-                                        response));
-                                return;
-                        }
-                    } catch (JsonProcessingException ignored) {
-                        // unable to map error response, throwing generic error
-                    }
-                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(), response.code(), errorBody, response));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
-    }
-
-    /**
-     * Use this endpoint to log a user out from the system.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> logoutUser() {
-        return logoutUser(null);
-    }
-
-    /**
-     * Use this endpoint to log a user out from the system.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> logoutUser(RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("User/authlogout");
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<PayabliApiHttpResponse<LogoutUserResponse>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, LogoutUserResponse.class),
-                                response));
-                        return;
-                    }
-                    try {
-                        switch (response.code()) {
-                            case 400:
-                                future.completeExceptionally(new BadRequestError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 401:
-                                future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 500:
-                                future.completeExceptionally(new InternalServerError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
-                                        response));
-                                return;
-                            case 503:
-                                future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -1138,7 +1213,7 @@ public class AsyncRawUserClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -1148,97 +1223,12 @@ public class AsyncRawUserClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
                     } catch (JsonProcessingException ignored) {
                         // unable to map error response, throwing generic error
-                    }
-                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
-                            "Error with status code " + response.code(), response.code(), errorBody, response));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser() {
-        return validateMfaUser(MfaValidationData.builder().build());
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
-            RequestOptions requestOptions) {
-        return validateMfaUser(MfaValidationData.builder().build(), requestOptions);
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
-            MfaValidationData request) {
-        return validateMfaUser(request, null);
-    }
-
-    /**
-     * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> validateMfaUser(
-            MfaValidationData request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("User/mfa");
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl.build())
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseUserMfa>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, PayabliApiResponseUserMfa.class),
-                                response));
-                        return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiApiException(

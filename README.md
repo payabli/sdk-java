@@ -65,11 +65,12 @@ package com.example.usage;
 
 import io.github.payabli.api.PayabliApiClient;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
-import io.github.payabli.api.resources.moneyin.types.TransRequestBody;
 import io.github.payabli.api.types.PayMethodCredit;
+import io.github.payabli.api.types.PayMethodCreditMethod;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
+import io.github.payabli.api.types.TransRequestBody;
 import java.util.Optional;
 
 public class Example {
@@ -98,6 +99,7 @@ public class Example {
                                     .builder()
                                     .cardexp("02/27")
                                     .cardnumber("4111111111111111")
+                                    .method(PayMethodCreditMethod.CARD)
                                     .cardcvv(Optional.of("999"))
                                     .cardHolder(Optional.of("John Cassian"))
                                     .cardzip(Optional.of("12345"))
@@ -111,7 +113,7 @@ public class Example {
                                 .customerId(4440L)
                                 .build()
                         )
-                        .entryPoint("f743aed24a")
+                        .entryPoint("8cfec329267")
                         .ipaddress("255.255.255.255")
                         .build()
                 )
@@ -297,7 +299,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:0.0.332'
+  implementation 'io.github.payabli:sdk-java:1.0.0'
 }
 ```
 
@@ -309,7 +311,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>0.0.332</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 

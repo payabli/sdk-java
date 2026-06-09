@@ -35,6 +35,8 @@ public final class PayMethodAch {
 
     private final Optional<String> device;
 
+    private final PayMethodAchMethod method;
+
     private final Map<String, Object> additionalProperties;
 
     private PayMethodAch(
@@ -45,6 +47,7 @@ public final class PayMethodAch {
             Optional<AchHolderType> achHolderType,
             String achRouting,
             Optional<String> device,
+            PayMethodAchMethod method,
             Map<String, Object> additionalProperties) {
         this.achAccount = achAccount;
         this.achAccountType = achAccountType;
@@ -53,6 +56,7 @@ public final class PayMethodAch {
         this.achHolderType = achHolderType;
         this.achRouting = achRouting;
         this.device = device;
+        this.method = method;
         this.additionalProperties = additionalProperties;
     }
 
@@ -101,8 +105,8 @@ public final class PayMethodAch {
     }
 
     @JsonProperty("method")
-    public String getMethod() {
-        return "ach";
+    public PayMethodAchMethod getMethod() {
+        return method;
     }
 
     @java.lang.Override
@@ -123,7 +127,8 @@ public final class PayMethodAch {
                 && achHolder.equals(other.achHolder)
                 && achHolderType.equals(other.achHolderType)
                 && achRouting.equals(other.achRouting)
-                && device.equals(other.device);
+                && device.equals(other.device)
+                && method.equals(other.method);
     }
 
     @java.lang.Override
@@ -135,7 +140,8 @@ public final class PayMethodAch {
                 this.achHolder,
                 this.achHolderType,
                 this.achRouting,
-                this.device);
+                this.device,
+                this.method);
     }
 
     @java.lang.Override
@@ -164,7 +170,11 @@ public final class PayMethodAch {
         /**
          * <p>ABA/routing number of bank account. This field is <strong>required</strong> when method = 'ach'.</p>
          */
-        _FinalStage achRouting(@NotNull String achRouting);
+        MethodStage achRouting(@NotNull String achRouting);
+    }
+
+    public interface MethodStage {
+        _FinalStage method(@NotNull PayMethodAchMethod method);
     }
 
     public interface _FinalStage {
@@ -195,12 +205,15 @@ public final class PayMethodAch {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements AchAccountStage, AchHolderStage, AchRoutingStage, _FinalStage {
+    public static final class Builder
+            implements AchAccountStage, AchHolderStage, AchRoutingStage, MethodStage, _FinalStage {
         private String achAccount;
 
         private String achHolder;
 
         private String achRouting;
+
+        private PayMethodAchMethod method;
 
         private Optional<String> device = Optional.empty();
 
@@ -224,6 +237,7 @@ public final class PayMethodAch {
             achHolderType(other.getAchHolderType());
             achRouting(other.getAchRouting());
             device(other.getDevice());
+            method(other.getMethod());
             return this;
         }
 
@@ -253,8 +267,15 @@ public final class PayMethodAch {
          */
         @java.lang.Override
         @JsonSetter("achRouting")
-        public _FinalStage achRouting(@NotNull String achRouting) {
+        public MethodStage achRouting(@NotNull String achRouting) {
             this.achRouting = Objects.requireNonNull(achRouting, "achRouting must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull PayMethodAchMethod method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
             return this;
         }
 
@@ -327,6 +348,7 @@ public final class PayMethodAch {
                     achHolderType,
                     achRouting,
                     device,
+                    method,
                     additionalProperties);
         }
 

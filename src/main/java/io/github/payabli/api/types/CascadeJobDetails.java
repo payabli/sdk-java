@@ -27,7 +27,7 @@ public final class CascadeJobDetails {
 
     private final Optional<String> jobId;
 
-    private final Optional<String> jobStatus;
+    private final Optional<JobStatus> jobStatus;
 
     private final Optional<OffsetDateTime> updatedAt;
 
@@ -37,7 +37,7 @@ public final class CascadeJobDetails {
             Optional<OffsetDateTime> createdAt,
             Optional<String> jobErrorMessage,
             Optional<String> jobId,
-            Optional<String> jobStatus,
+            Optional<JobStatus> jobStatus,
             Optional<OffsetDateTime> updatedAt,
             Map<String, Object> additionalProperties) {
         this.createdAt = createdAt;
@@ -67,7 +67,7 @@ public final class CascadeJobDetails {
     }
 
     @JsonProperty("jobStatus")
-    public Optional<String> getJobStatus() {
+    public Optional<JobStatus> getJobStatus() {
         return jobStatus;
     }
 
@@ -117,7 +117,7 @@ public final class CascadeJobDetails {
 
         private Optional<String> jobId = Optional.empty();
 
-        private Optional<String> jobStatus = Optional.empty();
+        private Optional<JobStatus> jobStatus = Optional.empty();
 
         private Optional<OffsetDateTime> updatedAt = Optional.empty();
 
@@ -172,12 +172,12 @@ public final class CascadeJobDetails {
         }
 
         @JsonSetter(value = "jobStatus", nulls = Nulls.SKIP)
-        public Builder jobStatus(Optional<String> jobStatus) {
+        public Builder jobStatus(Optional<JobStatus> jobStatus) {
             this.jobStatus = jobStatus;
             return this;
         }
 
-        public Builder jobStatus(String jobStatus) {
+        public Builder jobStatus(JobStatus jobStatus) {
             this.jobStatus = Optional.ofNullable(jobStatus);
             return this;
         }

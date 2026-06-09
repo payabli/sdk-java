@@ -8,10 +8,10 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.tokenstorage.requests.AddMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
-import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
+import io.github.payabli.api.types.AddMethodResponse;
+import io.github.payabli.api.types.GetMethodResponse;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
+import io.github.payabli.api.types.RequestTokenStorage;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncTokenStorageClient {
@@ -89,21 +89,6 @@ public class AsyncTokenStorageClient {
     }
 
     /**
-     * Deletes a saved payment method.
-     */
-    public CompletableFuture<PayabliApiResponsePaymethodDelete> removeMethod(String methodId) {
-        return this.rawClient.removeMethod(methodId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a saved payment method.
-     */
-    public CompletableFuture<PayabliApiResponsePaymethodDelete> removeMethod(
-            String methodId, RequestOptions requestOptions) {
-        return this.rawClient.removeMethod(methodId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Updates a saved payment method.
      */
     public CompletableFuture<PayabliApiResponsePaymethodDelete> updateMethod(
@@ -133,5 +118,20 @@ public class AsyncTokenStorageClient {
     public CompletableFuture<PayabliApiResponsePaymethodDelete> updateMethod(
             String methodId, UpdateMethodRequest request, RequestOptions requestOptions) {
         return this.rawClient.updateMethod(methodId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a saved payment method.
+     */
+    public CompletableFuture<PayabliApiResponsePaymethodDelete> removeMethod(String methodId) {
+        return this.rawClient.removeMethod(methodId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a saved payment method.
+     */
+    public CompletableFuture<PayabliApiResponsePaymethodDelete> removeMethod(
+            String methodId, RequestOptions requestOptions) {
+        return this.rawClient.removeMethod(methodId, requestOptions).thenApply(response -> response.body());
     }
 }

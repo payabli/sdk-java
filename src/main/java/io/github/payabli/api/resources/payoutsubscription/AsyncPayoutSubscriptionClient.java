@@ -6,12 +6,11 @@ package io.github.payabli.api.resources.payoutsubscription;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.payoutsubscription.requests.RequestPayoutSchedule;
-import io.github.payabli.api.resources.payoutsubscription.types.AddPayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.DeletePayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.GetPayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.PayoutSubscriptionRequestBody;
-import io.github.payabli.api.resources.payoutsubscription.types.UpdatePayoutSubscriptionBody;
-import io.github.payabli.api.resources.payoutsubscription.types.UpdatePayoutSubscriptionResponse;
+import io.github.payabli.api.resources.payoutsubscription.requests.UpdatePayoutSubscriptionBody;
+import io.github.payabli.api.types.AddPayoutSubscriptionResponse;
+import io.github.payabli.api.types.DeletePayoutSubscriptionResponse;
+import io.github.payabli.api.types.GetPayoutSubscriptionResponse;
+import io.github.payabli.api.types.UpdatePayoutSubscriptionResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncPayoutSubscriptionClient {
@@ -29,22 +28,6 @@ public class AsyncPayoutSubscriptionClient {
      */
     public AsyncRawPayoutSubscriptionClient withRawResponse() {
         return this.rawClient;
-    }
-
-    /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
-     */
-    public CompletableFuture<AddPayoutSubscriptionResponse> createPayoutSubscription(
-            PayoutSubscriptionRequestBody body) {
-        return this.rawClient.createPayoutSubscription(body).thenApply(response -> response.body());
-    }
-
-    /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
-     */
-    public CompletableFuture<AddPayoutSubscriptionResponse> createPayoutSubscription(
-            PayoutSubscriptionRequestBody body, RequestOptions requestOptions) {
-        return this.rawClient.createPayoutSubscription(body, requestOptions).thenApply(response -> response.body());
     }
 
     /**

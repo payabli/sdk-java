@@ -5,8 +5,8 @@ package io.github.payabli.api.resources.ocr;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.resources.ocr.types.FileContentImageOnly;
-import io.github.payabli.api.resources.ocr.types.PayabliApiResponseOcr;
+import io.github.payabli.api.types.FileContentImageOnly;
+import io.github.payabli.api.types.PayabliApiResponseOcr;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncOcrClient {

@@ -7,10 +7,10 @@ import io.github.payabli.api.resources.statistic.requests.BasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.CustomerBasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.SubStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.VendorBasicStatsRequest;
-import io.github.payabli.api.resources.statistic.types.StatBasicExtendedQueryRecord;
-import io.github.payabli.api.resources.statistic.types.StatBasicQueryRecord;
-import io.github.payabli.api.resources.statistic.types.StatisticsVendorQueryRecord;
-import io.github.payabli.api.resources.statistic.types.SubscriptionStatsQueryRecord;
+import io.github.payabli.api.types.StatBasicExtendedQueryRecord;
+import io.github.payabli.api.types.StatBasicQueryRecord;
+import io.github.payabli.api.types.StatisticsVendorQueryRecord;
+import io.github.payabli.api.types.SubscriptionStatsQueryRecord;
 import java.util.List;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -144,7 +144,7 @@ public class StatisticWireTest {
                 .setBody("[{\"interval\":\"2023-03\",\"count\":45,\"volume\":12500.75}]"));
         List<SubscriptionStatsQueryRecord> response = client.statistic()
                 .customerBasicStats(
-                        "ytd", "m", 998, CustomerBasicStatsRequest.builder().build());
+                        "ytd", "m", 4440, CustomerBasicStatsRequest.builder().build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());

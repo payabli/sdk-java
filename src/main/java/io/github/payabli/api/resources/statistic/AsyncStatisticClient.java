@@ -9,10 +9,10 @@ import io.github.payabli.api.resources.statistic.requests.BasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.CustomerBasicStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.SubStatsRequest;
 import io.github.payabli.api.resources.statistic.requests.VendorBasicStatsRequest;
-import io.github.payabli.api.resources.statistic.types.StatBasicExtendedQueryRecord;
-import io.github.payabli.api.resources.statistic.types.StatBasicQueryRecord;
-import io.github.payabli.api.resources.statistic.types.StatisticsVendorQueryRecord;
-import io.github.payabli.api.resources.statistic.types.SubscriptionStatsQueryRecord;
+import io.github.payabli.api.types.StatBasicExtendedQueryRecord;
+import io.github.payabli.api.types.StatBasicQueryRecord;
+import io.github.payabli.api.types.StatisticsVendorQueryRecord;
+import io.github.payabli.api.types.SubscriptionStatsQueryRecord;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 

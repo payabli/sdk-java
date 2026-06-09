@@ -43,211 +43,195 @@ public class PayabliApiClient {
 
     protected final Supplier<BillClient> billClient;
 
-    protected final Supplier<BoardingClient> boardingClient;
-
-    protected final Supplier<ChargeBacksClient> chargeBacksClient;
+    protected final Supplier<CustomerClient> customerClient;
 
     protected final Supplier<CheckCaptureClient> checkCaptureClient;
 
-    protected final Supplier<CloudClient> cloudClient;
-
-    protected final Supplier<CustomerClient> customerClient;
-
-    protected final Supplier<ExportClient> exportClient;
-
-    protected final Supplier<GhostCardClient> ghostCardClient;
-
-    protected final Supplier<HostedPaymentPagesClient> hostedPaymentPagesClient;
-
-    protected final Supplier<ImportClient> importClient;
-
-    protected final Supplier<InvoiceClient> invoiceClient;
-
-    protected final Supplier<LineItemClient> lineItemClient;
-
-    protected final Supplier<ManagementClient> managementClient;
-
     protected final Supplier<MoneyInClient> moneyInClient;
-
-    protected final Supplier<MoneyOutClient> moneyOutClient;
-
-    protected final Supplier<NotificationClient> notificationClient;
-
-    protected final Supplier<NotificationlogsClient> notificationlogsClient;
-
-    protected final Supplier<OcrClient> ocrClient;
-
-    protected final Supplier<OrganizationClient> organizationClient;
-
-    protected final Supplier<PaymentLinkClient> paymentLinkClient;
-
-    protected final Supplier<PaymentMethodDomainClient> paymentMethodDomainClient;
-
-    protected final Supplier<PayoutSubscriptionClient> payoutSubscriptionClient;
-
-    protected final Supplier<PaypointClient> paypointClient;
-
-    protected final Supplier<QueryClient> queryClient;
-
-    protected final Supplier<StatisticClient> statisticClient;
 
     protected final Supplier<SubscriptionClient> subscriptionClient;
 
-    protected final Supplier<TemplatesClient> templatesClient;
+    protected final Supplier<InvoiceClient> invoiceClient;
+
+    protected final Supplier<PaymentLinkClient> paymentLinkClient;
 
     protected final Supplier<TokenStorageClient> tokenStorageClient;
+
+    protected final Supplier<PaypointClient> paypointClient;
+
+    protected final Supplier<HostedPaymentPagesClient> hostedPaymentPagesClient;
+
+    protected final Supplier<PaymentMethodDomainClient> paymentMethodDomainClient;
+
+    protected final Supplier<ImportClient> importClient;
+
+    protected final Supplier<QueryClient> queryClient;
+
+    protected final Supplier<OcrClient> ocrClient;
+
+    protected final Supplier<NotificationlogsClient> notificationlogsClient;
+
+    protected final Supplier<CloudClient> cloudClient;
+
+    protected final Supplier<LineItemClient> lineItemClient;
+
+    protected final Supplier<BoardingClient> boardingClient;
+
+    protected final Supplier<TemplatesClient> templatesClient;
+
+    protected final Supplier<ExportClient> exportClient;
+
+    protected final Supplier<OrganizationClient> organizationClient;
+
+    protected final Supplier<ManagementClient> managementClient;
+
+    protected final Supplier<StatisticClient> statisticClient;
+
+    protected final Supplier<NotificationClient> notificationClient;
 
     protected final Supplier<UserClient> userClient;
 
     protected final Supplier<VendorClient> vendorClient;
 
+    protected final Supplier<GhostCardClient> ghostCardClient;
+
+    protected final Supplier<MoneyOutClient> moneyOutClient;
+
     protected final Supplier<WalletClient> walletClient;
+
+    protected final Supplier<PayoutSubscriptionClient> payoutSubscriptionClient;
+
+    protected final Supplier<ChargeBacksClient> chargeBacksClient;
 
     public PayabliApiClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.billClient = Suppliers.memoize(() -> new BillClient(clientOptions));
-        this.boardingClient = Suppliers.memoize(() -> new BoardingClient(clientOptions));
-        this.chargeBacksClient = Suppliers.memoize(() -> new ChargeBacksClient(clientOptions));
-        this.checkCaptureClient = Suppliers.memoize(() -> new CheckCaptureClient(clientOptions));
-        this.cloudClient = Suppliers.memoize(() -> new CloudClient(clientOptions));
         this.customerClient = Suppliers.memoize(() -> new CustomerClient(clientOptions));
-        this.exportClient = Suppliers.memoize(() -> new ExportClient(clientOptions));
-        this.ghostCardClient = Suppliers.memoize(() -> new GhostCardClient(clientOptions));
-        this.hostedPaymentPagesClient = Suppliers.memoize(() -> new HostedPaymentPagesClient(clientOptions));
-        this.importClient = Suppliers.memoize(() -> new ImportClient(clientOptions));
-        this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
-        this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
-        this.managementClient = Suppliers.memoize(() -> new ManagementClient(clientOptions));
+        this.checkCaptureClient = Suppliers.memoize(() -> new CheckCaptureClient(clientOptions));
         this.moneyInClient = Suppliers.memoize(() -> new MoneyInClient(clientOptions));
-        this.moneyOutClient = Suppliers.memoize(() -> new MoneyOutClient(clientOptions));
-        this.notificationClient = Suppliers.memoize(() -> new NotificationClient(clientOptions));
-        this.notificationlogsClient = Suppliers.memoize(() -> new NotificationlogsClient(clientOptions));
-        this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
-        this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
-        this.paymentLinkClient = Suppliers.memoize(() -> new PaymentLinkClient(clientOptions));
-        this.paymentMethodDomainClient = Suppliers.memoize(() -> new PaymentMethodDomainClient(clientOptions));
-        this.payoutSubscriptionClient = Suppliers.memoize(() -> new PayoutSubscriptionClient(clientOptions));
-        this.paypointClient = Suppliers.memoize(() -> new PaypointClient(clientOptions));
-        this.queryClient = Suppliers.memoize(() -> new QueryClient(clientOptions));
-        this.statisticClient = Suppliers.memoize(() -> new StatisticClient(clientOptions));
         this.subscriptionClient = Suppliers.memoize(() -> new SubscriptionClient(clientOptions));
-        this.templatesClient = Suppliers.memoize(() -> new TemplatesClient(clientOptions));
+        this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
+        this.paymentLinkClient = Suppliers.memoize(() -> new PaymentLinkClient(clientOptions));
         this.tokenStorageClient = Suppliers.memoize(() -> new TokenStorageClient(clientOptions));
+        this.paypointClient = Suppliers.memoize(() -> new PaypointClient(clientOptions));
+        this.hostedPaymentPagesClient = Suppliers.memoize(() -> new HostedPaymentPagesClient(clientOptions));
+        this.paymentMethodDomainClient = Suppliers.memoize(() -> new PaymentMethodDomainClient(clientOptions));
+        this.importClient = Suppliers.memoize(() -> new ImportClient(clientOptions));
+        this.queryClient = Suppliers.memoize(() -> new QueryClient(clientOptions));
+        this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
+        this.notificationlogsClient = Suppliers.memoize(() -> new NotificationlogsClient(clientOptions));
+        this.cloudClient = Suppliers.memoize(() -> new CloudClient(clientOptions));
+        this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
+        this.boardingClient = Suppliers.memoize(() -> new BoardingClient(clientOptions));
+        this.templatesClient = Suppliers.memoize(() -> new TemplatesClient(clientOptions));
+        this.exportClient = Suppliers.memoize(() -> new ExportClient(clientOptions));
+        this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
+        this.managementClient = Suppliers.memoize(() -> new ManagementClient(clientOptions));
+        this.statisticClient = Suppliers.memoize(() -> new StatisticClient(clientOptions));
+        this.notificationClient = Suppliers.memoize(() -> new NotificationClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.vendorClient = Suppliers.memoize(() -> new VendorClient(clientOptions));
+        this.ghostCardClient = Suppliers.memoize(() -> new GhostCardClient(clientOptions));
+        this.moneyOutClient = Suppliers.memoize(() -> new MoneyOutClient(clientOptions));
         this.walletClient = Suppliers.memoize(() -> new WalletClient(clientOptions));
+        this.payoutSubscriptionClient = Suppliers.memoize(() -> new PayoutSubscriptionClient(clientOptions));
+        this.chargeBacksClient = Suppliers.memoize(() -> new ChargeBacksClient(clientOptions));
     }
 
     public BillClient bill() {
         return this.billClient.get();
     }
 
-    public BoardingClient boarding() {
-        return this.boardingClient.get();
-    }
-
-    public ChargeBacksClient chargeBacks() {
-        return this.chargeBacksClient.get();
+    public CustomerClient customer() {
+        return this.customerClient.get();
     }
 
     public CheckCaptureClient checkCapture() {
         return this.checkCaptureClient.get();
     }
 
-    public CloudClient cloud() {
-        return this.cloudClient.get();
-    }
-
-    public CustomerClient customer() {
-        return this.customerClient.get();
-    }
-
-    public ExportClient export() {
-        return this.exportClient.get();
-    }
-
-    public GhostCardClient ghostCard() {
-        return this.ghostCardClient.get();
-    }
-
-    public HostedPaymentPagesClient hostedPaymentPages() {
-        return this.hostedPaymentPagesClient.get();
-    }
-
-    public ImportClient import_() {
-        return this.importClient.get();
-    }
-
-    public InvoiceClient invoice() {
-        return this.invoiceClient.get();
-    }
-
-    public LineItemClient lineItem() {
-        return this.lineItemClient.get();
-    }
-
-    public ManagementClient management() {
-        return this.managementClient.get();
-    }
-
     public MoneyInClient moneyIn() {
         return this.moneyInClient.get();
-    }
-
-    public MoneyOutClient moneyOut() {
-        return this.moneyOutClient.get();
-    }
-
-    public NotificationClient notification() {
-        return this.notificationClient.get();
-    }
-
-    public NotificationlogsClient notificationlogs() {
-        return this.notificationlogsClient.get();
-    }
-
-    public OcrClient ocr() {
-        return this.ocrClient.get();
-    }
-
-    public OrganizationClient organization() {
-        return this.organizationClient.get();
-    }
-
-    public PaymentLinkClient paymentLink() {
-        return this.paymentLinkClient.get();
-    }
-
-    public PaymentMethodDomainClient paymentMethodDomain() {
-        return this.paymentMethodDomainClient.get();
-    }
-
-    public PayoutSubscriptionClient payoutSubscription() {
-        return this.payoutSubscriptionClient.get();
-    }
-
-    public PaypointClient paypoint() {
-        return this.paypointClient.get();
-    }
-
-    public QueryClient query() {
-        return this.queryClient.get();
-    }
-
-    public StatisticClient statistic() {
-        return this.statisticClient.get();
     }
 
     public SubscriptionClient subscription() {
         return this.subscriptionClient.get();
     }
 
-    public TemplatesClient templates() {
-        return this.templatesClient.get();
+    public InvoiceClient invoice() {
+        return this.invoiceClient.get();
+    }
+
+    public PaymentLinkClient paymentLink() {
+        return this.paymentLinkClient.get();
     }
 
     public TokenStorageClient tokenStorage() {
         return this.tokenStorageClient.get();
+    }
+
+    public PaypointClient paypoint() {
+        return this.paypointClient.get();
+    }
+
+    public HostedPaymentPagesClient hostedPaymentPages() {
+        return this.hostedPaymentPagesClient.get();
+    }
+
+    public PaymentMethodDomainClient paymentMethodDomain() {
+        return this.paymentMethodDomainClient.get();
+    }
+
+    public ImportClient import_() {
+        return this.importClient.get();
+    }
+
+    public QueryClient query() {
+        return this.queryClient.get();
+    }
+
+    public OcrClient ocr() {
+        return this.ocrClient.get();
+    }
+
+    public NotificationlogsClient notificationlogs() {
+        return this.notificationlogsClient.get();
+    }
+
+    public CloudClient cloud() {
+        return this.cloudClient.get();
+    }
+
+    public LineItemClient lineItem() {
+        return this.lineItemClient.get();
+    }
+
+    public BoardingClient boarding() {
+        return this.boardingClient.get();
+    }
+
+    public TemplatesClient templates() {
+        return this.templatesClient.get();
+    }
+
+    public ExportClient export() {
+        return this.exportClient.get();
+    }
+
+    public OrganizationClient organization() {
+        return this.organizationClient.get();
+    }
+
+    public ManagementClient management() {
+        return this.managementClient.get();
+    }
+
+    public StatisticClient statistic() {
+        return this.statisticClient.get();
+    }
+
+    public NotificationClient notification() {
+        return this.notificationClient.get();
     }
 
     public UserClient user() {
@@ -258,8 +242,24 @@ public class PayabliApiClient {
         return this.vendorClient.get();
     }
 
+    public GhostCardClient ghostCard() {
+        return this.ghostCardClient.get();
+    }
+
+    public MoneyOutClient moneyOut() {
+        return this.moneyOutClient.get();
+    }
+
     public WalletClient wallet() {
         return this.walletClient.get();
+    }
+
+    public PayoutSubscriptionClient payoutSubscription() {
+        return this.payoutSubscriptionClient.get();
+    }
+
+    public ChargeBacksClient chargeBacks() {
+        return this.chargeBacksClient.get();
     }
 
     public static PayabliApiClientBuilder builder() {

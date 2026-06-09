@@ -5,17 +5,17 @@ package io.github.payabli.api.resources.boarding;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
+import io.github.payabli.api.resources.boarding.requests.CreateApplicationFromPaypointRequest;
 import io.github.payabli.api.resources.boarding.requests.GetExternalApplicationRequest;
 import io.github.payabli.api.resources.boarding.requests.ListApplicationsRequest;
 import io.github.payabli.api.resources.boarding.requests.ListBoardingLinksRequest;
 import io.github.payabli.api.resources.boarding.requests.RequestAppByAuth;
-import io.github.payabli.api.resources.boarding.types.AddApplicationRequest;
-import io.github.payabli.api.resources.boarding.types.CreateApplicationFromPaypointRequest;
-import io.github.payabli.api.resources.boarding.types.CreateApplicationFromPaypointResponse;
+import io.github.payabli.api.types.AddApplicationRequest;
 import io.github.payabli.api.types.ApplicationData;
 import io.github.payabli.api.types.ApplicationDetailsRecord;
 import io.github.payabli.api.types.ApplicationQueryRecord;
 import io.github.payabli.api.types.BoardingLinkQueryRecord;
+import io.github.payabli.api.types.CreateApplicationFromPaypointResponse;
 import io.github.payabli.api.types.PayabliApiResponse00;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.QueryBoardingAppsListResponse;
@@ -51,6 +51,35 @@ public class BoardingClient {
     public PayabliApiResponse00Responsedatanonobject addApplication(
             AddApplicationRequest request, RequestOptions requestOptions) {
         return this.rawClient.addApplication(request, requestOptions).body();
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId) {
+        return this.rawClient.updateApplication(appId).body();
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, RequestOptions requestOptions) {
+        return this.rawClient.updateApplication(appId, requestOptions).body();
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, ApplicationData request) {
+        return this.rawClient.updateApplication(appId, request).body();
+    }
+
+    /**
+     * Updates a boarding application by ID. This endpoint requires an application API token.
+     */
+    public PayabliApiResponse00Responsedatanonobject updateApplication(
+            int appId, ApplicationData request, RequestOptions requestOptions) {
+        return this.rawClient.updateApplication(appId, request, requestOptions).body();
     }
 
     /**
@@ -247,35 +276,6 @@ public class BoardingClient {
     public QueryBoardingLinksResponse listBoardingLinks(
             int orgId, ListBoardingLinksRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBoardingLinks(orgId, request, requestOptions).body();
-    }
-
-    /**
-     * Updates a boarding application by ID. This endpoint requires an application API token.
-     */
-    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId) {
-        return this.rawClient.updateApplication(appId).body();
-    }
-
-    /**
-     * Updates a boarding application by ID. This endpoint requires an application API token.
-     */
-    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, RequestOptions requestOptions) {
-        return this.rawClient.updateApplication(appId, requestOptions).body();
-    }
-
-    /**
-     * Updates a boarding application by ID. This endpoint requires an application API token.
-     */
-    public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, ApplicationData request) {
-        return this.rawClient.updateApplication(appId, request).body();
-    }
-
-    /**
-     * Updates a boarding application by ID. This endpoint requires an application API token.
-     */
-    public PayabliApiResponse00Responsedatanonobject updateApplication(
-            int appId, ApplicationData request, RequestOptions requestOptions) {
-        return this.rawClient.updateApplication(appId, request, requestOptions).body();
     }
 
     /**

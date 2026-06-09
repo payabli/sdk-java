@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public final class Whenprovided {
-    public static final Whenprovided SIXTY_DAYS = new Whenprovided(Value.SIXTY_DAYS, "60+ Days");
-
     public static final Whenprovided THIRTY_DAYS_OR_LESS =
             new Whenprovided(Value.THIRTY_DAYS_OR_LESS, "30 Days or Less");
 
@@ -46,8 +44,6 @@ public final class Whenprovided {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case SIXTY_DAYS:
-                return visitor.visitSixtyDays();
             case THIRTY_DAYS_OR_LESS:
                 return visitor.visitThirtyDaysOrLess();
             case THIRTY_ONE_TO_60_DAYS:
@@ -61,8 +57,6 @@ public final class Whenprovided {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Whenprovided valueOf(String value) {
         switch (value) {
-            case "60+ Days":
-                return SIXTY_DAYS;
             case "30 Days or Less":
                 return THIRTY_DAYS_OR_LESS;
             case "31 to 60 Days":
@@ -77,8 +71,6 @@ public final class Whenprovided {
 
         THIRTY_ONE_TO_60_DAYS,
 
-        SIXTY_DAYS,
-
         UNKNOWN
     }
 
@@ -86,8 +78,6 @@ public final class Whenprovided {
         T visitThirtyDaysOrLess();
 
         T visitThirtyOneTo60Days();
-
-        T visitSixtyDays();
 
         T visitUnknown(String unknownType);
     }

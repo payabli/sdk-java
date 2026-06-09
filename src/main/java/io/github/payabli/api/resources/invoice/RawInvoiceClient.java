@@ -23,14 +23,14 @@ import io.github.payabli.api.resources.invoice.requests.GetAttachedFileFromInvoi
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
-import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
-import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
-import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
-import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
-import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
-import io.github.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import io.github.payabli.api.types.FileContent;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.GetInvoiceRecord;
+import io.github.payabli.api.types.InvoiceDataRequest;
+import io.github.payabli.api.types.InvoiceNumberResponse;
+import io.github.payabli.api.types.InvoiceResponseWithoutData;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.QueryInvoiceResponse;
+import io.github.payabli.api.types.SendInvoiceResponse;
 import java.io.IOException;
 import java.util.Map;
 import okhttp3.Headers;
@@ -128,13 +128,103 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
+        return getAttachedFileFromInvoice(
+                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+            int idInvoice, String filename, RequestOptions requestOptions) {
+        return getAttachedFileFromInvoice(
+                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
+        return getAttachedFileFromInvoice(idInvoice, filename, request, null);
+    }
+
+    /**
+     * Retrieves a file attached to an invoice.
+     */
+    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Invoice/attachedFileFromInvoice")
+                .addPathSegment(Integer.toString(idInvoice))
+                .addPathSegment(filename);
+        if (request.getReturnObject().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnObject", request.getReturnObject().get(), false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -196,13 +286,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -217,17 +308,16 @@ public class RawInvoiceClient {
     }
 
     /**
-     * Deletes a single invoice from an entrypoint.
+     * Retrieves a single invoice by ID.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(int idInvoice) {
-        return deleteInvoice(idInvoice, null);
+    public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice) {
+        return getInvoice(idInvoice, null);
     }
 
     /**
-     * Deletes a single invoice from an entrypoint.
+     * Retrieves a single invoice by ID.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(
-            int idInvoice, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice")
@@ -239,7 +329,7 @@ public class RawInvoiceClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -252,8 +342,7 @@ public class RawInvoiceClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceResponseWithoutData.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetInvoiceRecord.class), response);
             }
             try {
                 switch (response.code()) {
@@ -262,13 +351,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -358,13 +448,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -379,104 +470,17 @@ public class RawInvoiceClient {
     }
 
     /**
-     * Retrieves a file attached to an invoice.
+     * Deletes a single invoice from an entrypoint.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
-        return getAttachedFileFromInvoice(
-                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
+    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(int idInvoice) {
+        return deleteInvoice(idInvoice, null);
     }
 
     /**
-     * Retrieves a file attached to an invoice.
+     * Deletes a single invoice from an entrypoint.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
-            int idInvoice, String filename, RequestOptions requestOptions) {
-        return getAttachedFileFromInvoice(
-                idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
-    }
-
-    /**
-     * Retrieves a file attached to an invoice.
-     */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
-            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
-        return getAttachedFileFromInvoice(idInvoice, filename, request, null);
-    }
-
-    /**
-     * Retrieves a file attached to an invoice.
-     */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
-            int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("Invoice/attachedFileFromInvoice")
-                .addPathSegment(Integer.toString(idInvoice))
-                .addPathSegment(filename);
-        if (request.getReturnObject().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnObject", request.getReturnObject().get(), false);
-        }
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Retrieves a single invoice by ID.
-     */
-    public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice) {
-        return getInvoice(idInvoice, null);
-    }
-
-    /**
-     * Retrieves a single invoice by ID.
-     */
-    public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(
+            int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice")
@@ -488,7 +492,7 @@ public class RawInvoiceClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("GET", null)
+                .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -501,7 +505,8 @@ public class RawInvoiceClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetInvoiceRecord.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceResponseWithoutData.class),
+                        response);
             }
             try {
                 switch (response.code()) {
@@ -510,13 +515,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -574,13 +580,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -673,13 +680,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -772,13 +780,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -859,13 +868,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -925,13 +935,14 @@ public class RawInvoiceClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {

@@ -15,11 +15,11 @@ import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichRequest;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.resources.vendor.requests.VendorEnrichRequest;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
+import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.VendorData;
+import io.github.payabli.api.types.VendorEnrichResponse;
 import io.github.payabli.api.types.VendorQueryRecord;
 import java.io.IOException;
 import okhttp3.Headers;
@@ -105,13 +105,14 @@ public class RawVendorClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -126,16 +127,16 @@ public class RawVendorClient {
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor) {
-        return deleteVendor(idVendor, null);
+    public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor) {
+        return getVendor(idVendor, null);
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
@@ -147,7 +148,7 @@ public class RawVendorClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -160,27 +161,7 @@ public class RawVendorClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseVendors.class),
-                        response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
-                                response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class), response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
@@ -258,13 +239,14 @@ public class RawVendorClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -279,16 +261,16 @@ public class RawVendorClient {
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor) {
-        return getVendor(idVendor, null);
+    public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor) {
+        return deleteVendor(idVendor, null);
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
@@ -300,7 +282,7 @@ public class RawVendorClient {
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("GET", null)
+                .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json")
                 .build();
@@ -313,7 +295,28 @@ public class RawVendorClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseVendors.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiApiException(
@@ -376,13 +379,14 @@ public class RawVendorClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {

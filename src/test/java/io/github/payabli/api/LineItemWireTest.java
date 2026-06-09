@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.lineitem.requests.AddItemRequest;
 import io.github.payabli.api.resources.lineitem.requests.ListLineItemsRequest;
-import io.github.payabli.api.resources.lineitem.types.DeleteItemResponse;
+import io.github.payabli.api.types.DeleteItemResponse;
 import io.github.payabli.api.types.LineItem;
 import io.github.payabli.api.types.LineItemQueryRecord;
 import io.github.payabli.api.types.PayabliApiResponse6;
@@ -45,7 +45,7 @@ public class LineItemWireTest {
                 .setBody("{\"isSuccess\":true,\"responseData\":700,\"responseText\":\"Success\"}"));
         PayabliApiResponse6 response = client.lineItem()
                 .addItem(
-                        "47cae3d74",
+                        "8cfec329267",
                         AddItemRequest.builder()
                                 .body(LineItem.builder()
                                         .itemCost(12.45)
@@ -74,6 +74,154 @@ public class LineItemWireTest {
                 + "  \"itemQty\": 1,\n"
                 + "  \"itemMode\": 0\n"
                 + "}";
+        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
+        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
+        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
+        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
+            String discriminator = null;
+            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
+            else if (actualJson.has("_type"))
+                discriminator = actualJson.get("_type").asText();
+            else if (actualJson.has("kind"))
+                discriminator = actualJson.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualJson.isNull()) {
+            Assertions.assertTrue(
+                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
+                    "request should be a valid JSON value");
+        }
+
+        if (actualJson.isArray()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
+        }
+        if (actualJson.isObject()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
+        }
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseData\": 700,\n"
+                + "  \"responseText\": \"Success\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testGetItem() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"createdAt\":\"2022-07-01T15:00:01Z\",\"id\":700,\"itemCategories\":[\"itemCategories\"],\"itemCommodityCode\":\"010\",\"itemCost\":5,\"itemDescription\":\"Deposit for materials.\",\"itemMode\":0,\"itemProductCode\":\"M-DEPOSIT\",\"itemProductName\":\"Materials deposit\",\"itemQty\":1,\"itemUnitOfMeasure\":\"SqFt\",\"lastUpdated\":\"2022-07-01T15:00:01Z\",\"pageidentifier\":\"null\",\"ParentOrgName\":\"PropertyManager Pro\",\"PaypointDbaname\":\"Sunshine Gutters\",\"PaypointEntryname\":\"d193cf9a46\",\"PaypointLegalname\":\"Sunshine Services, LLC\"}"));
+        LineItemQueryRecord response = client.lineItem().getItem(700);
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"createdAt\": \"2022-07-01T15:00:01Z\",\n"
+                + "  \"id\": 700,\n"
+                + "  \"itemCategories\": [\n"
+                + "    \"itemCategories\"\n"
+                + "  ],\n"
+                + "  \"itemCommodityCode\": \"010\",\n"
+                + "  \"itemCost\": 5,\n"
+                + "  \"itemDescription\": \"Deposit for materials.\",\n"
+                + "  \"itemMode\": 0,\n"
+                + "  \"itemProductCode\": \"M-DEPOSIT\",\n"
+                + "  \"itemProductName\": \"Materials deposit\",\n"
+                + "  \"itemQty\": 1,\n"
+                + "  \"itemUnitOfMeasure\": \"SqFt\",\n"
+                + "  \"lastUpdated\": \"2022-07-01T15:00:01Z\",\n"
+                + "  \"pageidentifier\": \"null\",\n"
+                + "  \"ParentOrgName\": \"PropertyManager Pro\",\n"
+                + "  \"PaypointDbaname\": \"Sunshine Gutters\",\n"
+                + "  \"PaypointEntryname\": \"d193cf9a46\",\n"
+                + "  \"PaypointLegalname\": \"Sunshine Services, LLC\"\n"
+                + "}";
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testUpdateItem() throws Exception {
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"isSuccess\":true,\"responseData\":700,\"responseText\":\"Success\"}"));
+        PayabliApiResponse6 response = client.lineItem()
+                .updateItem(700, LineItem.builder().itemCost(12.45).itemQty(1).build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("PUT", request.getMethod());
+        // Validate request body
+        String actualRequestBody = request.getBody().readUtf8();
+        String expectedRequestBody = "" + "{\n" + "  \"itemCost\": 12.45,\n" + "  \"itemQty\": 1\n" + "}";
         JsonNode actualJson = objectMapper.readTree(actualRequestBody);
         JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
         Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
@@ -187,74 +335,6 @@ public class LineItemWireTest {
     }
 
     @Test
-    public void testGetItem() throws Exception {
-        server.enqueue(
-                new MockResponse()
-                        .setResponseCode(200)
-                        .setBody(
-                                "{\"createdAt\":\"2022-07-01T15:00:01Z\",\"id\":700,\"itemCategories\":[\"itemCategories\"],\"itemCommodityCode\":\"010\",\"itemCost\":5,\"itemDescription\":\"Deposit for materials.\",\"itemMode\":0,\"itemProductCode\":\"M-DEPOSIT\",\"itemProductName\":\"Materials deposit\",\"itemQty\":1,\"itemUnitOfMeasure\":\"SqFt\",\"lastUpdated\":\"2022-07-01T15:00:01Z\",\"pageidentifier\":\"null\",\"ParentOrgName\":\"PropertyManager Pro\",\"PaypointDbaname\":\"Sunshine Gutters\",\"PaypointEntryname\":\"d193cf9a46\",\"PaypointLegalname\":\"Sunshine Services, LLC\"}"));
-        LineItemQueryRecord response = client.lineItem().getItem(700);
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("GET", request.getMethod());
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"createdAt\": \"2022-07-01T15:00:01Z\",\n"
-                + "  \"id\": 700,\n"
-                + "  \"itemCategories\": [\n"
-                + "    \"itemCategories\"\n"
-                + "  ],\n"
-                + "  \"itemCommodityCode\": \"010\",\n"
-                + "  \"itemCost\": 5,\n"
-                + "  \"itemDescription\": \"Deposit for materials.\",\n"
-                + "  \"itemMode\": 0,\n"
-                + "  \"itemProductCode\": \"M-DEPOSIT\",\n"
-                + "  \"itemProductName\": \"Materials deposit\",\n"
-                + "  \"itemQty\": 1,\n"
-                + "  \"itemUnitOfMeasure\": \"SqFt\",\n"
-                + "  \"lastUpdated\": \"2022-07-01T15:00:01Z\",\n"
-                + "  \"pageidentifier\": \"null\",\n"
-                + "  \"ParentOrgName\": \"PropertyManager Pro\",\n"
-                + "  \"PaypointDbaname\": \"Sunshine Gutters\",\n"
-                + "  \"PaypointEntryname\": \"d193cf9a46\",\n"
-                + "  \"PaypointLegalname\": \"Sunshine Services, LLC\"\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
     public void testListLineItems() throws Exception {
         server.enqueue(
                 new MockResponse()
@@ -299,86 +379,6 @@ public class LineItemWireTest {
                 + "    \"totalPages\": 2,\n"
                 + "    \"totalRecords\": 2\n"
                 + "  }\n"
-                + "}";
-        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
-        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
-        Assertions.assertTrue(
-                jsonEquals(expectedResponseNode, actualResponseNode),
-                "Response body structure does not match expected");
-        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
-            String discriminator = null;
-            if (actualResponseNode.has("type"))
-                discriminator = actualResponseNode.get("type").asText();
-            else if (actualResponseNode.has("_type"))
-                discriminator = actualResponseNode.get("_type").asText();
-            else if (actualResponseNode.has("kind"))
-                discriminator = actualResponseNode.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualResponseNode.isNull()) {
-            Assertions.assertTrue(
-                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
-                    "response should be a valid JSON value");
-        }
-
-        if (actualResponseNode.isArray()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
-        }
-        if (actualResponseNode.isObject()) {
-            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
-        }
-    }
-
-    @Test
-    public void testUpdateItem() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody("{\"isSuccess\":true,\"responseData\":700,\"responseText\":\"Success\"}"));
-        PayabliApiResponse6 response = client.lineItem()
-                .updateItem(700, LineItem.builder().itemCost(12.45).itemQty(1).build());
-        RecordedRequest request = server.takeRequest();
-        Assertions.assertNotNull(request);
-        Assertions.assertEquals("PUT", request.getMethod());
-        // Validate request body
-        String actualRequestBody = request.getBody().readUtf8();
-        String expectedRequestBody = "" + "{\n" + "  \"itemCost\": 12.45,\n" + "  \"itemQty\": 1\n" + "}";
-        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
-        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
-        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
-        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
-            String discriminator = null;
-            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
-            else if (actualJson.has("_type"))
-                discriminator = actualJson.get("_type").asText();
-            else if (actualJson.has("kind"))
-                discriminator = actualJson.get("kind").asText();
-            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
-            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
-        }
-
-        if (!actualJson.isNull()) {
-            Assertions.assertTrue(
-                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
-                    "request should be a valid JSON value");
-        }
-
-        if (actualJson.isArray()) {
-            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
-        }
-        if (actualJson.isObject()) {
-            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
-        }
-
-        // Validate response body
-        Assertions.assertNotNull(response, "Response should not be null");
-        String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody = ""
-                + "{\n"
-                + "  \"isSuccess\": true,\n"
-                + "  \"responseData\": 700,\n"
-                + "  \"responseText\": \"Success\"\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);

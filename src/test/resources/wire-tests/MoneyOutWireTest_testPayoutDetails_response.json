@@ -1,7 +1,7 @@
 {
   "Bills": [
     {
-      "invoiceNumber": "123B",
+      "invoiceNumber": "INV-2345",
       "netAmount": "8800.00"
     }
   ],
@@ -54,7 +54,7 @@
   "StatusText": "Captured",
   "TotalAmount": 8800,
   "Vendor": {
-    "VendorNumber": "1234",
+    "VendorNumber": "VEN-123",
     "Name1": "Herman's Coatings",
     "Name2": "Herman's Coating Supply Company, LLC",
     "EIN": "123456789",
@@ -93,7 +93,7 @@
     },
     "PaymentMethod": null,
     "VendorStatus": 1,
-    "VendorId": 1,
+    "VendorId": 456,
     "EnrollmentStatus": null,
     "Summary": {
       "ActiveBills": 2,

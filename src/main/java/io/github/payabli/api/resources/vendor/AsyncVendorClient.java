@@ -5,10 +5,10 @@ package io.github.payabli.api.resources.vendor;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichRequest;
-import io.github.payabli.api.resources.vendor.types.VendorEnrichResponse;
+import io.github.payabli.api.resources.vendor.requests.VendorEnrichRequest;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
 import io.github.payabli.api.types.VendorData;
+import io.github.payabli.api.types.VendorEnrichResponse;
 import io.github.payabli.api.types.VendorQueryRecord;
 import java.util.concurrent.CompletableFuture;
 
@@ -59,17 +59,17 @@ public class AsyncVendorClient {
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public CompletableFuture<PayabliApiResponseVendors> deleteVendor(int idVendor) {
-        return this.rawClient.deleteVendor(idVendor).thenApply(response -> response.body());
+    public CompletableFuture<VendorQueryRecord> getVendor(int idVendor) {
+        return this.rawClient.getVendor(idVendor).thenApply(response -> response.body());
     }
 
     /**
-     * Delete a vendor.
+     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public CompletableFuture<PayabliApiResponseVendors> deleteVendor(int idVendor, RequestOptions requestOptions) {
-        return this.rawClient.deleteVendor(idVendor, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
+        return this.rawClient.getVendor(idVendor, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -102,17 +102,17 @@ public class AsyncVendorClient {
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public CompletableFuture<VendorQueryRecord> getVendor(int idVendor) {
-        return this.rawClient.getVendor(idVendor).thenApply(response -> response.body());
+    public CompletableFuture<PayabliApiResponseVendors> deleteVendor(int idVendor) {
+        return this.rawClient.deleteVendor(idVendor).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+     * Delete a vendor.
      */
-    public CompletableFuture<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
-        return this.rawClient.getVendor(idVendor, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<PayabliApiResponseVendors> deleteVendor(int idVendor, RequestOptions requestOptions) {
+        return this.rawClient.deleteVendor(idVendor, requestOptions).thenApply(response -> response.body());
     }
 
     /**

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.paymentlink.types.PaymentPageRequestBodyOut;
+import io.github.payabli.api.types.PaymentPageRequestBodyOut;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -49,6 +49,9 @@ public final class PayLinkDataOut {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The entity's entrypoint identifier. <a href="/developers/api-reference/api-overview#entrypoint-vs-entry">Learn more</a>
+     */
     @JsonProperty("entryPoint")
     public String getEntryPoint() {
         return entryPoint;
@@ -117,6 +120,9 @@ public final class PayLinkDataOut {
     }
 
     public interface EntryPointStage {
+        /**
+         * <p>The entity's entrypoint identifier. <a href="/developers/api-reference/api-overview#entrypoint-vs-entry">Learn more</a></p>
+         */
         VendorNumberStage entryPoint(@NotNull String entryPoint);
 
         Builder from(PayLinkDataOut other);
@@ -182,6 +188,11 @@ public final class PayLinkDataOut {
             return this;
         }
 
+        /**
+         * <p>The entity's entrypoint identifier. <a href="/developers/api-reference/api-overview#entrypoint-vs-entry">Learn more</a></p>
+         * <p>The entity's entrypoint identifier. <a href="/developers/api-reference/api-overview#entrypoint-vs-entry">Learn more</a></p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("entryPoint")
         public VendorNumberStage entryPoint(@NotNull String entryPoint) {

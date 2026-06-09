@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.management.requests.VerifyAccountDetailsRequest;
-import io.github.payabli.api.resources.management.types.VerifyAccountDetailsResponse;
+import io.github.payabli.api.types.VerifyAccountDetailsResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -42,7 +42,7 @@ public class ManagementWireTest {
                                 "{\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"aba\":\"122105278\",\"accountNumber\":\"0000000016\",\"isValid\":true,\"errorMessage\":null,\"verificationResponse\":\"Pass\",\"responseCode\":\"2\",\"responseValue\":\"CA11\",\"responseDescription\":\"Customer authentication passed gAuthenticate.\",\"bankName\":null,\"reportedAccountType\":null,\"accountAddedDate\":null,\"accountLastUpdatedDate\":null,\"accountClosedDate\":null}}"));
         VerifyAccountDetailsResponse response = client.management()
                 .verifyAccountDetails(
-                        "entry752",
+                        "8cfec329267",
                         VerifyAccountDetailsRequest.builder()
                                 .routingNumber("122105278")
                                 .accountNumber("0000000016")

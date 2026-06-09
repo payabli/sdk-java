@@ -7,7 +7,7 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.ghostcard.requests.CreateGhostCardRequestBody;
 import io.github.payabli.api.resources.ghostcard.requests.UpdateCardRequestBody;
-import io.github.payabli.api.resources.ghostcard.types.CreateGhostCardResponse;
+import io.github.payabli.api.types.CreateGhostCardResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import java.util.concurrent.CompletableFuture;
 

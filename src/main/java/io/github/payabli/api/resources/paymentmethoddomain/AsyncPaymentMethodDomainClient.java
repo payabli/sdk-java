@@ -8,9 +8,9 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.AddPaymentMethodDomainRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.ListPaymentMethodDomainsRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.UpdatePaymentMethodDomainRequest;
-import io.github.payabli.api.resources.paymentmethoddomain.types.DeletePaymentMethodDomainResponse;
-import io.github.payabli.api.resources.paymentmethoddomain.types.ListPaymentMethodDomainsResponse;
 import io.github.payabli.api.types.AddPaymentMethodDomainApiResponse;
+import io.github.payabli.api.types.DeletePaymentMethodDomainResponse;
+import io.github.payabli.api.types.ListPaymentMethodDomainsResponse;
 import io.github.payabli.api.types.PaymentMethodDomainApiResponse;
 import io.github.payabli.api.types.PaymentMethodDomainGeneralResponse;
 import java.util.concurrent.CompletableFuture;
@@ -80,23 +80,6 @@ public class AsyncPaymentMethodDomainClient {
     }
 
     /**
-     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-     */
-    public CompletableFuture<DeletePaymentMethodDomainResponse> deletePaymentMethodDomain(String domainId) {
-        return this.rawClient.deletePaymentMethodDomain(domainId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-     */
-    public CompletableFuture<DeletePaymentMethodDomainResponse> deletePaymentMethodDomain(
-            String domainId, RequestOptions requestOptions) {
-        return this.rawClient
-                .deletePaymentMethodDomain(domainId, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
      * Get the details for a payment method domain.
      */
     public CompletableFuture<PaymentMethodDomainApiResponse> getPaymentMethodDomain(String domainId) {
@@ -112,33 +95,20 @@ public class AsyncPaymentMethodDomainClient {
     }
 
     /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
      */
-    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains() {
-        return this.rawClient.listPaymentMethodDomains().thenApply(response -> response.body());
+    public CompletableFuture<DeletePaymentMethodDomainResponse> deletePaymentMethodDomain(String domainId) {
+        return this.rawClient.deletePaymentMethodDomain(domainId).thenApply(response -> response.body());
     }
 
     /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
      */
-    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(RequestOptions requestOptions) {
-        return this.rawClient.listPaymentMethodDomains(requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
-     */
-    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(
-            ListPaymentMethodDomainsRequest request) {
-        return this.rawClient.listPaymentMethodDomains(request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
-     */
-    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(
-            ListPaymentMethodDomainsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listPaymentMethodDomains(request, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<DeletePaymentMethodDomainResponse> deletePaymentMethodDomain(
+            String domainId, RequestOptions requestOptions) {
+        return this.rawClient
+                .deletePaymentMethodDomain(domainId, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
@@ -174,6 +144,36 @@ public class AsyncPaymentMethodDomainClient {
         return this.rawClient
                 .updatePaymentMethodDomain(domainId, request, requestOptions)
                 .thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains() {
+        return this.rawClient.listPaymentMethodDomains().thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(RequestOptions requestOptions) {
+        return this.rawClient.listPaymentMethodDomains(requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(
+            ListPaymentMethodDomainsRequest request) {
+        return this.rawClient.listPaymentMethodDomains(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+     */
+    public CompletableFuture<ListPaymentMethodDomainsResponse> listPaymentMethodDomains(
+            ListPaymentMethodDomainsRequest request, RequestOptions requestOptions) {
+        return this.rawClient.listPaymentMethodDomains(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**

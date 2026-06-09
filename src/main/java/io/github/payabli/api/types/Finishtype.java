@@ -34,7 +34,7 @@ public final class Finishtype {
     }
 
     /**
-     * @return Flag to enable 'calendar' option
+     * @return Flag to enable the 'calendar' option.
      */
     @JsonProperty("calendar")
     public Optional<Boolean> getCalendar() {
@@ -42,7 +42,7 @@ public final class Finishtype {
     }
 
     /**
-     * @return Flag to enable 'untilCancelled' option
+     * @return Flag to enable the 'untilCancelled' option.
      */
     @JsonProperty("untilCancelled")
     public Optional<Boolean> getUntilCancelled() {
@@ -96,7 +96,7 @@ public final class Finishtype {
         }
 
         /**
-         * <p>Flag to enable 'calendar' option</p>
+         * <p>Flag to enable the 'calendar' option.</p>
          */
         @JsonSetter(value = "calendar", nulls = Nulls.SKIP)
         public Builder calendar(Optional<Boolean> calendar) {
@@ -110,7 +110,7 @@ public final class Finishtype {
         }
 
         /**
-         * <p>Flag to enable 'untilCancelled' option</p>
+         * <p>Flag to enable the 'untilCancelled' option.</p>
          */
         @JsonSetter(value = "untilCancelled", nulls = Nulls.SKIP)
         public Builder untilCancelled(Optional<Boolean> untilCancelled) {

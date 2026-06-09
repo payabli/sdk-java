@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.checkcapture.requests.CheckCaptureRequestBody;
-import io.github.payabli.api.resources.checkcapture.types.CheckCaptureResponse;
+import io.github.payabli.api.types.CheckCaptureResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -42,7 +42,7 @@ public class CheckCaptureWireTest {
                                 "{\"id\":\"txn_abc123def456\",\"success\":true,\"processDate\":\"2025-04-10T04:17:09.875Z\",\"ocrMicr\":\"⑆123456789⑆ ⑈123456⑈ 0123\",\"ocrMicrStatus\":\"SUCCESS\",\"ocrMicrConfidence\":\"95\",\"ocrAccountNumber\":\"123456\",\"ocrRoutingNumber\":\"123456789\",\"ocrCheckNumber\":\"0123\",\"ocrCheckTranCode\":\"\",\"ocrAmount\":\"125.50\",\"ocrAmountStatus\":\"SUCCESS\",\"ocrAmountConfidence\":\"98\",\"amountDiscrepancyDetected\":false,\"endorsementDetected\":true,\"errors\":[],\"messages\":[\"Check processed successfully\"],\"carLarMatchConfidence\":\"97\",\"carLarMatchStatus\":\"MATCH\",\"checkType\":1,\"referenceNumber\":\"REF_XYZ789\",\"pageIdentifier\":null}"));
         CheckCaptureResponse response = client.checkCapture()
                 .checkProcessing(CheckCaptureRequestBody.builder()
-                        .entryPoint("47abcfea12")
+                        .entryPoint("8cfec329267")
                         .frontImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
                         .rearImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
                         .checkAmount(12550)
@@ -54,7 +54,7 @@ public class CheckCaptureWireTest {
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
                 + "{\n"
-                + "  \"entryPoint\": \"47abcfea12\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"frontImage\": \"/9j/4AAQSkZJRgABAQEASABIAAD...\",\n"
                 + "  \"rearImage\": \"/9j/4AAQSkZJRgABAQEASABIAAD...\",\n"
                 + "  \"checkAmount\": 12550\n"

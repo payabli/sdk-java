@@ -16,26 +16,26 @@
   "baddress1": "Suite 103",
   "bankData": [
     {
-      "accountNumber": "123123123",
+      "accountNumber": "123123100",
       "bankAccountFunction": 1,
       "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
       "bankAccountHolderType": "Business",
-      "bankName": "Test Bank",
+      "bankName": "Test Bank 1",
       "nickname": "Withdrawal Account",
       "routingAccount": "123123123",
       "typeAccount": "Checking",
       "accountId": "123-456"
     },
     {
-      "accountNumber": "123123123",
+      "accountNumber": "123123200",
       "bankAccountFunction": 0,
       "bankAccountHolderName": "Gruzya Adventure Outfitters LLC",
       "bankAccountHolderType": "Business",
-      "bankName": "Test Bank",
+      "bankName": "Test Bank 2",
       "nickname": "Deposit Account",
-      "routingAccount": "123123123",
+      "routingAccount": "321321321",
       "typeAccount": "Checking",
-      "accountId": "123-456"
+      "accountId": "123-789"
     }
   ],
   "bcity": "New Vegas",

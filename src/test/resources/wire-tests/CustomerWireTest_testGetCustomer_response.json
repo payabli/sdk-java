@@ -1,6 +1,6 @@
 {
   "customerId": 4440,
-  "customerNumber": "3456-7645A",
+  "customerNumber": "C-90010",
   "customerUsername": "myusername",
   "customerStatus": 1,
   "Company": "AA LLC",
@@ -59,7 +59,7 @@
       },
       "PaypointDbaname": "Sunshine Gutters",
       "PaypointEntryname": "d193cf9a46",
-      "PaypointId": 255,
+      "PaypointId": 3040,
       "PaypointLegalname": "Sunshine Services, LLC",
       "PlanId": 0,
       "Source": "api",
@@ -78,7 +78,16 @@
   ],
   "StoredMethods": [
     {
-      "bin": "411111",
+      "IdPmethod": "6edcbb56-9c0e-4003-b3d1-99abf149ba0e",
+      "Method": "card",
+      "Descriptor": "visa",
+      "MaskedAccount": "4XXXXXXXX1111",
+      "ExpDate": "1227",
+      "HolderName": "Chad Mercia",
+      "AchSecCode": null,
+      "AchHolderType": null,
+      "IsValidatedACH": null,
+      "BIN": "411111",
       "binData": {
         "binMatchedLength": "6",
         "binCardBrand": "Visa",
@@ -92,13 +101,12 @@
         "binCardUseCategory": "Consumer",
         "binCardIssuerCountryCodeA3": "USA"
       },
-      "descriptor": "visa",
-      "expDate": "1227",
-      "holderName": "Chad Mercia",
-      "idPmethod": "6edcbb56-9c0e-4003-b3d1-99abf149ba0e",
-      "lastUpdated": "2022-07-01T15:00:01Z",
-      "maskedAccount": "4XXXXXXXX1111",
-      "method": "card"
+      "ABA": null,
+      "PostalCode": null,
+      "MethodType": null,
+      "WalletType": null,
+      "LastUpdated": "2022-07-01T15:00:01Z",
+      "CardUpdatedOn": null
     }
   ],
   "customerSummary": {
@@ -108,7 +116,7 @@
         "EntrypageId": 0,
         "FeeAmount": 1,
         "PayorId": 1551,
-        "PaypointId": 226,
+        "PaypointId": 3040,
         "SettlementStatus": 2,
         "splitCount": 0,
         "TotalAmount": 30.22,

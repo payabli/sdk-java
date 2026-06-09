@@ -19,10 +19,10 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.AddPaymentMethodDomainRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.ListPaymentMethodDomainsRequest;
 import io.github.payabli.api.resources.paymentmethoddomain.requests.UpdatePaymentMethodDomainRequest;
-import io.github.payabli.api.resources.paymentmethoddomain.types.DeletePaymentMethodDomainResponse;
-import io.github.payabli.api.resources.paymentmethoddomain.types.ListPaymentMethodDomainsResponse;
 import io.github.payabli.api.types.AddPaymentMethodDomainApiResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.DeletePaymentMethodDomainResponse;
+import io.github.payabli.api.types.ListPaymentMethodDomainsResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.PaymentMethodDomainApiResponse;
 import io.github.payabli.api.types.PaymentMethodDomainGeneralResponse;
 import java.io.IOException;
@@ -111,13 +111,14 @@ public class RawPaymentMethodDomainClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -179,13 +180,81 @@ public class RawPaymentMethodDomainClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (IOException e) {
+            throw new PayabliApiException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Get the details for a payment method domain.
+     */
+    public PayabliApiHttpResponse<PaymentMethodDomainApiResponse> getPaymentMethodDomain(String domainId) {
+        return getPaymentMethodDomain(domainId, null);
+    }
+
+    /**
+     * Get the details for a payment method domain.
+     */
+    public PayabliApiHttpResponse<PaymentMethodDomainApiResponse> getPaymentMethodDomain(
+            String domainId, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("PaymentMethodDomain")
+                .addPathSegment(domainId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PaymentMethodDomainApiResponse.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -246,13 +315,14 @@ public class RawPaymentMethodDomainClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -267,17 +337,35 @@ public class RawPaymentMethodDomainClient {
     }
 
     /**
-     * Get the details for a payment method domain.
+     * Update a payment method domain's configuration values.
      */
-    public PayabliApiHttpResponse<PaymentMethodDomainApiResponse> getPaymentMethodDomain(String domainId) {
-        return getPaymentMethodDomain(domainId, null);
+    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(String domainId) {
+        return updatePaymentMethodDomain(
+                domainId, UpdatePaymentMethodDomainRequest.builder().build());
     }
 
     /**
-     * Get the details for a payment method domain.
+     * Update a payment method domain's configuration values.
      */
-    public PayabliApiHttpResponse<PaymentMethodDomainApiResponse> getPaymentMethodDomain(
+    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
+        return updatePaymentMethodDomain(
+                domainId, UpdatePaymentMethodDomainRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * Update a payment method domain's configuration values.
+     */
+    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
+            String domainId, UpdatePaymentMethodDomainRequest request) {
+        return updatePaymentMethodDomain(domainId, request, null);
+    }
+
+    /**
+     * Update a payment method domain's configuration values.
+     */
+    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
+            String domainId, UpdatePaymentMethodDomainRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
@@ -287,10 +375,18 @@ public class RawPaymentMethodDomainClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("GET", null)
+                .method("PATCH", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
@@ -302,7 +398,8 @@ public class RawPaymentMethodDomainClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PaymentMethodDomainApiResponse.class),
+                        ObjectMappers.JSON_MAPPER.readValue(
+                                responseBodyString, PaymentMethodDomainGeneralResponse.class),
                         response);
             }
             try {
@@ -312,13 +409,14 @@ public class RawPaymentMethodDomainClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -411,106 +509,14 @@ public class RawPaymentMethodDomainClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 500:
-                        throw new InternalServerError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 503:
-                        throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
-                }
-            } catch (JsonProcessingException ignored) {
-                // unable to map error response, throwing generic error
-            }
-            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
-                    "Error with status code " + response.code(), response.code(), errorBody, response);
-        } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Update a payment method domain's configuration values.
-     */
-    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(String domainId) {
-        return updatePaymentMethodDomain(
-                domainId, UpdatePaymentMethodDomainRequest.builder().build());
-    }
-
-    /**
-     * Update a payment method domain's configuration values.
-     */
-    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
-            String domainId, RequestOptions requestOptions) {
-        return updatePaymentMethodDomain(
-                domainId, UpdatePaymentMethodDomainRequest.builder().build(), requestOptions);
-    }
-
-    /**
-     * Update a payment method domain's configuration values.
-     */
-    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
-            String domainId, UpdatePaymentMethodDomainRequest request) {
-        return updatePaymentMethodDomain(domainId, request, null);
-    }
-
-    /**
-     * Update a payment method domain's configuration values.
-     */
-    public PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse> updatePaymentMethodDomain(
-            String domainId, UpdatePaymentMethodDomainRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("PaymentMethodDomain")
-                .addPathSegment(domainId);
-        if (requestOptions != null) {
-            requestOptions.getQueryParameters().forEach((_key, _value) -> {
-                httpUrl.addQueryParameter(_key, _value);
-            });
-        }
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl.build())
-                .method("PATCH", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(
-                                responseBodyString, PaymentMethodDomainGeneralResponse.class),
-                        response);
-            }
-            try {
-                switch (response.code()) {
-                    case 400:
-                        throw new BadRequestError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
-                    case 401:
-                        throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {

@@ -21,11 +21,11 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BillItem.Builder.class)
 public final class BillItem {
-    private final Optional<List<Optional<String>>> itemCategories;
+    private final Optional<List<String>> itemCategories;
 
     private final Optional<String> itemCommodityCode;
 
-    private final double itemCost;
+    private final Optional<Double> itemCost;
 
     private final Optional<String> itemDescription;
 
@@ -48,9 +48,9 @@ public final class BillItem {
     private final Map<String, Object> additionalProperties;
 
     private BillItem(
-            Optional<List<Optional<String>>> itemCategories,
+            Optional<List<String>> itemCategories,
             Optional<String> itemCommodityCode,
-            double itemCost,
+            Optional<Double> itemCost,
             Optional<String> itemDescription,
             Optional<Integer> itemMode,
             Optional<String> itemProductCode,
@@ -80,7 +80,7 @@ public final class BillItem {
      * @return Array of tags classifying item or product.
      */
     @JsonProperty("itemCategories")
-    public Optional<List<Optional<String>>> getItemCategories() {
+    public Optional<List<String>> getItemCategories() {
         return itemCategories;
     }
 
@@ -93,7 +93,7 @@ public final class BillItem {
      * @return Item or product price per unit.
      */
     @JsonProperty("itemCost")
-    public double getItemCost() {
+    public Optional<Double> getItemCost() {
         return itemCost;
     }
 
@@ -103,7 +103,9 @@ public final class BillItem {
     }
 
     /**
-     * @return Internal class of item or product: value '0' is only for invoices , '1' for bills and, '2' common for both.
+     * @return Internal class of item or product: value <code>0</code> is only for invoices,
+     * <code>1</code> for bills, and <code>2</code> is common for both. Required on invoice line
+     * items — invoice creation fails with <code>Invalid item data</code> if it's omitted.
      */
     @JsonProperty("itemMode")
     public Optional<Integer> getItemMode() {
@@ -145,7 +147,8 @@ public final class BillItem {
     }
 
     /**
-     * @return Total amount in item or product.
+     * @return Per-line total for this item (unit cost times quantity). Distinct from
+     * the invoice's overall total, <code>invoiceAmount</code>. Required on invoice line items.
      */
     @JsonProperty("itemTotalAmount")
     public Optional<Double> getItemTotalAmount() {
@@ -171,7 +174,7 @@ public final class BillItem {
     private boolean equalTo(BillItem other) {
         return itemCategories.equals(other.itemCategories)
                 && itemCommodityCode.equals(other.itemCommodityCode)
-                && itemCost == other.itemCost
+                && itemCost.equals(other.itemCost)
                 && itemDescription.equals(other.itemDescription)
                 && itemMode.equals(other.itemMode)
                 && itemProductCode.equals(other.itemProductCode)
@@ -205,121 +208,41 @@ public final class BillItem {
         return ObjectMappers.stringify(this);
     }
 
-    public static ItemCostStage builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    public interface ItemCostStage {
-        /**
-         * <p>Item or product price per unit.</p>
-         */
-        _FinalStage itemCost(double itemCost);
-
-        Builder from(BillItem other);
-    }
-
-    public interface _FinalStage {
-        BillItem build();
-
-        _FinalStage additionalProperty(String key, Object value);
-
-        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-        /**
-         * <p>Array of tags classifying item or product.</p>
-         */
-        _FinalStage itemCategories(Optional<List<Optional<String>>> itemCategories);
-
-        _FinalStage itemCategories(List<Optional<String>> itemCategories);
-
-        _FinalStage itemCommodityCode(Optional<String> itemCommodityCode);
-
-        _FinalStage itemCommodityCode(String itemCommodityCode);
-
-        _FinalStage itemDescription(Optional<String> itemDescription);
-
-        _FinalStage itemDescription(String itemDescription);
-
-        /**
-         * <p>Internal class of item or product: value '0' is only for invoices , '1' for bills and, '2' common for both.</p>
-         */
-        _FinalStage itemMode(Optional<Integer> itemMode);
-
-        _FinalStage itemMode(Integer itemMode);
-
-        _FinalStage itemProductCode(Optional<String> itemProductCode);
-
-        _FinalStage itemProductCode(String itemProductCode);
-
-        _FinalStage itemProductName(Optional<String> itemProductName);
-
-        _FinalStage itemProductName(String itemProductName);
-
-        /**
-         * <p>Quantity of item or product.</p>
-         */
-        _FinalStage itemQty(Optional<Integer> itemQty);
-
-        _FinalStage itemQty(Integer itemQty);
-
-        /**
-         * <p>Tax amount applied to item or product.</p>
-         */
-        _FinalStage itemTaxAmount(Optional<Double> itemTaxAmount);
-
-        _FinalStage itemTaxAmount(Double itemTaxAmount);
-
-        /**
-         * <p>Tax rate applied to item or product.</p>
-         */
-        _FinalStage itemTaxRate(Optional<Double> itemTaxRate);
-
-        _FinalStage itemTaxRate(Double itemTaxRate);
-
-        /**
-         * <p>Total amount in item or product.</p>
-         */
-        _FinalStage itemTotalAmount(Optional<Double> itemTotalAmount);
-
-        _FinalStage itemTotalAmount(Double itemTotalAmount);
-
-        _FinalStage itemUnitOfMeasure(Optional<String> itemUnitOfMeasure);
-
-        _FinalStage itemUnitOfMeasure(String itemUnitOfMeasure);
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ItemCostStage, _FinalStage {
-        private double itemCost;
-
-        private Optional<String> itemUnitOfMeasure = Optional.empty();
-
-        private Optional<Double> itemTotalAmount = Optional.empty();
-
-        private Optional<Double> itemTaxRate = Optional.empty();
-
-        private Optional<Double> itemTaxAmount = Optional.empty();
-
-        private Optional<Integer> itemQty = Optional.empty();
-
-        private Optional<String> itemProductName = Optional.empty();
-
-        private Optional<String> itemProductCode = Optional.empty();
-
-        private Optional<Integer> itemMode = Optional.empty();
-
-        private Optional<String> itemDescription = Optional.empty();
+    public static final class Builder {
+        private Optional<List<String>> itemCategories = Optional.empty();
 
         private Optional<String> itemCommodityCode = Optional.empty();
 
-        private Optional<List<Optional<String>>> itemCategories = Optional.empty();
+        private Optional<Double> itemCost = Optional.empty();
+
+        private Optional<String> itemDescription = Optional.empty();
+
+        private Optional<Integer> itemMode = Optional.empty();
+
+        private Optional<String> itemProductCode = Optional.empty();
+
+        private Optional<String> itemProductName = Optional.empty();
+
+        private Optional<Integer> itemQty = Optional.empty();
+
+        private Optional<Double> itemTaxAmount = Optional.empty();
+
+        private Optional<Double> itemTaxRate = Optional.empty();
+
+        private Optional<Double> itemTotalAmount = Optional.empty();
+
+        private Optional<String> itemUnitOfMeasure = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @java.lang.Override
         public Builder from(BillItem other) {
             itemCategories(other.getItemCategories());
             itemCommodityCode(other.getItemCommodityCode());
@@ -337,203 +260,161 @@ public final class BillItem {
         }
 
         /**
-         * <p>Item or product price per unit.</p>
-         * <p>Item or product price per unit.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
+         * <p>Array of tags classifying item or product.</p>
          */
-        @java.lang.Override
-        @JsonSetter("itemCost")
-        public _FinalStage itemCost(double itemCost) {
+        @JsonSetter(value = "itemCategories", nulls = Nulls.SKIP)
+        public Builder itemCategories(Optional<List<String>> itemCategories) {
+            this.itemCategories = itemCategories;
+            return this;
+        }
+
+        public Builder itemCategories(List<String> itemCategories) {
+            this.itemCategories = Optional.ofNullable(itemCategories);
+            return this;
+        }
+
+        @JsonSetter(value = "itemCommodityCode", nulls = Nulls.SKIP)
+        public Builder itemCommodityCode(Optional<String> itemCommodityCode) {
+            this.itemCommodityCode = itemCommodityCode;
+            return this;
+        }
+
+        public Builder itemCommodityCode(String itemCommodityCode) {
+            this.itemCommodityCode = Optional.ofNullable(itemCommodityCode);
+            return this;
+        }
+
+        /**
+         * <p>Item or product price per unit.</p>
+         */
+        @JsonSetter(value = "itemCost", nulls = Nulls.SKIP)
+        public Builder itemCost(Optional<Double> itemCost) {
             this.itemCost = itemCost;
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage itemUnitOfMeasure(String itemUnitOfMeasure) {
-            this.itemUnitOfMeasure = Optional.ofNullable(itemUnitOfMeasure);
+        public Builder itemCost(Double itemCost) {
+            this.itemCost = Optional.ofNullable(itemCost);
             return this;
         }
 
-        @java.lang.Override
-        @JsonSetter(value = "itemUnitOfMeasure", nulls = Nulls.SKIP)
-        public _FinalStage itemUnitOfMeasure(Optional<String> itemUnitOfMeasure) {
-            this.itemUnitOfMeasure = itemUnitOfMeasure;
+        @JsonSetter(value = "itemDescription", nulls = Nulls.SKIP)
+        public Builder itemDescription(Optional<String> itemDescription) {
+            this.itemDescription = itemDescription;
             return this;
         }
 
-        /**
-         * <p>Total amount in item or product.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage itemTotalAmount(Double itemTotalAmount) {
-            this.itemTotalAmount = Optional.ofNullable(itemTotalAmount);
+        public Builder itemDescription(String itemDescription) {
+            this.itemDescription = Optional.ofNullable(itemDescription);
             return this;
         }
 
         /**
-         * <p>Total amount in item or product.</p>
+         * <p>Internal class of item or product: value <code>0</code> is only for invoices,
+         * <code>1</code> for bills, and <code>2</code> is common for both. Required on invoice line
+         * items — invoice creation fails with <code>Invalid item data</code> if it's omitted.</p>
          */
-        @java.lang.Override
-        @JsonSetter(value = "itemTotalAmount", nulls = Nulls.SKIP)
-        public _FinalStage itemTotalAmount(Optional<Double> itemTotalAmount) {
-            this.itemTotalAmount = itemTotalAmount;
+        @JsonSetter(value = "itemMode", nulls = Nulls.SKIP)
+        public Builder itemMode(Optional<Integer> itemMode) {
+            this.itemMode = itemMode;
             return this;
         }
 
-        /**
-         * <p>Tax rate applied to item or product.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage itemTaxRate(Double itemTaxRate) {
-            this.itemTaxRate = Optional.ofNullable(itemTaxRate);
+        public Builder itemMode(Integer itemMode) {
+            this.itemMode = Optional.ofNullable(itemMode);
             return this;
         }
 
-        /**
-         * <p>Tax rate applied to item or product.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "itemTaxRate", nulls = Nulls.SKIP)
-        public _FinalStage itemTaxRate(Optional<Double> itemTaxRate) {
-            this.itemTaxRate = itemTaxRate;
+        @JsonSetter(value = "itemProductCode", nulls = Nulls.SKIP)
+        public Builder itemProductCode(Optional<String> itemProductCode) {
+            this.itemProductCode = itemProductCode;
             return this;
         }
 
-        /**
-         * <p>Tax amount applied to item or product.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage itemTaxAmount(Double itemTaxAmount) {
-            this.itemTaxAmount = Optional.ofNullable(itemTaxAmount);
+        public Builder itemProductCode(String itemProductCode) {
+            this.itemProductCode = Optional.ofNullable(itemProductCode);
             return this;
         }
 
-        /**
-         * <p>Tax amount applied to item or product.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "itemTaxAmount", nulls = Nulls.SKIP)
-        public _FinalStage itemTaxAmount(Optional<Double> itemTaxAmount) {
-            this.itemTaxAmount = itemTaxAmount;
+        @JsonSetter(value = "itemProductName", nulls = Nulls.SKIP)
+        public Builder itemProductName(Optional<String> itemProductName) {
+            this.itemProductName = itemProductName;
+            return this;
+        }
+
+        public Builder itemProductName(String itemProductName) {
+            this.itemProductName = Optional.ofNullable(itemProductName);
             return this;
         }
 
         /**
          * <p>Quantity of item or product.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @java.lang.Override
-        public _FinalStage itemQty(Integer itemQty) {
+        @JsonSetter(value = "itemQty", nulls = Nulls.SKIP)
+        public Builder itemQty(Optional<Integer> itemQty) {
+            this.itemQty = itemQty;
+            return this;
+        }
+
+        public Builder itemQty(Integer itemQty) {
             this.itemQty = Optional.ofNullable(itemQty);
             return this;
         }
 
         /**
-         * <p>Quantity of item or product.</p>
+         * <p>Tax amount applied to item or product.</p>
          */
-        @java.lang.Override
-        @JsonSetter(value = "itemQty", nulls = Nulls.SKIP)
-        public _FinalStage itemQty(Optional<Integer> itemQty) {
-            this.itemQty = itemQty;
+        @JsonSetter(value = "itemTaxAmount", nulls = Nulls.SKIP)
+        public Builder itemTaxAmount(Optional<Double> itemTaxAmount) {
+            this.itemTaxAmount = itemTaxAmount;
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage itemProductName(String itemProductName) {
-            this.itemProductName = Optional.ofNullable(itemProductName);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "itemProductName", nulls = Nulls.SKIP)
-        public _FinalStage itemProductName(Optional<String> itemProductName) {
-            this.itemProductName = itemProductName;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage itemProductCode(String itemProductCode) {
-            this.itemProductCode = Optional.ofNullable(itemProductCode);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "itemProductCode", nulls = Nulls.SKIP)
-        public _FinalStage itemProductCode(Optional<String> itemProductCode) {
-            this.itemProductCode = itemProductCode;
+        public Builder itemTaxAmount(Double itemTaxAmount) {
+            this.itemTaxAmount = Optional.ofNullable(itemTaxAmount);
             return this;
         }
 
         /**
-         * <p>Internal class of item or product: value '0' is only for invoices , '1' for bills and, '2' common for both.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
+         * <p>Tax rate applied to item or product.</p>
          */
-        @java.lang.Override
-        public _FinalStage itemMode(Integer itemMode) {
-            this.itemMode = Optional.ofNullable(itemMode);
+        @JsonSetter(value = "itemTaxRate", nulls = Nulls.SKIP)
+        public Builder itemTaxRate(Optional<Double> itemTaxRate) {
+            this.itemTaxRate = itemTaxRate;
+            return this;
+        }
+
+        public Builder itemTaxRate(Double itemTaxRate) {
+            this.itemTaxRate = Optional.ofNullable(itemTaxRate);
             return this;
         }
 
         /**
-         * <p>Internal class of item or product: value '0' is only for invoices , '1' for bills and, '2' common for both.</p>
+         * <p>Per-line total for this item (unit cost times quantity). Distinct from
+         * the invoice's overall total, <code>invoiceAmount</code>. Required on invoice line items.</p>
          */
-        @java.lang.Override
-        @JsonSetter(value = "itemMode", nulls = Nulls.SKIP)
-        public _FinalStage itemMode(Optional<Integer> itemMode) {
-            this.itemMode = itemMode;
+        @JsonSetter(value = "itemTotalAmount", nulls = Nulls.SKIP)
+        public Builder itemTotalAmount(Optional<Double> itemTotalAmount) {
+            this.itemTotalAmount = itemTotalAmount;
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage itemDescription(String itemDescription) {
-            this.itemDescription = Optional.ofNullable(itemDescription);
+        public Builder itemTotalAmount(Double itemTotalAmount) {
+            this.itemTotalAmount = Optional.ofNullable(itemTotalAmount);
             return this;
         }
 
-        @java.lang.Override
-        @JsonSetter(value = "itemDescription", nulls = Nulls.SKIP)
-        public _FinalStage itemDescription(Optional<String> itemDescription) {
-            this.itemDescription = itemDescription;
+        @JsonSetter(value = "itemUnitOfMeasure", nulls = Nulls.SKIP)
+        public Builder itemUnitOfMeasure(Optional<String> itemUnitOfMeasure) {
+            this.itemUnitOfMeasure = itemUnitOfMeasure;
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage itemCommodityCode(String itemCommodityCode) {
-            this.itemCommodityCode = Optional.ofNullable(itemCommodityCode);
+        public Builder itemUnitOfMeasure(String itemUnitOfMeasure) {
+            this.itemUnitOfMeasure = Optional.ofNullable(itemUnitOfMeasure);
             return this;
         }
 
-        @java.lang.Override
-        @JsonSetter(value = "itemCommodityCode", nulls = Nulls.SKIP)
-        public _FinalStage itemCommodityCode(Optional<String> itemCommodityCode) {
-            this.itemCommodityCode = itemCommodityCode;
-            return this;
-        }
-
-        /**
-         * <p>Array of tags classifying item or product.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage itemCategories(List<Optional<String>> itemCategories) {
-            this.itemCategories = Optional.ofNullable(itemCategories);
-            return this;
-        }
-
-        /**
-         * <p>Array of tags classifying item or product.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "itemCategories", nulls = Nulls.SKIP)
-        public _FinalStage itemCategories(Optional<List<Optional<String>>> itemCategories) {
-            this.itemCategories = itemCategories;
-            return this;
-        }
-
-        @java.lang.Override
         public BillItem build() {
             return new BillItem(
                     itemCategories,
@@ -551,13 +432,11 @@ public final class BillItem {
                     additionalProperties);
         }
 
-        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
-        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

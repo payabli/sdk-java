@@ -228,8 +228,8 @@ public final class QueryResponseSettlementsRecordsItem {
 
     /**
      * @return Describes whether the transaction is being held or not.
-     * <p>1 - Transaction is held</p>
-     * <p>0 - Transaction isn't being held</p>
+     * 1 - Transaction is held
+     * 0 - Transaction isn't being held
      */
     @JsonProperty("isHold")
     public Optional<Integer> getIsHold() {
@@ -723,9 +723,9 @@ public final class QueryResponseSettlementsRecordsItem {
         }
 
         /**
-         * <p>Describes whether the transaction is being held or not.</p>
-         * <p>1 - Transaction is held</p>
-         * <p>0 - Transaction isn't being held</p>
+         * <p>Describes whether the transaction is being held or not.
+         * 1 - Transaction is held
+         * 0 - Transaction isn't being held</p>
          */
         @JsonSetter(value = "isHold", nulls = Nulls.SKIP)
         public Builder isHold(Optional<Integer> isHold) {

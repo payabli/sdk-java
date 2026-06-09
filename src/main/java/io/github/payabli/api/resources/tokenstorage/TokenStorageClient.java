@@ -8,10 +8,10 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.tokenstorage.requests.AddMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.GetMethodRequest;
 import io.github.payabli.api.resources.tokenstorage.requests.UpdateMethodRequest;
-import io.github.payabli.api.resources.tokenstorage.types.AddMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.GetMethodResponse;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStorage;
+import io.github.payabli.api.types.AddMethodResponse;
+import io.github.payabli.api.types.GetMethodResponse;
 import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
+import io.github.payabli.api.types.RequestTokenStorage;
 
 public class TokenStorageClient {
     protected final ClientOptions clientOptions;
@@ -87,20 +87,6 @@ public class TokenStorageClient {
     }
 
     /**
-     * Deletes a saved payment method.
-     */
-    public PayabliApiResponsePaymethodDelete removeMethod(String methodId) {
-        return this.rawClient.removeMethod(methodId).body();
-    }
-
-    /**
-     * Deletes a saved payment method.
-     */
-    public PayabliApiResponsePaymethodDelete removeMethod(String methodId, RequestOptions requestOptions) {
-        return this.rawClient.removeMethod(methodId, requestOptions).body();
-    }
-
-    /**
      * Updates a saved payment method.
      */
     public PayabliApiResponsePaymethodDelete updateMethod(String methodId, RequestTokenStorage body) {
@@ -128,5 +114,19 @@ public class TokenStorageClient {
     public PayabliApiResponsePaymethodDelete updateMethod(
             String methodId, UpdateMethodRequest request, RequestOptions requestOptions) {
         return this.rawClient.updateMethod(methodId, request, requestOptions).body();
+    }
+
+    /**
+     * Deletes a saved payment method.
+     */
+    public PayabliApiResponsePaymethodDelete removeMethod(String methodId) {
+        return this.rawClient.removeMethod(methodId).body();
+    }
+
+    /**
+     * Deletes a saved payment method.
+     */
+    public PayabliApiResponsePaymethodDelete removeMethod(String methodId, RequestOptions requestOptions) {
+        return this.rawClient.removeMethod(methodId, requestOptions).body();
     }
 }

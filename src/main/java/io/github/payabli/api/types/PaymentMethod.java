@@ -124,7 +124,8 @@ public final class PaymentMethod {
             Object value = p.readValueAs(Object.class);
             if (value instanceof Map<?, ?>
                     && ((Map<?, ?>) value).containsKey("cardexp")
-                    && ((Map<?, ?>) value).containsKey("cardnumber")) {
+                    && ((Map<?, ?>) value).containsKey("cardnumber")
+                    && ((Map<?, ?>) value).containsKey("method")) {
                 try {
                     return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCredit.class));
                 } catch (RuntimeException e) {
@@ -133,7 +134,8 @@ public final class PaymentMethod {
             if (value instanceof Map<?, ?>
                     && ((Map<?, ?>) value).containsKey("achAccount")
                     && ((Map<?, ?>) value).containsKey("achHolder")
-                    && ((Map<?, ?>) value).containsKey("achRouting")) {
+                    && ((Map<?, ?>) value).containsKey("achRouting")
+                    && ((Map<?, ?>) value).containsKey("method")) {
                 try {
                     return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodAch.class));
                 } catch (RuntimeException e) {
@@ -145,9 +147,23 @@ public final class PaymentMethod {
                 } catch (RuntimeException e) {
                 }
             }
-            if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("achHolder")) {
+            if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("method")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCloud.class));
+                } catch (RuntimeException e) {
+                }
+            }
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("achHolder")
+                    && ((Map<?, ?>) value).containsKey("method")) {
                 try {
                     return of(ObjectMappers.JSON_MAPPER.convertValue(value, Check.class));
+                } catch (RuntimeException e) {
+                }
+            }
+            if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("method")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, Cash.class));
                 } catch (RuntimeException e) {
                 }
             }
@@ -159,14 +175,6 @@ public final class PaymentMethod {
                     return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodBodyAllFields.class));
                 } catch (RuntimeException e) {
                 }
-            }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCloud.class));
-            } catch (RuntimeException e) {
-            }
-            try {
-                return of(ObjectMappers.JSON_MAPPER.convertValue(value, Cash.class));
-            } catch (RuntimeException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");
         }

@@ -16,13 +16,12 @@ import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.payoutsubscription.requests.RequestPayoutSchedule;
-import io.github.payabli.api.resources.payoutsubscription.types.AddPayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.DeletePayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.GetPayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.PayoutSubscriptionRequestBody;
-import io.github.payabli.api.resources.payoutsubscription.types.UpdatePayoutSubscriptionBody;
-import io.github.payabli.api.resources.payoutsubscription.types.UpdatePayoutSubscriptionResponse;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.resources.payoutsubscription.requests.UpdatePayoutSubscriptionBody;
+import io.github.payabli.api.types.AddPayoutSubscriptionResponse;
+import io.github.payabli.api.types.DeletePayoutSubscriptionResponse;
+import io.github.payabli.api.types.GetPayoutSubscriptionResponse;
+import io.github.payabli.api.types.PayabliErrorBody;
+import io.github.payabli.api.types.UpdatePayoutSubscriptionResponse;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
@@ -41,24 +40,6 @@ public class AsyncRawPayoutSubscriptionClient {
 
     public AsyncRawPayoutSubscriptionClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-    }
-
-    /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
-            PayoutSubscriptionRequestBody body) {
-        return createPayoutSubscription(
-                RequestPayoutSchedule.builder().body(body).build());
-    }
-
-    /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
-     */
-    public CompletableFuture<PayabliApiHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
-            PayoutSubscriptionRequestBody body, RequestOptions requestOptions) {
-        return createPayoutSubscription(
-                RequestPayoutSchedule.builder().body(body).build(), requestOptions);
     }
 
     /**
@@ -85,7 +66,7 @@ public class AsyncRawPayoutSubscriptionClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -126,7 +107,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -136,8 +117,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -214,7 +194,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -224,8 +204,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -329,7 +308,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -339,8 +318,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }
@@ -418,7 +396,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                             case 500:
@@ -428,8 +406,7 @@ public class AsyncRawPayoutSubscriptionClient {
                                 return;
                             case 503:
                                 future.completeExceptionally(new ServiceUnavailableError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PayabliApiResponse.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
                         }

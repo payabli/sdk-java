@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.notificationlogs.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,22 +27,45 @@ public final class SearchNotificationLogsRequest {
 
     private final Optional<Integer> page;
 
-    private final NotificationLogSearchRequest body;
+    private final OffsetDateTime startDate;
+
+    private final OffsetDateTime endDate;
+
+    private final Optional<String> notificationEvent;
+
+    private final Optional<Boolean> succeeded;
+
+    private final Optional<Long> orgId;
+
+    private final Optional<Long> paypointId;
 
     private final Map<String, Object> additionalProperties;
 
     private SearchNotificationLogsRequest(
             Optional<Integer> pageSize,
             Optional<Integer> page,
-            NotificationLogSearchRequest body,
+            OffsetDateTime startDate,
+            OffsetDateTime endDate,
+            Optional<String> notificationEvent,
+            Optional<Boolean> succeeded,
+            Optional<Long> orgId,
+            Optional<Long> paypointId,
             Map<String, Object> additionalProperties) {
         this.pageSize = pageSize;
         this.page = page;
-        this.body = body;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.notificationEvent = notificationEvent;
+        this.succeeded = succeeded;
+        this.orgId = orgId;
+        this.paypointId = paypointId;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("PageSize")
+    /**
+     * @return Number of records on each response page.
+     */
+    @JsonIgnore
     public Optional<Integer> getPageSize() {
         return pageSize;
     }
@@ -49,14 +73,57 @@ public final class SearchNotificationLogsRequest {
     /**
      * @return The page number to retrieve. Defaults to 1 if not provided.
      */
-    @JsonProperty("Page")
+    @JsonIgnore
     public Optional<Integer> getPage() {
         return page;
     }
 
-    @JsonProperty("body")
-    public NotificationLogSearchRequest getBody() {
-        return body;
+    /**
+     * @return The start date for the search.
+     */
+    @JsonProperty("startDate")
+    public OffsetDateTime getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @return The end date for the search.
+     */
+    @JsonProperty("endDate")
+    public OffsetDateTime getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @return The type of notification event to filter by.
+     */
+    @JsonProperty("notificationEvent")
+    public Optional<String> getNotificationEvent() {
+        return notificationEvent;
+    }
+
+    /**
+     * @return Indicates whether the notification was successful.
+     */
+    @JsonProperty("succeeded")
+    public Optional<Boolean> getSucceeded() {
+        return succeeded;
+    }
+
+    /**
+     * @return The ID of the organization to filter by.
+     */
+    @JsonProperty("orgId")
+    public Optional<Long> getOrgId() {
+        return orgId;
+    }
+
+    /**
+     * @return The ID of the paypoint to filter by.
+     */
+    @JsonProperty("paypointId")
+    public Optional<Long> getPaypointId() {
+        return paypointId;
     }
 
     @java.lang.Override
@@ -71,12 +138,27 @@ public final class SearchNotificationLogsRequest {
     }
 
     private boolean equalTo(SearchNotificationLogsRequest other) {
-        return pageSize.equals(other.pageSize) && page.equals(other.page) && body.equals(other.body);
+        return pageSize.equals(other.pageSize)
+                && page.equals(other.page)
+                && startDate.equals(other.startDate)
+                && endDate.equals(other.endDate)
+                && notificationEvent.equals(other.notificationEvent)
+                && succeeded.equals(other.succeeded)
+                && orgId.equals(other.orgId)
+                && paypointId.equals(other.paypointId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.pageSize, this.page, this.body);
+        return Objects.hash(
+                this.pageSize,
+                this.page,
+                this.startDate,
+                this.endDate,
+                this.notificationEvent,
+                this.succeeded,
+                this.orgId,
+                this.paypointId);
     }
 
     @java.lang.Override
@@ -84,14 +166,24 @@ public final class SearchNotificationLogsRequest {
         return ObjectMappers.stringify(this);
     }
 
-    public static BodyStage builder() {
+    public static StartDateStage builder() {
         return new Builder();
     }
 
-    public interface BodyStage {
-        _FinalStage body(@NotNull NotificationLogSearchRequest body);
+    public interface StartDateStage {
+        /**
+         * <p>The start date for the search.</p>
+         */
+        EndDateStage startDate(@NotNull OffsetDateTime startDate);
 
         Builder from(SearchNotificationLogsRequest other);
+    }
+
+    public interface EndDateStage {
+        /**
+         * <p>The end date for the search.</p>
+         */
+        _FinalStage endDate(@NotNull OffsetDateTime endDate);
     }
 
     public interface _FinalStage {
@@ -101,6 +193,9 @@ public final class SearchNotificationLogsRequest {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p>Number of records on each response page.</p>
+         */
         _FinalStage pageSize(Optional<Integer> pageSize);
 
         _FinalStage pageSize(Integer pageSize);
@@ -111,11 +206,49 @@ public final class SearchNotificationLogsRequest {
         _FinalStage page(Optional<Integer> page);
 
         _FinalStage page(Integer page);
+
+        /**
+         * <p>The type of notification event to filter by.</p>
+         */
+        _FinalStage notificationEvent(Optional<String> notificationEvent);
+
+        _FinalStage notificationEvent(String notificationEvent);
+
+        /**
+         * <p>Indicates whether the notification was successful.</p>
+         */
+        _FinalStage succeeded(Optional<Boolean> succeeded);
+
+        _FinalStage succeeded(Boolean succeeded);
+
+        /**
+         * <p>The ID of the organization to filter by.</p>
+         */
+        _FinalStage orgId(Optional<Long> orgId);
+
+        _FinalStage orgId(Long orgId);
+
+        /**
+         * <p>The ID of the paypoint to filter by.</p>
+         */
+        _FinalStage paypointId(Optional<Long> paypointId);
+
+        _FinalStage paypointId(Long paypointId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements BodyStage, _FinalStage {
-        private NotificationLogSearchRequest body;
+    public static final class Builder implements StartDateStage, EndDateStage, _FinalStage {
+        private OffsetDateTime startDate;
+
+        private OffsetDateTime endDate;
+
+        private Optional<Long> paypointId = Optional.empty();
+
+        private Optional<Long> orgId = Optional.empty();
+
+        private Optional<Boolean> succeeded = Optional.empty();
+
+        private Optional<String> notificationEvent = Optional.empty();
 
         private Optional<Integer> page = Optional.empty();
 
@@ -130,14 +263,116 @@ public final class SearchNotificationLogsRequest {
         public Builder from(SearchNotificationLogsRequest other) {
             pageSize(other.getPageSize());
             page(other.getPage());
-            body(other.getBody());
+            startDate(other.getStartDate());
+            endDate(other.getEndDate());
+            notificationEvent(other.getNotificationEvent());
+            succeeded(other.getSucceeded());
+            orgId(other.getOrgId());
+            paypointId(other.getPaypointId());
             return this;
         }
 
+        /**
+         * <p>The start date for the search.</p>
+         * <p>The start date for the search.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        @JsonSetter("body")
-        public _FinalStage body(@NotNull NotificationLogSearchRequest body) {
-            this.body = Objects.requireNonNull(body, "body must not be null");
+        @JsonSetter("startDate")
+        public EndDateStage startDate(@NotNull OffsetDateTime startDate) {
+            this.startDate = Objects.requireNonNull(startDate, "startDate must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The end date for the search.</p>
+         * <p>The end date for the search.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("endDate")
+        public _FinalStage endDate(@NotNull OffsetDateTime endDate) {
+            this.endDate = Objects.requireNonNull(endDate, "endDate must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The ID of the paypoint to filter by.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointId(Long paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
+        /**
+         * <p>The ID of the paypoint to filter by.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
+        public _FinalStage paypointId(Optional<Long> paypointId) {
+            this.paypointId = paypointId;
+            return this;
+        }
+
+        /**
+         * <p>The ID of the organization to filter by.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage orgId(Long orgId) {
+            this.orgId = Optional.ofNullable(orgId);
+            return this;
+        }
+
+        /**
+         * <p>The ID of the organization to filter by.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "orgId", nulls = Nulls.SKIP)
+        public _FinalStage orgId(Optional<Long> orgId) {
+            this.orgId = orgId;
+            return this;
+        }
+
+        /**
+         * <p>Indicates whether the notification was successful.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage succeeded(Boolean succeeded) {
+            this.succeeded = Optional.ofNullable(succeeded);
+            return this;
+        }
+
+        /**
+         * <p>Indicates whether the notification was successful.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "succeeded", nulls = Nulls.SKIP)
+        public _FinalStage succeeded(Optional<Boolean> succeeded) {
+            this.succeeded = succeeded;
+            return this;
+        }
+
+        /**
+         * <p>The type of notification event to filter by.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage notificationEvent(String notificationEvent) {
+            this.notificationEvent = Optional.ofNullable(notificationEvent);
+            return this;
+        }
+
+        /**
+         * <p>The type of notification event to filter by.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "notificationEvent", nulls = Nulls.SKIP)
+        public _FinalStage notificationEvent(Optional<String> notificationEvent) {
+            this.notificationEvent = notificationEvent;
             return this;
         }
 
@@ -161,12 +396,19 @@ public final class SearchNotificationLogsRequest {
             return this;
         }
 
+        /**
+         * <p>Number of records on each response page.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage pageSize(Integer pageSize) {
             this.pageSize = Optional.ofNullable(pageSize);
             return this;
         }
 
+        /**
+         * <p>Number of records on each response page.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "PageSize", nulls = Nulls.SKIP)
         public _FinalStage pageSize(Optional<Integer> pageSize) {
@@ -176,7 +418,16 @@ public final class SearchNotificationLogsRequest {
 
         @java.lang.Override
         public SearchNotificationLogsRequest build() {
-            return new SearchNotificationLogsRequest(pageSize, page, body, additionalProperties);
+            return new SearchNotificationLogsRequest(
+                    pageSize,
+                    page,
+                    startDate,
+                    endDate,
+                    notificationEvent,
+                    succeeded,
+                    orgId,
+                    paypointId,
+                    additionalProperties);
         }
 
         @java.lang.Override

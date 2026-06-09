@@ -12,7 +12,7 @@
     "BillingZip": "45567",
     "CompanyName": "Sunshine LLC",
     "customerId": 4440,
-    "CustomerNumber": "3456-7645A",
+    "CustomerNumber": "C-90010",
     "customerStatus": 1,
     "FirstName": "John",
     "Identifiers": [
@@ -131,7 +131,7 @@
   },
   "PaypointDbaname": "Sunshine Gutters",
   "PaypointEntryname": "d193cf9a46",
-  "PaypointId": 255,
+  "PaypointId": 3040,
   "PaypointLegalname": "Sunshine Services, LLC",
   "PlanId": 0,
   "Source": "api",
@@ -146,6 +146,7 @@
     }
   ],
   "SubStatus": 1,
+  "SubscriptionType": "Regular",
   "TotalAmount": 103,
   "TotalCycles": 24,
   "UntilCancelled": true

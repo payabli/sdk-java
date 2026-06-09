@@ -12,14 +12,14 @@ import io.github.payabli.api.resources.bill.requests.ListBillsOrgRequest;
 import io.github.payabli.api.resources.bill.requests.ListBillsRequest;
 import io.github.payabli.api.resources.bill.requests.SendToApprovalBillRequest;
 import io.github.payabli.api.resources.bill.requests.SetApprovedBillRequest;
-import io.github.payabli.api.resources.bill.types.BillOutData;
-import io.github.payabli.api.resources.bill.types.BillResponse;
-import io.github.payabli.api.resources.bill.types.EditBillResponse;
-import io.github.payabli.api.resources.bill.types.GetBillResponse;
-import io.github.payabli.api.resources.bill.types.ModifyApprovalBillResponse;
-import io.github.payabli.api.resources.bill.types.SetApprovedBillResponse;
+import io.github.payabli.api.types.BillOutData;
 import io.github.payabli.api.types.BillQueryResponse;
+import io.github.payabli.api.types.BillResponse;
+import io.github.payabli.api.types.EditBillResponse;
 import io.github.payabli.api.types.FileContent;
+import io.github.payabli.api.types.GetBillResponse;
+import io.github.payabli.api.types.ModifyApprovalBillResponse;
+import io.github.payabli.api.types.SetApprovedBillResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -70,52 +70,17 @@ public class AsyncBillClient {
     }
 
     /**
-     * Delete a file attached to a bill.
+     * Retrieves a bill by ID from an entrypoint.
      */
-    public CompletableFuture<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
-        return this.rawClient.deleteAttachedFromBill(idBill, filename).thenApply(response -> response.body());
+    public CompletableFuture<GetBillResponse> getBill(int idBill) {
+        return this.rawClient.getBill(idBill).thenApply(response -> response.body());
     }
 
     /**
-     * Delete a file attached to a bill.
+     * Retrieves a bill by ID from an entrypoint.
      */
-    public CompletableFuture<BillResponse> deleteAttachedFromBill(
-            int idBill, String filename, RequestOptions requestOptions) {
-        return this.rawClient
-                .deleteAttachedFromBill(idBill, filename, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Delete a file attached to a bill.
-     */
-    public CompletableFuture<BillResponse> deleteAttachedFromBill(
-            int idBill, String filename, DeleteAttachedFromBillRequest request) {
-        return this.rawClient.deleteAttachedFromBill(idBill, filename, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Delete a file attached to a bill.
-     */
-    public CompletableFuture<BillResponse> deleteAttachedFromBill(
-            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .deleteAttachedFromBill(idBill, filename, request, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a bill by ID.
-     */
-    public CompletableFuture<BillResponse> deleteBill(int idBill) {
-        return this.rawClient.deleteBill(idBill).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a bill by ID.
-     */
-    public CompletableFuture<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
-        return this.rawClient.deleteBill(idBill, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
+        return this.rawClient.getBill(idBill, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -145,6 +110,20 @@ public class AsyncBillClient {
     public CompletableFuture<EditBillResponse> editBill(
             int idBill, BillOutData request, RequestOptions requestOptions) {
         return this.rawClient.editBill(idBill, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a bill by ID.
+     */
+    public CompletableFuture<BillResponse> deleteBill(int idBill) {
+        return this.rawClient.deleteBill(idBill).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a bill by ID.
+     */
+    public CompletableFuture<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
+        return this.rawClient.deleteBill(idBill, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -183,17 +162,120 @@ public class AsyncBillClient {
     }
 
     /**
-     * Retrieves a bill by ID from an entrypoint.
+     * Delete a file attached to a bill.
      */
-    public CompletableFuture<GetBillResponse> getBill(int idBill) {
-        return this.rawClient.getBill(idBill).thenApply(response -> response.body());
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves a bill by ID from an entrypoint.
+     * Delete a file attached to a bill.
      */
-    public CompletableFuture<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
-        return this.rawClient.getBill(idBill, requestOptions).thenApply(response -> response.body());
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromBill(idBill, filename, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, DeleteAttachedFromBillRequest request) {
+        return this.rawClient.deleteAttachedFromBill(idBill, filename, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Delete a file attached to a bill.
+     */
+    public CompletableFuture<BillResponse> deleteAttachedFromBill(
+            int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromBill(idBill, filename, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public CompletableFuture<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
+        return this.rawClient.sendToApprovalBill(idBill, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public CompletableFuture<BillResponse> sendToApprovalBill(
+            int idBill, List<String> body, RequestOptions requestOptions) {
+        return this.rawClient.sendToApprovalBill(idBill, body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public CompletableFuture<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
+        return this.rawClient.sendToApprovalBill(idBill, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Send a bill to a user or list of users to approve.
+     */
+    public CompletableFuture<BillResponse> sendToApprovalBill(
+            int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .sendToApprovalBill(idBill, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Modify the list of users the bill is sent to for approval.
+     */
+    public CompletableFuture<ModifyApprovalBillResponse> modifyApprovalBill(int idBill, List<String> request) {
+        return this.rawClient.modifyApprovalBill(idBill, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Modify the list of users the bill is sent to for approval.
+     */
+    public CompletableFuture<ModifyApprovalBillResponse> modifyApprovalBill(
+            int idBill, List<String> request, RequestOptions requestOptions) {
+        return this.rawClient
+                .modifyApprovalBill(idBill, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
+        return this.rawClient.setApprovedBill(idBill, approved).thenApply(response -> response.body());
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, RequestOptions requestOptions) {
+        return this.rawClient.setApprovedBill(idBill, approved, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, SetApprovedBillRequest request) {
+        return this.rawClient.setApprovedBill(idBill, approved, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Approve or disapprove a bill by ID.
+     */
+    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
+            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .setApprovedBill(idBill, approved, request, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
@@ -252,87 +334,5 @@ public class AsyncBillClient {
     public CompletableFuture<BillQueryResponse> listBillsOrg(
             int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient.listBillsOrg(orgId, request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Modify the list of users the bill is sent to for approval.
-     */
-    public CompletableFuture<ModifyApprovalBillResponse> modifyApprovalBill(int idBill, List<String> request) {
-        return this.rawClient.modifyApprovalBill(idBill, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Modify the list of users the bill is sent to for approval.
-     */
-    public CompletableFuture<ModifyApprovalBillResponse> modifyApprovalBill(
-            int idBill, List<String> request, RequestOptions requestOptions) {
-        return this.rawClient
-                .modifyApprovalBill(idBill, request, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public CompletableFuture<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
-        return this.rawClient.sendToApprovalBill(idBill, body).thenApply(response -> response.body());
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public CompletableFuture<BillResponse> sendToApprovalBill(
-            int idBill, List<String> body, RequestOptions requestOptions) {
-        return this.rawClient.sendToApprovalBill(idBill, body, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public CompletableFuture<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
-        return this.rawClient.sendToApprovalBill(idBill, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Send a bill to a user or list of users to approve.
-     */
-    public CompletableFuture<BillResponse> sendToApprovalBill(
-            int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .sendToApprovalBill(idBill, request, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
-        return this.rawClient.setApprovedBill(idBill, approved).thenApply(response -> response.body());
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
-            int idBill, String approved, RequestOptions requestOptions) {
-        return this.rawClient.setApprovedBill(idBill, approved, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
-            int idBill, String approved, SetApprovedBillRequest request) {
-        return this.rawClient.setApprovedBill(idBill, approved, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Approve or disapprove a bill by ID.
-     */
-    public CompletableFuture<SetApprovedBillResponse> setApprovedBill(
-            int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .setApprovedBill(idBill, approved, request, requestOptions)
-                .thenApply(response -> response.body());
     }
 }

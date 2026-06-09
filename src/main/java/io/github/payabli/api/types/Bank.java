@@ -21,6 +21,10 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Bank.Builder.class)
 public final class Bank {
+    private final Optional<Boolean> default_;
+
+    private final Optional<String> country;
+
     private final Optional<Integer> id;
 
     private final Optional<String> accountId;
@@ -50,6 +54,8 @@ public final class Bank {
     private final Map<String, Object> additionalProperties;
 
     private Bank(
+            Optional<Boolean> default_,
+            Optional<String> country,
             Optional<Integer> id,
             Optional<String> accountId,
             Optional<String> nickname,
@@ -64,6 +70,8 @@ public final class Bank {
             Optional<Integer> status,
             Optional<List<String>> services,
             Map<String, Object> additionalProperties) {
+        this.default_ = default_;
+        this.country = country;
         this.id = id;
         this.accountId = accountId;
         this.nickname = nickname;
@@ -78,6 +86,16 @@ public final class Bank {
         this.status = status;
         this.services = services;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("default")
+    public Optional<Boolean> getDefault() {
+        return default_;
+    }
+
+    @JsonProperty("country")
+    public Optional<String> getCountry() {
+        return country;
     }
 
     /**
@@ -172,7 +190,9 @@ public final class Bank {
     }
 
     private boolean equalTo(Bank other) {
-        return id.equals(other.id)
+        return default_.equals(other.default_)
+                && country.equals(other.country)
+                && id.equals(other.id)
                 && accountId.equals(other.accountId)
                 && nickname.equals(other.nickname)
                 && bankName.equals(other.bankName)
@@ -190,6 +210,8 @@ public final class Bank {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.default_,
+                this.country,
                 this.id,
                 this.accountId,
                 this.nickname,
@@ -216,6 +238,10 @@ public final class Bank {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Boolean> default_ = Optional.empty();
+
+        private Optional<String> country = Optional.empty();
+
         private Optional<Integer> id = Optional.empty();
 
         private Optional<String> accountId = Optional.empty();
@@ -248,6 +274,8 @@ public final class Bank {
         private Builder() {}
 
         public Builder from(Bank other) {
+            default_(other.getDefault());
+            country(other.getCountry());
             id(other.getId());
             accountId(other.getAccountId());
             nickname(other.getNickname());
@@ -261,6 +289,28 @@ public final class Bank {
             verified(other.getVerified());
             status(other.getStatus());
             services(other.getServices());
+            return this;
+        }
+
+        @JsonSetter(value = "default", nulls = Nulls.SKIP)
+        public Builder default_(Optional<Boolean> default_) {
+            this.default_ = default_;
+            return this;
+        }
+
+        public Builder default_(Boolean default_) {
+            this.default_ = Optional.ofNullable(default_);
+            return this;
+        }
+
+        @JsonSetter(value = "country", nulls = Nulls.SKIP)
+        public Builder country(Optional<String> country) {
+            this.country = country;
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.country = Optional.ofNullable(country);
             return this;
         }
 
@@ -424,6 +474,8 @@ public final class Bank {
 
         public Bank build() {
             return new Bank(
+                    default_,
+                    country,
                     id,
                     accountId,
                     nickname,

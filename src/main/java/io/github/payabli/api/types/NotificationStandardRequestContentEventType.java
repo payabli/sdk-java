@@ -309,6 +309,9 @@ public final class NotificationStandardRequestContentEventType {
     public static final NotificationStandardRequestContentEventType PAYOUT_BATCH_RELEASED =
             new NotificationStandardRequestContentEventType(Value.PAYOUT_BATCH_RELEASED, "payout_batch_released");
 
+    public static final NotificationStandardRequestContentEventType CARD_UPDATER_COMPLETE =
+            new NotificationStandardRequestContentEventType(Value.CARD_UPDATER_COMPLETE, "CardUpdaterComplete");
+
     public static final NotificationStandardRequestContentEventType APPROVED_PAYMENT =
             new NotificationStandardRequestContentEventType(Value.APPROVED_PAYMENT, "ApprovedPayment");
 
@@ -637,6 +640,8 @@ public final class NotificationStandardRequestContentEventType {
                 return visitor.visitPayOutProcessed();
             case PAYOUT_BATCH_RELEASED:
                 return visitor.visitPayoutBatchReleased();
+            case CARD_UPDATER_COMPLETE:
+                return visitor.visitCardUpdaterComplete();
             case APPROVED_PAYMENT:
                 return visitor.visitApprovedPayment();
             case PAYOUT_TRANSACTION_APPROVEDCAPTURED:
@@ -898,6 +903,8 @@ public final class NotificationStandardRequestContentEventType {
                 return PAY_OUT_PROCESSED;
             case "payout_batch_released":
                 return PAYOUT_BATCH_RELEASED;
+            case "CardUpdaterComplete":
+                return CARD_UPDATER_COMPLETE;
             case "ApprovedPayment":
                 return APPROVED_PAYMENT;
             case "payout_transaction_approvedcaptured":
@@ -1113,6 +1120,8 @@ public final class NotificationStandardRequestContentEventType {
         SEND_RECEIPT,
 
         RECOVERED_TRANSACTION,
+
+        CARD_UPDATER_COMPLETE,
 
         CREATED_APPLICATION,
 
@@ -1369,6 +1378,8 @@ public final class NotificationStandardRequestContentEventType {
         T visitSendReceipt();
 
         T visitRecoveredTransaction();
+
+        T visitCardUpdaterComplete();
 
         T visitCreatedApplication();
 

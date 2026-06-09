@@ -5,7 +5,6 @@ package io.github.payabli.api.resources.query;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.resources.payoutsubscription.types.QueryPayoutSubscriptionResponse;
 import io.github.payabli.api.resources.query.requests.ListBatchDetailsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListBatchDetailsRequest;
 import io.github.payabli.api.resources.query.requests.ListBatchesOrgRequest;
@@ -48,18 +47,15 @@ import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsOrgR
 import io.github.payabli.api.resources.query.requests.ListVcardsTransactionsRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsOrgRequest;
 import io.github.payabli.api.resources.query.requests.ListVendorsRequest;
-import io.github.payabli.api.resources.querytypes.types.ListOrganizationsResponse;
-import io.github.payabli.api.resources.querytypes.types.QueryBatchesDetailResponse;
-import io.github.payabli.api.resources.querytypes.types.QueryBatchesResponse;
-import io.github.payabli.api.resources.querytypes.types.QueryDeviceResponse;
-import io.github.payabli.api.resources.querytypes.types.QueryTransferDetailResponse;
-import io.github.payabli.api.resources.querytypes.types.TransferOutDetailQueryResponse;
-import io.github.payabli.api.resources.querytypes.types.TransferOutQueryResponse;
-import io.github.payabli.api.resources.querytypes.types.VCardTransactionQueryResponse;
+import io.github.payabli.api.types.ListOrganizationsResponse;
+import io.github.payabli.api.types.QueryBatchesDetailResponse;
 import io.github.payabli.api.types.QueryBatchesOutResponse;
+import io.github.payabli.api.types.QueryBatchesResponse;
 import io.github.payabli.api.types.QueryChargebacksResponse;
 import io.github.payabli.api.types.QueryCustomerResponse;
+import io.github.payabli.api.types.QueryDeviceResponse;
 import io.github.payabli.api.types.QueryEntrypointResponse;
+import io.github.payabli.api.types.QueryPayoutSubscriptionResponse;
 import io.github.payabli.api.types.QueryPayoutTransaction;
 import io.github.payabli.api.types.QueryResponseNotificationReports;
 import io.github.payabli.api.types.QueryResponseNotifications;
@@ -67,9 +63,13 @@ import io.github.payabli.api.types.QueryResponseSettlements;
 import io.github.payabli.api.types.QueryResponseTransactions;
 import io.github.payabli.api.types.QueryResponseVendors;
 import io.github.payabli.api.types.QuerySubscriptionResponse;
+import io.github.payabli.api.types.QueryTransferDetailResponse;
 import io.github.payabli.api.types.QueryUserResponse;
+import io.github.payabli.api.types.TransferOutDetailQueryResponse;
+import io.github.payabli.api.types.TransferOutQueryResponse;
 import io.github.payabli.api.types.TransferQueryResponse;
 import io.github.payabli.api.types.VCardQueryResponse;
+import io.github.payabli.api.types.VCardTransactionQueryResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncQueryClient {
@@ -881,10 +881,10 @@ public class AsyncQueryClient {
 
     /**
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
-     *
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59 \
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactions(String entry) {
@@ -893,10 +893,10 @@ public class AsyncQueryClient {
 
     /**
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
-     *
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59 \
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactions(String entry, RequestOptions requestOptions) {
@@ -905,10 +905,10 @@ public class AsyncQueryClient {
 
     /**
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
-     *
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59 \
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactions(
@@ -918,10 +918,10 @@ public class AsyncQueryClient {
 
     /**
      * Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
-     * By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.
-     * For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
-     * <pre><code class="language-curl">  -H 'requestToken: &lt;API TOKEN&gt;'
-     *
+     * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59 \
+     *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactions(
@@ -930,13 +930,11 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to
-     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Retrieve a list of transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
-     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET &quot;https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot; \
      *   -H 'requestToken: &lt;API TOKEN&gt;'
-     *
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactionsOrg(int orgId) {
@@ -944,13 +942,11 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to
-     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Retrieve a list of transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
-     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET &quot;https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot; \
      *   -H 'requestToken: &lt;API TOKEN&gt;'
-     *
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactionsOrg(int orgId, RequestOptions requestOptions) {
@@ -958,13 +954,11 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to
-     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Retrieve a list of transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
-     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET &quot;https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot; \
      *   -H 'requestToken: &lt;API TOKEN&gt;'
-     *
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactionsOrg(
@@ -973,13 +967,11 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Retrieve a list of transactions for an organization. Use filters to
-     * limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Retrieve a list of transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      * <p>By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include <code>transactionDate</code> filters.</p>
-     * <p>For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.</p>
-     * <pre><code>curl -X GET &quot;https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot;\
+     * <p>These request parameters filter for transactions between April 1, 2024 and April 9, 2024.</p>
+     * <pre><code class="language-bash">curl -X GET &quot;https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&amp;fromRecord=0&amp;transactionDate(ge)=2024-04-01T00:00:00&amp;transactionDate(le)=2024-04-09T23:59:59&quot; \
      *   -H 'requestToken: &lt;API TOKEN&gt;'
-     *
      * </code></pre>
      */
     public CompletableFuture<QueryResponseTransactions> listTransactionsOrg(

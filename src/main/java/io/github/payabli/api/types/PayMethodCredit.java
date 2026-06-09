@@ -33,6 +33,8 @@ public final class PayMethodCredit {
 
     private final Optional<String> initiator;
 
+    private final PayMethodCreditMethod method;
+
     private final Optional<Boolean> saveIfSuccess;
 
     private final Map<String, Object> additionalProperties;
@@ -44,6 +46,7 @@ public final class PayMethodCredit {
             String cardnumber,
             Optional<String> cardzip,
             Optional<String> initiator,
+            PayMethodCreditMethod method,
             Optional<Boolean> saveIfSuccess,
             Map<String, Object> additionalProperties) {
         this.cardcvv = cardcvv;
@@ -52,6 +55,7 @@ public final class PayMethodCredit {
         this.cardnumber = cardnumber;
         this.cardzip = cardzip;
         this.initiator = initiator;
+        this.method = method;
         this.saveIfSuccess = saveIfSuccess;
         this.additionalProperties = additionalProperties;
     }
@@ -90,8 +94,8 @@ public final class PayMethodCredit {
      * @return Method to use for the transaction. For transactions with a credit or debit card, or a tokenized card, use <code>card</code>.
      */
     @JsonProperty("method")
-    public String getMethod() {
-        return "card";
+    public PayMethodCreditMethod getMethod() {
+        return method;
     }
 
     @JsonProperty("saveIfSuccess")
@@ -117,6 +121,7 @@ public final class PayMethodCredit {
                 && cardnumber.equals(other.cardnumber)
                 && cardzip.equals(other.cardzip)
                 && initiator.equals(other.initiator)
+                && method.equals(other.method)
                 && saveIfSuccess.equals(other.saveIfSuccess);
     }
 
@@ -129,6 +134,7 @@ public final class PayMethodCredit {
                 this.cardnumber,
                 this.cardzip,
                 this.initiator,
+                this.method,
                 this.saveIfSuccess);
     }
 
@@ -148,7 +154,14 @@ public final class PayMethodCredit {
     }
 
     public interface CardnumberStage {
-        _FinalStage cardnumber(@NotNull String cardnumber);
+        MethodStage cardnumber(@NotNull String cardnumber);
+    }
+
+    public interface MethodStage {
+        /**
+         * <p>Method to use for the transaction. For transactions with a credit or debit card, or a tokenized card, use <code>card</code>.</p>
+         */
+        _FinalStage method(@NotNull PayMethodCreditMethod method);
     }
 
     public interface _FinalStage {
@@ -180,10 +193,12 @@ public final class PayMethodCredit {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements CardexpStage, CardnumberStage, _FinalStage {
+    public static final class Builder implements CardexpStage, CardnumberStage, MethodStage, _FinalStage {
         private String cardexp;
 
         private String cardnumber;
+
+        private PayMethodCreditMethod method;
 
         private Optional<Boolean> saveIfSuccess = Optional.empty();
 
@@ -208,6 +223,7 @@ public final class PayMethodCredit {
             cardnumber(other.getCardnumber());
             cardzip(other.getCardzip());
             initiator(other.getInitiator());
+            method(other.getMethod());
             saveIfSuccess(other.getSaveIfSuccess());
             return this;
         }
@@ -221,8 +237,20 @@ public final class PayMethodCredit {
 
         @java.lang.Override
         @JsonSetter("cardnumber")
-        public _FinalStage cardnumber(@NotNull String cardnumber) {
+        public MethodStage cardnumber(@NotNull String cardnumber) {
             this.cardnumber = Objects.requireNonNull(cardnumber, "cardnumber must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Method to use for the transaction. For transactions with a credit or debit card, or a tokenized card, use <code>card</code>.</p>
+         * <p>Method to use for the transaction. For transactions with a credit or debit card, or a tokenized card, use <code>card</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull PayMethodCreditMethod method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
             return this;
         }
 
@@ -294,7 +322,15 @@ public final class PayMethodCredit {
         @java.lang.Override
         public PayMethodCredit build() {
             return new PayMethodCredit(
-                    cardcvv, cardexp, cardHolder, cardnumber, cardzip, initiator, saveIfSuccess, additionalProperties);
+                    cardcvv,
+                    cardexp,
+                    cardHolder,
+                    cardnumber,
+                    cardzip,
+                    initiator,
+                    method,
+                    saveIfSuccess,
+                    additionalProperties);
         }
 
         @java.lang.Override

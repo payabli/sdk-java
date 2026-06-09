@@ -16,19 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayMethodCloud.Builder.class)
 public final class PayMethodCloud {
     private final Optional<String> device;
 
+    private final PayMethodCloudMethod method;
+
     private final Optional<Boolean> saveIfSuccess;
 
     private final Map<String, Object> additionalProperties;
 
     private PayMethodCloud(
-            Optional<String> device, Optional<Boolean> saveIfSuccess, Map<String, Object> additionalProperties) {
+            Optional<String> device,
+            PayMethodCloudMethod method,
+            Optional<Boolean> saveIfSuccess,
+            Map<String, Object> additionalProperties) {
         this.device = device;
+        this.method = method;
         this.saveIfSuccess = saveIfSuccess;
         this.additionalProperties = additionalProperties;
     }
@@ -42,8 +49,8 @@ public final class PayMethodCloud {
      * @return Method to use for the transaction. For cloud device transactions, the method is <code>cloud</code>.
      */
     @JsonProperty("method")
-    public String getMethod() {
-        return "cloud";
+    public PayMethodCloudMethod getMethod() {
+        return method;
     }
 
     @JsonProperty("saveIfSuccess")
@@ -63,12 +70,12 @@ public final class PayMethodCloud {
     }
 
     private boolean equalTo(PayMethodCloud other) {
-        return device.equals(other.device) && saveIfSuccess.equals(other.saveIfSuccess);
+        return device.equals(other.device) && method.equals(other.method) && saveIfSuccess.equals(other.saveIfSuccess);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.device, this.saveIfSuccess);
+        return Objects.hash(this.device, this.method, this.saveIfSuccess);
     }
 
     @java.lang.Override
@@ -76,58 +83,106 @@ public final class PayMethodCloud {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static MethodStage builder() {
         return new Builder();
     }
 
+    public interface MethodStage {
+        /**
+         * <p>Method to use for the transaction. For cloud device transactions, the method is <code>cloud</code>.</p>
+         */
+        _FinalStage method(@NotNull PayMethodCloudMethod method);
+
+        Builder from(PayMethodCloud other);
+    }
+
+    public interface _FinalStage {
+        PayMethodCloud build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        _FinalStage device(Optional<String> device);
+
+        _FinalStage device(String device);
+
+        _FinalStage saveIfSuccess(Optional<Boolean> saveIfSuccess);
+
+        _FinalStage saveIfSuccess(Boolean saveIfSuccess);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> device = Optional.empty();
+    public static final class Builder implements MethodStage, _FinalStage {
+        private PayMethodCloudMethod method;
 
         private Optional<Boolean> saveIfSuccess = Optional.empty();
+
+        private Optional<String> device = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayMethodCloud other) {
             device(other.getDevice());
+            method(other.getMethod());
             saveIfSuccess(other.getSaveIfSuccess());
             return this;
         }
 
-        @JsonSetter(value = "device", nulls = Nulls.SKIP)
-        public Builder device(Optional<String> device) {
-            this.device = device;
+        /**
+         * <p>Method to use for the transaction. For cloud device transactions, the method is <code>cloud</code>.</p>
+         * <p>Method to use for the transaction. For cloud device transactions, the method is <code>cloud</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("method")
+        public _FinalStage method(@NotNull PayMethodCloudMethod method) {
+            this.method = Objects.requireNonNull(method, "method must not be null");
             return this;
         }
 
-        public Builder device(String device) {
-            this.device = Optional.ofNullable(device);
-            return this;
-        }
-
-        @JsonSetter(value = "saveIfSuccess", nulls = Nulls.SKIP)
-        public Builder saveIfSuccess(Optional<Boolean> saveIfSuccess) {
-            this.saveIfSuccess = saveIfSuccess;
-            return this;
-        }
-
-        public Builder saveIfSuccess(Boolean saveIfSuccess) {
+        @java.lang.Override
+        public _FinalStage saveIfSuccess(Boolean saveIfSuccess) {
             this.saveIfSuccess = Optional.ofNullable(saveIfSuccess);
             return this;
         }
 
-        public PayMethodCloud build() {
-            return new PayMethodCloud(device, saveIfSuccess, additionalProperties);
+        @java.lang.Override
+        @JsonSetter(value = "saveIfSuccess", nulls = Nulls.SKIP)
+        public _FinalStage saveIfSuccess(Optional<Boolean> saveIfSuccess) {
+            this.saveIfSuccess = saveIfSuccess;
+            return this;
         }
 
+        @java.lang.Override
+        public _FinalStage device(String device) {
+            this.device = Optional.ofNullable(device);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "device", nulls = Nulls.SKIP)
+        public _FinalStage device(Optional<String> device) {
+            this.device = device;
+            return this;
+        }
+
+        @java.lang.Override
+        public PayMethodCloud build() {
+            return new PayMethodCloud(device, method, saveIfSuccess, additionalProperties);
+        }
+
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

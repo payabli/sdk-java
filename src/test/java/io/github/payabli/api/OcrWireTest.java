@@ -3,8 +3,8 @@ package io.github.payabli.api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.ocr.types.FileContentImageOnly;
-import io.github.payabli.api.resources.ocr.types.PayabliApiResponseOcr;
+import io.github.payabli.api.types.FileContentImageOnly;
+import io.github.payabli.api.types.PayabliApiResponseOcr;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -35,9 +35,11 @@ public class OcrWireTest {
 
     @Test
     public void testOcrDocumentForm() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(TestResources.loadResource("/wire-tests/OcrWireTest_testOcrDocumentForm_response.json")));
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseText\":\"responseText\",\"responseCode\":1,\"responseData\":{\"resultData\":{\"billNumber\":\"billNumber\",\"netAmount\":1.1,\"billDate\":\"2024-01-15T09:30:00Z\",\"dueDate\":\"2024-01-15T09:30:00Z\",\"comments\":\"comments\",\"billItems\":[{}],\"mode\":1,\"accountingField1\":\"accountingField1\",\"accountingField2\":\"accountingField2\",\"endDate\":\"2024-01-15T09:30:00Z\",\"frequency\":\"frequency\",\"terms\":\"terms\",\"status\":1,\"lotNumber\":\"lotNumber\",\"attachments\":[{}]}}}"));
         PayabliApiResponseOcr response = client.ocr()
                 .ocrDocumentForm("typeResult", FileContentImageOnly.builder().build());
         RecordedRequest request = server.takeRequest();
@@ -76,8 +78,35 @@ public class OcrWireTest {
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody =
-                TestResources.loadResource("/wire-tests/OcrWireTest_testOcrDocumentForm_response.json");
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"responseText\",\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": {\n"
+                + "    \"resultData\": {\n"
+                + "      \"billNumber\": \"billNumber\",\n"
+                + "      \"netAmount\": 1.1,\n"
+                + "      \"billDate\": \"2024-01-15T09:30:00Z\",\n"
+                + "      \"dueDate\": \"2024-01-15T09:30:00Z\",\n"
+                + "      \"comments\": \"comments\",\n"
+                + "      \"billItems\": [\n"
+                + "        {}\n"
+                + "      ],\n"
+                + "      \"mode\": 1,\n"
+                + "      \"accountingField1\": \"accountingField1\",\n"
+                + "      \"accountingField2\": \"accountingField2\",\n"
+                + "      \"endDate\": \"2024-01-15T09:30:00Z\",\n"
+                + "      \"frequency\": \"frequency\",\n"
+                + "      \"terms\": \"terms\",\n"
+                + "      \"status\": 1,\n"
+                + "      \"lotNumber\": \"lotNumber\",\n"
+                + "      \"attachments\": [\n"
+                + "        {}\n"
+                + "      ]\n"
+                + "    }\n"
+                + "  }\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(
@@ -111,9 +140,11 @@ public class OcrWireTest {
 
     @Test
     public void testOcrDocumentJson() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(TestResources.loadResource("/wire-tests/OcrWireTest_testOcrDocumentJson_response.json")));
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"isSuccess\":true,\"responseText\":\"responseText\",\"responseCode\":1,\"responseData\":{\"resultData\":{\"billNumber\":\"billNumber\",\"netAmount\":1.1,\"billDate\":\"2024-01-15T09:30:00Z\",\"dueDate\":\"2024-01-15T09:30:00Z\",\"comments\":\"comments\",\"billItems\":[{}],\"mode\":1,\"accountingField1\":\"accountingField1\",\"accountingField2\":\"accountingField2\",\"endDate\":\"2024-01-15T09:30:00Z\",\"frequency\":\"frequency\",\"terms\":\"terms\",\"status\":1,\"lotNumber\":\"lotNumber\",\"attachments\":[{}]}}}"));
         PayabliApiResponseOcr response = client.ocr()
                 .ocrDocumentJson("typeResult", FileContentImageOnly.builder().build());
         RecordedRequest request = server.takeRequest();
@@ -152,8 +183,35 @@ public class OcrWireTest {
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
         String actualResponseJson = objectMapper.writeValueAsString(response);
-        String expectedResponseBody =
-                TestResources.loadResource("/wire-tests/OcrWireTest_testOcrDocumentJson_response.json");
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseText\": \"responseText\",\n"
+                + "  \"responseCode\": 1,\n"
+                + "  \"responseData\": {\n"
+                + "    \"resultData\": {\n"
+                + "      \"billNumber\": \"billNumber\",\n"
+                + "      \"netAmount\": 1.1,\n"
+                + "      \"billDate\": \"2024-01-15T09:30:00Z\",\n"
+                + "      \"dueDate\": \"2024-01-15T09:30:00Z\",\n"
+                + "      \"comments\": \"comments\",\n"
+                + "      \"billItems\": [\n"
+                + "        {}\n"
+                + "      ],\n"
+                + "      \"mode\": 1,\n"
+                + "      \"accountingField1\": \"accountingField1\",\n"
+                + "      \"accountingField2\": \"accountingField2\",\n"
+                + "      \"endDate\": \"2024-01-15T09:30:00Z\",\n"
+                + "      \"frequency\": \"frequency\",\n"
+                + "      \"terms\": \"terms\",\n"
+                + "      \"status\": 1,\n"
+                + "      \"lotNumber\": \"lotNumber\",\n"
+                + "      \"attachments\": [\n"
+                + "        {}\n"
+                + "      ]\n"
+                + "    }\n"
+                + "  }\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

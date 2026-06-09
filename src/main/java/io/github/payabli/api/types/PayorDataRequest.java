@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayorDataRequest.Builder.class)
 public final class PayorDataRequest implements IPayorDataRequest {
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> billingAddress1;
 
@@ -47,7 +47,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
 
     private final Optional<String> firstName;
 
-    private final Optional<List<Optional<String>>> identifierFields;
+    private final Optional<List<String>> identifierFields;
 
     private final Optional<String> lastName;
 
@@ -66,7 +66,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
     private final Map<String, Object> additionalProperties;
 
     private PayorDataRequest(
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<String> billingAddress1,
             Optional<String> billingAddress2,
             Optional<String> billingCity,
@@ -79,7 +79,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
             Optional<Long> customerId,
             Optional<String> customerNumber,
             Optional<String> firstName,
-            Optional<List<Optional<String>>> identifierFields,
+            Optional<List<String>> identifierFields,
             Optional<String> lastName,
             Optional<String> shippingAddress1,
             Optional<String> shippingAddress2,
@@ -114,7 +114,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
 
     @JsonProperty("additionalData")
     @java.lang.Override
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
@@ -201,7 +201,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
 
     @JsonProperty("identifierFields")
     @java.lang.Override
-    public Optional<List<Optional<String>>> getIdentifierFields() {
+    public Optional<List<String>> getIdentifierFields() {
         return identifierFields;
     }
 
@@ -322,7 +322,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         private Optional<String> billingAddress1 = Optional.empty();
 
@@ -348,7 +348,7 @@ public final class PayorDataRequest implements IPayorDataRequest {
 
         private Optional<String> firstName = Optional.empty();
 
-        private Optional<List<Optional<String>>> identifierFields = Optional.empty();
+        private Optional<List<String>> identifierFields = Optional.empty();
 
         private Optional<String> lastName = Optional.empty();
 
@@ -395,12 +395,12 @@ public final class PayorDataRequest implements IPayorDataRequest {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
@@ -547,12 +547,12 @@ public final class PayorDataRequest implements IPayorDataRequest {
         }
 
         @JsonSetter(value = "identifierFields", nulls = Nulls.SKIP)
-        public Builder identifierFields(Optional<List<Optional<String>>> identifierFields) {
+        public Builder identifierFields(Optional<List<String>> identifierFields) {
             this.identifierFields = identifierFields;
             return this;
         }
 
-        public Builder identifierFields(List<Optional<String>> identifierFields) {
+        public Builder identifierFields(List<String> identifierFields) {
             this.identifierFields = Optional.ofNullable(identifierFields);
             return this;
         }

@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Contacts.Builder.class)
-public final class Contacts implements IContacts {
+public final class Contacts {
     private final Optional<String> contactEmail;
 
     private final Optional<String> contactName;
@@ -51,7 +51,6 @@ public final class Contacts implements IContacts {
      * @return Contact email address.
      */
     @JsonProperty("contactEmail")
-    @java.lang.Override
     public Optional<String> getContactEmail() {
         return contactEmail;
     }
@@ -60,7 +59,6 @@ public final class Contacts implements IContacts {
      * @return Contact name.
      */
     @JsonProperty("contactName")
-    @java.lang.Override
     public Optional<String> getContactName() {
         return contactName;
     }
@@ -69,7 +67,6 @@ public final class Contacts implements IContacts {
      * @return Contact phone number.
      */
     @JsonProperty("contactPhone")
-    @java.lang.Override
     public Optional<String> getContactPhone() {
         return contactPhone;
     }
@@ -78,13 +75,11 @@ public final class Contacts implements IContacts {
      * @return Contact title.
      */
     @JsonProperty("contactTitle")
-    @java.lang.Override
     public Optional<String> getContactTitle() {
         return contactTitle;
     }
 
     @JsonProperty("additionalData")
-    @java.lang.Override
     public Optional<String> getAdditionalData() {
         return additionalData;
     }

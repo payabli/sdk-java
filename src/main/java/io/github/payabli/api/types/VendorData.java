@@ -23,7 +23,7 @@ import java.util.Optional;
 public final class VendorData {
     private final Optional<String> vendorNumber;
 
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> address1;
 
@@ -93,7 +93,7 @@ public final class VendorData {
 
     private VendorData(
             Optional<String> vendorNumber,
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<String> address1,
             Optional<String> address2,
             Optional<BillingData> billingData,
@@ -170,7 +170,7 @@ public final class VendorData {
     }
 
     @JsonProperty("AdditionalData")
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
@@ -376,8 +376,8 @@ public final class VendorData {
      * When this feature is enabled and you include an attachment, the invoice is scanned and extracted vendor information is merged into the request.
      * Fields in the request body take precedence over extracted data.
      * If the scan fails, vendor creation proceeds with the original request data.
-     * <p>See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details.
-     * Contact Payabli to enable this feature.</p>
+     * See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details.
+     * Contact Payabli to enable this feature.
      */
     @JsonProperty("attachment")
     public Optional<FileContent> getAttachment() {
@@ -484,7 +484,7 @@ public final class VendorData {
     public static final class Builder {
         private Optional<String> vendorNumber = Optional.empty();
 
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         private Optional<String> address1 = Optional.empty();
 
@@ -605,12 +605,12 @@ public final class VendorData {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
@@ -1002,8 +1002,8 @@ public final class VendorData {
          * <p>PDF invoice attachment for AI-powered vendor enrichment.
          * When this feature is enabled and you include an attachment, the invoice is scanned and extracted vendor information is merged into the request.
          * Fields in the request body take precedence over extracted data.
-         * If the scan fails, vendor creation proceeds with the original request data.</p>
-         * <p>See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details.
+         * If the scan fails, vendor creation proceeds with the original request data.
+         * See the <a href="/guides/pay-out-vendor-enrichment-overview">vendor enrichment guide</a> for details.
          * Contact Payabli to enable this feature.</p>
          */
         @JsonSetter(value = "attachment", nulls = Nulls.SKIP)

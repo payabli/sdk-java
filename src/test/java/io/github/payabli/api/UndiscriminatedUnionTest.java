@@ -6,65 +6,14 @@ package io.github.payabli.api;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.boarding.types.AddApplicationRequest;
-import io.github.payabli.api.resources.subscription.types.RequestSchedulePaymentMethod;
-import io.github.payabli.api.resources.tokenstorage.types.ConvertToken;
-import io.github.payabli.api.resources.tokenstorage.types.RequestTokenStoragePaymentMethod;
-import io.github.payabli.api.resources.tokenstorage.types.TokenizeCard;
+import io.github.payabli.api.types.AddApplicationRequest;
 import io.github.payabli.api.types.ApplicationDataManaged;
-import io.github.payabli.api.types.Check;
-import io.github.payabli.api.types.PayMethodAch;
-import io.github.payabli.api.types.PayMethodCredit;
-import io.github.payabli.api.types.PaymentMethod;
+import io.github.payabli.api.types.ConvertToken;
+import io.github.payabli.api.types.RequestTokenStoragePaymentMethod;
+import io.github.payabli.api.types.TokenizeCard;
 import org.junit.jupiter.api.Test;
 
 public final class UndiscriminatedUnionTest {
-    @Test
-    public void testPaymentMethod_PayMethodCredit() throws Exception {
-        String json = "{\"cardexp\":\"test\",\"cardnumber\":\"test\"}";
-        PaymentMethod union = ObjectMappers.JSON_MAPPER.readValue(json, PaymentMethod.class);
-        assertTrue(union.get() instanceof PayMethodCredit, "Expected PayMethodCredit but got different variant");
-    }
-
-    @Test
-    public void testPaymentMethod_PayMethodAch() throws Exception {
-        String json = "{\"achAccount\":\"test\",\"achHolder\":\"test\",\"achRouting\":\"test\"}";
-        PaymentMethod union = ObjectMappers.JSON_MAPPER.readValue(json, PaymentMethod.class);
-        assertTrue(union.get() instanceof PayMethodAch, "Expected PayMethodAch but got different variant");
-    }
-
-    @Test
-    public void testPaymentMethod_Check() throws Exception {
-        String json = "{\"achHolder\":\"test\"}";
-        PaymentMethod union = ObjectMappers.JSON_MAPPER.readValue(json, PaymentMethod.class);
-        assertTrue(union.get() instanceof Check, "Expected Check but got different variant");
-    }
-
-    @Test
-    public void testAddApplicationRequest_ApplicationDataManaged() throws Exception {
-        String json = "{\"signer\":{}}";
-        AddApplicationRequest union = ObjectMappers.JSON_MAPPER.readValue(json, AddApplicationRequest.class);
-        assertTrue(
-                union.get() instanceof ApplicationDataManaged,
-                "Expected ApplicationDataManaged but got different variant");
-    }
-
-    @Test
-    public void testRequestSchedulePaymentMethod_PayMethodCredit() throws Exception {
-        String json = "{\"cardexp\":\"test\",\"cardnumber\":\"test\"}";
-        RequestSchedulePaymentMethod union =
-                ObjectMappers.JSON_MAPPER.readValue(json, RequestSchedulePaymentMethod.class);
-        assertTrue(union.get() instanceof PayMethodCredit, "Expected PayMethodCredit but got different variant");
-    }
-
-    @Test
-    public void testRequestSchedulePaymentMethod_PayMethodAch() throws Exception {
-        String json = "{\"achAccount\":\"test\",\"achHolder\":\"test\",\"achRouting\":\"test\"}";
-        RequestSchedulePaymentMethod union =
-                ObjectMappers.JSON_MAPPER.readValue(json, RequestSchedulePaymentMethod.class);
-        assertTrue(union.get() instanceof PayMethodAch, "Expected PayMethodAch but got different variant");
-    }
-
     @Test
     public void testRequestTokenStoragePaymentMethod_TokenizeCard() throws Exception {
         String json = "{\"method\":\"test\",\"cardexp\":\"test\",\"cardHolder\":\"test\",\"cardnumber\":\"test\"}";
@@ -79,5 +28,14 @@ public final class UndiscriminatedUnionTest {
         RequestTokenStoragePaymentMethod union =
                 ObjectMappers.JSON_MAPPER.readValue(json, RequestTokenStoragePaymentMethod.class);
         assertTrue(union.get() instanceof ConvertToken, "Expected ConvertToken but got different variant");
+    }
+
+    @Test
+    public void testAddApplicationRequest_ApplicationDataManaged() throws Exception {
+        String json = "{\"signer\":{}}";
+        AddApplicationRequest union = ObjectMappers.JSON_MAPPER.readValue(json, AddApplicationRequest.class);
+        assertTrue(
+                union.get() instanceof ApplicationDataManaged,
+                "Expected ApplicationDataManaged but got different variant");
     }
 }

@@ -32,7 +32,7 @@ import io.github.payabli.api.resources.export.requests.ExportTransferDetailsRequ
 import io.github.payabli.api.resources.export.requests.ExportTransfersRequest;
 import io.github.payabli.api.resources.export.requests.ExportVendorsOrgRequest;
 import io.github.payabli.api.resources.export.requests.ExportVendorsRequest;
-import io.github.payabli.api.resources.export.types.ExportFormat1;
+import io.github.payabli.api.types.ExportFormat1;
 import java.util.Map;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -1344,7 +1344,7 @@ public class ExportWireTest {
                 .exportTransferDetails(
                         ExportFormat1.CSV,
                         "8cfec329267",
-                        1000000L,
+                        4521L,
                         ExportTransferDetailsRequest.builder()
                                 .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
                                 .fromRecord(251)

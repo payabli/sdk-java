@@ -18,13 +18,11 @@ import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLog;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogDetail;
-import io.github.payabli.api.resources.notificationlogs.types.NotificationLogSearchRequest;
-import io.github.payabli.api.types.PayabliApiResponse;
+import io.github.payabli.api.types.NotificationLog;
+import io.github.payabli.api.types.NotificationLogDetail;
+import io.github.payabli.api.types.PayabliErrorBody;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -38,33 +36,6 @@ public class RawNotificationlogsClient {
 
     public RawNotificationlogsClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-    }
-
-    /**
-     * Search notification logs with filtering and pagination.
-     * <ul>
-     * <li>Start date and end date cannot be more than 30 days apart</li>
-     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
-     * </ul>
-     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
-     */
-    public PayabliApiHttpResponse<List<NotificationLog>> searchNotificationLogs(NotificationLogSearchRequest body) {
-        return searchNotificationLogs(
-                SearchNotificationLogsRequest.builder().body(body).build());
-    }
-
-    /**
-     * Search notification logs with filtering and pagination.
-     * <ul>
-     * <li>Start date and end date cannot be more than 30 days apart</li>
-     * <li>Either <code>orgId</code> or <code>paypointId</code> must be provided</li>
-     * </ul>
-     * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
-     */
-    public PayabliApiHttpResponse<List<NotificationLog>> searchNotificationLogs(
-            NotificationLogSearchRequest body, RequestOptions requestOptions) {
-        return searchNotificationLogs(
-                SearchNotificationLogsRequest.builder().body(body).build(), requestOptions);
     }
 
     /**
@@ -91,8 +62,7 @@ public class RawNotificationlogsClient {
             SearchNotificationLogsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v2")
-                .addPathSegments("notificationlogs");
+                .addPathSegments("v2/notificationlogs");
         if (request.getPageSize().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "PageSize", request.getPageSize().get(), false);
@@ -109,7 +79,7 @@ public class RawNotificationlogsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -140,13 +110,14 @@ public class RawNotificationlogsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -164,7 +135,7 @@ public class RawNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> getNotificationLog(UUID uuid) {
+    public PayabliApiHttpResponse<NotificationLogDetail> getNotificationLog(String uuid) {
         return getNotificationLog(uuid, null);
     }
 
@@ -172,12 +143,12 @@ public class RawNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> getNotificationLog(UUID uuid, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<NotificationLogDetail> getNotificationLog(
+            String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v2")
-                .addPathSegments("notificationlogs")
-                .addPathSegment(uuid.toString());
+                .addPathSegments("v2/notificationlogs")
+                .addPathSegment(uuid);
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -207,13 +178,14 @@ public class RawNotificationlogsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -231,7 +203,7 @@ public class RawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> retryNotificationLog(UUID uuid) {
+    public PayabliApiHttpResponse<NotificationLogDetail> retryNotificationLog(String uuid) {
         return retryNotificationLog(uuid, null);
     }
 
@@ -240,12 +212,11 @@ public class RawNotificationlogsClient {
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
     public PayabliApiHttpResponse<NotificationLogDetail> retryNotificationLog(
-            UUID uuid, RequestOptions requestOptions) {
+            String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v2")
-                .addPathSegments("notificationlogs")
-                .addPathSegment(uuid.toString())
+                .addPathSegments("v2/notificationlogs")
+                .addPathSegment(uuid)
                 .addPathSegments("retry");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -276,13 +247,14 @@ public class RawNotificationlogsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
                     case 500:
                         throw new InternalServerError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 503:
                         throw new ServiceUnavailableError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class),
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
                 }
             } catch (JsonProcessingException ignored) {
@@ -301,7 +273,7 @@ public class RawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public PayabliApiHttpResponse<Void> bulkRetryNotificationLogs(List<UUID> request) {
+    public PayabliApiHttpResponse<Void> bulkRetryNotificationLogs(List<String> request) {
         return bulkRetryNotificationLogs(request, null);
     }
 
@@ -310,11 +282,10 @@ public class RawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public PayabliApiHttpResponse<Void> bulkRetryNotificationLogs(List<UUID> request, RequestOptions requestOptions) {
+    public PayabliApiHttpResponse<Void> bulkRetryNotificationLogs(List<String> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("v2")
-                .addPathSegments("notificationlogs/retry");
+                .addPathSegments("v2/notificationlogs/retry");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

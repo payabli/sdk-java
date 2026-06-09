@@ -7,7 +7,7 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.lineitem.requests.AddItemRequest;
 import io.github.payabli.api.resources.lineitem.requests.ListLineItemsRequest;
-import io.github.payabli.api.resources.lineitem.types.DeleteItemResponse;
+import io.github.payabli.api.types.DeleteItemResponse;
 import io.github.payabli.api.types.LineItem;
 import io.github.payabli.api.types.LineItemQueryRecord;
 import io.github.payabli.api.types.PayabliApiResponse6;
@@ -61,20 +61,6 @@ public class AsyncLineItemClient {
     }
 
     /**
-     * Deletes an item.
-     */
-    public CompletableFuture<DeleteItemResponse> deleteItem(int lineItemId) {
-        return this.rawClient.deleteItem(lineItemId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes an item.
-     */
-    public CompletableFuture<DeleteItemResponse> deleteItem(int lineItemId, RequestOptions requestOptions) {
-        return this.rawClient.deleteItem(lineItemId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Gets an item by ID.
      */
     public CompletableFuture<LineItemQueryRecord> getItem(int lineItemId) {
@@ -86,6 +72,35 @@ public class AsyncLineItemClient {
      */
     public CompletableFuture<LineItemQueryRecord> getItem(int lineItemId, RequestOptions requestOptions) {
         return this.rawClient.getItem(lineItemId, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates an item.
+     */
+    public CompletableFuture<PayabliApiResponse6> updateItem(int lineItemId, LineItem request) {
+        return this.rawClient.updateItem(lineItemId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates an item.
+     */
+    public CompletableFuture<PayabliApiResponse6> updateItem(
+            int lineItemId, LineItem request, RequestOptions requestOptions) {
+        return this.rawClient.updateItem(lineItemId, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes an item.
+     */
+    public CompletableFuture<DeleteItemResponse> deleteItem(int lineItemId) {
+        return this.rawClient.deleteItem(lineItemId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes an item.
+     */
+    public CompletableFuture<DeleteItemResponse> deleteItem(int lineItemId, RequestOptions requestOptions) {
+        return this.rawClient.deleteItem(lineItemId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -115,20 +130,5 @@ public class AsyncLineItemClient {
     public CompletableFuture<QueryResponseItems> listLineItems(
             String entry, ListLineItemsRequest request, RequestOptions requestOptions) {
         return this.rawClient.listLineItems(entry, request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates an item.
-     */
-    public CompletableFuture<PayabliApiResponse6> updateItem(int lineItemId, LineItem request) {
-        return this.rawClient.updateItem(lineItemId, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates an item.
-     */
-    public CompletableFuture<PayabliApiResponse6> updateItem(
-            int lineItemId, LineItem request, RequestOptions requestOptions) {
-        return this.rawClient.updateItem(lineItemId, request, requestOptions).thenApply(response -> response.body());
     }
 }

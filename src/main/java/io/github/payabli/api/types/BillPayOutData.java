@@ -38,7 +38,7 @@ public final class BillPayOutData {
 
     private final Optional<String> discount;
 
-    private final Optional<String> terms;
+    private final Optional<Terms> terms;
 
     private final Optional<String> accountingField1;
 
@@ -58,7 +58,7 @@ public final class BillPayOutData {
             Optional<String> invoiceNumber,
             Optional<String> netAmount,
             Optional<String> discount,
-            Optional<String> terms,
+            Optional<Terms> terms,
             Optional<String> accountingField1,
             Optional<String> accountingField2,
             Optional<String> additionalData,
@@ -145,7 +145,7 @@ public final class BillPayOutData {
      * @return Description of payment terms.
      */
     @JsonProperty("Terms")
-    public Optional<String> getTerms() {
+    public Optional<Terms> getTerms() {
         return terms;
     }
 
@@ -252,7 +252,7 @@ public final class BillPayOutData {
 
         private Optional<String> discount = Optional.empty();
 
-        private Optional<String> terms = Optional.empty();
+        private Optional<Terms> terms = Optional.empty();
 
         private Optional<String> accountingField1 = Optional.empty();
 
@@ -407,12 +407,12 @@ public final class BillPayOutData {
          * <p>Description of payment terms.</p>
          */
         @JsonSetter(value = "Terms", nulls = Nulls.SKIP)
-        public Builder terms(Optional<String> terms) {
+        public Builder terms(Optional<Terms> terms) {
             this.terms = terms;
             return this;
         }
 
-        public Builder terms(String terms) {
+        public Builder terms(Terms terms) {
             this.terms = Optional.ofNullable(terms);
             return this;
         }

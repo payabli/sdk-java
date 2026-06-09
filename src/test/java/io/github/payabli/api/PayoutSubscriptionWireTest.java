@@ -3,19 +3,18 @@ package io.github.payabli.api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.resources.moneyouttypes.types.AuthorizePaymentMethod;
-import io.github.payabli.api.resources.moneyouttypes.types.RequestOutAuthorizeVendorData;
 import io.github.payabli.api.resources.payoutsubscription.requests.RequestPayoutSchedule;
-import io.github.payabli.api.resources.payoutsubscription.types.AddPayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.DeletePayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.GetPayoutSubscriptionResponse;
-import io.github.payabli.api.resources.payoutsubscription.types.PayoutPaymentDetail;
-import io.github.payabli.api.resources.payoutsubscription.types.PayoutScheduleDetail;
-import io.github.payabli.api.resources.payoutsubscription.types.PayoutSubscriptionRequestBody;
-import io.github.payabli.api.resources.payoutsubscription.types.UpdatePayoutSubscriptionBody;
-import io.github.payabli.api.resources.payoutsubscription.types.UpdatePayoutSubscriptionResponse;
+import io.github.payabli.api.resources.payoutsubscription.requests.UpdatePayoutSubscriptionBody;
+import io.github.payabli.api.types.AddPayoutSubscriptionResponse;
+import io.github.payabli.api.types.AuthorizePaymentMethod;
 import io.github.payabli.api.types.BillPayOutDataRequest;
+import io.github.payabli.api.types.DeletePayoutSubscriptionResponse;
 import io.github.payabli.api.types.Frequency;
+import io.github.payabli.api.types.GetPayoutSubscriptionResponse;
+import io.github.payabli.api.types.PayoutPaymentDetail;
+import io.github.payabli.api.types.PayoutScheduleDetail;
+import io.github.payabli.api.types.RequestOutAuthorizeVendorData;
+import io.github.payabli.api.types.UpdatePayoutSubscriptionResponse;
 import java.util.Arrays;
 import java.util.Optional;
 import okhttp3.mockwebserver.MockResponse;
@@ -50,37 +49,35 @@ public class PayoutSubscriptionWireTest {
     public void testCreatePayoutSubscription() throws Exception {
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
-                .setBody("{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":42,\"customerId\":1501}"));
+                .setBody("{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":42,\"customerId\":4440}"));
         AddPayoutSubscriptionResponse response = client.payoutSubscription()
                 .createPayoutSubscription(RequestPayoutSchedule.builder()
-                        .body(PayoutSubscriptionRequestBody.builder()
-                                .entryPoint("d193cf9a46")
-                                .paymentMethod(AuthorizePaymentMethod.builder()
-                                        .method("ach")
-                                        .achHolder("Herman Coatings")
-                                        .achRouting("021000021")
-                                        .achAccount("3453445666")
-                                        .achAccountType("checking")
-                                        .build())
-                                .vendorData(RequestOutAuthorizeVendorData.builder()
-                                        .vendorId(1501)
-                                        .build())
-                                .paymentDetails(PayoutPaymentDetail.builder()
-                                        .totalAmount(500.0)
-                                        .serviceFee(0.0)
-                                        .currency("USD")
-                                        .build())
-                                .billData(Optional.of(Arrays.asList(BillPayOutDataRequest.builder()
-                                        .dueDate("2025-08-15")
-                                        .invoiceDate("2025-08-01")
-                                        .invoiceNumber("INV-5001")
-                                        .netAmount("500")
-                                        .build())))
-                                .scheduleDetails(PayoutScheduleDetail.builder()
-                                        .startDate("09/01/2027")
-                                        .endDate("09/01/2026")
-                                        .frequency(Frequency.MONTHLY)
-                                        .build())
+                        .entryPoint("8cfec329267")
+                        .paymentMethod(AuthorizePaymentMethod.builder()
+                                .method("ach")
+                                .achHolder("Herman Coatings")
+                                .achRouting("021000021")
+                                .achAccount("3453445666")
+                                .achAccountType("checking")
+                                .build())
+                        .vendorData(RequestOutAuthorizeVendorData.builder()
+                                .vendorId(456)
+                                .build())
+                        .paymentDetails(PayoutPaymentDetail.builder()
+                                .totalAmount(500.0)
+                                .serviceFee(0.0)
+                                .currency("USD")
+                                .build())
+                        .billData(Optional.of(Arrays.asList(BillPayOutDataRequest.builder()
+                                .dueDate("2025-08-15")
+                                .invoiceDate("2025-08-01")
+                                .invoiceNumber("INV-2345")
+                                .netAmount("500")
+                                .build())))
+                        .scheduleDetails(PayoutScheduleDetail.builder()
+                                .startDate("09/01/2027")
+                                .endDate("09/01/2026")
+                                .frequency(Frequency.MONTHLY)
                                 .build())
                         .build());
         RecordedRequest request = server.takeRequest();
@@ -90,7 +87,7 @@ public class PayoutSubscriptionWireTest {
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
                 + "{\n"
-                + "  \"entryPoint\": \"d193cf9a46\",\n"
+                + "  \"entryPoint\": \"8cfec329267\",\n"
                 + "  \"paymentMethod\": {\n"
                 + "    \"method\": \"ach\",\n"
                 + "    \"achHolder\": \"Herman Coatings\",\n"
@@ -104,11 +101,11 @@ public class PayoutSubscriptionWireTest {
                 + "    \"currency\": \"USD\"\n"
                 + "  },\n"
                 + "  \"vendorData\": {\n"
-                + "    \"vendorId\": 1501\n"
+                + "    \"vendorId\": 456\n"
                 + "  },\n"
                 + "  \"billData\": [\n"
                 + "    {\n"
-                + "      \"invoiceNumber\": \"INV-5001\",\n"
+                + "      \"invoiceNumber\": \"INV-2345\",\n"
                 + "      \"netAmount\": \"500\",\n"
                 + "      \"invoiceDate\": \"2025-08-01\",\n"
                 + "      \"dueDate\": \"2025-08-15\"\n"
@@ -155,7 +152,7 @@ public class PayoutSubscriptionWireTest {
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseData\": 42,\n"
-                + "  \"customerId\": 1501\n"
+                + "  \"customerId\": 4440\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
@@ -241,7 +238,7 @@ public class PayoutSubscriptionWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":\"42 paused\",\"customerId\":1501}"));
+                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":\"42 paused\",\"customerId\":4440}"));
         UpdatePayoutSubscriptionResponse response = client.payoutSubscription()
                 .updatePayoutSubscription(
                         42L,
@@ -287,7 +284,7 @@ public class PayoutSubscriptionWireTest {
                 + "  \"responseText\": \"Success\",\n"
                 + "  \"isSuccess\": true,\n"
                 + "  \"responseData\": \"42 paused\",\n"
-                + "  \"customerId\": 1501\n"
+                + "  \"customerId\": 4440\n"
                 + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);

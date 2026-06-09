@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -82,9 +85,9 @@ public final class CustomerQueryRecords {
 
     private final Optional<OffsetDateTime> created;
 
-    private final Optional<Map<String, Optional<String>>> additionalFields;
+    private final Optional<Map<String, String>> additionalFields;
 
-    private final Optional<List<Optional<String>>> identifierFields;
+    private final Optional<List<String>> identifierFields;
 
     private final Optional<List<SubscriptionQueryRecords>> subscriptions;
 
@@ -107,6 +110,8 @@ public final class CustomerQueryRecords {
     private final Optional<String> externalPaypointId;
 
     private final Optional<CustomerQueryRecordsCustomerConsent> customerConsent;
+
+    private final Optional<String> customerPortal;
 
     private final Map<String, Object> additionalProperties;
 
@@ -141,8 +146,8 @@ public final class CustomerQueryRecords {
             Optional<String> snData,
             Optional<OffsetDateTime> lastUpdated,
             Optional<OffsetDateTime> created,
-            Optional<Map<String, Optional<String>>> additionalFields,
-            Optional<List<Optional<String>>> identifierFields,
+            Optional<Map<String, String>> additionalFields,
+            Optional<List<String>> identifierFields,
             Optional<List<SubscriptionQueryRecords>> subscriptions,
             Optional<List<MethodQueryRecords>> storedMethods,
             Optional<CustomerSummaryRecord> customerSummary,
@@ -154,6 +159,7 @@ public final class CustomerQueryRecords {
             Optional<String> pageidentifier,
             Optional<String> externalPaypointId,
             Optional<CustomerQueryRecordsCustomerConsent> customerConsent,
+            Optional<String> customerPortal,
             Map<String, Object> additionalProperties) {
         this.customerId = customerId;
         this.customerNumber = customerNumber;
@@ -198,6 +204,7 @@ public final class CustomerQueryRecords {
         this.pageidentifier = pageidentifier;
         this.externalPaypointId = externalPaypointId;
         this.customerConsent = customerConsent;
+        this.customerPortal = customerPortal;
         this.additionalProperties = additionalProperties;
     }
 
@@ -368,18 +375,10 @@ public final class CustomerQueryRecords {
     /**
      * @return Social network linked to customer. Possible values:
      * <ul>
-     * <li>
-     * <p><code>facebook</code></p>
-     * </li>
-     * <li>
-     * <p><code>google</code></p>
-     * </li>
-     * <li>
-     * <p><code>twitter</code></p>
-     * </li>
-     * <li>
-     * <p><code>microsoft</code></p>
-     * </li>
+     * <li><code>facebook</code></li>
+     * <li><code>google</code></li>
+     * <li><code>twitter</code></li>
+     * <li><code>microsoft</code></li>
      * </ul>
      */
     @JsonProperty("snProvider")
@@ -423,12 +422,12 @@ public final class CustomerQueryRecords {
      * @return List of additional custom fields in format key:value.
      */
     @JsonProperty("AdditionalFields")
-    public Optional<Map<String, Optional<String>>> getAdditionalFields() {
+    public Optional<Map<String, String>> getAdditionalFields() {
         return additionalFields;
     }
 
     @JsonProperty("IdentifierFields")
-    public Optional<List<Optional<String>>> getIdentifierFields() {
+    public Optional<List<String>> getIdentifierFields() {
         return identifierFields;
     }
 
@@ -499,6 +498,20 @@ public final class CustomerQueryRecords {
         return customerConsent;
     }
 
+    @JsonIgnore
+    public Optional<String> getCustomerPortal() {
+        if (customerPortal == null) {
+            return Optional.empty();
+        }
+        return customerPortal;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerPortal")
+    private Optional<String> _getCustomerPortal() {
+        return customerPortal;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -553,7 +566,8 @@ public final class CustomerQueryRecords {
                 && paypointEntryname.equals(other.paypointEntryname)
                 && pageidentifier.equals(other.pageidentifier)
                 && externalPaypointId.equals(other.externalPaypointId)
-                && customerConsent.equals(other.customerConsent);
+                && customerConsent.equals(other.customerConsent)
+                && customerPortal.equals(other.customerPortal);
     }
 
     @java.lang.Override
@@ -601,7 +615,8 @@ public final class CustomerQueryRecords {
                 this.paypointEntryname,
                 this.pageidentifier,
                 this.externalPaypointId,
-                this.customerConsent);
+                this.customerConsent,
+                this.customerPortal);
     }
 
     @java.lang.Override
@@ -675,9 +690,9 @@ public final class CustomerQueryRecords {
 
         private Optional<OffsetDateTime> created = Optional.empty();
 
-        private Optional<Map<String, Optional<String>>> additionalFields = Optional.empty();
+        private Optional<Map<String, String>> additionalFields = Optional.empty();
 
-        private Optional<List<Optional<String>>> identifierFields = Optional.empty();
+        private Optional<List<String>> identifierFields = Optional.empty();
 
         private Optional<List<SubscriptionQueryRecords>> subscriptions = Optional.empty();
 
@@ -700,6 +715,8 @@ public final class CustomerQueryRecords {
         private Optional<String> externalPaypointId = Optional.empty();
 
         private Optional<CustomerQueryRecordsCustomerConsent> customerConsent = Optional.empty();
+
+        private Optional<String> customerPortal = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -750,6 +767,7 @@ public final class CustomerQueryRecords {
             pageidentifier(other.getPageidentifier());
             externalPaypointId(other.getExternalPaypointId());
             customerConsent(other.getCustomerConsent());
+            customerPortal(other.getCustomerPortal());
             return this;
         }
 
@@ -1070,18 +1088,10 @@ public final class CustomerQueryRecords {
         /**
          * <p>Social network linked to customer. Possible values:</p>
          * <ul>
-         * <li>
-         * <p><code>facebook</code></p>
-         * </li>
-         * <li>
-         * <p><code>google</code></p>
-         * </li>
-         * <li>
-         * <p><code>twitter</code></p>
-         * </li>
-         * <li>
-         * <p><code>microsoft</code></p>
-         * </li>
+         * <li><code>facebook</code></li>
+         * <li><code>google</code></li>
+         * <li><code>twitter</code></li>
+         * <li><code>microsoft</code></li>
          * </ul>
          */
         @JsonSetter(value = "snProvider", nulls = Nulls.SKIP)
@@ -1155,23 +1165,23 @@ public final class CustomerQueryRecords {
          * <p>List of additional custom fields in format key:value.</p>
          */
         @JsonSetter(value = "AdditionalFields", nulls = Nulls.SKIP)
-        public Builder additionalFields(Optional<Map<String, Optional<String>>> additionalFields) {
+        public Builder additionalFields(Optional<Map<String, String>> additionalFields) {
             this.additionalFields = additionalFields;
             return this;
         }
 
-        public Builder additionalFields(Map<String, Optional<String>> additionalFields) {
+        public Builder additionalFields(Map<String, String> additionalFields) {
             this.additionalFields = Optional.ofNullable(additionalFields);
             return this;
         }
 
         @JsonSetter(value = "IdentifierFields", nulls = Nulls.SKIP)
-        public Builder identifierFields(Optional<List<Optional<String>>> identifierFields) {
+        public Builder identifierFields(Optional<List<String>> identifierFields) {
             this.identifierFields = identifierFields;
             return this;
         }
 
-        public Builder identifierFields(List<Optional<String>> identifierFields) {
+        public Builder identifierFields(List<String> identifierFields) {
             this.identifierFields = Optional.ofNullable(identifierFields);
             return this;
         }
@@ -1309,6 +1319,28 @@ public final class CustomerQueryRecords {
             return this;
         }
 
+        @JsonSetter(value = "customerPortal", nulls = Nulls.SKIP)
+        public Builder customerPortal(Optional<String> customerPortal) {
+            this.customerPortal = customerPortal;
+            return this;
+        }
+
+        public Builder customerPortal(String customerPortal) {
+            this.customerPortal = Optional.ofNullable(customerPortal);
+            return this;
+        }
+
+        public Builder customerPortal(Nullable<String> customerPortal) {
+            if (customerPortal.isNull()) {
+                this.customerPortal = null;
+            } else if (customerPortal.isEmpty()) {
+                this.customerPortal = Optional.empty();
+            } else {
+                this.customerPortal = Optional.of(customerPortal.get());
+            }
+            return this;
+        }
+
         public CustomerQueryRecords build() {
             return new CustomerQueryRecords(
                     customerId,
@@ -1354,6 +1386,7 @@ public final class CustomerQueryRecords {
                     pageidentifier,
                     externalPaypointId,
                     customerConsent,
+                    customerPortal,
                     additionalProperties);
         }
 

@@ -11,13 +11,13 @@ import io.github.payabli.api.resources.invoice.requests.GetAttachedFileFromInvoi
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesOrgRequest;
 import io.github.payabli.api.resources.invoice.requests.ListInvoicesRequest;
 import io.github.payabli.api.resources.invoice.requests.SendInvoiceRequest;
-import io.github.payabli.api.resources.invoice.types.GetInvoiceRecord;
-import io.github.payabli.api.resources.invoice.types.InvoiceDataRequest;
-import io.github.payabli.api.resources.invoice.types.InvoiceNumberResponse;
-import io.github.payabli.api.resources.invoice.types.InvoiceResponseWithoutData;
-import io.github.payabli.api.resources.invoice.types.QueryInvoiceResponse;
-import io.github.payabli.api.resources.invoice.types.SendInvoiceResponse;
 import io.github.payabli.api.types.FileContent;
+import io.github.payabli.api.types.GetInvoiceRecord;
+import io.github.payabli.api.types.InvoiceDataRequest;
+import io.github.payabli.api.types.InvoiceNumberResponse;
+import io.github.payabli.api.types.InvoiceResponseWithoutData;
+import io.github.payabli.api.types.QueryInvoiceResponse;
+import io.github.payabli.api.types.SendInvoiceResponse;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -69,67 +69,6 @@ public class AsyncInvoiceClient {
     }
 
     /**
-     * Deletes a file attached to an invoice.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(int idInvoice, String filename) {
-        return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a file attached to an invoice.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
-            int idInvoice, String filename, RequestOptions requestOptions) {
-        return this.rawClient
-                .deleteAttachedFromInvoice(idInvoice, filename, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a single invoice from an entrypoint.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> deleteInvoice(int idInvoice) {
-        return this.rawClient.deleteInvoice(idInvoice).thenApply(response -> response.body());
-    }
-
-    /**
-     * Deletes a single invoice from an entrypoint.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> deleteInvoice(int idInvoice, RequestOptions requestOptions) {
-        return this.rawClient.deleteInvoice(idInvoice, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(int idInvoice, InvoiceDataRequest body) {
-        return this.rawClient.editInvoice(idInvoice, body).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(
-            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
-        return this.rawClient.editInvoice(idInvoice, body, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(int idInvoice, EditInvoiceRequest request) {
-        return this.rawClient.editInvoice(idInvoice, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates details for a single invoice in an entrypoint.
-     */
-    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(
-            int idInvoice, EditInvoiceRequest request, RequestOptions requestOptions) {
-        return this.rawClient.editInvoice(idInvoice, request, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
      * Retrieves a file attached to an invoice.
      */
     public CompletableFuture<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
@@ -167,6 +106,23 @@ public class AsyncInvoiceClient {
     }
 
     /**
+     * Deletes a file attached to an invoice.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(int idInvoice, String filename) {
+        return this.rawClient.deleteAttachedFromInvoice(idInvoice, filename).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a file attached to an invoice.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
+            int idInvoice, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .deleteAttachedFromInvoice(idInvoice, filename, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
      * Retrieves a single invoice by ID.
      */
     public CompletableFuture<GetInvoiceRecord> getInvoice(int idInvoice) {
@@ -178,6 +134,50 @@ public class AsyncInvoiceClient {
      */
     public CompletableFuture<GetInvoiceRecord> getInvoice(int idInvoice, RequestOptions requestOptions) {
         return this.rawClient.getInvoice(idInvoice, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(int idInvoice, InvoiceDataRequest body) {
+        return this.rawClient.editInvoice(idInvoice, body).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(
+            int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
+        return this.rawClient.editInvoice(idInvoice, body, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(int idInvoice, EditInvoiceRequest request) {
+        return this.rawClient.editInvoice(idInvoice, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates details for a single invoice in an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> editInvoice(
+            int idInvoice, EditInvoiceRequest request, RequestOptions requestOptions) {
+        return this.rawClient.editInvoice(idInvoice, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a single invoice from an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> deleteInvoice(int idInvoice) {
+        return this.rawClient.deleteInvoice(idInvoice).thenApply(response -> response.body());
+    }
+
+    /**
+     * Deletes a single invoice from an entrypoint.
+     */
+    public CompletableFuture<InvoiceResponseWithoutData> deleteInvoice(int idInvoice, RequestOptions requestOptions) {
+        return this.rawClient.deleteInvoice(idInvoice, requestOptions).thenApply(response -> response.body());
     }
 
     /**

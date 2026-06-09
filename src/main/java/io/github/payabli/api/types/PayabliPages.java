@@ -21,8 +21,8 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliPages.Builder.class)
-public final class PayabliPages implements IPayabliPages {
-    private final Optional<Map<String, Optional<Map<String, Object>>>> additionalData;
+public final class PayabliPages {
+    private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<List<PayabliCredentials>> credentials;
 
@@ -47,7 +47,7 @@ public final class PayabliPages implements IPayabliPages {
     private final Map<String, Object> additionalProperties;
 
     private PayabliPages(
-            Optional<Map<String, Optional<Map<String, Object>>>> additionalData,
+            Optional<Map<String, Map<String, Object>>> additionalData,
             Optional<List<PayabliCredentials>> credentials,
             Optional<OffsetDateTime> lastAccess,
             Optional<PageContent> pageContent,
@@ -74,16 +74,14 @@ public final class PayabliPages implements IPayabliPages {
     }
 
     @JsonProperty("AdditionalData")
-    @java.lang.Override
-    public Optional<Map<String, Optional<Map<String, Object>>>> getAdditionalData() {
+    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
     /**
      * @return Array of credential objects with active services for the page
      */
-    @JsonProperty("credentials")
-    @java.lang.Override
+    @JsonProperty("Credentials")
     public Optional<List<PayabliCredentials>> getCredentials() {
         return credentials;
     }
@@ -91,8 +89,7 @@ public final class PayabliPages implements IPayabliPages {
     /**
      * @return Timestamp of last access to page structure
      */
-    @JsonProperty("lastAccess")
-    @java.lang.Override
+    @JsonProperty("LastAccess")
     public Optional<OffsetDateTime> getLastAccess() {
         return lastAccess;
     }
@@ -100,14 +97,12 @@ public final class PayabliPages implements IPayabliPages {
     /**
      * @return Sections of page
      */
-    @JsonProperty("pageContent")
-    @java.lang.Override
+    @JsonProperty("PageContent")
     public Optional<PageContent> getPageContent() {
         return pageContent;
     }
 
     @JsonProperty("pageIdentifier")
-    @java.lang.Override
     public Optional<String> getPageIdentifier() {
         return pageIdentifier;
     }
@@ -115,8 +110,7 @@ public final class PayabliPages implements IPayabliPages {
     /**
      * @return Settings of page
      */
-    @JsonProperty("pageSettings")
-    @java.lang.Override
+    @JsonProperty("PageSettings")
     public Optional<PageSetting> getPageSettings() {
         return pageSettings;
     }
@@ -125,7 +119,6 @@ public final class PayabliPages implements IPayabliPages {
      * @return Flag indicating if page is active to accept payments. <code>0</code> for false, <code>1</code> for true.
      */
     @JsonProperty("published")
-    @java.lang.Override
     public Optional<Integer> getPublished() {
         return published;
     }
@@ -133,8 +126,7 @@ public final class PayabliPages implements IPayabliPages {
     /**
      * @return Sections of payment receipt
      */
-    @JsonProperty("receiptContent")
-    @java.lang.Override
+    @JsonProperty("ReceiptContent")
     public Optional<ReceiptContent> getReceiptContent() {
         return receiptContent;
     }
@@ -142,8 +134,7 @@ public final class PayabliPages implements IPayabliPages {
     /**
      * @return Page identifier. Must be unique in platform.
      */
-    @JsonProperty("subdomain")
-    @java.lang.Override
+    @JsonProperty("Subdomain")
     public Optional<String> getSubdomain() {
         return subdomain;
     }
@@ -152,7 +143,6 @@ public final class PayabliPages implements IPayabliPages {
      * @return Total amount to pay in this page
      */
     @JsonProperty("totalAmount")
-    @java.lang.Override
     public Optional<Double> getTotalAmount() {
         return totalAmount;
     }
@@ -161,7 +151,6 @@ public final class PayabliPages implements IPayabliPages {
      * @return Base64 encoded image of CAPTCHA associated to this page load
      */
     @JsonProperty("validationCode")
-    @java.lang.Override
     public Optional<String> getValidationCode() {
         return validationCode;
     }
@@ -218,7 +207,7 @@ public final class PayabliPages implements IPayabliPages {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Map<String, Optional<Map<String, Object>>>> additionalData = Optional.empty();
+        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
 
         private Optional<List<PayabliCredentials>> credentials = Optional.empty();
 
@@ -261,12 +250,12 @@ public final class PayabliPages implements IPayabliPages {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Optional<Map<String, Object>>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Optional<Map<String, Object>>> additionalData) {
+        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
@@ -274,7 +263,7 @@ public final class PayabliPages implements IPayabliPages {
         /**
          * <p>Array of credential objects with active services for the page</p>
          */
-        @JsonSetter(value = "credentials", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Credentials", nulls = Nulls.SKIP)
         public Builder credentials(Optional<List<PayabliCredentials>> credentials) {
             this.credentials = credentials;
             return this;
@@ -288,7 +277,7 @@ public final class PayabliPages implements IPayabliPages {
         /**
          * <p>Timestamp of last access to page structure</p>
          */
-        @JsonSetter(value = "lastAccess", nulls = Nulls.SKIP)
+        @JsonSetter(value = "LastAccess", nulls = Nulls.SKIP)
         public Builder lastAccess(Optional<OffsetDateTime> lastAccess) {
             this.lastAccess = lastAccess;
             return this;
@@ -302,7 +291,7 @@ public final class PayabliPages implements IPayabliPages {
         /**
          * <p>Sections of page</p>
          */
-        @JsonSetter(value = "pageContent", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PageContent", nulls = Nulls.SKIP)
         public Builder pageContent(Optional<PageContent> pageContent) {
             this.pageContent = pageContent;
             return this;
@@ -327,7 +316,7 @@ public final class PayabliPages implements IPayabliPages {
         /**
          * <p>Settings of page</p>
          */
-        @JsonSetter(value = "pageSettings", nulls = Nulls.SKIP)
+        @JsonSetter(value = "PageSettings", nulls = Nulls.SKIP)
         public Builder pageSettings(Optional<PageSetting> pageSettings) {
             this.pageSettings = pageSettings;
             return this;
@@ -355,7 +344,7 @@ public final class PayabliPages implements IPayabliPages {
         /**
          * <p>Sections of payment receipt</p>
          */
-        @JsonSetter(value = "receiptContent", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ReceiptContent", nulls = Nulls.SKIP)
         public Builder receiptContent(Optional<ReceiptContent> receiptContent) {
             this.receiptContent = receiptContent;
             return this;
@@ -369,7 +358,7 @@ public final class PayabliPages implements IPayabliPages {
         /**
          * <p>Page identifier. Must be unique in platform.</p>
          */
-        @JsonSetter(value = "subdomain", nulls = Nulls.SKIP)
+        @JsonSetter(value = "Subdomain", nulls = Nulls.SKIP)
         public Builder subdomain(Optional<String> subdomain) {
             this.subdomain = subdomain;
             return this;

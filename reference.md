@@ -50,13 +50,13 @@ client.bill().addBill(
                     Arrays.asList(
                         BillItem
                             .builder()
-                            .itemCost(5.0)
                             .itemCategories(
                                 Optional.of(
-                                    Arrays.asList(Optional.of("deposits"))
+                                    Arrays.asList("deposits")
                                 )
                             )
                             .itemCommodityCode("010")
+                            .itemCost(5.0)
                             .itemDescription("Deposit for materials")
                             .itemMode(0)
                             .itemProductCode("M-DEPOSIT")
@@ -76,12 +76,12 @@ client.bill().addBill(
                 .frequency(Frequency.MONTHLY)
                 .mode(0)
                 .netAmount(3762.87)
-                .status(-99)
-                .terms("NET30")
+                .status(1)
+                .terms(Terms.NET_30)
                 .vendor(
-                    VendorData
+                    BillOutDataVendor
                         .builder()
-                        .vendorNumber("1234-A")
+                        .vendorNumber("VEN-123")
                         .build()
                 )
                 .build()
@@ -110,7 +110,7 @@ client.bill().addBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -130,7 +130,7 @@ client.bill().addBill(
 </dl>
 </details>
 
-<details><summary><code>client.bill.deleteAttachedFromBill(idBill, filename) -> BillResponse</code></summary>
+<details><summary><code>client.bill.getBill(idBill) -> GetBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -142,7 +142,7 @@ client.bill().addBill(
 <dl>
 <dd>
 
-Delete a file attached to a bill.
+Retrieves a bill by ID from an entrypoint.
 </dd>
 </dl>
 </dd>
@@ -157,87 +157,7 @@ Delete a file attached to a bill.
 <dd>
 
 ```java
-client.bill().deleteAttachedFromBill(
-    285,
-    "0_Bill.pdf",
-    DeleteAttachedFromBillRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `String` 
-
-The filename in Payabli. Get this from the `zipName` field
-in the `DocumentsRef.filelist` array returned by
-`/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**returnObject:** `Optional<Boolean>` — When `true`, the response includes the full bill object.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.bill.deleteBill(idBill) -> BillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a bill by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.bill().deleteBill(285);
+client.bill().getBill(285);
 ```
 </dd>
 </dl>
@@ -333,6 +253,60 @@ client.bill().editBill(
 </dl>
 </details>
 
+<details><summary><code>client.bill.deleteBill(idBill) -> BillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a bill by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.bill().deleteBill(285);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.bill.getAttachedFromBill(idBill, filename) -> FileContent</code></summary>
 <dl>
 <dd>
@@ -414,7 +388,7 @@ in the `DocumentsRef.filelist` array returned by
 </dl>
 </details>
 
-<details><summary><code>client.bill.getBill(idBill) -> GetBillResponse</code></summary>
+<details><summary><code>client.bill.deleteAttachedFromBill(idBill, filename) -> BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -426,7 +400,7 @@ in the `DocumentsRef.filelist` array returned by
 <dl>
 <dd>
 
-Retrieves a bill by ID from an entrypoint.
+Delete a file attached to a bill.
 </dd>
 </dl>
 </dd>
@@ -441,7 +415,13 @@ Retrieves a bill by ID from an entrypoint.
 <dd>
 
 ```java
-client.bill().getBill(285);
+client.bill().deleteAttachedFromBill(
+    285,
+    "0_Bill.pdf",
+    DeleteAttachedFromBillRequest
+        .builder()
+        .build()
+);
 ```
 </dd>
 </dl>
@@ -457,6 +437,254 @@ client.bill().getBill(285);
 <dd>
 
 **idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `String` 
+
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnObject:** `Optional<Boolean>` — When `true`, the response includes the full bill object.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.bill.sendToApprovalBill(idBill, request) -> BillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Send a bill to a user or list of users to approve.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.bill().sendToApprovalBill(
+    285,
+    SendToApprovalBillRequest
+        .builder()
+        .body(
+            Arrays.asList("approver@example.com")
+        )
+        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autocreateUser:** `Optional<Boolean>` — Automatically create the target user for approval if they don't exist.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `List<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.bill.modifyApprovalBill(idBill, request) -> ModifyApprovalBillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Modify the list of users the bill is sent to for approval.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.bill().modifyApprovalBill(
+    285,
+    Arrays.asList("approver1@example.com", "approver2@example.com")
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `List<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.bill.setApprovedBill(idBill, approved) -> SetApprovedBillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Approve or disapprove a bill by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.bill().setApprovedBill(
+    285,
+    "true",
+    SetApprovedBillRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approved:** `String` — String representing the approved status. Accepted values: 'true' or 'false'.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `Optional<String>` — Email or username of user modifying approval status.
     
 </dd>
 </dl>
@@ -526,7 +754,7 @@ client.bill().listBills(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -534,7 +762,7 @@ client.bill().listBills(
 <dl>
 <dd>
 
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set. 
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
     
 </dd>
 </dl>
@@ -672,7 +900,7 @@ client.bill().listBillsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -760,1917 +988,6 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.bill.modifyApprovalBill(idBill, request) -> ModifyApprovalBillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Modify the list of users the bill is sent to for approval.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.bill().modifyApprovalBill(
-    285,
-    Arrays.asList("approver1@example.com", "approver2@example.com")
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `List<String>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.bill.sendToApprovalBill(idBill, request) -> BillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Send a bill to a user or list of users to approve.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.bill().sendToApprovalBill(
-    285,
-    SendToApprovalBillRequest
-        .builder()
-        .body(
-            Arrays.asList("string")
-        )
-        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**autocreateUser:** `Optional<Boolean>` — Automatically create the target user for approval if they don't exist.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `List<String>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.bill.setApprovedBill(idBill, approved) -> SetApprovedBillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Approve or disapprove a bill by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.bill().setApprovedBill(
-    285,
-    "true",
-    SetApprovedBillRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `Integer` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**approved:** `String` — String representing the approved status. Accepted values: 'true' or 'false'.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `Optional<String>` — Email or username of user modifying approval status.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Boarding
-<details><summary><code>client.boarding.addApplication(request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a boarding application in an organization. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().addApplication(
-    AddApplicationRequest.of(
-        ApplicationDataPayIn
-            .builder()
-            .services(
-                ApplicationDataPayInServices
-                    .builder()
-                    .ach(
-                        ApplicationDataPayInServicesAch
-                            .builder()
-                            .build()
-                    )
-                    .card(
-                        ApplicationDataPayInServicesCard
-                            .builder()
-                            .acceptAmex(Optional.of(true))
-                            .acceptDiscover(Optional.of(true))
-                            .acceptMastercard(Optional.of(true))
-                            .acceptVisa(Optional.of(true))
-                            .build()
-                    )
-                    .build()
-            )
-            .phonenumber("1234567890")
-            .processingRegion("US")
-            .signer(
-                SignerDataRequest
-                    .builder()
-                    .name(Optional.of("John Smith"))
-                    .ssn(Optional.of("123456789"))
-                    .dob(Optional.of("01/01/1976"))
-                    .phone(Optional.of("555888111"))
-                    .email(Optional.of("test@email.com"))
-                    .address(Optional.of("33 North St"))
-                    .address1(Optional.of("STE 900"))
-                    .city(Optional.of("Bristol"))
-                    .country(Optional.of("US"))
-                    .state(Optional.of("TN"))
-                    .zip(Optional.of("55555"))
-                    .signedDocumentReference(Optional.of("https://example.com/signed-document.pdf"))
-                    .pciAttestation(Optional.of(true))
-                    .attestationDate(Optional.of("04/20/2025"))
-                    .additionalData(
-                        Optional.of(
-                            new HashMap<String, String>() {{
-                                put("deviceId", "499585-389fj484-3jcj8hj3");
-                                put("session", "fifji4-fiu443-fn4843");
-                                put("timeWithCompany", "6 Years");
-                            }}
-                        )
-                    )
-                    .signDate(Optional.of("04/20/2025"))
-                    .build()
-            )
-            .whenCharged(Whencharged.WHEN_SERVICE_PROVIDED)
-            .whenDelivered(Whendelivered.OVER_30_DAYS)
-            .whenProvided(Whenprovided.THIRTY_DAYS_OR_LESS)
-            .whenRefunded(Whenrefunded.THIRTY_DAYS_OR_LESS)
-            .annualRevenue(Optional.of(1000.0))
-            .averageBillSize(Optional.of("500"))
-            .averageMonthlyBill(Optional.of("5650"))
-            .avgmonthly(Optional.of(1000.0))
-            .baddress(Optional.of("123 Walnut Street"))
-            .baddress1(Optional.of("Suite 103"))
-            .bankData(
-                Arrays.asList(
-                    Bank
-                        .builder()
-                        .accountId("123-456")
-                        .nickname("Withdrawal Account")
-                        .bankName("Test Bank")
-                        .routingAccount("123123123")
-                        .accountNumber("123123123")
-                        .typeAccount(TypeAccount.CHECKING)
-                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
-                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
-                        .bankAccountFunction(1)
-                        .build(),
-                    Bank
-                        .builder()
-                        .accountId("123-456")
-                        .nickname("Deposit Account")
-                        .bankName("Test Bank")
-                        .routingAccount("123123123")
-                        .accountNumber("123123123")
-                        .typeAccount(TypeAccount.CHECKING)
-                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
-                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
-                        .bankAccountFunction(0)
-                        .build()
-                )
-            )
-            .bcity(Optional.of("New Vegas"))
-            .bcountry(Optional.of("US"))
-            .binperson(Optional.of(60))
-            .binphone(Optional.of(20))
-            .binweb(Optional.of(20))
-            .bstate(Optional.of("FL"))
-            .bsummary(Optional.of("Brick and mortar store that sells office supplies"))
-            .btype(Optional.of(OwnType.LIMITED_LIABILITY_COMPANY))
-            .bzip(Optional.of("33000"))
-            .contacts(
-                Optional.of(
-                    Arrays.asList(
-                        ApplicationDataPayInContactsItem
-                            .builder()
-                            .contactEmail("herman@hermanscoatings.com")
-                            .contactName("Herman Martinez")
-                            .contactPhone("3055550000")
-                            .contactTitle("Owner")
-                            .build()
-                    )
-                )
-            )
-            .creditLimit(Optional.of("creditLimit"))
-            .dbaName(Optional.of("Sunshine Gutters"))
-            .ein(Optional.of("123456789"))
-            .faxnumber(Optional.of("1234567890"))
-            .highticketamt(Optional.of(1000.0))
-            .legalName(Optional.of("Sunshine Services, LLC"))
-            .license(Optional.of("2222222FFG"))
-            .licstate(Optional.of("CA"))
-            .maddress(Optional.of("123 Walnut Street"))
-            .maddress1(Optional.of("STE 900"))
-            .mcc(Optional.of("7777"))
-            .mcity(Optional.of("Johnson City"))
-            .mcountry(Optional.of("US"))
-            .mstate(Optional.of("TN"))
-            .mzip(Optional.of("37615"))
-            .orgId(Optional.of(123L))
-            .ownership(
-                Optional.of(
-                    Arrays.asList(
-                        ApplicationDataPayInOwnershipItem
-                            .builder()
-                            .ownername("John Smith")
-                            .ownertitle("CEO")
-                            .ownerpercent(100)
-                            .ownerssn("123456789")
-                            .ownerdob("01/01/1990")
-                            .ownerphone1("555888111")
-                            .ownerphone2("555888111")
-                            .owneremail("test@email.com")
-                            .ownerdriver("CA6677778")
-                            .oaddress("33 North St")
-                            .ocity("Any City")
-                            .ocountry("US")
-                            .odriverstate("CA")
-                            .ostate("CA")
-                            .ozip("55555")
-                            .build()
-                    )
-                )
-            )
-            .recipientEmail(Optional.of("josephray@example.com"))
-            .recipientEmailNotification(Optional.of(true))
-            .resumable(Optional.of(true))
-            .startdate(Optional.of("01/01/1990"))
-            .taxFillName(Optional.of("Sunshine LLC"))
-            .templateId(Optional.of(22L))
-            .ticketamt(Optional.of(1000.0))
-            .website(Optional.of("www.example.com"))
-            .build()
-    )
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `AddApplicationRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.deleteApplication(appId) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a boarding application by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().deleteApplication(352);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `Integer` — Boarding application ID. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getApplication(appId) -> ApplicationDetailsRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the details for a boarding application by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getApplication(352);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `Integer` — Boarding application ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getApplicationByAuth(xId, request) -> ApplicationQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets a boarding application by authentication information. This endpoint requires an `application` API token. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getApplicationByAuth(
-    "17E",
-    RequestAppByAuth
-        .builder()
-        .email("admin@email.com")
-        .referenceId("n6UCd1f1ygG7")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**xId:** `String` — The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `Optional<String>` — The email address the applicant used to save the application.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**referenceId:** `Optional<String>` — The referenceId is sent to the applicant via email when they save the application.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getByIdLinkApplication(boardingLinkId) -> BoardingLinkQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves details for a boarding link, by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getByIdLinkApplication(91);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**boardingLinkId:** `Integer` — The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getByTemplateIdLinkApplication(templateId) -> BoardingLinkQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getByTemplateIdLinkApplication(80.0);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `Double` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getExternalApplication(appId, mail2) -> PayabliApiResponse00</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getExternalApplication(
-    352,
-    "mail2",
-    GetExternalApplicationRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `Integer` — Boarding application ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `String` — Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sendEmail:** `Optional<Boolean>` — If `true`, sends an email that includes the link to the application to the `mail2` address. Defaults to `false`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getLinkApplication(boardingLinkReference) -> BoardingLinkQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getLinkApplication("myorgaccountname-00091");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**boardingLinkReference:** `String` — The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.listApplications(orgId) -> QueryBoardingAppsListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().listApplications(
-    123,
-    ListApplicationsRequest
-        .builder()
-        .fromRecord(251)
-        .limitRecord(0)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exportFormat:** `Optional<ExportFormat>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `dbaname` (ct, nct)
-- `legalname` (ct, nct)
-- `ein` (ct, nct)
-- `address` (ct, nct)
-- `city` (ct, nct)
-- `state` (ct, nct)
-- `phone` (ct, nct)
-- `mcc` (ct, nct)
-- `owntype` (ct, nct)
-- `ownerName` (ct, nct)
-- `contactName` (ct, nct)
-- `status` (in, nin, eq,ne)
-- `orgParentname` (ct, nct)
-- `externalpaypointID` (ct, nct, eq, ne)
-- `repCode` (ct, nct, eq, ne)
-- `repName` (ct, nct, eq, ne)
-- `repOffice` (ct, nct, eq, ne)
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.listBoardingLinks(orgId) -> QueryBoardingLinksResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Return a list of boarding links for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().listBoardingLinks(
-    123,
-    ListBoardingLinksRequest
-        .builder()
-        .fromRecord(251)
-        .limitRecord(0)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `lastUpdated` (gt, ge, lt, le, eq, ne)
-- `templateName` (ct, nct)
-- `referenceName` (ct, nct)
-- `acceptRegister` (eq, ne)
-- `acceptAuth` (eq, ne)
-- `templateCode` (ct, nct)
-- `templateId` (eq, ne)
-- `orgParentname` (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than 
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: templateName(ct)=hoa return all records with template title containing "hoa"
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.updateApplication(appId, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a boarding application by ID. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().updateApplication(
-    352,
-    ApplicationData
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `Integer` — Boarding application ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `ApplicationData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.addServiceToPaypointFromApp(request) -> CreateApplicationFromPaypointResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().addServiceToPaypointFromApp(
-    CreateApplicationFromPaypointRequest
-        .builder()
-        .paypointId(123L)
-        .templateId(456L)
-        .recipientEmail("merchant@example.com")
-        .returnBoardingAccessInfoInLine(true)
-        .onCreate(
-            Optional.of(
-                Arrays.asList("submitApplication")
-            )
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateApplicationFromPaypointRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.boarding.getApplicationsByPaypointId(paypointId) -> QueryBoardingAppsListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.boarding().getApplicationsByPaypointId(12345L);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**paypointId:** `Long` — ID of the paypoint to retrieve applications for.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## ChargeBacks
-<details><summary><code>client.chargeBacks.addResponse(id, request) -> AddResponseResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Add a response to a chargeback or ACH return.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.chargeBacks().addResponse(
-    1000000L,
-    ResponseChargeBack
-        .builder()
-        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — ID of the chargeback or return record.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**attachments:** `Optional<List<FileContent>>` — Array of attached files to response.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contactEmail:** `Optional<String>` — Email of response submitter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contactName:** `Optional<String>` — Name of response submitter
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**notes:** `Optional<String>` — Response notes
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.chargeBacks.getChargeback(id) -> ChargebackQueryRecords</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a chargeback record and its details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.chargeBacks().getChargeback(1000000L);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.chargeBacks.getChargebackAttachment(id, fileName) -> String</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a chargeback attachment file by its file name.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.chargeBacks().getChargebackAttachment(1000000L, "fileName");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — The ID of chargeback or return record.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fileName:** `String` — The chargeback attachment's file name.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## CheckCapture
-<details><summary><code>client.checkCapture.checkProcessing(request) -> CheckCaptureResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Captures a check for Remote Deposit Capture (RDC) using the provided check images and details. This endpoint handles the OCR extraction of check data including MICR, routing number, account number, and amount. See the [RDC guide](/developers/developer-guides/pay-in-rdc) for more details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.checkCapture().checkProcessing(
-    CheckCaptureRequestBody
-        .builder()
-        .entryPoint("47abcfea12")
-        .frontImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
-        .rearImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
-        .checkAmount(12550)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entryPoint:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**frontImage:** `String` — Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**rearImage:** `String` — Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**checkAmount:** `Integer` — Check amount in cents (maximum 32-bit integer value).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Cloud
-<details><summary><code>client.cloud.addDevice(entry, request) -> AddDeviceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/developer-guides/devices-quickstart#devices-quickstart) for a complete guide.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.cloud().addDevice(
-    "8cfec329267",
-    DeviceEntry
-        .builder()
-        .description("Front Desk POS")
-        .registrationCode("YS7DS5")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `Optional<String>` — Description or name for the device. This can be anything, but Payabli recommends entering the name of the paypoint, or some other easy to identify descriptor. If you have several devices for one paypoint, you can give them descriptions like "Cashier 1" and "Cashier 2", or "Front Desk" and "Back Office"
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registrationCode:** `Optional<String>` 
-
-The device registration code or serial number, depending on the model.
-
-- Ingenico devices: This is the activation code that's displayed on the device screen during setup.
-
-- PAX A920 device: This code is the serial number on the back of the device.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.cloud.historyDevice(entry, deviceId) -> CloudQueryApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieve the registration history for a device. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.cloud().historyDevice("8cfec329267", "WXGDWB");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deviceId:** `String` — ID of the cloud device. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.cloud.listDevice(entry) -> CloudQueryApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
-
-Get a list of cloud devices registered to an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.cloud().listDevice(
-    "8cfec329267",
-    ListDeviceRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceRefresh:** `Optional<Boolean>` — When `true`, the request retrieves an updated list of devices from the processor instead of returning a cached list of devices.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.cloud.removeDevice(entry, deviceId) -> RemoveDeviceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Remove a cloud device from an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.cloud().removeDevice("8cfec329267", "6c361c7d-674c-44cc-b790-382b75d1xxx");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deviceId:** `String` — ID of the cloud device. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Customer
 <details><summary><code>client.customer.addCustomer(entry, request) -> PayabliApiResponseCustomerQuery</code></summary>
 <dl>
@@ -2684,7 +1001,7 @@ client.cloud().removeDevice("8cfec329267", "6c361c7d-674c-44cc-b790-382b75d1xxx"
 <dl>
 <dd>
 
-Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in PartnerHub. 
+Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in PartnerHub.
 If you don't include an identifier, the record is rejected.
 </dd>
 </dl>
@@ -2707,7 +1024,7 @@ client.customer().addCustomer(
         .body(
             CustomerData
                 .builder()
-                .customerNumber("12356ACB")
+                .customerNumber("C-90010")
                 .firstname("Irene")
                 .lastname("Canizales")
                 .email("irene@canizalesconcrete.com")
@@ -2718,7 +1035,7 @@ client.customer().addCustomer(
                 .country("US")
                 .timeZone(-5)
                 .identifierFields(
-                    Arrays.asList(Optional.of("email"))
+                    Arrays.asList("email")
                 )
                 .build()
         )
@@ -2738,7 +1055,7 @@ client.customer().addCustomer(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entrypoint identifier.
     
 </dd>
 </dl>
@@ -2762,7 +1079,135 @@ client.customer().addCustomer(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CustomerData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customer.getCustomer(customerId) -> CustomerQueryRecords</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a customer's record and details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.customer().getCustomer(4440);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customer.updateCustomer(customerId, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update a customer record. Include only the fields you want to change.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.customer().updateCustomer(
+    4440,
+    CustomerData
+        .builder()
+        .firstname("Irene")
+        .lastname("Canizales")
+        .address1("145 Bishop's Trail")
+        .city("Mountain City")
+        .state("TN")
+        .zip("37612")
+        .country("US")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
     
 </dd>
 </dl>
@@ -2809,7 +1254,7 @@ Delete a customer record.
 <dd>
 
 ```java
-client.customer().deleteCustomer(998);
+client.customer().deleteCustomer(4440);
 ```
 </dd>
 </dl>
@@ -2824,123 +1269,7 @@ client.customer().deleteCustomer(998);
 <dl>
 <dd>
 
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.customer.getCustomer(customerId) -> CustomerQueryRecords</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a customer's record and details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.customer().getCustomer(998);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.customer.linkCustomerTransaction(customerId, transId) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Links a customer to a transaction by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.customer().linkCustomerTransaction(998, "45-as456777hhhhhhhhhh77777777-324");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transId:** `String` — ReferenceId for the transaction (PaymentId).
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
     
 </dd>
 </dl>
@@ -2979,7 +1308,7 @@ Sends the consent opt-in email to the customer email address in the customer rec
 <dd>
 
 ```java
-client.customer().requestConsent(998);
+client.customer().requestConsent(4440);
 ```
 </dd>
 </dl>
@@ -2994,7 +1323,7 @@ client.customer().requestConsent(998);
 <dl>
 <dd>
 
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
     
 </dd>
 </dl>
@@ -3006,7 +1335,7 @@ client.customer().requestConsent(998);
 </dl>
 </details>
 
-<details><summary><code>client.customer.updateCustomer(customerId, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.customer.linkCustomerTransaction(customerId, transId) -> PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3018,7 +1347,7 @@ client.customer().requestConsent(998);
 <dl>
 <dd>
 
-Update a customer record. Include only the fields you want to change.
+Links a customer to a transaction by ID.
 </dd>
 </dl>
 </dd>
@@ -3033,17 +1362,76 @@ Update a customer record. Include only the fields you want to change.
 <dd>
 
 ```java
-client.customer().updateCustomer(
-    998,
-    CustomerData
+client.customer().linkCustomerTransaction(4440, "45-as456777hhhhhhhhhh77777777-324");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## CheckCapture
+<details><summary><code>client.checkCapture.checkProcessing(request) -> CheckCaptureResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Captures a check for Remote Deposit Capture (RDC) using the provided check images and details. This endpoint handles the OCR extraction of check data including MICR, routing number, account number, and amount. See the [RDC guide](/developers/developer-guides/pay-in-rdc) for more details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.checkCapture().checkProcessing(
+    CheckCaptureRequestBody
         .builder()
-        .firstname("Irene")
-        .lastname("Canizales")
-        .address1("145 Bishop's Trail")
-        .city("Mountain City")
-        .state("TN")
-        .zip("37612")
-        .country("US")
+        .entryPoint("8cfec329267")
+        .frontImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
+        .rearImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
+        .checkAmount(12550)
         .build()
 );
 ```
@@ -3060,7 +1448,7 @@ client.customer().updateCustomer(
 <dl>
 <dd>
 
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**entryPoint:** `String` 
     
 </dd>
 </dl>
@@ -3068,6975 +1456,15 @@ client.customer().updateCustomer(
 <dl>
 <dd>
 
-**request:** `CustomerData` 
+**frontImage:** `String` — Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
     
 </dd>
 </dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Export
-<details><summary><code>client.export.exportApplications(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of boarding applications for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportApplications(
-    ExportFormat1.CSV,
-    123,
-    ExportApplicationsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `dbaname`  (ct, nct)
-- `legalname`  (ct, nct)
-- `ein`  (ct, nct)
-- `address`  (ct, nct)
-- `city`  (ct, nct)
-- `state`  (ct, nct)
-- `phone`  (ct, nct)
-- `mcc`  (ct, nct)
-- `owntype`  (ct, nct)
-- `ownerName`  (ct, nct)
-- `contactName`  (ct, nct)
-- `status`  (eq, ne)
-- `orgParentname`  (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
-- `fromRecord` : initial record in query
-
-Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBatchDetails(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBatchDetails(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportBatchDetailsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-
-  - `settlementDate` (gt, ge, lt, le, eq, ne)
-  - `depositDate` (gt, ge, lt, le, eq, ne)
-  - `transId`  (ne, eq, ct, nct)
-  - `gatewayTransId`  (ne, eq, ct, nct)
-  - `method`   (in, nin, eq, ne)
-  - `settledAmount`  (gt, ge, lt, le, eq, ne)
-  - `operation`    (in, nin, eq, ne)
-  - `source`   (in, nin, eq, ne)
-  - `batchNumber`  (ct, nct, eq, ne)
-  - `payaccountLastfour`   (nct, ct)
-  - `payaccountType`   (ne, eq, in, nin)
-  - `customerFirstname`   (ct, nct, eq, ne)
-  - `customerLastname`    (ct, nct, eq, ne)
-  - `customerName`   (ct, nct)
-  - `customerId`  (eq, ne)
-  - `customerNumber`  (ct, nct, eq, ne)
-  - `customerCompanyname`    (ct, nct, eq, ne)
-  - `customerAddress` (ct, nct, eq, ne)
-  - `customerCity`    (ct, nct, eq, ne)
-  - `customerZip` (ct, nct, eq, ne)
-  - `customerState` (ct, nct, eq, ne)
-  - `customerCountry` (ct, nct, eq, ne)
-  - `customerPhone` (ct, nct, eq, ne)
-  - `customerEmail` (ct, nct, eq, ne)
-  - `customerShippingAddress` (ct, nct, eq, ne)
-  - `customerShippingCity`    (ct, nct, eq, ne)
-  - `customerShippingZip` (ct, nct, eq, ne)
-  - `customerShippingState` (ct, nct, eq, ne)
-  - `customerShippingCountry` (ct, nct, eq, ne)
-  - `orgId`  (eq) *mandatory when entry=org*
-  - `isHold` (eq, ne)
-  - `paypointId`  (ne, eq)
-  - `paypointLegal`  (ne, eq, ct, nct)
-  - `paypointDba`  (ne, eq, ct, nct)
-  - `orgName`  (ne, eq, ct, nct)
-  - `batchId` (ct, nct, eq, neq)
-  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `amount(gt)=20` return all records with amount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBatchDetailsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBatchDetailsOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportBatchDetailsOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-
-  - `settlementDate` (gt, ge, lt, le, eq, ne)
-  - `depositDate` (gt, ge, lt, le, eq, ne)
-  - `transId`  (ne, eq, ct, nct)
-  - `gatewayTransId`  (ne, eq, ct, nct)
-  - `method`   (in, nin, eq, ne)
-  - `settledAmount`  (gt, ge, lt, le, eq, ne)
-  - `operation`    (in, nin, eq, ne)
-  - `source`   (in, nin, eq, ne)
-  - `batchNumber`  (ct, nct, eq, ne)
-  - `payaccountLastfour`   (nct, ct)
-  - `payaccountType`   (ne, eq, in, nin)
-  - `customerFirstname`   (ct, nct, eq, ne)
-  - `customerLastname`    (ct, nct, eq, ne)
-  - `customerName`   (ct, nct)
-  - `customerId`  (eq, ne)
-  - `customerNumber`  (ct, nct, eq, ne)
-  - `customerCompanyname`    (ct, nct, eq, ne)
-  - `customerAddress` (ct, nct, eq, ne)
-  - `customerCity`    (ct, nct, eq, ne)
-  - `customerZip` (ct, nct, eq, ne)
-  - `customerState` (ct, nct, eq, ne)
-  - `customerCountry` (ct, nct, eq, ne)
-  - `customerPhone` (ct, nct, eq, ne)
-  - `customerEmail` (ct, nct, eq, ne)
-  - `customerShippingAddress` (ct, nct, eq, ne)
-  - `customerShippingCity`    (ct, nct, eq, ne)
-  - `customerShippingZip` (ct, nct, eq, ne)
-  - `customerShippingState` (ct, nct, eq, ne)
-  - `customerShippingCountry` (ct, nct, eq, ne)
-  - `orgId`  (eq) *mandatory when entry=org*
-  - `isHold` (eq, ne)
-  - `paypointId`  (ne, eq)
-  - `paypointLegal`  (ne, eq, ct, nct)
-  - `paypointDba`  (ne, eq, ct, nct)
-  - `orgName`  (ne, eq, ct, nct)
-  - `batchId` (ct, nct, eq, neq)
-  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `amount(gt)=20` return all records with amount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBatches(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of batches for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBatches(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportBatchesRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `batchDate` (gt, ge, lt, le, eq, ne)
-- `batchNumber` (ne, eq)
-- `connectorName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `batchAmount` (gt, ge, lt, le, eq, ne)
-- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
-- `netBatchAmount` (gt, ge, lt, le, eq, ne)
-- `releaseAmount` (gt, ge, lt, le, eq, ne)
-- `heldAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `paypointId` (ne, eq)
-- `externalPaypointID` (ct, nct, eq, ne)
-- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
-- `batchRecords` (gt, ge, lt, le, eq, ne)
-- `transferId` (ne, eq)
-- `transferDate` (gt, ge, lt, le, eq, ne)
-- `grossAmount` (gt, ge, lt, le, eq, ne)
-- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-- `returnedAmount` (gt, ge, lt, le, eq, ne)
-- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-- `netFundedAmount` (gt, ge, lt, le, eq, ne)
-- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-- `processor` (ne, eq, ct, nct)
-- `transferStatus` (ne, eq, in, nin)
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBatchesOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of batches for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBatchesOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportBatchesOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `batchDate` (gt, ge, lt, le, eq, ne)
-- `batchNumber` (ne, eq)
-- `connectorName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `batchAmount` (gt, ge, lt, le, eq, ne)
-- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
-- `netBatchAmount` (gt, ge, lt, le, eq, ne)
-- `releaseAmount` (gt, ge, lt, le, eq, ne)
-- `heldAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `paypointId` (ne, eq)
-- `externalPaypointID` (ct, nct, eq, ne)
-- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
-- `batchRecords` (gt, ge, lt, le, eq, ne)
-- `transferId` (ne, eq)
-- `transferDate` (gt, ge, lt, le, eq, ne)
-- `grossAmount` (gt, ge, lt, le, eq, ne)
-- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-- `returnedAmount` (gt, ge, lt, le, eq, ne)
-- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-- `netFundedAmount` (gt, ge, lt, le, eq, ne)
-- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-- `processor` (ne, eq, ct, nct)
-- `transferStatus` (ne, eq, in, nin)
-
-List of parameters accepted:
-- `limitRecord`: max number of records for query (default="20", "0" or negative value for all)
-- `fromRecord`: initial record in query
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBatchesOut(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of money out batches for a paypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBatchesOut(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportBatchesOutRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-  - `batchDate` (gt, ge, lt, le, eq, ne)
-  - `batchNumber` (ne, eq)
-  - `batchAmount` (gt, ge, lt, le, eq, ne)
-  - `status` (in, nin, eq, ne)
-  - `paypointLegal` (ne, eq, ct, nct)
-  - `paypointDba` (ne, eq, ct, nct)
-  - `orgName` (ne, eq, ct, nct, nin, in)
-  - `paypointId` (ne, eq)
-  - `externalPaypointID` (ct, nct, eq, ne)
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBatchesOutOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of money out batches for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBatchesOutOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportBatchesOutOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-  - `batchDate` (gt, ge, lt, le, eq, ne)
-  - `batchNumber` (ne, eq)
-  - `batchAmount` (gt, ge, lt, le, eq, ne)
-  - `status` (in, nin, eq, ne)
-  - `paypointLegal` (ne, eq, ct, nct)
-  - `paypointDba` (ne, eq, ct, nct)
-  - `orgName` (ne, eq, ct, nct, nin, in)
-  - `paypointId` (ne, eq)
-  - `externalPaypointID` (ct, nct, eq, ne)
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBills(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of bills for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBills(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportBillsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `billNumber` (ct, nct, eq, ne)
-- `billDate` (gt, ge, lt, le, eq, ne)
-- `billDueDate` (gt, ge, lt, le, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportBillsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of bills for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportBillsOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportBillsOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `billNumber` (ct, nct, eq, ne)
-- `billDate` (gt, ge, lt, le, eq, ne)
-- `billDueDate` (gt, ge, lt, le, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportChargebacks(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportChargebacks(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportChargebacksRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `chargebackDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `reasonCode` (in, nin, eq, ne)
-- `reason` (ct, nct, eq, ne)
-- `caseNumber` (ct, nct, eq, ne)
-- `status` (in, nin, eq, ne)
-- `accountType` (in, nin, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportChargebacksOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportChargebacksOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportChargebacksOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `chargebackDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `reasonCode` (in, nin, eq, ne)
-- `reason` (ct, nct, eq, ne)
-- `caseNumber` (ct, nct, eq, ne)
-- `status` (in, nin, eq, ne)
-- `accountType` (in, nin, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportCustomers(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of customers for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportCustomers(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportCustomersRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-- `createdDate` (gt, ge, lt, le, eq, ne)
-- `customernumber` (ne, eq, ct, nct)
-- `firstname` (ne, eq, ct, nct)
-- `lastname` (ne, eq, ct, nct)
-- `name` (ct, nct)
-- `address` (ne, eq, ct, nct)
-- `city` (ne, eq, ct, nct)
-- `country` (ne, eq, ct, nct)
-- `zip` (ne, eq, ct, nct)
-- `state` (ne, eq, ct, nct)
-- `shippingaddress` (ne, eq, ct, nct)
-- `shippingcity` (ne, eq, ct, nct)
-- `shippingcountry` (ne, eq, ct, nct)
-- `shippingzip` (ne, eq, ct, nct)
-- `shippingstate` (ne, eq, ct, nct)
-- `phone` (ne, eq, ct, nct)
-- `email` (ne, eq, ct, nct)
-- `company` (ne, eq, ct, nct)
-- `username` (ne, eq, ct, nct)
-- `balance` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-**List of comparison accepted - enclosed between parentheses:**
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-**List of parameters accepted:**
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-**Example:**
-balance(gt)=20 return all records with balance greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportCustomersOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Exports a list of customers for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportCustomersOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportCustomersOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-- `createdDate` (gt, ge, lt, le, eq, ne)
-- `customernumber` (ne, eq, ct, nct)
-- `firstname` (ne, eq, ct, nct)
-- `lastname` (ne, eq, ct, nct)
-- `name` (ct, nct)
-- `address` (ne, eq, ct, nct)
-- `city` (ne, eq, ct, nct)
-- `country` (ne, eq, ct, nct)
-- `zip` (ne, eq, ct, nct)
-- `state` (ne, eq, ct, nct)
-- `shippingaddress` (ne, eq, ct, nct)
-- `shippingcity` (ne, eq, ct, nct)
-- `shippingcountry` (ne, eq, ct, nct)
-- `shippingzip` (ne, eq, ct, nct)
-- `shippingstate` (ne, eq, ct, nct)
-- `phone` (ne, eq, ct, nct)
-- `email` (ne, eq, ct, nct)
-- `company` (ne, eq, ct, nct)
-- `username` (ne, eq, ct, nct)
-- `balance` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-**List of comparison accepted - enclosed between parentheses:**
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-**List of parameters accepted:**
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-**Example:**
-balance(gt)=20 return all records with balance greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportInvoices(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export list of invoices for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportInvoices(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportInvoicesRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
- - `invoiceDate` (gt, ge, lt, le, eq, ne)
- - `dueDate` (gt, ge, lt, le, eq, ne)
- - `sentDate` (gt, ge, lt, le, eq, ne)
- - `frequency`  (in, nin,ne, eq)
- - `invoiceType`   (eq, ne)
- - `payTerms`   (in, nin, eq, ne)
- - `paypointId`  (ne, eq)
- - `totalAmount`  (gt, ge, lt, le, eq, ne)
- - `paidAmount`  (gt, ge, lt, le, eq, ne)
- - `status`   (in, nin, eq, ne)
- - `invoiceNumber`   (ct, nct, eq, ne)
- - `purchaseOrder`   (ct, nct, eq, ne)
- - `itemProductCode` (ct, nct)
- - `itemDescription` (ct, nct)
- - `customerFirstname`   (ct, nct, eq, ne)
- - `customerLastname`    (ct, nct, eq, ne)
- - `customerName`   (ct, nct)
- - `customerId`  (eq, ne)
- - `customerNumber`  (ct, nct, eq, ne)
- - `customerCompanyname`    (ct, nct, eq, ne)
- - `customerAddress` (ct, nct, eq, ne)
- - `customerCity`    (ct, nct, eq, ne)
- - `customerZip` (ct, nct, eq, ne)
- - `customerState` (ct, nct, eq, ne)
- - `customerCountry` (ct, nct, eq, ne)
- - `customerPhone` (ct, nct, eq, ne)
- - `customerEmail` (ct, nct, eq, ne)
- - `customerShippingAddress` (ct, nct, eq, ne)
- - `customerShippingCity` (ct, nct, eq, ne)
- - `customerShippingZip` (ct, nct, eq, ne)
- - `customerShippingState` (ct, nct, eq, ne)
- - `customerShippingCountry` (ct, nct, eq, ne)
- - `orgId`  (eq) 
- - `paylinkId`  (ne, eq)
- - `paypointLegal`  (ne, eq, ct, nct)
- - `paypointDba`  (ne, eq, ct, nct)
- - `orgName`  (ne, eq, ct, nct)
- - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
- - eq or empty => equal
- - gt => greater than
- - ge => greater or equal
- - lt => less than
- - le => less or equal
- - ne => not equal
- - ct => contains
- - nct => not contains
- - in => inside array
- - nin => not inside array
- 
-List of parameters accepted:
- - `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
- - `fromRecord` : initial record in query
- 
-Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportInvoicesOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of invoices for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportInvoicesOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportInvoicesOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
- - `invoiceDate` (gt, ge, lt, le, eq, ne)
- - `dueDate` (gt, ge, lt, le, eq, ne)
- - `sentDate` (gt, ge, lt, le, eq, ne)
- - `frequency` (in, nin,ne, eq)
- - `invoiceType` (eq, ne)
- - `payTerms` (in, nin, eq, ne)
- - `paypointId` (ne, eq)
- - `totalAmount` (gt, ge, lt, le, eq, ne)
- - `paidAmount` (gt, ge, lt, le, eq, ne)
- - `status` (in, nin, eq, ne)
- - `invoiceNumber` (ct, nct, eq, ne)
- - `purchaseOrder` (ct, nct, eq, ne)
- - `itemProductCode` (ct, nct)
- - `itemDescription` (ct, nct)
- - `customerFirstname` (ct, nct, eq, ne)
- - `customerLastname` (ct, nct, eq, ne)
- - `customerName` (ct, nct)
- - `customerId` (eq, ne)
- - `customerNumber` (ct, nct, eq, ne)
- - `customerCompanyname` (ct, nct, eq, ne)
- - `customerAddress` (ct, nct, eq, ne)
- - `customerCity` (ct, nct, eq, ne)
- - `customerZip` (ct, nct, eq, ne)
- - `customerState` (ct, nct, eq, ne)
- - `customerCountry` (ct, nct, eq, ne)
- - `customerPhone` (ct, nct, eq, ne)
- - `customerEmail` (ct, nct, eq, ne)
- - `customerShippingAddress` (ct, nct, eq, ne)
- - `customerShippingCity` (ct, nct, eq, ne)
- - `customerShippingZip` (ct, nct, eq, ne)
- - `customerShippingState` (ct, nct, eq, ne)
- - `customerShippingCountry` (ct, nct, eq, ne)
- - `orgId` (eq) 
- - `paylinkId` (ne, eq)
- - `paypointLegal` (ne, eq, ct, nct)
- - `paypointDba` (ne, eq, ct, nct)
- - `orgName` (ne, eq, ct, nct)
- - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
- 
-List of comparison accepted - enclosed between parentheses:
- - eq or empty => equal
- - gt => greater than
- - ge => greater or equal
- - lt => less than
- - le => less or equal
- - ne => not equal
- - ct => contains
- - nct => not contains
- - in => inside array
- - nin => not inside array
- 
-List of parameters accepted:
- - limitRecord : max number of records for query (default="20", "0" or negative value for all)
- - fromRecord : initial record in query
- 
-Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportOrganizations(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of child organizations (suborganizations) for a parent organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportOrganizations(
-    ExportFormat1.CSV,
-    123,
-    ExportOrganizationsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `name` (ct, nct, eq, ne)
-- `type` (ne, eq)
-- `contactName` (ct, nct, eq, ne)
-- `contactTitle` (ct, nct, eq, ne)
-- `contactEmail` (ct, nct, eq, ne)
-- `contactPhone` (ct, nct, eq, ne)
-- `city` (ct, nct, eq, ne)
-- `state` (in, nin, eq, ne)
-- `address` (ct, nct, eq, ne)
-- `country` (ct, nct, eq, ne)
-- `zip` (ct, nct, eq, ne)
-- `hasBilling` any value greater than zero is taken as TRUE otherwise is FALSE
-- `hasResidual` any value greater than zero is taken as TRUE otherwise is FALSE
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: name(ct)=hoa  return all records where name contains "hoa"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportPayout(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportPayout(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportPayoutRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `billNumber` (ct, nct)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportPayoutOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of payouts and their details for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportPayoutOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportPayoutOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `billNumber` (ct, nct)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportPaypoints(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of paypoints in an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportPaypoints(
-    ExportFormat1.CSV,
-    123,
-    ExportPaypointsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `dbaname` (ct, nct)
-- `legalname` (ct, nct)
-- `ein` (ct, nct)
-- `address` (ct, nct)
-- `city` (ct, nct)
-- `state` (ct, nct)
-- `phone` (ct, nct)
-- `mcc` (ct, nct)
-- `owntype` (ct, nct)
-- `ownerName` (ct, nct)
-- `contactName` (ct, nct)
-- `orgParentname` (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportSettlements(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of settled transactions for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportSettlements(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportSettlementsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `settlementDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `settledAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `batchNumber` (ct, nct, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportSettlementsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of settled transactions for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportSettlementsOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportSettlementsOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `settlementDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `settledAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `batchNumber` (ct, nct, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportSubscriptions(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of subscriptions for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportSubscriptions(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportSubscriptionsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `endDate` (gt, ge, lt, le, eq, ne)
-- `nextDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin, ne, eq)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `untilcancelled` (eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) 
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportSubscriptionsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of subscriptions for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportSubscriptionsOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportSubscriptionsOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `endDate` (gt, ge, lt, le, eq, ne)
-- `nextDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin, ne, eq)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `untilcancelled` (eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) 
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportTransactions(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportTransactions(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportTransactionsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `orderId` (ne, eq)
-- `idTrans` (ne, eq)
-- `orgId` (ne, eq)
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `settlementStatus` (in, nin, eq, ne)
-- `batchNumber` (nct, ct)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportTransactionsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportTransactionsOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportTransactionsOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `orderId` (ne, eq)
-- `idTrans` (ne, eq)
-- `orgId` (ne, eq)
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `settlementStatus` (in, nin, eq, ne)
-- `batchNumber` (nct, ct)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportTransferDetails(format, entry, transferId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of transfer details for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportTransferDetails(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    1000000L,
-    ExportTransferDetailsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transferId:** `Long` — Transfer identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-
-  - `grossAmount` (gt, ge, lt, le, eq, ne)
-
-  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-
-  - `returnedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-
-  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-
-  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-
-  - `transactionId` (eq, ne, in, nin)
-
-  - `category` (eq, ne, ct, nct)
-
-  - `type` (eq, ne, in, nin)
-
-  - `method` (eq, ne, in, nin)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportTransfers(entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get a list of transfers for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportTransfers(
-    "8cfec329267",
-    ExportTransfersRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-  - `transferDate` (gt, ge, lt, le, eq, ne)
-
-  - `grossAmount` (gt, ge, lt, le, eq, ne)
-
-  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-
-  - `returnedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-
-  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-
-  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-
-  - `processor` (ne, eq, ct, nct)
-
-  - `transferStatus` (ne, eq, in, nin)
-
-  - `batchNumber` (ne, eq, ct, nct)
-
-  - `batchId` (ne, eq, in, nin)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportVendors(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of vendors for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportVendors(
-    ExportFormat1.CSV,
-    "8cfec329267",
-    ExportVendorsRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `method` (in, nin, eq, ne)
-- `enrollmentStatus` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `name` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `phone` (ct, nct, eq, ne)
-- `email` (ct, nct, eq, ne)
-- `address` (ct, nct, eq, ne)
-- `city` (ct, nct, eq, ne)
-- `state` (ct, nct, eq, ne)
-- `country` (ct, nct, eq, ne)
-- `zip` (ct, nct, eq, ne)
-- `mcc` (ct, nct, eq, ne)
-- `locationCode` (ct, nct, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.export.exportVendorsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of vendors for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.export().exportVendorsOrg(
-    ExportFormat1.CSV,
-    123,
-    ExportVendorsOrgRequest
-        .builder()
-        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
-        .fromRecord(251)
-        .limitRecord(1000)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `method` (in, nin, eq, ne)
-- `enrollmentStatus` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `name` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `phone` (ct, nct, eq, ne)
-- `email` (ct, nct, eq, ne)
-- `address` (ct, nct, eq, ne)
-- `city` (ct, nct, eq, ne)
-- `state` (ct, nct, eq, ne)
-- `country` (ct, nct, eq, ne)
-- `zip` (ct, nct, eq, ne)
-- `mcc` (ct, nct, eq, ne)
-- `locationCode` (ct, nct, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## GhostCard
-<details><summary><code>client.ghostCard.createGhostCard(entry, request) -> CreateGhostCardResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
-
-Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
-
-Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.ghostCard().createGhostCard(
-    "8cfec2e0fa",
-    CreateGhostCardRequestBody
-        .builder()
-        .vendorId(42L)
-        .expenseLimit(500.0)
-        .amount(500.0)
-        .maxNumberOfUses(3)
-        .exactAmount(false)
-        .expenseLimitPeriod("monthly")
-        .billingCycle("monthly")
-        .billingCycleDay("1")
-        .dailyTransactionCount(5)
-        .dailyAmountLimit(200.0)
-        .transactionAmountLimit(100)
-        .mcc("5411")
-        .tcc("R")
-        .misc1("PO-98765")
-        .misc2("Dept-Finance")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**vendorId:** `Long` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expenseLimit:** `Double` — Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expirationDate:** `Optional<String>` — Requested expiration date for the card. If not provided, defaults to 30 days from creation.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**amount:** `Double` — Initial load amount for the card.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**maxNumberOfUses:** `Integer` — Maximum number of times the card can be used. Ignored and set to `1` when `exactAmount` is `true`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exactAmount:** `Boolean` — When `true`, restricts the card to a single use. `maxNumberOfUses` is automatically set to `1` regardless of any other value provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expenseLimitPeriod:** `String` — Time period over which `expenseLimit` applies (for example, `monthly` or `weekly`).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingCycle:** `String` — Billing cycle identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingCycleDay:** `String` — Day within the billing cycle.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dailyTransactionCount:** `Integer` — Maximum number of transactions allowed per day.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dailyAmountLimit:** `Double` — Maximum total spend allowed per day.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transactionAmountLimit:** `Integer` — Maximum spend allowed per single transaction.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mcc:** `Optional<String>` — Merchant Category Code to restrict where the card can be used. Must be a valid MCC if provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tcc:** `Optional<String>` — Transaction Category Code to restrict where the card can be used. Must be a valid TCC if provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**misc1:** `Optional<String>` — Custom metadata field. Stored on the card record.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**misc2:** `Optional<String>` — Custom metadata field. Stored on the card record.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.ghostCard.updateCard(entry, request) -> PayabliApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates the status of a virtual card (including ghost cards) under a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.ghostCard().updateCard(
-    "8cfec2e0fa",
-    UpdateCardRequestBody
-        .builder()
-        .cardToken("gc_abc123def456")
-        .status(CardStatus.CANCELLED)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cardToken:** `String` — Token that uniquely identifies the card. This is the `ReferenceId` returned when the card was created.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `Optional<CardStatus>` — The new status to set on the card.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## HostedPaymentPages
-<details><summary><code>client.hostedPaymentPages.loadPage(entry, subdomain) -> PayabliPages</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Loads all of a payment page's details including `pageIdentifier` and `validationCode`. This endpoint requires an `application` API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.hostedPaymentPages().loadPage("8cfec329267", "pay-your-fees-1");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.hostedPaymentPages.newPage(entry, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-
-Creates a new payment page for a paypoint. 
-Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.hostedPaymentPages().newPage(
-    "8cfec329267",
-    NewPageRequest
-        .builder()
-        .body(
-            PayabliPages
-                .builder()
-                .build()
-        )
-        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `PayabliPages` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.hostedPaymentPages.savePage(entry, subdomain, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a payment page in a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.hostedPaymentPages().savePage(
-    "8cfec329267",
-    "pay-your-fees-1",
-    PayabliPages
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `PayabliPages` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Import
-<details><summary><code>client.import_.importBills(entry, request) -> PayabliApiResponseImport</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Import a list of bills from a CSV file. See the [Import Guide](/developers/developer-guides/bills-add#import-bills) for more help and an example file.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.import_().importBills(
-    "8cfec329267",
-    null,
-    ImportBillsRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.import_.importCustomer(entry, request) -> PayabliApiResponseImport</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.import_().importCustomer(
-    "8cfec329267",
-    null,
-    ImportCustomerRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replaceExisting:** `Optional<Integer>` — Flag indicating to replace existing customer with a new record. Possible values: 0 (do not replace), 1 (replace). Default is 0
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.import_.importVendor(entry, request) -> PayabliApiResponseImport</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.import_().importVendor(
-    "8cfec329267",
-    null,
-    ImportVendorRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Invoice
-<details><summary><code>client.invoice.addInvoice(entry, request) -> InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates an invoice in an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().addInvoice(
-    "8cfec329267",
-    AddInvoiceRequest
-        .builder()
-        .body(
-            InvoiceDataRequest
-                .builder()
-                .customerData(
-                    PayorDataRequest
-                        .builder()
-                        .customerNumber("3")
-                        .firstName("Tamara")
-                        .lastName("Bagratoni")
-                        .build()
-                )
-                .invoiceData(
-                    BillData
-                        .builder()
-                        .discount(10.0)
-                        .frequency(Frequency.ONE_TIME)
-                        .invoiceAmount(982.37)
-                        .invoiceDate("2025-10-19")
-                        .invoiceNumber("INV-3")
-                        .invoiceStatus(1)
-                        .invoiceType(0)
-                        .items(
-                            Optional.of(
-                                Arrays.asList(
-                                    BillItem
-                                        .builder()
-                                        .itemCost(100.0)
-                                        .itemDescription("Consultation for Georgian tours")
-                                        .itemMode(1)
-                                        .itemProductName("Adventure Consult")
-                                        .itemQty(1)
-                                        .itemTotalAmount(1.0)
-                                        .build(),
-                                    BillItem
-                                        .builder()
-                                        .itemCost(882.37)
-                                        .itemDescription("Deposit for trip planning")
-                                        .itemProductName("Deposit ")
-                                        .itemQty(1)
-                                        .itemTotalAmount(1.0)
-                                        .build()
-                                )
-                            )
-                        )
-                        .build()
-                )
-                .build()
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceCustomerCreation:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `InvoiceDataRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.deleteAttachedFromInvoice(idInvoice, filename) -> InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a file attached to an invoice.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().deleteAttachedFromInvoice(23548884, "0_Bill.pdf");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `String` 
-
-The filename in Payabli. Get this from the `zipName` field
-in the `DocumentsRef.filelist` array returned by
-`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.deleteInvoice(idInvoice) -> InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a single invoice from an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().deleteInvoice(23548884);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.editInvoice(idInvoice, request) -> InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates details for a single invoice in an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().editInvoice(
-    332,
-    EditInvoiceRequest
-        .builder()
-        .body(
-            InvoiceDataRequest
-                .builder()
-                .invoiceData(
-                    BillData
-                        .builder()
-                        .invoiceAmount(982.37)
-                        .invoiceDate("2025-10-19")
-                        .invoiceNumber("INV-6")
-                        .items(
-                            Optional.of(
-                                Arrays.asList(
-                                    BillItem
-                                        .builder()
-                                        .itemCost(882.37)
-                                        .itemDescription("Deposit for trip planning")
-                                        .itemProductName("Deposit")
-                                        .itemQty(1)
-                                        .build()
-                                )
-                            )
-                        )
-                        .build()
-                )
-                .build()
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `InvoiceDataRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.getAttachedFileFromInvoice(idInvoice, filename) -> FileContent</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a file attached to an invoice.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().getAttachedFileFromInvoice(
-    1,
-    "filename",
-    GetAttachedFileFromInvoiceRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `String` 
-
-The filename in Payabli. Get this from the `zipName` field
-in the `DocumentsRef.filelist` array returned by
-`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**returnObject:** `Optional<Boolean>` — When `true`, the request returns the file content as a Base64-encoded string.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.getInvoice(idInvoice) -> GetInvoiceRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a single invoice by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().getInvoice(23548884);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.getInvoiceNumber(entry) -> InvoiceNumberResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the next available invoice number for a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().getInvoiceNumber("8cfec329267");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.listInvoices(entry) -> QueryInvoiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().listInvoices(
-    "8cfec329267",
-    ListInvoicesRequest
-        .builder()
-        .fromRecord(251)
-        .limitRecord(0)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exportFormat:** `Optional<ExportFormat>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-
-- `invoiceDate` (gt, ge, lt, le, eq, ne)
-- `dueDate` (gt, ge, lt, le, eq, ne)
-- `sentDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin,ne, eq)
-- `invoiceType` (eq, ne)
-- `payTerms` (in, nin, eq, ne)
-- `paypointId` (ne, eq)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paidAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `invoiceNumber` (ct, nct, eq, ne)
-- `purchaseOrder` (ct, nct, eq, ne)
-- `itemProductCode` (ct, nct)
-- `itemDescription` (ct, nct)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq)
-- `paylinkId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-  
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.listInvoicesOrg(orgId) -> QueryInvoiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a list of invoices for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().listInvoicesOrg(
-    123,
-    ListInvoicesOrgRequest
-        .builder()
-        .fromRecord(251)
-        .limitRecord(0)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exportFormat:** `Optional<ExportFormat>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-Collection of field names, conditions, and values used to filter the query
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-
-- `invoiceDate` (gt, ge, lt, le, eq, ne)
-- `dueDate` (gt, ge, lt, le, eq, ne)
-- `sentDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin,ne, eq)
-- `invoiceType` (eq, ne)
-- `payTerms` (in, nin, eq, ne)
-- `paypointId` (ne, eq)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paidAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `invoiceNumber` (ct, nct, eq, ne)
-- `purchaseOrder` (ct, nct, eq, ne)
-- `itemProductCode` (ct, nct)
-- `itemDescription` (ct, nct)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq)
-- `paylinkId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.sendInvoice(idInvoice) -> SendInvoiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Sends an invoice from an entrypoint via email.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().sendInvoice(
-    23548884,
-    SendInvoiceRequest
-        .builder()
-        .attachfile(true)
-        .mail2("tamara@example.com")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**attachfile:** `Optional<Boolean>` — When `true`, attaches a PDF version of invoice to the email.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `Optional<String>` — Email address where the invoice will be sent to. If this parameter isn't included, Payabli uses the email address on file for the customer owner of the invoice.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.invoice.getInvoicePdf(idInvoice) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a single invoice in PDF format.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.invoice().getInvoicePdf(23548884);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `Integer` — Invoice ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## LineItem
-<details><summary><code>client.lineItem.addItem(entry, request) -> PayabliApiResponse6</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, "responseData" displays the item's code.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.lineItem().addItem(
-    "47cae3d74",
-    AddItemRequest
-        .builder()
-        .body(
-            LineItem
-                .builder()
-                .itemCost(12.45)
-                .itemQty(1)
-                .itemCommodityCode("010")
-                .itemDescription("Deposit for materials")
-                .itemMode(0)
-                .itemProductCode("M-DEPOSIT")
-                .itemProductName("Materials deposit")
-                .itemUnitOfMeasure("SqFt")
-                .build()
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` — A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `LineItem` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.lineItem.deleteItem(lineItemId) -> DeleteItemResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes an item.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.lineItem().deleteItem(700);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lineItemId:** `Integer` — ID for the line item (also known as a product, service, or item).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.lineItem.getItem(lineItemId) -> LineItemQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets an item by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.lineItem().getItem(700);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lineItemId:** `Integer` — ID for the line item (also known as a product, service, or item).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.lineItem.listLineItems(entry) -> QueryResponseItems</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.lineItem().listLineItems(
-    "8cfec329267",
-    ListLineItemsRequest
-        .builder()
-        .fromRecord(251)
-        .limitRecord(0)
-        .sortBy("desc(field_name)")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` 
-
-
-Collection of field names, conditions, and values used to filter the query
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-
-</Info>
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-
-  - `categories` (ct, nct)
-  - `code` (ne, eq, ct, nct)
-  - `commodityCode` (ne, eq, ct, nct)
-  - `createdDate` (gt, ge, lt, le, eq, ne)
-  - `description` (ne, eq, ct, nct)
-  - `externalPaypointID` (ct, nct, ne, eq)
-  - `mode` (eq, ne)
-  - `name` (ne, eq, ct, nct)
-  - `orgName` (ne, eq, ct, nct)
-  - `paypointDba` (ne, eq, ct, nct)
-  - `paypointId` (ne, eq)
-  - `paypointLegal` (ne, eq, ct, nct)
-  - `quantity` (gt, ge, lt, le, eq, ne)
-  - `uom` (ne, eq, ct, nct)
-  - `updatedDate` (gt, ge, lt, le, eq, ne)
-  - `value` (gt, ge, lt, le, eq, ne)
-
-List of comparison accepted - enclosed between parentheses:
-
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: name(ct)=john return all records with name containing john
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.lineItem.updateItem(lineItemId, request) -> PayabliApiResponse6</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an item.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.lineItem().updateItem(
-    700,
-    LineItem
-        .builder()
-        .itemCost(12.45)
-        .itemQty(1)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lineItemId:** `Integer` — ID for the line item (also known as a product, service, or item).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `LineItem` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Management
-<details><summary><code>client.management.verifyAccountDetails(entry, request) -> VerifyAccountDetailsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Verifies a bank account and returns detailed verification results from the verification network, including bank name, account status, and response codes. Unlike a pass/fail verification, this endpoint returns granular data to support decision-making and troubleshooting.
-
-When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
-
-Requires `inboundpayments_create` or `outboundpayments_create` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.management().verifyAccountDetails(
-    "entry752",
-    VerifyAccountDetailsRequest
-        .builder()
-        .routingNumber("122105278")
-        .accountNumber("0000000016")
-        .accountType("Checking")
-        .country("US")
-        .accountHolderType("personal")
-        .holderName("Jane Doe")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entry name identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**routingNumber:** `String` — The bank routing number to verify.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accountNumber:** `String` — The bank account number to verify.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accountType:** `Optional<String>` — The type of bank account, such as `Checking` or `Savings`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**country:** `Optional<String>` — The ISO country code for the bank account, such as `US`.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
 
-**accountHolderType:** `Optional<String>` — The type of account holder. Accepted values are `personal` or `business`. Required when bank authentication is enabled for the paypoint's organization.
+**rearImage:** `String` — Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
     
 </dd>
 </dl>
@@ -10044,7 +1472,7 @@ client.management().verifyAccountDetails(
 <dl>
 <dd>
 
-**holderName:** `Optional<String>` — The name of the bank account holder. For personal accounts, provide the holder's full name (for example, `Jane Doe`); the value is split on the first space into first and last name. For business accounts, provide the legal business name. Required when bank authentication is enabled for the paypoint's organization.
+**checkAmount:** `Integer` — Check amount in cents (maximum 32-bit integer value).
     
 </dd>
 </dl>
@@ -10107,6 +1535,7 @@ client.moneyIn().authorize(
                             .builder()
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
+                            .method(PayMethodCreditMethod.CARD)
                             .cardcvv(Optional.of("999"))
                             .cardHolder(Optional.of("John Cassian"))
                             .cardzip(Optional.of("12345"))
@@ -10120,7 +1549,7 @@ client.moneyIn().authorize(
                         .customerId(4440L)
                         .build()
                 )
-                .entryPoint("f743aed24a")
+                .entryPoint("8cfec329267")
                 .ipaddress("255.255.255.255")
                 .build()
         )
@@ -10140,7 +1569,7 @@ client.moneyIn().authorize(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `Optional<Boolean>` 
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -10148,7 +1577,7 @@ client.moneyIn().authorize(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -10183,7 +1612,7 @@ client.moneyIn().authorize(
 <Warning>
   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
 </Warning>
-  
+
   Capture an [authorized
 transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 </dd>
@@ -10247,7 +1676,7 @@ client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
 <dl>
 <dd>
 
-Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account. 
+Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 
 You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
 
@@ -10329,7 +1758,7 @@ client.moneyIn().captureAuth(
 
 Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
 
-This feature must be enabled by Payabli on a per-merchant basis. Contact support for help. 
+This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.
 </dd>
 </dl>
 </dd>
@@ -10351,7 +1780,7 @@ client.moneyIn().credit(
             PayorDataRequest
                 .builder()
                 .billingAddress1("5127 Linkwood ave")
-                .customerNumber("100")
+                .customerNumber("C-90010")
                 .build()
         )
         .paymentDetails(
@@ -10364,6 +1793,7 @@ client.moneyIn().credit(
         .paymentMethod(
             RequestCreditPaymentMethod
                 .builder()
+                .method(RequestCreditPaymentMethodMethod.ACH)
                 .achAccount("88354454")
                 .achAccountType(Achaccounttype.CHECKING)
                 .achHolder("John Smith")
@@ -10371,7 +1801,7 @@ client.moneyIn().credit(
                 .build()
         )
         .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-        .entrypoint("my-entrypoint")
+        .entrypoint("8cfec329267")
         .build()
 );
 ```
@@ -10388,7 +1818,7 @@ client.moneyIn().credit(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `Optional<Boolean>` 
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -10396,7 +1826,7 @@ client.moneyIn().credit(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -10584,6 +2014,7 @@ client.moneyIn().getpaid(
                             .builder()
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
+                            .method(PayMethodCreditMethod.CARD)
                             .cardcvv(Optional.of("999"))
                             .cardHolder(Optional.of("John Cassian"))
                             .cardzip(Optional.of("12345"))
@@ -10597,7 +2028,7 @@ client.moneyIn().getpaid(
                         .customerId(4440L)
                         .build()
                 )
-                .entryPoint("f743aed24a")
+                .entryPoint("8cfec329267")
                 .ipaddress("255.255.255.255")
                 .build()
         )
@@ -10617,7 +2048,7 @@ client.moneyIn().getpaid(
 <dl>
 <dd>
 
-**achValidation:** `Optional<Boolean>` 
+**achValidation:** `Optional<Boolean>` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
     
 </dd>
 </dl>
@@ -10625,7 +2056,7 @@ client.moneyIn().getpaid(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `Optional<Boolean>` 
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -10641,7 +2072,7 @@ client.moneyIn().getpaid(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -10721,10 +2152,9 @@ client.moneyIn().reverse("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
 
 **amount:** `Double` 
 
-
 Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 
-The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can reverse up to $90. 
+The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can reverse up to $90.
 
 An amount equal to zero will refunds the total amount authorized minus any service fee.
     
@@ -10794,8 +2224,7 @@ client.moneyIn().refund("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
 
 **amount:** `Double` 
 
-
-Amount to refund from original transaction, minus any service fees charged on the original transaction. 
+Amount to refund from original transaction, minus any service fees charged on the original transaction.
 
 The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.
 
@@ -10895,7 +2324,7 @@ client.moneyIn().refundWithInstructions(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -10905,10 +2334,9 @@ client.moneyIn().refundWithInstructions(
 
 **amount:** `Optional<Double>` 
 
+Amount to refund from original transaction, minus any service fees charged on the original transaction.
 
-Amount to refund from original transaction, minus any service fees charged on the original transaction. 
-
-The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90. 
+The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90.
 
 An amount equal to zero will refund the total amount authorized minus any service fee.
     
@@ -11074,7 +2502,7 @@ client.moneyIn().sendReceipt2Trans(
 
 **email:** `Optional<String>` 
 
-Email address where the payment receipt should be sent. 
+Email address where the payment receipt should be sent.
 
 If not provided, the email address on file for the user owner of the transaction is used.
     
@@ -11118,7 +2546,7 @@ Validates a card number without running a transaction or authorizing a charge.
 client.moneyIn().validate(
     RequestPaymentValidate
         .builder()
-        .entryPoint("entry132")
+        .entryPoint("8cfec329267")
         .paymentMethod(
             RequestPaymentValidatePaymentMethod
                 .builder()
@@ -11146,7 +2574,7 @@ client.moneyIn().validate(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -11302,6 +2730,7 @@ client.moneyIn().getpaidv2(
                             .builder()
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
+                            .method(PayMethodCreditMethod.CARD)
                             .cardcvv(Optional.of("999"))
                             .cardHolder(Optional.of("John Cassian"))
                             .cardzip(Optional.of("12345"))
@@ -11315,7 +2744,7 @@ client.moneyIn().getpaidv2(
                         .customerId(4440L)
                         .build()
                 )
-                .entryPoint("f743aed24a")
+                .entryPoint("8cfec329267")
                 .ipaddress("255.255.255.255")
                 .build()
         )
@@ -11335,7 +2764,7 @@ client.moneyIn().getpaidv2(
 <dl>
 <dd>
 
-**achValidation:** `Optional<Boolean>` 
+**achValidation:** `Optional<Boolean>` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
     
 </dd>
 </dl>
@@ -11343,7 +2772,7 @@ client.moneyIn().getpaidv2(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `Optional<Boolean>` 
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -11351,7 +2780,7 @@ client.moneyIn().getpaidv2(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -11427,6 +2856,7 @@ client.moneyIn().authorizev2(
                             .builder()
                             .cardexp("02/27")
                             .cardnumber("4111111111111111")
+                            .method(PayMethodCreditMethod.CARD)
                             .cardcvv(Optional.of("999"))
                             .cardHolder(Optional.of("John Cassian"))
                             .cardzip(Optional.of("12345"))
@@ -11440,7 +2870,7 @@ client.moneyIn().authorizev2(
                         .customerId(4440L)
                         .build()
                 )
-                .entryPoint("f743aed24a")
+                .entryPoint("8cfec329267")
                 .ipaddress("255.255.255.255")
                 .build()
         )
@@ -11460,7 +2890,7 @@ client.moneyIn().authorizev2(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `Optional<Boolean>` 
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -11468,7 +2898,7 @@ client.moneyIn().authorizev2(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -11736,8 +3166,8 @@ client.moneyIn().voidv2("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 </dl>
 </details>
 
-## MoneyOut
-<details><summary><code>client.moneyOut.authorizeOut(request) -> AuthCapturePayoutResponse</code></summary>
+## Subscription
+<details><summary><code>client.subscription.getSubscription(subId) -> SubscriptionQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -11749,11 +3179,7 @@ client.moneyIn().voidv2("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
 <dl>
 <dd>
 
-Authorizes a transaction for payout.
-
-If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
-
-When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+Retrieves a single subscription's details.
 </dd>
 </dl>
 </dd>
@@ -11768,758 +3194,431 @@ When `autoCapture` is `true`, Payabli captures the transaction asynchronously af
 <dd>
 
 ```java
-client.moneyOut().authorizeOut(
-    MoneyOutTypesRequestOutAuthorize
+client.subscription().getSubscription(231);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subId:** `Integer` — The subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.subscription.updateSubscription(subId, request) -> UpdateSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a subscription's details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.subscription().updateSubscription(
+    231,
+    RequestUpdateSchedule
+        .builder()
+        .setPause(true)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subId:** `Integer` — The subscription ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `Optional<PaymentDetail>` — Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `Optional<ScheduleDetail>` — Object describing the schedule for subscription
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.subscription.removeSubscription(subId) -> RemoveSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a subscription, autopay, or recurring payment and prevents future charges.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.subscription().removeSubscription(231);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subId:** `Integer` — The subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.subscription.newSubscription(request) -> AddSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the `paymentMethod.storedMethodId` field.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.subscription().newSubscription(
+    RequestSchedule
+        .builder()
+        .customerData(
+            PayorDataRequest
+                .builder()
+                .customerId(4440L)
+                .build()
+        )
+        .entryPoint("8cfec329267")
+        .paymentDetails(
+            PaymentDetail
+                .builder()
+                .totalAmount(100.0)
+                .serviceFee(0.0)
+                .build()
+        )
+        .paymentMethod(
+            RequestSchedulePaymentMethod.of(
+                PayMethodCredit
+                    .builder()
+                    .cardexp("02/25")
+                    .cardnumber("4111111111111111")
+                    .method(PayMethodCreditMethod.CARD)
+                    .cardcvv(Optional.of("123"))
+                    .cardHolder(Optional.of("John Cassian"))
+                    .cardzip(Optional.of("37615"))
+                    .initiator(Optional.of("payor"))
+                    .build()
+            )
+        )
+        .scheduleDetails(
+            ScheduleDetail
+                .builder()
+                .endDate("2025-03-20")
+                .frequency(Frequency.WEEKLY)
+                .planId(1)
+                .startDate("2024-09-20")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customerData:** `Optional<PayorDataRequest>` — Object describing the customer/payor.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoiceData:** `Optional<BillData>` — Object describing an Invoice linked to the subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `Optional<PaymentDetail>` — Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `Optional<RequestSchedulePaymentMethod>` — Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `Optional<ScheduleDetail>` — Object describing the schedule for subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subscriptionType:** `Optional<SubscriptionType>` — Subscription type. Defaults to `Regular` when omitted. Can't be changed after the subscription is created. If you send it to the update endpoint, it's ignored.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Invoice
+<details><summary><code>client.invoice.addInvoice(entry, request) -> InvoiceResponseWithoutData</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates an invoice in an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.invoice().addInvoice(
+    "8cfec329267",
+    AddInvoiceRequest
         .builder()
         .body(
-            AuthorizePayoutBody
+            InvoiceDataRequest
                 .builder()
-                .entryPoint("48acde49")
-                .paymentMethod(
-                    AuthorizePaymentMethod
+                .customerData(
+                    PayorDataRequest
                         .builder()
-                        .method("managed")
+                        .customerNumber("C-90010")
+                        .firstName("Tamara")
+                        .lastName("Bagratoni")
                         .build()
                 )
-                .paymentDetails(
-                    RequestOutAuthorizePaymentDetails
-                        .builder()
-                        .totalAmount(47.0)
-                        .unbundled(false)
-                        .build()
-                )
-                .vendorData(
-                    RequestOutAuthorizeVendorData
-                        .builder()
-                        .vendorNumber("7895433")
-                        .build()
-                )
-                .orderDescription("Window Painting")
                 .invoiceData(
-                    Arrays.asList(
-                        RequestOutAuthorizeInvoiceData
-                            .builder()
-                            .billId(54323L)
-                            .build()
-                    )
-                )
-                .autoCapture(true)
-                .build()
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**allowDuplicatedBills:** `Optional<Boolean>` — When `true`, the authorization bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout authorization for a bill, like a split payment.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**doNotCreateBills:** `Optional<Boolean>` — When `true`, Payabli won't automatically create a bill for this payout transaction.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceVendorCreation:** `Optional<Boolean>` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `AuthorizePayoutBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.cancelAllOut(request) -> CaptureAllOutResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Cancels an array of payout transactions.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().cancelAllOut(
-    Arrays.asList("2-29", "2-28", "2-27")
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `List<String>` — Array of identifiers of payout transactions to cancel.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.cancelOutGet(referenceId) -> PayabliApiResponse0000</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Cancel a payout transaction by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().cancelOutGet("129-219");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**referenceId:** `String` — The ID for the payout transaction. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.cancelOutDelete(referenceId) -> PayabliApiResponse0000</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Cancel a payout transaction by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().cancelOutDelete("129-219");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**referenceId:** `String` — The ID for the payout transaction. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.captureAllOut(request) -> CaptureAllOutResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().captureAllOut(
-    CaptureAllOutRequest
-        .builder()
-        .body(
-            Arrays.asList("2-29", "2-28", "2-27")
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `List<String>` — Array of identifiers of payout transactions to capture.  
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.captureOut(referenceId) -> AuthCapturePayoutResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`,  you don't need to call this endpoint to capture the transaction for processing.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().captureOut(
-    "129-219",
-    CaptureOutRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**referenceId:** `String` — The ID for the payout transaction. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.payoutDetails(transId) -> BillDetailResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns details for a processed money out transaction.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().payoutDetails("45-as456777hhhhhhhhhh77777777-324");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transId:** `String` — ReferenceId for the transaction (PaymentId).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.vCardGet(cardToken) -> VCardGetResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves vCard details for a single card in an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().vCardGet("20230403315245421165");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**cardToken:** `String` — ID for a virtual card.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.sendVCardLink(request) -> OperationResult</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Sends a virtual card link via email to the vendor associated with the `transId`.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().sendVCardLink(
-    SendVCardLinkRequest
-        .builder()
-        .transId("01K33Z6YQZ6GD5QVKZ856MJBSC")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transId:** `String` — The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.getCheckImage(assetName) -> String</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieve the image of a check associated with a processed transaction. 
-The check image is returned in the response body as a base64-encoded string. 
-The check image is only available for payouts that have been processed.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().getCheckImage("check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**assetName:** `String` 
-
-Name of the check asset to retrieve. This is returned as `filename` in the `CheckData` object 
-in the response when you make a GET request to `/MoneyOut/details/{transId}`.
-```
-    "CheckData": {
-      "ftype": "PDF",
-      "filename": "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
-      "furl": "",
-      "fContent": ""
-  }
-```
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.updateCheckPaymentStatus(transId, checkPaymentStatus) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
-
-The transaction must meet all of the following criteria:
-- **Status**: Must be in Processing or Processed status.
-- **Payment method**: Must be a check payment method.
-
-### Allowed status values
-
-| Value | Status | Description |
-|-------|--------|-------------|
-| `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
-| `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().updateCheckPaymentStatus("TRANS123456", AllowedCheckPaymentStatus.PAID);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transId:** `String` — The Payabli transaction ID for the check payment.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**checkPaymentStatus:** `AllowedCheckPaymentStatus` — The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.moneyOut.reissueOut(request) -> ReissuePayoutResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
-
-The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
-
-The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.moneyOut().reissueOut(
-    ReissueOutRequest
-        .builder()
-        .transId("129-219")
-        .body(
-            ReissuePayoutBody
-                .builder()
-                .paymentMethod(
-                    ReissuePaymentMethod
+                    BillData
                         .builder()
-                        .method("ach")
-                        .achHolder("Acme Corp")
-                        .achRouting("021000021")
-                        .achAccount("9876543210")
-                        .achAccountType("savings")
-                        .achHolderType(AchHolderType.BUSINESS)
+                        .discount(10.0)
+                        .frequency(Frequency.ONE_TIME)
+                        .invoiceAmount(1082.37)
+                        .invoiceDate("2025-10-19")
+                        .invoiceNumber("INV-2345")
+                        .invoiceStatus(1)
+                        .invoiceType(0)
+                        .items(
+                            Optional.of(
+                                Arrays.asList(
+                                    BillItem
+                                        .builder()
+                                        .itemCost(100.0)
+                                        .itemDescription("Consultation for Georgian tours")
+                                        .itemMode(2)
+                                        .itemProductName("Adventure Consult")
+                                        .itemQty(2)
+                                        .itemTotalAmount(200.0)
+                                        .build(),
+                                    BillItem
+                                        .builder()
+                                        .itemCost(882.37)
+                                        .itemDescription("Deposit for trip planning")
+                                        .itemMode(2)
+                                        .itemProductName("Deposit ")
+                                        .itemQty(1)
+                                        .itemTotalAmount(882.37)
+                                        .build()
+                                )
+                            )
+                        )
                         .build()
                 )
                 .build()
@@ -12540,7 +3639,7 @@ client.moneyOut().reissueOut(
 <dl>
 <dd>
 
-**transId:** `String` — The transaction ID of the payout to reissue.
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -12548,7 +3647,7 @@ client.moneyOut().reissueOut(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -12556,7 +3655,15 @@ client.moneyOut().reissueOut(
 <dl>
 <dd>
 
-**request:** `ReissuePayoutBody` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `InvoiceDataRequest` 
     
 </dd>
 </dl>
@@ -12568,8 +3675,7 @@ client.moneyOut().reissueOut(
 </dl>
 </details>
 
-## Notification
-<details><summary><code>client.notification.addNotification(request) -> PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.invoice.getAttachedFileFromInvoice(idInvoice, filename) -> FileContent</code></summary>
 <dl>
 <dd>
 
@@ -12581,7 +3687,7 @@ client.moneyOut().reissueOut(
 <dl>
 <dd>
 
-Create a new notification or auto-generated report. 
+Retrieves a file attached to an invoice.
 </dd>
 </dl>
 </dd>
@@ -12596,26 +3702,12 @@ Create a new notification or auto-generated report.
 <dd>
 
 ```java
-client.notification().addNotification(
-    AddNotificationRequest.of(
-        NotificationStandardRequest
-            .builder()
-            .frequency(NotificationStandardRequestFrequency.UNTILCANCELLED)
-            .method(NotificationStandardRequestMethod.WEB)
-            .ownerType(0)
-            .target("https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275")
-            .content(
-                Optional.of(
-                    NotificationStandardRequestContent
-                        .builder()
-                        .eventType(Optional.of(NotificationStandardRequestContentEventType.CREATED_APPLICATION))
-                        .build()
-                )
-            )
-            .ownerId(Optional.of(236))
-            .status(Optional.of(1))
-            .build()
-    )
+client.invoice().getAttachedFileFromInvoice(
+    1,
+    "filename",
+    GetAttachedFileFromInvoiceRequest
+        .builder()
+        .build()
 );
 ```
 </dd>
@@ -12631,7 +3723,27 @@ client.notification().addNotification(
 <dl>
 <dd>
 
-**request:** `AddNotificationRequest` 
+**idInvoice:** `Integer` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `String` 
+
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnObject:** `Optional<Boolean>` — When `true`, the request returns the file content as a Base64-encoded string.
     
 </dd>
 </dl>
@@ -12643,7 +3755,7 @@ client.notification().addNotification(
 </dl>
 </details>
 
-<details><summary><code>client.notification.deleteNotification(nId) -> PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.invoice.deleteAttachedFromInvoice(idInvoice, filename) -> InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -12655,7 +3767,7 @@ client.notification().addNotification(
 <dl>
 <dd>
 
-Deletes a single notification or auto-generated report.
+Deletes a file attached to an invoice.
 </dd>
 </dl>
 </dd>
@@ -12670,7 +3782,7 @@ Deletes a single notification or auto-generated report.
 <dd>
 
 ```java
-client.notification().deleteNotification("1717");
+client.invoice().deleteAttachedFromInvoice(23548884, "0_Bill.pdf");
 ```
 </dd>
 </dl>
@@ -12685,7 +3797,19 @@ client.notification().deleteNotification("1717");
 <dl>
 <dd>
 
-**nId:** `String` — Notification ID. 
+**idInvoice:** `Integer` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `String` 
+
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -12697,7 +3821,7 @@ client.notification().deleteNotification("1717");
 </dl>
 </details>
 
-<details><summary><code>client.notification.getNotification(nId) -> NotificationQueryRecord</code></summary>
+<details><summary><code>client.invoice.getInvoice(idInvoice) -> GetInvoiceRecord</code></summary>
 <dl>
 <dd>
 
@@ -12709,7 +3833,7 @@ client.notification().deleteNotification("1717");
 <dl>
 <dd>
 
-Retrieves a single notification or auto-generated report's details.
+Retrieves a single invoice by ID.
 </dd>
 </dl>
 </dd>
@@ -12724,7 +3848,7 @@ Retrieves a single notification or auto-generated report's details.
 <dd>
 
 ```java
-client.notification().getNotification("1717");
+client.invoice().getInvoice(23548884);
 ```
 </dd>
 </dl>
@@ -12739,7 +3863,7 @@ client.notification().getNotification("1717");
 <dl>
 <dd>
 
-**nId:** `String` — Notification ID. 
+**idInvoice:** `Integer` — Invoice ID
     
 </dd>
 </dl>
@@ -12751,7 +3875,7 @@ client.notification().getNotification("1717");
 </dl>
 </details>
 
-<details><summary><code>client.notification.updateNotification(nId, request) -> PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.invoice.editInvoice(idInvoice, request) -> InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -12763,7 +3887,7 @@ client.notification().getNotification("1717");
 <dl>
 <dd>
 
-Update a notification or auto-generated report. 
+Updates details for a single invoice in an entrypoint.
 </dd>
 </dl>
 </dd>
@@ -12778,162 +3902,36 @@ Update a notification or auto-generated report.
 <dd>
 
 ```java
-client.notification().updateNotification(
-    "1717",
-    UpdateNotificationRequest.of(
-        NotificationStandardRequest
-            .builder()
-            .frequency(NotificationStandardRequestFrequency.UNTILCANCELLED)
-            .method(NotificationStandardRequestMethod.EMAIL)
-            .ownerType(0)
-            .target("newemail@email.com")
-            .content(
-                Optional.of(
-                    NotificationStandardRequestContent
-                        .builder()
-                        .eventType(Optional.of(NotificationStandardRequestContentEventType.APPROVED_PAYMENT))
-                        .build()
-                )
-            )
-            .ownerId(Optional.of(136))
-            .status(Optional.of(1))
-            .build()
-    )
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**nId:** `String` — Notification ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateNotificationRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.notification.getReportFile(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets a copy of a generated report by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.notification().getReportFile(1000000L);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — Report ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Notificationlogs
-<details><summary><code>client.notificationlogs.searchNotificationLogs(request) -> List&amp;lt;NotificationLog&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Search notification logs with filtering and pagination.
-  - Start date and end date cannot be more than 30 days apart
-  - Either `orgId` or `paypointId` must be provided
-
-This endpoint requires the `notifications_create` OR `notifications_read` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.notificationlogs().searchNotificationLogs(
-    SearchNotificationLogsRequest
+client.invoice().editInvoice(
+    23548884,
+    EditInvoiceRequest
         .builder()
         .body(
-            NotificationLogSearchRequest
+            InvoiceDataRequest
                 .builder()
-                .startDate(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
-                .endDate(OffsetDateTime.parse("2024-01-31T23:59:59Z"))
-                .notificationEvent("ActivatedMerchant")
-                .succeeded(true)
-                .orgId(12345L)
+                .invoiceData(
+                    BillData
+                        .builder()
+                        .invoiceAmount(982.37)
+                        .invoiceDate("2025-10-19")
+                        .invoiceNumber("INV-2345")
+                        .items(
+                            Optional.of(
+                                Arrays.asList(
+                                    BillItem
+                                        .builder()
+                                        .itemCost(882.37)
+                                        .itemDescription("Deposit for trip planning")
+                                        .itemProductName("Deposit")
+                                        .itemQty(1)
+                                        .build()
+                                )
+                            )
+                        )
+                        .build()
+                )
                 .build()
         )
-        .pageSize(20)
         .build()
 );
 ```
@@ -12950,7 +3948,7 @@ client.notificationlogs().searchNotificationLogs(
 <dl>
 <dd>
 
-**pageSize:** `Optional<Integer>` 
+**idInvoice:** `Integer` — Invoice ID
     
 </dd>
 </dl>
@@ -12958,7 +3956,7 @@ client.notificationlogs().searchNotificationLogs(
 <dl>
 <dd>
 
-**page:** `Optional<Integer>` — The page number to retrieve. Defaults to 1 if not provided.
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.
     
 </dd>
 </dl>
@@ -12966,7 +3964,7 @@ client.notificationlogs().searchNotificationLogs(
 <dl>
 <dd>
 
-**request:** `NotificationLogSearchRequest` 
+**request:** `InvoiceDataRequest` 
     
 </dd>
 </dl>
@@ -12978,7 +3976,7 @@ client.notificationlogs().searchNotificationLogs(
 </dl>
 </details>
 
-<details><summary><code>client.notificationlogs.getNotificationLog(uuid) -> NotificationLogDetail</code></summary>
+<details><summary><code>client.invoice.deleteInvoice(idInvoice) -> InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -12990,8 +3988,7 @@ client.notificationlogs().searchNotificationLogs(
 <dl>
 <dd>
 
-Get detailed information for a specific notification log entry.
-This endpoint requires the `notifications_create` OR `notifications_read` permission.
+Deletes a single invoice from an entrypoint.
 </dd>
 </dl>
 </dd>
@@ -13006,7 +4003,7 @@ This endpoint requires the `notifications_create` OR `notifications_read` permis
 <dd>
 
 ```java
-client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+client.invoice().deleteInvoice(23548884);
 ```
 </dd>
 </dl>
@@ -13021,7 +4018,7 @@ client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4
 <dl>
 <dd>
 
-**uuid:** `UUID` — The notification log entry.
+**idInvoice:** `Integer` — Invoice ID
     
 </dd>
 </dl>
@@ -13033,7 +4030,7 @@ client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4
 </dl>
 </details>
 
-<details><summary><code>client.notificationlogs.retryNotificationLog(uuid) -> NotificationLogDetail</code></summary>
+<details><summary><code>client.invoice.getInvoiceNumber(entry) -> InvoiceNumberResponse</code></summary>
 <dl>
 <dd>
 
@@ -13045,9 +4042,7 @@ client.notificationlogs().getNotificationLog(UUID.fromString("550e8400-e29b-41d4
 <dl>
 <dd>
 
-Retry sending a specific notification.
-
-**Permissions:** notifications_create
+Retrieves the next available invoice number for a paypoint.
 </dd>
 </dl>
 </dd>
@@ -13062,801 +4057,7 @@ Retry sending a specific notification.
 <dd>
 
 ```java
-client.notificationlogs().retryNotificationLog(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**uuid:** `UUID` — Unique id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.notificationlogs.bulkRetryNotificationLogs(request)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retry sending multiple notifications (maximum 50 IDs).
-This is an async process, so use the search endpoint again to check the notification status.
-
-This endpoint requires the `notifications_create` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.notificationlogs().bulkRetryNotificationLogs(
-    Arrays.asList(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"), UUID.fromString("550e8400-e29b-41d4-a716-446655440001"), UUID.fromString("550e8400-e29b-41d4-a716-446655440002"))
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `List<UUID>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Ocr
-<details><summary><code>client.ocr.ocrDocumentForm(typeResult, request) -> PayabliApiResponseOcr</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.ocr().ocrDocumentForm(
-    "typeResult",
-    FileContentImageOnly
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**typeResult:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `FileContentImageOnly` — The image file to OCR. Accepted formats include PDF, JPG, JPEG, PNG, GIF.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.ocr.ocrDocumentJson(typeResult, request) -> PayabliApiResponseOcr</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.ocr().ocrDocumentJson(
-    "typeResult",
-    FileContentImageOnly
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**typeResult:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `FileContentImageOnly` — Base64-encoded file content for OCR processing
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Organization
-<details><summary><code>client.organization.addOrganization(request) -> AddOrganizationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates an organization under a parent organization. This is also referred to as a suborganization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.organization().addOrganization(
-    AddOrganizationRequest
-        .builder()
-        .orgName("Pilgrim Planner")
-        .orgType(0)
-        .replyToEmail("email@example.com")
-        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
-        .billingInfo(
-            Instrument
-                .builder()
-                .achAccount("123123123")
-                .achRouting("123123123")
-                .billingAddress("123 Walnut Street")
-                .billingCity("Johnson City")
-                .billingCountry("US")
-                .billingState("TN")
-                .billingZip("37615")
-                .build()
-        )
-        .contacts(
-            Arrays.asList(
-                Contacts
-                    .builder()
-                    .contactEmail("herman@hermanscoatings.com")
-                    .contactName("Herman Martinez")
-                    .contactPhone("3055550000")
-                    .contactTitle("Owner")
-                    .build()
-            )
-        )
-        .hasBilling(true)
-        .hasResidual(true)
-        .orgAddress("123 Walnut Street")
-        .orgCity("Johnson City")
-        .orgCountry("US")
-        .orgEntryName("pilgrim-planner")
-        .orgId("123")
-        .orgLogo(
-            FileContent
-                .builder()
-                .fContent("TXkgdGVzdCBmaWxlHJ==...")
-                .filename("my-doc.pdf")
-                .ftype(FileContentFtype.PDF)
-                .furl("https://mysite.com/my-doc.pdf")
-                .build()
-        )
-        .orgParentId(236L)
-        .orgState("TN")
-        .orgTimezone(-5)
-        .orgWebsite("www.pilgrimageplanner.com")
-        .orgZip("37615")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**services:** `Optional<List<ServiceCost>>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingInfo:** `Optional<Instrument>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contacts:** `Optional<List<Contacts>>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasBilling:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasResidual:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgAddress:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCity:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCountry:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgEntryName:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgLogo:** `Optional<FileContent>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgName:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgParentId:** `Optional<Long>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgState:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgTimezone:** `Optional<Integer>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgType:** `Integer` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgWebsite:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgZip:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replyToEmail:** `String` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.organization.deleteOrganization(orgId) -> DeleteOrganizationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Delete an organization by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.organization().deleteOrganization(123);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.organization.editOrganization(orgId, request) -> EditOrganizationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an organization's details by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.organization().editOrganization(
-    123,
-    OrganizationData
-        .builder()
-        .contacts(
-            Arrays.asList(
-                Contacts
-                    .builder()
-                    .contactEmail("herman@hermanscoatings.com")
-                    .contactName("Herman Martinez")
-                    .contactPhone("3055550000")
-                    .contactTitle("Owner")
-                    .build()
-            )
-        )
-        .orgAddress("123 Walnut Street")
-        .orgCity("Johnson City")
-        .orgCountry("US")
-        .orgEntryName("pilgrim-planner")
-        .organizationDataOrgId("123")
-        .orgName("Pilgrim Planner")
-        .orgState("TN")
-        .orgTimezone(-5)
-        .orgType(0)
-        .orgWebsite("www.pilgrimageplanner.com")
-        .orgZip("37615")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**services:** `Optional<List<ServiceCost>>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingInfo:** `Optional<Instrument>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contacts:** `Optional<List<Contacts>>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasBilling:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasResidual:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgAddress:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCity:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCountry:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgEntryName:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**organizationDataOrgId:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgLogo:** `Optional<FileContent>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgName:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgParentId:** `Optional<Long>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgState:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgTimezone:** `Optional<Integer>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgType:** `Optional<Integer>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgWebsite:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgZip:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replyToEmail:** `Optional<String>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.organization.getBasicOrganization(entry) -> OrganizationQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets an organization's basic information by entry name (entrypoint identifier).
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.organization().getBasicOrganization("8cfec329267");
+client.invoice().getInvoiceNumber("8cfec329267");
 ```
 </dd>
 </dl>
@@ -13883,7 +4084,7 @@ client.organization().getBasicOrganization("8cfec329267");
 </dl>
 </details>
 
-<details><summary><code>client.organization.getBasicOrganizationById(orgId) -> OrganizationQueryRecord</code></summary>
+<details><summary><code>client.invoice.listInvoices(entry) -> QueryInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13895,7 +4096,7 @@ client.organization().getBasicOrganization("8cfec329267");
 <dl>
 <dd>
 
-Gets an organization's basic details by org ID.
+Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 </dd>
 </dl>
 </dd>
@@ -13910,7 +4111,181 @@ Gets an organization's basic details by org ID.
 <dd>
 
 ```java
-client.organization().getBasicOrganizationById(123);
+client.invoice().listInvoices(
+    "8cfec329267",
+    ListInvoicesRequest
+        .builder()
+        .fromRecord(251)
+        .limitRecord(0)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+- `invoiceDate` (gt, ge, lt, le, eq, ne)
+- `dueDate` (gt, ge, lt, le, eq, ne)
+- `sentDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin,ne, eq)
+- `invoiceType` (eq, ne)
+- `payTerms` (in, nin, eq, ne)
+- `paypointId` (ne, eq)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paidAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `invoiceNumber` (ct, nct, eq, ne)
+- `purchaseOrder` (ct, nct, eq, ne)
+- `itemProductCode` (ct, nct)
+- `itemDescription` (ct, nct)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paylinkId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.listInvoicesOrg(orgId) -> QueryInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of invoices for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.invoice().listInvoicesOrg(
+    123,
+    ListInvoicesOrgRequest
+        .builder()
+        .fromRecord(251)
+        .limitRecord(0)
+        .sortBy("desc(field_name)")
+        .build()
+);
 ```
 </dd>
 </dl>
@@ -13929,57 +4304,107 @@ client.organization().getBasicOrganizationById(123);
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
+    
 </dd>
 </dl>
 
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.organization.getOrganization(orgId) -> OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves details for an organization by ID. 
-</dd>
-</dl>
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
 </dd>
 </dl>
 
-#### 🔌 Usage
-
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-```java
-client.organization().getOrganization(123);
-```
-</dd>
-</dl>
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
 </dd>
 </dl>
 
-#### ⚙️ Parameters
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+- `invoiceDate` (gt, ge, lt, le, eq, ne)
+- `dueDate` (gt, ge, lt, le, eq, ne)
+- `sentDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin,ne, eq)
+- `invoiceType` (eq, ne)
+- `payTerms` (in, nin, eq, ne)
+- `paypointId` (ne, eq)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paidAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `invoiceNumber` (ct, nct, eq, ne)
+- `purchaseOrder` (ct, nct, eq, ne)
+- `itemProductCode` (ct, nct)
+- `itemDescription` (ct, nct)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paylinkId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
     
 </dd>
 </dl>
@@ -13991,7 +4416,7 @@ client.organization().getOrganization(123);
 </dl>
 </details>
 
-<details><summary><code>client.organization.getSettingsOrganization(orgId) -> SettingsQueryRecord</code></summary>
+<details><summary><code>client.invoice.sendInvoice(idInvoice) -> SendInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -14003,7 +4428,7 @@ client.organization().getOrganization(123);
 <dl>
 <dd>
 
-Retrieves an organization's settings.
+Sends an invoice from an entrypoint via email.
 </dd>
 </dl>
 </dd>
@@ -14018,7 +4443,14 @@ Retrieves an organization's settings.
 <dd>
 
 ```java
-client.organization().getSettingsOrganization(123);
+client.invoice().sendInvoice(
+    23548884,
+    SendInvoiceRequest
+        .builder()
+        .attachfile(true)
+        .mail2("tamara@example.com")
+        .build()
+);
 ```
 </dd>
 </dl>
@@ -14033,7 +4465,77 @@ client.organization().getSettingsOrganization(123);
 <dl>
 <dd>
 
-**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+**idInvoice:** `Integer` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachfile:** `Optional<Boolean>` — When `true`, attaches a PDF version of invoice to the email.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `Optional<String>` — Email address where the invoice will be sent to. If this parameter isn't included, Payabli uses the email address on file for the customer owner of the invoice.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.getInvoicePdf(idInvoice) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Export a single invoice in PDF format.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.invoice().getInvoicePdf(23548884);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idInvoice:** `Integer` — Invoice ID
     
 </dd>
 </dl>
@@ -14058,7 +4560,7 @@ client.organization().getSettingsOrganization(123);
 <dl>
 <dd>
 
-Generates a payment link for an invoice from the invoice ID. 
+Generates a payment link for an invoice from the invoice ID.
 </dd>
 </dl>
 </dd>
@@ -14077,175 +4579,170 @@ client.paymentLink().addPayLinkFromInvoice(
     23548884,
     PayLinkDataInvoice
         .builder()
-        .body(
-            PaymentPageRequestBody
+        .mail2("jo@example.com; ceo@example.com")
+        .contactUs(
+            ContactElement
                 .builder()
-                .contactUs(
-                    ContactElement
-                        .builder()
-                        .emailLabel("Email")
-                        .enabled(true)
-                        .header("Contact Us")
-                        .order(0)
-                        .paymentIcons(true)
-                        .phoneLabel("Phone")
-                        .build()
-                )
-                .invoices(
-                    InvoiceElement
-                        .builder()
-                        .enabled(true)
-                        .invoiceLink(
-                            LabelElement
-                                .builder()
-                                .enabled(true)
-                                .label("View Invoice")
-                                .order(0)
-                                .build()
-                        )
-                        .order(0)
-                        .viewInvoiceDetails(
-                            LabelElement
-                                .builder()
-                                .enabled(true)
-                                .label("Invoice Details")
-                                .order(0)
-                                .build()
-                        )
-                        .build()
-                )
-                .logo(
-                    Element
-                        .builder()
-                        .enabled(true)
-                        .order(0)
-                        .build()
-                )
-                .messageBeforePaying(
+                .emailLabel("Email")
+                .enabled(true)
+                .header("Contact Us")
+                .order(0)
+                .paymentIcons(true)
+                .phoneLabel("Phone")
+                .build()
+        )
+        .invoices(
+            InvoiceElement
+                .builder()
+                .enabled(true)
+                .invoiceLink(
                     LabelElement
                         .builder()
                         .enabled(true)
-                        .label("Please review your payment details")
+                        .label("View Invoice")
                         .order(0)
                         .build()
                 )
-                .notes(
-                    NoteElement
-                        .builder()
-                        .enabled(true)
-                        .header("Additional Notes")
-                        .order(0)
-                        .placeholder("Enter any additional notes here")
-                        .value("")
-                        .build()
-                )
-                .page(
-                    PageElement
-                        .builder()
-                        .description("Complete your payment securely")
-                        .enabled(true)
-                        .header("Payment Page")
-                        .order(0)
-                        .build()
-                )
-                .paymentButton(
+                .order(0)
+                .viewInvoiceDetails(
                     LabelElement
                         .builder()
                         .enabled(true)
-                        .label("Pay Now")
+                        .label("Invoice Details")
                         .order(0)
-                        .build()
-                )
-                .paymentMethods(
-                    MethodElement
-                        .builder()
-                        .allMethodsChecked(true)
-                        .enabled(true)
-                        .header("Payment Methods")
-                        .methods(
-                            MethodsList
-                                .builder()
-                                .amex(true)
-                                .applePay(true)
-                                .discover(true)
-                                .eCheck(true)
-                                .mastercard(true)
-                                .visa(true)
-                                .build()
-                        )
-                        .order(0)
-                        .settings(
-                            MethodElementSettings
-                                .builder()
-                                .applePay(
-                                    MethodElementSettingsApplePay
-                                        .builder()
-                                        .buttonStyle(MethodElementSettingsApplePayButtonStyle.BLACK)
-                                        .buttonType(MethodElementSettingsApplePayButtonType.PAY)
-                                        .language(MethodElementSettingsApplePayLanguage.EN_US)
-                                        .build()
-                                )
-                                .build()
-                        )
-                        .build()
-                )
-                .payor(
-                    PayorElement
-                        .builder()
-                        .enabled(true)
-                        .fields(
-                            Optional.of(
-                                Arrays.asList(
-                                    PayorFields
-                                        .builder()
-                                        .display(true)
-                                        .fixed(true)
-                                        .identifier(true)
-                                        .label("Full Name")
-                                        .name("fullName")
-                                        .order(0)
-                                        .required(true)
-                                        .validation("alpha")
-                                        .value("")
-                                        .width(0)
-                                        .build()
-                                )
-                            )
-                        )
-                        .header("Payor Information")
-                        .order(0)
-                        .build()
-                )
-                .review(
-                    HeaderElement
-                        .builder()
-                        .enabled(true)
-                        .header("Review Payment")
-                        .order(0)
-                        .build()
-                )
-                .settings(
-                    PagelinkSetting
-                        .builder()
-                        .color("#000000")
-                        .customCssUrl("https://example.com/custom.css")
-                        .language("en")
-                        .pageLogo(
-                            FileContent
-                                .builder()
-                                .fContent("PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==")
-                                .filename("logo.jpg")
-                                .ftype(FileContentFtype.JPG)
-                                .furl("")
-                                .build()
-                        )
-                        .redirectAfterApprove(true)
-                        .redirectAfterApproveUrl("https://example.com/success")
                         .build()
                 )
                 .build()
         )
-        .mail2("jo@example.com; ceo@example.com")
+        .logo(
+            Element
+                .builder()
+                .enabled(true)
+                .order(0)
+                .build()
+        )
+        .messageBeforePaying(
+            LabelElement
+                .builder()
+                .enabled(true)
+                .label("Please review your payment details")
+                .order(0)
+                .build()
+        )
+        .notes(
+            NoteElement
+                .builder()
+                .enabled(true)
+                .header("Additional Notes")
+                .order(0)
+                .placeholder("Enter any additional notes here")
+                .value("")
+                .build()
+        )
+        .page(
+            PageElement
+                .builder()
+                .description("Complete your payment securely")
+                .enabled(true)
+                .header("Payment Page")
+                .order(0)
+                .build()
+        )
+        .paymentButton(
+            LabelElement
+                .builder()
+                .enabled(true)
+                .label("Pay Now")
+                .order(0)
+                .build()
+        )
+        .paymentMethods(
+            MethodElement
+                .builder()
+                .allMethodsChecked(true)
+                .enabled(true)
+                .header("Payment Methods")
+                .methods(
+                    MethodsList
+                        .builder()
+                        .amex(true)
+                        .applePay(true)
+                        .discover(true)
+                        .eCheck(true)
+                        .mastercard(true)
+                        .visa(true)
+                        .build()
+                )
+                .order(0)
+                .settings(
+                    MethodElementSettings
+                        .builder()
+                        .applePay(
+                            MethodElementSettingsApplePay
+                                .builder()
+                                .buttonStyle(MethodElementSettingsApplePayButtonStyle.BLACK)
+                                .buttonType(MethodElementSettingsApplePayButtonType.PAY)
+                                .language(MethodElementSettingsApplePayLanguage.EN_US)
+                                .build()
+                        )
+                        .build()
+                )
+                .build()
+        )
+        .payor(
+            PayorElement
+                .builder()
+                .enabled(true)
+                .fields(
+                    Optional.of(
+                        Arrays.asList(
+                            PayorFields
+                                .builder()
+                                .display(true)
+                                .fixed(true)
+                                .identifier(true)
+                                .label("Full Name")
+                                .name("fullName")
+                                .order(0)
+                                .required(true)
+                                .validation("alpha")
+                                .value("")
+                                .width(0)
+                                .build()
+                        )
+                    )
+                )
+                .header("Payor Information")
+                .order(0)
+                .build()
+        )
+        .review(
+            HeaderElement
+                .builder()
+                .enabled(true)
+                .header("Review Payment")
+                .order(0)
+                .build()
+        )
+        .settings(
+            PagelinkSetting
+                .builder()
+                .color("#000000")
+                .customCssUrl("https://example.com/custom.css")
+                .language("en")
+                .pageLogo(
+                    FileContent
+                        .builder()
+                        .fContent("PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==")
+                        .filename("logo.jpg")
+                        .ftype(FileContentFtype.JPG)
+                        .furl("")
+                        .build()
+                )
+                .redirectAfterApprove(true)
+                .redirectAfterApproveUrl("https://example.com/success")
+                .build()
+        )
         .build()
 );
 ```
@@ -14286,7 +4783,7 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -14294,7 +4791,87 @@ client.paymentLink().addPayLinkFromInvoice(
 <dl>
 <dd>
 
-**request:** `PaymentPageRequestBody` 
+**contactUs:** `Optional<ContactElement>` — ContactUs section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoices:** `Optional<InvoiceElement>` — Invoices section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**logo:** `Optional<Element>` — Logo section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**messageBeforePaying:** `Optional<LabelElement>` — Message section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `Optional<NoteElement>` — Notes section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `Optional<PageElement>` — Page header section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentButton:** `Optional<LabelElement>` — Payment button section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethods:** `Optional<MethodElement>` — Payment methods section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payor:** `Optional<PayorElement>` — Customer/Payor section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**review:** `Optional<HeaderElement>` — Review section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**settings:** `Optional<PagelinkSetting>` — Settings section of payment link page
     
 </dd>
 </dl>
@@ -14334,7 +4911,7 @@ Generates a payment link for a bill from the bill ID. The vendor receives a secu
 
 ```java
 client.paymentLink().addPayLinkFromBill(
-    23548884,
+    54323,
     PayLinkDataBill
         .builder()
         .body(
@@ -14471,7 +5048,7 @@ client.paymentLink().addPayLinkFromBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -14572,7 +5149,7 @@ Retrieves a payment link by ID.
 <dd>
 
 ```java
-client.paymentLink().getPayLinkFromId("paylinkId");
+client.paymentLink().getPayLinkFromId("2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234");
 ```
 </dd>
 </dl>
@@ -14627,7 +5204,7 @@ Send a payment link to the specified email addresses or phone numbers.
 
 ```java
 client.paymentLink().pushPayLinkFromId(
-    "payLinkId",
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     PushPayLinkRequest.sms(
         PushPayLinkRequestSms
             .builder()
@@ -14696,7 +5273,7 @@ Refresh a payment link's content after an update.
 
 ```java
 client.paymentLink().refreshPayLinkFromId(
-    "payLinkId",
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     RefreshPayLinkFromIdRequest
         .builder()
         .build()
@@ -14747,7 +5324,7 @@ client.paymentLink().refreshPayLinkFromId(
 <dl>
 <dd>
 
-Sends a payment link to the specified email addresses. 
+Sends a payment link to the specified email addresses.
 </dd>
 </dl>
 </dd>
@@ -14763,7 +5340,7 @@ Sends a payment link to the specified email addresses.
 
 ```java
 client.paymentLink().sendPayLinkFromId(
-    "payLinkId",
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     SendPayLinkFromIdRequest
         .builder()
         .mail2("jo@example.com; ceo@example.com")
@@ -14839,7 +5416,7 @@ Updates a payment link's details.
 
 ```java
 client.paymentLink().updatePayLinkFromId(
-    "332-c277b704-1301",
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     PayLinkUpdateData
         .builder()
         .notes(
@@ -14991,8 +5568,8 @@ client.paymentLink().addPayLinkFromBillLotNumber(
     "LOT-2024-001",
     PayLinkDataOut
         .builder()
-        .entryPoint("billing")
-        .vendorNumber("VENDOR-123")
+        .entryPoint("8cfec329267")
+        .vendorNumber("VEN-123")
         .body(
             PaymentPageRequestBodyOut
                 .builder()
@@ -15112,7 +5689,7 @@ client.paymentLink().addPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**entryPoint:** `String` 
+**entryPoint:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -15213,7 +5790,23 @@ client.paymentLink().patchOutPaymentLink(
 <dl>
 <dd>
 
-**request:** `PatchOutPaymentLinkRequest` 
+**billPageData:** `Optional<PaymentPageRequestBodyOut>` — Updated payment link page configuration.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `Optional<String>` — New expiration date for the payment link. Must be a future date. If null and the link is expired, uses the default expiration from settings. Updating the expiration date reactivates an expired payment link to Active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<PaymentLinkStatus>` — Updated status for the payment link.
     
 </dd>
 </dl>
@@ -15369,6 +5962,1111 @@ client.paymentLink().updatePayLinkOutFromId(
 <dd>
 
 **request:** `PaymentPageRequestBodyOut` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## TokenStorage
+<details><summary><code>client.tokenStorage.addMethod(request) -> AddMethodResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The `ReferenceId` value in the response is the `storedMethodId` to use with transactions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.tokenStorage().addMethod(
+    AddMethodRequest
+        .builder()
+        .body(
+            RequestTokenStorage
+                .builder()
+                .customerData(
+                    PayorDataRequest
+                        .builder()
+                        .customerId(4440L)
+                        .build()
+                )
+                .entryPoint("8cfec329267")
+                .fallbackAuth(true)
+                .fallbackAuthAmount(100)
+                .methodDescription("Primary Visa card")
+                .paymentMethod(
+                    RequestTokenStoragePaymentMethod.of(
+                        TokenizeCard
+                            .builder()
+                            .method("card")
+                            .cardexp("02/25")
+                            .cardHolder("John Doe")
+                            .cardnumber("4111111111111111")
+                            .cardcvv(Optional.of("123"))
+                            .cardzip(Optional.of("12345"))
+                            .build()
+                    )
+                )
+                .source("api")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**achValidation:** `Optional<Boolean>` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**createAnonymous:** `Optional<Boolean>` — When `true`, creates a saved method with no associated customer information. The token will be associated with customer information the first time it's used to make a payment. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**forceCustomerCreation:** `Optional<Boolean>` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**temporary:** `Optional<Boolean>` — Creates a temporary, one-time-use token for the payment method that expires in 12 hours. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RequestTokenStorage` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tokenStorage.getMethod(methodId) -> GetMethodResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves details for a saved payment method.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.tokenStorage().getMethod(
+    "32-8877drt00045632-678",
+    GetMethodRequest
+        .builder()
+        .cardExpirationFormat(1)
+        .includeTemporary(false)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**methodId:** `String` — The saved payment method ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cardExpirationFormat:** `Optional<Integer>` 
+
+Format for card expiration dates in the response.
+
+Accepted values:
+
+- 0: default, no formatting. Expiration dates are returned in the format they're saved in.
+
+- 1: MMYY
+
+- 2: MM/YY
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeTemporary:** `Optional<Boolean>` — When `true`, the request will include temporary tokens in the search and return details for a matching temporary token. The default behavior searches only for permanent tokens.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tokenStorage.updateMethod(methodId, request) -> PayabliApiResponsePaymethodDelete</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a saved payment method.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.tokenStorage().updateMethod(
+    "32-8877drt00045632-678",
+    UpdateMethodRequest
+        .builder()
+        .body(
+            RequestTokenStorage
+                .builder()
+                .customerData(
+                    PayorDataRequest
+                        .builder()
+                        .customerId(4440L)
+                        .build()
+                )
+                .entryPoint("8cfec329267")
+                .fallbackAuth(true)
+                .paymentMethod(
+                    RequestTokenStoragePaymentMethod.of(
+                        TokenizeCard
+                            .builder()
+                            .method("card")
+                            .cardexp("02/25")
+                            .cardHolder("John Doe")
+                            .cardnumber("4111111111111111")
+                            .cardcvv(Optional.of("123"))
+                            .cardzip(Optional.of("12345"))
+                            .build()
+                    )
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**methodId:** `String` — The saved payment method ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**achValidation:** `Optional<Boolean>` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RequestTokenStorage` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tokenStorage.removeMethod(methodId) -> PayabliApiResponsePaymethodDelete</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a saved payment method.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.tokenStorage().removeMethod("32-8877drt00045632-678");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**methodId:** `String` — The saved payment method ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Paypoint
+<details><summary><code>client.paypoint.getBasicEntry(entry) -> GetBasicEntryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets the basic details for a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().getBasicEntry("8cfec329267");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.getBasicEntryById(idPaypoint) -> GetBasicEntryByIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the basic details for a paypoint by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().getBasicEntryById("198");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idPaypoint:** `String` — Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.saveLogo(entry, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a paypoint logo.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().saveLogo(
+    "8cfec329267",
+    FileContent
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `FileContent` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.migrate(request) -> MigratePaypointResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Migrates a paypoint to a new parent organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().migrate(
+    PaypointMoveRequest
+        .builder()
+        .entryPoint("8cfec329267")
+        .newParentOrganizationId(123)
+        .notificationRequest(
+            NotificationRequest
+                .builder()
+                .notificationUrl("https://webhook-test.yoursie.com")
+                .webHeaderParameters(
+                    Optional.of(
+                        Arrays.asList(
+                            WebHeaderParameter
+                                .builder()
+                                .key("testheader")
+                                .value("1234567890")
+                                .build()
+                        )
+                    )
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entryPoint:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newParentOrganizationId:** `Integer` — The ID for the paypoint's new parent organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notificationRequest:** `Optional<NotificationRequest>` — Optional notification request object for a webhook
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.settingsPage(entry) -> SettingsQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().settingsPage("8cfec329267");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.getEntryConfig(entry) -> GetEntryConfigResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets the details for a single paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().getEntryConfig(
+    "8cfec329267",
+    GetEntryConfigRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entrypages:** `Optional<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.getPage(entry, subdomain) -> PayabliPages</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets the details for a single payment page for a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().getPage("8cfec329267", "pay-your-fees-1");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoint.removePage(entry, subdomain) -> PayabliApiResponseGeneric2Part</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payment page in a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoint().removePage("8cfec329267", "pay-your-fees-1");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## HostedPaymentPages
+<details><summary><code>client.hostedPaymentPages.loadPage(entry, subdomain) -> PayabliPages</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Loads all of a payment page's details including `pageIdentifier` and `validationCode`. This endpoint requires an `application` API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.hostedPaymentPages().loadPage("8cfec329267", "pay-your-fees-1");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.hostedPaymentPages.newPage(entry, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new payment page for a paypoint.
+Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.hostedPaymentPages().newPage(
+    "8cfec329267",
+    NewPageRequest
+        .builder()
+        .body(
+            PayabliPages
+                .builder()
+                .build()
+        )
+        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PayabliPages` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.hostedPaymentPages.savePage(entry, subdomain, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payment page in a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.hostedPaymentPages().savePage(
+    "8cfec329267",
+    "pay-your-fees-1",
+    PayabliPages
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `String` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PayabliPages` 
     
 </dd>
 </dl>
@@ -15540,60 +7238,6 @@ client.paymentMethodDomain().cascadePaymentMethodDomain("pmd_b8237fa45c964d8a9ef
 </dl>
 </details>
 
-<details><summary><code>client.paymentMethodDomain.deletePaymentMethodDomain(domainId) -> DeletePaymentMethodDomainResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paymentMethodDomain().deletePaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**domainId:** `String` — The payment method domain's ID in Payabli.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.paymentMethodDomain.getPaymentMethodDomain(domainId) -> PaymentMethodDomainApiResponse</code></summary>
 <dl>
 <dd>
@@ -15648,7 +7292,7 @@ client.paymentMethodDomain().getPaymentMethodDomain("pmd_b8237fa45c964d8a9ef2716
 </dl>
 </details>
 
-<details><summary><code>client.paymentMethodDomain.listPaymentMethodDomains() -> ListPaymentMethodDomainsResponse</code></summary>
+<details><summary><code>client.paymentMethodDomain.deletePaymentMethodDomain(domainId) -> DeletePaymentMethodDomainResponse</code></summary>
 <dl>
 <dd>
 
@@ -15660,7 +7304,7 @@ client.paymentMethodDomain().getPaymentMethodDomain("pmd_b8237fa45c964d8a9ef2716
 <dl>
 <dd>
 
-Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
 </dd>
 </dl>
 </dd>
@@ -15675,13 +7319,7 @@ Get a list of payment method domains that belong to a PSP, organization, or payp
 <dd>
 
 ```java
-client.paymentMethodDomain().listPaymentMethodDomains(
-    ListPaymentMethodDomainsRequest
-        .builder()
-        .entityId(1147L)
-        .entityType("paypoint")
-        .build()
-);
+client.paymentMethodDomain().deletePaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
 ```
 </dd>
 </dl>
@@ -15696,39 +7334,7 @@ client.paymentMethodDomain().listPaymentMethodDomains(
 <dl>
 <dd>
 
-**entityId:** `Optional<Long>` 
-
-Identifier for the organization or paypoint. 
-- For organization, provide the organization ID - For paypoint, provide the paypoint ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entityType:** `Optional<String>` 
-
-The type of entity. Valid values: 
-  - organization
-  - paypoint
-  - psp
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `Optional<Integer>` — Number of records to skip. Defaults to `0`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `Optional<Integer>` — Max number of records for query response. Defaults to `20`.
+**domainId:** `String` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -15827,6 +7433,98 @@ client.paymentMethodDomain().updatePaymentMethodDomain(
 </dl>
 </details>
 
+<details><summary><code>client.paymentMethodDomain.listPaymentMethodDomains() -> ListPaymentMethodDomainsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentMethodDomain().listPaymentMethodDomains(
+    ListPaymentMethodDomainsRequest
+        .builder()
+        .entityId(1147L)
+        .entityType("paypoint")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entityId:** `Optional<Long>` 
+
+Identifier for the organization or paypoint.
+- For organization, provide the organization ID - For paypoint, provide the paypoint ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entityType:** `Optional<String>` 
+
+The type of entity. Valid values:
+  - organization
+  - paypoint
+  - psp
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — Number of records to skip. Defaults to `0`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records for query response. Defaults to `20`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.paymentMethodDomain.verifyPaymentMethodDomain(domainId) -> PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
@@ -15881,8 +7579,8 @@ client.paymentMethodDomain().verifyPaymentMethodDomain("pmd_b8237fa45c964d8a9ef2
 </dl>
 </details>
 
-## PayoutSubscription
-<details><summary><code>client.payoutSubscription.createPayoutSubscription(request) -> AddPayoutSubscriptionResponse</code></summary>
+## Import
+<details><summary><code>client.import_.importBills(entry, request) -> PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -15894,7 +7592,7 @@ client.paymentMethodDomain().verifyPaymentMethodDomain("pmd_b8237fa45c964d8a9ef2
 <dl>
 <dd>
 
-Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+Import a list of bills from a CSV file. See the [Import Guide](/developers/developer-guides/bills-add#import-bills) for more help and an example file.
 </dd>
 </dl>
 </dd>
@@ -15909,411 +7607,10 @@ Creates a payout subscription to automatically send payouts to a vendor on a rec
 <dd>
 
 ```java
-client.payoutSubscription().createPayoutSubscription(
-    RequestPayoutSchedule
-        .builder()
-        .body(
-            PayoutSubscriptionRequestBody
-                .builder()
-                .entryPoint("d193cf9a46")
-                .paymentMethod(
-                    AuthorizePaymentMethod
-                        .builder()
-                        .method("ach")
-                        .achHolder("Herman Coatings")
-                        .achRouting("021000021")
-                        .achAccount("3453445666")
-                        .achAccountType("checking")
-                        .build()
-                )
-                .vendorData(
-                    RequestOutAuthorizeVendorData
-                        .builder()
-                        .vendorId(1501)
-                        .build()
-                )
-                .paymentDetails(
-                    PayoutPaymentDetail
-                        .builder()
-                        .totalAmount(500.0)
-                        .serviceFee(0.0)
-                        .currency("USD")
-                        .build()
-                )
-                .billData(
-                    Optional.of(
-                        Arrays.asList(
-                            BillPayOutDataRequest
-                                .builder()
-                                .dueDate("2025-08-15")
-                                .invoiceDate("2025-08-01")
-                                .invoiceNumber("INV-5001")
-                                .netAmount("500")
-                                .build()
-                        )
-                    )
-                )
-                .scheduleDetails(
-                    PayoutScheduleDetail
-                        .builder()
-                        .startDate("09/01/2027")
-                        .endDate("09/01/2026")
-                        .frequency(Frequency.MONTHLY)
-                        .build()
-                )
-                .build()
-        )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `PayoutSubscriptionRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payoutSubscription.getPayoutSubscription(id) -> GetPayoutSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.payoutSubscription().getPayoutSubscription(42L);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — The payout subscription ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payoutSubscription.updatePayoutSubscription(id, request) -> UpdatePayoutSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.payoutSubscription().updatePayoutSubscription(
-    42L,
-    UpdatePayoutSubscriptionBody
-        .builder()
-        .setPause(true)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — The payout subscription ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdatePayoutSubscriptionBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payoutSubscription.deletePayoutSubscription(id) -> DeletePayoutSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.payoutSubscription().deletePayoutSubscription(42L);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `Long` — The payout subscription ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Paypoint
-<details><summary><code>client.paypoint.getBasicEntry(entry) -> GetBasicEntryResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets the basic details for a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paypoint().getBasicEntry("8cfec329267");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.paypoint.getBasicEntryById(idPaypoint) -> GetBasicEntryByIdResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the basic details for a paypoint by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paypoint().getBasicEntryById("198");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idPaypoint:** `String` — Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.paypoint.getEntryConfig(entry) -> GetEntryConfigResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets the details for a single paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paypoint().getEntryConfig(
+client.import_().importBills(
     "8cfec329267",
-    GetEntryConfigRequest
+    null,
+    ImportBillsRequest
         .builder()
         .build()
 );
@@ -16335,14 +7632,6 @@ client.paypoint().getEntryConfig(
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**entrypages:** `Optional<String>` 
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -16351,7 +7640,7 @@ client.paypoint().getEntryConfig(
 </dl>
 </details>
 
-<details><summary><code>client.paypoint.getPage(entry, subdomain) -> PayabliPages</code></summary>
+<details><summary><code>client.import_.importCustomer(entry, request) -> PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -16363,7 +7652,7 @@ client.paypoint().getEntryConfig(
 <dl>
 <dd>
 
-Gets the details for a single payment page for a paypoint. 
+Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
 </dd>
 </dl>
 </dd>
@@ -16378,133 +7667,10 @@ Gets the details for a single payment page for a paypoint.
 <dd>
 
 ```java
-client.paypoint().getPage("8cfec329267", "pay-your-fees-1");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.paypoint.removePage(entry, subdomain) -> PayabliApiResponseGeneric2Part</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a payment page in a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paypoint().removePage("8cfec329267", "pay-your-fees-1");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `String` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.paypoint.saveLogo(entry, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a paypoint logo. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paypoint().saveLogo(
+client.import_().importCustomer(
     "8cfec329267",
-    FileContent
+    null,
+    ImportCustomerRequest
         .builder()
         .build()
 );
@@ -16522,7 +7688,7 @@ client.paypoint().saveLogo(
 <dl>
 <dd>
 
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+**entry:** `String` — The entrypoint identifier.
     
 </dd>
 </dl>
@@ -16530,7 +7696,7 @@ client.paypoint().saveLogo(
 <dl>
 <dd>
 
-**request:** `FileContent` 
+**replaceExisting:** `Optional<Integer>` — Flag indicating to replace existing customer with a new record. Possible values: 0 (do not replace), 1 (replace). Default is 0
     
 </dd>
 </dl>
@@ -16542,7 +7708,7 @@ client.paypoint().saveLogo(
 </dl>
 </details>
 
-<details><summary><code>client.paypoint.settingsPage(entry) -> SettingsQueryRecord</code></summary>
+<details><summary><code>client.import_.importVendor(entry, request) -> PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -16554,7 +7720,7 @@ client.paypoint().saveLogo(
 <dl>
 <dd>
 
-Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
 </dd>
 </dl>
 </dd>
@@ -16569,82 +7735,11 @@ Retrieves a paypoint's basic settings like custom fields, identifiers, and invoi
 <dd>
 
 ```java
-client.paypoint().settingsPage("8cfec329267");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.paypoint.migrate(request) -> MigratePaypointResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Migrates a paypoint to a new parent organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.paypoint().migrate(
-    PaypointMoveRequest
+client.import_().importVendor(
+    "8cfec329267",
+    null,
+    ImportVendorRequest
         .builder()
-        .entryPoint("473abc123def")
-        .newParentOrganizationId(123)
-        .notificationRequest(
-            NotificationRequest
-                .builder()
-                .notificationUrl("https://webhook-test.yoursie.com")
-                .webHeaderParameters(
-                    Optional.of(
-                        Arrays.asList(
-                            WebHeaderParameter
-                                .builder()
-                                .key("testheader")
-                                .value("1234567890")
-                                .build()
-                        )
-                    )
-                )
-                .build()
-        )
         .build()
 );
 ```
@@ -16661,7 +7756,7 @@ client.paypoint().migrate(
 <dl>
 <dd>
 
-**request:** `PaypointMoveRequest` 
+**entry:** `String` — The entrypoint identifier.
     
 </dd>
 </dl>
@@ -16725,7 +7820,7 @@ client.query().listBatchDetails(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -16733,7 +7828,7 @@ client.query().listBatchDetails(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -16759,8 +7854,7 @@ client.query().listBatchDetails(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -16912,7 +8006,7 @@ client.query().listBatchDetailsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -16938,8 +8032,7 @@ client.query().listBatchDetailsOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -17082,7 +8175,7 @@ client.query().listBatches(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -17090,7 +8183,7 @@ client.query().listBatches(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -17116,7 +8209,7 @@ client.query().listBatches(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -17247,7 +8340,7 @@ client.query().listBatchesOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -17273,7 +8366,7 @@ client.query().listBatchesOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -17396,7 +8489,7 @@ client.query().listBatchesOut(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -17404,7 +8497,7 @@ client.query().listBatchesOut(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -17429,7 +8522,6 @@ client.query().listBatchesOut(
 <dd>
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
-
 
 Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
 
@@ -17523,7 +8615,7 @@ client.query().listBatchesOutOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -17549,8 +8641,7 @@ client.query().listBatchesOutOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -17649,7 +8740,7 @@ client.query().listChargebacks(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -17657,7 +8748,7 @@ client.query().listChargebacks(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -17831,7 +8922,7 @@ client.query().listChargebacksOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -17999,7 +9090,7 @@ client.query().listCustomers(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -18007,7 +9098,7 @@ client.query().listCustomers(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18033,7 +9124,7 @@ client.query().listCustomers(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -18175,7 +9266,7 @@ client.query().listCustomersOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18201,7 +9292,7 @@ client.query().listCustomersOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -18335,7 +9426,7 @@ client.query().listDevices(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -18343,7 +9434,7 @@ client.query().listDevices(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18368,7 +9459,6 @@ client.query().listDevices(
 <dd>
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
-
 
 Collection of field names, conditions, and values used to filter
 the query.
@@ -18509,7 +9599,7 @@ Returns a list of cloud devices for a single organization. Use filters to limit 
 
 ```java
 client.query().listDevicesOrg(
-    100,
+    123,
     ListDevicesOrgRequest
         .builder()
         .fromRecord(0)
@@ -18539,7 +9629,7 @@ client.query().listDevicesOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18564,7 +9654,6 @@ client.query().listDevicesOrg(
 <dd>
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
-
 
 Collection of field names, conditions, and values used to filter
 the query.
@@ -18727,7 +9816,7 @@ client.query().listNotificationReports(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -18991,7 +10080,7 @@ client.query().listNotifications(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -19269,7 +10358,7 @@ client.query().listOrganizations(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19325,7 +10414,7 @@ Collection of field names, conditions, and values used to filter the query.
 - `ownerName`  (ct, nct)
 - `contactName`  (ct, nct)
 - `orgParentname`  (ct, nct)
-- `boardingId` (eq, ne) 
+- `boardingId` (eq, ne)
 - `entryName`  (ct, nct)
 
 **List of comparison accepted - enclosed between parentheses:**
@@ -19416,7 +10505,7 @@ client.query().listPayout(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -19424,7 +10513,7 @@ client.query().listPayout(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19506,7 +10595,7 @@ List of field names accepted:
   - `customerVendorAccount` (ct, nct, eq, ne)
   - `batchId` (eq, ne)
   - `AchTraceNumber` (eq, ne)
-  - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`. 
+  - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`.
 
   List of comparison accepted - enclosed between parentheses:
   - eq or empty => equal
@@ -19606,7 +10695,7 @@ client.query().listPayoutOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19647,7 +10736,7 @@ Collection of field names, conditions, and values used to filter the query.
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
 List of field names accepted:
-  
+
   - `status` (in, nin, eq, ne)
   - `transactionDate` (gt, ge, lt, le, eq, ne)
   - `billNumber` (ct, nct)
@@ -19787,7 +10876,7 @@ client.query().listPaypoints(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19847,7 +10936,7 @@ Collection of field names, conditions, and values used to filter the query
 - `contactName`  (ct, nct)
 - `paypointId` (eq, ne)
 - `orgParentname`  (ct, nct, in, nin)
-- `boardingId` (eq, ne) 
+- `boardingId` (eq, ne)
 - `entryName`  (ct, nct)
 - `externalOrgID` (ct, nct)
 
@@ -19939,7 +11028,7 @@ client.query().listSettlements(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -19947,7 +11036,7 @@ client.query().listSettlements(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19973,8 +11062,7 @@ client.query().listSettlements(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -20126,7 +11214,7 @@ client.query().listSettlementsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20152,8 +11240,7 @@ client.query().listSettlementsOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -20297,7 +11384,7 @@ client.query().listSubscriptions(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -20305,7 +11392,7 @@ client.query().listSubscriptions(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20331,8 +11418,7 @@ client.query().listSubscriptions(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -20347,7 +11433,7 @@ Collection of field names, conditions, and values used to filter the query.
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
 See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
-      
+
 **List of field names accepted:**
 
 - `startDate` (gt, ge, lt, le, eq, ne)
@@ -20360,6 +11446,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `feeAmount` (gt, ge, lt, le, eq, ne)
 - `status` (in, nin, eq, ne)
 - `untilcancelled` (eq, ne)
+- `subscriptionType` (eq, ne, in, nin). Filters by subscription type. Accepts `Regular` or `BalanceDriven`. Case-insensitive. Example: `subscriptionType(in)=Regular|BalanceDriven`.
 - `payaccountLastfour` (nct, ct)
 - `payaccountType` (ne, eq, in, nin)
 - `payaccountCurrency` (ne, eq, in, nin)
@@ -20395,7 +11482,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `createdAt` (eq, ne, gt, ge, lt, le)
 - `updatedOn` (eq, ne, gt, ge, lt, le)
 - `invoiceNumber` (ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name  
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
 
 **List of comparison operators accepted:**
 - `eq` or empty => equal
@@ -20485,7 +11572,7 @@ client.query().listSubscriptionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20511,8 +11598,7 @@ client.query().listSubscriptionsOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -20527,7 +11613,7 @@ Collection of field names, conditions, and values used to filter the query.
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
 See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
-      
+
 **List of field names accepted:**
 
 - `startDate` (gt, ge, lt, le, eq, ne)
@@ -20540,6 +11626,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `feeAmount` (gt, ge, lt, le, eq, ne)
 - `status` (in, nin, eq, ne)
 - `untilcancelled` (eq, ne)
+- `subscriptionType` (eq, ne, in, nin). Filters by subscription type. Accepts `Regular` or `BalanceDriven`. Case-insensitive. Example: `subscriptionType(in)=Regular|BalanceDriven`.
 - `payaccountLastfour` (nct, ct)
 - `payaccountType` (ne, eq, in, nin)
 - `payaccountCurrency` (ne, eq, in, nin)
@@ -20575,7 +11662,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `createdAt` (eq, ne, gt, ge, lt, le)
 - `updatedOn` (eq, ne, gt, ge, lt, le)
 - `invoiceNumber` (ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name  
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
 
 **List of comparison operators accepted:**
 - `eq` or empty => equal
@@ -20657,7 +11744,7 @@ client.query().listPayoutSubscriptions(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -20665,7 +11752,7 @@ client.query().listPayoutSubscriptions(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20690,7 +11777,6 @@ client.query().listPayoutSubscriptions(
 <dd>
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
-
 
 Collection of field names, conditions, and values used to filter the query.
 <Info>
@@ -20832,7 +11918,7 @@ client.query().listPayoutSubscriptionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20857,7 +11943,6 @@ client.query().listPayoutSubscriptionsOrg(
 <dd>
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
-
 
 Collection of field names, conditions, and values used to filter the query.
 <Info>
@@ -20954,12 +12039,15 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 <dd>
 
 Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
-For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
-``` curl -X GET https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-  -H 'requestToken: <API TOKEN>'
 
-  ```
+By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
+
+These request parameters filter for transactions between April 1, 2024 and April 9, 2024.
+
+```bash
+curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59 \
+  -H 'requestToken: <API TOKEN>'
+```
 </dd>
 </dl>
 </dd>
@@ -20997,7 +12085,7 @@ client.query().listTransactions(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -21005,7 +12093,7 @@ client.query().listTransactions(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21031,8 +12119,7 @@ client.query().listTransactions(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -21147,20 +12234,16 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 <dl>
 <dd>
 
-
-Retrieve a list of transactions for an organization. Use filters to
-limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-
+Retrieve a list of transactions for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 
 By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 
-For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
+These request parameters filter for transactions between April 1, 2024 and April 9, 2024.
 
-```
-curl -X GET "https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59"\
+```bash
+curl -X GET "https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59" \
   -H 'requestToken: <API TOKEN>'
-
-  ```
+```
 </dd>
 </dl>
 </dd>
@@ -21206,7 +12289,7 @@ client.query().listTransactionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21232,8 +12315,7 @@ client.query().listTransactionsOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -21363,8 +12445,8 @@ Retrieve a list of transfer details records for a paypoint. Use filters to limit
 
 ```java
 client.query().listTransferDetails(
-    "47862acd",
-    123456,
+    "8cfec329267",
+    4521,
     ListTransfersPaypointRequest
         .builder()
         .build()
@@ -21383,7 +12465,7 @@ client.query().listTransferDetails(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -21399,7 +12481,7 @@ client.query().listTransferDetails(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21415,7 +12497,7 @@ client.query().listTransferDetails(
 <dl>
 <dd>
 
-**limitRecord:** `Optional<Integer>` 
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records. Defaults to 20.
     
 </dd>
 </dl>
@@ -21425,9 +12507,8 @@ client.query().listTransferDetails(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
 Collection of field names, conditions, and values used to filter
-the query. 
+the query.
 
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
@@ -21510,7 +12591,7 @@ Retrieve a list of transfers for a paypoint. Use filters to limit results. Inclu
 
 ```java
 client.query().listTransfers(
-    "47862acd",
+    "8cfec329267",
     ListTransfersRequest
         .builder()
         .fromRecord(0)
@@ -21531,7 +12612,7 @@ client.query().listTransfers(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -21539,7 +12620,7 @@ client.query().listTransfers(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21668,7 +12749,7 @@ client.query().listTransfersOrg(
 <dl>
 <dd>
 
-**orgId:** `Long` 
+**orgId:** `Long` — Organization ID. Unique identifier assigned to an org by Payabli.
     
 </dd>
 </dl>
@@ -21676,7 +12757,7 @@ client.query().listTransfersOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21781,7 +12862,7 @@ Retrieve a list of outbound transfers for an organization. Use filters to limit 
 
 ```java
 client.query().listTransfersOutOrg(
-    77,
+    123,
     ListTransfersOutOrgRequest
         .builder()
         .fromRecord(0)
@@ -21903,7 +12984,7 @@ Retrieve a list of outbound transfers for a paypoint. Use filters to limit resul
 
 ```java
 client.query().listTransfersOutPaypoint(
-    "47cade237",
+    "8cfec329267",
     ListTransfersOutPaypointRequest
         .builder()
         .fromRecord(0)
@@ -21924,7 +13005,7 @@ client.query().listTransfersOutPaypoint(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -22025,7 +13106,7 @@ Retrieve details for a specific outbound transfer. Use filters to limit results.
 
 ```java
 client.query().listTransferDetailsOut(
-    "47ace2b25",
+    "8cfec329267",
     4521,
     ListTransferDetailsOutRequest
         .builder()
@@ -22047,7 +13128,7 @@ client.query().listTransferDetailsOut(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -22459,7 +13540,7 @@ client.query().listVendors(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22617,7 +13698,7 @@ client.query().listVendorsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22767,7 +13848,7 @@ client.query().listVcards(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -22775,7 +13856,7 @@ client.query().listVcards(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22801,7 +13882,7 @@ client.query().listVcards(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -22815,7 +13896,7 @@ Collection of field names, conditions, and values used to filter the query.
 
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
-List of field names accepted:  
+List of field names accepted:
 
   - `status` (eq, ne, ct, nct, sw, ew)
   - `createdAt` (gt, ge, lt, le, eq, ne)
@@ -22836,7 +13917,7 @@ List of field names accepted:
   - `paypointId` (eq, ne, gt, ge, lt, le)
   - `cardType` (eq, ne, gt, ge, lt, le)
 
-List of comparison accepted - enclosed between parentheses:  
+List of comparison accepted - enclosed between parentheses:
 
   - eq or empty => equal
   - gt => greater than
@@ -22919,7 +14000,7 @@ client.query().listVcardsTransactions(
 <dl>
 <dd>
 
-**entry:** `String` 
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -23223,7 +14304,7 @@ client.query().listVcardsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `Optional<ExportFormat>` 
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -23249,7 +14330,7 @@ client.query().listVcardsOrg(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -23263,7 +14344,7 @@ Collection of field names, conditions, and values used to filter the query.
 
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
-List of field names accepted:  
+List of field names accepted:
 
   - `status` (eq, ne, ct, nct, sw, ew)
   - `createdAt` (gt, ge, lt, le, eq, ne)
@@ -23284,7 +14365,7 @@ List of field names accepted:
   - `paypointId` (eq, ne, gt, ge, lt, le)
   - `cardType` (eq, ne, gt, ge, lt, le)
 
-List of comparison accepted - enclosed between parentheses:  
+List of comparison accepted - enclosed between parentheses:
 
   - eq or empty => equal
   - gt => greater than
@@ -23317,8 +14398,8 @@ List of comparison accepted - enclosed between parentheses:
 </dl>
 </details>
 
-## Statistic
-<details><summary><code>client.statistic.basicStats(mode, freq, level, entryId) -> List&amp;lt;StatBasicExtendedQueryRecord&amp;gt;</code></summary>
+## Ocr
+<details><summary><code>client.ocr.ocrDocumentForm(typeResult, request) -> PayabliApiResponseOcr</code></summary>
 <dl>
 <dd>
 
@@ -23330,7 +14411,7 @@ List of comparison accepted - enclosed between parentheses:
 <dl>
 <dd>
 
-Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency. 
+Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
 </dd>
 </dl>
 </dd>
@@ -23345,166 +14426,9 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 <dd>
 
 ```java
-client.statistic().basicStats(
-    "custom",
-    "m",
-    2,
-    1000000L,
-    BasicStatsRequest
-        .builder()
-        .startDate("2025-11-01")
-        .endDate("2025-11-30")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mode:** `String` 
-
-Mode for the request. Allowed values:
-
-- `custom` - Allows you to set a custom date range
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
-  
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**freq:** `String` 
-
-Frequency to group series. Allowed values:
-
-- `m` - monthly
-- `w` - weekly
-- `d` - daily
-- `h` - hourly
-
-For example, `w` groups the results by week.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**level:** `Integer` 
-
-The entry level for the request: 
-  - 0 for Organization
-  - 2 for Paypoint
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entryId:** `Long` — Identifier in Payabli for the entity.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**endDate:** `Optional<String>` 
-
-Used with `custom` mode. The end date for the range. 
-Valid formats:
-  - YYYY-mm-dd
-  - YYYY/mm/dd
-  - mm-dd-YYYY
-  - mm/dd/YYYY
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**startDate:** `Optional<String>` 
-
-Used with `custom` mode. The start date for the range. 
-Valid formats:
-   - YYYY-mm-dd
-   - YYYY/mm/dd
-   -  mm-dd-YYYY
-   - mm/dd/YYYY
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&amp;lt;SubscriptionStatsQueryRecord&amp;gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.statistic().customerBasicStats(
-    "ytd",
-    "m",
-    998,
-    CustomerBasicStatsRequest
+client.ocr().ocrDocumentForm(
+    "typeResult",
+    FileContentImageOnly
         .builder()
         .build()
 );
@@ -23522,21 +14446,7 @@ client.statistic().customerBasicStats(
 <dl>
 <dd>
 
-**mode:** `String` 
-
-Mode for request. Allowed values:
-
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
+**typeResult:** `String` — The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
     
 </dd>
 </dl>
@@ -23544,32 +14454,7 @@ Mode for request. Allowed values:
 <dl>
 <dd>
 
-**freq:** `String` 
-
-Frequency to group series. Allowed values:
-
-- `m` - monthly
-- `w` - weekly
-- `d` - daily
-- `h` - hourly
-
-For example, `w` groups the results by week.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
+**request:** `FileContentImageOnly` 
     
 </dd>
 </dl>
@@ -23581,7 +14466,7 @@ For example, `w` groups the results by week.
 </dl>
 </details>
 
-<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&amp;lt;StatBasicQueryRecord&amp;gt;</code></summary>
+<details><summary><code>client.ocr.ocrDocumentJson(typeResult, request) -> PayabliApiResponseOcr</code></summary>
 <dl>
 <dd>
 
@@ -23593,7 +14478,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-Retrieves the subscription statistics for a given interval for a paypoint or organization.
+Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
 </dd>
 </dl>
 </dd>
@@ -23608,11 +14493,9 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 <dd>
 
 ```java
-client.statistic().subStats(
-    "30",
-    2,
-    1000000L,
-    SubStatsRequest
+client.ocr().ocrDocumentJson(
+    "typeResult",
+    FileContentImageOnly
         .builder()
         .build()
 );
@@ -23630,15 +14513,7 @@ client.statistic().subStats(
 <dl>
 <dd>
 
-**interval:** `String` 
-
-Interval to get the data. Allowed values:
-
-- `all` - all intervals
-- `30` - 1-30 days
-- `60` - 31-60 days
-- `90` - 61-90 days
-- `plus` - +90 days
+**typeResult:** `String` — The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
     
 </dd>
 </dl>
@@ -23646,27 +14521,7 @@ Interval to get the data. Allowed values:
 <dl>
 <dd>
 
-**level:** `Integer` 
-
-The entry level for the request: 
-  - 0 for Organization
-  - 2 for Paypoint
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entryId:** `Long` — Identifier in Payabli for the entity.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
+**request:** `FileContentImageOnly` 
     
 </dd>
 </dl>
@@ -23678,7 +14533,8 @@ The entry level for the request:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.vendorBasicStats(mode, freq, idVendor) -> List&amp;lt;StatisticsVendorQueryRecord&amp;gt;</code></summary>
+## Notificationlogs
+<details><summary><code>client.notificationlogs.searchNotificationLogs(request) -> List&amp;lt;NotificationLog&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -23690,7 +14546,11 @@ The entry level for the request:
 <dl>
 <dd>
 
-Retrieve the basic statistics about a vendor for a given time period, grouped by frequency. 
+Search notification logs with filtering and pagination.
+  - Start date and end date cannot be more than 30 days apart
+  - Either `orgId` or `paypointId` must be provided
+
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
 </dd>
 </dl>
 </dd>
@@ -23705,11 +14565,517 @@ Retrieve the basic statistics about a vendor for a given time period, grouped by
 <dd>
 
 ```java
-client.statistic().vendorBasicStats(
-    "ytd",
-    "m",
-    1,
-    VendorBasicStatsRequest
+client.notificationlogs().searchNotificationLogs(
+    SearchNotificationLogsRequest
+        .builder()
+        .startDate(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
+        .endDate(OffsetDateTime.parse("2024-01-31T23:59:59Z"))
+        .pageSize(20)
+        .notificationEvent("ActivatedMerchant")
+        .succeeded(true)
+        .orgId(123L)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**pageSize:** `Optional<Integer>` — Number of records on each response page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `Optional<Integer>` — The page number to retrieve. Defaults to 1 if not provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startDate:** `OffsetDateTime` — The start date for the search.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**endDate:** `OffsetDateTime` — The end date for the search.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notificationEvent:** `Optional<String>` — The type of notification event to filter by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**succeeded:** `Optional<Boolean>` — Indicates whether the notification was successful.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Optional<Long>` — The ID of the organization to filter by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paypointId:** `Optional<Long>` — The ID of the paypoint to filter by.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notificationlogs.getNotificationLog(uuid) -> NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get detailed information for a specific notification log entry.
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().getNotificationLog("550e8400-e29b-41d4-a716-446655440000");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The notification log entry.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notificationlogs.retryNotificationLog(uuid) -> NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending a specific notification.
+
+**Permissions:** notifications_create
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().retryNotificationLog("550e8400-e29b-41d4-a716-446655440000");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — Unique id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notificationlogs.bulkRetryNotificationLogs(request)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending multiple notifications (maximum 50 IDs).
+This is an async process, so use the search endpoint again to check the notification status.
+
+This endpoint requires the `notifications_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notificationlogs().bulkRetryNotificationLogs(
+    Arrays.asList("550e8400-e29b-41d4-a716-446655440000", "550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002")
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `List<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Cloud
+<details><summary><code>client.cloud.addDevice(entry, request) -> AddDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/developer-guides/devices-quickstart#devices-quickstart) for a complete guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.cloud().addDevice(
+    "8cfec329267",
+    DeviceEntry
+        .builder()
+        .description("Front Desk POS")
+        .registrationCode("YS7DS5")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `Optional<String>` — Description or name for the device. This can be anything, but Payabli recommends entering the name of the paypoint, or some other easy to identify descriptor. If you have several devices for one paypoint, you can give them descriptions like "Cashier 1" and "Cashier 2", or "Front Desk" and "Back Office"
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registrationCode:** `Optional<String>` 
+
+The device registration code or serial number, depending on the model.
+
+- Ingenico devices: This is the activation code that's displayed on the device screen during setup.
+
+- PAX A920 device: This code is the serial number on the back of the device.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cloud.removeDevice(entry, deviceId) -> RemoveDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Remove a cloud device from an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.cloud().removeDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceId:** `String` — ID of the cloud device.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cloud.historyDevice(entry, deviceId) -> CloudQueryApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the registration history for a device.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.cloud().historyDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceId:** `String` — ID of the cloud device.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cloud.listDevice(entry) -> CloudQueryApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+
+Get a list of cloud devices registered to an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.cloud().listDevice(
+    "8cfec329267",
+    ListDeviceRequest
         .builder()
         .build()
 );
@@ -23727,21 +15093,7 @@ client.statistic().vendorBasicStats(
 <dl>
 <dd>
 
-**mode:** `String` 
-
-Mode for request. Allowed values:
-
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -23749,32 +15101,7 @@ Mode for request. Allowed values:
 <dl>
 <dd>
 
-**freq:** `String` 
-
-Frequency to group series. Allowed values:
-
-- `m` - monthly
-- `w` - weekly
-- `d` - daily
-- `h` - hourly
-
-For example, `w` groups the results by week.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idVendor:** `Integer` — Vendor ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
+**forceRefresh:** `Optional<Boolean>` — When `true`, the request retrieves an updated list of devices from the processor instead of returning a cached list of devices.
     
 </dd>
 </dl>
@@ -23786,8 +15113,8 @@ For example, `w` groups the results by week.
 </dl>
 </details>
 
-## Subscription
-<details><summary><code>client.subscription.getSubscription(subId) -> SubscriptionQueryRecords</code></summary>
+## LineItem
+<details><summary><code>client.lineItem.addItem(entry, request) -> PayabliApiResponse6</code></summary>
 <dl>
 <dd>
 
@@ -23799,7 +15126,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-Retrieves a single subscription's details.
+Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, "responseData" displays the item's code.
 </dd>
 </dl>
 </dd>
@@ -23814,102 +15141,21 @@ Retrieves a single subscription's details.
 <dd>
 
 ```java
-client.subscription().getSubscription(263);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**subId:** `Integer` — The subscription ID. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.subscription.newSubscription(request) -> AddSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a subscription or scheduled payment to run at a specified time and frequency. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.subscription().newSubscription(
-    RequestSchedule
+client.lineItem().addItem(
+    "8cfec329267",
+    AddItemRequest
         .builder()
         .body(
-            SubscriptionRequestBody
+            LineItem
                 .builder()
-                .customerData(
-                    PayorDataRequest
-                        .builder()
-                        .customerId(4440L)
-                        .build()
-                )
-                .entryPoint("f743aed24a")
-                .paymentDetails(
-                    PaymentDetail
-                        .builder()
-                        .totalAmount(100.0)
-                        .serviceFee(0.0)
-                        .build()
-                )
-                .paymentMethod(
-                    RequestSchedulePaymentMethod.of(
-                        PayMethodCredit
-                            .builder()
-                            .cardexp("02/25")
-                            .cardnumber("4111111111111111")
-                            .cardcvv(Optional.of("123"))
-                            .cardHolder(Optional.of("John Cassian"))
-                            .cardzip(Optional.of("37615"))
-                            .initiator(Optional.of("payor"))
-                            .build()
-                    )
-                )
-                .scheduleDetails(
-                    ScheduleDetail
-                        .builder()
-                        .endDate("03-20-2025")
-                        .frequency(Frequency.WEEKLY)
-                        .planId(1)
-                        .startDate("09-20-2024")
-                        .build()
-                )
+                .itemCost(12.45)
+                .itemQty(1)
+                .itemCommodityCode("010")
+                .itemDescription("Deposit for materials")
+                .itemMode(0)
+                .itemProductCode("M-DEPOSIT")
+                .itemProductName("Materials deposit")
+                .itemUnitOfMeasure("SqFt")
                 .build()
         )
         .build()
@@ -23928,7 +15174,7 @@ client.subscription().newSubscription(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `Optional<Boolean>` 
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -23936,7 +15182,7 @@ client.subscription().newSubscription(
 <dl>
 <dd>
 
-**idempotencyKey:** `Optional<String>` 
+**idempotencyKey:** `Optional<String>` — A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
     
 </dd>
 </dl>
@@ -23944,7 +15190,7 @@ client.subscription().newSubscription(
 <dl>
 <dd>
 
-**request:** `SubscriptionRequestBody` 
+**request:** `LineItem` 
     
 </dd>
 </dl>
@@ -23956,7 +15202,7 @@ client.subscription().newSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.subscription.removeSubscription(subId) -> RemoveSubscriptionResponse</code></summary>
+<details><summary><code>client.lineItem.getItem(lineItemId) -> LineItemQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -23968,7 +15214,7 @@ client.subscription().newSubscription(
 <dl>
 <dd>
 
-Deletes a subscription, autopay, or recurring payment and prevents future charges.
+Gets an item by ID.
 </dd>
 </dl>
 </dd>
@@ -23983,7 +15229,7 @@ Deletes a subscription, autopay, or recurring payment and prevents future charge
 <dd>
 
 ```java
-client.subscription().removeSubscription(396);
+client.lineItem().getItem(700);
 ```
 </dd>
 </dl>
@@ -23998,7 +15244,7 @@ client.subscription().removeSubscription(396);
 <dl>
 <dd>
 
-**subId:** `Integer` — The subscription ID. 
+**lineItemId:** `Integer` — ID for the line item (also known as a product, service, or item).
     
 </dd>
 </dl>
@@ -24010,7 +15256,7 @@ client.subscription().removeSubscription(396);
 </dl>
 </details>
 
-<details><summary><code>client.subscription.updateSubscription(subId, request) -> UpdateSubscriptionResponse</code></summary>
+<details><summary><code>client.lineItem.updateItem(lineItemId, request) -> PayabliApiResponse6</code></summary>
 <dl>
 <dd>
 
@@ -24022,7 +15268,7 @@ client.subscription().removeSubscription(396);
 <dl>
 <dd>
 
-Updates a subscription's details.
+Updates an item.
 </dd>
 </dl>
 </dd>
@@ -24037,11 +15283,12 @@ Updates a subscription's details.
 <dd>
 
 ```java
-client.subscription().updateSubscription(
-    231,
-    RequestUpdateSchedule
+client.lineItem().updateItem(
+    700,
+    LineItem
         .builder()
-        .setPause(true)
+        .itemCost(12.45)
+        .itemQty(1)
         .build()
 );
 ```
@@ -24058,7 +15305,7 @@ client.subscription().updateSubscription(
 <dl>
 <dd>
 
-**subId:** `Integer` — The subscription ID. 
+**lineItemId:** `Integer` — ID for the line item (also known as a product, service, or item).
     
 </dd>
 </dl>
@@ -24066,7 +15313,123 @@ client.subscription().updateSubscription(
 <dl>
 <dd>
 
-**paymentDetails:** `Optional<PaymentDetail>` — Object describing details of the payment. To skip the payment, set the `totalAmount` to 0. Payments will be paused until the amount is updated to a non-zero value. When `totalAmount` is set to 0, the `serviceFee` must also be set to 0.
+**request:** `LineItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.lineItem.deleteItem(lineItemId) -> DeleteItemResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes an item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.lineItem().deleteItem(700);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lineItemId:** `Integer` — ID for the line item (also known as a product, service, or item).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.lineItem.listLineItems(entry) -> QueryResponseItems</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.lineItem().listLineItems(
+    "8cfec329267",
+    ListLineItemsRequest
+        .builder()
+        .fromRecord(251)
+        .limitRecord(0)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -24074,7 +15437,7 @@ client.subscription().updateSubscription(
 <dl>
 <dd>
 
-**scheduleDetails:** `Optional<ScheduleDetail>` — Object describing the schedule for subscription
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
     
 </dd>
 </dl>
@@ -24082,7 +15445,1204 @@ client.subscription().updateSubscription(
 <dl>
 <dd>
 
-**setPause:** `Optional<Boolean>` 
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+  - `categories` (ct, nct)
+  - `code` (ne, eq, ct, nct)
+  - `commodityCode` (ne, eq, ct, nct)
+  - `createdDate` (gt, ge, lt, le, eq, ne)
+  - `description` (ne, eq, ct, nct)
+  - `externalPaypointID` (ct, nct, ne, eq)
+  - `mode` (eq, ne)
+  - `name` (ne, eq, ct, nct)
+  - `orgName` (ne, eq, ct, nct)
+  - `paypointDba` (ne, eq, ct, nct)
+  - `paypointId` (ne, eq)
+  - `paypointLegal` (ne, eq, ct, nct)
+  - `quantity` (gt, ge, lt, le, eq, ne)
+  - `uom` (ne, eq, ct, nct)
+  - `updatedDate` (gt, ge, lt, le, eq, ne)
+  - `value` (gt, ge, lt, le, eq, ne)
+
+List of comparison accepted - enclosed between parentheses:
+
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: name(ct)=john return all records with name containing john
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Boarding
+<details><summary><code>client.boarding.addApplication(request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a boarding application in an organization. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().addApplication(
+    AddApplicationRequest.of(
+        ApplicationDataPayIn
+            .builder()
+            .services(
+                ApplicationDataPayInServices
+                    .builder()
+                    .ach(
+                        AchSetup
+                            .builder()
+                            .build()
+                    )
+                    .card(
+                        CardSetup
+                            .builder()
+                            .acceptAmex(Optional.of(true))
+                            .acceptDiscover(Optional.of(true))
+                            .acceptMastercard(Optional.of(true))
+                            .acceptVisa(Optional.of(true))
+                            .build()
+                    )
+                    .build()
+            )
+            .phonenumber("1234567890")
+            .processingRegion("US")
+            .signer(
+                SignerDataRequest
+                    .builder()
+                    .name(Optional.of("John Smith"))
+                    .ssn(Optional.of("123456789"))
+                    .dob(Optional.of("01/01/1976"))
+                    .phone(Optional.of("555888111"))
+                    .email(Optional.of("test@email.com"))
+                    .address(Optional.of("33 North St"))
+                    .address1(Optional.of("STE 900"))
+                    .city(Optional.of("Bristol"))
+                    .country(Optional.of("US"))
+                    .state(Optional.of("TN"))
+                    .zip(Optional.of("55555"))
+                    .signedDocumentReference(Optional.of("https://example.com/signed-document.pdf"))
+                    .pciAttestation(Optional.of(true))
+                    .attestationDate(Optional.of("04/20/2025"))
+                    .additionalData(
+                        Optional.of(
+                            new HashMap<String, String>() {{
+                                put("deviceId", "499585-389fj484-3jcj8hj3");
+                                put("session", "fifji4-fiu443-fn4843");
+                                put("timeWithCompany", "6 Years");
+                            }}
+                        )
+                    )
+                    .signDate(Optional.of("04/20/2025"))
+                    .build()
+            )
+            .whenCharged(Whencharged.WHEN_SERVICE_PROVIDED)
+            .whenDelivered(Whendelivered.OVER_30_DAYS)
+            .whenProvided(Whenprovided.THIRTY_DAYS_OR_LESS)
+            .whenRefunded(Whenrefunded.THIRTY_DAYS_OR_LESS)
+            .annualRevenue(Optional.of(1000.0))
+            .averageBillSize(Optional.of("500"))
+            .averageMonthlyBill(Optional.of("5650"))
+            .avgmonthly(Optional.of(1000.0))
+            .baddress(Optional.of("123 Walnut Street"))
+            .baddress1(Optional.of("Suite 103"))
+            .bankData(
+                Arrays.asList(
+                    Bank
+                        .builder()
+                        .accountId("123-456")
+                        .nickname("Withdrawal Account")
+                        .bankName("Test Bank 1")
+                        .routingAccount("123123123")
+                        .accountNumber("123123100")
+                        .typeAccount(TypeAccount.CHECKING)
+                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                        .bankAccountFunction(1)
+                        .build(),
+                    Bank
+                        .builder()
+                        .accountId("123-789")
+                        .nickname("Deposit Account")
+                        .bankName("Test Bank 2")
+                        .routingAccount("321321321")
+                        .accountNumber("123123200")
+                        .typeAccount(TypeAccount.CHECKING)
+                        .bankAccountHolderName("Gruzya Adventure Outfitters LLC")
+                        .bankAccountHolderType(BankAccountHolderType.BUSINESS)
+                        .bankAccountFunction(0)
+                        .build()
+                )
+            )
+            .bcity(Optional.of("New Vegas"))
+            .bcountry(Optional.of("US"))
+            .binperson(Optional.of(60))
+            .binphone(Optional.of(20))
+            .binweb(Optional.of(20))
+            .bstate(Optional.of("FL"))
+            .bsummary(Optional.of("Brick and mortar store that sells office supplies"))
+            .btype(Optional.of(OwnType.LIMITED_LIABILITY_COMPANY))
+            .bzip(Optional.of("33000"))
+            .contacts(
+                Optional.of(
+                    Arrays.asList(
+                        Contacts
+                            .builder()
+                            .contactEmail("herman@hermanscoatings.com")
+                            .contactName("Herman Martinez")
+                            .contactPhone("3055550000")
+                            .contactTitle("Owner")
+                            .build()
+                    )
+                )
+            )
+            .creditLimit(Optional.of("creditLimit"))
+            .dbaName(Optional.of("Sunshine Gutters"))
+            .ein(Optional.of("123456789"))
+            .faxnumber(Optional.of("1234567890"))
+            .highticketamt(Optional.of(1000.0))
+            .legalName(Optional.of("Sunshine Services, LLC"))
+            .license(Optional.of("2222222FFG"))
+            .licstate(Optional.of("CA"))
+            .maddress(Optional.of("123 Walnut Street"))
+            .maddress1(Optional.of("STE 900"))
+            .mcc(Optional.of("7777"))
+            .mcity(Optional.of("Johnson City"))
+            .mcountry(Optional.of("US"))
+            .mstate(Optional.of("TN"))
+            .mzip(Optional.of("37615"))
+            .orgId(Optional.of(123L))
+            .ownership(
+                Optional.of(
+                    Arrays.asList(
+                        Owners
+                            .builder()
+                            .ownername("John Smith")
+                            .ownertitle("CEO")
+                            .ownerpercent(100)
+                            .ownerssn("123456789")
+                            .ownerdob("01/01/1990")
+                            .ownerphone1("555888111")
+                            .ownerphone2("555888111")
+                            .owneremail("test@email.com")
+                            .ownerdriver("CA6677778")
+                            .oaddress("33 North St")
+                            .ocity("Any City")
+                            .ocountry("US")
+                            .odriverstate("CA")
+                            .ostate("CA")
+                            .ozip("55555")
+                            .build()
+                    )
+                )
+            )
+            .recipientEmail(Optional.of("josephray@example.com"))
+            .recipientEmailNotification(Optional.of(true))
+            .resumable(Optional.of(true))
+            .startdate(Optional.of("01/01/1990"))
+            .taxFillName(Optional.of("Sunshine LLC"))
+            .templateId(Optional.of(22L))
+            .ticketamt(Optional.of(1000.0))
+            .website(Optional.of("www.example.com"))
+            .build()
+    )
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `AddApplicationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.updateApplication(appId, request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a boarding application by ID. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().updateApplication(
+    352,
+    ApplicationData
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `Integer` — Boarding application ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ApplicationData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.deleteApplication(appId) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a boarding application by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().deleteApplication(352);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `Integer` — Boarding application ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getApplication(appId) -> ApplicationDetailsRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the details for a boarding application by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getApplication(352);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `Integer` — Boarding application ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getApplicationByAuth(xId, request) -> ApplicationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a boarding application by authentication information. This endpoint requires an `application` API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getApplicationByAuth(
+    "17E",
+    RequestAppByAuth
+        .builder()
+        .email("admin@email.com")
+        .referenceId("129-219")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**xId:** `String` — The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `Optional<String>` — The email address the applicant used to save the application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**referenceId:** `Optional<String>` — The referenceId is sent to the applicant via email when they save the application.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getByIdLinkApplication(boardingLinkId) -> BoardingLinkQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves details for a boarding link, by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getByIdLinkApplication(91);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**boardingLinkId:** `Integer` — The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getByTemplateIdLinkApplication(templateId) -> BoardingLinkQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getByTemplateIdLinkApplication(80.0);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateId:** `Double` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getExternalApplication(appId, mail2) -> PayabliApiResponse00</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getExternalApplication(
+    352,
+    "mail2",
+    GetExternalApplicationRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `Integer` — Boarding application ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `String` — Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sendEmail:** `Optional<Boolean>` — If `true`, sends an email that includes the link to the application to the `mail2` address. Defaults to `false`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getLinkApplication(boardingLinkReference) -> BoardingLinkQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getLinkApplication("myorgaccountname-00091");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**boardingLinkReference:** `String` — The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.listApplications(orgId) -> QueryBoardingAppsListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().listApplications(
+    123,
+    ListApplicationsRequest
+        .builder()
+        .fromRecord(251)
+        .limitRecord(0)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `Optional<ExportFormat>` — Export format for file downloads. When specified, returns data as a file instead of JSON.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `dbaname` (ct, nct)
+- `legalname` (ct, nct)
+- `ein` (ct, nct)
+- `address` (ct, nct)
+- `city` (ct, nct)
+- `state` (ct, nct)
+- `phone` (ct, nct)
+- `mcc` (ct, nct)
+- `owntype` (ct, nct)
+- `ownerName` (ct, nct)
+- `contactName` (ct, nct)
+- `status` (in, nin, eq,ne)
+- `orgParentname` (ct, nct)
+- `externalpaypointID` (ct, nct, eq, ne)
+- `repCode` (ct, nct, eq, ne)
+- `repName` (ct, nct, eq, ne)
+- `repOffice` (ct, nct, eq, ne)
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.listBoardingLinks(orgId) -> QueryBoardingLinksResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return a list of boarding links for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().listBoardingLinks(
+    123,
+    ListBoardingLinksRequest
+        .builder()
+        .fromRecord(251)
+        .limitRecord(0)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `lastUpdated` (gt, ge, lt, le, eq, ne)
+- `templateName` (ct, nct)
+- `referenceName` (ct, nct)
+- `acceptRegister` (eq, ne)
+- `acceptAuth` (eq, ne)
+- `templateCode` (ct, nct)
+- `templateId` (eq, ne)
+- `orgParentname` (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: templateName(ct)=hoa return all records with template title containing "hoa"
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.addServiceToPaypointFromApp(request) -> CreateApplicationFromPaypointResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().addServiceToPaypointFromApp(
+    CreateApplicationFromPaypointRequest
+        .builder()
+        .paypointId(3040L)
+        .templateId(456L)
+        .recipientEmail("merchant@example.com")
+        .returnBoardingAccessInfoInLine(true)
+        .onCreate(
+            Optional.of(
+                Arrays.asList("submitApplication")
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `Long` — ID of the existing paypoint to link to this application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**templateId:** `Long` — ID of the boarding template to use for the new application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recipientEmail:** `String` — Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use `returnBoardingAccessInfoInLine` to retrieve the link from the response instead.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnBoardingAccessInfoInLine:** `Optional<Boolean>` — When `true`, returns the boarding access information directly in the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**onCreate:** `Optional<List<String>>` — Additional actions to trigger when the application is created. Currently only `submitApplication` is supported, which automatically submits the application on creation and skips the draft state.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boarding.getApplicationsByPaypointId(paypointId) -> QueryBoardingAppsListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boarding().getApplicationsByPaypointId(3040L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `Long` — ID of the paypoint to retrieve applications for.
     
 </dd>
 </dl>
@@ -24107,7 +16667,7 @@ client.subscription().updateSubscription(
 <dl>
 <dd>
 
-Deletes a template by ID. 
+Deletes a template by ID.
 </dd>
 </dl>
 </dd>
@@ -24341,7 +16901,6 @@ client.templates().listTemplates(
 
 **parameters:** `Optional<Map<String, Optional<String>>>` 
 
-
 Collection of field names, conditions, and values used to filter the query.
 
 <Info>
@@ -24404,8 +16963,8 @@ Example: title(ct)=hoa return all records with title containing "hoa"
 </dl>
 </details>
 
-## TokenStorage
-<details><summary><code>client.tokenStorage.addMethod(request) -> AddMethodResponse</code></summary>
+## Export
+<details><summary><code>client.export.exportApplications(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -24417,7 +16976,11 @@ Example: title(ct)=hoa return all records with title containing "hoa"
 <dl>
 <dd>
 
-Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The `ReferenceId` value in the response is the `storedMethodId` to use with transactions.
+<Warning>
+  This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of boarding applications for an organization. Use filters to limit results.
 </dd>
 </dl>
 </dd>
@@ -24432,304 +16995,4912 @@ Saves a payment method for reuse. This call exchanges sensitive payment informat
 <dd>
 
 ```java
-client.tokenStorage().addMethod(
-    AddMethodRequest
+client.export().exportApplications(
+    ExportFormat1.CSV,
+    123,
+    ExportApplicationsRequest
         .builder()
-        .body(
-            RequestTokenStorage
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `dbaname`  (ct, nct)
+- `legalname`  (ct, nct)
+- `ein`  (ct, nct)
+- `address`  (ct, nct)
+- `city`  (ct, nct)
+- `state`  (ct, nct)
+- `phone`  (ct, nct)
+- `mcc`  (ct, nct)
+- `owntype`  (ct, nct)
+- `ownerName`  (ct, nct)
+- `contactName`  (ct, nct)
+- `status`  (eq, ne)
+- `orgParentname`  (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
+- `fromRecord` : initial record in query
+
+Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBatchDetails(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batch details](/developers/api-reference/query/get-list-of-batchdetails-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export batch details for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBatchDetails(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportBatchDetailsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+
+  - `settlementDate` (gt, ge, lt, le, eq, ne)
+  - `depositDate` (gt, ge, lt, le, eq, ne)
+  - `transId`  (ne, eq, ct, nct)
+  - `gatewayTransId`  (ne, eq, ct, nct)
+  - `method`   (in, nin, eq, ne)
+  - `settledAmount`  (gt, ge, lt, le, eq, ne)
+  - `operation`    (in, nin, eq, ne)
+  - `source`   (in, nin, eq, ne)
+  - `batchNumber`  (ct, nct, eq, ne)
+  - `payaccountLastfour`   (nct, ct)
+  - `payaccountType`   (ne, eq, in, nin)
+  - `customerFirstname`   (ct, nct, eq, ne)
+  - `customerLastname`    (ct, nct, eq, ne)
+  - `customerName`   (ct, nct)
+  - `customerId`  (eq, ne)
+  - `customerNumber`  (ct, nct, eq, ne)
+  - `customerCompanyname`    (ct, nct, eq, ne)
+  - `customerAddress` (ct, nct, eq, ne)
+  - `customerCity`    (ct, nct, eq, ne)
+  - `customerZip` (ct, nct, eq, ne)
+  - `customerState` (ct, nct, eq, ne)
+  - `customerCountry` (ct, nct, eq, ne)
+  - `customerPhone` (ct, nct, eq, ne)
+  - `customerEmail` (ct, nct, eq, ne)
+  - `customerShippingAddress` (ct, nct, eq, ne)
+  - `customerShippingCity`    (ct, nct, eq, ne)
+  - `customerShippingZip` (ct, nct, eq, ne)
+  - `customerShippingState` (ct, nct, eq, ne)
+  - `customerShippingCountry` (ct, nct, eq, ne)
+  - `orgId`  (eq) *mandatory when entry=org*
+  - `isHold` (eq, ne)
+  - `paypointId`  (ne, eq)
+  - `paypointLegal`  (ne, eq, ct, nct)
+  - `paypointDba`  (ne, eq, ct, nct)
+  - `orgName`  (ne, eq, ct, nct)
+  - `batchId` (ct, nct, eq, neq)
+  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `amount(gt)=20` return all records with amount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBatchDetailsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batch details for org](/developers/api-reference/query/get-list-of-batchdetails-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export batch details for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBatchDetailsOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportBatchDetailsOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+
+  - `settlementDate` (gt, ge, lt, le, eq, ne)
+  - `depositDate` (gt, ge, lt, le, eq, ne)
+  - `transId`  (ne, eq, ct, nct)
+  - `gatewayTransId`  (ne, eq, ct, nct)
+  - `method`   (in, nin, eq, ne)
+  - `settledAmount`  (gt, ge, lt, le, eq, ne)
+  - `operation`    (in, nin, eq, ne)
+  - `source`   (in, nin, eq, ne)
+  - `batchNumber`  (ct, nct, eq, ne)
+  - `payaccountLastfour`   (nct, ct)
+  - `payaccountType`   (ne, eq, in, nin)
+  - `customerFirstname`   (ct, nct, eq, ne)
+  - `customerLastname`    (ct, nct, eq, ne)
+  - `customerName`   (ct, nct)
+  - `customerId`  (eq, ne)
+  - `customerNumber`  (ct, nct, eq, ne)
+  - `customerCompanyname`    (ct, nct, eq, ne)
+  - `customerAddress` (ct, nct, eq, ne)
+  - `customerCity`    (ct, nct, eq, ne)
+  - `customerZip` (ct, nct, eq, ne)
+  - `customerState` (ct, nct, eq, ne)
+  - `customerCountry` (ct, nct, eq, ne)
+  - `customerPhone` (ct, nct, eq, ne)
+  - `customerEmail` (ct, nct, eq, ne)
+  - `customerShippingAddress` (ct, nct, eq, ne)
+  - `customerShippingCity`    (ct, nct, eq, ne)
+  - `customerShippingZip` (ct, nct, eq, ne)
+  - `customerShippingState` (ct, nct, eq, ne)
+  - `customerShippingCountry` (ct, nct, eq, ne)
+  - `orgId`  (eq) *mandatory when entry=org*
+  - `isHold` (eq, ne)
+  - `paypointId`  (ne, eq)
+  - `paypointLegal`  (ne, eq, ct, nct)
+  - `paypointDba`  (ne, eq, ct, nct)
+  - `orgName`  (ne, eq, ct, nct)
+  - `batchId` (ct, nct, eq, neq)
+  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `amount(gt)=20` return all records with amount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBatches(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batches for paypoint](/developers/api-reference/query/get-list-of-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of batches for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBatches(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportBatchesRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `batchDate` (gt, ge, lt, le, eq, ne)
+- `batchNumber` (ne, eq)
+- `connectorName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `batchAmount` (gt, ge, lt, le, eq, ne)
+- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
+- `netBatchAmount` (gt, ge, lt, le, eq, ne)
+- `releaseAmount` (gt, ge, lt, le, eq, ne)
+- `heldAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `paypointId` (ne, eq)
+- `externalPaypointID` (ct, nct, eq, ne)
+- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
+- `batchRecords` (gt, ge, lt, le, eq, ne)
+- `transferId` (ne, eq)
+- `transferDate` (gt, ge, lt, le, eq, ne)
+- `grossAmount` (gt, ge, lt, le, eq, ne)
+- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+- `returnedAmount` (gt, ge, lt, le, eq, ne)
+- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+- `netFundedAmount` (gt, ge, lt, le, eq, ne)
+- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+- `processor` (ne, eq, ct, nct)
+- `transferStatus` (ne, eq, in, nin)
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBatchesOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batches for org](/developers/api-reference/query/get-list-of-batches-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of batches for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBatchesOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportBatchesOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `batchDate` (gt, ge, lt, le, eq, ne)
+- `batchNumber` (ne, eq)
+- `connectorName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `batchAmount` (gt, ge, lt, le, eq, ne)
+- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
+- `netBatchAmount` (gt, ge, lt, le, eq, ne)
+- `releaseAmount` (gt, ge, lt, le, eq, ne)
+- `heldAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `paypointId` (ne, eq)
+- `externalPaypointID` (ct, nct, eq, ne)
+- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
+- `batchRecords` (gt, ge, lt, le, eq, ne)
+- `transferId` (ne, eq)
+- `transferDate` (gt, ge, lt, le, eq, ne)
+- `grossAmount` (gt, ge, lt, le, eq, ne)
+- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+- `returnedAmount` (gt, ge, lt, le, eq, ne)
+- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+- `netFundedAmount` (gt, ge, lt, le, eq, ne)
+- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+- `processor` (ne, eq, ct, nct)
+- `transferStatus` (ne, eq, in, nin)
+
+List of parameters accepted:
+- `limitRecord`: max number of records for query (default="20", "0" or negative value for all)
+- `fromRecord`: initial record in query
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBatchesOut(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payout batches for paypoint](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of money out batches for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBatchesOut(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportBatchesOutRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+  - `batchDate` (gt, ge, lt, le, eq, ne)
+  - `batchNumber` (ne, eq)
+  - `batchAmount` (gt, ge, lt, le, eq, ne)
+  - `status` (in, nin, eq, ne)
+  - `paypointLegal` (ne, eq, ct, nct)
+  - `paypointDba` (ne, eq, ct, nct)
+  - `orgName` (ne, eq, ct, nct, nin, in)
+  - `paypointId` (ne, eq)
+  - `externalPaypointID` (ct, nct, eq, ne)
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBatchesOutOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payout batches for org](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of money out batches for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBatchesOutOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportBatchesOutOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+  - `batchDate` (gt, ge, lt, le, eq, ne)
+  - `batchNumber` (ne, eq)
+  - `batchAmount` (gt, ge, lt, le, eq, ne)
+  - `status` (in, nin, eq, ne)
+  - `paypointLegal` (ne, eq, ct, nct)
+  - `paypointDba` (ne, eq, ct, nct)
+  - `orgName` (ne, eq, ct, nct, nin, in)
+  - `paypointId` (ne, eq)
+  - `externalPaypointID` (ct, nct, eq, ne)
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBills(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List bills by paypoint](/developers/api-reference/bill/get-list-of-bills-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of bills for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBills(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportBillsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `billNumber` (ct, nct, eq, ne)
+- `billDate` (gt, ge, lt, le, eq, ne)
+- `billDueDate` (gt, ge, lt, le, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportBillsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List bills by organization](/developers/api-reference/bill/get-list-of-bills-for-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of bills for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportBillsOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportBillsOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `billNumber` (ct, nct, eq, ne)
+- `billDate` (gt, ge, lt, le, eq, ne)
+- `billDueDate` (gt, ge, lt, le, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportChargebacks(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List disputes by paypoint](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportChargebacks(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportChargebacksRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `chargebackDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `reasonCode` (in, nin, eq, ne)
+- `reason` (ct, nct, eq, ne)
+- `caseNumber` (ct, nct, eq, ne)
+- `status` (in, nin, eq, ne)
+- `accountType` (in, nin, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportChargebacksOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List disputes by organization](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportChargebacksOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportChargebacksOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `chargebackDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `reasonCode` (in, nin, eq, ne)
+- `reason` (ct, nct, eq, ne)
+- `caseNumber` (ct, nct, eq, ne)
+- `status` (in, nin, eq, ne)
+- `accountType` (in, nin, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportCustomers(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List customers by paypoint](/developers/api-reference/customer/get-list-of-customers-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of customers for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportCustomers(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportCustomersRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+- `createdDate` (gt, ge, lt, le, eq, ne)
+- `customernumber` (ne, eq, ct, nct)
+- `firstname` (ne, eq, ct, nct)
+- `lastname` (ne, eq, ct, nct)
+- `name` (ct, nct)
+- `address` (ne, eq, ct, nct)
+- `city` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `shippingaddress` (ne, eq, ct, nct)
+- `shippingcity` (ne, eq, ct, nct)
+- `shippingcountry` (ne, eq, ct, nct)
+- `shippingzip` (ne, eq, ct, nct)
+- `shippingstate` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `company` (ne, eq, ct, nct)
+- `username` (ne, eq, ct, nct)
+- `balance` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+**List of comparison accepted - enclosed between parentheses:**
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+**List of parameters accepted:**
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+**Example:**
+balance(gt)=20 return all records with balance greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportCustomersOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List customers by organization](/developers/api-reference/customer/get-list-of-customers-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Exports a list of customers for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportCustomersOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportCustomersOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+- `createdDate` (gt, ge, lt, le, eq, ne)
+- `customernumber` (ne, eq, ct, nct)
+- `firstname` (ne, eq, ct, nct)
+- `lastname` (ne, eq, ct, nct)
+- `name` (ct, nct)
+- `address` (ne, eq, ct, nct)
+- `city` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `shippingaddress` (ne, eq, ct, nct)
+- `shippingcity` (ne, eq, ct, nct)
+- `shippingcountry` (ne, eq, ct, nct)
+- `shippingzip` (ne, eq, ct, nct)
+- `shippingstate` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `company` (ne, eq, ct, nct)
+- `username` (ne, eq, ct, nct)
+- `balance` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+**List of comparison accepted - enclosed between parentheses:**
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+**List of parameters accepted:**
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+**Example:**
+balance(gt)=20 return all records with balance greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportInvoices(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List invoices by paypoint](/developers/api-reference/invoice/get-list-of-invoices-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export list of invoices for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportInvoices(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportInvoicesRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+ - `invoiceDate` (gt, ge, lt, le, eq, ne)
+ - `dueDate` (gt, ge, lt, le, eq, ne)
+ - `sentDate` (gt, ge, lt, le, eq, ne)
+ - `frequency`  (in, nin,ne, eq)
+ - `invoiceType`   (eq, ne)
+ - `payTerms`   (in, nin, eq, ne)
+ - `paypointId`  (ne, eq)
+ - `totalAmount`  (gt, ge, lt, le, eq, ne)
+ - `paidAmount`  (gt, ge, lt, le, eq, ne)
+ - `status`   (in, nin, eq, ne)
+ - `invoiceNumber`   (ct, nct, eq, ne)
+ - `purchaseOrder`   (ct, nct, eq, ne)
+ - `itemProductCode` (ct, nct)
+ - `itemDescription` (ct, nct)
+ - `customerFirstname`   (ct, nct, eq, ne)
+ - `customerLastname`    (ct, nct, eq, ne)
+ - `customerName`   (ct, nct)
+ - `customerId`  (eq, ne)
+ - `customerNumber`  (ct, nct, eq, ne)
+ - `customerCompanyname`    (ct, nct, eq, ne)
+ - `customerAddress` (ct, nct, eq, ne)
+ - `customerCity`    (ct, nct, eq, ne)
+ - `customerZip` (ct, nct, eq, ne)
+ - `customerState` (ct, nct, eq, ne)
+ - `customerCountry` (ct, nct, eq, ne)
+ - `customerPhone` (ct, nct, eq, ne)
+ - `customerEmail` (ct, nct, eq, ne)
+ - `customerShippingAddress` (ct, nct, eq, ne)
+ - `customerShippingCity` (ct, nct, eq, ne)
+ - `customerShippingZip` (ct, nct, eq, ne)
+ - `customerShippingState` (ct, nct, eq, ne)
+ - `customerShippingCountry` (ct, nct, eq, ne)
+ - `orgId`  (eq)
+ - `paylinkId`  (ne, eq)
+ - `paypointLegal`  (ne, eq, ct, nct)
+ - `paypointDba`  (ne, eq, ct, nct)
+ - `orgName`  (ne, eq, ct, nct)
+ - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+ - eq or empty => equal
+ - gt => greater than
+ - ge => greater or equal
+ - lt => less than
+ - le => less or equal
+ - ne => not equal
+ - ct => contains
+ - nct => not contains
+ - in => inside array
+ - nin => not inside array
+
+List of parameters accepted:
+ - `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
+ - `fromRecord` : initial record in query
+
+Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportInvoicesOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List invoices by organization](/developers/api-reference/invoice/get-list-of-invoices-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of invoices for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportInvoicesOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportInvoicesOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+ - `invoiceDate` (gt, ge, lt, le, eq, ne)
+ - `dueDate` (gt, ge, lt, le, eq, ne)
+ - `sentDate` (gt, ge, lt, le, eq, ne)
+ - `frequency` (in, nin,ne, eq)
+ - `invoiceType` (eq, ne)
+ - `payTerms` (in, nin, eq, ne)
+ - `paypointId` (ne, eq)
+ - `totalAmount` (gt, ge, lt, le, eq, ne)
+ - `paidAmount` (gt, ge, lt, le, eq, ne)
+ - `status` (in, nin, eq, ne)
+ - `invoiceNumber` (ct, nct, eq, ne)
+ - `purchaseOrder` (ct, nct, eq, ne)
+ - `itemProductCode` (ct, nct)
+ - `itemDescription` (ct, nct)
+ - `customerFirstname` (ct, nct, eq, ne)
+ - `customerLastname` (ct, nct, eq, ne)
+ - `customerName` (ct, nct)
+ - `customerId` (eq, ne)
+ - `customerNumber` (ct, nct, eq, ne)
+ - `customerCompanyname` (ct, nct, eq, ne)
+ - `customerAddress` (ct, nct, eq, ne)
+ - `customerCity` (ct, nct, eq, ne)
+ - `customerZip` (ct, nct, eq, ne)
+ - `customerState` (ct, nct, eq, ne)
+ - `customerCountry` (ct, nct, eq, ne)
+ - `customerPhone` (ct, nct, eq, ne)
+ - `customerEmail` (ct, nct, eq, ne)
+ - `customerShippingAddress` (ct, nct, eq, ne)
+ - `customerShippingCity` (ct, nct, eq, ne)
+ - `customerShippingZip` (ct, nct, eq, ne)
+ - `customerShippingState` (ct, nct, eq, ne)
+ - `customerShippingCountry` (ct, nct, eq, ne)
+ - `orgId` (eq)
+ - `paylinkId` (ne, eq)
+ - `paypointLegal` (ne, eq, ct, nct)
+ - `paypointDba` (ne, eq, ct, nct)
+ - `orgName` (ne, eq, ct, nct)
+ - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+ - eq or empty => equal
+ - gt => greater than
+ - ge => greater or equal
+ - lt => less than
+ - le => less or equal
+ - ne => not equal
+ - ct => contains
+ - nct => not contains
+ - in => inside array
+ - nin => not inside array
+
+List of parameters accepted:
+ - limitRecord : max number of records for query (default="20", "0" or negative value for all)
+ - fromRecord : initial record in query
+
+Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportOrganizations(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List suborganizations by organization](/developers/api-reference/organization/get-list-of-organizations-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of child organizations (suborganizations) for a parent organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportOrganizations(
+    ExportFormat1.CSV,
+    123,
+    ExportOrganizationsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `name` (ct, nct, eq, ne)
+- `type` (ne, eq)
+- `contactName` (ct, nct, eq, ne)
+- `contactTitle` (ct, nct, eq, ne)
+- `contactEmail` (ct, nct, eq, ne)
+- `contactPhone` (ct, nct, eq, ne)
+- `city` (ct, nct, eq, ne)
+- `state` (in, nin, eq, ne)
+- `address` (ct, nct, eq, ne)
+- `country` (ct, nct, eq, ne)
+- `zip` (ct, nct, eq, ne)
+- `hasBilling` any value greater than zero is taken as TRUE otherwise is FALSE
+- `hasResidual` any value greater than zero is taken as TRUE otherwise is FALSE
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: name(ct)=hoa  return all records where name contains "hoa"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportPayout(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payouts by paypoint](/developers/api-reference/query/get-list-of-payouts-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportPayout(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportPayoutRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `billNumber` (ct, nct)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportPayoutOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payouts by org](/developers/api-reference/query/get-list-of-payouts-for-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of payouts and their details for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportPayoutOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportPayoutOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `billNumber` (ct, nct)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportPaypoints(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List paypoints by organization](/developers/api-reference/paypoint/get-list-of-paypoints-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of paypoints in an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportPaypoints(
+    ExportFormat1.CSV,
+    123,
+    ExportPaypointsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `dbaname` (ct, nct)
+- `legalname` (ct, nct)
+- `ein` (ct, nct)
+- `address` (ct, nct)
+- `city` (ct, nct)
+- `state` (ct, nct)
+- `phone` (ct, nct)
+- `mcc` (ct, nct)
+- `owntype` (ct, nct)
+- `ownerName` (ct, nct)
+- `contactName` (ct, nct)
+- `orgParentname` (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportSettlements(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List settled transactions for paypoint](/developers/api-reference/query/get-list-of-settled-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of settled transactions for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportSettlements(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportSettlementsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `settlementDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `settledAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `batchNumber` (ct, nct, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportSettlementsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List settled transactions for org](/developers/api-reference/query/get-list-of-settled-transactions-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of settled transactions for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportSettlementsOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportSettlementsOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `settlementDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `settledAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `batchNumber` (ct, nct, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportSubscriptions(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List subscriptions by paypoint](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of subscriptions for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportSubscriptions(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportSubscriptionsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportSubscriptionsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List subscriptions by organization](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of subscriptions for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportSubscriptionsOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportSubscriptionsOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportTransactions(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List transactions for paypoint](/developers/api-reference/query/get-list-of-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportTransactions(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportTransactionsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `orderId` (ne, eq)
+- `idTrans` (ne, eq)
+- `orgId` (ne, eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `settlementStatus` (in, nin, eq, ne)
+- `batchNumber` (nct, ct)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportTransactionsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List transactions for org](/developers/api-reference/query/get-list-of-transactions-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportTransactionsOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportTransactionsOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `orderId` (ne, eq)
+- `idTrans` (ne, eq)
+- `orgId` (ne, eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `settlementStatus` (in, nin, eq, ne)
+- `batchNumber` (nct, ct)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportTransferDetails(format, entry, transferId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [Get transfer details](/developers/api-reference/query/get-list-of-transfer-details) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of transfer details for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportTransferDetails(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    4521L,
+    ExportTransferDetailsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transferId:** `Long` — Transfer identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+
+  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+
+  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+
+  - `transactionId` (eq, ne, in, nin)
+
+  - `category` (eq, ne, ct, nct)
+
+  - `type` (eq, ne, in, nin)
+
+  - `method` (eq, ne, in, nin)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportTransfers(entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List transfers](/developers/api-reference/query/get-list-of-transfers) with the `exportFormat` query parameter instead.
+</Warning>
+
+Get a list of transfers for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportTransfers(
+    "8cfec329267",
+    ExportTransfersRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .sortBy("desc(field_name)")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+  - `transferDate` (gt, ge, lt, le, eq, ne)
+
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+
+  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+
+  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+
+  - `processor` (ne, eq, ct, nct)
+
+  - `transferStatus` (ne, eq, in, nin)
+
+  - `batchNumber` (ne, eq, ct, nct)
+
+  - `batchId` (ne, eq, in, nin)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportVendors(format, entry) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List vendors by paypoint](/developers/api-reference/vendor/get-list-of-vendors-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of vendors for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportVendors(
+    ExportFormat1.CSV,
+    "8cfec329267",
+    ExportVendorsRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `method` (in, nin, eq, ne)
+- `enrollmentStatus` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `name` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `phone` (ct, nct, eq, ne)
+- `email` (ct, nct, eq, ne)
+- `address` (ct, nct, eq, ne)
+- `city` (ct, nct, eq, ne)
+- `state` (ct, nct, eq, ne)
+- `country` (ct, nct, eq, ne)
+- `zip` (ct, nct, eq, ne)
+- `mcc` (ct, nct, eq, ne)
+- `locationCode` (ct, nct, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.export.exportVendorsOrg(format, orgId) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List vendors by organization](/developers/api-reference/vendor/get-list-of-vendors-for-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of vendors for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.export().exportVendorsOrg(
+    ExportFormat1.CSV,
+    123,
+    ExportVendorsOrgRequest
+        .builder()
+        .columnsExport("BatchDate:Batch_Date,PaypointName:Legal_name")
+        .fromRecord(251)
+        .limitRecord(1000)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `method` (in, nin, eq, ne)
+- `enrollmentStatus` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `name` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `phone` (ct, nct, eq, ne)
+- `email` (ct, nct, eq, ne)
+- `address` (ct, nct, eq, ne)
+- `city` (ct, nct, eq, ne)
+- `state` (ct, nct, eq, ne)
+- `country` (ct, nct, eq, ne)
+- `zip` (ct, nct, eq, ne)
+- `mcc` (ct, nct, eq, ne)
+- `locationCode` (ct, nct, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Organization
+<details><summary><code>client.organization.addOrganization(request) -> AddOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates an organization under a parent organization. This is also referred to as a suborganization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().addOrganization(
+    AddOrganizationRequest
+        .builder()
+        .orgName("Pilgrim Planner")
+        .orgType(0)
+        .replyToEmail("email@example.com")
+        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
+        .billingInfo(
+            Instrument
                 .builder()
-                .customerData(
-                    PayorDataRequest
-                        .builder()
-                        .customerId(4440L)
-                        .build()
-                )
-                .entryPoint("f743aed24a")
-                .fallbackAuth(true)
-                .fallbackAuthAmount(100)
-                .methodDescription("Primary Visa card")
-                .paymentMethod(
-                    RequestTokenStoragePaymentMethod.of(
-                        TokenizeCard
-                            .builder()
-                            .method("card")
-                            .cardexp("02/25")
-                            .cardHolder("John Doe")
-                            .cardnumber("4111111111111111")
-                            .cardcvv(Optional.of("123"))
-                            .cardzip(Optional.of("12345"))
-                            .build()
-                    )
-                )
-                .source("api")
+                .achAccount("123123123")
+                .achRouting("123123123")
+                .billingAddress("123 Walnut Street")
+                .billingCity("Johnson City")
+                .billingCountry("US")
+                .billingState("TN")
+                .billingZip("37615")
                 .build()
         )
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**achValidation:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**createAnonymous:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceCustomerCreation:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**temporary:** `Optional<Boolean>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `RequestTokenStorage` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tokenStorage.getMethod(methodId) -> GetMethodResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves details for a saved payment method.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.tokenStorage().getMethod(
-    "32-8877drt00045632-678",
-    GetMethodRequest
-        .builder()
-        .cardExpirationFormat(1)
-        .includeTemporary(false)
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**methodId:** `String` — The saved payment method ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cardExpirationFormat:** `Optional<Integer>` 
-
-Format for card expiration dates in the response. 
-
-Accepted values:
-  
-- 0: default, no formatting. Expiration dates are returned in the format they're saved in.
-
-- 1: MMYY
- 
-- 2: MM/YY
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**includeTemporary:** `Optional<Boolean>` — When `true`, the request will include temporary tokens in the search and return details for a matching temporary token. The default behavior searches only for permanent tokens.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tokenStorage.removeMethod(methodId) -> PayabliApiResponsePaymethodDelete</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a saved payment method.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.tokenStorage().removeMethod("32-8877drt00045632-678");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**methodId:** `String` — The saved payment method ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tokenStorage.updateMethod(methodId, request) -> PayabliApiResponsePaymethodDelete</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a saved payment method.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.tokenStorage().updateMethod(
-    "32-8877drt00045632-678",
-    UpdateMethodRequest
-        .builder()
-        .body(
-            RequestTokenStorage
+        .contacts(
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("herman@hermanscoatings.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
+            )
+        )
+        .hasBilling(true)
+        .hasResidual(true)
+        .orgAddress("123 Walnut Street")
+        .orgCity("Johnson City")
+        .orgCountry("US")
+        .orgEntryName("pilgrim-planner")
+        .orgId("123")
+        .orgLogo(
+            FileContent
                 .builder()
-                .customerData(
-                    PayorDataRequest
-                        .builder()
-                        .customerId(4440L)
-                        .build()
-                )
-                .entryPoint("f743aed24a")
-                .fallbackAuth(true)
-                .paymentMethod(
-                    RequestTokenStoragePaymentMethod.of(
-                        TokenizeCard
-                            .builder()
-                            .method("card")
-                            .cardexp("02/25")
-                            .cardHolder("John Doe")
-                            .cardnumber("4111111111111111")
-                            .cardcvv(Optional.of("123"))
-                            .cardzip(Optional.of("12345"))
-                            .build()
-                    )
-                )
+                .fContent("TXkgdGVzdCBmaWxlHJ==...")
+                .filename("my-doc.pdf")
+                .ftype(FileContentFtype.PDF)
+                .furl("https://mysite.com/my-doc.pdf")
                 .build()
         )
+        .orgParentId(236L)
+        .orgState("TN")
+        .orgTimezone(-5)
+        .orgWebsite("www.pilgrimageplanner.com")
+        .orgZip("37615")
         .build()
 );
 ```
@@ -24746,7 +21917,7 @@ client.tokenStorage().updateMethod(
 <dl>
 <dd>
 
-**methodId:** `String` — The saved payment method ID.
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -24754,7 +21925,7 @@ client.tokenStorage().updateMethod(
 <dl>
 <dd>
 
-**achValidation:** `Optional<Boolean>` 
+**services:** `Optional<List<ServiceCost>>` 
     
 </dd>
 </dl>
@@ -24762,7 +21933,1552 @@ client.tokenStorage().updateMethod(
 <dl>
 <dd>
 
-**request:** `RequestTokenStorage` 
+**billingInfo:** `Optional<Instrument>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contacts:** `Optional<List<Contacts>>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasBilling:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasResidual:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgAddress:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCity:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCountry:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgEntryName:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgLogo:** `Optional<FileContent>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgName:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgParentId:** `Optional<Long>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgState:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgTimezone:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgType:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgWebsite:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgZip:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**replyToEmail:** `String` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.editOrganization(orgId, request) -> EditOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates an organization's details by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().editOrganization(
+    123,
+    OrganizationData
+        .builder()
+        .contacts(
+            Arrays.asList(
+                Contacts
+                    .builder()
+                    .contactEmail("herman@hermanscoatings.com")
+                    .contactName("Herman Martinez")
+                    .contactPhone("3055550000")
+                    .contactTitle("Owner")
+                    .build()
+            )
+        )
+        .orgAddress("123 Walnut Street")
+        .orgCity("Johnson City")
+        .orgCountry("US")
+        .orgEntryName("pilgrim-planner")
+        .organizationDataOrgId("123")
+        .orgName("Pilgrim Planner")
+        .orgState("TN")
+        .orgTimezone(-5)
+        .orgType(0)
+        .orgWebsite("www.pilgrimageplanner.com")
+        .orgZip("37615")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `Optional<List<ServiceCost>>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingInfo:** `Optional<Instrument>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contacts:** `Optional<List<Contacts>>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasBilling:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasResidual:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgAddress:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCity:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCountry:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgEntryName:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**organizationDataOrgId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgLogo:** `Optional<FileContent>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgName:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgParentId:** `Optional<Long>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgState:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgTimezone:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgType:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgWebsite:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgZip:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**replyToEmail:** `Optional<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.deleteOrganization(orgId) -> DeleteOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete an organization by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().deleteOrganization(123);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.getBasicOrganization(entry) -> OrganizationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets an organization's basic information by entry name (entrypoint identifier).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().getBasicOrganization("8cfec329267");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.getBasicOrganizationById(orgId) -> OrganizationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets an organization's basic details by org ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().getBasicOrganizationById(123);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.getOrganization(orgId) -> OrganizationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves details for an organization by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().getOrganization(123);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.getSettingsOrganization(orgId) -> SettingsQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves an organization's settings.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.organization().getSettingsOrganization(123);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Management
+<details><summary><code>client.management.verifyAccountDetails(entry, request) -> VerifyAccountDetailsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Verifies a bank account and returns detailed verification results from the verification network, including bank name, account status, and response codes. Unlike a pass/fail verification, this endpoint returns granular data to support decision-making and troubleshooting.
+
+When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
+
+Requires `inboundpayments_create` or `outboundpayments_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.management().verifyAccountDetails(
+    "8cfec329267",
+    VerifyAccountDetailsRequest
+        .builder()
+        .routingNumber("122105278")
+        .accountNumber("0000000016")
+        .accountType("Checking")
+        .country("US")
+        .accountHolderType("personal")
+        .holderName("Jane Doe")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entry name identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `String` — The bank routing number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `String` — The bank account number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `Optional<String>` — The type of bank account, such as `Checking` or `Savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `Optional<String>` — The ISO country code for the bank account, such as `US`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountHolderType:** `Optional<String>` — The type of account holder. Accepted values are `personal` or `business`. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**holderName:** `Optional<String>` — The name of the bank account holder. For personal accounts, provide the holder's full name (for example, `Jane Doe`); the value is split on the first space into first and last name. For business accounts, provide the legal business name. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Statistic
+<details><summary><code>client.statistic.basicStats(mode, freq, level, entryId) -> List&amp;lt;StatBasicExtendedQueryRecord&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.statistic().basicStats(
+    "custom",
+    "m",
+    2,
+    1000000L,
+    BasicStatsRequest
+        .builder()
+        .startDate("2025-11-01")
+        .endDate("2025-11-30")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mode:** `String` 
+
+Mode for the request. Allowed values:
+
+- `custom` - Allows you to set a custom date range
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**freq:** `String` 
+
+Frequency to group series. Allowed values:
+
+- `m` - monthly
+- `w` - weekly
+- `d` - daily
+- `h` - hourly
+
+For example, `w` groups the results by week.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**level:** `Integer` 
+
+The entry level for the request:
+  - 0 for Organization
+  - 2 for Paypoint
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryId:** `Long` — Identifier in Payabli for the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**endDate:** `Optional<String>` 
+
+Used with `custom` mode. The end date for the range.
+Valid formats:
+  - YYYY-mm-dd
+  - YYYY/mm/dd
+  - mm-dd-YYYY
+  - mm/dd/YYYY
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startDate:** `Optional<String>` 
+
+Used with `custom` mode. The start date for the range.
+Valid formats:
+   - YYYY-mm-dd
+   - YYYY/mm/dd
+   -  mm-dd-YYYY
+   - mm/dd/YYYY
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&amp;lt;SubscriptionStatsQueryRecord&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.statistic().customerBasicStats(
+    "ytd",
+    "m",
+    4440,
+    CustomerBasicStatsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mode:** `String` 
+
+Mode for request. Allowed values:
+
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**freq:** `String` 
+
+Frequency to group series. Allowed values:
+
+- `m` - monthly
+- `w` - weekly
+- `d` - daily
+- `h` - hourly
+
+For example, `w` groups the results by week.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customerId:** `Integer` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&amp;lt;StatBasicQueryRecord&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the subscription statistics for a given interval for a paypoint or organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.statistic().subStats(
+    "30",
+    2,
+    1000000L,
+    SubStatsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**interval:** `String` 
+
+Interval to get the data. Allowed values:
+
+- `all` - all intervals
+- `30` - 1-30 days
+- `60` - 31-60 days
+- `90` - 61-90 days
+- `plus` - +90 days
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**level:** `Integer` 
+
+The entry level for the request:
+  - 0 for Organization
+  - 2 for Paypoint
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryId:** `Long` — Identifier in Payabli for the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.statistic.vendorBasicStats(mode, freq, idVendor) -> List&amp;lt;StatisticsVendorQueryRecord&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.statistic().vendorBasicStats(
+    "ytd",
+    "m",
+    1,
+    VendorBasicStatsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mode:** `String` 
+
+Mode for request. Allowed values:
+
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**freq:** `String` 
+
+Frequency to group series. Allowed values:
+
+- `m` - monthly
+- `w` - weekly
+- `d` - daily
+- `h` - hourly
+
+For example, `w` groups the results by week.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idVendor:** `Integer` — Vendor ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Notification
+<details><summary><code>client.notification.addNotification(request) -> PayabliApiResponseNotifications</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new notification or auto-generated report.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notification().addNotification(
+    AddNotificationRequest.of(
+        NotificationStandardRequest
+            .builder()
+            .frequency(NotificationStandardRequestFrequency.UNTILCANCELLED)
+            .method(NotificationStandardRequestMethod.WEB)
+            .ownerType(0)
+            .target("https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275")
+            .content(
+                Optional.of(
+                    NotificationStandardRequestContent
+                        .builder()
+                        .eventType(Optional.of(NotificationStandardRequestContentEventType.CREATED_APPLICATION))
+                        .build()
+                )
+            )
+            .ownerId(Optional.of(236))
+            .status(Optional.of(1))
+            .build()
+    )
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `AddNotificationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notification.getNotification(nId) -> NotificationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single notification or auto-generated report's details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notification().getNotification("1717");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**nId:** `String` — Notification ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notification.updateNotification(nId, request) -> PayabliApiResponseNotifications</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update a notification or auto-generated report.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notification().updateNotification(
+    "1717",
+    UpdateNotificationRequest.of(
+        NotificationStandardRequest
+            .builder()
+            .frequency(NotificationStandardRequestFrequency.UNTILCANCELLED)
+            .method(NotificationStandardRequestMethod.EMAIL)
+            .ownerType(0)
+            .target("newemail@email.com")
+            .content(
+                Optional.of(
+                    NotificationStandardRequestContent
+                        .builder()
+                        .eventType(Optional.of(NotificationStandardRequestContentEventType.APPROVED_PAYMENT))
+                        .build()
+                )
+            )
+            .ownerId(Optional.of(136))
+            .status(Optional.of(1))
+            .build()
+    )
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**nId:** `String` — Notification ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateNotificationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notification.deleteNotification(nId) -> PayabliApiResponseNotifications</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a single notification or auto-generated report.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notification().deleteNotification("1717");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**nId:** `String` — Notification ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.notification.getReportFile(id) -> Map&amp;lt;String, Object&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a copy of a generated report by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.notification().getReportFile(1000000L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — Report ID
     
 </dd>
 </dl>
@@ -24822,6 +23538,310 @@ client.user().addUser(
 <dd>
 
 **request:** `UserData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.user.getUser(userId) -> UserQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to retrieve information about a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.user().getUser(
+    1000000L,
+    GetUserRequest
+        .builder()
+        .entry("8cfec329267")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userId:** `Long` — The Payabli-generated `userId` value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `Optional<String>` — The entrypoint identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**level:** `Optional<Integer>` — Entry level: 0 - partner, 2 - paypoint
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.user.editUser(userId, request) -> PayabliApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to modify the details of a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.user().editUser(
+    1000000L,
+    UserData
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userId:** `Long` — User Identifier
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UserData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.user.deleteUser(userId) -> DeleteUserResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to delete a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.user().deleteUser(1000000L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userId:** `Long` — The Payabli-generated `userId` value.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.user.authUser(provider, request) -> PayabliApiResponseMfaBasic</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.user().authUser(
+    "provider",
+    UserAuthRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provider:** `String` — Auth provider. Pass `null` to use the built-in provider.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `Optional<String>` — Identifier for entry point originating the request (used by front-end apps)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryType:** `Optional<Integer>` — Type of entry identifier: 0 - partner, 2 - paypoint. This is used by front-end apps, required if an Entry is indicated.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**psw:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userId:** `Optional<Long>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userTokenId:** `Optional<String>` 
     
 </dd>
 </dl>
@@ -24946,113 +23966,6 @@ client.user().authResetUser(
 </dl>
 </details>
 
-<details><summary><code>client.user.authUser(provider, request) -> PayabliApiResponseMfaBasic</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.user().authUser(
-    "provider",
-    UserAuthRequest
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**provider:** `String` — Auth provider. Pass `null` to use the built-in provider.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `Optional<String>` — Identifier for entry point originating the request (used by front-end apps)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entryType:** `Optional<Integer>` — Type of entry identifier: 0 - partner, 2 - paypoint. This is used by front-end apps, required if an Entry is indicated.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**psw:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userId:** `Optional<Long>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userTokenId:** `Optional<String>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.user.changePswUser(request) -> ChangePswUserResponse</code></summary>
 <dl>
 <dd>
@@ -25111,7 +24024,7 @@ client.user().changePswUser(
 </dl>
 </details>
 
-<details><summary><code>client.user.deleteUser(userId) -> DeleteUserResponse</code></summary>
+<details><summary><code>client.user.logoutUser() -> LogoutUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -25123,7 +24036,7 @@ client.user().changePswUser(
 <dl>
 <dd>
 
-Use this endpoint to delete a specific user within an organization.
+Use this endpoint to log a user out from the system.
 </dd>
 </dl>
 </dd>
@@ -25138,7 +24051,50 @@ Use this endpoint to delete a specific user within an organization.
 <dd>
 
 ```java
-client.user().deleteUser(1000000L);
+client.user().logoutUser();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.user.validateMfaUser(request) -> PayabliApiResponseUserMfa</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.user().validateMfaUser(
+    MfaValidationData
+        .builder()
+        .build()
+);
 ```
 </dd>
 </dl>
@@ -25153,7 +24109,15 @@ client.user().deleteUser(1000000L);
 <dl>
 <dd>
 
-**userId:** `Long` — The Payabli-generated `userId` value.
+**mfaCode:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mfaValidationCode:** `Optional<String>` 
     
 </dd>
 </dl>
@@ -25232,188 +24196,6 @@ client.user().editMfaUser(
 </dl>
 </details>
 
-<details><summary><code>client.user.editUser(userId, request) -> PayabliApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to modify the details of a specific user within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.user().editUser(
-    1000000L,
-    UserData
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**userId:** `Long` — User Identifier
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UserData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.user.getUser(userId) -> UserQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to retrieve information about a specific user within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.user().getUser(
-    1000000L,
-    GetUserRequest
-        .builder()
-        .entry("478ae1234")
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**userId:** `Long` — The Payabli-generated `userId` value.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `Optional<String>` — The entrypoint identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**level:** `Optional<Integer>` — Entry level: 0 - partner, 2 - paypoint
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.user.logoutUser() -> LogoutUserResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to log a user out from the system.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.user().logoutUser();
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.user.resendMfaCode(usrname, entry, entryType) -> PayabliApiResponseMfaBasic</code></summary>
 <dl>
 <dd>
@@ -25441,7 +24223,7 @@ Resends the MFA code to the user via the selected MFA mode (email or SMS).
 <dd>
 
 ```java
-client.user().resendMfaCode("usrname", "Entry", 1);
+client.user().resendMfaCode("usrname", "8cfec329267", 1);
 ```
 </dd>
 </dl>
@@ -25456,7 +24238,7 @@ client.user().resendMfaCode("usrname", "Entry", 1);
 <dl>
 <dd>
 
-**usrname:** `String` —  
+**usrname:** `String` — 
     
 </dd>
 </dl>
@@ -25464,7 +24246,7 @@ client.user().resendMfaCode("usrname", "Entry", 1);
 <dl>
 <dd>
 
-**entry:** `String` —  
+**entry:** `String` — 
     
 </dd>
 </dl>
@@ -25472,73 +24254,7 @@ client.user().resendMfaCode("usrname", "Entry", 1);
 <dl>
 <dd>
 
-**entryType:** `Integer` —  
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.user.validateMfaUser(request) -> PayabliApiResponseUserMfa</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.user().validateMfaUser(
-    MfaValidationData
-        .builder()
-        .build()
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mfaCode:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mfaValidationCode:** `Optional<String>` 
+**entryType:** `Integer` — 
     
 </dd>
 </dl>
@@ -25582,7 +24298,7 @@ client.vendor().addVendor(
     "8cfec329267",
     VendorData
         .builder()
-        .vendorNumber("1234")
+        .vendorNumber("VEN-123")
         .address1("123 Ocean Drive")
         .address2("Suite 400")
         .billingData(
@@ -25668,7 +24384,7 @@ client.vendor().addVendor(
 </dl>
 </details>
 
-<details><summary><code>client.vendor.deleteVendor(idVendor) -> PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.vendor.getVendor(idVendor) -> VendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -25680,7 +24396,7 @@ client.vendor().addVendor(
 <dl>
 <dd>
 
-Delete a vendor. 
+Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
 </dd>
 </dl>
 </dd>
@@ -25695,7 +24411,7 @@ Delete a vendor.
 <dd>
 
 ```java
-client.vendor().deleteVendor(1);
+client.vendor().getVendor(1);
 ```
 </dd>
 </dl>
@@ -25790,7 +24506,7 @@ client.vendor().editVendor(
 </dl>
 </details>
 
-<details><summary><code>client.vendor.getVendor(idVendor) -> VendorQueryRecord</code></summary>
+<details><summary><code>client.vendor.deleteVendor(idVendor) -> PayabliApiResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -25802,7 +24518,7 @@ client.vendor().editVendor(
 <dl>
 <dd>
 
-Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+Delete a vendor.
 </dd>
 </dl>
 </dd>
@@ -25817,7 +24533,7 @@ Retrieves a vendor's details, including enrichment status and payment acceptance
 <dd>
 
 ```java
-client.vendor().getVendor(1);
+client.vendor().deleteVendor(1);
 ```
 </dd>
 </dl>
@@ -25875,7 +24591,7 @@ client.vendor().enrichVendor(
     "8cfec329267",
     VendorEnrichRequest
         .builder()
-        .vendorId(3890L)
+        .vendorId(456L)
         .scope(
             Optional.of(
                 Arrays.asList("invoice_scan")
@@ -25915,7 +24631,1249 @@ client.vendor().enrichVendor(
 <dl>
 <dd>
 
-**request:** `VendorEnrichRequest` 
+**vendorId:** `Long` — ID of the vendor to enrich. Must be active and belong to the given entrypoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope:** `Optional<List<String>>` — Enrichment stages to run. Valid values are `invoice_scan` and `web_search`. Stages run in order: invoice scan first, then web search. If the vendor becomes payout-ready after invoice scan, web search is skipped.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**applyEnrichmentData:** `Optional<Boolean>` — When `true` (the default), extracted data is automatically written to the vendor record. Only empty fields are populated, existing values are never overwritten. When `false`, the vendor record isn't modified. In both cases, `enrichmentData` in the response contains the extracted results. Use `false` for UI flows where users review and confirm changes before applying them with the update vendor endpoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleCallIfNeeded:** `Optional<Boolean>` — When `true`, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoiceFile:** `Optional<FileContent>` — PDF invoice file, Base64-encoded. Required when `scope` includes `invoice_scan`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billId:** `Optional<Long>` — Bill ID to associate with this enrichment request.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fallbackMethod:** `Optional<String>` — Payment method to apply if enrichment can't find payment details. Values are `check`, `ach`, or `card`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## GhostCard
+<details><summary><code>client.ghostCard.createGhostCard(entry, request) -> CreateGhostCardResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
+
+Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
+
+Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.ghostCard().createGhostCard(
+    "8cfec329267",
+    CreateGhostCardRequestBody
+        .builder()
+        .vendorId(456L)
+        .expenseLimit(500.0)
+        .amount(500.0)
+        .maxNumberOfUses(3)
+        .exactAmount(false)
+        .expenseLimitPeriod("monthly")
+        .billingCycle("monthly")
+        .billingCycleDay("1")
+        .dailyTransactionCount(5)
+        .dailyAmountLimit(200.0)
+        .transactionAmountLimit(100)
+        .mcc("5411")
+        .tcc("R")
+        .misc1("PO-98765")
+        .misc2("Dept-Finance")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorId:** `Long` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimit:** `Double` — Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `Optional<String>` — Requested expiration date for the card. If not provided, defaults to 30 days from creation.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `Double` — Initial load amount for the card.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxNumberOfUses:** `Integer` — Maximum number of times the card can be used. Ignored and set to `1` when `exactAmount` is `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exactAmount:** `Boolean` — When `true`, restricts the card to a single use. `maxNumberOfUses` is automatically set to `1` regardless of any other value provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimitPeriod:** `String` — Time period over which `expenseLimit` applies (for example, `monthly` or `weekly`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycle:** `String` — Billing cycle identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycleDay:** `String` — Day within the billing cycle.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyTransactionCount:** `Integer` — Maximum number of transactions allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyAmountLimit:** `Double` — Maximum total spend allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transactionAmountLimit:** `Integer` — Maximum spend allowed per single transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mcc:** `Optional<String>` — Merchant Category Code to restrict where the card can be used. Must be a valid MCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tcc:** `Optional<String>` — Transaction Category Code to restrict where the card can be used. Must be a valid TCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc1:** `Optional<String>` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc2:** `Optional<String>` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ghostCard.updateCard(entry, request) -> PayabliApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a virtual card (including ghost cards) under a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.ghostCard().updateCard(
+    "8cfec329267",
+    UpdateCardRequestBody
+        .builder()
+        .cardToken("gc_abc123def456")
+        .status(CardStatus.CANCELLED)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cardToken:** `String` — Token that uniquely identifies the card. This is the `ReferenceId` returned when the card was created.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<CardStatus>` — The new status to set on the card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MoneyOut
+<details><summary><code>client.moneyOut.authorizeOut(request) -> AuthCapturePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Authorizes a transaction for payout.
+
+If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
+
+When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().authorizeOut(
+    RequestOutAuthorize
+        .builder()
+        .entryPoint("8cfec329267")
+        .paymentMethod(
+            AuthorizePaymentMethod
+                .builder()
+                .method("managed")
+                .build()
+        )
+        .paymentDetails(
+            RequestOutAuthorizePaymentDetails
+                .builder()
+                .totalAmount(47.0)
+                .unbundled(false)
+                .build()
+        )
+        .vendorData(
+            RequestOutAuthorizeVendorData
+                .builder()
+                .vendorNumber("VEN-123")
+                .build()
+        )
+        .invoiceData(
+            Arrays.asList(
+                RequestOutAuthorizeInvoiceData
+                    .builder()
+                    .billId(54323L)
+                    .build()
+            )
+        )
+        .orderDescription("Window Painting")
+        .autoCapture(true)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowDuplicatedBills:** `Optional<Boolean>` — When `true`, the authorization bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout authorization for a bill, like a split payment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**doNotCreateBills:** `Optional<Boolean>` — When `true`, Payabli won't automatically create a bill for this payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**forceVendorCreation:** `Optional<Boolean>` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderDescription:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `AuthorizePaymentMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `RequestOutAuthorizePaymentDetails` — Object containing payment details.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorData:** `RequestOutAuthorizeVendorData` — Object containing vendor data.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoiceData:** `List<RequestOutAuthorizeInvoiceData>` — Array of bills associated to the transaction
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subscriptionId:** `Optional<Long>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autoCapture:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.cancelAllOut(request) -> CaptureAllOutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancels an array of payout transactions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().cancelAllOut(
+    Arrays.asList("2-29", "2-28", "2-27")
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `List<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.cancelOutGet(referenceId) -> PayabliApiResponse0000</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a payout transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().cancelOutGet("129-219");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `String` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.cancelOutDelete(referenceId) -> PayabliApiResponse0000</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a payout transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().cancelOutDelete("129-219");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `String` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.captureAllOut(request) -> CaptureAllOutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().captureAllOut(
+    CaptureAllOutRequest
+        .builder()
+        .body(
+            Arrays.asList("2-29", "2-28", "2-27")
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `List<String>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.captureOut(referenceId) -> AuthCapturePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`,  you don't need to call this endpoint to capture the transaction for processing.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().captureOut(
+    "129-219",
+    CaptureOutRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `String` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.payoutDetails(transId) -> BillDetailResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns details for a processed money out transaction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().payoutDetails("45-as456777hhhhhhhhhh77777777-324");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.vCardGet(cardToken) -> VCardGetResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves vCard details for a single card in an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().vCardGet("20230403315245421165");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cardToken:** `String` — ID for a virtual card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.sendVCardLink(request) -> OperationResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends a virtual card link via email to the vendor associated with the `transId`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().sendVCardLink(
+    SendVCardLinkRequest
+        .builder()
+        .transId("01K33Z6YQZ6GD5QVKZ856MJBSC")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.getCheckImage(assetName) -> String</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the image of a check associated with a processed transaction.
+The check image is returned in the response body as a base64-encoded string.
+The check image is only available for payouts that have been processed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().getCheckImage("check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetName:** `String` 
+
+Name of the check asset to retrieve. This is returned as `filename` in the `CheckData` object
+in the response when you make a GET request to `/MoneyOut/details/{transId}`.
+```
+    "CheckData": {
+      "ftype": "PDF",
+      "filename": "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
+      "furl": "",
+      "fContent": ""
+  }
+```
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.updateCheckPaymentStatus(transId, checkPaymentStatus) -> PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
+
+The transaction must meet all of the following criteria:
+- **Status**: Must be in Processing or Processed status.
+- **Payment method**: Must be a check payment method.
+
+### Allowed status values
+
+| Value | Status | Description |
+|-------|--------|-------------|
+| `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
+| `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().updateCheckPaymentStatus("TRANS123456", AllowedCheckPaymentStatus.PAID);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — The Payabli transaction ID for the check payment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkPaymentStatus:** `AllowedCheckPaymentStatus` — The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.reissueOut(request) -> ReissuePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+
+The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
+
+The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().reissueOut(
+    ReissueOutRequest
+        .builder()
+        .transId("129-219")
+        .paymentMethod(
+            ReissuePaymentMethod
+                .builder()
+                .method("ach")
+                .achHolder("Acme Corp")
+                .achRouting("021000021")
+                .achAccount("9876543210")
+                .achAccountType("savings")
+                .achHolderType(AchHolderType.BUSINESS)
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `String` — The transaction ID of the payout to reissue.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `ReissuePaymentMethod` 
     
 </dd>
 </dl>
@@ -25960,7 +25918,7 @@ client.wallet().configureApplePayOrganization(
         .builder()
         .cascade(true)
         .isEnabled(true)
-        .orgId(901L)
+        .orgId(123L)
         .build()
 );
 ```
@@ -26105,7 +26063,7 @@ client.wallet().configureGooglePayOrganization(
         .builder()
         .cascade(true)
         .isEnabled(true)
-        .orgId(901L)
+        .orgId(123L)
         .build()
 );
 ```
@@ -26207,6 +26165,608 @@ client.wallet().configureGooglePayPaypoint(
 <dd>
 
 **isEnabled:** `Optional<Boolean>` — When `true`, Google Pay is enabled.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## PayoutSubscription
+<details><summary><code>client.payoutSubscription.createPayoutSubscription(request) -> AddPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().createPayoutSubscription(
+    RequestPayoutSchedule
+        .builder()
+        .entryPoint("8cfec329267")
+        .paymentMethod(
+            AuthorizePaymentMethod
+                .builder()
+                .method("ach")
+                .achHolder("Herman Coatings")
+                .achRouting("021000021")
+                .achAccount("3453445666")
+                .achAccountType("checking")
+                .build()
+        )
+        .vendorData(
+            RequestOutAuthorizeVendorData
+                .builder()
+                .vendorId(456)
+                .build()
+        )
+        .paymentDetails(
+            PayoutPaymentDetail
+                .builder()
+                .totalAmount(500.0)
+                .serviceFee(0.0)
+                .currency("USD")
+                .build()
+        )
+        .billData(
+            Optional.of(
+                Arrays.asList(
+                    BillPayOutDataRequest
+                        .builder()
+                        .dueDate("2025-08-15")
+                        .invoiceDate("2025-08-01")
+                        .invoiceNumber("INV-2345")
+                        .netAmount("500")
+                        .build()
+                )
+            )
+        )
+        .scheduleDetails(
+            PayoutScheduleDetail
+                .builder()
+                .startDate("09/01/2027")
+                .endDate("09/01/2026")
+                .frequency(Frequency.MONTHLY)
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `AuthorizePaymentMethod` — Payment method for the payout subscription. Supports `ach`, `vcard`, and `check`. The `managed` method isn't supported for payout subscriptions.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `Optional<PayoutPaymentDetail>` — Object describing details of the payout.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorData:** `RequestOutAuthorizeVendorData` — Object identifying the vendor for this subscription. Only a `vendorId` or `vendorNumber` is needed to link to an existing vendor.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billData:** `Optional<List<BillPayOutDataRequest>>` — Array of bills associated with the payout subscription. If omitted and `doNotCreateBills` isn't set to `true`, the system creates a bill automatically.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `Optional<PayoutScheduleDetail>` — Object describing the schedule for the payout subscription.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payoutSubscription.getPayoutSubscription(id) -> GetPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().getPayoutSubscription(42L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payoutSubscription.updatePayoutSubscription(id, request) -> UpdatePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().updatePayoutSubscription(
+    42L,
+    UpdatePayoutSubscriptionBody
+        .builder()
+        .setPause(true)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The payout subscription ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `Optional<Boolean>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `Optional<PayoutPaymentDetail>` — Object describing details of the payout.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `Optional<AuthorizePaymentMethod>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `Optional<PayoutScheduleDetail>` — Object describing the schedule for the payout subscription.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payoutSubscription.deletePayoutSubscription(id) -> DeletePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.payoutSubscription().deletePayoutSubscription(42L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## ChargeBacks
+<details><summary><code>client.chargeBacks.addResponse(id, request) -> AddResponseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add a response to a chargeback or ACH return.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.chargeBacks().addResponse(
+    1000000L,
+    ResponseChargeBack
+        .builder()
+        .idempotencyKey("6B29FC40-CA47-1067-B31D-00DD010662DA")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — ID of the chargeback or return record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachments:** `Optional<List<FileContent>>` — Array of attached files to response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contactEmail:** `Optional<String>` — Email of response submitter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contactName:** `Optional<String>` — Name of response submitter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `Optional<String>` — Response notes
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.chargeBacks.getChargeback(id) -> ChargebackQueryRecords</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a chargeback record and its details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.chargeBacks().getChargeback(1000000L);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.chargeBacks.getChargebackAttachment(id, fileName) -> String</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a chargeback attachment file by its file name.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.chargeBacks().getChargebackAttachment(1000000L, "fileName");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Long` — The ID of chargeback or return record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fileName:** `String` — The chargeback attachment's file name.
     
 </dd>
 </dl>

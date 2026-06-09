@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Owners.Builder.class)
-public final class Owners implements IOwners {
+public final class Owners {
     private final Optional<String> ownername;
 
     private final Optional<String> ownertitle;
@@ -95,7 +95,6 @@ public final class Owners implements IOwners {
      * @return Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
      */
     @JsonProperty("ownername")
-    @java.lang.Override
     public Optional<String> getOwnername() {
         return ownername;
     }
@@ -104,7 +103,6 @@ public final class Owners implements IOwners {
      * @return The job title of the person such as CEO or director.
      */
     @JsonProperty("ownertitle")
-    @java.lang.Override
     public Optional<String> getOwnertitle() {
         return ownertitle;
     }
@@ -113,7 +111,6 @@ public final class Owners implements IOwners {
      * @return Percentage of ownership the person holds, in integer format.
      */
     @JsonProperty("ownerpercent")
-    @java.lang.Override
     public Optional<Integer> getOwnerpercent() {
         return ownerpercent;
     }
@@ -122,7 +119,6 @@ public final class Owners implements IOwners {
      * @return The relevant identifier for the person such as a Social Security Number.
      */
     @JsonProperty("ownerssn")
-    @java.lang.Override
     public Optional<String> getOwnerssn() {
         return ownerssn;
     }
@@ -131,7 +127,6 @@ public final class Owners implements IOwners {
      * @return Owner's date of birth.
      */
     @JsonProperty("ownerdob")
-    @java.lang.Override
     public Optional<String> getOwnerdob() {
         return ownerdob;
     }
@@ -140,7 +135,6 @@ public final class Owners implements IOwners {
      * @return Owner phone 1.
      */
     @JsonProperty("ownerphone1")
-    @java.lang.Override
     public Optional<String> getOwnerphone1() {
         return ownerphone1;
     }
@@ -149,7 +143,6 @@ public final class Owners implements IOwners {
      * @return Owner phone 2.
      */
     @JsonProperty("ownerphone2")
-    @java.lang.Override
     public Optional<String> getOwnerphone2() {
         return ownerphone2;
     }
@@ -158,7 +151,6 @@ public final class Owners implements IOwners {
      * @return Owner email.
      */
     @JsonProperty("owneremail")
-    @java.lang.Override
     public Optional<String> getOwneremail() {
         return owneremail;
     }
@@ -167,7 +159,6 @@ public final class Owners implements IOwners {
      * @return Owner driver's license ID number. Payabli strongly recommends including this.
      */
     @JsonProperty("ownerdriver")
-    @java.lang.Override
     public Optional<String> getOwnerdriver() {
         return ownerdriver;
     }
@@ -176,7 +167,6 @@ public final class Owners implements IOwners {
      * @return Owner street address. This must be the physical address of the owner, not a P.O. box.
      */
     @JsonProperty("oaddress")
-    @java.lang.Override
     public Optional<String> getOaddress() {
         return oaddress;
     }
@@ -185,7 +175,6 @@ public final class Owners implements IOwners {
      * @return Owner address city.
      */
     @JsonProperty("ocity")
-    @java.lang.Override
     public Optional<String> getOcity() {
         return ocity;
     }
@@ -194,7 +183,6 @@ public final class Owners implements IOwners {
      * @return Owner address country in ISO-3166-1 alpha 2 format. Check out https://en.wikipedia.org/wiki/ISO_3166-1 for reference.
      */
     @JsonProperty("ocountry")
-    @java.lang.Override
     public Optional<String> getOcountry() {
         return ocountry;
     }
@@ -203,7 +191,6 @@ public final class Owners implements IOwners {
      * @return Owner driver's license State. Payabli strongly recommends including this.
      */
     @JsonProperty("odriverstate")
-    @java.lang.Override
     public Optional<String> getOdriverstate() {
         return odriverstate;
     }
@@ -212,7 +199,6 @@ public final class Owners implements IOwners {
      * @return Owner address state.
      */
     @JsonProperty("ostate")
-    @java.lang.Override
     public Optional<String> getOstate() {
         return ostate;
     }
@@ -221,13 +207,11 @@ public final class Owners implements IOwners {
      * @return Owner address ZIP.
      */
     @JsonProperty("ozip")
-    @java.lang.Override
     public Optional<String> getOzip() {
         return ozip;
     }
 
     @JsonProperty("additionalData")
-    @java.lang.Override
     public Optional<String> getAdditionalData() {
         return additionalData;
     }

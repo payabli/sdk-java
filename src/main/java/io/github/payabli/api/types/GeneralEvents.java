@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -67,8 +70,11 @@ public final class GeneralEvents {
     /**
      * @return Extra data.
      */
-    @JsonProperty("extraData")
+    @JsonIgnore
     public Optional<String> getExtraData() {
+        if (extraData == null) {
+            return Optional.empty();
+        }
         return extraData;
     }
 
@@ -86,6 +92,12 @@ public final class GeneralEvents {
     @JsonProperty("source")
     public Optional<String> getSource() {
         return source;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("extraData")
+    private Optional<String> _getExtraData() {
+        return extraData;
     }
 
     @java.lang.Override
@@ -186,6 +198,17 @@ public final class GeneralEvents {
 
         public Builder extraData(String extraData) {
             this.extraData = Optional.ofNullable(extraData);
+            return this;
+        }
+
+        public Builder extraData(Nullable<String> extraData) {
+            if (extraData.isNull()) {
+                this.extraData = null;
+            } else if (extraData.isEmpty()) {
+                this.extraData = Optional.empty();
+            } else {
+                this.extraData = Optional.of(extraData.get());
+            }
             return this;
         }
 

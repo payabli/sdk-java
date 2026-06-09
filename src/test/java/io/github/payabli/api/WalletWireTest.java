@@ -49,7 +49,7 @@ public class WalletWireTest {
                 .configureApplePayOrganization(ConfigureOrganizationRequestApplePay.builder()
                         .cascade(true)
                         .isEnabled(true)
-                        .orgId(901L)
+                        .orgId(123L)
                         .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -57,7 +57,7 @@ public class WalletWireTest {
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody =
-                "" + "{\n" + "  \"cascade\": true,\n" + "  \"isEnabled\": true,\n" + "  \"orgId\": 901\n" + "}";
+                "" + "{\n" + "  \"cascade\": true,\n" + "  \"isEnabled\": true,\n" + "  \"orgId\": 123\n" + "}";
         JsonNode actualJson = objectMapper.readTree(actualRequestBody);
         JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
         Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
@@ -256,7 +256,7 @@ public class WalletWireTest {
                 .configureGooglePayOrganization(ConfigureOrganizationRequestGooglePay.builder()
                         .cascade(true)
                         .isEnabled(true)
-                        .orgId(901L)
+                        .orgId(123L)
                         .build());
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -264,7 +264,7 @@ public class WalletWireTest {
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody =
-                "" + "{\n" + "  \"cascade\": true,\n" + "  \"isEnabled\": true,\n" + "  \"orgId\": 901\n" + "}";
+                "" + "{\n" + "  \"cascade\": true,\n" + "  \"isEnabled\": true,\n" + "  \"orgId\": 123\n" + "}";
         JsonNode actualJson = objectMapper.readTree(actualRequestBody);
         JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
         Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");

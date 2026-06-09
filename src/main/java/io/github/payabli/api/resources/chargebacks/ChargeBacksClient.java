@@ -6,8 +6,8 @@ package io.github.payabli.api.resources.chargebacks;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.chargebacks.requests.ResponseChargeBack;
-import io.github.payabli.api.resources.chargebacks.types.AddResponseResponse;
-import io.github.payabli.api.resources.chargebacks.types.ChargebackQueryRecords;
+import io.github.payabli.api.types.AddResponseResponse;
+import io.github.payabli.api.types.ChargebackQueryRecords;
 
 public class ChargeBacksClient {
     protected final ClientOptions clientOptions;

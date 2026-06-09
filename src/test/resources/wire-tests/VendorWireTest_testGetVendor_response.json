@@ -1,5 +1,5 @@
 {
-  "VendorNumber": "1234",
+  "VendorNumber": "VEN-123",
   "Name1": "Herman's Coatings",
   "Name2": "Herman's Coating Supply Company, LLC",
   "EIN": "123456789",
@@ -38,7 +38,7 @@
   },
   "PaymentMethod": null,
   "VendorStatus": 1,
-  "VendorId": 1,
+  "VendorId": 456,
   "EnrollmentStatus": null,
   "Summary": {
     "ActiveBills": 2,
