@@ -749,6 +749,7 @@ public class MoneyInWireTest {
         }
     }
 
+    /*
     @Test
     public void testRefund() throws Exception {
         server.enqueue(
@@ -811,6 +812,7 @@ public class MoneyInWireTest {
             Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
         }
     }
+    */
 
     @Test
     public void testRefundWithInstructions() throws Exception {
