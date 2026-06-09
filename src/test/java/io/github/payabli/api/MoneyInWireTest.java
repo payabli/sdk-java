@@ -27,7 +27,6 @@ import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
 import io.github.payabli.api.types.ReceiptResponse;
 import io.github.payabli.api.types.RefundDetail;
-import io.github.payabli.api.types.RefundResponse;
 import io.github.payabli.api.types.RefundWithInstructionsResponse;
 import io.github.payabli.api.types.RequestCreditPaymentMethod;
 import io.github.payabli.api.types.RequestCreditPaymentMethodMethod;
