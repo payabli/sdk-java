@@ -866,9 +866,6 @@ public final class TransferOutDetailRecord {
         return settlementStatus;
     }
 
-    /**
-     * @return Name of the settlement status.
-     */
     @JsonIgnore
     public Optional<String> getSettlementStatusName() {
         if (settlementStatusName == null) {
@@ -3033,9 +3030,6 @@ public final class TransferOutDetailRecord {
             return this;
         }
 
-        /**
-         * <p>Name of the settlement status.</p>
-         */
         @JsonSetter(value = "SettlementStatusName", nulls = Nulls.SKIP)
         public Builder settlementStatusName(Optional<String> settlementStatusName) {
             this.settlementStatusName = settlementStatusName;

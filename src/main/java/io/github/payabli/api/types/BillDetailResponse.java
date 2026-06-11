@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -78,7 +81,7 @@ public final class BillDetailResponse {
 
     private final Optional<String> entryName;
 
-    private final Optional<String> batchId;
+    private final Optional<Double> batchId;
 
     private final Optional<Boolean> hasVcardTransactions;
 
@@ -86,7 +89,9 @@ public final class BillDetailResponse {
 
     private final Optional<Long> scheduleId;
 
-    private final Optional<Integer> settlementStatus;
+    private final Optional<String> settlementStatus;
+
+    private final Optional<String> settlementStatusName;
 
     private final Optional<Boolean> riskFlagged;
 
@@ -99,6 +104,8 @@ public final class BillDetailResponse {
     private final Optional<String> riskAction;
 
     private final Optional<Integer> riskActionCode;
+
+    private final Optional<String> entityId;
 
     private final Map<String, Object> additionalProperties;
 
@@ -131,17 +138,19 @@ public final class BillDetailResponse {
             Optional<VendorQueryRecord> vendor,
             Optional<String> externalPaypointId,
             Optional<String> entryName,
-            Optional<String> batchId,
+            Optional<Double> batchId,
             Optional<Boolean> hasVcardTransactions,
             Optional<Boolean> isSameDayAch,
             Optional<Long> scheduleId,
-            Optional<Integer> settlementStatus,
+            Optional<String> settlementStatus,
+            Optional<String> settlementStatusName,
             Optional<Boolean> riskFlagged,
             Optional<OffsetDateTime> riskFlaggedOn,
             Optional<String> riskStatus,
             Optional<String> riskReason,
             Optional<String> riskAction,
             Optional<Integer> riskActionCode,
+            Optional<String> entityId,
             Map<String, Object> additionalProperties) {
         this.bills = bills;
         this.checkData = checkData;
@@ -176,12 +185,14 @@ public final class BillDetailResponse {
         this.isSameDayAch = isSameDayAch;
         this.scheduleId = scheduleId;
         this.settlementStatus = settlementStatus;
+        this.settlementStatusName = settlementStatusName;
         this.riskFlagged = riskFlagged;
         this.riskFlaggedOn = riskFlaggedOn;
         this.riskStatus = riskStatus;
         this.riskReason = riskReason;
         this.riskAction = riskAction;
         this.riskActionCode = riskActionCode;
+        this.entityId = entityId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -387,7 +398,7 @@ public final class BillDetailResponse {
      * @return Identifier for the batch in which this transaction was processed. Used to track and reconcile batch-level operations.
      */
     @JsonProperty("BatchId")
-    public Optional<String> getBatchId() {
+    public Optional<Double> getBatchId() {
         return batchId;
     }
 
@@ -407,8 +418,16 @@ public final class BillDetailResponse {
     }
 
     @JsonProperty("SettlementStatus")
-    public Optional<Integer> getSettlementStatus() {
+    public Optional<String> getSettlementStatus() {
         return settlementStatus;
+    }
+
+    @JsonIgnore
+    public Optional<String> getSettlementStatusName() {
+        if (settlementStatusName == null) {
+            return Optional.empty();
+        }
+        return settlementStatusName;
     }
 
     @JsonProperty("RiskFlagged")
@@ -439,6 +458,17 @@ public final class BillDetailResponse {
     @JsonProperty("RiskActionCode")
     public Optional<Integer> getRiskActionCode() {
         return riskActionCode;
+    }
+
+    @JsonProperty("EntityId")
+    public Optional<String> getEntityId() {
+        return entityId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("SettlementStatusName")
+    private Optional<String> _getSettlementStatusName() {
+        return settlementStatusName;
     }
 
     @java.lang.Override
@@ -486,12 +516,14 @@ public final class BillDetailResponse {
                 && isSameDayAch.equals(other.isSameDayAch)
                 && scheduleId.equals(other.scheduleId)
                 && settlementStatus.equals(other.settlementStatus)
+                && settlementStatusName.equals(other.settlementStatusName)
                 && riskFlagged.equals(other.riskFlagged)
                 && riskFlaggedOn.equals(other.riskFlaggedOn)
                 && riskStatus.equals(other.riskStatus)
                 && riskReason.equals(other.riskReason)
                 && riskAction.equals(other.riskAction)
-                && riskActionCode.equals(other.riskActionCode);
+                && riskActionCode.equals(other.riskActionCode)
+                && entityId.equals(other.entityId);
     }
 
     @java.lang.Override
@@ -530,12 +562,14 @@ public final class BillDetailResponse {
                 this.isSameDayAch,
                 this.scheduleId,
                 this.settlementStatus,
+                this.settlementStatusName,
                 this.riskFlagged,
                 this.riskFlaggedOn,
                 this.riskStatus,
                 this.riskReason,
                 this.riskAction,
-                this.riskActionCode);
+                this.riskActionCode,
+                this.entityId);
     }
 
     @java.lang.Override
@@ -605,7 +639,7 @@ public final class BillDetailResponse {
 
         private Optional<String> entryName = Optional.empty();
 
-        private Optional<String> batchId = Optional.empty();
+        private Optional<Double> batchId = Optional.empty();
 
         private Optional<Boolean> hasVcardTransactions = Optional.empty();
 
@@ -613,7 +647,9 @@ public final class BillDetailResponse {
 
         private Optional<Long> scheduleId = Optional.empty();
 
-        private Optional<Integer> settlementStatus = Optional.empty();
+        private Optional<String> settlementStatus = Optional.empty();
+
+        private Optional<String> settlementStatusName = Optional.empty();
 
         private Optional<Boolean> riskFlagged = Optional.empty();
 
@@ -626,6 +662,8 @@ public final class BillDetailResponse {
         private Optional<String> riskAction = Optional.empty();
 
         private Optional<Integer> riskActionCode = Optional.empty();
+
+        private Optional<String> entityId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -666,12 +704,14 @@ public final class BillDetailResponse {
             isSameDayAch(other.getIsSameDayAch());
             scheduleId(other.getScheduleId());
             settlementStatus(other.getSettlementStatus());
+            settlementStatusName(other.getSettlementStatusName());
             riskFlagged(other.getRiskFlagged());
             riskFlaggedOn(other.getRiskFlaggedOn());
             riskStatus(other.getRiskStatus());
             riskReason(other.getRiskReason());
             riskAction(other.getRiskAction());
             riskActionCode(other.getRiskActionCode());
+            entityId(other.getEntityId());
             return this;
         }
 
@@ -1045,12 +1085,12 @@ public final class BillDetailResponse {
          * <p>Identifier for the batch in which this transaction was processed. Used to track and reconcile batch-level operations.</p>
          */
         @JsonSetter(value = "BatchId", nulls = Nulls.SKIP)
-        public Builder batchId(Optional<String> batchId) {
+        public Builder batchId(Optional<Double> batchId) {
             this.batchId = batchId;
             return this;
         }
 
-        public Builder batchId(String batchId) {
+        public Builder batchId(Double batchId) {
             this.batchId = Optional.ofNullable(batchId);
             return this;
         }
@@ -1089,13 +1129,35 @@ public final class BillDetailResponse {
         }
 
         @JsonSetter(value = "SettlementStatus", nulls = Nulls.SKIP)
-        public Builder settlementStatus(Optional<Integer> settlementStatus) {
+        public Builder settlementStatus(Optional<String> settlementStatus) {
             this.settlementStatus = settlementStatus;
             return this;
         }
 
-        public Builder settlementStatus(Integer settlementStatus) {
+        public Builder settlementStatus(String settlementStatus) {
             this.settlementStatus = Optional.ofNullable(settlementStatus);
+            return this;
+        }
+
+        @JsonSetter(value = "SettlementStatusName", nulls = Nulls.SKIP)
+        public Builder settlementStatusName(Optional<String> settlementStatusName) {
+            this.settlementStatusName = settlementStatusName;
+            return this;
+        }
+
+        public Builder settlementStatusName(String settlementStatusName) {
+            this.settlementStatusName = Optional.ofNullable(settlementStatusName);
+            return this;
+        }
+
+        public Builder settlementStatusName(Nullable<String> settlementStatusName) {
+            if (settlementStatusName.isNull()) {
+                this.settlementStatusName = null;
+            } else if (settlementStatusName.isEmpty()) {
+                this.settlementStatusName = Optional.empty();
+            } else {
+                this.settlementStatusName = Optional.of(settlementStatusName.get());
+            }
             return this;
         }
 
@@ -1165,6 +1227,17 @@ public final class BillDetailResponse {
             return this;
         }
 
+        @JsonSetter(value = "EntityId", nulls = Nulls.SKIP)
+        public Builder entityId(Optional<String> entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        public Builder entityId(String entityId) {
+            this.entityId = Optional.ofNullable(entityId);
+            return this;
+        }
+
         public BillDetailResponse build() {
             return new BillDetailResponse(
                     bills,
@@ -1200,12 +1273,14 @@ public final class BillDetailResponse {
                     isSameDayAch,
                     scheduleId,
                     settlementStatus,
+                    settlementStatusName,
                     riskFlagged,
                     riskFlaggedOn,
                     riskStatus,
                     riskReason,
                     riskAction,
                     riskActionCode,
+                    entityId,
                     additionalProperties);
         }
 

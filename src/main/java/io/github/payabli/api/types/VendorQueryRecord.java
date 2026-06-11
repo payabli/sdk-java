@@ -32,7 +32,7 @@ public final class VendorQueryRecord {
 
     private final Optional<String> city;
 
-    private final Optional<ContactsResponse> contacts;
+    private final Optional<List<ContactsResponse>> contacts;
 
     private final Optional<String> country;
 
@@ -132,7 +132,7 @@ public final class VendorQueryRecord {
             Optional<String> address2,
             Optional<BillingDataResponse> billingData,
             Optional<String> city,
-            Optional<ContactsResponse> contacts,
+            Optional<List<ContactsResponse>> contacts,
             Optional<String> country,
             Optional<OffsetDateTime> createdDate,
             Optional<String> customerVendorAccount,
@@ -258,8 +258,11 @@ public final class VendorQueryRecord {
         return city;
     }
 
+    /**
+     * @return Array of objects describing the vendor's contacts.
+     */
     @JsonProperty("Contacts")
-    public Optional<ContactsResponse> getContacts() {
+    public Optional<List<ContactsResponse>> getContacts() {
         return contacts;
     }
 
@@ -651,7 +654,7 @@ public final class VendorQueryRecord {
 
         private Optional<String> city = Optional.empty();
 
-        private Optional<ContactsResponse> contacts = Optional.empty();
+        private Optional<List<ContactsResponse>> contacts = Optional.empty();
 
         private Optional<String> country = Optional.empty();
 
@@ -858,13 +861,16 @@ public final class VendorQueryRecord {
             return this;
         }
 
+        /**
+         * <p>Array of objects describing the vendor's contacts.</p>
+         */
         @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
-        public Builder contacts(Optional<ContactsResponse> contacts) {
+        public Builder contacts(Optional<List<ContactsResponse>> contacts) {
             this.contacts = contacts;
             return this;
         }
 
-        public Builder contacts(ContactsResponse contacts) {
+        public Builder contacts(List<ContactsResponse> contacts) {
             this.contacts = Optional.ofNullable(contacts);
             return this;
         }

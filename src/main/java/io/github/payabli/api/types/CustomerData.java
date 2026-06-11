@@ -184,7 +184,7 @@ public final class CustomerData {
     }
 
     /**
-     * @return Customer phone number
+     * @return Customer phone number. Payabli normalizes this value when it's stored. For example, <code>(555) 555-0100</code> is stored as <code>+15555550100</code>.
      */
     @JsonProperty("phone")
     public Optional<String> getPhone() {
@@ -570,7 +570,7 @@ public final class CustomerData {
         }
 
         /**
-         * <p>Customer phone number</p>
+         * <p>Customer phone number. Payabli normalizes this value when it's stored. For example, <code>(555) 555-0100</code> is stored as <code>+15555550100</code>.</p>
          */
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public Builder phone(Optional<String> phone) {
