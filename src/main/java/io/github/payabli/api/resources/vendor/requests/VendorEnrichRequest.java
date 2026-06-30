@@ -82,7 +82,7 @@ public final class VendorEnrichRequest {
     }
 
     /**
-     * @return When <code>true</code>, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
+     * @return When <code>true</code>, Payabli schedules an AI outreach call to the vendor if the enrichment stages return insufficient payment acceptance info. The call collects the vendor's preferred payment method and contact email. This is the third enrichment stage and is opt-in at the org level. See the schedule outreach call endpoint for behavior and requirements.
      */
     @JsonProperty("scheduleCallIfNeeded")
     public Optional<Boolean> getScheduleCallIfNeeded() {
@@ -186,7 +186,7 @@ public final class VendorEnrichRequest {
         _FinalStage applyEnrichmentData(Boolean applyEnrichmentData);
 
         /**
-         * <p>When <code>true</code>, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.</p>
+         * <p>When <code>true</code>, Payabli schedules an AI outreach call to the vendor if the enrichment stages return insufficient payment acceptance info. The call collects the vendor's preferred payment method and contact email. This is the third enrichment stage and is opt-in at the org level. See the schedule outreach call endpoint for behavior and requirements.</p>
          */
         _FinalStage scheduleCallIfNeeded(Optional<Boolean> scheduleCallIfNeeded);
 
@@ -320,7 +320,7 @@ public final class VendorEnrichRequest {
         }
 
         /**
-         * <p>When <code>true</code>, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.</p>
+         * <p>When <code>true</code>, Payabli schedules an AI outreach call to the vendor if the enrichment stages return insufficient payment acceptance info. The call collects the vendor's preferred payment method and contact email. This is the third enrichment stage and is opt-in at the org level. See the schedule outreach call endpoint for behavior and requirements.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -330,7 +330,7 @@ public final class VendorEnrichRequest {
         }
 
         /**
-         * <p>When <code>true</code>, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.</p>
+         * <p>When <code>true</code>, Payabli schedules an AI outreach call to the vendor if the enrichment stages return insufficient payment acceptance info. The call collects the vendor's preferred payment method and contact email. This is the third enrichment stage and is opt-in at the org level. See the schedule outreach call endpoint for behavior and requirements.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "scheduleCallIfNeeded", nulls = Nulls.SKIP)

@@ -65,8 +65,10 @@ package com.example.usage;
 
 import io.github.payabli.api.PayabliApiClient;
 import io.github.payabli.api.resources.moneyin.requests.RequestPaymentV2;
-import io.github.payabli.api.types.PayMethodCredit;
-import io.github.payabli.api.types.PayMethodCreditMethod;
+import io.github.payabli.api.types.AchHolderType;
+import io.github.payabli.api.types.Achaccounttype;
+import io.github.payabli.api.types.PayMethodAch;
+import io.github.payabli.api.types.PayMethodAchMethod;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.PaymentMethod;
 import io.github.payabli.api.types.PayorDataRequest;
@@ -95,15 +97,15 @@ public class Example {
                         )
                         .paymentMethod(
                             PaymentMethod.of(
-                                PayMethodCredit
+                                PayMethodAch
                                     .builder()
-                                    .cardexp("02/27")
-                                    .cardnumber("4111111111111111")
-                                    .method(PayMethodCreditMethod.CARD)
-                                    .cardcvv(Optional.of("999"))
-                                    .cardHolder(Optional.of("John Cassian"))
-                                    .cardzip(Optional.of("12345"))
-                                    .initiator(Optional.of("payor"))
+                                    .achAccount("123123123")
+                                    .achHolder("John Cassian")
+                                    .achRouting("123123123")
+                                    .method(PayMethodAchMethod.ACH)
+                                    .achAccountType(Optional.of(Achaccounttype.CHECKING))
+                                    .achCode(Optional.of("WEB"))
+                                    .achHolderType(Optional.of(AchHolderType.PERSONAL))
                                     .build()
                             )
                         )
@@ -299,7 +301,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:1.0.4'
+  implementation 'io.github.payabli:sdk-java:1.0.5'
 }
 ```
 
@@ -311,7 +313,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 

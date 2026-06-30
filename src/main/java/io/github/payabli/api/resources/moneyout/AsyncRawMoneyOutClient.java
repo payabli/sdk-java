@@ -17,9 +17,11 @@ import io.github.payabli.api.errors.ForbiddenError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
+import io.github.payabli.api.errors.UnprocessableEntityError;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.RenewVCardRequest;
 import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.types.AllowedCheckPaymentStatus;
@@ -31,6 +33,7 @@ import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.ReissuePayoutResponse;
+import io.github.payabli.api.types.RenewVCardResponse;
 import io.github.payabli.api.types.VCardGetResponse;
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +60,7 @@ public class AsyncRawMoneyOutClient {
      * Authorizes a transaction for payout.
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(
             RequestOutAuthorize request) {
@@ -67,6 +71,7 @@ public class AsyncRawMoneyOutClient {
      * Authorizes a transaction for payout.
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> authorizeOut(
             RequestOutAuthorize request, RequestOptions requestOptions) {
@@ -140,6 +145,11 @@ public class AsyncRawMoneyOutClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 422:
+                                future.completeExceptionally(new UnprocessableEntityError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
@@ -553,14 +563,16 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(String referenceId) {
         return captureOut(referenceId, CaptureOutRequest.builder().build());
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, RequestOptions requestOptions) {
@@ -568,7 +580,8 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, CaptureOutRequest request) {
@@ -576,7 +589,8 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthCapturePayoutResponse>> captureOut(
             String referenceId, CaptureOutRequest request, RequestOptions requestOptions) {
@@ -625,6 +639,11 @@ public class AsyncRawMoneyOutClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 422:
+                                future.completeExceptionally(new UnprocessableEntityError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                         response));
                                 return;
@@ -785,6 +804,106 @@ public class AsyncRawMoneyOutClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardGetResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Renews an expired or expiring virtual card by extending its expiration date to a future month.
+     * <p>The card must be a virtual card that hasn't been fully used. The new expiration date must be in <code>MM-YYYY</code> or <code>MM/YYYY</code> format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.</p>
+     * <p>On success, <code>referenceId</code> holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return <code>null</code>.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<RenewVCardResponse>> renewVCard(
+            String cardToken, RenewVCardRequest request) {
+        return renewVCard(cardToken, request, null);
+    }
+
+    /**
+     * Renews an expired or expiring virtual card by extending its expiration date to a future month.
+     * <p>The card must be a virtual card that hasn't been fully used. The new expiration date must be in <code>MM-YYYY</code> or <code>MM/YYYY</code> format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.</p>
+     * <p>On success, <code>referenceId</code> holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return <code>null</code>.</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<RenewVCardResponse>> renewVCard(
+            String cardToken, RenewVCardRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyOutCard/vcard")
+                .addPathSegment(cardToken)
+                .addPathSegments("renew");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("PUT", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<PayabliApiHttpResponse<RenewVCardResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RenewVCardResponse.class),
                                 response));
                         return;
                     }

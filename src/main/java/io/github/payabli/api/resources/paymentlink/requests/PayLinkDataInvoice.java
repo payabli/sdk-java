@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayLinkDataInvoice.Builder.class)
@@ -39,7 +40,7 @@ public final class PayLinkDataInvoice {
 
     private final Optional<ContactElement> contactUs;
 
-    private final Optional<InvoiceElement> invoices;
+    private final InvoiceElement invoices;
 
     private final Optional<Element> logo;
 
@@ -66,7 +67,7 @@ public final class PayLinkDataInvoice {
             Optional<Boolean> amountFixed,
             Optional<String> mail2,
             Optional<ContactElement> contactUs,
-            Optional<InvoiceElement> invoices,
+            InvoiceElement invoices,
             Optional<Element> logo,
             Optional<LabelElement> messageBeforePaying,
             Optional<NoteElement> notes,
@@ -119,7 +120,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return ContactUs section of payment link page
+     * @return Contact us section of payment link page. If omitted, this block is enabled at display order 11.
      */
     @JsonProperty("contactUs")
     public Optional<ContactElement> getContactUs() {
@@ -127,15 +128,15 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Invoices section of payment link page
+     * @return Invoices section of payment link page. Required. Omitting it returns a <code>400</code> error with code <code>7045</code>.
      */
     @JsonProperty("invoices")
-    public Optional<InvoiceElement> getInvoices() {
+    public InvoiceElement getInvoices() {
         return invoices;
     }
 
     /**
-     * @return Logo section of payment link page
+     * @return Logo section of payment link page. If omitted, this block is enabled at display order 1, and the logo image is resolved from the paypoint's entry logo.
      */
     @JsonProperty("logo")
     public Optional<Element> getLogo() {
@@ -143,7 +144,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Message section of payment link page
+     * @return Message section of payment link page. If omitted, this block is enabled at display order 5.
      */
     @JsonProperty("messageBeforePaying")
     public Optional<LabelElement> getMessageBeforePaying() {
@@ -151,7 +152,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Notes section of payment link page
+     * @return Notes section of payment link page. If omitted, this block is enabled at display order 10.
      */
     @JsonProperty("notes")
     public Optional<NoteElement> getNotes() {
@@ -159,7 +160,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Page header section of payment link page
+     * @return Page header section of payment link page. If omitted, this block is enabled at display order 2.
      */
     @JsonProperty("page")
     public Optional<PageElement> getPage() {
@@ -167,7 +168,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Payment button section of payment link page
+     * @return Payment button section of payment link page. If omitted, this block is enabled at display order 6, with the label &quot;Pay Now&quot;.
      */
     @JsonProperty("paymentButton")
     public Optional<LabelElement> getPaymentButton() {
@@ -175,7 +176,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Payment methods section of payment link page
+     * @return Payment methods section of payment link page. If omitted, this block is enabled at display order 3, with all payment methods enabled except RDC.
      */
     @JsonProperty("paymentMethods")
     public Optional<MethodElement> getPaymentMethods() {
@@ -191,7 +192,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Review section of payment link page
+     * @return Review section of payment link page. If omitted, this block is enabled at display order 4.
      */
     @JsonProperty("review")
     public Optional<HeaderElement> getReview() {
@@ -199,7 +200,7 @@ public final class PayLinkDataInvoice {
     }
 
     /**
-     * @return Settings section of payment link page
+     * @return Settings section of payment link page. If omitted, defaults are applied, including page color <code>#10a0e3</code> and language <code>en</code>.
      */
     @JsonProperty("settings")
     public Optional<PagelinkSetting> getSettings() {
@@ -258,45 +259,154 @@ public final class PayLinkDataInvoice {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static InvoicesStage builder() {
         return new Builder();
     }
 
+    public interface InvoicesStage {
+        /**
+         * <p>Invoices section of payment link page. Required. Omitting it returns a <code>400</code> error with code <code>7045</code>.</p>
+         */
+        _FinalStage invoices(@NotNull InvoiceElement invoices);
+
+        Builder from(PayLinkDataInvoice other);
+    }
+
+    public interface _FinalStage {
+        PayLinkDataInvoice build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
+        _FinalStage idempotencyKey(Optional<String> idempotencyKey);
+
+        _FinalStage idempotencyKey(String idempotencyKey);
+
+        /**
+         * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
+         */
+        _FinalStage amountFixed(Optional<Boolean> amountFixed);
+
+        _FinalStage amountFixed(Boolean amountFixed);
+
+        /**
+         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
+         */
+        _FinalStage mail2(Optional<String> mail2);
+
+        _FinalStage mail2(String mail2);
+
+        /**
+         * <p>Contact us section of payment link page. If omitted, this block is enabled at display order 11.</p>
+         */
+        _FinalStage contactUs(Optional<ContactElement> contactUs);
+
+        _FinalStage contactUs(ContactElement contactUs);
+
+        /**
+         * <p>Logo section of payment link page. If omitted, this block is enabled at display order 1, and the logo image is resolved from the paypoint's entry logo.</p>
+         */
+        _FinalStage logo(Optional<Element> logo);
+
+        _FinalStage logo(Element logo);
+
+        /**
+         * <p>Message section of payment link page. If omitted, this block is enabled at display order 5.</p>
+         */
+        _FinalStage messageBeforePaying(Optional<LabelElement> messageBeforePaying);
+
+        _FinalStage messageBeforePaying(LabelElement messageBeforePaying);
+
+        /**
+         * <p>Notes section of payment link page. If omitted, this block is enabled at display order 10.</p>
+         */
+        _FinalStage notes(Optional<NoteElement> notes);
+
+        _FinalStage notes(NoteElement notes);
+
+        /**
+         * <p>Page header section of payment link page. If omitted, this block is enabled at display order 2.</p>
+         */
+        _FinalStage page(Optional<PageElement> page);
+
+        _FinalStage page(PageElement page);
+
+        /**
+         * <p>Payment button section of payment link page. If omitted, this block is enabled at display order 6, with the label &quot;Pay Now&quot;.</p>
+         */
+        _FinalStage paymentButton(Optional<LabelElement> paymentButton);
+
+        _FinalStage paymentButton(LabelElement paymentButton);
+
+        /**
+         * <p>Payment methods section of payment link page. If omitted, this block is enabled at display order 3, with all payment methods enabled except RDC.</p>
+         */
+        _FinalStage paymentMethods(Optional<MethodElement> paymentMethods);
+
+        _FinalStage paymentMethods(MethodElement paymentMethods);
+
+        /**
+         * <p>Customer/Payor section of payment link page</p>
+         */
+        _FinalStage payor(Optional<PayorElement> payor);
+
+        _FinalStage payor(PayorElement payor);
+
+        /**
+         * <p>Review section of payment link page. If omitted, this block is enabled at display order 4.</p>
+         */
+        _FinalStage review(Optional<HeaderElement> review);
+
+        _FinalStage review(HeaderElement review);
+
+        /**
+         * <p>Settings section of payment link page. If omitted, defaults are applied, including page color <code>#10a0e3</code> and language <code>en</code>.</p>
+         */
+        _FinalStage settings(Optional<PagelinkSetting> settings);
+
+        _FinalStage settings(PagelinkSetting settings);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> idempotencyKey = Optional.empty();
+    public static final class Builder implements InvoicesStage, _FinalStage {
+        private InvoiceElement invoices;
 
-        private Optional<Boolean> amountFixed = Optional.empty();
-
-        private Optional<String> mail2 = Optional.empty();
-
-        private Optional<ContactElement> contactUs = Optional.empty();
-
-        private Optional<InvoiceElement> invoices = Optional.empty();
-
-        private Optional<Element> logo = Optional.empty();
-
-        private Optional<LabelElement> messageBeforePaying = Optional.empty();
-
-        private Optional<NoteElement> notes = Optional.empty();
-
-        private Optional<PageElement> page = Optional.empty();
-
-        private Optional<LabelElement> paymentButton = Optional.empty();
-
-        private Optional<MethodElement> paymentMethods = Optional.empty();
-
-        private Optional<PayorElement> payor = Optional.empty();
+        private Optional<PagelinkSetting> settings = Optional.empty();
 
         private Optional<HeaderElement> review = Optional.empty();
 
-        private Optional<PagelinkSetting> settings = Optional.empty();
+        private Optional<PayorElement> payor = Optional.empty();
+
+        private Optional<MethodElement> paymentMethods = Optional.empty();
+
+        private Optional<LabelElement> paymentButton = Optional.empty();
+
+        private Optional<PageElement> page = Optional.empty();
+
+        private Optional<NoteElement> notes = Optional.empty();
+
+        private Optional<LabelElement> messageBeforePaying = Optional.empty();
+
+        private Optional<Element> logo = Optional.empty();
+
+        private Optional<ContactElement> contactUs = Optional.empty();
+
+        private Optional<String> mail2 = Optional.empty();
+
+        private Optional<Boolean> amountFixed = Optional.empty();
+
+        private Optional<String> idempotencyKey = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(PayLinkDataInvoice other) {
             idempotencyKey(other.getIdempotencyKey());
             amountFixed(other.getAmountFixed());
@@ -316,200 +426,277 @@ public final class PayLinkDataInvoice {
         }
 
         /**
-         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         * <p>Invoices section of payment link page. Required. Omitting it returns a <code>400</code> error with code <code>7045</code>.</p>
+         * <p>Invoices section of payment link page. Required. Omitting it returns a <code>400</code> error with code <code>7045</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        public Builder idempotencyKey(Optional<String> idempotencyKey) {
-            this.idempotencyKey = idempotencyKey;
-            return this;
-        }
-
-        public Builder idempotencyKey(String idempotencyKey) {
-            this.idempotencyKey = Optional.ofNullable(idempotencyKey);
+        @java.lang.Override
+        @JsonSetter("invoices")
+        public _FinalStage invoices(@NotNull InvoiceElement invoices) {
+            this.invoices = Objects.requireNonNull(invoices, "invoices must not be null");
             return this;
         }
 
         /**
-         * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
+         * <p>Settings section of payment link page. If omitted, defaults are applied, including page color <code>#10a0e3</code> and language <code>en</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "amountFixed", nulls = Nulls.SKIP)
-        public Builder amountFixed(Optional<Boolean> amountFixed) {
-            this.amountFixed = amountFixed;
-            return this;
-        }
-
-        public Builder amountFixed(Boolean amountFixed) {
-            this.amountFixed = Optional.ofNullable(amountFixed);
+        @java.lang.Override
+        public _FinalStage settings(PagelinkSetting settings) {
+            this.settings = Optional.ofNullable(settings);
             return this;
         }
 
         /**
-         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
+         * <p>Settings section of payment link page. If omitted, defaults are applied, including page color <code>#10a0e3</code> and language <code>en</code>.</p>
          */
-        @JsonSetter(value = "mail2", nulls = Nulls.SKIP)
-        public Builder mail2(Optional<String> mail2) {
-            this.mail2 = mail2;
-            return this;
-        }
-
-        public Builder mail2(String mail2) {
-            this.mail2 = Optional.ofNullable(mail2);
+        @java.lang.Override
+        @JsonSetter(value = "settings", nulls = Nulls.SKIP)
+        public _FinalStage settings(Optional<PagelinkSetting> settings) {
+            this.settings = settings;
             return this;
         }
 
         /**
-         * <p>ContactUs section of payment link page</p>
+         * <p>Review section of payment link page. If omitted, this block is enabled at display order 4.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "contactUs", nulls = Nulls.SKIP)
-        public Builder contactUs(Optional<ContactElement> contactUs) {
-            this.contactUs = contactUs;
-            return this;
-        }
-
-        public Builder contactUs(ContactElement contactUs) {
-            this.contactUs = Optional.ofNullable(contactUs);
+        @java.lang.Override
+        public _FinalStage review(HeaderElement review) {
+            this.review = Optional.ofNullable(review);
             return this;
         }
 
         /**
-         * <p>Invoices section of payment link page</p>
+         * <p>Review section of payment link page. If omitted, this block is enabled at display order 4.</p>
          */
-        @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
-        public Builder invoices(Optional<InvoiceElement> invoices) {
-            this.invoices = invoices;
-            return this;
-        }
-
-        public Builder invoices(InvoiceElement invoices) {
-            this.invoices = Optional.ofNullable(invoices);
+        @java.lang.Override
+        @JsonSetter(value = "review", nulls = Nulls.SKIP)
+        public _FinalStage review(Optional<HeaderElement> review) {
+            this.review = review;
             return this;
         }
 
         /**
-         * <p>Logo section of payment link page</p>
+         * <p>Customer/Payor section of payment link page</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
-        public Builder logo(Optional<Element> logo) {
-            this.logo = logo;
-            return this;
-        }
-
-        public Builder logo(Element logo) {
-            this.logo = Optional.ofNullable(logo);
-            return this;
-        }
-
-        /**
-         * <p>Message section of payment link page</p>
-         */
-        @JsonSetter(value = "messageBeforePaying", nulls = Nulls.SKIP)
-        public Builder messageBeforePaying(Optional<LabelElement> messageBeforePaying) {
-            this.messageBeforePaying = messageBeforePaying;
-            return this;
-        }
-
-        public Builder messageBeforePaying(LabelElement messageBeforePaying) {
-            this.messageBeforePaying = Optional.ofNullable(messageBeforePaying);
-            return this;
-        }
-
-        /**
-         * <p>Notes section of payment link page</p>
-         */
-        @JsonSetter(value = "notes", nulls = Nulls.SKIP)
-        public Builder notes(Optional<NoteElement> notes) {
-            this.notes = notes;
-            return this;
-        }
-
-        public Builder notes(NoteElement notes) {
-            this.notes = Optional.ofNullable(notes);
-            return this;
-        }
-
-        /**
-         * <p>Page header section of payment link page</p>
-         */
-        @JsonSetter(value = "page", nulls = Nulls.SKIP)
-        public Builder page(Optional<PageElement> page) {
-            this.page = page;
-            return this;
-        }
-
-        public Builder page(PageElement page) {
-            this.page = Optional.ofNullable(page);
-            return this;
-        }
-
-        /**
-         * <p>Payment button section of payment link page</p>
-         */
-        @JsonSetter(value = "paymentButton", nulls = Nulls.SKIP)
-        public Builder paymentButton(Optional<LabelElement> paymentButton) {
-            this.paymentButton = paymentButton;
-            return this;
-        }
-
-        public Builder paymentButton(LabelElement paymentButton) {
-            this.paymentButton = Optional.ofNullable(paymentButton);
-            return this;
-        }
-
-        /**
-         * <p>Payment methods section of payment link page</p>
-         */
-        @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
-        public Builder paymentMethods(Optional<MethodElement> paymentMethods) {
-            this.paymentMethods = paymentMethods;
-            return this;
-        }
-
-        public Builder paymentMethods(MethodElement paymentMethods) {
-            this.paymentMethods = Optional.ofNullable(paymentMethods);
+        @java.lang.Override
+        public _FinalStage payor(PayorElement payor) {
+            this.payor = Optional.ofNullable(payor);
             return this;
         }
 
         /**
          * <p>Customer/Payor section of payment link page</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "payor", nulls = Nulls.SKIP)
-        public Builder payor(Optional<PayorElement> payor) {
+        public _FinalStage payor(Optional<PayorElement> payor) {
             this.payor = payor;
             return this;
         }
 
-        public Builder payor(PayorElement payor) {
-            this.payor = Optional.ofNullable(payor);
+        /**
+         * <p>Payment methods section of payment link page. If omitted, this block is enabled at display order 3, with all payment methods enabled except RDC.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentMethods(MethodElement paymentMethods) {
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
         /**
-         * <p>Review section of payment link page</p>
+         * <p>Payment methods section of payment link page. If omitted, this block is enabled at display order 3, with all payment methods enabled except RDC.</p>
          */
-        @JsonSetter(value = "review", nulls = Nulls.SKIP)
-        public Builder review(Optional<HeaderElement> review) {
-            this.review = review;
-            return this;
-        }
-
-        public Builder review(HeaderElement review) {
-            this.review = Optional.ofNullable(review);
+        @java.lang.Override
+        @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
+        public _FinalStage paymentMethods(Optional<MethodElement> paymentMethods) {
+            this.paymentMethods = paymentMethods;
             return this;
         }
 
         /**
-         * <p>Settings section of payment link page</p>
+         * <p>Payment button section of payment link page. If omitted, this block is enabled at display order 6, with the label &quot;Pay Now&quot;.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "settings", nulls = Nulls.SKIP)
-        public Builder settings(Optional<PagelinkSetting> settings) {
-            this.settings = settings;
+        @java.lang.Override
+        public _FinalStage paymentButton(LabelElement paymentButton) {
+            this.paymentButton = Optional.ofNullable(paymentButton);
             return this;
         }
 
-        public Builder settings(PagelinkSetting settings) {
-            this.settings = Optional.ofNullable(settings);
+        /**
+         * <p>Payment button section of payment link page. If omitted, this block is enabled at display order 6, with the label &quot;Pay Now&quot;.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paymentButton", nulls = Nulls.SKIP)
+        public _FinalStage paymentButton(Optional<LabelElement> paymentButton) {
+            this.paymentButton = paymentButton;
             return this;
         }
 
+        /**
+         * <p>Page header section of payment link page. If omitted, this block is enabled at display order 2.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage page(PageElement page) {
+            this.page = Optional.ofNullable(page);
+            return this;
+        }
+
+        /**
+         * <p>Page header section of payment link page. If omitted, this block is enabled at display order 2.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "page", nulls = Nulls.SKIP)
+        public _FinalStage page(Optional<PageElement> page) {
+            this.page = page;
+            return this;
+        }
+
+        /**
+         * <p>Notes section of payment link page. If omitted, this block is enabled at display order 10.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage notes(NoteElement notes) {
+            this.notes = Optional.ofNullable(notes);
+            return this;
+        }
+
+        /**
+         * <p>Notes section of payment link page. If omitted, this block is enabled at display order 10.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "notes", nulls = Nulls.SKIP)
+        public _FinalStage notes(Optional<NoteElement> notes) {
+            this.notes = notes;
+            return this;
+        }
+
+        /**
+         * <p>Message section of payment link page. If omitted, this block is enabled at display order 5.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage messageBeforePaying(LabelElement messageBeforePaying) {
+            this.messageBeforePaying = Optional.ofNullable(messageBeforePaying);
+            return this;
+        }
+
+        /**
+         * <p>Message section of payment link page. If omitted, this block is enabled at display order 5.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "messageBeforePaying", nulls = Nulls.SKIP)
+        public _FinalStage messageBeforePaying(Optional<LabelElement> messageBeforePaying) {
+            this.messageBeforePaying = messageBeforePaying;
+            return this;
+        }
+
+        /**
+         * <p>Logo section of payment link page. If omitted, this block is enabled at display order 1, and the logo image is resolved from the paypoint's entry logo.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage logo(Element logo) {
+            this.logo = Optional.ofNullable(logo);
+            return this;
+        }
+
+        /**
+         * <p>Logo section of payment link page. If omitted, this block is enabled at display order 1, and the logo image is resolved from the paypoint's entry logo.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
+        public _FinalStage logo(Optional<Element> logo) {
+            this.logo = logo;
+            return this;
+        }
+
+        /**
+         * <p>Contact us section of payment link page. If omitted, this block is enabled at display order 11.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage contactUs(ContactElement contactUs) {
+            this.contactUs = Optional.ofNullable(contactUs);
+            return this;
+        }
+
+        /**
+         * <p>Contact us section of payment link page. If omitted, this block is enabled at display order 11.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "contactUs", nulls = Nulls.SKIP)
+        public _FinalStage contactUs(Optional<ContactElement> contactUs) {
+            this.contactUs = contactUs;
+            return this;
+        }
+
+        /**
+         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage mail2(String mail2) {
+            this.mail2 = Optional.ofNullable(mail2);
+            return this;
+        }
+
+        /**
+         * <p>List of recipient email addresses. When there is more than one, separate them by a semicolon (;).</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "mail2", nulls = Nulls.SKIP)
+        public _FinalStage mail2(Optional<String> mail2) {
+            this.mail2 = mail2;
+            return this;
+        }
+
+        /**
+         * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage amountFixed(Boolean amountFixed) {
+            this.amountFixed = Optional.ofNullable(amountFixed);
+            return this;
+        }
+
+        /**
+         * <p>Indicates whether customer can modify the payment amount. A value of <code>true</code> means the amount isn't modifiable, a value <code>false</code> means the payor can modify the amount to pay.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "amountFixed", nulls = Nulls.SKIP)
+        public _FinalStage amountFixed(Optional<Boolean> amountFixed) {
+            this.amountFixed = amountFixed;
+            return this;
+        }
+
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage idempotencyKey(String idempotencyKey) {
+            this.idempotencyKey = Optional.ofNullable(idempotencyKey);
+            return this;
+        }
+
+        /**
+         * <p><em>Optional but recommended</em> A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.</p>
+         */
+        @java.lang.Override
+        public _FinalStage idempotencyKey(Optional<String> idempotencyKey) {
+            this.idempotencyKey = idempotencyKey;
+            return this;
+        }
+
+        @java.lang.Override
         public PayLinkDataInvoice build() {
             return new PayLinkDataInvoice(
                     idempotencyKey,
@@ -529,11 +716,13 @@ public final class PayLinkDataInvoice {
                     additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

@@ -124,6 +124,7 @@
         "HolderName": "Billy J Franks",
         "Initiator": "payor",
         "MaskedAccount": "411111XXXXXX1111",
+        "orderDescription": "Monthly subscription",
         "paymentDetails": {
           "totalAmount": 100
         },

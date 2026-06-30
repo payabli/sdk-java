@@ -46,7 +46,7 @@ public class StatisticWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "[{\"outCustomers\":18196,\"outNewCustomers\":1089,\"outTransactions\":3319,\"outSubscriptionsPaid\":0,\"outCardTransactions\":0,\"outVCardTransactions\":0,\"outACHTransactions\":0,\"outCheckTransactions\":0,\"outPendingMethodTransactions\":22,\"outTransactionsVolume\":13111741.78,\"outSubscriptionsPaidVolume\":0,\"outCardVolume\":0,\"outVCardVolume\":0,\"outACHVolume\":0,\"outCheckVolume\":0,\"outPendingMethodVolume\":82,\"statX\":\"2025-11\",\"inTransactions\":168204,\"inSubscriptionsPaid\":311,\"inCustomers\":2561522,\"inNewCustomers\":44846,\"inCardTransactions\":115059,\"inACHTransactions\":53153,\"inCheckTransactions\":0,\"inCashTransactions\":15,\"inWalletTransactions\":0,\"inCardChargeBacks\":17,\"inACHReturns\":0,\"inTransactionsVolume\":104795896.94,\"inSubscriptionsPaidVolume\":81569.32,\"inCardVolume\":41085285.13,\"inACHVolume\":63706101.81,\"inCheckVolume\":0,\"inCashVolume\":4510,\"inWalletVolume\":0,\"inCardChargeBackVolume\":15455.75,\"inACHReturnsVolume\":0}]"));
+                                "[{\"outCustomers\":18196,\"outNewCustomers\":1089,\"outTransactions\":3319,\"outSubscriptionsPaid\":0,\"outCardTransactions\":0,\"outVCardTransactions\":0,\"outACHTransactions\":0,\"outCheckTransactions\":0,\"outPendingMethodTransactions\":22,\"outRTPTransactions\":8,\"outRTPVolume\":12500,\"outWireTransactions\":5,\"outWireVolume\":47800,\"outTransactionsVolume\":13111741.78,\"outSubscriptionsPaidVolume\":0,\"outCardVolume\":0,\"outVCardVolume\":0,\"outACHVolume\":0,\"outCheckVolume\":0,\"outPendingMethodVolume\":82,\"statX\":\"2025-11\",\"inTransactions\":168204,\"inSubscriptionsPaid\":311,\"inCustomers\":2561522,\"inNewCustomers\":44846,\"inCardTransactions\":115059,\"inACHTransactions\":53153,\"inCheckTransactions\":0,\"inCashTransactions\":15,\"inWalletTransactions\":0,\"inCardChargeBacks\":17,\"inACHReturns\":0,\"inTransactionsVolume\":104795896.94,\"inSubscriptionsPaidVolume\":81569.32,\"inCardVolume\":41085285.13,\"inACHVolume\":63706101.81,\"inCheckVolume\":0,\"inCashVolume\":4510,\"inWalletVolume\":0,\"inCardChargeBackVolume\":15455.75,\"inACHReturnsVolume\":0}]"));
         List<StatBasicExtendedQueryRecord> response = client.statistic()
                 .basicStats(
                         "custom",
@@ -76,6 +76,10 @@ public class StatisticWireTest {
                 + "    \"outACHTransactions\": 0,\n"
                 + "    \"outCheckTransactions\": 0,\n"
                 + "    \"outPendingMethodTransactions\": 22,\n"
+                + "    \"outRTPTransactions\": 8,\n"
+                + "    \"outRTPVolume\": 12500,\n"
+                + "    \"outWireTransactions\": 5,\n"
+                + "    \"outWireVolume\": 47800,\n"
                 + "    \"outTransactionsVolume\": 13111741.78,\n"
                 + "    \"outSubscriptionsPaidVolume\": 0,\n"
                 + "    \"outCardVolume\": 0,\n"

@@ -5,11 +5,14 @@ package io.github.payabli.api.resources.vendor;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
+import io.github.payabli.api.resources.vendor.requests.ScheduleEnrichmentCallRequest;
 import io.github.payabli.api.resources.vendor.requests.VendorEnrichRequest;
 import io.github.payabli.api.types.PayabliApiResponseVendors;
+import io.github.payabli.api.types.VendorCallStatusResponse;
 import io.github.payabli.api.types.VendorData;
 import io.github.payabli.api.types.VendorEnrichResponse;
 import io.github.payabli.api.types.VendorQueryRecord;
+import io.github.payabli.api.types.VendorScheduleCallResponse;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncVendorClient {
@@ -128,5 +131,38 @@ public class AsyncVendorClient {
     public CompletableFuture<VendorEnrichResponse> enrichVendor(
             String entry, VendorEnrichRequest request, RequestOptions requestOptions) {
         return this.rawClient.enrichVendor(entry, request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
+     */
+    public CompletableFuture<VendorScheduleCallResponse> scheduleEnrichmentCall(
+            String entry, ScheduleEnrichmentCallRequest request) {
+        return this.rawClient.scheduleEnrichmentCall(entry, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
+     */
+    public CompletableFuture<VendorScheduleCallResponse> scheduleEnrichmentCall(
+            String entry, ScheduleEnrichmentCallRequest request, RequestOptions requestOptions) {
+        return this.rawClient
+                .scheduleEnrichmentCall(entry, request, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns the latest AI outreach call activity for a vendor. The response is a composite object with a <code>state</code> discriminator (<code>none</code>, <code>scheduled</code>, <code>successful</code>, or <code>failed</code>); the block that matches the current state is populated. When the vendor has no call activity, <code>state</code> is <code>none</code> and the response returns HTTP 200.
+     */
+    public CompletableFuture<VendorCallStatusResponse> getEnrichmentCallStatus(long idVendor) {
+        return this.rawClient.getEnrichmentCallStatus(idVendor).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns the latest AI outreach call activity for a vendor. The response is a composite object with a <code>state</code> discriminator (<code>none</code>, <code>scheduled</code>, <code>successful</code>, or <code>failed</code>); the block that matches the current state is populated. When the vendor has no call activity, <code>state</code> is <code>none</code> and the response returns HTTP 200.
+     */
+    public CompletableFuture<VendorCallStatusResponse> getEnrichmentCallStatus(
+            long idVendor, RequestOptions requestOptions) {
+        return this.rawClient.getEnrichmentCallStatus(idVendor, requestOptions).thenApply(response -> response.body());
     }
 }

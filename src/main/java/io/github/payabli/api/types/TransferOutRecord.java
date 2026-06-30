@@ -93,6 +93,10 @@ public final class TransferOutRecord {
 
     private final Optional<List<TransferOutMessage>> messages;
 
+    private final Optional<String> type;
+
+    private final Optional<String> method;
+
     private final Map<String, Object> additionalProperties;
 
     private TransferOutRecord(
@@ -130,6 +134,8 @@ public final class TransferOutRecord {
             Optional<Double> splitAmount,
             Optional<List<TransferOutEventData>> eventsData,
             Optional<List<TransferOutMessage>> messages,
+            Optional<String> type,
+            Optional<String> method,
             Map<String, Object> additionalProperties) {
         this.transferId = transferId;
         this.paypointId = paypointId;
@@ -165,6 +171,8 @@ public final class TransferOutRecord {
         this.splitAmount = splitAmount;
         this.eventsData = eventsData;
         this.messages = messages;
+        this.type = type;
+        this.method = method;
         this.additionalProperties = additionalProperties;
     }
 
@@ -542,6 +550,28 @@ public final class TransferOutRecord {
         return messages;
     }
 
+    /**
+     * @return The transfer type. One of <code>debit</code>, <code>credit</code>, or <code>billing</code>.
+     */
+    @JsonIgnore
+    public Optional<String> getType() {
+        if (type == null) {
+            return Optional.empty();
+        }
+        return type;
+    }
+
+    /**
+     * @return The payment method for the transfer, such as <code>ach</code>, <code>vcard</code>, or <code>check</code>.
+     */
+    @JsonIgnore
+    public Optional<String> getMethod() {
+        if (method == null) {
+            return Optional.empty();
+        }
+        return method;
+    }
+
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("transferId")
     private Optional<Integer> _getTransferId() {
@@ -746,6 +776,18 @@ public final class TransferOutRecord {
         return messages;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("type")
+    private Optional<String> _getType() {
+        return type;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("method")
+    private Optional<String> _getMethod() {
+        return method;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -791,7 +833,9 @@ public final class TransferOutRecord {
                 && netTransferAmount.equals(other.netTransferAmount)
                 && splitAmount.equals(other.splitAmount)
                 && eventsData.equals(other.eventsData)
-                && messages.equals(other.messages);
+                && messages.equals(other.messages)
+                && type.equals(other.type)
+                && method.equals(other.method);
     }
 
     @java.lang.Override
@@ -830,7 +874,9 @@ public final class TransferOutRecord {
                 this.netTransferAmount,
                 this.splitAmount,
                 this.eventsData,
-                this.messages);
+                this.messages,
+                this.type,
+                this.method);
     }
 
     @java.lang.Override
@@ -912,6 +958,10 @@ public final class TransferOutRecord {
 
         private Optional<List<TransferOutMessage>> messages = Optional.empty();
 
+        private Optional<String> type = Optional.empty();
+
+        private Optional<String> method = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -952,6 +1002,8 @@ public final class TransferOutRecord {
             splitAmount(other.getSplitAmount());
             eventsData(other.getEventsData());
             messages(other.getMessages());
+            type(other.getType());
+            method(other.getMethod());
             return this;
         }
 
@@ -1805,6 +1857,56 @@ public final class TransferOutRecord {
             return this;
         }
 
+        /**
+         * <p>The transfer type. One of <code>debit</code>, <code>credit</code>, or <code>billing</code>.</p>
+         */
+        @JsonSetter(value = "type", nulls = Nulls.SKIP)
+        public Builder type(Optional<String> type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = Optional.ofNullable(type);
+            return this;
+        }
+
+        public Builder type(Nullable<String> type) {
+            if (type.isNull()) {
+                this.type = null;
+            } else if (type.isEmpty()) {
+                this.type = Optional.empty();
+            } else {
+                this.type = Optional.of(type.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The payment method for the transfer, such as <code>ach</code>, <code>vcard</code>, or <code>check</code>.</p>
+         */
+        @JsonSetter(value = "method", nulls = Nulls.SKIP)
+        public Builder method(Optional<String> method) {
+            this.method = method;
+            return this;
+        }
+
+        public Builder method(String method) {
+            this.method = Optional.ofNullable(method);
+            return this;
+        }
+
+        public Builder method(Nullable<String> method) {
+            if (method.isNull()) {
+                this.method = null;
+            } else if (method.isEmpty()) {
+                this.method = Optional.empty();
+            } else {
+                this.method = Optional.of(method.get());
+            }
+            return this;
+        }
+
         public TransferOutRecord build() {
             return new TransferOutRecord(
                     transferId,
@@ -1841,6 +1943,8 @@ public final class TransferOutRecord {
                     splitAmount,
                     eventsData,
                     messages,
+                    type,
+                    method,
                     additionalProperties);
         }
 

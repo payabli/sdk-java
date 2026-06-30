@@ -22,6 +22,8 @@ import java.util.Optional;
 public final class CaptureAllOutResponseResponseDataItem {
     private final Optional<Long> customerId;
 
+    private final Optional<Long> vendorId;
+
     private final Optional<String> referenceId;
 
     private final Optional<Integer> resultCode;
@@ -32,11 +34,13 @@ public final class CaptureAllOutResponseResponseDataItem {
 
     private CaptureAllOutResponseResponseDataItem(
             Optional<Long> customerId,
+            Optional<Long> vendorId,
             Optional<String> referenceId,
             Optional<Integer> resultCode,
             Optional<String> resultText,
             Map<String, Object> additionalProperties) {
         this.customerId = customerId;
+        this.vendorId = vendorId;
         this.referenceId = referenceId;
         this.resultCode = resultCode;
         this.resultText = resultText;
@@ -44,11 +48,19 @@ public final class CaptureAllOutResponseResponseDataItem {
     }
 
     /**
-     * @return Internal unique Id of vendor owner of transaction. Returns <code>0</code> if the transaction wasn't assigned to an existing vendor or no vendor was created.
+     * @return Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>VendorId</code>, or <code>0</code> when no vendor is associated.
      */
     @JsonProperty("CustomerId")
     public Optional<Long> getCustomerId() {
         return customerId;
+    }
+
+    /**
+     * @return Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>CustomerId</code>, or <code>0</code> when no vendor is associated.
+     */
+    @JsonProperty("VendorId")
+    public Optional<Long> getVendorId() {
+        return vendorId;
     }
 
     @JsonProperty("ReferenceId")
@@ -85,6 +97,7 @@ public final class CaptureAllOutResponseResponseDataItem {
 
     private boolean equalTo(CaptureAllOutResponseResponseDataItem other) {
         return customerId.equals(other.customerId)
+                && vendorId.equals(other.vendorId)
                 && referenceId.equals(other.referenceId)
                 && resultCode.equals(other.resultCode)
                 && resultText.equals(other.resultText);
@@ -92,7 +105,7 @@ public final class CaptureAllOutResponseResponseDataItem {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.customerId, this.referenceId, this.resultCode, this.resultText);
+        return Objects.hash(this.customerId, this.vendorId, this.referenceId, this.resultCode, this.resultText);
     }
 
     @java.lang.Override
@@ -108,6 +121,8 @@ public final class CaptureAllOutResponseResponseDataItem {
     public static final class Builder {
         private Optional<Long> customerId = Optional.empty();
 
+        private Optional<Long> vendorId = Optional.empty();
+
         private Optional<String> referenceId = Optional.empty();
 
         private Optional<Integer> resultCode = Optional.empty();
@@ -121,6 +136,7 @@ public final class CaptureAllOutResponseResponseDataItem {
 
         public Builder from(CaptureAllOutResponseResponseDataItem other) {
             customerId(other.getCustomerId());
+            vendorId(other.getVendorId());
             referenceId(other.getReferenceId());
             resultCode(other.getResultCode());
             resultText(other.getResultText());
@@ -128,7 +144,7 @@ public final class CaptureAllOutResponseResponseDataItem {
         }
 
         /**
-         * <p>Internal unique Id of vendor owner of transaction. Returns <code>0</code> if the transaction wasn't assigned to an existing vendor or no vendor was created.</p>
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>VendorId</code>, or <code>0</code> when no vendor is associated.</p>
          */
         @JsonSetter(value = "CustomerId", nulls = Nulls.SKIP)
         public Builder customerId(Optional<Long> customerId) {
@@ -138,6 +154,20 @@ public final class CaptureAllOutResponseResponseDataItem {
 
         public Builder customerId(Long customerId) {
             this.customerId = Optional.ofNullable(customerId);
+            return this;
+        }
+
+        /**
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>CustomerId</code>, or <code>0</code> when no vendor is associated.</p>
+         */
+        @JsonSetter(value = "VendorId", nulls = Nulls.SKIP)
+        public Builder vendorId(Optional<Long> vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        public Builder vendorId(Long vendorId) {
+            this.vendorId = Optional.ofNullable(vendorId);
             return this;
         }
 
@@ -181,7 +211,7 @@ public final class CaptureAllOutResponseResponseDataItem {
 
         public CaptureAllOutResponseResponseDataItem build() {
             return new CaptureAllOutResponseResponseDataItem(
-                    customerId, referenceId, resultCode, resultText, additionalProperties);
+                    customerId, vendorId, referenceId, resultCode, resultText, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

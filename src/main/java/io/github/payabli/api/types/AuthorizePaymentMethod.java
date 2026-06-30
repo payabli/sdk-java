@@ -69,7 +69,7 @@ public final class AuthorizePaymentMethod {
     }
 
     /**
-     * @return Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;
+     * @return Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, &quot;ach&quot;, &quot;wire&quot;, or &quot;rtp&quot;
      */
     @JsonProperty("method")
     public String getMethod() {
@@ -186,7 +186,7 @@ public final class AuthorizePaymentMethod {
 
     public interface MethodStage {
         /**
-         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
+         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, &quot;ach&quot;, &quot;wire&quot;, or &quot;rtp&quot;</p>
          */
         _FinalStage method(@NotNull String method);
 
@@ -295,8 +295,8 @@ public final class AuthorizePaymentMethod {
         }
 
         /**
-         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
-         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
+         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, &quot;ach&quot;, &quot;wire&quot;, or &quot;rtp&quot;</p>
+         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, &quot;ach&quot;, &quot;wire&quot;, or &quot;rtp&quot;</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -38,6 +38,8 @@ public final class AuthCapturePayoutResponseData {
 
     private final long customerId;
 
+    private final long vendorId;
+
     private final Optional<String> methodReferenceId;
 
     private final Map<String, Object> additionalProperties;
@@ -50,6 +52,7 @@ public final class AuthCapturePayoutResponseData {
             Optional<String> avsResponseText,
             Optional<String> cvvResponseText,
             long customerId,
+            long vendorId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
         this.authCode = authCode;
@@ -59,6 +62,7 @@ public final class AuthCapturePayoutResponseData {
         this.avsResponseText = avsResponseText;
         this.cvvResponseText = cvvResponseText;
         this.customerId = customerId;
+        this.vendorId = vendorId;
         this.methodReferenceId = methodReferenceId;
         this.additionalProperties = additionalProperties;
     }
@@ -102,9 +106,20 @@ public final class AuthCapturePayoutResponseData {
         return cvvResponseText;
     }
 
+    /**
+     * @return Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>vendorId</code>, or <code>0</code> when no vendor is associated.
+     */
     @JsonProperty("customerId")
     public long getCustomerId() {
         return customerId;
+    }
+
+    /**
+     * @return Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>customerId</code>, or <code>0</code> when no vendor is associated.
+     */
+    @JsonProperty("vendorId")
+    public long getVendorId() {
+        return vendorId;
     }
 
     @JsonIgnore
@@ -158,6 +173,7 @@ public final class AuthCapturePayoutResponseData {
                 && avsResponseText.equals(other.avsResponseText)
                 && cvvResponseText.equals(other.cvvResponseText)
                 && customerId == other.customerId
+                && vendorId == other.vendorId
                 && methodReferenceId.equals(other.methodReferenceId);
     }
 
@@ -171,6 +187,7 @@ public final class AuthCapturePayoutResponseData {
                 this.avsResponseText,
                 this.cvvResponseText,
                 this.customerId,
+                this.vendorId,
                 this.methodReferenceId);
     }
 
@@ -198,7 +215,17 @@ public final class AuthCapturePayoutResponseData {
     }
 
     public interface CustomerIdStage {
-        _FinalStage customerId(long customerId);
+        /**
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>vendorId</code>, or <code>0</code> when no vendor is associated.</p>
+         */
+        VendorIdStage customerId(long customerId);
+    }
+
+    public interface VendorIdStage {
+        /**
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>customerId</code>, or <code>0</code> when no vendor is associated.</p>
+         */
+        _FinalStage vendorId(long vendorId);
     }
 
     public interface _FinalStage {
@@ -235,7 +262,7 @@ public final class AuthCapturePayoutResponseData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements ReferenceIdStage, ResultCodeStage, ResultTextStage, CustomerIdStage, _FinalStage {
+            implements ReferenceIdStage, ResultCodeStage, ResultTextStage, CustomerIdStage, VendorIdStage, _FinalStage {
         private String referenceId;
 
         private int resultCode;
@@ -243,6 +270,8 @@ public final class AuthCapturePayoutResponseData {
         private String resultText;
 
         private long customerId;
+
+        private long vendorId;
 
         private Optional<String> methodReferenceId = Optional.empty();
 
@@ -266,6 +295,7 @@ public final class AuthCapturePayoutResponseData {
             avsResponseText(other.getAvsResponseText());
             cvvResponseText(other.getCvvResponseText());
             customerId(other.getCustomerId());
+            vendorId(other.getVendorId());
             methodReferenceId(other.getMethodReferenceId());
             return this;
         }
@@ -291,10 +321,27 @@ public final class AuthCapturePayoutResponseData {
             return this;
         }
 
+        /**
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>vendorId</code>, or <code>0</code> when no vendor is associated.</p>
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>vendorId</code>, or <code>0</code> when no vendor is associated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("customerId")
-        public _FinalStage customerId(long customerId) {
+        public VendorIdStage customerId(long customerId) {
             this.customerId = customerId;
+            return this;
+        }
+
+        /**
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>customerId</code>, or <code>0</code> when no vendor is associated.</p>
+         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>customerId</code>, or <code>0</code> when no vendor is associated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("vendorId")
+        public _FinalStage vendorId(long vendorId) {
+            this.vendorId = vendorId;
             return this;
         }
 
@@ -408,6 +455,7 @@ public final class AuthCapturePayoutResponseData {
                     avsResponseText,
                     cvvResponseText,
                     customerId,
+                    vendorId,
                     methodReferenceId,
                     additionalProperties);
         }

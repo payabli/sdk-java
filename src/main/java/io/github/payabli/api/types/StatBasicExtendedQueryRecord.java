@@ -39,6 +39,14 @@ public final class StatBasicExtendedQueryRecord {
 
     private final int outPendingMethodTransactions;
 
+    private final int outRtpTransactions;
+
+    private final double outRtpVolume;
+
+    private final int outWireTransactions;
+
+    private final double outWireVolume;
+
     private final double outTransactionsVolume;
 
     private final double outSubscriptionsPaidVolume;
@@ -106,6 +114,10 @@ public final class StatBasicExtendedQueryRecord {
             int outAchTransactions,
             int outCheckTransactions,
             int outPendingMethodTransactions,
+            int outRtpTransactions,
+            double outRtpVolume,
+            int outWireTransactions,
+            double outWireVolume,
             double outTransactionsVolume,
             double outSubscriptionsPaidVolume,
             double outCardVolume,
@@ -144,6 +156,10 @@ public final class StatBasicExtendedQueryRecord {
         this.outAchTransactions = outAchTransactions;
         this.outCheckTransactions = outCheckTransactions;
         this.outPendingMethodTransactions = outPendingMethodTransactions;
+        this.outRtpTransactions = outRtpTransactions;
+        this.outRtpVolume = outRtpVolume;
+        this.outWireTransactions = outWireTransactions;
+        this.outWireVolume = outWireVolume;
         this.outTransactionsVolume = outTransactionsVolume;
         this.outSubscriptionsPaidVolume = outSubscriptionsPaidVolume;
         this.outCardVolume = outCardVolume;
@@ -252,6 +268,38 @@ public final class StatBasicExtendedQueryRecord {
     @JsonProperty("outPendingMethodTransactions")
     public int getOutPendingMethodTransactions() {
         return outPendingMethodTransactions;
+    }
+
+    /**
+     * @return Outbound (payout) RTP transactions count.
+     */
+    @JsonProperty("outRTPTransactions")
+    public int getOutRtpTransactions() {
+        return outRtpTransactions;
+    }
+
+    /**
+     * @return Outbound (payout) RTP transactions volume.
+     */
+    @JsonProperty("outRTPVolume")
+    public double getOutRtpVolume() {
+        return outRtpVolume;
+    }
+
+    /**
+     * @return Outbound (payout) wire transactions count.
+     */
+    @JsonProperty("outWireTransactions")
+    public int getOutWireTransactions() {
+        return outWireTransactions;
+    }
+
+    /**
+     * @return Outbound (payout) wire transactions volume.
+     */
+    @JsonProperty("outWireVolume")
+    public double getOutWireVolume() {
+        return outWireVolume;
     }
 
     /**
@@ -492,6 +540,10 @@ public final class StatBasicExtendedQueryRecord {
                 && outAchTransactions == other.outAchTransactions
                 && outCheckTransactions == other.outCheckTransactions
                 && outPendingMethodTransactions == other.outPendingMethodTransactions
+                && outRtpTransactions == other.outRtpTransactions
+                && outRtpVolume == other.outRtpVolume
+                && outWireTransactions == other.outWireTransactions
+                && outWireVolume == other.outWireVolume
                 && outTransactionsVolume == other.outTransactionsVolume
                 && outSubscriptionsPaidVolume == other.outSubscriptionsPaidVolume
                 && outCardVolume == other.outCardVolume
@@ -534,6 +586,10 @@ public final class StatBasicExtendedQueryRecord {
                 this.outAchTransactions,
                 this.outCheckTransactions,
                 this.outPendingMethodTransactions,
+                this.outRtpTransactions,
+                this.outRtpVolume,
+                this.outWireTransactions,
+                this.outWireVolume,
                 this.outTransactionsVolume,
                 this.outSubscriptionsPaidVolume,
                 this.outCardVolume,
@@ -641,7 +697,35 @@ public final class StatBasicExtendedQueryRecord {
         /**
          * <p>Outbound (payout) Managed Payables transactions count.</p>
          */
-        OutTransactionsVolumeStage outPendingMethodTransactions(int outPendingMethodTransactions);
+        OutRtpTransactionsStage outPendingMethodTransactions(int outPendingMethodTransactions);
+    }
+
+    public interface OutRtpTransactionsStage {
+        /**
+         * <p>Outbound (payout) RTP transactions count.</p>
+         */
+        OutRtpVolumeStage outRtpTransactions(int outRtpTransactions);
+    }
+
+    public interface OutRtpVolumeStage {
+        /**
+         * <p>Outbound (payout) RTP transactions volume.</p>
+         */
+        OutWireTransactionsStage outRtpVolume(double outRtpVolume);
+    }
+
+    public interface OutWireTransactionsStage {
+        /**
+         * <p>Outbound (payout) wire transactions count.</p>
+         */
+        OutWireVolumeStage outWireTransactions(int outWireTransactions);
+    }
+
+    public interface OutWireVolumeStage {
+        /**
+         * <p>Outbound (payout) wire transactions volume.</p>
+         */
+        OutTransactionsVolumeStage outWireVolume(double outWireVolume);
     }
 
     public interface OutTransactionsVolumeStage {
@@ -853,6 +937,10 @@ public final class StatBasicExtendedQueryRecord {
                     OutAchTransactionsStage,
                     OutCheckTransactionsStage,
                     OutPendingMethodTransactionsStage,
+                    OutRtpTransactionsStage,
+                    OutRtpVolumeStage,
+                    OutWireTransactionsStage,
+                    OutWireVolumeStage,
                     OutTransactionsVolumeStage,
                     OutSubscriptionsPaidVolumeStage,
                     OutCardVolumeStage,
@@ -900,6 +988,14 @@ public final class StatBasicExtendedQueryRecord {
         private int outCheckTransactions;
 
         private int outPendingMethodTransactions;
+
+        private int outRtpTransactions;
+
+        private double outRtpVolume;
+
+        private int outWireTransactions;
+
+        private double outWireVolume;
 
         private double outTransactionsVolume;
 
@@ -972,6 +1068,10 @@ public final class StatBasicExtendedQueryRecord {
             outAchTransactions(other.getOutAchTransactions());
             outCheckTransactions(other.getOutCheckTransactions());
             outPendingMethodTransactions(other.getOutPendingMethodTransactions());
+            outRtpTransactions(other.getOutRtpTransactions());
+            outRtpVolume(other.getOutRtpVolume());
+            outWireTransactions(other.getOutWireTransactions());
+            outWireVolume(other.getOutWireVolume());
             outTransactionsVolume(other.getOutTransactionsVolume());
             outSubscriptionsPaidVolume(other.getOutSubscriptionsPaidVolume());
             outCardVolume(other.getOutCardVolume());
@@ -1117,8 +1217,56 @@ public final class StatBasicExtendedQueryRecord {
          */
         @java.lang.Override
         @JsonSetter("outPendingMethodTransactions")
-        public OutTransactionsVolumeStage outPendingMethodTransactions(int outPendingMethodTransactions) {
+        public OutRtpTransactionsStage outPendingMethodTransactions(int outPendingMethodTransactions) {
             this.outPendingMethodTransactions = outPendingMethodTransactions;
+            return this;
+        }
+
+        /**
+         * <p>Outbound (payout) RTP transactions count.</p>
+         * <p>Outbound (payout) RTP transactions count.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("outRTPTransactions")
+        public OutRtpVolumeStage outRtpTransactions(int outRtpTransactions) {
+            this.outRtpTransactions = outRtpTransactions;
+            return this;
+        }
+
+        /**
+         * <p>Outbound (payout) RTP transactions volume.</p>
+         * <p>Outbound (payout) RTP transactions volume.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("outRTPVolume")
+        public OutWireTransactionsStage outRtpVolume(double outRtpVolume) {
+            this.outRtpVolume = outRtpVolume;
+            return this;
+        }
+
+        /**
+         * <p>Outbound (payout) wire transactions count.</p>
+         * <p>Outbound (payout) wire transactions count.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("outWireTransactions")
+        public OutWireVolumeStage outWireTransactions(int outWireTransactions) {
+            this.outWireTransactions = outWireTransactions;
+            return this;
+        }
+
+        /**
+         * <p>Outbound (payout) wire transactions volume.</p>
+         * <p>Outbound (payout) wire transactions volume.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("outWireVolume")
+        public OutTransactionsVolumeStage outWireVolume(double outWireVolume) {
+            this.outWireVolume = outWireVolume;
             return this;
         }
 
@@ -1459,6 +1607,10 @@ public final class StatBasicExtendedQueryRecord {
                     outAchTransactions,
                     outCheckTransactions,
                     outPendingMethodTransactions,
+                    outRtpTransactions,
+                    outRtpVolume,
+                    outWireTransactions,
+                    outWireVolume,
                     outTransactionsVolume,
                     outSubscriptionsPaidVolume,
                     outCardVolume,

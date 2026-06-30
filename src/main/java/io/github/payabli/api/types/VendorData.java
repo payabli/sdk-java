@@ -23,7 +23,7 @@ import java.util.Optional;
 public final class VendorData {
     private final Optional<String> vendorNumber;
 
-    private final Optional<Map<String, Map<String, Object>>> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> address1;
 
@@ -93,7 +93,7 @@ public final class VendorData {
 
     private VendorData(
             Optional<String> vendorNumber,
-            Optional<Map<String, Map<String, Object>>> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> address1,
             Optional<String> address2,
             Optional<BillingData> billingData,
@@ -170,7 +170,7 @@ public final class VendorData {
     }
 
     @JsonProperty("AdditionalData")
-    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -484,7 +484,7 @@ public final class VendorData {
     public static final class Builder {
         private Optional<String> vendorNumber = Optional.empty();
 
-        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> address1 = Optional.empty();
 
@@ -605,12 +605,12 @@ public final class VendorData {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

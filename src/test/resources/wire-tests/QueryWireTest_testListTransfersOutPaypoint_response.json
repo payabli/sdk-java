@@ -65,7 +65,9 @@
             "currentTransferStatus": "completed"
           }
         }
-      ]
+      ],
+      "type": "credit",
+      "method": "ach"
     }
   ]
 }

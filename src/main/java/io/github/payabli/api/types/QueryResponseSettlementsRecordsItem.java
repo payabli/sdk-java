@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -80,6 +83,8 @@ public final class QueryResponseSettlementsRecordsItem {
 
     private final Optional<String> source;
 
+    private final Optional<List<SettlementSplitFundingDetail>> splitFundingInstructions;
+
     private final Optional<Integer> status;
 
     private final Optional<List<QueryTransactionEvents>> transactionEvents;
@@ -122,6 +127,7 @@ public final class QueryResponseSettlementsRecordsItem {
             Optional<Double> settledAmount,
             Optional<OffsetDateTime> settlementDate,
             Optional<String> source,
+            Optional<List<SettlementSplitFundingDetail>> splitFundingInstructions,
             Optional<Integer> status,
             Optional<List<QueryTransactionEvents>> transactionEvents,
             Optional<OffsetDateTime> transactionTime,
@@ -157,6 +163,7 @@ public final class QueryResponseSettlementsRecordsItem {
         this.settledAmount = settledAmount;
         this.settlementDate = settlementDate;
         this.source = source;
+        this.splitFundingInstructions = splitFundingInstructions;
         this.status = status;
         this.transactionEvents = transactionEvents;
         this.transactionTime = transactionTime;
@@ -351,6 +358,17 @@ public final class QueryResponseSettlementsRecordsItem {
         return source;
     }
 
+    /**
+     * @return Split funding instructions for the settled transaction, each enriched with the batch and transfer that paid out the split. Null when the transaction has no splits.
+     */
+    @JsonIgnore
+    public Optional<List<SettlementSplitFundingDetail>> getSplitFundingInstructions() {
+        if (splitFundingInstructions == null) {
+            return Optional.empty();
+        }
+        return splitFundingInstructions;
+    }
+
     @JsonProperty("Status")
     public Optional<Integer> getStatus() {
         return status;
@@ -383,6 +401,12 @@ public final class QueryResponseSettlementsRecordsItem {
     @JsonProperty("Type")
     public Optional<String> getType() {
         return type;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("splitFundingInstructions")
+    private Optional<List<SettlementSplitFundingDetail>> _getSplitFundingInstructions() {
+        return splitFundingInstructions;
     }
 
     @java.lang.Override
@@ -427,6 +451,7 @@ public final class QueryResponseSettlementsRecordsItem {
                 && settledAmount.equals(other.settledAmount)
                 && settlementDate.equals(other.settlementDate)
                 && source.equals(other.source)
+                && splitFundingInstructions.equals(other.splitFundingInstructions)
                 && status.equals(other.status)
                 && transactionEvents.equals(other.transactionEvents)
                 && transactionTime.equals(other.transactionTime)
@@ -466,6 +491,7 @@ public final class QueryResponseSettlementsRecordsItem {
                 this.settledAmount,
                 this.settlementDate,
                 this.source,
+                this.splitFundingInstructions,
                 this.status,
                 this.transactionEvents,
                 this.transactionTime,
@@ -542,6 +568,8 @@ public final class QueryResponseSettlementsRecordsItem {
 
         private Optional<String> source = Optional.empty();
 
+        private Optional<List<SettlementSplitFundingDetail>> splitFundingInstructions = Optional.empty();
+
         private Optional<Integer> status = Optional.empty();
 
         private Optional<List<QueryTransactionEvents>> transactionEvents = Optional.empty();
@@ -587,6 +615,7 @@ public final class QueryResponseSettlementsRecordsItem {
             settledAmount(other.getSettledAmount());
             settlementDate(other.getSettlementDate());
             source(other.getSource());
+            splitFundingInstructions(other.getSplitFundingInstructions());
             status(other.getStatus());
             transactionEvents(other.getTransactionEvents());
             transactionTime(other.getTransactionTime());
@@ -955,6 +984,31 @@ public final class QueryResponseSettlementsRecordsItem {
             return this;
         }
 
+        /**
+         * <p>Split funding instructions for the settled transaction, each enriched with the batch and transfer that paid out the split. Null when the transaction has no splits.</p>
+         */
+        @JsonSetter(value = "splitFundingInstructions", nulls = Nulls.SKIP)
+        public Builder splitFundingInstructions(Optional<List<SettlementSplitFundingDetail>> splitFundingInstructions) {
+            this.splitFundingInstructions = splitFundingInstructions;
+            return this;
+        }
+
+        public Builder splitFundingInstructions(List<SettlementSplitFundingDetail> splitFundingInstructions) {
+            this.splitFundingInstructions = Optional.ofNullable(splitFundingInstructions);
+            return this;
+        }
+
+        public Builder splitFundingInstructions(Nullable<List<SettlementSplitFundingDetail>> splitFundingInstructions) {
+            if (splitFundingInstructions.isNull()) {
+                this.splitFundingInstructions = null;
+            } else if (splitFundingInstructions.isEmpty()) {
+                this.splitFundingInstructions = Optional.empty();
+            } else {
+                this.splitFundingInstructions = Optional.of(splitFundingInstructions.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "Status", nulls = Nulls.SKIP)
         public Builder status(Optional<Integer> status) {
             this.status = status;
@@ -1050,6 +1104,7 @@ public final class QueryResponseSettlementsRecordsItem {
                     settledAmount,
                     settlementDate,
                     source,
+                    splitFundingInstructions,
                     status,
                     transactionEvents,
                     transactionTime,

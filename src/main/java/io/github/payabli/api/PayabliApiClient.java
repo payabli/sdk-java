@@ -12,6 +12,7 @@ import io.github.payabli.api.resources.checkcapture.CheckCaptureClient;
 import io.github.payabli.api.resources.cloud.CloudClient;
 import io.github.payabli.api.resources.customer.CustomerClient;
 import io.github.payabli.api.resources.export.ExportClient;
+import io.github.payabli.api.resources.funding.FundingClient;
 import io.github.payabli.api.resources.ghostcard.GhostCardClient;
 import io.github.payabli.api.resources.hostedpaymentpages.HostedPaymentPagesClient;
 import io.github.payabli.api.resources.import_.ImportClient;
@@ -97,6 +98,8 @@ public class PayabliApiClient {
 
     protected final Supplier<MoneyOutClient> moneyOutClient;
 
+    protected final Supplier<FundingClient> fundingClient;
+
     protected final Supplier<WalletClient> walletClient;
 
     protected final Supplier<PayoutSubscriptionClient> payoutSubscriptionClient;
@@ -133,6 +136,7 @@ public class PayabliApiClient {
         this.vendorClient = Suppliers.memoize(() -> new VendorClient(clientOptions));
         this.ghostCardClient = Suppliers.memoize(() -> new GhostCardClient(clientOptions));
         this.moneyOutClient = Suppliers.memoize(() -> new MoneyOutClient(clientOptions));
+        this.fundingClient = Suppliers.memoize(() -> new FundingClient(clientOptions));
         this.walletClient = Suppliers.memoize(() -> new WalletClient(clientOptions));
         this.payoutSubscriptionClient = Suppliers.memoize(() -> new PayoutSubscriptionClient(clientOptions));
         this.chargeBacksClient = Suppliers.memoize(() -> new ChargeBacksClient(clientOptions));
@@ -248,6 +252,10 @@ public class PayabliApiClient {
 
     public MoneyOutClient moneyOut() {
         return this.moneyOutClient.get();
+    }
+
+    public FundingClient funding() {
+        return this.fundingClient.get();
     }
 
     public WalletClient wallet() {

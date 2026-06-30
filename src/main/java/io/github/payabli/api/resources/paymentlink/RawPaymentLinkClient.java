@@ -46,21 +46,7 @@ public class RawPaymentLinkClient {
 
     /**
      * Generates a payment link for an invoice from the invoice ID.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(int idInvoice) {
-        return addPayLinkFromInvoice(idInvoice, PayLinkDataInvoice.builder().build());
-    }
-
-    /**
-     * Generates a payment link for an invoice from the invoice ID.
-     */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
-            int idInvoice, RequestOptions requestOptions) {
-        return addPayLinkFromInvoice(idInvoice, PayLinkDataInvoice.builder().build(), requestOptions);
-    }
-
-    /**
-     * Generates a payment link for an invoice from the invoice ID.
+     * <p>The payment page configuration blocks (<code>logo</code>, <code>page</code>, <code>paymentMethods</code>, <code>review</code>, <code>messageBeforePaying</code>, <code>paymentButton</code>, <code>notes</code>, <code>contactUs</code>, and <code>settings</code>) are optional. When you omit a block, Payabli applies a default rather than hiding it. The block is enabled at a fixed display order, so the generated page stays complete and branded. To hide a section, send the block explicitly with <code>enabled</code> set to <code>false</code>. An explicit value is always honored and is never replaced by a default. For each block's default, see its description in the request body.</p>
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
             int idInvoice, PayLinkDataInvoice request) {
@@ -69,6 +55,7 @@ public class RawPaymentLinkClient {
 
     /**
      * Generates a payment link for an invoice from the invoice ID.
+     * <p>The payment page configuration blocks (<code>logo</code>, <code>page</code>, <code>paymentMethods</code>, <code>review</code>, <code>messageBeforePaying</code>, <code>paymentButton</code>, <code>notes</code>, <code>contactUs</code>, and <code>settings</code>) are optional. When you omit a block, Payabli applies a default rather than hiding it. The block is enabled at a fixed display order, so the generated page stays complete and branded. To hide a section, send the block explicitly with <code>enabled</code> set to <code>false</code>. An explicit value is always honored and is never replaced by a default. For each block's default, see its description in the request body.</p>
      */
     public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
             int idInvoice, PayLinkDataInvoice request, RequestOptions requestOptions) {

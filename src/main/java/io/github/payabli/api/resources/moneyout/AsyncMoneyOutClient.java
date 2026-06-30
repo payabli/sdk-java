@@ -8,6 +8,7 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.RenewVCardRequest;
 import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.types.AllowedCheckPaymentStatus;
@@ -18,6 +19,7 @@ import io.github.payabli.api.types.OperationResult;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.ReissuePayoutResponse;
+import io.github.payabli.api.types.RenewVCardResponse;
 import io.github.payabli.api.types.VCardGetResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -43,6 +45,7 @@ public class AsyncMoneyOutClient {
      * Authorizes a transaction for payout.
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<AuthCapturePayoutResponse> authorizeOut(RequestOutAuthorize request) {
         return this.rawClient.authorizeOut(request).thenApply(response -> response.body());
@@ -52,6 +55,7 @@ public class AsyncMoneyOutClient {
      * Authorizes a transaction for payout.
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
      * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<AuthCapturePayoutResponse> authorizeOut(
             RequestOutAuthorize request, RequestOptions requestOptions) {
@@ -131,28 +135,32 @@ public class AsyncMoneyOutClient {
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<AuthCapturePayoutResponse> captureOut(String referenceId) {
         return this.rawClient.captureOut(referenceId).thenApply(response -> response.body());
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<AuthCapturePayoutResponse> captureOut(String referenceId, RequestOptions requestOptions) {
         return this.rawClient.captureOut(referenceId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<AuthCapturePayoutResponse> captureOut(String referenceId, CaptureOutRequest request) {
         return this.rawClient.captureOut(referenceId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>,  you don't need to call this endpoint to capture the transaction for processing.
+     * Captures a single authorized payout transaction by ID. If the transaction was authorized with <code>autoCapture</code> set to <code>true</code>, you don't need to call this endpoint to capture the transaction for processing.
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
      */
     public CompletableFuture<AuthCapturePayoutResponse> captureOut(
             String referenceId, CaptureOutRequest request, RequestOptions requestOptions) {
@@ -185,6 +193,25 @@ public class AsyncMoneyOutClient {
      */
     public CompletableFuture<VCardGetResponse> vCardGet(String cardToken, RequestOptions requestOptions) {
         return this.rawClient.vCardGet(cardToken, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Renews an expired or expiring virtual card by extending its expiration date to a future month.
+     * <p>The card must be a virtual card that hasn't been fully used. The new expiration date must be in <code>MM-YYYY</code> or <code>MM/YYYY</code> format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.</p>
+     * <p>On success, <code>referenceId</code> holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return <code>null</code>.</p>
+     */
+    public CompletableFuture<RenewVCardResponse> renewVCard(String cardToken, RenewVCardRequest request) {
+        return this.rawClient.renewVCard(cardToken, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Renews an expired or expiring virtual card by extending its expiration date to a future month.
+     * <p>The card must be a virtual card that hasn't been fully used. The new expiration date must be in <code>MM-YYYY</code> or <code>MM/YYYY</code> format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.</p>
+     * <p>On success, <code>referenceId</code> holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return <code>null</code>.</p>
+     */
+    public CompletableFuture<RenewVCardResponse> renewVCard(
+            String cardToken, RenewVCardRequest request, RequestOptions requestOptions) {
+        return this.rawClient.renewVCard(cardToken, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**

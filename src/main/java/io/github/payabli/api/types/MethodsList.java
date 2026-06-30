@@ -34,6 +34,12 @@ public final class MethodsList {
 
     private final Optional<Boolean> visa;
 
+    private final Optional<Boolean> diners;
+
+    private final Optional<Boolean> jcb;
+
+    private final Optional<Boolean> rdc;
+
     private final Map<String, Object> additionalProperties;
 
     private MethodsList(
@@ -44,6 +50,9 @@ public final class MethodsList {
             Optional<Boolean> eCheck,
             Optional<Boolean> mastercard,
             Optional<Boolean> visa,
+            Optional<Boolean> diners,
+            Optional<Boolean> jcb,
+            Optional<Boolean> rdc,
             Map<String, Object> additionalProperties) {
         this.amex = amex;
         this.applePay = applePay;
@@ -52,6 +61,9 @@ public final class MethodsList {
         this.eCheck = eCheck;
         this.mastercard = mastercard;
         this.visa = visa;
+        this.diners = diners;
+        this.jcb = jcb;
+        this.rdc = rdc;
         this.additionalProperties = additionalProperties;
     }
 
@@ -111,6 +123,30 @@ public final class MethodsList {
         return visa;
     }
 
+    /**
+     * @return When <code>true</code>, Diners Club is accepted.
+     */
+    @JsonProperty("diners")
+    public Optional<Boolean> getDiners() {
+        return diners;
+    }
+
+    /**
+     * @return When <code>true</code>, JCB is accepted.
+     */
+    @JsonProperty("jcb")
+    public Optional<Boolean> getJcb() {
+        return jcb;
+    }
+
+    /**
+     * @return When <code>true</code>, Remote Deposit Capture (RDC) is accepted.
+     */
+    @JsonProperty("rdc")
+    public Optional<Boolean> getRdc() {
+        return rdc;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -129,13 +165,25 @@ public final class MethodsList {
                 && discover.equals(other.discover)
                 && eCheck.equals(other.eCheck)
                 && mastercard.equals(other.mastercard)
-                && visa.equals(other.visa);
+                && visa.equals(other.visa)
+                && diners.equals(other.diners)
+                && jcb.equals(other.jcb)
+                && rdc.equals(other.rdc);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.amex, this.applePay, this.googlePay, this.discover, this.eCheck, this.mastercard, this.visa);
+                this.amex,
+                this.applePay,
+                this.googlePay,
+                this.discover,
+                this.eCheck,
+                this.mastercard,
+                this.visa,
+                this.diners,
+                this.jcb,
+                this.rdc);
     }
 
     @java.lang.Override
@@ -163,6 +211,12 @@ public final class MethodsList {
 
         private Optional<Boolean> visa = Optional.empty();
 
+        private Optional<Boolean> diners = Optional.empty();
+
+        private Optional<Boolean> jcb = Optional.empty();
+
+        private Optional<Boolean> rdc = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -176,6 +230,9 @@ public final class MethodsList {
             eCheck(other.getECheck());
             mastercard(other.getMastercard());
             visa(other.getVisa());
+            diners(other.getDiners());
+            jcb(other.getJcb());
+            rdc(other.getRdc());
             return this;
         }
 
@@ -277,8 +334,61 @@ public final class MethodsList {
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, Diners Club is accepted.</p>
+         */
+        @JsonSetter(value = "diners", nulls = Nulls.SKIP)
+        public Builder diners(Optional<Boolean> diners) {
+            this.diners = diners;
+            return this;
+        }
+
+        public Builder diners(Boolean diners) {
+            this.diners = Optional.ofNullable(diners);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, JCB is accepted.</p>
+         */
+        @JsonSetter(value = "jcb", nulls = Nulls.SKIP)
+        public Builder jcb(Optional<Boolean> jcb) {
+            this.jcb = jcb;
+            return this;
+        }
+
+        public Builder jcb(Boolean jcb) {
+            this.jcb = Optional.ofNullable(jcb);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, Remote Deposit Capture (RDC) is accepted.</p>
+         */
+        @JsonSetter(value = "rdc", nulls = Nulls.SKIP)
+        public Builder rdc(Optional<Boolean> rdc) {
+            this.rdc = rdc;
+            return this;
+        }
+
+        public Builder rdc(Boolean rdc) {
+            this.rdc = Optional.ofNullable(rdc);
+            return this;
+        }
+
         public MethodsList build() {
-            return new MethodsList(amex, applePay, googlePay, discover, eCheck, mastercard, visa, additionalProperties);
+            return new MethodsList(
+                    amex,
+                    applePay,
+                    googlePay,
+                    discover,
+                    eCheck,
+                    mastercard,
+                    visa,
+                    diners,
+                    jcb,
+                    rdc,
+                    additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

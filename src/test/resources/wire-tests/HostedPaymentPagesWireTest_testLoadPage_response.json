@@ -89,6 +89,7 @@
     },
     "paymentMethods": {
       "allMethodsChecked": true,
+      "showSaveMethod": true,
       "enabled": true,
       "header": "header",
       "methods": {

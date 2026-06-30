@@ -6,6 +6,7 @@ import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.RenewVCardRequest;
 import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.types.AchHolderType;
@@ -19,6 +20,7 @@ import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
 import io.github.payabli.api.types.ReissuePaymentMethod;
 import io.github.payabli.api.types.ReissuePayoutResponse;
+import io.github.payabli.api.types.RenewVCardResponse;
 import io.github.payabli.api.types.RequestOutAuthorizeInvoiceData;
 import io.github.payabli.api.types.RequestOutAuthorizePaymentDetails;
 import io.github.payabli.api.types.RequestOutAuthorizeVendorData;
@@ -58,7 +60,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":4440,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":456,\"vendorId\":456,\"methodReferenceId\":null}}"));
         AuthCapturePayoutResponse response = client.moneyOut()
                 .authorizeOut(RequestOutAuthorize.builder()
                         .entryPoint("8cfec329267")
@@ -148,7 +150,8 @@ public class MoneyOutWireTest {
                 + "    \"resultText\": \"Authorized\",\n"
                 + "    \"avsResponseText\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
-                + "    \"customerId\": 4440,\n"
+                + "    \"customerId\": 456,\n"
+                + "    \"vendorId\": 456,\n"
                 + "    \"methodReferenceId\": null\n"
                 + "  }\n"
                 + "}";
@@ -189,7 +192,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":4440,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"},{\"CustomerId\":4440,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":456,\"VendorId\":456,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"},{\"CustomerId\":456,\"VendorId\":456,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Cancelled\"}],\"responseText\":\"Success\"}"));
         CaptureAllOutResponse response = client.moneyOut().cancelAllOut(Arrays.asList("2-29", "2-28", "2-27"));
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -234,13 +237,15 @@ public class MoneyOutWireTest {
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": [\n"
                 + "    {\n"
-                + "      \"CustomerId\": 4440,\n"
+                + "      \"CustomerId\": 456,\n"
+                + "      \"VendorId\": 456,\n"
                 + "      \"ReferenceId\": \"129-230\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Cancelled\"\n"
                 + "    },\n"
                 + "    {\n"
-                + "      \"CustomerId\": 4440,\n"
+                + "      \"CustomerId\": 456,\n"
+                + "      \"VendorId\": 456,\n"
                 + "      \"ReferenceId\": \"129-219\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Cancelled\"\n"
@@ -285,7 +290,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":4440,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
+                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":456,\"VendorId\":456,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
         PayabliApiResponse0000 response = client.moneyOut().cancelOutGet("129-219");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -303,7 +308,8 @@ public class MoneyOutWireTest {
                 + "    \"ReferenceId\": \"129-219\",\n"
                 + "    \"ResultCode\": 1,\n"
                 + "    \"ResultText\": \"Approved\",\n"
-                + "    \"CustomerId\": 4440,\n"
+                + "    \"CustomerId\": 456,\n"
+                + "    \"VendorId\": 456,\n"
                 + "    \"AuthCode\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
                 + "    \"avsResponseText\": null,\n"
@@ -347,7 +353,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":4440,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
+                                "{\"isSuccess\":true,\"responseText\":\"Success\",\"pageIdentifier\":null,\"responseData\":{\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Approved\",\"CustomerId\":456,\"VendorId\":456,\"AuthCode\":null,\"cvvResponseText\":null,\"avsResponseText\":null,\"methodReferenceId\":null}}"));
         PayabliApiResponse0000 response = client.moneyOut().cancelOutDelete("129-219");
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
@@ -365,7 +371,8 @@ public class MoneyOutWireTest {
                 + "    \"ReferenceId\": \"129-219\",\n"
                 + "    \"ResultCode\": 1,\n"
                 + "    \"ResultText\": \"Approved\",\n"
-                + "    \"CustomerId\": 4440,\n"
+                + "    \"CustomerId\": 456,\n"
+                + "    \"VendorId\": 456,\n"
                 + "    \"AuthCode\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
                 + "    \"avsResponseText\": null,\n"
@@ -409,7 +416,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":4440,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Captured\"},{\"CustomerId\":4440,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Captured\"}],\"responseText\":\"Success\"}"));
+                                "{\"isSuccess\":true,\"pageIdentifier\":null,\"responseCode\":1,\"responseData\":[{\"CustomerId\":456,\"VendorId\":456,\"ReferenceId\":\"129-230\",\"ResultCode\":1,\"ResultText\":\"Captured\"},{\"CustomerId\":456,\"VendorId\":456,\"ReferenceId\":\"129-219\",\"ResultCode\":1,\"ResultText\":\"Captured\"}],\"responseText\":\"Success\"}"));
         CaptureAllOutResponse response = client.moneyOut()
                 .captureAllOut(CaptureAllOutRequest.builder()
                         .body(Arrays.asList("2-29", "2-28", "2-27"))
@@ -457,13 +464,15 @@ public class MoneyOutWireTest {
                 + "  \"responseCode\": 1,\n"
                 + "  \"responseData\": [\n"
                 + "    {\n"
-                + "      \"CustomerId\": 4440,\n"
+                + "      \"CustomerId\": 456,\n"
+                + "      \"VendorId\": 456,\n"
                 + "      \"ReferenceId\": \"129-230\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Captured\"\n"
                 + "    },\n"
                 + "    {\n"
-                + "      \"CustomerId\": 4440,\n"
+                + "      \"CustomerId\": 456,\n"
+                + "      \"VendorId\": 456,\n"
                 + "      \"ReferenceId\": \"129-219\",\n"
                 + "      \"ResultCode\": 1,\n"
                 + "      \"ResultText\": \"Captured\"\n"
@@ -508,7 +517,7 @@ public class MoneyOutWireTest {
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
-                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":4440,\"methodReferenceId\":null}}"));
+                                "{\"responseCode\":1,\"pageIdentifier\":null,\"roomId\":0,\"isSuccess\":true,\"responseText\":\"Success\",\"responseData\":{\"authCode\":null,\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Authorized\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":456,\"vendorId\":456,\"methodReferenceId\":null}}"));
         AuthCapturePayoutResponse response = client.moneyOut()
                 .captureOut("129-219", CaptureOutRequest.builder().build());
         RecordedRequest request = server.takeRequest();
@@ -532,7 +541,8 @@ public class MoneyOutWireTest {
                 + "    \"resultText\": \"Authorized\",\n"
                 + "    \"avsResponseText\": null,\n"
                 + "    \"cvvResponseText\": null,\n"
-                + "    \"customerId\": 4440,\n"
+                + "    \"customerId\": 456,\n"
+                + "    \"vendorId\": 456,\n"
                 + "    \"methodReferenceId\": null\n"
                 + "  }\n"
                 + "}";
@@ -628,6 +638,100 @@ public class MoneyOutWireTest {
         String actualResponseJson = objectMapper.writeValueAsString(response);
         String expectedResponseBody =
                 TestResources.loadResource("/wire-tests/MoneyOutWireTest_testVCardGet_response.json");
+        JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
+        JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
+        Assertions.assertTrue(
+                jsonEquals(expectedResponseNode, actualResponseNode),
+                "Response body structure does not match expected");
+        if (actualResponseNode.has("type") || actualResponseNode.has("_type") || actualResponseNode.has("kind")) {
+            String discriminator = null;
+            if (actualResponseNode.has("type"))
+                discriminator = actualResponseNode.get("type").asText();
+            else if (actualResponseNode.has("_type"))
+                discriminator = actualResponseNode.get("_type").asText();
+            else if (actualResponseNode.has("kind"))
+                discriminator = actualResponseNode.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualResponseNode.isNull()) {
+            Assertions.assertTrue(
+                    actualResponseNode.isObject() || actualResponseNode.isArray() || actualResponseNode.isValueNode(),
+                    "response should be a valid JSON value");
+        }
+
+        if (actualResponseNode.isArray()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Array should have valid size");
+        }
+        if (actualResponseNode.isObject()) {
+            Assertions.assertTrue(actualResponseNode.size() >= 0, "Object should have valid field count");
+        }
+    }
+
+    @Test
+    public void testRenewVCard() throws Exception {
+        server.enqueue(
+                new MockResponse()
+                        .setResponseCode(200)
+                        .setBody(
+                                "{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":{\"authCode\":null,\"referenceId\":\"20231206142225227890\",\"resultCode\":1,\"resultText\":\"Virtual card renewed\",\"avsResponseText\":null,\"cvvResponseText\":null,\"customerId\":null,\"vendorId\":null,\"methodReferenceId\":null}}"));
+        RenewVCardResponse response = client.moneyOut()
+                .renewVCard(
+                        "20231206142225226104",
+                        RenewVCardRequest.builder().expirationDate("12-2027").build());
+        RecordedRequest request = server.takeRequest();
+        Assertions.assertNotNull(request);
+        Assertions.assertEquals("PUT", request.getMethod());
+        // Validate request body
+        String actualRequestBody = request.getBody().readUtf8();
+        String expectedRequestBody = "" + "{\n" + "  \"expirationDate\": \"12-2027\"\n" + "}";
+        JsonNode actualJson = objectMapper.readTree(actualRequestBody);
+        JsonNode expectedJson = objectMapper.readTree(expectedRequestBody);
+        Assertions.assertTrue(jsonEquals(expectedJson, actualJson), "Request body structure does not match expected");
+        if (actualJson.has("type") || actualJson.has("_type") || actualJson.has("kind")) {
+            String discriminator = null;
+            if (actualJson.has("type")) discriminator = actualJson.get("type").asText();
+            else if (actualJson.has("_type"))
+                discriminator = actualJson.get("_type").asText();
+            else if (actualJson.has("kind"))
+                discriminator = actualJson.get("kind").asText();
+            Assertions.assertNotNull(discriminator, "Union type should have a discriminator field");
+            Assertions.assertFalse(discriminator.isEmpty(), "Union discriminator should not be empty");
+        }
+
+        if (!actualJson.isNull()) {
+            Assertions.assertTrue(
+                    actualJson.isObject() || actualJson.isArray() || actualJson.isValueNode(),
+                    "request should be a valid JSON value");
+        }
+
+        if (actualJson.isArray()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Array should have valid size");
+        }
+        if (actualJson.isObject()) {
+            Assertions.assertTrue(actualJson.size() >= 0, "Object should have valid field count");
+        }
+
+        // Validate response body
+        Assertions.assertNotNull(response, "Response should not be null");
+        String actualResponseJson = objectMapper.writeValueAsString(response);
+        String expectedResponseBody = ""
+                + "{\n"
+                + "  \"responseText\": \"Success\",\n"
+                + "  \"isSuccess\": true,\n"
+                + "  \"responseData\": {\n"
+                + "    \"authCode\": null,\n"
+                + "    \"referenceId\": \"20231206142225227890\",\n"
+                + "    \"resultCode\": 1,\n"
+                + "    \"resultText\": \"Virtual card renewed\",\n"
+                + "    \"avsResponseText\": null,\n"
+                + "    \"cvvResponseText\": null,\n"
+                + "    \"customerId\": null,\n"
+                + "    \"vendorId\": null,\n"
+                + "    \"methodReferenceId\": null\n"
+                + "  }\n"
+                + "}";
         JsonNode actualResponseNode = objectMapper.readTree(actualResponseJson);
         JsonNode expectedResponseNode = objectMapper.readTree(expectedResponseBody);
         Assertions.assertTrue(

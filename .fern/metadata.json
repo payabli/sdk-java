@@ -1,5 +1,5 @@
 {
-  "cliVersion": "5.7.9",
+  "cliVersion": "5.56.0",
   "generatorName": "fernapi/fern-java-sdk",
   "generatorVersion": "4.8.11",
   "generatorConfig": {
@@ -8,10 +8,10 @@
     "enable-wire-tests": true,
     "enable-forward-compatible-enums": true
   },
-  "originGitCommit": "21b1f70a2e9bfc3b23ab1d28054848d68be85fdc",
+  "originGitCommit": "1aeb9b5f59cac476a429df4671f575ed07ab5731",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.4",
+  "requestedVersion": "1.0.5",
   "ciProvider": "github",
-  "sdkVersion": "1.0.4"
+  "sdkVersion": "1.0.5"
 }

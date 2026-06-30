@@ -23,6 +23,7 @@
       "OrgId": 123,
       "ParentOrgName": "PropertyManager Pro",
       "PaymentData": {
+        "orderDescription": "Monthly subscription",
         "paymentDetails": {
           "totalAmount": 100
         }

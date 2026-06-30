@@ -30,7 +30,11 @@ public final class MethodElement {
 
     private final Optional<Integer> order;
 
+    private final Optional<String> paymentDescription;
+
     private final Optional<MethodElementSettings> settings;
+
+    private final Optional<Boolean> showSaveMethod;
 
     private final Map<String, Object> additionalProperties;
 
@@ -40,14 +44,18 @@ public final class MethodElement {
             Optional<String> header,
             Optional<MethodsList> methods,
             Optional<Integer> order,
+            Optional<String> paymentDescription,
             Optional<MethodElementSettings> settings,
+            Optional<Boolean> showSaveMethod,
             Map<String, Object> additionalProperties) {
         this.allMethodsChecked = allMethodsChecked;
         this.enabled = enabled;
         this.header = header;
         this.methods = methods;
         this.order = order;
+        this.paymentDescription = paymentDescription;
         this.settings = settings;
+        this.showSaveMethod = showSaveMethod;
         this.additionalProperties = additionalProperties;
     }
 
@@ -83,11 +91,27 @@ public final class MethodElement {
     }
 
     /**
+     * @return Description text shown in the payment methods section.
+     */
+    @JsonProperty("paymentDescription")
+    public Optional<String> getPaymentDescription() {
+        return paymentDescription;
+    }
+
+    /**
      * @return Settings for wallet payment methods.
      */
     @JsonProperty("settings")
     public Optional<MethodElementSettings> getSettings() {
         return settings;
+    }
+
+    /**
+     * @return Controls whether the &quot;Save payment details for future use&quot; checkbox appears on the hosted payment page. Set to <code>false</code> to hide the checkbox. Defaults to <code>true</code>.
+     */
+    @JsonProperty("showSaveMethod")
+    public Optional<Boolean> getShowSaveMethod() {
+        return showSaveMethod;
     }
 
     @java.lang.Override
@@ -107,12 +131,22 @@ public final class MethodElement {
                 && header.equals(other.header)
                 && methods.equals(other.methods)
                 && order.equals(other.order)
-                && settings.equals(other.settings);
+                && paymentDescription.equals(other.paymentDescription)
+                && settings.equals(other.settings)
+                && showSaveMethod.equals(other.showSaveMethod);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.allMethodsChecked, this.enabled, this.header, this.methods, this.order, this.settings);
+        return Objects.hash(
+                this.allMethodsChecked,
+                this.enabled,
+                this.header,
+                this.methods,
+                this.order,
+                this.paymentDescription,
+                this.settings,
+                this.showSaveMethod);
     }
 
     @java.lang.Override
@@ -136,7 +170,11 @@ public final class MethodElement {
 
         private Optional<Integer> order = Optional.empty();
 
+        private Optional<String> paymentDescription = Optional.empty();
+
         private Optional<MethodElementSettings> settings = Optional.empty();
+
+        private Optional<Boolean> showSaveMethod = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -149,7 +187,9 @@ public final class MethodElement {
             header(other.getHeader());
             methods(other.getMethods());
             order(other.getOrder());
+            paymentDescription(other.getPaymentDescription());
             settings(other.getSettings());
+            showSaveMethod(other.getShowSaveMethod());
             return this;
         }
 
@@ -215,6 +255,20 @@ public final class MethodElement {
         }
 
         /**
+         * <p>Description text shown in the payment methods section.</p>
+         */
+        @JsonSetter(value = "paymentDescription", nulls = Nulls.SKIP)
+        public Builder paymentDescription(Optional<String> paymentDescription) {
+            this.paymentDescription = paymentDescription;
+            return this;
+        }
+
+        public Builder paymentDescription(String paymentDescription) {
+            this.paymentDescription = Optional.ofNullable(paymentDescription);
+            return this;
+        }
+
+        /**
          * <p>Settings for wallet payment methods.</p>
          */
         @JsonSetter(value = "settings", nulls = Nulls.SKIP)
@@ -228,9 +282,31 @@ public final class MethodElement {
             return this;
         }
 
+        /**
+         * <p>Controls whether the &quot;Save payment details for future use&quot; checkbox appears on the hosted payment page. Set to <code>false</code> to hide the checkbox. Defaults to <code>true</code>.</p>
+         */
+        @JsonSetter(value = "showSaveMethod", nulls = Nulls.SKIP)
+        public Builder showSaveMethod(Optional<Boolean> showSaveMethod) {
+            this.showSaveMethod = showSaveMethod;
+            return this;
+        }
+
+        public Builder showSaveMethod(Boolean showSaveMethod) {
+            this.showSaveMethod = Optional.ofNullable(showSaveMethod);
+            return this;
+        }
+
         public MethodElement build() {
             return new MethodElement(
-                    allMethodsChecked, enabled, header, methods, order, settings, additionalProperties);
+                    allMethodsChecked,
+                    enabled,
+                    header,
+                    methods,
+                    order,
+                    paymentDescription,
+                    settings,
+                    showSaveMethod,
+                    additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

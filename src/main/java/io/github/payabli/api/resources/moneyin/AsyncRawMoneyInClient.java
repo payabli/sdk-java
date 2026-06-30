@@ -34,6 +34,7 @@ import io.github.payabli.api.types.PayabliApiResponseGetPaid;
 import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.ReceiptResponse;
 import io.github.payabli.api.types.RefundResponse;
+import io.github.payabli.api.types.RefundV2Request;
 import io.github.payabli.api.types.RefundWithInstructionsResponse;
 import io.github.payabli.api.types.ReverseResponse;
 import io.github.payabli.api.types.TransRequestBody;
@@ -63,22 +64,22 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction), then capture, void, or refund the resulting transaction with the corresponding endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
-     * &lt;Tip&gt;
-     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
-     * &lt;/Tip&gt;
+     * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(TransRequestBody body) {
         return authorize(RequestPaymentAuthorize.builder().body(body).build());
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction), then capture, void, or refund the resulting transaction with the corresponding endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
-     * &lt;Tip&gt;
-     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
-     * &lt;/Tip&gt;
+     * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(
             TransRequestBody body, RequestOptions requestOptions) {
@@ -86,22 +87,22 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction), then capture, void, or refund the resulting transaction with the corresponding endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
-     * &lt;Tip&gt;
-     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
-     * &lt;/Tip&gt;
+     * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(RequestPaymentAuthorize request) {
         return authorize(request, null);
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction), then capture, void, or refund the resulting transaction with the corresponding endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
-     * Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
-     * &lt;Tip&gt;
-     * Consider migrating to the <a href="/developers/api-reference/moneyinV2/authorize-a-transaction">v2 Authorize endpoint</a> to take advantage of unified response codes and improved response consistency.
-     * &lt;/Tip&gt;
+     * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<AuthResponse>> authorize(
             RequestPaymentAuthorize request, RequestOptions requestOptions) {
@@ -198,7 +199,7 @@ public class AsyncRawMoneyInClient {
 
     /**
      * <p>&lt;Warning&gt;
-     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
+     *   This endpoint is deprecated. Use [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction) instead, which supports partial captures and service fee adjustments.
      * &lt;/Warning&gt;</p>
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
@@ -209,7 +210,7 @@ public class AsyncRawMoneyInClient {
 
     /**
      * <p>&lt;Warning&gt;
-     *   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
+     *   This endpoint is deprecated. Use [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction) instead, which supports partial captures and service fee adjustments.
      * &lt;/Warning&gt;</p>
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
@@ -292,11 +293,11 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to capture transactions originally authorized with the legacy [Authorize endpoint](/developers/api-reference/moneyin/authorize-a-transaction). New integrations should use the [Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction), which only works on transactions authorized with the current [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction).
+     * &lt;/Warning&gt;</p>
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
-     * <p>&lt;Tip&gt;
-     * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
-     * &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> captureAuth(
             String transId, CaptureRequest request) {
@@ -304,11 +305,11 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to capture transactions originally authorized with the legacy [Authorize endpoint](/developers/api-reference/moneyin/authorize-a-transaction). New integrations should use the [Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction), which only works on transactions authorized with the current [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction).
+     * &lt;/Warning&gt;</p>
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
-     * <p>&lt;Tip&gt;
-     * Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
-     * &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<CaptureResponse>> captureAuth(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
@@ -588,20 +589,20 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) and manage the resulting transaction with the corresponding void or refund endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(TransRequestBody body) {
         return getpaid(RequestPayment.builder().body(body).build());
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) and manage the resulting transaction with the corresponding void or refund endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(
             TransRequestBody body, RequestOptions requestOptions) {
@@ -609,20 +610,20 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) and manage the resulting transaction with the corresponding void or refund endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(RequestPayment request) {
         return getpaid(request, null);
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. New integrations should use the [Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) and manage the resulting transaction with the corresponding void or refund endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+     * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseGetPaid>> getpaid(
             RequestPayment request, RequestOptions requestOptions) {
@@ -732,14 +733,20 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the v1 API. For v2 transactions, check the transaction's settlement status and call v2 void or v2 refund based on the result.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated and only works on transactions created with the legacy endpoints. There's no equivalent in the current endpoints. For transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), check the transaction's settlement status and call [Void](/developers/api-reference/moneyinV2/void-a-transaction) or [Refund](/developers/api-reference/moneyinV2/refund-a-settled-transaction) based on the result.
+     * &lt;/Warning&gt;</p>
+     * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the legacy endpoints. For transactions made with the current endpoints, check the transaction's settlement status and call void or refund based on the result.
      */
     public CompletableFuture<PayabliApiHttpResponse<ReverseResponse>> reverse(String transId, double amount) {
         return reverse(transId, amount, null);
     }
 
     /**
-     * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the v1 API. For v2 transactions, check the transaction's settlement status and call v2 void or v2 refund based on the result.
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated and only works on transactions created with the legacy endpoints. There's no equivalent in the current endpoints. For transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), check the transaction's settlement status and call [Void](/developers/api-reference/moneyinV2/void-a-transaction) or [Refund](/developers/api-reference/moneyinV2/refund-a-settled-transaction) based on the result.
+     * &lt;/Warning&gt;</p>
+     * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the legacy endpoints. For transactions made with the current endpoints, check the transaction's settlement status and call void or refund based on the result.
      */
     public CompletableFuture<PayabliApiHttpResponse<ReverseResponse>> reverse(
             String transId, double amount, RequestOptions requestOptions) {
@@ -819,20 +826,20 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. New integrations should use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction), which only works on transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction).
+     * &lt;/Warning&gt;</p>
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundResponse>> refund(String transId, double amount) {
         return refund(transId, amount, null);
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. New integrations should use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction), which only works on transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction).
+     * &lt;/Warning&gt;</p>
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundResponse>> refund(
             String transId, double amount, RequestOptions requestOptions) {
@@ -912,6 +919,9 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. To refund a split-funded transaction created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) with split instructions in the request body.
+     * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
@@ -920,6 +930,9 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. To refund a split-funded transaction created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) with split instructions in the request body.
+     * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
@@ -928,6 +941,9 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. To refund a split-funded transaction created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) with split instructions in the request body.
+     * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
@@ -936,6 +952,9 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. To refund a split-funded transaction created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) with split instructions in the request body.
+     * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
     public CompletableFuture<PayabliApiHttpResponse<RefundWithInstructionsResponse>> refundWithInstructions(
@@ -1317,20 +1336,20 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to void transactions originally created with the legacy endpoints. New integrations should use the [Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction), which only works on transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction).
+     * &lt;/Warning&gt;</p>
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<VoidResponse>> void_(String transId) {
         return void_(transId, null);
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   This endpoint is deprecated. Use it only to void transactions originally created with the legacy endpoints. New integrations should use the [Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction), which only works on transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction).
+     * &lt;/Warning&gt;</p>
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
-     * <p>  &lt;Tip&gt;
-     *   Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
-     *   &lt;/Tip&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<VoidResponse>> void_(
             String transId, RequestOptions requestOptions) {
@@ -1760,19 +1779,49 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="/developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(String transId) {
-        return refundv2(transId, null);
+        return refundv2(transId, RefundV2Request.builder().build());
     }
 
     /**
-     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="/developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(
             String transId, RequestOptions requestOptions) {
+        return refundv2(transId, RefundV2Request.builder().build(), requestOptions);
+    }
+
+    /**
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="/developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(
+            String transId, RefundV2Request request) {
+        return refundv2(transId, request, null);
+    }
+
+    /**
+     * Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see <a href="/developers/api-reference/moneyinV2/partial-refund-a-settled-transaction">Partially refund a transaction</a>.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2(
+            String transId, RefundV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/refund")
@@ -1782,10 +1831,18 @@ public class AsyncRawMoneyInClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("POST", RequestBody.create("", null))
+                .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
@@ -1850,20 +1907,50 @@ public class AsyncRawMoneyInClient {
     }
 
     /**
-     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
             String transId, double amount) {
-        return refundv2Amount(transId, amount, null);
+        return refundv2Amount(transId, amount, RefundV2Request.builder().build());
     }
 
     /**
-     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is omitted or set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
      */
     public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
             String transId, double amount, RequestOptions requestOptions) {
+        return refundv2Amount(transId, amount, RefundV2Request.builder().build(), requestOptions);
+    }
+
+    /**
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
+            String transId, double amount, RefundV2Request request) {
+        return refundv2Amount(transId, amount, request, null);
+    }
+
+    /**
+     * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
+     * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
+     * <p>&lt;Note&gt;
+     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     * &lt;/Note&gt;</p>
+     */
+    public CompletableFuture<PayabliApiHttpResponse<V2TransactionResponseWrapper>> refundv2Amount(
+            String transId, double amount, RefundV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/refund")
@@ -1874,10 +1961,18 @@ public class AsyncRawMoneyInClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiException("Failed to serialize request", e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
-                .method("POST", RequestBody.create("", null))
+                .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();

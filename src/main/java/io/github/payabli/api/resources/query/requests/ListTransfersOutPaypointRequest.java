@@ -83,6 +83,8 @@ public final class ListTransfersOutPaypointRequest {
      * <li><code>paypointDbaName</code> (ne, eq, ct, nct)</li>
      * <li><code>batchNumber</code> (ne, eq, ct, nct)</li>
      * <li><code>batchId</code> (ne, eq, in, nin)</li>
+     * <li><code>detailType</code> (eq, ne, in, nin, ct, nct)</li>
+     * <li><code>detailMethod</code> (eq, ne, in, nin, ct, nct)</li>
      * </ul>
      */
     @JsonProperty("parameters")
@@ -205,6 +207,8 @@ public final class ListTransfersOutPaypointRequest {
          * <li><code>paypointDbaName</code> (ne, eq, ct, nct)</li>
          * <li><code>batchNumber</code> (ne, eq, ct, nct)</li>
          * <li><code>batchId</code> (ne, eq, in, nin)</li>
+         * <li><code>detailType</code> (eq, ne, in, nin, ct, nct)</li>
+         * <li><code>detailMethod</code> (eq, ne, in, nin, ct, nct)</li>
          * </ul>
          */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)

@@ -29,7 +29,7 @@ public final class PayabliApiResponse0000 {
 
     private final Optional<Integer> responseCode;
 
-    private final Optional<PayabliApiResponse0ResponseData> responseData;
+    private final Optional<CancelPayoutResponseData> responseData;
 
     private final Map<String, Object> additionalProperties;
 
@@ -38,7 +38,7 @@ public final class PayabliApiResponse0000 {
             String responseText,
             Optional<String> pageIdentifier,
             Optional<Integer> responseCode,
-            Optional<PayabliApiResponse0ResponseData> responseData,
+            Optional<CancelPayoutResponseData> responseData,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseText = responseText;
@@ -69,7 +69,7 @@ public final class PayabliApiResponse0000 {
     }
 
     @JsonProperty("responseData")
-    public Optional<PayabliApiResponse0ResponseData> getResponseData() {
+    public Optional<CancelPayoutResponseData> getResponseData() {
         return responseData;
     }
 
@@ -132,16 +132,16 @@ public final class PayabliApiResponse0000 {
 
         _FinalStage responseCode(Integer responseCode);
 
-        _FinalStage responseData(Optional<PayabliApiResponse0ResponseData> responseData);
+        _FinalStage responseData(Optional<CancelPayoutResponseData> responseData);
 
-        _FinalStage responseData(PayabliApiResponse0ResponseData responseData);
+        _FinalStage responseData(CancelPayoutResponseData responseData);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements ResponseTextStage, _FinalStage {
         private String responseText;
 
-        private Optional<PayabliApiResponse0ResponseData> responseData = Optional.empty();
+        private Optional<CancelPayoutResponseData> responseData = Optional.empty();
 
         private Optional<Integer> responseCode = Optional.empty();
 
@@ -172,14 +172,14 @@ public final class PayabliApiResponse0000 {
         }
 
         @java.lang.Override
-        public _FinalStage responseData(PayabliApiResponse0ResponseData responseData) {
+        public _FinalStage responseData(CancelPayoutResponseData responseData) {
             this.responseData = Optional.ofNullable(responseData);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "responseData", nulls = Nulls.SKIP)
-        public _FinalStage responseData(Optional<PayabliApiResponse0ResponseData> responseData) {
+        public _FinalStage responseData(Optional<CancelPayoutResponseData> responseData) {
             this.responseData = responseData;
             return this;
         }
