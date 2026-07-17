@@ -26,56 +26,68 @@ import java.util.Optional;
 public final class BillPayOutData {
     private final Optional<Long> billId;
 
-    private final Optional<String> comments;
-
-    private final Optional<String> dueDate;
-
-    private final Optional<String> invoiceDate;
-
-    private final Optional<String> invoiceNumber;
-
-    private final Optional<String> netAmount;
-
-    private final Optional<String> discount;
-
-    private final Optional<Terms> terms;
+    private final Optional<String> lotNumber;
 
     private final Optional<String> accountingField1;
 
     private final Optional<String> accountingField2;
 
+    private final Optional<Terms> terms;
+
     private final Optional<String> additionalData;
 
     private final Optional<List<FileContent>> attachments;
+
+    private final Optional<String> invoiceNumber;
+
+    private final Optional<String> netAmount;
+
+    private final Optional<String> invoiceDate;
+
+    private final Optional<String> dueDate;
+
+    private final Optional<String> comments;
+
+    private final Optional<String> identifier;
+
+    private final Optional<String> discount;
+
+    private final Optional<String> totalAmount;
 
     private final Map<String, Object> additionalProperties;
 
     private BillPayOutData(
             Optional<Long> billId,
-            Optional<String> comments,
-            Optional<String> dueDate,
-            Optional<String> invoiceDate,
-            Optional<String> invoiceNumber,
-            Optional<String> netAmount,
-            Optional<String> discount,
-            Optional<Terms> terms,
+            Optional<String> lotNumber,
             Optional<String> accountingField1,
             Optional<String> accountingField2,
+            Optional<Terms> terms,
             Optional<String> additionalData,
             Optional<List<FileContent>> attachments,
+            Optional<String> invoiceNumber,
+            Optional<String> netAmount,
+            Optional<String> invoiceDate,
+            Optional<String> dueDate,
+            Optional<String> comments,
+            Optional<String> identifier,
+            Optional<String> discount,
+            Optional<String> totalAmount,
             Map<String, Object> additionalProperties) {
         this.billId = billId;
-        this.comments = comments;
-        this.dueDate = dueDate;
-        this.invoiceDate = invoiceDate;
-        this.invoiceNumber = invoiceNumber;
-        this.netAmount = netAmount;
-        this.discount = discount;
-        this.terms = terms;
+        this.lotNumber = lotNumber;
         this.accountingField1 = accountingField1;
         this.accountingField2 = accountingField2;
+        this.terms = terms;
         this.additionalData = additionalData;
         this.attachments = attachments;
+        this.invoiceNumber = invoiceNumber;
+        this.netAmount = netAmount;
+        this.invoiceDate = invoiceDate;
+        this.dueDate = dueDate;
+        this.comments = comments;
+        this.identifier = identifier;
+        this.discount = discount;
+        this.totalAmount = totalAmount;
         this.additionalProperties = additionalProperties;
     }
 
@@ -88,33 +100,45 @@ public final class BillPayOutData {
     }
 
     /**
-     * @return Any comments about bill. <strong>For managed payouts, this field has a limit of 100 characters</strong>.
+     * @return Lot number associated with the bill.
      */
-    @JsonProperty("comments")
-    public Optional<String> getComments() {
-        return comments;
+    @JsonIgnore
+    public Optional<String> getLotNumber() {
+        if (lotNumber == null) {
+            return Optional.empty();
+        }
+        return lotNumber;
+    }
+
+    @JsonProperty("AccountingField1")
+    public Optional<String> getAccountingField1() {
+        return accountingField1;
+    }
+
+    @JsonProperty("AccountingField2")
+    public Optional<String> getAccountingField2() {
+        return accountingField2;
     }
 
     /**
-     * @return Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
+     * @return Description of payment terms.
      */
-    @JsonIgnore
-    public Optional<String> getDueDate() {
-        if (dueDate == null) {
-            return Optional.empty();
-        }
-        return dueDate;
+    @JsonProperty("Terms")
+    public Optional<Terms> getTerms() {
+        return terms;
+    }
+
+    @JsonProperty("AdditionalData")
+    public Optional<String> getAdditionalData() {
+        return additionalData;
     }
 
     /**
-     * @return Bill date in format YYYY-MM-DD or MM/DD/YYYY.
+     * @return Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see <a href="/developers/developer-guides/pay-out-manage-payouts">the documentation</a>.
      */
-    @JsonIgnore
-    public Optional<String> getInvoiceDate() {
-        if (invoiceDate == null) {
-            return Optional.empty();
-        }
-        return invoiceDate;
+    @JsonProperty("attachments")
+    public Optional<List<FileContent>> getAttachments() {
+        return attachments;
     }
 
     /**
@@ -134,6 +158,47 @@ public final class BillPayOutData {
     }
 
     /**
+     * @return Bill date in format YYYY-MM-DD or MM/DD/YYYY.
+     */
+    @JsonIgnore
+    public Optional<String> getInvoiceDate() {
+        if (invoiceDate == null) {
+            return Optional.empty();
+        }
+        return invoiceDate;
+    }
+
+    /**
+     * @return Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
+     */
+    @JsonIgnore
+    public Optional<String> getDueDate() {
+        if (dueDate == null) {
+            return Optional.empty();
+        }
+        return dueDate;
+    }
+
+    /**
+     * @return Any comments about bill. <strong>For managed payouts, this field has a limit of 100 characters</strong>.
+     */
+    @JsonProperty("comments")
+    public Optional<String> getComments() {
+        return comments;
+    }
+
+    /**
+     * @return Custom identifier for the bill.
+     */
+    @JsonIgnore
+    public Optional<String> getIdentifier() {
+        if (identifier == null) {
+            return Optional.empty();
+        }
+        return identifier;
+    }
+
+    /**
      * @return Bill discount amount.
      */
     @JsonProperty("discount")
@@ -142,34 +207,26 @@ public final class BillPayOutData {
     }
 
     /**
-     * @return Description of payment terms.
+     * @return Total amount of the bill.
      */
-    @JsonProperty("Terms")
-    public Optional<Terms> getTerms() {
-        return terms;
+    @JsonIgnore
+    public Optional<String> getTotalAmount() {
+        if (totalAmount == null) {
+            return Optional.empty();
+        }
+        return totalAmount;
     }
 
-    @JsonProperty("AccountingField1")
-    public Optional<String> getAccountingField1() {
-        return accountingField1;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("LotNumber")
+    private Optional<String> _getLotNumber() {
+        return lotNumber;
     }
 
-    @JsonProperty("AccountingField2")
-    public Optional<String> getAccountingField2() {
-        return accountingField2;
-    }
-
-    @JsonProperty("AdditionalData")
-    public Optional<String> getAdditionalData() {
-        return additionalData;
-    }
-
-    /**
-     * @return Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see <a href="/developers/developer-guides/pay-out-manage-payouts">the documentation</a>.
-     */
-    @JsonProperty("attachments")
-    public Optional<List<FileContent>> getAttachments() {
-        return attachments;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceDate")
+    private Optional<String> _getInvoiceDate() {
+        return invoiceDate;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -179,9 +236,15 @@ public final class BillPayOutData {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
-    @JsonProperty("invoiceDate")
-    private Optional<String> _getInvoiceDate() {
-        return invoiceDate;
+    @JsonProperty("identifier")
+    private Optional<String> _getIdentifier() {
+        return identifier;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("totalAmount")
+    private Optional<String> _getTotalAmount() {
+        return totalAmount;
     }
 
     @java.lang.Override
@@ -197,34 +260,40 @@ public final class BillPayOutData {
 
     private boolean equalTo(BillPayOutData other) {
         return billId.equals(other.billId)
-                && comments.equals(other.comments)
-                && dueDate.equals(other.dueDate)
-                && invoiceDate.equals(other.invoiceDate)
-                && invoiceNumber.equals(other.invoiceNumber)
-                && netAmount.equals(other.netAmount)
-                && discount.equals(other.discount)
-                && terms.equals(other.terms)
+                && lotNumber.equals(other.lotNumber)
                 && accountingField1.equals(other.accountingField1)
                 && accountingField2.equals(other.accountingField2)
+                && terms.equals(other.terms)
                 && additionalData.equals(other.additionalData)
-                && attachments.equals(other.attachments);
+                && attachments.equals(other.attachments)
+                && invoiceNumber.equals(other.invoiceNumber)
+                && netAmount.equals(other.netAmount)
+                && invoiceDate.equals(other.invoiceDate)
+                && dueDate.equals(other.dueDate)
+                && comments.equals(other.comments)
+                && identifier.equals(other.identifier)
+                && discount.equals(other.discount)
+                && totalAmount.equals(other.totalAmount);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.billId,
-                this.comments,
-                this.dueDate,
-                this.invoiceDate,
-                this.invoiceNumber,
-                this.netAmount,
-                this.discount,
-                this.terms,
+                this.lotNumber,
                 this.accountingField1,
                 this.accountingField2,
+                this.terms,
                 this.additionalData,
-                this.attachments);
+                this.attachments,
+                this.invoiceNumber,
+                this.netAmount,
+                this.invoiceDate,
+                this.dueDate,
+                this.comments,
+                this.identifier,
+                this.discount,
+                this.totalAmount);
     }
 
     @java.lang.Override
@@ -240,27 +309,33 @@ public final class BillPayOutData {
     public static final class Builder {
         private Optional<Long> billId = Optional.empty();
 
-        private Optional<String> comments = Optional.empty();
-
-        private Optional<String> dueDate = Optional.empty();
-
-        private Optional<String> invoiceDate = Optional.empty();
-
-        private Optional<String> invoiceNumber = Optional.empty();
-
-        private Optional<String> netAmount = Optional.empty();
-
-        private Optional<String> discount = Optional.empty();
-
-        private Optional<Terms> terms = Optional.empty();
+        private Optional<String> lotNumber = Optional.empty();
 
         private Optional<String> accountingField1 = Optional.empty();
 
         private Optional<String> accountingField2 = Optional.empty();
 
+        private Optional<Terms> terms = Optional.empty();
+
         private Optional<String> additionalData = Optional.empty();
 
         private Optional<List<FileContent>> attachments = Optional.empty();
+
+        private Optional<String> invoiceNumber = Optional.empty();
+
+        private Optional<String> netAmount = Optional.empty();
+
+        private Optional<String> invoiceDate = Optional.empty();
+
+        private Optional<String> dueDate = Optional.empty();
+
+        private Optional<String> comments = Optional.empty();
+
+        private Optional<String> identifier = Optional.empty();
+
+        private Optional<String> discount = Optional.empty();
+
+        private Optional<String> totalAmount = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -269,17 +344,20 @@ public final class BillPayOutData {
 
         public Builder from(BillPayOutData other) {
             billId(other.getBillId());
-            comments(other.getComments());
-            dueDate(other.getDueDate());
-            invoiceDate(other.getInvoiceDate());
-            invoiceNumber(other.getInvoiceNumber());
-            netAmount(other.getNetAmount());
-            discount(other.getDiscount());
-            terms(other.getTerms());
+            lotNumber(other.getLotNumber());
             accountingField1(other.getAccountingField1());
             accountingField2(other.getAccountingField2());
+            terms(other.getTerms());
             additionalData(other.getAdditionalData());
             attachments(other.getAttachments());
+            invoiceNumber(other.getInvoiceNumber());
+            netAmount(other.getNetAmount());
+            invoiceDate(other.getInvoiceDate());
+            dueDate(other.getDueDate());
+            comments(other.getComments());
+            identifier(other.getIdentifier());
+            discount(other.getDiscount());
+            totalAmount(other.getTotalAmount());
             return this;
         }
 
@@ -298,66 +376,88 @@ public final class BillPayOutData {
         }
 
         /**
-         * <p>Any comments about bill. <strong>For managed payouts, this field has a limit of 100 characters</strong>.</p>
+         * <p>Lot number associated with the bill.</p>
          */
-        @JsonSetter(value = "comments", nulls = Nulls.SKIP)
-        public Builder comments(Optional<String> comments) {
-            this.comments = comments;
+        @JsonSetter(value = "LotNumber", nulls = Nulls.SKIP)
+        public Builder lotNumber(Optional<String> lotNumber) {
+            this.lotNumber = lotNumber;
             return this;
         }
 
-        public Builder comments(String comments) {
-            this.comments = Optional.ofNullable(comments);
+        public Builder lotNumber(String lotNumber) {
+            this.lotNumber = Optional.ofNullable(lotNumber);
             return this;
         }
 
-        /**
-         * <p>Bill due date in format YYYY-MM-DD or MM/DD/YYYY.</p>
-         */
-        @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
-        public Builder dueDate(Optional<String> dueDate) {
-            this.dueDate = dueDate;
-            return this;
-        }
-
-        public Builder dueDate(String dueDate) {
-            this.dueDate = Optional.ofNullable(dueDate);
-            return this;
-        }
-
-        public Builder dueDate(Nullable<String> dueDate) {
-            if (dueDate.isNull()) {
-                this.dueDate = null;
-            } else if (dueDate.isEmpty()) {
-                this.dueDate = Optional.empty();
+        public Builder lotNumber(Nullable<String> lotNumber) {
+            if (lotNumber.isNull()) {
+                this.lotNumber = null;
+            } else if (lotNumber.isEmpty()) {
+                this.lotNumber = Optional.empty();
             } else {
-                this.dueDate = Optional.of(dueDate.get());
+                this.lotNumber = Optional.of(lotNumber.get());
             }
             return this;
         }
 
+        @JsonSetter(value = "AccountingField1", nulls = Nulls.SKIP)
+        public Builder accountingField1(Optional<String> accountingField1) {
+            this.accountingField1 = accountingField1;
+            return this;
+        }
+
+        public Builder accountingField1(String accountingField1) {
+            this.accountingField1 = Optional.ofNullable(accountingField1);
+            return this;
+        }
+
+        @JsonSetter(value = "AccountingField2", nulls = Nulls.SKIP)
+        public Builder accountingField2(Optional<String> accountingField2) {
+            this.accountingField2 = accountingField2;
+            return this;
+        }
+
+        public Builder accountingField2(String accountingField2) {
+            this.accountingField2 = Optional.ofNullable(accountingField2);
+            return this;
+        }
+
         /**
-         * <p>Bill date in format YYYY-MM-DD or MM/DD/YYYY.</p>
+         * <p>Description of payment terms.</p>
          */
-        @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
-        public Builder invoiceDate(Optional<String> invoiceDate) {
-            this.invoiceDate = invoiceDate;
+        @JsonSetter(value = "Terms", nulls = Nulls.SKIP)
+        public Builder terms(Optional<Terms> terms) {
+            this.terms = terms;
             return this;
         }
 
-        public Builder invoiceDate(String invoiceDate) {
-            this.invoiceDate = Optional.ofNullable(invoiceDate);
+        public Builder terms(Terms terms) {
+            this.terms = Optional.ofNullable(terms);
             return this;
         }
 
-        public Builder invoiceDate(Nullable<String> invoiceDate) {
-            if (invoiceDate.isNull()) {
-                this.invoiceDate = null;
-            } else if (invoiceDate.isEmpty()) {
-                this.invoiceDate = Optional.empty();
-            } else {
-                this.invoiceDate = Optional.of(invoiceDate.get());
-            }
+        @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
+        public Builder additionalData(Optional<String> additionalData) {
+            this.additionalData = additionalData;
+            return this;
+        }
+
+        public Builder additionalData(String additionalData) {
+            this.additionalData = Optional.ofNullable(additionalData);
+            return this;
+        }
+
+        /**
+         * <p>Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see <a href="/developers/developer-guides/pay-out-manage-payouts">the documentation</a>.</p>
+         */
+        @JsonSetter(value = "attachments", nulls = Nulls.SKIP)
+        public Builder attachments(Optional<List<FileContent>> attachments) {
+            this.attachments = attachments;
+            return this;
+        }
+
+        public Builder attachments(List<FileContent> attachments) {
+            this.attachments = Optional.ofNullable(attachments);
             return this;
         }
 
@@ -390,6 +490,95 @@ public final class BillPayOutData {
         }
 
         /**
+         * <p>Bill date in format YYYY-MM-DD or MM/DD/YYYY.</p>
+         */
+        @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
+        public Builder invoiceDate(Optional<String> invoiceDate) {
+            this.invoiceDate = invoiceDate;
+            return this;
+        }
+
+        public Builder invoiceDate(String invoiceDate) {
+            this.invoiceDate = Optional.ofNullable(invoiceDate);
+            return this;
+        }
+
+        public Builder invoiceDate(Nullable<String> invoiceDate) {
+            if (invoiceDate.isNull()) {
+                this.invoiceDate = null;
+            } else if (invoiceDate.isEmpty()) {
+                this.invoiceDate = Optional.empty();
+            } else {
+                this.invoiceDate = Optional.of(invoiceDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Bill due date in format YYYY-MM-DD or MM/DD/YYYY.</p>
+         */
+        @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
+        public Builder dueDate(Optional<String> dueDate) {
+            this.dueDate = dueDate;
+            return this;
+        }
+
+        public Builder dueDate(String dueDate) {
+            this.dueDate = Optional.ofNullable(dueDate);
+            return this;
+        }
+
+        public Builder dueDate(Nullable<String> dueDate) {
+            if (dueDate.isNull()) {
+                this.dueDate = null;
+            } else if (dueDate.isEmpty()) {
+                this.dueDate = Optional.empty();
+            } else {
+                this.dueDate = Optional.of(dueDate.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Any comments about bill. <strong>For managed payouts, this field has a limit of 100 characters</strong>.</p>
+         */
+        @JsonSetter(value = "comments", nulls = Nulls.SKIP)
+        public Builder comments(Optional<String> comments) {
+            this.comments = comments;
+            return this;
+        }
+
+        public Builder comments(String comments) {
+            this.comments = Optional.ofNullable(comments);
+            return this;
+        }
+
+        /**
+         * <p>Custom identifier for the bill.</p>
+         */
+        @JsonSetter(value = "identifier", nulls = Nulls.SKIP)
+        public Builder identifier(Optional<String> identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
+        public Builder identifier(String identifier) {
+            this.identifier = Optional.ofNullable(identifier);
+            return this;
+        }
+
+        public Builder identifier(Nullable<String> identifier) {
+            if (identifier.isNull()) {
+                this.identifier = null;
+            } else if (identifier.isEmpty()) {
+                this.identifier = Optional.empty();
+            } else {
+                this.identifier = Optional.of(identifier.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>Bill discount amount.</p>
          */
         @JsonSetter(value = "discount", nulls = Nulls.SKIP)
@@ -404,80 +593,47 @@ public final class BillPayOutData {
         }
 
         /**
-         * <p>Description of payment terms.</p>
+         * <p>Total amount of the bill.</p>
          */
-        @JsonSetter(value = "Terms", nulls = Nulls.SKIP)
-        public Builder terms(Optional<Terms> terms) {
-            this.terms = terms;
+        @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
+        public Builder totalAmount(Optional<String> totalAmount) {
+            this.totalAmount = totalAmount;
             return this;
         }
 
-        public Builder terms(Terms terms) {
-            this.terms = Optional.ofNullable(terms);
+        public Builder totalAmount(String totalAmount) {
+            this.totalAmount = Optional.ofNullable(totalAmount);
             return this;
         }
 
-        @JsonSetter(value = "AccountingField1", nulls = Nulls.SKIP)
-        public Builder accountingField1(Optional<String> accountingField1) {
-            this.accountingField1 = accountingField1;
-            return this;
-        }
-
-        public Builder accountingField1(String accountingField1) {
-            this.accountingField1 = Optional.ofNullable(accountingField1);
-            return this;
-        }
-
-        @JsonSetter(value = "AccountingField2", nulls = Nulls.SKIP)
-        public Builder accountingField2(Optional<String> accountingField2) {
-            this.accountingField2 = accountingField2;
-            return this;
-        }
-
-        public Builder accountingField2(String accountingField2) {
-            this.accountingField2 = Optional.ofNullable(accountingField2);
-            return this;
-        }
-
-        @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
-            this.additionalData = additionalData;
-            return this;
-        }
-
-        public Builder additionalData(String additionalData) {
-            this.additionalData = Optional.ofNullable(additionalData);
-            return this;
-        }
-
-        /**
-         * <p>Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see <a href="/developers/developer-guides/pay-out-manage-payouts">the documentation</a>.</p>
-         */
-        @JsonSetter(value = "attachments", nulls = Nulls.SKIP)
-        public Builder attachments(Optional<List<FileContent>> attachments) {
-            this.attachments = attachments;
-            return this;
-        }
-
-        public Builder attachments(List<FileContent> attachments) {
-            this.attachments = Optional.ofNullable(attachments);
+        public Builder totalAmount(Nullable<String> totalAmount) {
+            if (totalAmount.isNull()) {
+                this.totalAmount = null;
+            } else if (totalAmount.isEmpty()) {
+                this.totalAmount = Optional.empty();
+            } else {
+                this.totalAmount = Optional.of(totalAmount.get());
+            }
             return this;
         }
 
         public BillPayOutData build() {
             return new BillPayOutData(
                     billId,
-                    comments,
-                    dueDate,
-                    invoiceDate,
-                    invoiceNumber,
-                    netAmount,
-                    discount,
-                    terms,
+                    lotNumber,
                     accountingField1,
                     accountingField2,
+                    terms,
                     additionalData,
                     attachments,
+                    invoiceNumber,
+                    netAmount,
+                    invoiceDate,
+                    dueDate,
+                    comments,
+                    identifier,
+                    discount,
+                    totalAmount,
                     additionalProperties);
         }
 

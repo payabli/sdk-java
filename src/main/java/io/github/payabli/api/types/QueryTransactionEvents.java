@@ -21,23 +21,31 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QueryTransactionEvents.Builder.class)
 public final class QueryTransactionEvents {
+    private final Optional<String> transEvent;
+
     private final Optional<QueryTransactionEventsEventData> eventData;
 
     private final Optional<OffsetDateTime> eventTime;
 
-    private final Optional<String> transEvent;
-
     private final Map<String, Object> additionalProperties;
 
     private QueryTransactionEvents(
+            Optional<String> transEvent,
             Optional<QueryTransactionEventsEventData> eventData,
             Optional<OffsetDateTime> eventTime,
-            Optional<String> transEvent,
             Map<String, Object> additionalProperties) {
+        this.transEvent = transEvent;
         this.eventData = eventData;
         this.eventTime = eventTime;
-        this.transEvent = transEvent;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Event descriptor. See <a href="/guides/pay-in-transevents-reference">TransEvent Reference</a> for more details.
+     */
+    @JsonProperty("TransEvent")
+    public Optional<String> getTransEvent() {
+        return transEvent;
     }
 
     /**
@@ -56,14 +64,6 @@ public final class QueryTransactionEvents {
         return eventTime;
     }
 
-    /**
-     * @return Event descriptor. See <a href="/guides/pay-in-transevents-reference">TransEvent Reference</a> for more details.
-     */
-    @JsonProperty("TransEvent")
-    public Optional<String> getTransEvent() {
-        return transEvent;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -76,14 +76,14 @@ public final class QueryTransactionEvents {
     }
 
     private boolean equalTo(QueryTransactionEvents other) {
-        return eventData.equals(other.eventData)
-                && eventTime.equals(other.eventTime)
-                && transEvent.equals(other.transEvent);
+        return transEvent.equals(other.transEvent)
+                && eventData.equals(other.eventData)
+                && eventTime.equals(other.eventTime);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventData, this.eventTime, this.transEvent);
+        return Objects.hash(this.transEvent, this.eventData, this.eventTime);
     }
 
     @java.lang.Override
@@ -97,11 +97,11 @@ public final class QueryTransactionEvents {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<String> transEvent = Optional.empty();
+
         private Optional<QueryTransactionEventsEventData> eventData = Optional.empty();
 
         private Optional<OffsetDateTime> eventTime = Optional.empty();
-
-        private Optional<String> transEvent = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -109,9 +109,23 @@ public final class QueryTransactionEvents {
         private Builder() {}
 
         public Builder from(QueryTransactionEvents other) {
+            transEvent(other.getTransEvent());
             eventData(other.getEventData());
             eventTime(other.getEventTime());
-            transEvent(other.getTransEvent());
+            return this;
+        }
+
+        /**
+         * <p>Event descriptor. See <a href="/guides/pay-in-transevents-reference">TransEvent Reference</a> for more details.</p>
+         */
+        @JsonSetter(value = "TransEvent", nulls = Nulls.SKIP)
+        public Builder transEvent(Optional<String> transEvent) {
+            this.transEvent = transEvent;
+            return this;
+        }
+
+        public Builder transEvent(String transEvent) {
+            this.transEvent = Optional.ofNullable(transEvent);
             return this;
         }
 
@@ -143,22 +157,8 @@ public final class QueryTransactionEvents {
             return this;
         }
 
-        /**
-         * <p>Event descriptor. See <a href="/guides/pay-in-transevents-reference">TransEvent Reference</a> for more details.</p>
-         */
-        @JsonSetter(value = "TransEvent", nulls = Nulls.SKIP)
-        public Builder transEvent(Optional<String> transEvent) {
-            this.transEvent = transEvent;
-            return this;
-        }
-
-        public Builder transEvent(String transEvent) {
-            this.transEvent = Optional.ofNullable(transEvent);
-            return this;
-        }
-
         public QueryTransactionEvents build() {
-            return new QueryTransactionEvents(eventData, eventTime, transEvent, additionalProperties);
+            return new QueryTransactionEvents(transEvent, eventData, eventTime, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

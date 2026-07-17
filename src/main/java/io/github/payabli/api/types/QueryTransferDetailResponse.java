@@ -128,7 +128,6 @@ public final class QueryTransferDetailResponse {
 
         /**
          * <p>Summary of the transfer details query</p>
-         * <p>Summary of the transfer details query</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

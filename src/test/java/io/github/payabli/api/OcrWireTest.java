@@ -22,9 +22,8 @@ public class OcrWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -35,6 +34,10 @@ public class OcrWireTest {
 
     @Test
     public void testOcrDocumentForm() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -42,9 +45,17 @@ public class OcrWireTest {
                                 "{\"isSuccess\":true,\"responseText\":\"responseText\",\"responseCode\":1,\"responseData\":{\"resultData\":{\"billNumber\":\"billNumber\",\"netAmount\":1.1,\"billDate\":\"2024-01-15T09:30:00Z\",\"dueDate\":\"2024-01-15T09:30:00Z\",\"comments\":\"comments\",\"billItems\":[{}],\"mode\":1,\"accountingField1\":\"accountingField1\",\"accountingField2\":\"accountingField2\",\"endDate\":\"2024-01-15T09:30:00Z\",\"frequency\":\"frequency\",\"terms\":\"terms\",\"status\":1,\"lotNumber\":\"lotNumber\",\"attachments\":[{}]}}}"));
         PayabliApiResponseOcr response = client.ocr()
                 .ocrDocumentForm("typeResult", FileContentImageOnly.builder().build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = "" + "{}";
@@ -140,6 +151,10 @@ public class OcrWireTest {
 
     @Test
     public void testOcrDocumentJson() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -147,9 +162,17 @@ public class OcrWireTest {
                                 "{\"isSuccess\":true,\"responseText\":\"responseText\",\"responseCode\":1,\"responseData\":{\"resultData\":{\"billNumber\":\"billNumber\",\"netAmount\":1.1,\"billDate\":\"2024-01-15T09:30:00Z\",\"dueDate\":\"2024-01-15T09:30:00Z\",\"comments\":\"comments\",\"billItems\":[{}],\"mode\":1,\"accountingField1\":\"accountingField1\",\"accountingField2\":\"accountingField2\",\"endDate\":\"2024-01-15T09:30:00Z\",\"frequency\":\"frequency\",\"terms\":\"terms\",\"status\":1,\"lotNumber\":\"lotNumber\",\"attachments\":[{}]}}}"));
         PayabliApiResponseOcr response = client.ocr()
                 .ocrDocumentJson("typeResult", FileContentImageOnly.builder().build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = "" + "{}";

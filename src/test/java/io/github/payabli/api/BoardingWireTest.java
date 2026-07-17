@@ -53,9 +53,8 @@ public class BoardingWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -66,6 +65,10 @@ public class BoardingWireTest {
 
     @Test
     public void testAddApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody("{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\"}"));
@@ -196,9 +199,17 @@ public class BoardingWireTest {
                         .ticketamt(Optional.of(1000.0))
                         .website(Optional.of("www.example.com"))
                         .build()));
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody =
@@ -273,14 +284,26 @@ public class BoardingWireTest {
 
     @Test
     public void testUpdateApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody("{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\"}"));
         PayabliApiResponse00Responsedatanonobject response = client.boarding()
                 .updateApplication(352, ApplicationData.builder().build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("PUT", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = "" + "{}";
@@ -354,13 +377,25 @@ public class BoardingWireTest {
 
     @Test
     public void testDeleteApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody("{\"isSuccess\":true,\"responseCode\":1,\"responseData\":3625,\"responseText\":\"Success\"}"));
         PayabliApiResponse00Responsedatanonobject response = client.boarding().deleteApplication(352);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -405,13 +440,25 @@ public class BoardingWireTest {
 
     @Test
     public void testGetApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(TestResources.loadResource("/wire-tests/BoardingWireTest_testGetApplication_response.json")));
         ApplicationDetailsRecord response = client.boarding().getApplication(352);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -451,6 +498,10 @@ public class BoardingWireTest {
 
     @Test
     public void testGetApplicationByAuth() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(TestResources.loadResource(
@@ -462,9 +513,17 @@ public class BoardingWireTest {
                                 .email("admin@email.com")
                                 .referenceId("129-219")
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody =
@@ -534,15 +593,27 @@ public class BoardingWireTest {
 
     @Test
     public void testGetByIdLinkApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"acceptOauth\":false,\"acceptRegister\":false,\"builderData\":{\"attributes\":{\"minimumDocuments\":1,\"multipleContacts\":true,\"multipleOwners\":true}},\"entryAttributes\":\"entryAttributes\",\"id\":1000000,\"logo\":{\"fContent\":\"TXkgdGVzdCBmaWxlHJ==...\",\"filename\":\"my-doc.pdf\",\"ftype\":\"pdf\",\"furl\":\"https://mysite.com/my-doc.pdf\"},\"orgId\":123,\"pageIdentifier:\":\"null\",\"recipientEmailNotification\":true,\"referenceName\":\"payabli-00710\",\"referenceTemplateId\":1830,\"resumable\":false}"));
         BoardingLinkQueryRecord response = client.boarding().getByIdLinkApplication(91);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -606,15 +677,27 @@ public class BoardingWireTest {
 
     @Test
     public void testGetByTemplateIdLinkApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"acceptOauth\":false,\"acceptRegister\":false,\"builderData\":{\"attributes\":{\"minimumDocuments\":1,\"multipleContacts\":true,\"multipleOwners\":true}},\"entryAttributes\":\"entryAttributes\",\"id\":1000000,\"logo\":{\"fContent\":\"TXkgdGVzdCBmaWxlHJ==...\",\"filename\":\"my-doc.pdf\",\"ftype\":\"pdf\",\"furl\":\"https://mysite.com/my-doc.pdf\"},\"orgId\":123,\"pageIdentifier:\":\"null\",\"recipientEmailNotification\":true,\"referenceName\":\"payabli-00710\",\"referenceTemplateId\":1830,\"resumable\":false}"));
         BoardingLinkQueryRecord response = client.boarding().getByTemplateIdLinkApplication(80.0);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -678,6 +761,10 @@ public class BoardingWireTest {
 
     @Test
     public void testGetExternalApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -686,9 +773,17 @@ public class BoardingWireTest {
         PayabliApiResponse00 response = client.boarding()
                 .getExternalApplication(
                         352, "mail2", GetExternalApplicationRequest.builder().build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("PUT", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -736,15 +831,27 @@ public class BoardingWireTest {
 
     @Test
     public void testGetLinkApplication() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"acceptOauth\":false,\"acceptRegister\":false,\"builderData\":{\"attributes\":{\"minimumDocuments\":1,\"multipleContacts\":true,\"multipleOwners\":true}},\"entryAttributes\":\"entryAttributes\",\"id\":1000000,\"logo\":{\"fContent\":\"TXkgdGVzdCBmaWxlHJ==...\",\"filename\":\"my-doc.pdf\",\"ftype\":\"pdf\",\"furl\":\"https://mysite.com/my-doc.pdf\"},\"orgId\":123,\"pageIdentifier:\":\"null\",\"recipientEmailNotification\":true,\"referenceName\":\"payabli-00710\",\"referenceTemplateId\":1830,\"resumable\":false}"));
         BoardingLinkQueryRecord response = client.boarding().getLinkApplication("myorgaccountname-00091");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -808,6 +915,10 @@ public class BoardingWireTest {
 
     @Test
     public void testListApplications() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(
@@ -820,9 +931,17 @@ public class BoardingWireTest {
                                 .limitRecord(0)
                                 .sortBy("desc(field_name)")
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -862,6 +981,10 @@ public class BoardingWireTest {
 
     @Test
     public void testListBoardingLinks() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -875,9 +998,17 @@ public class BoardingWireTest {
                                 .limitRecord(0)
                                 .sortBy("desc(field_name)")
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -940,6 +1071,10 @@ public class BoardingWireTest {
 
     @Test
     public void testAddServiceToPaypointFromApp() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -953,9 +1088,17 @@ public class BoardingWireTest {
                         .returnBoardingAccessInfoInLine(true)
                         .onCreate(Optional.of(Arrays.asList("submitApplication")))
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -1043,15 +1186,27 @@ public class BoardingWireTest {
 
     @Test
     public void testGetApplicationsByPaypointId() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"Records\":[{\"idApplication\":68388,\"orgId\":123,\"dbaName\":\"Meadowbrook Phase II HOA A\",\"legalName\":\"Meadowbrook Phase II HOA B\",\"ein\":\"601907058\",\"boardingStatus\":7,\"boardingSubStatus\":0,\"templateId\":8233,\"boardingLinkId\":6344,\"contactData\":[{\"contactName\":\"Gary Heaney\",\"contactEmail\":\"hello@meadowbrookphaseii.com\",\"contactTitle\":\"Human Group Designer\",\"contactPhone\":\"7863078875\"}],\"generalEvents\":[{\"description\":\"Created\",\"eventTime\":\"2026-03-17T18:56:39.8854072Z\"},{\"description\":\"Linked to paypoint 6257\",\"eventTime\":\"2026-03-17T18:56:39.885413Z\"},{\"description\":\"Updated Status: 7, 0\",\"eventTime\":\"2026-03-18T19:32:39.4012114Z\"}]}],\"Summary\":{\"pageIdentifier\":\"null\",\"pageSize\":0,\"totalAmount\":0,\"totalNetAmount\":0,\"totalPages\":0,\"totalRecords\":1}}"));
         QueryBoardingAppsListResponse response = client.boarding().getApplicationsByPaypointId(3040L);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

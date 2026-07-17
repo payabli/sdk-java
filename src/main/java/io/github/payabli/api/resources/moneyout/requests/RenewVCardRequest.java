@@ -99,7 +99,6 @@ public final class RenewVCardRequest {
 
         /**
          * <p>The new expiration date for the virtual card, in <code>MM-YYYY</code> or <code>MM/YYYY</code> format. The card expires on the last day of the month you specify. The date can't be more than 2 years and 363 days in the future.</p>
-         * <p>The new expiration date for the virtual card, in <code>MM-YYYY</code> or <code>MM/YYYY</code> format. The card expires on the last day of the month you specify. The date can't be more than 2 years and 363 days in the future.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

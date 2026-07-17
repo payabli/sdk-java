@@ -123,7 +123,6 @@ public final class VendorPaymentMethod {
 
         /**
          * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
-         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, or &quot;ach&quot;</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -244,7 +244,6 @@ public final class PayMethodCredit {
 
         /**
          * <p>Method to use for the transaction. For transactions with a credit or debit card, or a tokenized card, use <code>card</code>.</p>
-         * <p>Method to use for the transaction. For transactions with a credit or debit card, or a tokenized card, use <code>card</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

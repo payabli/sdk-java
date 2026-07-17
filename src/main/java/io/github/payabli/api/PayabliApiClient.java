@@ -33,6 +33,7 @@ import io.github.payabli.api.resources.query.QueryClient;
 import io.github.payabli.api.resources.statistic.StatisticClient;
 import io.github.payabli.api.resources.subscription.SubscriptionClient;
 import io.github.payabli.api.resources.templates.TemplatesClient;
+import io.github.payabli.api.resources.token.TokenClient;
 import io.github.payabli.api.resources.tokenstorage.TokenStorageClient;
 import io.github.payabli.api.resources.user.UserClient;
 import io.github.payabli.api.resources.vendor.VendorClient;
@@ -49,6 +50,8 @@ public class PayabliApiClient {
     protected final Supplier<CheckCaptureClient> checkCaptureClient;
 
     protected final Supplier<MoneyInClient> moneyInClient;
+
+    protected final Supplier<TokenClient> tokenClient;
 
     protected final Supplier<SubscriptionClient> subscriptionClient;
 
@@ -112,6 +115,7 @@ public class PayabliApiClient {
         this.customerClient = Suppliers.memoize(() -> new CustomerClient(clientOptions));
         this.checkCaptureClient = Suppliers.memoize(() -> new CheckCaptureClient(clientOptions));
         this.moneyInClient = Suppliers.memoize(() -> new MoneyInClient(clientOptions));
+        this.tokenClient = Suppliers.memoize(() -> new TokenClient(clientOptions));
         this.subscriptionClient = Suppliers.memoize(() -> new SubscriptionClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.paymentLinkClient = Suppliers.memoize(() -> new PaymentLinkClient(clientOptions));
@@ -156,6 +160,10 @@ public class PayabliApiClient {
 
     public MoneyInClient moneyIn() {
         return this.moneyInClient.get();
+    }
+
+    public TokenClient token() {
+        return this.tokenClient.get();
     }
 
     public SubscriptionClient subscription() {
@@ -270,7 +278,30 @@ public class PayabliApiClient {
         return this.chargeBacksClient.get();
     }
 
-    public static PayabliApiClientBuilder builder() {
-        return new PayabliApiClientBuilder();
+    /**
+     * Creates a client builder using a pre-generated access token.
+     * @param token The access token to use for authentication
+     * @return A builder configured for token authentication
+     */
+    public static PayabliApiClientBuilder._TokenAuth withToken(String token) {
+        return PayabliApiClientBuilder.withToken(token);
+    }
+
+    /**
+     * Creates a client builder using OAuth client credentials.
+     * @param clientId The OAuth client ID
+     * @param clientSecret The OAuth client secret
+     * @return A builder configured for OAuth authentication
+     */
+    public static PayabliApiClientBuilder._CredentialsAuth withCredentials(String clientId, String clientSecret) {
+        return PayabliApiClientBuilder.withCredentials(clientId, clientSecret);
+    }
+
+    /**
+     * Creates a new client builder.
+     * @return A builder for configuring and creating the client
+     */
+    public static PayabliApiClientBuilder._Builder builder() {
+        return PayabliApiClientBuilder.builder();
     }
 }

@@ -22,9 +22,8 @@ public class CheckCaptureWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -35,6 +34,10 @@ public class CheckCaptureWireTest {
 
     @Test
     public void testCheckProcessing() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -47,9 +50,17 @@ public class CheckCaptureWireTest {
                         .rearImage("/9j/4AAQSkZJRgABAQEASABIAAD...")
                         .checkAmount(12550)
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""

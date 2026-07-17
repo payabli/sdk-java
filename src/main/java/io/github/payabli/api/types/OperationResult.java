@@ -121,7 +121,6 @@ public final class OperationResult {
 
         /**
          * <p>Indicates whether the operation was successful.</p>
-         * <p>Indicates whether the operation was successful.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

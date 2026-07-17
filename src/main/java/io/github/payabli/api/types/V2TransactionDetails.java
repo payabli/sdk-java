@@ -1233,7 +1233,6 @@ public final class V2TransactionDetails {
 
         /**
          * <p>Unique transaction identifier.</p>
-         * <p>Unique transaction identifier.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1244,7 +1243,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Name of the payment connector used.</p>
          * <p>Name of the payment connector used.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1265,7 +1263,6 @@ public final class V2TransactionDetails {
 
         /**
          * <p>Gateway transaction identifier.</p>
-         * <p>Gateway transaction identifier.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1276,7 +1273,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Payment method used for the transaction.</p>
          * <p>Payment method used for the transaction.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1295,7 +1291,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Total amount in the batch.</p>
          * <p>Total amount in the batch.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1336,7 +1331,6 @@ public final class V2TransactionDetails {
 
         /**
          * <p>Total transaction amount including fees.</p>
-         * <p>Total transaction amount including fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1347,7 +1341,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Net transaction amount excluding fees.</p>
          * <p>Net transaction amount excluding fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1394,7 +1387,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Reference to associated payment schedule if applicable.</p>
          * <p>Reference to associated payment schedule if applicable.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1456,7 +1448,6 @@ public final class V2TransactionDetails {
 
         /**
          * <p>Indicates if ACH account was validated in real-time.</p>
-         * <p>Indicates if ACH account was validated in real-time.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1467,7 +1458,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Timestamp when transaction was created.</p>
          * <p>Timestamp when transaction was created.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1528,7 +1518,6 @@ public final class V2TransactionDetails {
         }
 
         /**
-         * <p>Indicates if ACH transaction uses same-day processing.</p>
          * <p>Indicates if ACH transaction uses same-day processing.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

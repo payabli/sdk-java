@@ -434,7 +434,6 @@ public final class RequestOutAuthorize {
 
         /**
          * <p>Object containing payment details.</p>
-         * <p>Object containing payment details.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -445,7 +444,6 @@ public final class RequestOutAuthorize {
         }
 
         /**
-         * <p>Object containing vendor data.</p>
          * <p>Object containing vendor data.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -274,7 +274,6 @@ public final class PaymentDetail {
 
         /**
          * <p>Total amount to be charged. If a service fee is sent, then this amount should include the service fee.&quot;</p>
-         * <p>Total amount to be charged. If a service fee is sent, then this amount should include the service fee.&quot;</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

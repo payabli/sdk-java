@@ -224,7 +224,6 @@ public final class VerifyAccountDetailsRequest {
 
         /**
          * <p>The bank routing number to verify.</p>
-         * <p>The bank routing number to verify.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -235,7 +234,6 @@ public final class VerifyAccountDetailsRequest {
         }
 
         /**
-         * <p>The bank account number to verify.</p>
          * <p>The bank account number to verify.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -172,7 +172,6 @@ public final class CheckCaptureRequestBody {
 
         /**
          * <p>Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
-         * <p>Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -184,7 +183,6 @@ public final class CheckCaptureRequestBody {
 
         /**
          * <p>Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
-         * <p>Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -195,7 +193,6 @@ public final class CheckCaptureRequestBody {
         }
 
         /**
-         * <p>Check amount in cents (maximum 32-bit integer value).</p>
          * <p>Check amount in cents (maximum 32-bit integer value).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

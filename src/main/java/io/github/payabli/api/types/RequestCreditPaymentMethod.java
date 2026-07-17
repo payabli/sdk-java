@@ -195,7 +195,6 @@ public final class RequestCreditPaymentMethod {
 
         /**
          * <p>Method to use for the transaction. Must be ACH.</p>
-         * <p>Method to use for the transaction. Must be ACH.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

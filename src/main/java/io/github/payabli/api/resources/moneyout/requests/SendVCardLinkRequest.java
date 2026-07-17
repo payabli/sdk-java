@@ -99,7 +99,6 @@ public final class SendVCardLinkRequest {
 
         /**
          * <p>The transaction ID of the virtual card payout. The ID is returned as <code>ReferenceId</code> in the response when you authorize a payout with POST /MoneyOut/authorize.</p>
-         * <p>The transaction ID of the virtual card payout. The ID is returned as <code>ReferenceId</code> in the response when you authorize a payout with POST /MoneyOut/authorize.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

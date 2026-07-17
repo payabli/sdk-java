@@ -328,7 +328,6 @@ public final class RequestPayoutSchedule {
 
         /**
          * <p>Payment method for the payout subscription. Supports <code>ach</code>, <code>vcard</code>, and <code>check</code>. The <code>managed</code> method isn't supported for payout subscriptions.</p>
-         * <p>Payment method for the payout subscription. Supports <code>ach</code>, <code>vcard</code>, and <code>check</code>. The <code>managed</code> method isn't supported for payout subscriptions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -339,7 +338,6 @@ public final class RequestPayoutSchedule {
         }
 
         /**
-         * <p>Object identifying the vendor for this subscription. Only a <code>vendorId</code> or <code>vendorNumber</code> is needed to link to an existing vendor.</p>
          * <p>Object identifying the vendor for this subscription. Only a <code>vendorId</code> or <code>vendorNumber</code> is needed to link to an existing vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

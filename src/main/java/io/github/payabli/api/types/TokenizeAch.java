@@ -35,8 +35,6 @@ public final class TokenizeAch {
 
     private final String achRouting;
 
-    private final Optional<String> device;
-
     private final Map<String, Object> additionalProperties;
 
     private TokenizeAch(
@@ -47,7 +45,6 @@ public final class TokenizeAch {
             String achHolder,
             Optional<AchHolderType> achHolderType,
             String achRouting,
-            Optional<String> device,
             Map<String, Object> additionalProperties) {
         this.method = method;
         this.achAccount = achAccount;
@@ -56,7 +53,6 @@ public final class TokenizeAch {
         this.achHolder = achHolder;
         this.achHolderType = achHolderType;
         this.achRouting = achRouting;
-        this.device = device;
         this.additionalProperties = additionalProperties;
     }
 
@@ -101,11 +97,6 @@ public final class TokenizeAch {
         return achRouting;
     }
 
-    @JsonProperty("device")
-    public Optional<String> getDevice() {
-        return device;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -124,8 +115,7 @@ public final class TokenizeAch {
                 && achCode.equals(other.achCode)
                 && achHolder.equals(other.achHolder)
                 && achHolderType.equals(other.achHolderType)
-                && achRouting.equals(other.achRouting)
-                && device.equals(other.device);
+                && achRouting.equals(other.achRouting);
     }
 
     @java.lang.Override
@@ -137,8 +127,7 @@ public final class TokenizeAch {
                 this.achCode,
                 this.achHolder,
                 this.achHolderType,
-                this.achRouting,
-                this.device);
+                this.achRouting);
     }
 
     @java.lang.Override
@@ -192,10 +181,6 @@ public final class TokenizeAch {
         _FinalStage achHolderType(Optional<AchHolderType> achHolderType);
 
         _FinalStage achHolderType(AchHolderType achHolderType);
-
-        _FinalStage device(Optional<String> device);
-
-        _FinalStage device(String device);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -210,8 +195,6 @@ public final class TokenizeAch {
         private String achHolder;
 
         private String achRouting;
-
-        private Optional<String> device = Optional.empty();
 
         private Optional<AchHolderType> achHolderType = Optional.empty();
 
@@ -231,12 +214,10 @@ public final class TokenizeAch {
             achHolder(other.getAchHolder());
             achHolderType(other.getAchHolderType());
             achRouting(other.getAchRouting());
-            device(other.getDevice());
             return this;
         }
 
         /**
-         * <p>The type of payment method to tokenize. For ACH, this is always <code>ach</code>.</p>
          * <p>The type of payment method to tokenize. For ACH, this is always <code>ach</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -263,7 +244,6 @@ public final class TokenizeAch {
 
         /**
          * <p>Bank account holder. This field is <strong>required</strong> when <code>method</code> is <code>ach</code>. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.</p>
-         * <p>Bank account holder. This field is <strong>required</strong> when <code>method</code> is <code>ach</code>. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -277,19 +257,6 @@ public final class TokenizeAch {
         @JsonSetter("achRouting")
         public _FinalStage achRouting(@NotNull String achRouting) {
             this.achRouting = Objects.requireNonNull(achRouting, "achRouting must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage device(String device) {
-            this.device = Optional.ofNullable(device);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "device", nulls = Nulls.SKIP)
-        public _FinalStage device(Optional<String> device) {
-            this.device = device;
             return this;
         }
 
@@ -329,7 +296,6 @@ public final class TokenizeAch {
                     achHolder,
                     achHolderType,
                     achRouting,
-                    device,
                     additionalProperties);
         }
 

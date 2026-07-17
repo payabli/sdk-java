@@ -174,7 +174,6 @@ public final class PayabliErrorBody {
 
         /**
          * <p>Always <code>false</code> for error responses.</p>
-         * <p>Always <code>false</code> for error responses.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -185,7 +184,6 @@ public final class PayabliErrorBody {
         }
 
         /**
-         * <p>Error text describing what went wrong.</p>
          * <p>Error text describing what went wrong.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

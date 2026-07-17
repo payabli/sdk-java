@@ -120,7 +120,6 @@ public final class V2BadRequestErrorDetail {
 
         /**
          * <p>Description of the validation error.</p>
-         * <p>Description of the validation error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -131,7 +130,6 @@ public final class V2BadRequestErrorDetail {
         }
 
         /**
-         * <p>Suggested action to fix the error.</p>
          * <p>Suggested action to fix the error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

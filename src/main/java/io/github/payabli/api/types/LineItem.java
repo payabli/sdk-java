@@ -266,7 +266,6 @@ public final class LineItem {
 
         /**
          * <p>Item or product price per unit.</p>
-         * <p>Item or product price per unit.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -277,7 +276,6 @@ public final class LineItem {
         }
 
         /**
-         * <p>Quantity of item or product.</p>
          * <p>Quantity of item or product.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

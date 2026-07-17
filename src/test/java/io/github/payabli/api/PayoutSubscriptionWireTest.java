@@ -34,9 +34,8 @@ public class PayoutSubscriptionWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -47,6 +46,10 @@ public class PayoutSubscriptionWireTest {
 
     @Test
     public void testCreatePayoutSubscription() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody("{\"responseText\":\"Success\",\"isSuccess\":true,\"responseData\":42,\"customerId\":4440}"));
@@ -80,9 +83,17 @@ public class PayoutSubscriptionWireTest {
                                 .frequency(Frequency.MONTHLY)
                                 .build())
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -187,14 +198,26 @@ public class PayoutSubscriptionWireTest {
 
     @Test
     public void testGetPayoutSubscription() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(TestResources.loadResource(
                         "/wire-tests/PayoutSubscriptionWireTest_testGetPayoutSubscription_response.json")));
         GetPayoutSubscriptionResponse response = client.payoutSubscription().getPayoutSubscription(42L);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -234,6 +257,10 @@ public class PayoutSubscriptionWireTest {
 
     @Test
     public void testUpdatePayoutSubscription() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -243,9 +270,17 @@ public class PayoutSubscriptionWireTest {
                 .updatePayoutSubscription(
                         42L,
                         UpdatePayoutSubscriptionBody.builder().setPause(true).build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("PUT", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = "" + "{\n" + "  \"setPause\": true\n" + "}";
@@ -319,13 +354,25 @@ public class PayoutSubscriptionWireTest {
 
     @Test
     public void testDeletePayoutSubscription() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody("{\"isSuccess\":true,\"responseData\":\"42\",\"responseText\":\"Success\"}"));
         DeletePayoutSubscriptionResponse response = client.payoutSubscription().deletePayoutSubscription(42L);
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

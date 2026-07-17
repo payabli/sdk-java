@@ -51,9 +51,8 @@ public class ExportWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -64,6 +63,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportApplications() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportApplications(
@@ -74,9 +77,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -115,6 +126,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBatchDetails() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBatchDetails(
@@ -125,9 +140,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -166,6 +189,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBatchDetailsOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBatchDetailsOrg(
@@ -176,9 +203,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -217,6 +252,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBatches() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBatches(
@@ -227,9 +266,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -268,6 +315,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBatchesOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBatchesOrg(
@@ -278,9 +329,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -319,6 +378,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBatchesOut() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBatchesOut(
@@ -329,9 +392,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -370,6 +441,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBatchesOutOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBatchesOutOrg(
@@ -380,9 +455,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -421,6 +504,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBills() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBills(
@@ -431,9 +518,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -472,6 +567,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportBillsOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportBillsOrg(
@@ -482,9 +581,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -523,6 +630,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportChargebacks() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportChargebacks(
@@ -533,9 +644,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -574,6 +693,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportChargebacksOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportChargebacksOrg(
@@ -584,9 +707,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -625,6 +756,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportCustomers() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportCustomers(
@@ -635,9 +770,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -676,6 +819,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportCustomersOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportCustomersOrg(
@@ -686,9 +833,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -727,6 +882,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportInvoices() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportInvoices(
@@ -737,9 +896,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -778,6 +945,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportInvoicesOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportInvoicesOrg(
@@ -788,9 +959,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -829,6 +1008,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportOrganizations() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportOrganizations(
@@ -839,9 +1022,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -880,6 +1071,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportPayout() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportPayout(
@@ -890,9 +1085,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -931,6 +1134,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportPayoutOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportPayoutOrg(
@@ -941,9 +1148,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -982,6 +1197,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportPaypoints() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportPaypoints(
@@ -992,9 +1211,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1033,6 +1260,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportSettlements() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportSettlements(
@@ -1043,9 +1274,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1084,6 +1323,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportSettlementsOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportSettlementsOrg(
@@ -1094,9 +1337,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1135,6 +1386,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportSubscriptions() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportSubscriptions(
@@ -1145,9 +1400,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1186,6 +1449,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportSubscriptionsOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportSubscriptionsOrg(
@@ -1196,9 +1463,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1237,6 +1512,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportTransactions() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportTransactions(
@@ -1247,9 +1526,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1288,6 +1575,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportTransactionsOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportTransactionsOrg(
@@ -1298,9 +1589,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1339,6 +1638,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportTransferDetails() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportTransferDetails(
@@ -1351,9 +1654,17 @@ public class ExportWireTest {
                                 .limitRecord(1000)
                                 .sortBy("desc(field_name)")
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1392,6 +1703,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportTransfers() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportTransfers(
@@ -1402,9 +1717,17 @@ public class ExportWireTest {
                                 .limitRecord(1000)
                                 .sortBy("desc(field_name)")
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1443,6 +1766,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportVendors() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportVendors(
@@ -1453,9 +1780,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -1494,6 +1829,10 @@ public class ExportWireTest {
 
     @Test
     public void testExportVendorsOrg() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"key\":\"value\"}"));
         Map<String, Object> response = client.export()
                 .exportVendorsOrg(
@@ -1504,9 +1843,17 @@ public class ExportWireTest {
                                 .fromRecord(251)
                                 .limitRecord(1000)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

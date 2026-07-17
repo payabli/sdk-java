@@ -126,7 +126,6 @@ public final class NotificationRequest {
 
         /**
          * <p>Complete HTTP URL receiving the notification</p>
-         * <p>Complete HTTP URL receiving the notification</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

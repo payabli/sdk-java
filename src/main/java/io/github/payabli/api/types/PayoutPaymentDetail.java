@@ -391,7 +391,6 @@ public final class PayoutPaymentDetail {
 
         /**
          * <p>Total payout amount. If a service fee is included, this amount should include the service fee.</p>
-         * <p>Total payout amount. If a service fee is included, this amount should include the service fee.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

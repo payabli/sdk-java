@@ -20,35 +20,27 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ContactsResponse.Builder.class)
 public final class ContactsResponse {
-    private final Optional<String> contactEmail;
-
     private final Optional<String> contactName;
 
-    private final Optional<String> contactPhone;
+    private final Optional<String> contactEmail;
 
     private final Optional<String> contactTitle;
+
+    private final Optional<String> contactPhone;
 
     private final Map<String, Object> additionalProperties;
 
     private ContactsResponse(
-            Optional<String> contactEmail,
             Optional<String> contactName,
-            Optional<String> contactPhone,
+            Optional<String> contactEmail,
             Optional<String> contactTitle,
+            Optional<String> contactPhone,
             Map<String, Object> additionalProperties) {
-        this.contactEmail = contactEmail;
         this.contactName = contactName;
-        this.contactPhone = contactPhone;
+        this.contactEmail = contactEmail;
         this.contactTitle = contactTitle;
+        this.contactPhone = contactPhone;
         this.additionalProperties = additionalProperties;
-    }
-
-    /**
-     * @return Contact email address.
-     */
-    @JsonProperty("ContactEmail")
-    public Optional<String> getContactEmail() {
-        return contactEmail;
     }
 
     /**
@@ -60,11 +52,11 @@ public final class ContactsResponse {
     }
 
     /**
-     * @return Contact phone number.
+     * @return Contact email address.
      */
-    @JsonProperty("ContactPhone")
-    public Optional<String> getContactPhone() {
-        return contactPhone;
+    @JsonProperty("ContactEmail")
+    public Optional<String> getContactEmail() {
+        return contactEmail;
     }
 
     /**
@@ -73,6 +65,14 @@ public final class ContactsResponse {
     @JsonProperty("ContactTitle")
     public Optional<String> getContactTitle() {
         return contactTitle;
+    }
+
+    /**
+     * @return Contact phone number.
+     */
+    @JsonProperty("ContactPhone")
+    public Optional<String> getContactPhone() {
+        return contactPhone;
     }
 
     @java.lang.Override
@@ -87,15 +87,15 @@ public final class ContactsResponse {
     }
 
     private boolean equalTo(ContactsResponse other) {
-        return contactEmail.equals(other.contactEmail)
-                && contactName.equals(other.contactName)
-                && contactPhone.equals(other.contactPhone)
-                && contactTitle.equals(other.contactTitle);
+        return contactName.equals(other.contactName)
+                && contactEmail.equals(other.contactEmail)
+                && contactTitle.equals(other.contactTitle)
+                && contactPhone.equals(other.contactPhone);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.contactEmail, this.contactName, this.contactPhone, this.contactTitle);
+        return Objects.hash(this.contactName, this.contactEmail, this.contactTitle, this.contactPhone);
     }
 
     @java.lang.Override
@@ -109,13 +109,13 @@ public final class ContactsResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> contactEmail = Optional.empty();
-
         private Optional<String> contactName = Optional.empty();
 
-        private Optional<String> contactPhone = Optional.empty();
+        private Optional<String> contactEmail = Optional.empty();
 
         private Optional<String> contactTitle = Optional.empty();
+
+        private Optional<String> contactPhone = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -123,24 +123,10 @@ public final class ContactsResponse {
         private Builder() {}
 
         public Builder from(ContactsResponse other) {
-            contactEmail(other.getContactEmail());
             contactName(other.getContactName());
-            contactPhone(other.getContactPhone());
+            contactEmail(other.getContactEmail());
             contactTitle(other.getContactTitle());
-            return this;
-        }
-
-        /**
-         * <p>Contact email address.</p>
-         */
-        @JsonSetter(value = "ContactEmail", nulls = Nulls.SKIP)
-        public Builder contactEmail(Optional<String> contactEmail) {
-            this.contactEmail = contactEmail;
-            return this;
-        }
-
-        public Builder contactEmail(String contactEmail) {
-            this.contactEmail = Optional.ofNullable(contactEmail);
+            contactPhone(other.getContactPhone());
             return this;
         }
 
@@ -159,16 +145,16 @@ public final class ContactsResponse {
         }
 
         /**
-         * <p>Contact phone number.</p>
+         * <p>Contact email address.</p>
          */
-        @JsonSetter(value = "ContactPhone", nulls = Nulls.SKIP)
-        public Builder contactPhone(Optional<String> contactPhone) {
-            this.contactPhone = contactPhone;
+        @JsonSetter(value = "ContactEmail", nulls = Nulls.SKIP)
+        public Builder contactEmail(Optional<String> contactEmail) {
+            this.contactEmail = contactEmail;
             return this;
         }
 
-        public Builder contactPhone(String contactPhone) {
-            this.contactPhone = Optional.ofNullable(contactPhone);
+        public Builder contactEmail(String contactEmail) {
+            this.contactEmail = Optional.ofNullable(contactEmail);
             return this;
         }
 
@@ -186,8 +172,22 @@ public final class ContactsResponse {
             return this;
         }
 
+        /**
+         * <p>Contact phone number.</p>
+         */
+        @JsonSetter(value = "ContactPhone", nulls = Nulls.SKIP)
+        public Builder contactPhone(Optional<String> contactPhone) {
+            this.contactPhone = contactPhone;
+            return this;
+        }
+
+        public Builder contactPhone(String contactPhone) {
+            this.contactPhone = Optional.ofNullable(contactPhone);
+            return this;
+        }
+
         public ContactsResponse build() {
-            return new ContactsResponse(contactEmail, contactName, contactPhone, contactTitle, additionalProperties);
+            return new ContactsResponse(contactName, contactEmail, contactTitle, contactPhone, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

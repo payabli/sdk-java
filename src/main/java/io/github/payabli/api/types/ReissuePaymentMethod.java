@@ -213,7 +213,6 @@ public final class ReissuePaymentMethod {
 
         /**
          * <p>Payment method type. Must be <code>&quot;ach&quot;</code>, <code>&quot;check&quot;</code>, or <code>&quot;vcard&quot;</code>.</p>
-         * <p>Payment method type. Must be <code>&quot;ach&quot;</code>, <code>&quot;check&quot;</code>, or <code>&quot;vcard&quot;</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

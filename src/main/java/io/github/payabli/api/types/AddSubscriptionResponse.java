@@ -161,7 +161,6 @@ public final class AddSubscriptionResponse {
 
         /**
          * <p>The identifier of the newly created subscription.</p>
-         * <p>The identifier of the newly created subscription.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

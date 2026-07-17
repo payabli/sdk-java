@@ -204,7 +204,6 @@ public final class StatBasicQueryRecord {
 
         /**
          * <p>Statistical grouping identifier</p>
-         * <p>Statistical grouping identifier</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -215,7 +214,6 @@ public final class StatBasicQueryRecord {
         }
 
         /**
-         * <p>Number of incoming transactions</p>
          * <p>Number of incoming transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -228,7 +226,6 @@ public final class StatBasicQueryRecord {
 
         /**
          * <p>Volume of incoming transactions</p>
-         * <p>Volume of incoming transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -240,7 +237,6 @@ public final class StatBasicQueryRecord {
 
         /**
          * <p>Number of incoming wallet transactions</p>
-         * <p>Number of incoming wallet transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -251,7 +247,6 @@ public final class StatBasicQueryRecord {
         }
 
         /**
-         * <p>Volume of incoming wallet transactions</p>
          * <p>Volume of incoming wallet transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

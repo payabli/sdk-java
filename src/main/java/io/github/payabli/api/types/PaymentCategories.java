@@ -172,7 +172,6 @@ public final class PaymentCategories {
 
         /**
          * <p>Price/cost per unit of item or category.</p>
-         * <p>Price/cost per unit of item or category.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -183,7 +182,6 @@ public final class PaymentCategories {
         }
 
         /**
-         * <p>Name of item or category.</p>
          * <p>Name of item or category.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -33,6 +33,8 @@ public final class TokenizeCard {
 
     private final Optional<String> cardzip;
 
+    private final Optional<String> device;
+
     private final Map<String, Object> additionalProperties;
 
     private TokenizeCard(
@@ -42,6 +44,7 @@ public final class TokenizeCard {
             String cardHolder,
             String cardnumber,
             Optional<String> cardzip,
+            Optional<String> device,
             Map<String, Object> additionalProperties) {
         this.method = method;
         this.cardcvv = cardcvv;
@@ -49,6 +52,7 @@ public final class TokenizeCard {
         this.cardHolder = cardHolder;
         this.cardnumber = cardnumber;
         this.cardzip = cardzip;
+        this.device = device;
         this.additionalProperties = additionalProperties;
     }
 
@@ -85,6 +89,11 @@ public final class TokenizeCard {
         return cardzip;
     }
 
+    @JsonProperty("device")
+    public Optional<String> getDevice() {
+        return device;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -102,12 +111,14 @@ public final class TokenizeCard {
                 && cardexp.equals(other.cardexp)
                 && cardHolder.equals(other.cardHolder)
                 && cardnumber.equals(other.cardnumber)
-                && cardzip.equals(other.cardzip);
+                && cardzip.equals(other.cardzip)
+                && device.equals(other.device);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.method, this.cardcvv, this.cardexp, this.cardHolder, this.cardnumber, this.cardzip);
+        return Objects.hash(
+                this.method, this.cardcvv, this.cardexp, this.cardHolder, this.cardnumber, this.cardzip, this.device);
     }
 
     @java.lang.Override
@@ -154,6 +165,10 @@ public final class TokenizeCard {
         _FinalStage cardzip(Optional<String> cardzip);
 
         _FinalStage cardzip(String cardzip);
+
+        _FinalStage device(Optional<String> device);
+
+        _FinalStage device(String device);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -166,6 +181,8 @@ public final class TokenizeCard {
         private String cardHolder;
 
         private String cardnumber;
+
+        private Optional<String> device = Optional.empty();
 
         private Optional<String> cardzip = Optional.empty();
 
@@ -184,11 +201,11 @@ public final class TokenizeCard {
             cardHolder(other.getCardHolder());
             cardnumber(other.getCardnumber());
             cardzip(other.getCardzip());
+            device(other.getDevice());
             return this;
         }
 
         /**
-         * <p>The type of payment method to tokenize. For cards, this is always <code>card</code>.</p>
          * <p>The type of payment method to tokenize. For cards, this is always <code>card</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -221,6 +238,19 @@ public final class TokenizeCard {
         }
 
         @java.lang.Override
+        public _FinalStage device(String device) {
+            this.device = Optional.ofNullable(device);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "device", nulls = Nulls.SKIP)
+        public _FinalStage device(Optional<String> device) {
+            this.device = device;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage cardzip(String cardzip) {
             this.cardzip = Optional.ofNullable(cardzip);
             return this;
@@ -248,7 +278,8 @@ public final class TokenizeCard {
 
         @java.lang.Override
         public TokenizeCard build() {
-            return new TokenizeCard(method, cardcvv, cardexp, cardHolder, cardnumber, cardzip, additionalProperties);
+            return new TokenizeCard(
+                    method, cardcvv, cardexp, cardHolder, cardnumber, cardzip, device, additionalProperties);
         }
 
         @java.lang.Override

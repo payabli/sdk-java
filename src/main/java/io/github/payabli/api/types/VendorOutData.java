@@ -718,7 +718,6 @@ public final class VendorOutData {
 
         /**
          * <p>Vendor's city.</p>
-         * <p>Vendor's city.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -729,7 +728,6 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's country. <code>US</code> or <code>CA</code>.</p>
          * <p>Vendor's country. <code>US</code> or <code>CA</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -742,7 +740,6 @@ public final class VendorOutData {
 
         /**
          * <p>EIN/Tax ID for vendor. Must be nine digits formatted as <code>XX-XXXXXXX</code>. In responses, this field is masked and looks like: <code>XXXXX6789</code>.</p>
-         * <p>EIN/Tax ID for vendor. Must be nine digits formatted as <code>XX-XXXXXXX</code>. In responses, this field is masked and looks like: <code>XXXXX6789</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -753,7 +750,6 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' &amp; ( )</p>
          * <p>Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' &amp; ( )</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -766,7 +762,6 @@ public final class VendorOutData {
 
         /**
          * <p>Vendor's phone number. Digits only when creating or updating a vendor.</p>
-         * <p>Vendor's phone number. Digits only when creating or updating a vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -778,7 +773,6 @@ public final class VendorOutData {
 
         /**
          * <p>Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the <code>Country</code> value.</p>
-         * <p>Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the <code>Country</code> value.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -789,7 +783,6 @@ public final class VendorOutData {
         }
 
         /**
-         * <p>Vendor's ZIP or postal code. For US addresses, five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
          * <p>Vendor's ZIP or postal code. For US addresses, five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

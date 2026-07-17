@@ -323,7 +323,6 @@ public final class AuthCapturePayoutResponseData {
 
         /**
          * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>vendorId</code>, or <code>0</code> when no vendor is associated.</p>
-         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>vendorId</code>, or <code>0</code> when no vendor is associated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -334,7 +333,6 @@ public final class AuthCapturePayoutResponseData {
         }
 
         /**
-         * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>customerId</code>, or <code>0</code> when no vendor is associated.</p>
          * <p>Payabli-generated unique ID of the vendor on the payout. Returns the same value as <code>customerId</code>, or <code>0</code> when no vendor is associated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

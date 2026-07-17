@@ -249,7 +249,6 @@ public final class VendorEnrichRequest {
 
         /**
          * <p>ID of the vendor to enrich. Must be active and belong to the given entrypoint.</p>
-         * <p>ID of the vendor to enrich. Must be active and belong to the given entrypoint.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

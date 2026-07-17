@@ -149,7 +149,6 @@ public final class ReissuePayoutResponseData {
 
         /**
          * <p>The transaction ID of the newly created payout.</p>
-         * <p>The transaction ID of the newly created payout.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -160,7 +159,6 @@ public final class ReissuePayoutResponseData {
         }
 
         /**
-         * <p>The status of the new transaction.</p>
          * <p>The status of the new transaction.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

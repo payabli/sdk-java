@@ -146,7 +146,6 @@ public final class InvoiceNumberResponse {
 
         /**
          * <p>If <code>isSuccess</code> = true, this contains the next available invoice number in the format defined by paypoint settings. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
-         * <p>If <code>isSuccess</code> = true, this contains the next available invoice number in the format defined by paypoint settings. If <code>isSuccess</code> = false, this contains the reason for the error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

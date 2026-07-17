@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -22,209 +25,223 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QueryPayoutTransactionRecordsItem.Builder.class)
 public final class QueryPayoutTransactionRecordsItem {
-    private final Optional<String> batchNumber;
-
-    private final Optional<Integer> batchId;
-
-    private final Optional<List<BillPayOutData>> bills;
-
-    private final Optional<String> cardToken;
-
-    private final Optional<FileContent> checkData;
-
-    private final Optional<String> checkNumber;
-
-    private final Optional<String> comments;
+    private final Optional<Long> idOut;
 
     private final Optional<OffsetDateTime> createdAt;
 
-    private final Optional<String> entryName;
+    private final Optional<String> comments;
 
-    private final Optional<List<QueryTransactionEvents>> events;
-
-    private final Optional<String> externalPaypointId;
-
-    private final Optional<Double> feeAmount;
-
-    private final Optional<String> gateway;
-
-    private final Optional<Boolean> hasVcardTransactions;
-
-    private final Optional<Long> idOut;
-
-    private final Optional<Boolean> isSameDayAch;
-
-    private final Optional<OffsetDateTime> lastUpdated;
-
-    private final Optional<Double> netAmount;
-
-    private final Optional<String> parentOrgName;
-
-    private final Optional<Long> parentOrgId;
-
-    private final Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData;
-
-    private final Optional<String> paymentId;
-
-    private final Optional<String> paymentMethod;
-
-    private final Optional<String> paymentStatus;
-
-    private final Optional<String> payoutProgram;
+    private final Optional<VendorQueryRecord> vendor;
 
     private final Optional<String> paypointDbaname;
 
     private final Optional<String> paypointLegalname;
 
-    private final Optional<String> riskAction;
+    private final Optional<Long> paypointId;
 
-    private final Optional<Integer> riskActionCode;
+    private final Optional<Integer> status;
 
-    private final Optional<Boolean> riskFlagged;
+    private final Optional<String> paymentId;
 
-    private final Optional<OffsetDateTime> riskFlaggedOn;
+    private final Optional<String> transId;
 
-    private final Optional<String> riskReason;
+    private final Optional<Integer> transStatus;
 
-    private final Optional<String> riskStatus;
+    private final Optional<String> transStatusDetail;
+
+    private final Optional<String> transStatusName;
+
+    private final Optional<String> transStatusCategory;
+
+    private final Optional<OffsetDateTime> lastUpdated;
+
+    private final Optional<Double> totalAmount;
+
+    private final Optional<Double> netAmount;
+
+    private final Optional<Double> feeAmount;
+
+    private final Optional<String> source;
+
+    private final Optional<String> parentOrgName;
+
+    private final Optional<Long> parentOrgId;
+
+    private final Optional<String> batchNumber;
+
+    private final Optional<String> paymentStatus;
+
+    private final Optional<String> paymentMethod;
+
+    private final Optional<String> cardToken;
+
+    private final Optional<String> checkNumber;
+
+    private final Optional<FileContent> checkData;
+
+    private final Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData;
+
+    private final Optional<List<BillPayOutData>> bills;
+
+    private final Optional<List<QueryTransactionEvents>> events;
+
+    private final Optional<String> externalPaypointId;
+
+    private final Optional<String> entryName;
+
+    private final Optional<String> gateway;
+
+    private final Optional<Integer> batchId;
+
+    private final Optional<Boolean> hasVcardTransactions;
+
+    private final Optional<Boolean> isSameDayAch;
 
     private final Optional<Long> scheduleId;
 
     private final Optional<String> settlementStatus;
 
-    private final Optional<String> source;
+    private final Optional<String> settlementStatusName;
 
-    private final Optional<Integer> status;
+    private final Optional<OffsetDateTime> settlementDate;
 
-    private final Optional<Double> totalAmount;
+    private final Optional<Boolean> riskFlagged;
 
-    private final Optional<VendorQueryRecord> vendor;
+    private final Optional<OffsetDateTime> riskFlaggedOn;
+
+    private final Optional<String> riskStatus;
+
+    private final Optional<String> riskReason;
+
+    private final Optional<String> riskAction;
+
+    private final Optional<Integer> riskActionCode;
+
+    private final Optional<String> payoutProgram;
+
+    private final Optional<String> achTraceNumber;
+
+    private final Optional<String> entityId;
 
     private final Map<String, Object> additionalProperties;
 
     private QueryPayoutTransactionRecordsItem(
-            Optional<String> batchNumber,
-            Optional<Integer> batchId,
-            Optional<List<BillPayOutData>> bills,
-            Optional<String> cardToken,
-            Optional<FileContent> checkData,
-            Optional<String> checkNumber,
-            Optional<String> comments,
-            Optional<OffsetDateTime> createdAt,
-            Optional<String> entryName,
-            Optional<List<QueryTransactionEvents>> events,
-            Optional<String> externalPaypointId,
-            Optional<Double> feeAmount,
-            Optional<String> gateway,
-            Optional<Boolean> hasVcardTransactions,
             Optional<Long> idOut,
-            Optional<Boolean> isSameDayAch,
-            Optional<OffsetDateTime> lastUpdated,
-            Optional<Double> netAmount,
-            Optional<String> parentOrgName,
-            Optional<Long> parentOrgId,
-            Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData,
-            Optional<String> paymentId,
-            Optional<String> paymentMethod,
-            Optional<String> paymentStatus,
-            Optional<String> payoutProgram,
+            Optional<OffsetDateTime> createdAt,
+            Optional<String> comments,
+            Optional<VendorQueryRecord> vendor,
             Optional<String> paypointDbaname,
             Optional<String> paypointLegalname,
-            Optional<String> riskAction,
-            Optional<Integer> riskActionCode,
-            Optional<Boolean> riskFlagged,
-            Optional<OffsetDateTime> riskFlaggedOn,
-            Optional<String> riskReason,
-            Optional<String> riskStatus,
+            Optional<Long> paypointId,
+            Optional<Integer> status,
+            Optional<String> paymentId,
+            Optional<String> transId,
+            Optional<Integer> transStatus,
+            Optional<String> transStatusDetail,
+            Optional<String> transStatusName,
+            Optional<String> transStatusCategory,
+            Optional<OffsetDateTime> lastUpdated,
+            Optional<Double> totalAmount,
+            Optional<Double> netAmount,
+            Optional<Double> feeAmount,
+            Optional<String> source,
+            Optional<String> parentOrgName,
+            Optional<Long> parentOrgId,
+            Optional<String> batchNumber,
+            Optional<String> paymentStatus,
+            Optional<String> paymentMethod,
+            Optional<String> cardToken,
+            Optional<String> checkNumber,
+            Optional<FileContent> checkData,
+            Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData,
+            Optional<List<BillPayOutData>> bills,
+            Optional<List<QueryTransactionEvents>> events,
+            Optional<String> externalPaypointId,
+            Optional<String> entryName,
+            Optional<String> gateway,
+            Optional<Integer> batchId,
+            Optional<Boolean> hasVcardTransactions,
+            Optional<Boolean> isSameDayAch,
             Optional<Long> scheduleId,
             Optional<String> settlementStatus,
-            Optional<String> source,
-            Optional<Integer> status,
-            Optional<Double> totalAmount,
-            Optional<VendorQueryRecord> vendor,
+            Optional<String> settlementStatusName,
+            Optional<OffsetDateTime> settlementDate,
+            Optional<Boolean> riskFlagged,
+            Optional<OffsetDateTime> riskFlaggedOn,
+            Optional<String> riskStatus,
+            Optional<String> riskReason,
+            Optional<String> riskAction,
+            Optional<Integer> riskActionCode,
+            Optional<String> payoutProgram,
+            Optional<String> achTraceNumber,
+            Optional<String> entityId,
             Map<String, Object> additionalProperties) {
-        this.batchNumber = batchNumber;
-        this.batchId = batchId;
-        this.bills = bills;
-        this.cardToken = cardToken;
-        this.checkData = checkData;
-        this.checkNumber = checkNumber;
-        this.comments = comments;
-        this.createdAt = createdAt;
-        this.entryName = entryName;
-        this.events = events;
-        this.externalPaypointId = externalPaypointId;
-        this.feeAmount = feeAmount;
-        this.gateway = gateway;
-        this.hasVcardTransactions = hasVcardTransactions;
         this.idOut = idOut;
-        this.isSameDayAch = isSameDayAch;
-        this.lastUpdated = lastUpdated;
-        this.netAmount = netAmount;
-        this.parentOrgName = parentOrgName;
-        this.parentOrgId = parentOrgId;
-        this.paymentData = paymentData;
-        this.paymentId = paymentId;
-        this.paymentMethod = paymentMethod;
-        this.paymentStatus = paymentStatus;
-        this.payoutProgram = payoutProgram;
+        this.createdAt = createdAt;
+        this.comments = comments;
+        this.vendor = vendor;
         this.paypointDbaname = paypointDbaname;
         this.paypointLegalname = paypointLegalname;
-        this.riskAction = riskAction;
-        this.riskActionCode = riskActionCode;
-        this.riskFlagged = riskFlagged;
-        this.riskFlaggedOn = riskFlaggedOn;
-        this.riskReason = riskReason;
-        this.riskStatus = riskStatus;
+        this.paypointId = paypointId;
+        this.status = status;
+        this.paymentId = paymentId;
+        this.transId = transId;
+        this.transStatus = transStatus;
+        this.transStatusDetail = transStatusDetail;
+        this.transStatusName = transStatusName;
+        this.transStatusCategory = transStatusCategory;
+        this.lastUpdated = lastUpdated;
+        this.totalAmount = totalAmount;
+        this.netAmount = netAmount;
+        this.feeAmount = feeAmount;
+        this.source = source;
+        this.parentOrgName = parentOrgName;
+        this.parentOrgId = parentOrgId;
+        this.batchNumber = batchNumber;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
+        this.cardToken = cardToken;
+        this.checkNumber = checkNumber;
+        this.checkData = checkData;
+        this.paymentData = paymentData;
+        this.bills = bills;
+        this.events = events;
+        this.externalPaypointId = externalPaypointId;
+        this.entryName = entryName;
+        this.gateway = gateway;
+        this.batchId = batchId;
+        this.hasVcardTransactions = hasVcardTransactions;
+        this.isSameDayAch = isSameDayAch;
         this.scheduleId = scheduleId;
         this.settlementStatus = settlementStatus;
-        this.source = source;
-        this.status = status;
-        this.totalAmount = totalAmount;
-        this.vendor = vendor;
+        this.settlementStatusName = settlementStatusName;
+        this.settlementDate = settlementDate;
+        this.riskFlagged = riskFlagged;
+        this.riskFlaggedOn = riskFlaggedOn;
+        this.riskStatus = riskStatus;
+        this.riskReason = riskReason;
+        this.riskAction = riskAction;
+        this.riskActionCode = riskActionCode;
+        this.payoutProgram = payoutProgram;
+        this.achTraceNumber = achTraceNumber;
+        this.entityId = entityId;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("BatchNumber")
-    public Optional<String> getBatchNumber() {
-        return batchNumber;
+    /**
+     * @return Identifier of payout transaction.
+     */
+    @JsonProperty("IdOut")
+    public Optional<Long> getIdOut() {
+        return idOut;
     }
 
     /**
-     * @return Identifier of the batch associated with payout transaction.
+     * @return Timestamp when the payment was created, in UTC.
      */
-    @JsonProperty("BatchId")
-    public Optional<Integer> getBatchId() {
-        return batchId;
-    }
-
-    /**
-     * @return Bills associated with this transaction.
-     */
-    @JsonProperty("Bills")
-    public Optional<List<BillPayOutData>> getBills() {
-        return bills;
-    }
-
-    @JsonProperty("CardToken")
-    public Optional<String> getCardToken() {
-        return cardToken;
-    }
-
-    /**
-     * @return Object referencing paper check image.
-     */
-    @JsonProperty("CheckData")
-    public Optional<FileContent> getCheckData() {
-        return checkData;
-    }
-
-    /**
-     * @return Paper check number related to payout transaction.
-     */
-    @JsonProperty("CheckNumber")
-    public Optional<String> getCheckNumber() {
-        return checkNumber;
+    @JsonProperty("CreatedAt")
+    public Optional<OffsetDateTime> getCreatedAt() {
+        return createdAt;
     }
 
     /**
@@ -236,114 +253,11 @@ public final class QueryPayoutTransactionRecordsItem {
     }
 
     /**
-     * @return Timestamp when the payment was created, in UTC.
+     * @return Vendor related to the payout transaction.
      */
-    @JsonProperty("CreatedAt")
-    public Optional<OffsetDateTime> getCreatedAt() {
-        return createdAt;
-    }
-
-    @JsonProperty("EntryName")
-    public Optional<String> getEntryName() {
-        return entryName;
-    }
-
-    /**
-     * @return Events associated with this transaction.
-     */
-    @JsonProperty("Events")
-    public Optional<List<QueryTransactionEvents>> getEvents() {
-        return events;
-    }
-
-    @JsonProperty("externalPaypointID")
-    public Optional<String> getExternalPaypointId() {
-        return externalPaypointId;
-    }
-
-    @JsonProperty("FeeAmount")
-    public Optional<Double> getFeeAmount() {
-        return feeAmount;
-    }
-
-    @JsonProperty("Gateway")
-    public Optional<String> getGateway() {
-        return gateway;
-    }
-
-    @JsonProperty("HasVcardTransactions")
-    public Optional<Boolean> getHasVcardTransactions() {
-        return hasVcardTransactions;
-    }
-
-    /**
-     * @return Identifier of payout transaction.
-     */
-    @JsonProperty("IdOut")
-    public Optional<Long> getIdOut() {
-        return idOut;
-    }
-
-    @JsonProperty("IsSameDayACH")
-    public Optional<Boolean> getIsSameDayAch() {
-        return isSameDayAch;
-    }
-
-    /**
-     * @return Timestamp when payment record was updated.
-     */
-    @JsonProperty("LastUpdated")
-    public Optional<OffsetDateTime> getLastUpdated() {
-        return lastUpdated;
-    }
-
-    /**
-     * @return Net amount paid.
-     */
-    @JsonProperty("NetAmount")
-    public Optional<Double> getNetAmount() {
-        return netAmount;
-    }
-
-    @JsonProperty("ParentOrgName")
-    public Optional<String> getParentOrgName() {
-        return parentOrgName;
-    }
-
-    @JsonProperty("ParentOrgId")
-    public Optional<Long> getParentOrgId() {
-        return parentOrgId;
-    }
-
-    @JsonProperty("PaymentData")
-    public Optional<QueryPayoutTransactionRecordsItemPaymentData> getPaymentData() {
-        return paymentData;
-    }
-
-    @JsonProperty("PaymentId")
-    public Optional<String> getPaymentId() {
-        return paymentId;
-    }
-
-    /**
-     * @return The payment method for the transaction.
-     */
-    @JsonProperty("PaymentMethod")
-    public Optional<String> getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    /**
-     * @return Status of payout transaction. See <a href="guides/money-out-statuses#payout-transaction-statuses">Payout Transaction Statuses</a> for a full reference.
-     */
-    @JsonProperty("PaymentStatus")
-    public Optional<String> getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    @JsonProperty("PayoutProgram")
-    public Optional<String> getPayoutProgram() {
-        return payoutProgram;
+    @JsonProperty("Vendor")
+    public Optional<VendorQueryRecord> getVendor() {
+        return vendor;
     }
 
     @JsonProperty("PaypointDbaname")
@@ -359,34 +273,220 @@ public final class QueryPayoutTransactionRecordsItem {
         return paypointLegalname;
     }
 
-    @JsonProperty("RiskAction")
-    public Optional<String> getRiskAction() {
-        return riskAction;
+    @JsonProperty("PaypointId")
+    public Optional<Long> getPaypointId() {
+        return paypointId;
     }
 
-    @JsonProperty("RiskActionCode")
-    public Optional<Integer> getRiskActionCode() {
-        return riskActionCode;
+    /**
+     * @return Internal status of transaction.
+     */
+    @JsonProperty("Status")
+    public Optional<Integer> getStatus() {
+        return status;
     }
 
-    @JsonProperty("RiskFlagged")
-    public Optional<Boolean> getRiskFlagged() {
-        return riskFlagged;
+    @JsonProperty("PaymentId")
+    public Optional<String> getPaymentId() {
+        return paymentId;
     }
 
-    @JsonProperty("RiskFlaggedOn")
-    public Optional<OffsetDateTime> getRiskFlaggedOn() {
-        return riskFlaggedOn;
+    /**
+     * @return ID of the transaction linked to this payout, when applicable.
+     */
+    @JsonIgnore
+    public Optional<String> getTransId() {
+        if (transId == null) {
+            return Optional.empty();
+        }
+        return transId;
     }
 
-    @JsonProperty("RiskReason")
-    public Optional<String> getRiskReason() {
-        return riskReason;
+    /**
+     * @return Status of the linked transaction.
+     */
+    @JsonIgnore
+    public Optional<Integer> getTransStatus() {
+        if (transStatus == null) {
+            return Optional.empty();
+        }
+        return transStatus;
     }
 
-    @JsonProperty("RiskStatus")
-    public Optional<String> getRiskStatus() {
-        return riskStatus;
+    /**
+     * @return Detailed status of the linked transaction.
+     */
+    @JsonIgnore
+    public Optional<String> getTransStatusDetail() {
+        if (transStatusDetail == null) {
+            return Optional.empty();
+        }
+        return transStatusDetail;
+    }
+
+    /**
+     * @return Name of the linked transaction's status.
+     */
+    @JsonIgnore
+    public Optional<String> getTransStatusName() {
+        if (transStatusName == null) {
+            return Optional.empty();
+        }
+        return transStatusName;
+    }
+
+    /**
+     * @return Category of the linked transaction's status.
+     */
+    @JsonIgnore
+    public Optional<String> getTransStatusCategory() {
+        if (transStatusCategory == null) {
+            return Optional.empty();
+        }
+        return transStatusCategory;
+    }
+
+    /**
+     * @return Timestamp when payment record was updated.
+     */
+    @JsonProperty("LastUpdated")
+    public Optional<OffsetDateTime> getLastUpdated() {
+        return lastUpdated;
+    }
+
+    /**
+     * @return Transaction total amount (including service fee or sub-charge).
+     */
+    @JsonProperty("TotalAmount")
+    public Optional<Double> getTotalAmount() {
+        return totalAmount;
+    }
+
+    /**
+     * @return Net amount paid.
+     */
+    @JsonProperty("NetAmount")
+    public Optional<Double> getNetAmount() {
+        return netAmount;
+    }
+
+    @JsonProperty("FeeAmount")
+    public Optional<Double> getFeeAmount() {
+        return feeAmount;
+    }
+
+    @JsonProperty("Source")
+    public Optional<String> getSource() {
+        return source;
+    }
+
+    @JsonProperty("ParentOrgName")
+    public Optional<String> getParentOrgName() {
+        return parentOrgName;
+    }
+
+    @JsonProperty("ParentOrgId")
+    public Optional<Long> getParentOrgId() {
+        return parentOrgId;
+    }
+
+    @JsonProperty("BatchNumber")
+    public Optional<String> getBatchNumber() {
+        return batchNumber;
+    }
+
+    /**
+     * @return Status of payout transaction. See <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Payout Transaction Statuses</a> for a full reference.
+     */
+    @JsonProperty("PaymentStatus")
+    public Optional<String> getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    /**
+     * @return The payment method for the transaction.
+     */
+    @JsonProperty("PaymentMethod")
+    public Optional<String> getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    @JsonIgnore
+    public Optional<String> getCardToken() {
+        if (cardToken == null) {
+            return Optional.empty();
+        }
+        return cardToken;
+    }
+
+    /**
+     * @return Paper check number related to payout transaction.
+     */
+    @JsonProperty("CheckNumber")
+    public Optional<String> getCheckNumber() {
+        return checkNumber;
+    }
+
+    /**
+     * @return Object referencing paper check image.
+     */
+    @JsonProperty("CheckData")
+    public Optional<FileContent> getCheckData() {
+        return checkData;
+    }
+
+    @JsonProperty("PaymentData")
+    public Optional<QueryPayoutTransactionRecordsItemPaymentData> getPaymentData() {
+        return paymentData;
+    }
+
+    /**
+     * @return Bills associated with this transaction.
+     */
+    @JsonProperty("Bills")
+    public Optional<List<BillPayOutData>> getBills() {
+        return bills;
+    }
+
+    /**
+     * @return Events associated with this transaction.
+     */
+    @JsonProperty("Events")
+    public Optional<List<QueryTransactionEvents>> getEvents() {
+        return events;
+    }
+
+    @JsonProperty("externalPaypointID")
+    public Optional<String> getExternalPaypointId() {
+        return externalPaypointId;
+    }
+
+    @JsonProperty("EntryName")
+    public Optional<String> getEntryName() {
+        return entryName;
+    }
+
+    @JsonProperty("Gateway")
+    public Optional<String> getGateway() {
+        return gateway;
+    }
+
+    /**
+     * @return Identifier of the batch associated with payout transaction.
+     */
+    @JsonProperty("BatchId")
+    public Optional<Integer> getBatchId() {
+        return batchId;
+    }
+
+    @JsonProperty("HasVcardTransactions")
+    public Optional<Boolean> getHasVcardTransactions() {
+        return hasVcardTransactions;
+    }
+
+    @JsonProperty("IsSameDayACH")
+    public Optional<Boolean> getIsSameDayAch() {
+        return isSameDayAch;
     }
 
     @JsonProperty("ScheduleId")
@@ -399,33 +499,131 @@ public final class QueryPayoutTransactionRecordsItem {
         return settlementStatus;
     }
 
-    @JsonProperty("Source")
-    public Optional<String> getSource() {
-        return source;
+    @JsonIgnore
+    public Optional<String> getSettlementStatusName() {
+        if (settlementStatusName == null) {
+            return Optional.empty();
+        }
+        return settlementStatusName;
     }
 
     /**
-     * @return Internal status of transaction.
+     * @return Date the payout settled, in UTC. Null until the payout settles.
      */
-    @JsonProperty("Status")
-    public Optional<Integer> getStatus() {
-        return status;
+    @JsonIgnore
+    public Optional<OffsetDateTime> getSettlementDate() {
+        if (settlementDate == null) {
+            return Optional.empty();
+        }
+        return settlementDate;
+    }
+
+    @JsonProperty("RiskFlagged")
+    public Optional<Boolean> getRiskFlagged() {
+        return riskFlagged;
+    }
+
+    @JsonProperty("RiskFlaggedOn")
+    public Optional<OffsetDateTime> getRiskFlaggedOn() {
+        return riskFlaggedOn;
+    }
+
+    @JsonProperty("RiskStatus")
+    public Optional<String> getRiskStatus() {
+        return riskStatus;
+    }
+
+    @JsonProperty("RiskReason")
+    public Optional<String> getRiskReason() {
+        return riskReason;
+    }
+
+    @JsonProperty("RiskAction")
+    public Optional<String> getRiskAction() {
+        return riskAction;
+    }
+
+    @JsonProperty("RiskActionCode")
+    public Optional<Integer> getRiskActionCode() {
+        return riskActionCode;
+    }
+
+    @JsonProperty("PayoutProgram")
+    public Optional<String> getPayoutProgram() {
+        return payoutProgram;
     }
 
     /**
-     * @return Transaction total amount (including service fee or sub-charge).
+     * @return ACH trace number for the payout, when available.
      */
-    @JsonProperty("TotalAmount")
-    public Optional<Double> getTotalAmount() {
-        return totalAmount;
+    @JsonIgnore
+    public Optional<String> getAchTraceNumber() {
+        if (achTraceNumber == null) {
+            return Optional.empty();
+        }
+        return achTraceNumber;
     }
 
     /**
-     * @return Vendor related to the payout transaction.
+     * @return Unique identifier (ULID) of the payout transaction.
      */
-    @JsonProperty("Vendor")
-    public Optional<VendorQueryRecord> getVendor() {
-        return vendor;
+    @JsonProperty("EntityId")
+    public Optional<String> getEntityId() {
+        return entityId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransId")
+    private Optional<String> _getTransId() {
+        return transId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransStatus")
+    private Optional<Integer> _getTransStatus() {
+        return transStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransStatusDetail")
+    private Optional<String> _getTransStatusDetail() {
+        return transStatusDetail;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransStatusName")
+    private Optional<String> _getTransStatusName() {
+        return transStatusName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("TransStatusCategory")
+    private Optional<String> _getTransStatusCategory() {
+        return transStatusCategory;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("CardToken")
+    private Optional<String> _getCardToken() {
+        return cardToken;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("SettlementStatusName")
+    private Optional<String> _getSettlementStatusName() {
+        return settlementStatusName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("SettlementDate")
+    private Optional<OffsetDateTime> _getSettlementDate() {
+        return settlementDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AchTraceNumber")
+    private Optional<String> _getAchTraceNumber() {
+        return achTraceNumber;
     }
 
     @java.lang.Override
@@ -440,89 +638,109 @@ public final class QueryPayoutTransactionRecordsItem {
     }
 
     private boolean equalTo(QueryPayoutTransactionRecordsItem other) {
-        return batchNumber.equals(other.batchNumber)
-                && batchId.equals(other.batchId)
-                && bills.equals(other.bills)
-                && cardToken.equals(other.cardToken)
-                && checkData.equals(other.checkData)
-                && checkNumber.equals(other.checkNumber)
-                && comments.equals(other.comments)
+        return idOut.equals(other.idOut)
                 && createdAt.equals(other.createdAt)
-                && entryName.equals(other.entryName)
-                && events.equals(other.events)
-                && externalPaypointId.equals(other.externalPaypointId)
-                && feeAmount.equals(other.feeAmount)
-                && gateway.equals(other.gateway)
-                && hasVcardTransactions.equals(other.hasVcardTransactions)
-                && idOut.equals(other.idOut)
-                && isSameDayAch.equals(other.isSameDayAch)
-                && lastUpdated.equals(other.lastUpdated)
-                && netAmount.equals(other.netAmount)
-                && parentOrgName.equals(other.parentOrgName)
-                && parentOrgId.equals(other.parentOrgId)
-                && paymentData.equals(other.paymentData)
-                && paymentId.equals(other.paymentId)
-                && paymentMethod.equals(other.paymentMethod)
-                && paymentStatus.equals(other.paymentStatus)
-                && payoutProgram.equals(other.payoutProgram)
+                && comments.equals(other.comments)
+                && vendor.equals(other.vendor)
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointLegalname.equals(other.paypointLegalname)
-                && riskAction.equals(other.riskAction)
-                && riskActionCode.equals(other.riskActionCode)
-                && riskFlagged.equals(other.riskFlagged)
-                && riskFlaggedOn.equals(other.riskFlaggedOn)
-                && riskReason.equals(other.riskReason)
-                && riskStatus.equals(other.riskStatus)
+                && paypointId.equals(other.paypointId)
+                && status.equals(other.status)
+                && paymentId.equals(other.paymentId)
+                && transId.equals(other.transId)
+                && transStatus.equals(other.transStatus)
+                && transStatusDetail.equals(other.transStatusDetail)
+                && transStatusName.equals(other.transStatusName)
+                && transStatusCategory.equals(other.transStatusCategory)
+                && lastUpdated.equals(other.lastUpdated)
+                && totalAmount.equals(other.totalAmount)
+                && netAmount.equals(other.netAmount)
+                && feeAmount.equals(other.feeAmount)
+                && source.equals(other.source)
+                && parentOrgName.equals(other.parentOrgName)
+                && parentOrgId.equals(other.parentOrgId)
+                && batchNumber.equals(other.batchNumber)
+                && paymentStatus.equals(other.paymentStatus)
+                && paymentMethod.equals(other.paymentMethod)
+                && cardToken.equals(other.cardToken)
+                && checkNumber.equals(other.checkNumber)
+                && checkData.equals(other.checkData)
+                && paymentData.equals(other.paymentData)
+                && bills.equals(other.bills)
+                && events.equals(other.events)
+                && externalPaypointId.equals(other.externalPaypointId)
+                && entryName.equals(other.entryName)
+                && gateway.equals(other.gateway)
+                && batchId.equals(other.batchId)
+                && hasVcardTransactions.equals(other.hasVcardTransactions)
+                && isSameDayAch.equals(other.isSameDayAch)
                 && scheduleId.equals(other.scheduleId)
                 && settlementStatus.equals(other.settlementStatus)
-                && source.equals(other.source)
-                && status.equals(other.status)
-                && totalAmount.equals(other.totalAmount)
-                && vendor.equals(other.vendor);
+                && settlementStatusName.equals(other.settlementStatusName)
+                && settlementDate.equals(other.settlementDate)
+                && riskFlagged.equals(other.riskFlagged)
+                && riskFlaggedOn.equals(other.riskFlaggedOn)
+                && riskStatus.equals(other.riskStatus)
+                && riskReason.equals(other.riskReason)
+                && riskAction.equals(other.riskAction)
+                && riskActionCode.equals(other.riskActionCode)
+                && payoutProgram.equals(other.payoutProgram)
+                && achTraceNumber.equals(other.achTraceNumber)
+                && entityId.equals(other.entityId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.batchNumber,
-                this.batchId,
-                this.bills,
-                this.cardToken,
-                this.checkData,
-                this.checkNumber,
-                this.comments,
-                this.createdAt,
-                this.entryName,
-                this.events,
-                this.externalPaypointId,
-                this.feeAmount,
-                this.gateway,
-                this.hasVcardTransactions,
                 this.idOut,
-                this.isSameDayAch,
-                this.lastUpdated,
-                this.netAmount,
-                this.parentOrgName,
-                this.parentOrgId,
-                this.paymentData,
-                this.paymentId,
-                this.paymentMethod,
-                this.paymentStatus,
-                this.payoutProgram,
+                this.createdAt,
+                this.comments,
+                this.vendor,
                 this.paypointDbaname,
                 this.paypointLegalname,
-                this.riskAction,
-                this.riskActionCode,
-                this.riskFlagged,
-                this.riskFlaggedOn,
-                this.riskReason,
-                this.riskStatus,
+                this.paypointId,
+                this.status,
+                this.paymentId,
+                this.transId,
+                this.transStatus,
+                this.transStatusDetail,
+                this.transStatusName,
+                this.transStatusCategory,
+                this.lastUpdated,
+                this.totalAmount,
+                this.netAmount,
+                this.feeAmount,
+                this.source,
+                this.parentOrgName,
+                this.parentOrgId,
+                this.batchNumber,
+                this.paymentStatus,
+                this.paymentMethod,
+                this.cardToken,
+                this.checkNumber,
+                this.checkData,
+                this.paymentData,
+                this.bills,
+                this.events,
+                this.externalPaypointId,
+                this.entryName,
+                this.gateway,
+                this.batchId,
+                this.hasVcardTransactions,
+                this.isSameDayAch,
                 this.scheduleId,
                 this.settlementStatus,
-                this.source,
-                this.status,
-                this.totalAmount,
-                this.vendor);
+                this.settlementStatusName,
+                this.settlementDate,
+                this.riskFlagged,
+                this.riskFlaggedOn,
+                this.riskStatus,
+                this.riskReason,
+                this.riskAction,
+                this.riskActionCode,
+                this.payoutProgram,
+                this.achTraceNumber,
+                this.entityId);
     }
 
     @java.lang.Override
@@ -536,83 +754,103 @@ public final class QueryPayoutTransactionRecordsItem {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> batchNumber = Optional.empty();
-
-        private Optional<Integer> batchId = Optional.empty();
-
-        private Optional<List<BillPayOutData>> bills = Optional.empty();
-
-        private Optional<String> cardToken = Optional.empty();
-
-        private Optional<FileContent> checkData = Optional.empty();
-
-        private Optional<String> checkNumber = Optional.empty();
-
-        private Optional<String> comments = Optional.empty();
+        private Optional<Long> idOut = Optional.empty();
 
         private Optional<OffsetDateTime> createdAt = Optional.empty();
 
-        private Optional<String> entryName = Optional.empty();
+        private Optional<String> comments = Optional.empty();
 
-        private Optional<List<QueryTransactionEvents>> events = Optional.empty();
-
-        private Optional<String> externalPaypointId = Optional.empty();
-
-        private Optional<Double> feeAmount = Optional.empty();
-
-        private Optional<String> gateway = Optional.empty();
-
-        private Optional<Boolean> hasVcardTransactions = Optional.empty();
-
-        private Optional<Long> idOut = Optional.empty();
-
-        private Optional<Boolean> isSameDayAch = Optional.empty();
-
-        private Optional<OffsetDateTime> lastUpdated = Optional.empty();
-
-        private Optional<Double> netAmount = Optional.empty();
-
-        private Optional<String> parentOrgName = Optional.empty();
-
-        private Optional<Long> parentOrgId = Optional.empty();
-
-        private Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData = Optional.empty();
-
-        private Optional<String> paymentId = Optional.empty();
-
-        private Optional<String> paymentMethod = Optional.empty();
-
-        private Optional<String> paymentStatus = Optional.empty();
-
-        private Optional<String> payoutProgram = Optional.empty();
+        private Optional<VendorQueryRecord> vendor = Optional.empty();
 
         private Optional<String> paypointDbaname = Optional.empty();
 
         private Optional<String> paypointLegalname = Optional.empty();
 
-        private Optional<String> riskAction = Optional.empty();
+        private Optional<Long> paypointId = Optional.empty();
 
-        private Optional<Integer> riskActionCode = Optional.empty();
+        private Optional<Integer> status = Optional.empty();
 
-        private Optional<Boolean> riskFlagged = Optional.empty();
+        private Optional<String> paymentId = Optional.empty();
 
-        private Optional<OffsetDateTime> riskFlaggedOn = Optional.empty();
+        private Optional<String> transId = Optional.empty();
 
-        private Optional<String> riskReason = Optional.empty();
+        private Optional<Integer> transStatus = Optional.empty();
 
-        private Optional<String> riskStatus = Optional.empty();
+        private Optional<String> transStatusDetail = Optional.empty();
+
+        private Optional<String> transStatusName = Optional.empty();
+
+        private Optional<String> transStatusCategory = Optional.empty();
+
+        private Optional<OffsetDateTime> lastUpdated = Optional.empty();
+
+        private Optional<Double> totalAmount = Optional.empty();
+
+        private Optional<Double> netAmount = Optional.empty();
+
+        private Optional<Double> feeAmount = Optional.empty();
+
+        private Optional<String> source = Optional.empty();
+
+        private Optional<String> parentOrgName = Optional.empty();
+
+        private Optional<Long> parentOrgId = Optional.empty();
+
+        private Optional<String> batchNumber = Optional.empty();
+
+        private Optional<String> paymentStatus = Optional.empty();
+
+        private Optional<String> paymentMethod = Optional.empty();
+
+        private Optional<String> cardToken = Optional.empty();
+
+        private Optional<String> checkNumber = Optional.empty();
+
+        private Optional<FileContent> checkData = Optional.empty();
+
+        private Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData = Optional.empty();
+
+        private Optional<List<BillPayOutData>> bills = Optional.empty();
+
+        private Optional<List<QueryTransactionEvents>> events = Optional.empty();
+
+        private Optional<String> externalPaypointId = Optional.empty();
+
+        private Optional<String> entryName = Optional.empty();
+
+        private Optional<String> gateway = Optional.empty();
+
+        private Optional<Integer> batchId = Optional.empty();
+
+        private Optional<Boolean> hasVcardTransactions = Optional.empty();
+
+        private Optional<Boolean> isSameDayAch = Optional.empty();
 
         private Optional<Long> scheduleId = Optional.empty();
 
         private Optional<String> settlementStatus = Optional.empty();
 
-        private Optional<String> source = Optional.empty();
+        private Optional<String> settlementStatusName = Optional.empty();
 
-        private Optional<Integer> status = Optional.empty();
+        private Optional<OffsetDateTime> settlementDate = Optional.empty();
 
-        private Optional<Double> totalAmount = Optional.empty();
+        private Optional<Boolean> riskFlagged = Optional.empty();
 
-        private Optional<VendorQueryRecord> vendor = Optional.empty();
+        private Optional<OffsetDateTime> riskFlaggedOn = Optional.empty();
+
+        private Optional<String> riskStatus = Optional.empty();
+
+        private Optional<String> riskReason = Optional.empty();
+
+        private Optional<String> riskAction = Optional.empty();
+
+        private Optional<Integer> riskActionCode = Optional.empty();
+
+        private Optional<String> payoutProgram = Optional.empty();
+
+        private Optional<String> achTraceNumber = Optional.empty();
+
+        private Optional<String> entityId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -620,123 +858,83 @@ public final class QueryPayoutTransactionRecordsItem {
         private Builder() {}
 
         public Builder from(QueryPayoutTransactionRecordsItem other) {
-            batchNumber(other.getBatchNumber());
-            batchId(other.getBatchId());
-            bills(other.getBills());
-            cardToken(other.getCardToken());
-            checkData(other.getCheckData());
-            checkNumber(other.getCheckNumber());
-            comments(other.getComments());
-            createdAt(other.getCreatedAt());
-            entryName(other.getEntryName());
-            events(other.getEvents());
-            externalPaypointId(other.getExternalPaypointId());
-            feeAmount(other.getFeeAmount());
-            gateway(other.getGateway());
-            hasVcardTransactions(other.getHasVcardTransactions());
             idOut(other.getIdOut());
-            isSameDayAch(other.getIsSameDayAch());
-            lastUpdated(other.getLastUpdated());
-            netAmount(other.getNetAmount());
-            parentOrgName(other.getParentOrgName());
-            parentOrgId(other.getParentOrgId());
-            paymentData(other.getPaymentData());
-            paymentId(other.getPaymentId());
-            paymentMethod(other.getPaymentMethod());
-            paymentStatus(other.getPaymentStatus());
-            payoutProgram(other.getPayoutProgram());
+            createdAt(other.getCreatedAt());
+            comments(other.getComments());
+            vendor(other.getVendor());
             paypointDbaname(other.getPaypointDbaname());
             paypointLegalname(other.getPaypointLegalname());
-            riskAction(other.getRiskAction());
-            riskActionCode(other.getRiskActionCode());
-            riskFlagged(other.getRiskFlagged());
-            riskFlaggedOn(other.getRiskFlaggedOn());
-            riskReason(other.getRiskReason());
-            riskStatus(other.getRiskStatus());
+            paypointId(other.getPaypointId());
+            status(other.getStatus());
+            paymentId(other.getPaymentId());
+            transId(other.getTransId());
+            transStatus(other.getTransStatus());
+            transStatusDetail(other.getTransStatusDetail());
+            transStatusName(other.getTransStatusName());
+            transStatusCategory(other.getTransStatusCategory());
+            lastUpdated(other.getLastUpdated());
+            totalAmount(other.getTotalAmount());
+            netAmount(other.getNetAmount());
+            feeAmount(other.getFeeAmount());
+            source(other.getSource());
+            parentOrgName(other.getParentOrgName());
+            parentOrgId(other.getParentOrgId());
+            batchNumber(other.getBatchNumber());
+            paymentStatus(other.getPaymentStatus());
+            paymentMethod(other.getPaymentMethod());
+            cardToken(other.getCardToken());
+            checkNumber(other.getCheckNumber());
+            checkData(other.getCheckData());
+            paymentData(other.getPaymentData());
+            bills(other.getBills());
+            events(other.getEvents());
+            externalPaypointId(other.getExternalPaypointId());
+            entryName(other.getEntryName());
+            gateway(other.getGateway());
+            batchId(other.getBatchId());
+            hasVcardTransactions(other.getHasVcardTransactions());
+            isSameDayAch(other.getIsSameDayAch());
             scheduleId(other.getScheduleId());
             settlementStatus(other.getSettlementStatus());
-            source(other.getSource());
-            status(other.getStatus());
-            totalAmount(other.getTotalAmount());
-            vendor(other.getVendor());
-            return this;
-        }
-
-        @JsonSetter(value = "BatchNumber", nulls = Nulls.SKIP)
-        public Builder batchNumber(Optional<String> batchNumber) {
-            this.batchNumber = batchNumber;
-            return this;
-        }
-
-        public Builder batchNumber(String batchNumber) {
-            this.batchNumber = Optional.ofNullable(batchNumber);
+            settlementStatusName(other.getSettlementStatusName());
+            settlementDate(other.getSettlementDate());
+            riskFlagged(other.getRiskFlagged());
+            riskFlaggedOn(other.getRiskFlaggedOn());
+            riskStatus(other.getRiskStatus());
+            riskReason(other.getRiskReason());
+            riskAction(other.getRiskAction());
+            riskActionCode(other.getRiskActionCode());
+            payoutProgram(other.getPayoutProgram());
+            achTraceNumber(other.getAchTraceNumber());
+            entityId(other.getEntityId());
             return this;
         }
 
         /**
-         * <p>Identifier of the batch associated with payout transaction.</p>
+         * <p>Identifier of payout transaction.</p>
          */
-        @JsonSetter(value = "BatchId", nulls = Nulls.SKIP)
-        public Builder batchId(Optional<Integer> batchId) {
-            this.batchId = batchId;
+        @JsonSetter(value = "IdOut", nulls = Nulls.SKIP)
+        public Builder idOut(Optional<Long> idOut) {
+            this.idOut = idOut;
             return this;
         }
 
-        public Builder batchId(Integer batchId) {
-            this.batchId = Optional.ofNullable(batchId);
+        public Builder idOut(Long idOut) {
+            this.idOut = Optional.ofNullable(idOut);
             return this;
         }
 
         /**
-         * <p>Bills associated with this transaction.</p>
+         * <p>Timestamp when the payment was created, in UTC.</p>
          */
-        @JsonSetter(value = "Bills", nulls = Nulls.SKIP)
-        public Builder bills(Optional<List<BillPayOutData>> bills) {
-            this.bills = bills;
+        @JsonSetter(value = "CreatedAt", nulls = Nulls.SKIP)
+        public Builder createdAt(Optional<OffsetDateTime> createdAt) {
+            this.createdAt = createdAt;
             return this;
         }
 
-        public Builder bills(List<BillPayOutData> bills) {
-            this.bills = Optional.ofNullable(bills);
-            return this;
-        }
-
-        @JsonSetter(value = "CardToken", nulls = Nulls.SKIP)
-        public Builder cardToken(Optional<String> cardToken) {
-            this.cardToken = cardToken;
-            return this;
-        }
-
-        public Builder cardToken(String cardToken) {
-            this.cardToken = Optional.ofNullable(cardToken);
-            return this;
-        }
-
-        /**
-         * <p>Object referencing paper check image.</p>
-         */
-        @JsonSetter(value = "CheckData", nulls = Nulls.SKIP)
-        public Builder checkData(Optional<FileContent> checkData) {
-            this.checkData = checkData;
-            return this;
-        }
-
-        public Builder checkData(FileContent checkData) {
-            this.checkData = Optional.ofNullable(checkData);
-            return this;
-        }
-
-        /**
-         * <p>Paper check number related to payout transaction.</p>
-         */
-        @JsonSetter(value = "CheckNumber", nulls = Nulls.SKIP)
-        public Builder checkNumber(Optional<String> checkNumber) {
-            this.checkNumber = checkNumber;
-            return this;
-        }
-
-        public Builder checkNumber(String checkNumber) {
-            this.checkNumber = Optional.ofNullable(checkNumber);
+        public Builder createdAt(OffsetDateTime createdAt) {
+            this.createdAt = Optional.ofNullable(createdAt);
             return this;
         }
 
@@ -755,221 +953,16 @@ public final class QueryPayoutTransactionRecordsItem {
         }
 
         /**
-         * <p>Timestamp when the payment was created, in UTC.</p>
+         * <p>Vendor related to the payout transaction.</p>
          */
-        @JsonSetter(value = "CreatedAt", nulls = Nulls.SKIP)
-        public Builder createdAt(Optional<OffsetDateTime> createdAt) {
-            this.createdAt = createdAt;
+        @JsonSetter(value = "Vendor", nulls = Nulls.SKIP)
+        public Builder vendor(Optional<VendorQueryRecord> vendor) {
+            this.vendor = vendor;
             return this;
         }
 
-        public Builder createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.ofNullable(createdAt);
-            return this;
-        }
-
-        @JsonSetter(value = "EntryName", nulls = Nulls.SKIP)
-        public Builder entryName(Optional<String> entryName) {
-            this.entryName = entryName;
-            return this;
-        }
-
-        public Builder entryName(String entryName) {
-            this.entryName = Optional.ofNullable(entryName);
-            return this;
-        }
-
-        /**
-         * <p>Events associated with this transaction.</p>
-         */
-        @JsonSetter(value = "Events", nulls = Nulls.SKIP)
-        public Builder events(Optional<List<QueryTransactionEvents>> events) {
-            this.events = events;
-            return this;
-        }
-
-        public Builder events(List<QueryTransactionEvents> events) {
-            this.events = Optional.ofNullable(events);
-            return this;
-        }
-
-        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
-        public Builder externalPaypointId(Optional<String> externalPaypointId) {
-            this.externalPaypointId = externalPaypointId;
-            return this;
-        }
-
-        public Builder externalPaypointId(String externalPaypointId) {
-            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
-            return this;
-        }
-
-        @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
-        public Builder feeAmount(Optional<Double> feeAmount) {
-            this.feeAmount = feeAmount;
-            return this;
-        }
-
-        public Builder feeAmount(Double feeAmount) {
-            this.feeAmount = Optional.ofNullable(feeAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "Gateway", nulls = Nulls.SKIP)
-        public Builder gateway(Optional<String> gateway) {
-            this.gateway = gateway;
-            return this;
-        }
-
-        public Builder gateway(String gateway) {
-            this.gateway = Optional.ofNullable(gateway);
-            return this;
-        }
-
-        @JsonSetter(value = "HasVcardTransactions", nulls = Nulls.SKIP)
-        public Builder hasVcardTransactions(Optional<Boolean> hasVcardTransactions) {
-            this.hasVcardTransactions = hasVcardTransactions;
-            return this;
-        }
-
-        public Builder hasVcardTransactions(Boolean hasVcardTransactions) {
-            this.hasVcardTransactions = Optional.ofNullable(hasVcardTransactions);
-            return this;
-        }
-
-        /**
-         * <p>Identifier of payout transaction.</p>
-         */
-        @JsonSetter(value = "IdOut", nulls = Nulls.SKIP)
-        public Builder idOut(Optional<Long> idOut) {
-            this.idOut = idOut;
-            return this;
-        }
-
-        public Builder idOut(Long idOut) {
-            this.idOut = Optional.ofNullable(idOut);
-            return this;
-        }
-
-        @JsonSetter(value = "IsSameDayACH", nulls = Nulls.SKIP)
-        public Builder isSameDayAch(Optional<Boolean> isSameDayAch) {
-            this.isSameDayAch = isSameDayAch;
-            return this;
-        }
-
-        public Builder isSameDayAch(Boolean isSameDayAch) {
-            this.isSameDayAch = Optional.ofNullable(isSameDayAch);
-            return this;
-        }
-
-        /**
-         * <p>Timestamp when payment record was updated.</p>
-         */
-        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
-        public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
-            this.lastUpdated = lastUpdated;
-            return this;
-        }
-
-        public Builder lastUpdated(OffsetDateTime lastUpdated) {
-            this.lastUpdated = Optional.ofNullable(lastUpdated);
-            return this;
-        }
-
-        /**
-         * <p>Net amount paid.</p>
-         */
-        @JsonSetter(value = "NetAmount", nulls = Nulls.SKIP)
-        public Builder netAmount(Optional<Double> netAmount) {
-            this.netAmount = netAmount;
-            return this;
-        }
-
-        public Builder netAmount(Double netAmount) {
-            this.netAmount = Optional.ofNullable(netAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
-        public Builder parentOrgName(Optional<String> parentOrgName) {
-            this.parentOrgName = parentOrgName;
-            return this;
-        }
-
-        public Builder parentOrgName(String parentOrgName) {
-            this.parentOrgName = Optional.ofNullable(parentOrgName);
-            return this;
-        }
-
-        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
-        public Builder parentOrgId(Optional<Long> parentOrgId) {
-            this.parentOrgId = parentOrgId;
-            return this;
-        }
-
-        public Builder parentOrgId(Long parentOrgId) {
-            this.parentOrgId = Optional.ofNullable(parentOrgId);
-            return this;
-        }
-
-        @JsonSetter(value = "PaymentData", nulls = Nulls.SKIP)
-        public Builder paymentData(Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData) {
-            this.paymentData = paymentData;
-            return this;
-        }
-
-        public Builder paymentData(QueryPayoutTransactionRecordsItemPaymentData paymentData) {
-            this.paymentData = Optional.ofNullable(paymentData);
-            return this;
-        }
-
-        @JsonSetter(value = "PaymentId", nulls = Nulls.SKIP)
-        public Builder paymentId(Optional<String> paymentId) {
-            this.paymentId = paymentId;
-            return this;
-        }
-
-        public Builder paymentId(String paymentId) {
-            this.paymentId = Optional.ofNullable(paymentId);
-            return this;
-        }
-
-        /**
-         * <p>The payment method for the transaction.</p>
-         */
-        @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
-        public Builder paymentMethod(Optional<String> paymentMethod) {
-            this.paymentMethod = paymentMethod;
-            return this;
-        }
-
-        public Builder paymentMethod(String paymentMethod) {
-            this.paymentMethod = Optional.ofNullable(paymentMethod);
-            return this;
-        }
-
-        /**
-         * <p>Status of payout transaction. See <a href="guides/money-out-statuses#payout-transaction-statuses">Payout Transaction Statuses</a> for a full reference.</p>
-         */
-        @JsonSetter(value = "PaymentStatus", nulls = Nulls.SKIP)
-        public Builder paymentStatus(Optional<String> paymentStatus) {
-            this.paymentStatus = paymentStatus;
-            return this;
-        }
-
-        public Builder paymentStatus(String paymentStatus) {
-            this.paymentStatus = Optional.ofNullable(paymentStatus);
-            return this;
-        }
-
-        @JsonSetter(value = "PayoutProgram", nulls = Nulls.SKIP)
-        public Builder payoutProgram(Optional<String> payoutProgram) {
-            this.payoutProgram = payoutProgram;
-            return this;
-        }
-
-        public Builder payoutProgram(String payoutProgram) {
-            this.payoutProgram = Optional.ofNullable(payoutProgram);
+        public Builder vendor(VendorQueryRecord vendor) {
+            this.vendor = Optional.ofNullable(vendor);
             return this;
         }
 
@@ -998,69 +991,447 @@ public final class QueryPayoutTransactionRecordsItem {
             return this;
         }
 
-        @JsonSetter(value = "RiskAction", nulls = Nulls.SKIP)
-        public Builder riskAction(Optional<String> riskAction) {
-            this.riskAction = riskAction;
+        @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
+        public Builder paypointId(Optional<Long> paypointId) {
+            this.paypointId = paypointId;
             return this;
         }
 
-        public Builder riskAction(String riskAction) {
-            this.riskAction = Optional.ofNullable(riskAction);
+        public Builder paypointId(Long paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
             return this;
         }
 
-        @JsonSetter(value = "RiskActionCode", nulls = Nulls.SKIP)
-        public Builder riskActionCode(Optional<Integer> riskActionCode) {
-            this.riskActionCode = riskActionCode;
+        /**
+         * <p>Internal status of transaction.</p>
+         */
+        @JsonSetter(value = "Status", nulls = Nulls.SKIP)
+        public Builder status(Optional<Integer> status) {
+            this.status = status;
             return this;
         }
 
-        public Builder riskActionCode(Integer riskActionCode) {
-            this.riskActionCode = Optional.ofNullable(riskActionCode);
+        public Builder status(Integer status) {
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
-        @JsonSetter(value = "RiskFlagged", nulls = Nulls.SKIP)
-        public Builder riskFlagged(Optional<Boolean> riskFlagged) {
-            this.riskFlagged = riskFlagged;
+        @JsonSetter(value = "PaymentId", nulls = Nulls.SKIP)
+        public Builder paymentId(Optional<String> paymentId) {
+            this.paymentId = paymentId;
             return this;
         }
 
-        public Builder riskFlagged(Boolean riskFlagged) {
-            this.riskFlagged = Optional.ofNullable(riskFlagged);
+        public Builder paymentId(String paymentId) {
+            this.paymentId = Optional.ofNullable(paymentId);
             return this;
         }
 
-        @JsonSetter(value = "RiskFlaggedOn", nulls = Nulls.SKIP)
-        public Builder riskFlaggedOn(Optional<OffsetDateTime> riskFlaggedOn) {
-            this.riskFlaggedOn = riskFlaggedOn;
+        /**
+         * <p>ID of the transaction linked to this payout, when applicable.</p>
+         */
+        @JsonSetter(value = "TransId", nulls = Nulls.SKIP)
+        public Builder transId(Optional<String> transId) {
+            this.transId = transId;
             return this;
         }
 
-        public Builder riskFlaggedOn(OffsetDateTime riskFlaggedOn) {
-            this.riskFlaggedOn = Optional.ofNullable(riskFlaggedOn);
+        public Builder transId(String transId) {
+            this.transId = Optional.ofNullable(transId);
             return this;
         }
 
-        @JsonSetter(value = "RiskReason", nulls = Nulls.SKIP)
-        public Builder riskReason(Optional<String> riskReason) {
-            this.riskReason = riskReason;
+        public Builder transId(Nullable<String> transId) {
+            if (transId.isNull()) {
+                this.transId = null;
+            } else if (transId.isEmpty()) {
+                this.transId = Optional.empty();
+            } else {
+                this.transId = Optional.of(transId.get());
+            }
             return this;
         }
 
-        public Builder riskReason(String riskReason) {
-            this.riskReason = Optional.ofNullable(riskReason);
+        /**
+         * <p>Status of the linked transaction.</p>
+         */
+        @JsonSetter(value = "TransStatus", nulls = Nulls.SKIP)
+        public Builder transStatus(Optional<Integer> transStatus) {
+            this.transStatus = transStatus;
             return this;
         }
 
-        @JsonSetter(value = "RiskStatus", nulls = Nulls.SKIP)
-        public Builder riskStatus(Optional<String> riskStatus) {
-            this.riskStatus = riskStatus;
+        public Builder transStatus(Integer transStatus) {
+            this.transStatus = Optional.ofNullable(transStatus);
             return this;
         }
 
-        public Builder riskStatus(String riskStatus) {
-            this.riskStatus = Optional.ofNullable(riskStatus);
+        public Builder transStatus(Nullable<Integer> transStatus) {
+            if (transStatus.isNull()) {
+                this.transStatus = null;
+            } else if (transStatus.isEmpty()) {
+                this.transStatus = Optional.empty();
+            } else {
+                this.transStatus = Optional.of(transStatus.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Detailed status of the linked transaction.</p>
+         */
+        @JsonSetter(value = "TransStatusDetail", nulls = Nulls.SKIP)
+        public Builder transStatusDetail(Optional<String> transStatusDetail) {
+            this.transStatusDetail = transStatusDetail;
+            return this;
+        }
+
+        public Builder transStatusDetail(String transStatusDetail) {
+            this.transStatusDetail = Optional.ofNullable(transStatusDetail);
+            return this;
+        }
+
+        public Builder transStatusDetail(Nullable<String> transStatusDetail) {
+            if (transStatusDetail.isNull()) {
+                this.transStatusDetail = null;
+            } else if (transStatusDetail.isEmpty()) {
+                this.transStatusDetail = Optional.empty();
+            } else {
+                this.transStatusDetail = Optional.of(transStatusDetail.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Name of the linked transaction's status.</p>
+         */
+        @JsonSetter(value = "TransStatusName", nulls = Nulls.SKIP)
+        public Builder transStatusName(Optional<String> transStatusName) {
+            this.transStatusName = transStatusName;
+            return this;
+        }
+
+        public Builder transStatusName(String transStatusName) {
+            this.transStatusName = Optional.ofNullable(transStatusName);
+            return this;
+        }
+
+        public Builder transStatusName(Nullable<String> transStatusName) {
+            if (transStatusName.isNull()) {
+                this.transStatusName = null;
+            } else if (transStatusName.isEmpty()) {
+                this.transStatusName = Optional.empty();
+            } else {
+                this.transStatusName = Optional.of(transStatusName.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Category of the linked transaction's status.</p>
+         */
+        @JsonSetter(value = "TransStatusCategory", nulls = Nulls.SKIP)
+        public Builder transStatusCategory(Optional<String> transStatusCategory) {
+            this.transStatusCategory = transStatusCategory;
+            return this;
+        }
+
+        public Builder transStatusCategory(String transStatusCategory) {
+            this.transStatusCategory = Optional.ofNullable(transStatusCategory);
+            return this;
+        }
+
+        public Builder transStatusCategory(Nullable<String> transStatusCategory) {
+            if (transStatusCategory.isNull()) {
+                this.transStatusCategory = null;
+            } else if (transStatusCategory.isEmpty()) {
+                this.transStatusCategory = Optional.empty();
+            } else {
+                this.transStatusCategory = Optional.of(transStatusCategory.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when payment record was updated.</p>
+         */
+        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
+        public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return this;
+        }
+
+        public Builder lastUpdated(OffsetDateTime lastUpdated) {
+            this.lastUpdated = Optional.ofNullable(lastUpdated);
+            return this;
+        }
+
+        /**
+         * <p>Transaction total amount (including service fee or sub-charge).</p>
+         */
+        @JsonSetter(value = "TotalAmount", nulls = Nulls.SKIP)
+        public Builder totalAmount(Optional<Double> totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Builder totalAmount(Double totalAmount) {
+            this.totalAmount = Optional.ofNullable(totalAmount);
+            return this;
+        }
+
+        /**
+         * <p>Net amount paid.</p>
+         */
+        @JsonSetter(value = "NetAmount", nulls = Nulls.SKIP)
+        public Builder netAmount(Optional<Double> netAmount) {
+            this.netAmount = netAmount;
+            return this;
+        }
+
+        public Builder netAmount(Double netAmount) {
+            this.netAmount = Optional.ofNullable(netAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "FeeAmount", nulls = Nulls.SKIP)
+        public Builder feeAmount(Optional<Double> feeAmount) {
+            this.feeAmount = feeAmount;
+            return this;
+        }
+
+        public Builder feeAmount(Double feeAmount) {
+            this.feeAmount = Optional.ofNullable(feeAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "Source", nulls = Nulls.SKIP)
+        public Builder source(Optional<String> source) {
+            this.source = source;
+            return this;
+        }
+
+        public Builder source(String source) {
+            this.source = Optional.ofNullable(source);
+            return this;
+        }
+
+        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
+        public Builder parentOrgName(Optional<String> parentOrgName) {
+            this.parentOrgName = parentOrgName;
+            return this;
+        }
+
+        public Builder parentOrgName(String parentOrgName) {
+            this.parentOrgName = Optional.ofNullable(parentOrgName);
+            return this;
+        }
+
+        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
+        public Builder parentOrgId(Optional<Long> parentOrgId) {
+            this.parentOrgId = parentOrgId;
+            return this;
+        }
+
+        public Builder parentOrgId(Long parentOrgId) {
+            this.parentOrgId = Optional.ofNullable(parentOrgId);
+            return this;
+        }
+
+        @JsonSetter(value = "BatchNumber", nulls = Nulls.SKIP)
+        public Builder batchNumber(Optional<String> batchNumber) {
+            this.batchNumber = batchNumber;
+            return this;
+        }
+
+        public Builder batchNumber(String batchNumber) {
+            this.batchNumber = Optional.ofNullable(batchNumber);
+            return this;
+        }
+
+        /**
+         * <p>Status of payout transaction. See <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Payout Transaction Statuses</a> for a full reference.</p>
+         */
+        @JsonSetter(value = "PaymentStatus", nulls = Nulls.SKIP)
+        public Builder paymentStatus(Optional<String> paymentStatus) {
+            this.paymentStatus = paymentStatus;
+            return this;
+        }
+
+        public Builder paymentStatus(String paymentStatus) {
+            this.paymentStatus = Optional.ofNullable(paymentStatus);
+            return this;
+        }
+
+        /**
+         * <p>The payment method for the transaction.</p>
+         */
+        @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
+        public Builder paymentMethod(Optional<String> paymentMethod) {
+            this.paymentMethod = paymentMethod;
+            return this;
+        }
+
+        public Builder paymentMethod(String paymentMethod) {
+            this.paymentMethod = Optional.ofNullable(paymentMethod);
+            return this;
+        }
+
+        @JsonSetter(value = "CardToken", nulls = Nulls.SKIP)
+        public Builder cardToken(Optional<String> cardToken) {
+            this.cardToken = cardToken;
+            return this;
+        }
+
+        public Builder cardToken(String cardToken) {
+            this.cardToken = Optional.ofNullable(cardToken);
+            return this;
+        }
+
+        public Builder cardToken(Nullable<String> cardToken) {
+            if (cardToken.isNull()) {
+                this.cardToken = null;
+            } else if (cardToken.isEmpty()) {
+                this.cardToken = Optional.empty();
+            } else {
+                this.cardToken = Optional.of(cardToken.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Paper check number related to payout transaction.</p>
+         */
+        @JsonSetter(value = "CheckNumber", nulls = Nulls.SKIP)
+        public Builder checkNumber(Optional<String> checkNumber) {
+            this.checkNumber = checkNumber;
+            return this;
+        }
+
+        public Builder checkNumber(String checkNumber) {
+            this.checkNumber = Optional.ofNullable(checkNumber);
+            return this;
+        }
+
+        /**
+         * <p>Object referencing paper check image.</p>
+         */
+        @JsonSetter(value = "CheckData", nulls = Nulls.SKIP)
+        public Builder checkData(Optional<FileContent> checkData) {
+            this.checkData = checkData;
+            return this;
+        }
+
+        public Builder checkData(FileContent checkData) {
+            this.checkData = Optional.ofNullable(checkData);
+            return this;
+        }
+
+        @JsonSetter(value = "PaymentData", nulls = Nulls.SKIP)
+        public Builder paymentData(Optional<QueryPayoutTransactionRecordsItemPaymentData> paymentData) {
+            this.paymentData = paymentData;
+            return this;
+        }
+
+        public Builder paymentData(QueryPayoutTransactionRecordsItemPaymentData paymentData) {
+            this.paymentData = Optional.ofNullable(paymentData);
+            return this;
+        }
+
+        /**
+         * <p>Bills associated with this transaction.</p>
+         */
+        @JsonSetter(value = "Bills", nulls = Nulls.SKIP)
+        public Builder bills(Optional<List<BillPayOutData>> bills) {
+            this.bills = bills;
+            return this;
+        }
+
+        public Builder bills(List<BillPayOutData> bills) {
+            this.bills = Optional.ofNullable(bills);
+            return this;
+        }
+
+        /**
+         * <p>Events associated with this transaction.</p>
+         */
+        @JsonSetter(value = "Events", nulls = Nulls.SKIP)
+        public Builder events(Optional<List<QueryTransactionEvents>> events) {
+            this.events = events;
+            return this;
+        }
+
+        public Builder events(List<QueryTransactionEvents> events) {
+            this.events = Optional.ofNullable(events);
+            return this;
+        }
+
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
+        public Builder externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
+            return this;
+        }
+
+        public Builder externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        @JsonSetter(value = "EntryName", nulls = Nulls.SKIP)
+        public Builder entryName(Optional<String> entryName) {
+            this.entryName = entryName;
+            return this;
+        }
+
+        public Builder entryName(String entryName) {
+            this.entryName = Optional.ofNullable(entryName);
+            return this;
+        }
+
+        @JsonSetter(value = "Gateway", nulls = Nulls.SKIP)
+        public Builder gateway(Optional<String> gateway) {
+            this.gateway = gateway;
+            return this;
+        }
+
+        public Builder gateway(String gateway) {
+            this.gateway = Optional.ofNullable(gateway);
+            return this;
+        }
+
+        /**
+         * <p>Identifier of the batch associated with payout transaction.</p>
+         */
+        @JsonSetter(value = "BatchId", nulls = Nulls.SKIP)
+        public Builder batchId(Optional<Integer> batchId) {
+            this.batchId = batchId;
+            return this;
+        }
+
+        public Builder batchId(Integer batchId) {
+            this.batchId = Optional.ofNullable(batchId);
+            return this;
+        }
+
+        @JsonSetter(value = "HasVcardTransactions", nulls = Nulls.SKIP)
+        public Builder hasVcardTransactions(Optional<Boolean> hasVcardTransactions) {
+            this.hasVcardTransactions = hasVcardTransactions;
+            return this;
+        }
+
+        public Builder hasVcardTransactions(Boolean hasVcardTransactions) {
+            this.hasVcardTransactions = Optional.ofNullable(hasVcardTransactions);
+            return this;
+        }
+
+        @JsonSetter(value = "IsSameDayACH", nulls = Nulls.SKIP)
+        public Builder isSameDayAch(Optional<Boolean> isSameDayAch) {
+            this.isSameDayAch = isSameDayAch;
+            return this;
+        }
+
+        public Builder isSameDayAch(Boolean isSameDayAch) {
+            this.isSameDayAch = Optional.ofNullable(isSameDayAch);
             return this;
         }
 
@@ -1086,100 +1457,220 @@ public final class QueryPayoutTransactionRecordsItem {
             return this;
         }
 
-        @JsonSetter(value = "Source", nulls = Nulls.SKIP)
-        public Builder source(Optional<String> source) {
-            this.source = source;
+        @JsonSetter(value = "SettlementStatusName", nulls = Nulls.SKIP)
+        public Builder settlementStatusName(Optional<String> settlementStatusName) {
+            this.settlementStatusName = settlementStatusName;
             return this;
         }
 
-        public Builder source(String source) {
-            this.source = Optional.ofNullable(source);
+        public Builder settlementStatusName(String settlementStatusName) {
+            this.settlementStatusName = Optional.ofNullable(settlementStatusName);
             return this;
         }
 
-        /**
-         * <p>Internal status of transaction.</p>
-         */
-        @JsonSetter(value = "Status", nulls = Nulls.SKIP)
-        public Builder status(Optional<Integer> status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder status(Integer status) {
-            this.status = Optional.ofNullable(status);
-            return this;
-        }
-
-        /**
-         * <p>Transaction total amount (including service fee or sub-charge).</p>
-         */
-        @JsonSetter(value = "TotalAmount", nulls = Nulls.SKIP)
-        public Builder totalAmount(Optional<Double> totalAmount) {
-            this.totalAmount = totalAmount;
-            return this;
-        }
-
-        public Builder totalAmount(Double totalAmount) {
-            this.totalAmount = Optional.ofNullable(totalAmount);
+        public Builder settlementStatusName(Nullable<String> settlementStatusName) {
+            if (settlementStatusName.isNull()) {
+                this.settlementStatusName = null;
+            } else if (settlementStatusName.isEmpty()) {
+                this.settlementStatusName = Optional.empty();
+            } else {
+                this.settlementStatusName = Optional.of(settlementStatusName.get());
+            }
             return this;
         }
 
         /**
-         * <p>Vendor related to the payout transaction.</p>
+         * <p>Date the payout settled, in UTC. Null until the payout settles.</p>
          */
-        @JsonSetter(value = "Vendor", nulls = Nulls.SKIP)
-        public Builder vendor(Optional<VendorQueryRecord> vendor) {
-            this.vendor = vendor;
+        @JsonSetter(value = "SettlementDate", nulls = Nulls.SKIP)
+        public Builder settlementDate(Optional<OffsetDateTime> settlementDate) {
+            this.settlementDate = settlementDate;
             return this;
         }
 
-        public Builder vendor(VendorQueryRecord vendor) {
-            this.vendor = Optional.ofNullable(vendor);
+        public Builder settlementDate(OffsetDateTime settlementDate) {
+            this.settlementDate = Optional.ofNullable(settlementDate);
+            return this;
+        }
+
+        public Builder settlementDate(Nullable<OffsetDateTime> settlementDate) {
+            if (settlementDate.isNull()) {
+                this.settlementDate = null;
+            } else if (settlementDate.isEmpty()) {
+                this.settlementDate = Optional.empty();
+            } else {
+                this.settlementDate = Optional.of(settlementDate.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "RiskFlagged", nulls = Nulls.SKIP)
+        public Builder riskFlagged(Optional<Boolean> riskFlagged) {
+            this.riskFlagged = riskFlagged;
+            return this;
+        }
+
+        public Builder riskFlagged(Boolean riskFlagged) {
+            this.riskFlagged = Optional.ofNullable(riskFlagged);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskFlaggedOn", nulls = Nulls.SKIP)
+        public Builder riskFlaggedOn(Optional<OffsetDateTime> riskFlaggedOn) {
+            this.riskFlaggedOn = riskFlaggedOn;
+            return this;
+        }
+
+        public Builder riskFlaggedOn(OffsetDateTime riskFlaggedOn) {
+            this.riskFlaggedOn = Optional.ofNullable(riskFlaggedOn);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskStatus", nulls = Nulls.SKIP)
+        public Builder riskStatus(Optional<String> riskStatus) {
+            this.riskStatus = riskStatus;
+            return this;
+        }
+
+        public Builder riskStatus(String riskStatus) {
+            this.riskStatus = Optional.ofNullable(riskStatus);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskReason", nulls = Nulls.SKIP)
+        public Builder riskReason(Optional<String> riskReason) {
+            this.riskReason = riskReason;
+            return this;
+        }
+
+        public Builder riskReason(String riskReason) {
+            this.riskReason = Optional.ofNullable(riskReason);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskAction", nulls = Nulls.SKIP)
+        public Builder riskAction(Optional<String> riskAction) {
+            this.riskAction = riskAction;
+            return this;
+        }
+
+        public Builder riskAction(String riskAction) {
+            this.riskAction = Optional.ofNullable(riskAction);
+            return this;
+        }
+
+        @JsonSetter(value = "RiskActionCode", nulls = Nulls.SKIP)
+        public Builder riskActionCode(Optional<Integer> riskActionCode) {
+            this.riskActionCode = riskActionCode;
+            return this;
+        }
+
+        public Builder riskActionCode(Integer riskActionCode) {
+            this.riskActionCode = Optional.ofNullable(riskActionCode);
+            return this;
+        }
+
+        @JsonSetter(value = "PayoutProgram", nulls = Nulls.SKIP)
+        public Builder payoutProgram(Optional<String> payoutProgram) {
+            this.payoutProgram = payoutProgram;
+            return this;
+        }
+
+        public Builder payoutProgram(String payoutProgram) {
+            this.payoutProgram = Optional.ofNullable(payoutProgram);
+            return this;
+        }
+
+        /**
+         * <p>ACH trace number for the payout, when available.</p>
+         */
+        @JsonSetter(value = "AchTraceNumber", nulls = Nulls.SKIP)
+        public Builder achTraceNumber(Optional<String> achTraceNumber) {
+            this.achTraceNumber = achTraceNumber;
+            return this;
+        }
+
+        public Builder achTraceNumber(String achTraceNumber) {
+            this.achTraceNumber = Optional.ofNullable(achTraceNumber);
+            return this;
+        }
+
+        public Builder achTraceNumber(Nullable<String> achTraceNumber) {
+            if (achTraceNumber.isNull()) {
+                this.achTraceNumber = null;
+            } else if (achTraceNumber.isEmpty()) {
+                this.achTraceNumber = Optional.empty();
+            } else {
+                this.achTraceNumber = Optional.of(achTraceNumber.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier (ULID) of the payout transaction.</p>
+         */
+        @JsonSetter(value = "EntityId", nulls = Nulls.SKIP)
+        public Builder entityId(Optional<String> entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        public Builder entityId(String entityId) {
+            this.entityId = Optional.ofNullable(entityId);
             return this;
         }
 
         public QueryPayoutTransactionRecordsItem build() {
             return new QueryPayoutTransactionRecordsItem(
-                    batchNumber,
-                    batchId,
-                    bills,
-                    cardToken,
-                    checkData,
-                    checkNumber,
-                    comments,
-                    createdAt,
-                    entryName,
-                    events,
-                    externalPaypointId,
-                    feeAmount,
-                    gateway,
-                    hasVcardTransactions,
                     idOut,
-                    isSameDayAch,
-                    lastUpdated,
-                    netAmount,
-                    parentOrgName,
-                    parentOrgId,
-                    paymentData,
-                    paymentId,
-                    paymentMethod,
-                    paymentStatus,
-                    payoutProgram,
+                    createdAt,
+                    comments,
+                    vendor,
                     paypointDbaname,
                     paypointLegalname,
-                    riskAction,
-                    riskActionCode,
-                    riskFlagged,
-                    riskFlaggedOn,
-                    riskReason,
-                    riskStatus,
+                    paypointId,
+                    status,
+                    paymentId,
+                    transId,
+                    transStatus,
+                    transStatusDetail,
+                    transStatusName,
+                    transStatusCategory,
+                    lastUpdated,
+                    totalAmount,
+                    netAmount,
+                    feeAmount,
+                    source,
+                    parentOrgName,
+                    parentOrgId,
+                    batchNumber,
+                    paymentStatus,
+                    paymentMethod,
+                    cardToken,
+                    checkNumber,
+                    checkData,
+                    paymentData,
+                    bills,
+                    events,
+                    externalPaypointId,
+                    entryName,
+                    gateway,
+                    batchId,
+                    hasVcardTransactions,
+                    isSameDayAch,
                     scheduleId,
                     settlementStatus,
-                    source,
-                    status,
-                    totalAmount,
-                    vendor,
+                    settlementStatusName,
+                    settlementDate,
+                    riskFlagged,
+                    riskFlaggedOn,
+                    riskStatus,
+                    riskReason,
+                    riskAction,
+                    riskActionCode,
+                    payoutProgram,
+                    achTraceNumber,
+                    entityId,
                     additionalProperties);
         }
 

@@ -476,7 +476,6 @@ public final class CreateGhostCardRequestBody {
 
         /**
          * <p>ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.</p>
-         * <p>ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -487,7 +486,6 @@ public final class CreateGhostCardRequestBody {
         }
 
         /**
-         * <p>Spending limit for the card. Must be greater than <code>0</code> and can't exceed the paypoint's configured payout credit limit.</p>
          * <p>Spending limit for the card. Must be greater than <code>0</code> and can't exceed the paypoint's configured payout credit limit.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -500,7 +498,6 @@ public final class CreateGhostCardRequestBody {
 
         /**
          * <p>Initial load amount for the card.</p>
-         * <p>Initial load amount for the card.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -511,7 +508,6 @@ public final class CreateGhostCardRequestBody {
         }
 
         /**
-         * <p>Maximum number of times the card can be used. Ignored and set to <code>1</code> when <code>exactAmount</code> is <code>true</code>.</p>
          * <p>Maximum number of times the card can be used. Ignored and set to <code>1</code> when <code>exactAmount</code> is <code>true</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -524,7 +520,6 @@ public final class CreateGhostCardRequestBody {
 
         /**
          * <p>When <code>true</code>, restricts the card to a single use. <code>maxNumberOfUses</code> is automatically set to <code>1</code> regardless of any other value provided.</p>
-         * <p>When <code>true</code>, restricts the card to a single use. <code>maxNumberOfUses</code> is automatically set to <code>1</code> regardless of any other value provided.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -535,7 +530,6 @@ public final class CreateGhostCardRequestBody {
         }
 
         /**
-         * <p>Time period over which <code>expenseLimit</code> applies (for example, <code>monthly</code> or <code>weekly</code>).</p>
          * <p>Time period over which <code>expenseLimit</code> applies (for example, <code>monthly</code> or <code>weekly</code>).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -548,7 +542,6 @@ public final class CreateGhostCardRequestBody {
 
         /**
          * <p>Billing cycle identifier.</p>
-         * <p>Billing cycle identifier.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -559,7 +552,6 @@ public final class CreateGhostCardRequestBody {
         }
 
         /**
-         * <p>Day within the billing cycle.</p>
          * <p>Day within the billing cycle.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -572,7 +564,6 @@ public final class CreateGhostCardRequestBody {
 
         /**
          * <p>Maximum number of transactions allowed per day.</p>
-         * <p>Maximum number of transactions allowed per day.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -584,7 +575,6 @@ public final class CreateGhostCardRequestBody {
 
         /**
          * <p>Maximum total spend allowed per day.</p>
-         * <p>Maximum total spend allowed per day.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -595,7 +585,6 @@ public final class CreateGhostCardRequestBody {
         }
 
         /**
-         * <p>Maximum spend allowed per single transaction.</p>
          * <p>Maximum spend allowed per single transaction.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

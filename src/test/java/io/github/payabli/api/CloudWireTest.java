@@ -25,9 +25,8 @@ public class CloudWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -38,6 +37,10 @@ public class CloudWireTest {
 
     @Test
     public void testAddDevice() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -50,9 +53,17 @@ public class CloudWireTest {
                                 .description("Front Desk POS")
                                 .registrationCode("YS7DS5")
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody =
@@ -126,15 +137,27 @@ public class CloudWireTest {
 
     @Test
     public void testRemoveDevice() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"isSuccess\":true,\"responseData\":\"6c361c7d-674c-44cc-b790-382b75d1xxx\",\"responseText\":\"Success\"}"));
         RemoveDeviceResponse response = client.cloud().removeDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -178,15 +201,27 @@ public class CloudWireTest {
 
     @Test
     public void testHistoryDevice() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"isSuccess\":true,\"responseList\":[{\"connected\":true,\"dateRegistered\":\"2024-03-05T15:56:04Z\",\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"deviceNickName\":\"Front Desk POS\",\"make\":\"ingenico\",\"model\":\"LK2500\",\"registered\":true,\"serialNumber\":\"312345692080000000\"}],\"responseText\":\"Success\"}"));
         CloudQueryApiResponse response = client.cloud().historyDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -241,6 +276,10 @@ public class CloudWireTest {
 
     @Test
     public void testListDevice() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -248,9 +287,17 @@ public class CloudWireTest {
                                 "{\"isSuccess\":true,\"responseList\":[{\"connected\":true,\"dateRegistered\":\"2024-03-05T15:56:04Z\",\"deviceId\":\"499585-389fj484-3jcj8hj3\",\"deviceNickName\":\"Front Desk POS\",\"make\":\"ingenico\",\"model\":\"LK2500\",\"registered\":true,\"serialNumber\":\"312345692080000000\"}],\"responseText\":\"Success\"}"));
         CloudQueryApiResponse response = client.cloud()
                 .listDevice("8cfec329267", ListDeviceRequest.builder().build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

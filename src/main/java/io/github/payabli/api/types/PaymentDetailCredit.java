@@ -148,7 +148,6 @@ public final class PaymentDetailCredit {
 
         /**
          * <p>Total amount to be charged. If a service fee is provided, then this amount should include the service fee.</p>
-         * <p>Total amount to be charged. If a service fee is provided, then this amount should include the service fee.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

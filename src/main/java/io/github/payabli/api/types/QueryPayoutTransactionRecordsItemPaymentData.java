@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,141 +23,83 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QueryPayoutTransactionRecordsItemPaymentData.Builder.class)
 public final class QueryPayoutTransactionRecordsItemPaymentData {
-    private final Optional<String> accountExp;
-
-    private final Optional<String> accountId;
+    private final Optional<String> maskedAccount;
 
     private final Optional<String> accountType;
 
+    private final Optional<String> accountExp;
+
     private final Optional<String> accountZip;
 
-    private final Optional<String> bankAccount;
+    private final Optional<String> holderName;
 
-    private final Optional<BinData> binData;
+    private final Optional<String> storedId;
+
+    private final Optional<String> initiator;
+
+    private final Optional<String> storedMethodUsageType;
+
+    private final Optional<String> sequence;
+
+    private final Optional<String> orderDescription;
 
     private final Optional<String> cloudSignatureData;
 
     private final Optional<String> cloudSignatureFormat;
 
-    private final Optional<PayoutGatewayConnector> gatewayConnector;
-
-    private final Optional<String> holderName;
-
-    private final Optional<String> initiator;
-
-    private final Optional<String> maskedAccount;
-
-    private final Optional<String> orderDescription;
-
     private final Optional<PaymentDetail> paymentDetails;
 
     private final Optional<String> payorData;
 
-    private final Optional<String> sequence;
+    private final Optional<String> accountId;
 
-    private final Optional<String> storedId;
+    private final Optional<String> bankAccount;
 
-    private final Optional<String> storedMethodUsageType;
+    private final Optional<PayoutGatewayConnector> gatewayConnector;
+
+    private final Optional<BinData> binData;
 
     private final Map<String, Object> additionalProperties;
 
     private QueryPayoutTransactionRecordsItemPaymentData(
-            Optional<String> accountExp,
-            Optional<String> accountId,
+            Optional<String> maskedAccount,
             Optional<String> accountType,
+            Optional<String> accountExp,
             Optional<String> accountZip,
-            Optional<String> bankAccount,
-            Optional<BinData> binData,
+            Optional<String> holderName,
+            Optional<String> storedId,
+            Optional<String> initiator,
+            Optional<String> storedMethodUsageType,
+            Optional<String> sequence,
+            Optional<String> orderDescription,
             Optional<String> cloudSignatureData,
             Optional<String> cloudSignatureFormat,
-            Optional<PayoutGatewayConnector> gatewayConnector,
-            Optional<String> holderName,
-            Optional<String> initiator,
-            Optional<String> maskedAccount,
-            Optional<String> orderDescription,
             Optional<PaymentDetail> paymentDetails,
             Optional<String> payorData,
-            Optional<String> sequence,
-            Optional<String> storedId,
-            Optional<String> storedMethodUsageType,
+            Optional<String> accountId,
+            Optional<String> bankAccount,
+            Optional<PayoutGatewayConnector> gatewayConnector,
+            Optional<BinData> binData,
             Map<String, Object> additionalProperties) {
-        this.accountExp = accountExp;
-        this.accountId = accountId;
+        this.maskedAccount = maskedAccount;
         this.accountType = accountType;
+        this.accountExp = accountExp;
         this.accountZip = accountZip;
-        this.bankAccount = bankAccount;
-        this.binData = binData;
+        this.holderName = holderName;
+        this.storedId = storedId;
+        this.initiator = initiator;
+        this.storedMethodUsageType = storedMethodUsageType;
+        this.sequence = sequence;
+        this.orderDescription = orderDescription;
         this.cloudSignatureData = cloudSignatureData;
         this.cloudSignatureFormat = cloudSignatureFormat;
-        this.gatewayConnector = gatewayConnector;
-        this.holderName = holderName;
-        this.initiator = initiator;
-        this.maskedAccount = maskedAccount;
-        this.orderDescription = orderDescription;
         this.paymentDetails = paymentDetails;
         this.payorData = payorData;
-        this.sequence = sequence;
-        this.storedId = storedId;
-        this.storedMethodUsageType = storedMethodUsageType;
+        this.accountId = accountId;
+        this.bankAccount = bankAccount;
+        this.gatewayConnector = gatewayConnector;
+        this.binData = binData;
         this.additionalProperties = additionalProperties;
-    }
-
-    @JsonProperty("AccountExp")
-    public Optional<String> getAccountExp() {
-        return accountExp;
-    }
-
-    @JsonProperty("accountId")
-    public Optional<String> getAccountId() {
-        return accountId;
-    }
-
-    @JsonProperty("AccountType")
-    public Optional<String> getAccountType() {
-        return accountType;
-    }
-
-    @JsonProperty("AccountZip")
-    public Optional<String> getAccountZip() {
-        return accountZip;
-    }
-
-    @JsonProperty("bankAccount")
-    public Optional<String> getBankAccount() {
-        return bankAccount;
-    }
-
-    @JsonProperty("binData")
-    public Optional<BinData> getBinData() {
-        return binData;
-    }
-
-    @JsonProperty("cloudSignatureData")
-    public Optional<String> getCloudSignatureData() {
-        return cloudSignatureData;
-    }
-
-    @JsonProperty("cloudSignatureFormat")
-    public Optional<String> getCloudSignatureFormat() {
-        return cloudSignatureFormat;
-    }
-
-    @JsonProperty("gatewayConnector")
-    public Optional<PayoutGatewayConnector> getGatewayConnector() {
-        return gatewayConnector;
-    }
-
-    /**
-     * @return Card or bank account holder name.
-     */
-    @JsonProperty("HolderName")
-    public Optional<String> getHolderName() {
-        return holderName;
-    }
-
-    @JsonProperty("Initiator")
-    public Optional<String> getInitiator() {
-        return initiator;
     }
 
     @JsonProperty("MaskedAccount")
@@ -162,24 +107,30 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
         return maskedAccount;
     }
 
-    @JsonProperty("orderDescription")
-    public Optional<String> getOrderDescription() {
-        return orderDescription;
+    @JsonProperty("AccountType")
+    public Optional<String> getAccountType() {
+        return accountType;
     }
 
-    @JsonProperty("paymentDetails")
-    public Optional<PaymentDetail> getPaymentDetails() {
-        return paymentDetails;
+    @JsonProperty("AccountExp")
+    public Optional<String> getAccountExp() {
+        return accountExp;
     }
 
-    @JsonProperty("payorData")
-    public Optional<String> getPayorData() {
-        return payorData;
+    @JsonProperty("AccountZip")
+    public Optional<String> getAccountZip() {
+        return accountZip;
     }
 
-    @JsonProperty("Sequence")
-    public Optional<String> getSequence() {
-        return sequence;
+    /**
+     * @return Card or bank account holder name.
+     */
+    @JsonIgnore
+    public Optional<String> getHolderName() {
+        if (holderName == null) {
+            return Optional.empty();
+        }
+        return holderName;
     }
 
     /**
@@ -190,9 +141,169 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
         return storedId;
     }
 
-    @JsonProperty("StoredMethodUsageType")
+    @JsonIgnore
+    public Optional<String> getInitiator() {
+        if (initiator == null) {
+            return Optional.empty();
+        }
+        return initiator;
+    }
+
+    @JsonIgnore
     public Optional<String> getStoredMethodUsageType() {
+        if (storedMethodUsageType == null) {
+            return Optional.empty();
+        }
         return storedMethodUsageType;
+    }
+
+    @JsonIgnore
+    public Optional<String> getSequence() {
+        if (sequence == null) {
+            return Optional.empty();
+        }
+        return sequence;
+    }
+
+    @JsonIgnore
+    public Optional<String> getOrderDescription() {
+        if (orderDescription == null) {
+            return Optional.empty();
+        }
+        return orderDescription;
+    }
+
+    @JsonIgnore
+    public Optional<String> getCloudSignatureData() {
+        if (cloudSignatureData == null) {
+            return Optional.empty();
+        }
+        return cloudSignatureData;
+    }
+
+    @JsonIgnore
+    public Optional<String> getCloudSignatureFormat() {
+        if (cloudSignatureFormat == null) {
+            return Optional.empty();
+        }
+        return cloudSignatureFormat;
+    }
+
+    @JsonIgnore
+    public Optional<PaymentDetail> getPaymentDetails() {
+        if (paymentDetails == null) {
+            return Optional.empty();
+        }
+        return paymentDetails;
+    }
+
+    @JsonIgnore
+    public Optional<String> getPayorData() {
+        if (payorData == null) {
+            return Optional.empty();
+        }
+        return payorData;
+    }
+
+    @JsonProperty("accountId")
+    public Optional<String> getAccountId() {
+        return accountId;
+    }
+
+    @JsonIgnore
+    public Optional<String> getBankAccount() {
+        if (bankAccount == null) {
+            return Optional.empty();
+        }
+        return bankAccount;
+    }
+
+    @JsonIgnore
+    public Optional<PayoutGatewayConnector> getGatewayConnector() {
+        if (gatewayConnector == null) {
+            return Optional.empty();
+        }
+        return gatewayConnector;
+    }
+
+    @JsonIgnore
+    public Optional<BinData> getBinData() {
+        if (binData == null) {
+            return Optional.empty();
+        }
+        return binData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("HolderName")
+    private Optional<String> _getHolderName() {
+        return holderName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Initiator")
+    private Optional<String> _getInitiator() {
+        return initiator;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StoredMethodUsageType")
+    private Optional<String> _getStoredMethodUsageType() {
+        return storedMethodUsageType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Sequence")
+    private Optional<String> _getSequence() {
+        return sequence;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("orderDescription")
+    private Optional<String> _getOrderDescription() {
+        return orderDescription;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cloudSignatureData")
+    private Optional<String> _getCloudSignatureData() {
+        return cloudSignatureData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cloudSignatureFormat")
+    private Optional<String> _getCloudSignatureFormat() {
+        return cloudSignatureFormat;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paymentDetails")
+    private Optional<PaymentDetail> _getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("payorData")
+    private Optional<String> _getPayorData() {
+        return payorData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("bankAccount")
+    private Optional<String> _getBankAccount() {
+        return bankAccount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("gatewayConnector")
+    private Optional<PayoutGatewayConnector> _getGatewayConnector() {
+        return gatewayConnector;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("binData")
+    private Optional<BinData> _getBinData() {
+        return binData;
     }
 
     @java.lang.Override
@@ -208,47 +319,47 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
     }
 
     private boolean equalTo(QueryPayoutTransactionRecordsItemPaymentData other) {
-        return accountExp.equals(other.accountExp)
-                && accountId.equals(other.accountId)
+        return maskedAccount.equals(other.maskedAccount)
                 && accountType.equals(other.accountType)
+                && accountExp.equals(other.accountExp)
                 && accountZip.equals(other.accountZip)
-                && bankAccount.equals(other.bankAccount)
-                && binData.equals(other.binData)
+                && holderName.equals(other.holderName)
+                && storedId.equals(other.storedId)
+                && initiator.equals(other.initiator)
+                && storedMethodUsageType.equals(other.storedMethodUsageType)
+                && sequence.equals(other.sequence)
+                && orderDescription.equals(other.orderDescription)
                 && cloudSignatureData.equals(other.cloudSignatureData)
                 && cloudSignatureFormat.equals(other.cloudSignatureFormat)
-                && gatewayConnector.equals(other.gatewayConnector)
-                && holderName.equals(other.holderName)
-                && initiator.equals(other.initiator)
-                && maskedAccount.equals(other.maskedAccount)
-                && orderDescription.equals(other.orderDescription)
                 && paymentDetails.equals(other.paymentDetails)
                 && payorData.equals(other.payorData)
-                && sequence.equals(other.sequence)
-                && storedId.equals(other.storedId)
-                && storedMethodUsageType.equals(other.storedMethodUsageType);
+                && accountId.equals(other.accountId)
+                && bankAccount.equals(other.bankAccount)
+                && gatewayConnector.equals(other.gatewayConnector)
+                && binData.equals(other.binData);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.accountExp,
-                this.accountId,
+                this.maskedAccount,
                 this.accountType,
+                this.accountExp,
                 this.accountZip,
-                this.bankAccount,
-                this.binData,
+                this.holderName,
+                this.storedId,
+                this.initiator,
+                this.storedMethodUsageType,
+                this.sequence,
+                this.orderDescription,
                 this.cloudSignatureData,
                 this.cloudSignatureFormat,
-                this.gatewayConnector,
-                this.holderName,
-                this.initiator,
-                this.maskedAccount,
-                this.orderDescription,
                 this.paymentDetails,
                 this.payorData,
-                this.sequence,
-                this.storedId,
-                this.storedMethodUsageType);
+                this.accountId,
+                this.bankAccount,
+                this.gatewayConnector,
+                this.binData);
     }
 
     @java.lang.Override
@@ -262,41 +373,41 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> accountExp = Optional.empty();
-
-        private Optional<String> accountId = Optional.empty();
+        private Optional<String> maskedAccount = Optional.empty();
 
         private Optional<String> accountType = Optional.empty();
 
+        private Optional<String> accountExp = Optional.empty();
+
         private Optional<String> accountZip = Optional.empty();
 
-        private Optional<String> bankAccount = Optional.empty();
+        private Optional<String> holderName = Optional.empty();
 
-        private Optional<BinData> binData = Optional.empty();
+        private Optional<String> storedId = Optional.empty();
+
+        private Optional<String> initiator = Optional.empty();
+
+        private Optional<String> storedMethodUsageType = Optional.empty();
+
+        private Optional<String> sequence = Optional.empty();
+
+        private Optional<String> orderDescription = Optional.empty();
 
         private Optional<String> cloudSignatureData = Optional.empty();
 
         private Optional<String> cloudSignatureFormat = Optional.empty();
 
-        private Optional<PayoutGatewayConnector> gatewayConnector = Optional.empty();
-
-        private Optional<String> holderName = Optional.empty();
-
-        private Optional<String> initiator = Optional.empty();
-
-        private Optional<String> maskedAccount = Optional.empty();
-
-        private Optional<String> orderDescription = Optional.empty();
-
         private Optional<PaymentDetail> paymentDetails = Optional.empty();
 
         private Optional<String> payorData = Optional.empty();
 
-        private Optional<String> sequence = Optional.empty();
+        private Optional<String> accountId = Optional.empty();
 
-        private Optional<String> storedId = Optional.empty();
+        private Optional<String> bankAccount = Optional.empty();
 
-        private Optional<String> storedMethodUsageType = Optional.empty();
+        private Optional<PayoutGatewayConnector> gatewayConnector = Optional.empty();
+
+        private Optional<BinData> binData = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -304,46 +415,35 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
         private Builder() {}
 
         public Builder from(QueryPayoutTransactionRecordsItemPaymentData other) {
-            accountExp(other.getAccountExp());
-            accountId(other.getAccountId());
+            maskedAccount(other.getMaskedAccount());
             accountType(other.getAccountType());
+            accountExp(other.getAccountExp());
             accountZip(other.getAccountZip());
-            bankAccount(other.getBankAccount());
-            binData(other.getBinData());
+            holderName(other.getHolderName());
+            storedId(other.getStoredId());
+            initiator(other.getInitiator());
+            storedMethodUsageType(other.getStoredMethodUsageType());
+            sequence(other.getSequence());
+            orderDescription(other.getOrderDescription());
             cloudSignatureData(other.getCloudSignatureData());
             cloudSignatureFormat(other.getCloudSignatureFormat());
-            gatewayConnector(other.getGatewayConnector());
-            holderName(other.getHolderName());
-            initiator(other.getInitiator());
-            maskedAccount(other.getMaskedAccount());
-            orderDescription(other.getOrderDescription());
             paymentDetails(other.getPaymentDetails());
             payorData(other.getPayorData());
-            sequence(other.getSequence());
-            storedId(other.getStoredId());
-            storedMethodUsageType(other.getStoredMethodUsageType());
+            accountId(other.getAccountId());
+            bankAccount(other.getBankAccount());
+            gatewayConnector(other.getGatewayConnector());
+            binData(other.getBinData());
             return this;
         }
 
-        @JsonSetter(value = "AccountExp", nulls = Nulls.SKIP)
-        public Builder accountExp(Optional<String> accountExp) {
-            this.accountExp = accountExp;
+        @JsonSetter(value = "MaskedAccount", nulls = Nulls.SKIP)
+        public Builder maskedAccount(Optional<String> maskedAccount) {
+            this.maskedAccount = maskedAccount;
             return this;
         }
 
-        public Builder accountExp(String accountExp) {
-            this.accountExp = Optional.ofNullable(accountExp);
-            return this;
-        }
-
-        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
-        public Builder accountId(Optional<String> accountId) {
-            this.accountId = accountId;
-            return this;
-        }
-
-        public Builder accountId(String accountId) {
-            this.accountId = Optional.ofNullable(accountId);
+        public Builder maskedAccount(String maskedAccount) {
+            this.maskedAccount = Optional.ofNullable(maskedAccount);
             return this;
         }
 
@@ -358,6 +458,17 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        @JsonSetter(value = "AccountExp", nulls = Nulls.SKIP)
+        public Builder accountExp(Optional<String> accountExp) {
+            this.accountExp = accountExp;
+            return this;
+        }
+
+        public Builder accountExp(String accountExp) {
+            this.accountExp = Optional.ofNullable(accountExp);
+            return this;
+        }
+
         @JsonSetter(value = "AccountZip", nulls = Nulls.SKIP)
         public Builder accountZip(Optional<String> accountZip) {
             this.accountZip = accountZip;
@@ -366,61 +477,6 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
 
         public Builder accountZip(String accountZip) {
             this.accountZip = Optional.ofNullable(accountZip);
-            return this;
-        }
-
-        @JsonSetter(value = "bankAccount", nulls = Nulls.SKIP)
-        public Builder bankAccount(Optional<String> bankAccount) {
-            this.bankAccount = bankAccount;
-            return this;
-        }
-
-        public Builder bankAccount(String bankAccount) {
-            this.bankAccount = Optional.ofNullable(bankAccount);
-            return this;
-        }
-
-        @JsonSetter(value = "binData", nulls = Nulls.SKIP)
-        public Builder binData(Optional<BinData> binData) {
-            this.binData = binData;
-            return this;
-        }
-
-        public Builder binData(BinData binData) {
-            this.binData = Optional.ofNullable(binData);
-            return this;
-        }
-
-        @JsonSetter(value = "cloudSignatureData", nulls = Nulls.SKIP)
-        public Builder cloudSignatureData(Optional<String> cloudSignatureData) {
-            this.cloudSignatureData = cloudSignatureData;
-            return this;
-        }
-
-        public Builder cloudSignatureData(String cloudSignatureData) {
-            this.cloudSignatureData = Optional.ofNullable(cloudSignatureData);
-            return this;
-        }
-
-        @JsonSetter(value = "cloudSignatureFormat", nulls = Nulls.SKIP)
-        public Builder cloudSignatureFormat(Optional<String> cloudSignatureFormat) {
-            this.cloudSignatureFormat = cloudSignatureFormat;
-            return this;
-        }
-
-        public Builder cloudSignatureFormat(String cloudSignatureFormat) {
-            this.cloudSignatureFormat = Optional.ofNullable(cloudSignatureFormat);
-            return this;
-        }
-
-        @JsonSetter(value = "gatewayConnector", nulls = Nulls.SKIP)
-        public Builder gatewayConnector(Optional<PayoutGatewayConnector> gatewayConnector) {
-            this.gatewayConnector = gatewayConnector;
-            return this;
-        }
-
-        public Builder gatewayConnector(PayoutGatewayConnector gatewayConnector) {
-            this.gatewayConnector = Optional.ofNullable(gatewayConnector);
             return this;
         }
 
@@ -438,69 +494,14 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
-        @JsonSetter(value = "Initiator", nulls = Nulls.SKIP)
-        public Builder initiator(Optional<String> initiator) {
-            this.initiator = initiator;
-            return this;
-        }
-
-        public Builder initiator(String initiator) {
-            this.initiator = Optional.ofNullable(initiator);
-            return this;
-        }
-
-        @JsonSetter(value = "MaskedAccount", nulls = Nulls.SKIP)
-        public Builder maskedAccount(Optional<String> maskedAccount) {
-            this.maskedAccount = maskedAccount;
-            return this;
-        }
-
-        public Builder maskedAccount(String maskedAccount) {
-            this.maskedAccount = Optional.ofNullable(maskedAccount);
-            return this;
-        }
-
-        @JsonSetter(value = "orderDescription", nulls = Nulls.SKIP)
-        public Builder orderDescription(Optional<String> orderDescription) {
-            this.orderDescription = orderDescription;
-            return this;
-        }
-
-        public Builder orderDescription(String orderDescription) {
-            this.orderDescription = Optional.ofNullable(orderDescription);
-            return this;
-        }
-
-        @JsonSetter(value = "paymentDetails", nulls = Nulls.SKIP)
-        public Builder paymentDetails(Optional<PaymentDetail> paymentDetails) {
-            this.paymentDetails = paymentDetails;
-            return this;
-        }
-
-        public Builder paymentDetails(PaymentDetail paymentDetails) {
-            this.paymentDetails = Optional.ofNullable(paymentDetails);
-            return this;
-        }
-
-        @JsonSetter(value = "payorData", nulls = Nulls.SKIP)
-        public Builder payorData(Optional<String> payorData) {
-            this.payorData = payorData;
-            return this;
-        }
-
-        public Builder payorData(String payorData) {
-            this.payorData = Optional.ofNullable(payorData);
-            return this;
-        }
-
-        @JsonSetter(value = "Sequence", nulls = Nulls.SKIP)
-        public Builder sequence(Optional<String> sequence) {
-            this.sequence = sequence;
-            return this;
-        }
-
-        public Builder sequence(String sequence) {
-            this.sequence = Optional.ofNullable(sequence);
+        public Builder holderName(Nullable<String> holderName) {
+            if (holderName.isNull()) {
+                this.holderName = null;
+            } else if (holderName.isEmpty()) {
+                this.holderName = Optional.empty();
+            } else {
+                this.holderName = Optional.of(holderName.get());
+            }
             return this;
         }
 
@@ -518,6 +519,28 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        @JsonSetter(value = "Initiator", nulls = Nulls.SKIP)
+        public Builder initiator(Optional<String> initiator) {
+            this.initiator = initiator;
+            return this;
+        }
+
+        public Builder initiator(String initiator) {
+            this.initiator = Optional.ofNullable(initiator);
+            return this;
+        }
+
+        public Builder initiator(Nullable<String> initiator) {
+            if (initiator.isNull()) {
+                this.initiator = null;
+            } else if (initiator.isEmpty()) {
+                this.initiator = Optional.empty();
+            } else {
+                this.initiator = Optional.of(initiator.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "StoredMethodUsageType", nulls = Nulls.SKIP)
         public Builder storedMethodUsageType(Optional<String> storedMethodUsageType) {
             this.storedMethodUsageType = storedMethodUsageType;
@@ -529,26 +552,246 @@ public final class QueryPayoutTransactionRecordsItemPaymentData {
             return this;
         }
 
+        public Builder storedMethodUsageType(Nullable<String> storedMethodUsageType) {
+            if (storedMethodUsageType.isNull()) {
+                this.storedMethodUsageType = null;
+            } else if (storedMethodUsageType.isEmpty()) {
+                this.storedMethodUsageType = Optional.empty();
+            } else {
+                this.storedMethodUsageType = Optional.of(storedMethodUsageType.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "Sequence", nulls = Nulls.SKIP)
+        public Builder sequence(Optional<String> sequence) {
+            this.sequence = sequence;
+            return this;
+        }
+
+        public Builder sequence(String sequence) {
+            this.sequence = Optional.ofNullable(sequence);
+            return this;
+        }
+
+        public Builder sequence(Nullable<String> sequence) {
+            if (sequence.isNull()) {
+                this.sequence = null;
+            } else if (sequence.isEmpty()) {
+                this.sequence = Optional.empty();
+            } else {
+                this.sequence = Optional.of(sequence.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "orderDescription", nulls = Nulls.SKIP)
+        public Builder orderDescription(Optional<String> orderDescription) {
+            this.orderDescription = orderDescription;
+            return this;
+        }
+
+        public Builder orderDescription(String orderDescription) {
+            this.orderDescription = Optional.ofNullable(orderDescription);
+            return this;
+        }
+
+        public Builder orderDescription(Nullable<String> orderDescription) {
+            if (orderDescription.isNull()) {
+                this.orderDescription = null;
+            } else if (orderDescription.isEmpty()) {
+                this.orderDescription = Optional.empty();
+            } else {
+                this.orderDescription = Optional.of(orderDescription.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "cloudSignatureData", nulls = Nulls.SKIP)
+        public Builder cloudSignatureData(Optional<String> cloudSignatureData) {
+            this.cloudSignatureData = cloudSignatureData;
+            return this;
+        }
+
+        public Builder cloudSignatureData(String cloudSignatureData) {
+            this.cloudSignatureData = Optional.ofNullable(cloudSignatureData);
+            return this;
+        }
+
+        public Builder cloudSignatureData(Nullable<String> cloudSignatureData) {
+            if (cloudSignatureData.isNull()) {
+                this.cloudSignatureData = null;
+            } else if (cloudSignatureData.isEmpty()) {
+                this.cloudSignatureData = Optional.empty();
+            } else {
+                this.cloudSignatureData = Optional.of(cloudSignatureData.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "cloudSignatureFormat", nulls = Nulls.SKIP)
+        public Builder cloudSignatureFormat(Optional<String> cloudSignatureFormat) {
+            this.cloudSignatureFormat = cloudSignatureFormat;
+            return this;
+        }
+
+        public Builder cloudSignatureFormat(String cloudSignatureFormat) {
+            this.cloudSignatureFormat = Optional.ofNullable(cloudSignatureFormat);
+            return this;
+        }
+
+        public Builder cloudSignatureFormat(Nullable<String> cloudSignatureFormat) {
+            if (cloudSignatureFormat.isNull()) {
+                this.cloudSignatureFormat = null;
+            } else if (cloudSignatureFormat.isEmpty()) {
+                this.cloudSignatureFormat = Optional.empty();
+            } else {
+                this.cloudSignatureFormat = Optional.of(cloudSignatureFormat.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "paymentDetails", nulls = Nulls.SKIP)
+        public Builder paymentDetails(Optional<PaymentDetail> paymentDetails) {
+            this.paymentDetails = paymentDetails;
+            return this;
+        }
+
+        public Builder paymentDetails(PaymentDetail paymentDetails) {
+            this.paymentDetails = Optional.ofNullable(paymentDetails);
+            return this;
+        }
+
+        public Builder paymentDetails(Nullable<PaymentDetail> paymentDetails) {
+            if (paymentDetails.isNull()) {
+                this.paymentDetails = null;
+            } else if (paymentDetails.isEmpty()) {
+                this.paymentDetails = Optional.empty();
+            } else {
+                this.paymentDetails = Optional.of(paymentDetails.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "payorData", nulls = Nulls.SKIP)
+        public Builder payorData(Optional<String> payorData) {
+            this.payorData = payorData;
+            return this;
+        }
+
+        public Builder payorData(String payorData) {
+            this.payorData = Optional.ofNullable(payorData);
+            return this;
+        }
+
+        public Builder payorData(Nullable<String> payorData) {
+            if (payorData.isNull()) {
+                this.payorData = null;
+            } else if (payorData.isEmpty()) {
+                this.payorData = Optional.empty();
+            } else {
+                this.payorData = Optional.of(payorData.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
+        public Builder accountId(Optional<String> accountId) {
+            this.accountId = accountId;
+            return this;
+        }
+
+        public Builder accountId(String accountId) {
+            this.accountId = Optional.ofNullable(accountId);
+            return this;
+        }
+
+        @JsonSetter(value = "bankAccount", nulls = Nulls.SKIP)
+        public Builder bankAccount(Optional<String> bankAccount) {
+            this.bankAccount = bankAccount;
+            return this;
+        }
+
+        public Builder bankAccount(String bankAccount) {
+            this.bankAccount = Optional.ofNullable(bankAccount);
+            return this;
+        }
+
+        public Builder bankAccount(Nullable<String> bankAccount) {
+            if (bankAccount.isNull()) {
+                this.bankAccount = null;
+            } else if (bankAccount.isEmpty()) {
+                this.bankAccount = Optional.empty();
+            } else {
+                this.bankAccount = Optional.of(bankAccount.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "gatewayConnector", nulls = Nulls.SKIP)
+        public Builder gatewayConnector(Optional<PayoutGatewayConnector> gatewayConnector) {
+            this.gatewayConnector = gatewayConnector;
+            return this;
+        }
+
+        public Builder gatewayConnector(PayoutGatewayConnector gatewayConnector) {
+            this.gatewayConnector = Optional.ofNullable(gatewayConnector);
+            return this;
+        }
+
+        public Builder gatewayConnector(Nullable<PayoutGatewayConnector> gatewayConnector) {
+            if (gatewayConnector.isNull()) {
+                this.gatewayConnector = null;
+            } else if (gatewayConnector.isEmpty()) {
+                this.gatewayConnector = Optional.empty();
+            } else {
+                this.gatewayConnector = Optional.of(gatewayConnector.get());
+            }
+            return this;
+        }
+
+        @JsonSetter(value = "binData", nulls = Nulls.SKIP)
+        public Builder binData(Optional<BinData> binData) {
+            this.binData = binData;
+            return this;
+        }
+
+        public Builder binData(BinData binData) {
+            this.binData = Optional.ofNullable(binData);
+            return this;
+        }
+
+        public Builder binData(Nullable<BinData> binData) {
+            if (binData.isNull()) {
+                this.binData = null;
+            } else if (binData.isEmpty()) {
+                this.binData = Optional.empty();
+            } else {
+                this.binData = Optional.of(binData.get());
+            }
+            return this;
+        }
+
         public QueryPayoutTransactionRecordsItemPaymentData build() {
             return new QueryPayoutTransactionRecordsItemPaymentData(
-                    accountExp,
-                    accountId,
+                    maskedAccount,
                     accountType,
+                    accountExp,
                     accountZip,
-                    bankAccount,
-                    binData,
+                    holderName,
+                    storedId,
+                    initiator,
+                    storedMethodUsageType,
+                    sequence,
+                    orderDescription,
                     cloudSignatureData,
                     cloudSignatureFormat,
-                    gatewayConnector,
-                    holderName,
-                    initiator,
-                    maskedAccount,
-                    orderDescription,
                     paymentDetails,
                     payorData,
-                    sequence,
-                    storedId,
-                    storedMethodUsageType,
+                    accountId,
+                    bankAccount,
+                    gatewayConnector,
+                    binData,
                     additionalProperties);
         }
 

@@ -320,7 +320,6 @@ public final class TransRequestBody {
 
         /**
          * <p>Object describing details of the payment. Required.</p>
-         * <p>Object describing details of the payment. Required.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -331,7 +330,6 @@ public final class TransRequestBody {
         }
 
         /**
-         * <p>Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.</p>
          * <p>Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

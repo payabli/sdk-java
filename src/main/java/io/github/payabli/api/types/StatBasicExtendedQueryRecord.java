@@ -1104,7 +1104,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>The time window based on the mode and frequency used for the query.</p>
-         * <p>The time window based on the mode and frequency used for the query.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1115,7 +1114,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Number of active vendors.</p>
          * <p>Number of active vendors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1128,7 +1126,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Number of new vendors.</p>
-         * <p>Number of new vendors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1139,7 +1136,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) transactions count.</p>
          * <p>Outbound (payout) transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1152,7 +1148,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Recurring outbound (payout) transactions count.</p>
-         * <p>Recurring outbound (payout) transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1163,7 +1158,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) pCard transactions count.</p>
          * <p>Outbound (payout) pCard transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1176,7 +1170,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) vCard transactions count.</p>
-         * <p>Outbound (payout) vCard transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1187,7 +1180,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) ACH transactions count.</p>
          * <p>Outbound (payout) ACH transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1200,7 +1192,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) check transactions count.</p>
-         * <p>Outbound (payout) check transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1211,7 +1202,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) Managed Payables transactions count.</p>
          * <p>Outbound (payout) Managed Payables transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1224,7 +1214,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) RTP transactions count.</p>
-         * <p>Outbound (payout) RTP transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1235,7 +1224,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) RTP transactions volume.</p>
          * <p>Outbound (payout) RTP transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1248,7 +1236,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) wire transactions count.</p>
-         * <p>Outbound (payout) wire transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1259,7 +1246,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) wire transactions volume.</p>
          * <p>Outbound (payout) wire transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1272,7 +1258,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) volume.</p>
-         * <p>Outbound (payout) volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1283,7 +1268,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Recurring outbound (payout) volume.</p>
          * <p>Recurring outbound (payout) volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1296,7 +1280,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) pCard transactions volume.</p>
-         * <p>Outbound (payout) pCard transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1307,7 +1290,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) vCard transactions volume.</p>
          * <p>Outbound (payout) vCard transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1320,7 +1302,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) ACH transactions volume.</p>
-         * <p>Outbound (payout) ACH transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1331,7 +1312,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Outbound (payout) check transactions volume.</p>
          * <p>Outbound (payout) check transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1344,7 +1324,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Outbound (payout) Managed Payables volume.</p>
-         * <p>Outbound (payout) Managed Payables volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1355,7 +1334,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound transactions count.</p>
          * <p>Inbound transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1368,7 +1346,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound recurring transactions count.</p>
-         * <p>Inbound recurring transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1379,7 +1356,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Number of active customers.</p>
          * <p>Number of active customers.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1392,7 +1368,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Number of new customers.</p>
-         * <p>Number of new customers.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1403,7 +1378,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound card transactions count.</p>
          * <p>Inbound card transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1416,7 +1390,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound ACH transactions count.</p>
-         * <p>Inbound ACH transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1427,7 +1400,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound check transactions count.</p>
          * <p>Inbound check transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1440,7 +1412,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound cash transactions count.</p>
-         * <p>Inbound cash transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1451,7 +1422,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound wallet transactions count.</p>
          * <p>Inbound wallet transactions count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1464,7 +1434,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound card chargebacks and returns count.</p>
-         * <p>Inbound card chargebacks and returns count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1475,7 +1444,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound ACH returns count.</p>
          * <p>Inbound ACH returns count.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1488,7 +1456,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound volume.</p>
-         * <p>Inbound volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1499,7 +1466,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound recurring payments volume.</p>
          * <p>Inbound recurring payments volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1512,7 +1478,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound card volume.</p>
-         * <p>Inbound card volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1523,7 +1488,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound ACH volume.</p>
          * <p>Inbound ACH volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1536,7 +1500,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound check volume.</p>
-         * <p>Inbound check volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1547,7 +1510,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound cash volume recognized.</p>
          * <p>Inbound cash volume recognized.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1560,7 +1522,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound wallet transactions volume.</p>
-         * <p>Inbound wallet transactions volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1572,7 +1533,6 @@ public final class StatBasicExtendedQueryRecord {
 
         /**
          * <p>Inbound Card chargebacks and returns volume.</p>
-         * <p>Inbound Card chargebacks and returns volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1583,7 +1543,6 @@ public final class StatBasicExtendedQueryRecord {
         }
 
         /**
-         * <p>Inbound ACH returns volume.</p>
          * <p>Inbound ACH returns volume.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

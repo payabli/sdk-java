@@ -125,8 +125,6 @@ public final class CapturePaymentDetails {
         /**
          * <p>Total amount to be captured, including the <code>serviceFee</code> amount. The amount can't be greater the original
          * total amount of the transaction, and can't be more than 15% lower than the original amount.</p>
-         * <p>Total amount to be captured, including the <code>serviceFee</code> amount. The amount can't be greater the original
-         * total amount of the transaction, and can't be more than 15% lower than the original amount.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

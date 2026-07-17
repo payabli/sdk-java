@@ -353,7 +353,6 @@ public final class RenewVCardResponseData {
 
         /**
          * <p>Reference identifier for the renewed virtual card returned by the card processor.</p>
-         * <p>Reference identifier for the renewed virtual card returned by the card processor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -838,7 +838,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Identifier of chargeback or return.</p>
-         * <p>Identifier of chargeback or return.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -849,7 +848,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.</p>
          * <p>Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -862,7 +860,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Number of case assigned to the chargeback.</p>
-         * <p>Number of case assigned to the chargeback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -873,7 +870,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>R code for returned ACH or custom code identifying the reason.</p>
          * <p>R code for returned ACH or custom code identifying the reason.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -886,7 +882,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Text describing the chargeback or ACH return reason.</p>
-         * <p>Text describing the chargeback or ACH return reason.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -898,7 +893,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Processor reference number to the chargeback.</p>
-         * <p>Processor reference number to the chargeback.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -909,7 +903,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>Last 4 digits of card or bank account involved in chargeback or return.</p>
          * <p>Last 4 digits of card or bank account involved in chargeback or return.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -937,15 +930,6 @@ public final class ChargebackQueryRecords {
          * <li>4: ACH Return (ACH only)</li>
          * <li>5: ACH Dispute, Not Authorized (ACH only)</li>
          * </ul>
-         * <p>Status for chargeback or ACH return</p>
-         * <ul>
-         * <li>0: Open (chargebacks only)</li>
-         * <li>1: Pending (chargebacks only)</li>
-         * <li>2: Closed-Won (chargebacks only)</li>
-         * <li>3: Closed-Lost (chargebacks only)</li>
-         * <li>4: ACH Return (ACH only)</li>
-         * <li>5: ACH Dispute, Not Authorized (ACH only)</li>
-         * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -957,7 +941,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>.</p>
-         * <p>Type of payment vehicle: <strong>ach</strong> or <strong>card</strong>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -968,7 +951,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>Timestamp when the register was created, in UTC.</p>
          * <p>Timestamp when the register was created, in UTC.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -987,7 +969,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>ReferenceId of the transaction in Payabli.</p>
          * <p>ReferenceId of the transaction in Payabli.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1028,7 +1009,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>The paypoint's legal name.</p>
-         * <p>The paypoint's legal name.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1039,7 +1019,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>The paypoint's DBA name.</p>
          * <p>The paypoint's DBA name.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1059,7 +1038,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>The ID of the parent organization.</p>
-         * <p>The ID of the parent organization.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1070,7 +1048,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>The paypoint's entryname.</p>
          * <p>The paypoint's entryname.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1090,7 +1067,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Service group classification.</p>
-         * <p>Service group classification.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1102,7 +1078,6 @@ public final class ChargebackQueryRecords {
 
         /**
          * <p>Type of dispute classification.</p>
-         * <p>Type of dispute classification.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1113,7 +1088,6 @@ public final class ChargebackQueryRecords {
         }
 
         /**
-         * <p>Name of the payment processor.</p>
          * <p>Name of the payment processor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

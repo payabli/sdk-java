@@ -229,7 +229,6 @@ public final class NotificationStandardRequest {
 
         /**
          * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
-         * <p>Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on those key events. See <a href="/developers/developer-guides/notifications-and-webhooks-overview#notifications">Notifications</a> for more.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -247,12 +246,6 @@ public final class NotificationStandardRequest {
         }
 
         /**
-         * <p>Specify the notification target.</p>
-         * <ul>
-         * <li>For method=email the expected value is a list of email addresses separated by semicolon.</li>
-         * <li>For method=sms the expected value is a list of phone numbers separated by semicolon.</li>
-         * <li>For method=web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.</li>
-         * </ul>
          * <p>Specify the notification target.</p>
          * <ul>
          * <li>For method=email the expected value is a list of email addresses separated by semicolon.</li>

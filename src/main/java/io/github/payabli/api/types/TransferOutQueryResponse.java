@@ -126,7 +126,6 @@ public final class TransferOutQueryResponse {
 
         /**
          * <p>Summary information about the transfers.</p>
-         * <p>Summary information about the transfers.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

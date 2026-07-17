@@ -1336,7 +1336,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         /**
          * <p>Frequency of scheduled invoice.</p>
-         * <p>Frequency of scheduled invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1369,7 +1368,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         /**
          * <p>First name of the recipient of the invoice.</p>
-         * <p>First name of the recipient of the invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1380,7 +1378,6 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         /**
-         * <p>Last name of the recipient of the invoice.</p>
          * <p>Last name of the recipient of the invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1442,7 +1439,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         /**
          * <p>Shipping recipient's contact email address.</p>
-         * <p>Shipping recipient's contact email address.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1453,7 +1449,6 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         /**
-         * <p>Recipient phone number.</p>
          * <p>Recipient phone number.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1480,7 +1475,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         /**
          * <p>Paypoint's legal name.</p>
-         * <p>Paypoint's legal name.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1492,7 +1486,6 @@ public final class QueryInvoiceResponseRecordsItem {
 
         /**
          * <p>Paypoint's DBA name.</p>
-         * <p>Paypoint's DBA name.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1503,7 +1496,6 @@ public final class QueryInvoiceResponseRecordsItem {
         }
 
         /**
-         * <p>Paypoint's entryname.</p>
          * <p>Paypoint's entryname.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

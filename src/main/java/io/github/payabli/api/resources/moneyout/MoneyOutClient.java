@@ -43,8 +43,9 @@ public class MoneyOutClient {
     /**
      * Authorizes a transaction for payout.
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
-     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/api-reference/webhooks-overview/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
      * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
+     * <p>For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a <code>422</code> response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.</p>
      */
     public AuthCapturePayoutResponse authorizeOut(RequestOutAuthorize request) {
         return this.rawClient.authorizeOut(request).body();
@@ -53,8 +54,9 @@ public class MoneyOutClient {
     /**
      * Authorizes a transaction for payout.
      * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
-     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/api-reference/webhooks-overview/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
      * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
+     * <p>For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a <code>422</code> response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.</p>
      */
     public AuthCapturePayoutResponse authorizeOut(RequestOutAuthorize request, RequestOptions requestOptions) {
         return this.rawClient.authorizeOut(request, requestOptions).body();

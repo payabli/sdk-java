@@ -344,7 +344,7 @@ public final class BillDetailResponse {
 
     /**
      * @return Internal status of transaction.
-     * Payout statuses, also known as money out transaction statuses, appear in PartnerHub and PayHub, and the API, and describe where a payout transaction is in its lifecycle.
+     * Payout statuses, also known as money out transaction statuses, appear in the Payabli Portal and the API and describe where a payout transaction is in its lifecycle.
      * | Status | Key | Description | Events |
      * |--------|-----|-------------|---------|
      * | <strong>Authorized</strong> | 11 | A payout is authorized. These are queued payouts, and nothing happens with them until they're captured. | Authorized |
@@ -995,7 +995,7 @@ public final class BillDetailResponse {
 
         /**
          * <p>Internal status of transaction.
-         * Payout statuses, also known as money out transaction statuses, appear in PartnerHub and PayHub, and the API, and describe where a payout transaction is in its lifecycle.
+         * Payout statuses, also known as money out transaction statuses, appear in the Payabli Portal and the API and describe where a payout transaction is in its lifecycle.
          * | Status | Key | Description | Events |
          * |--------|-----|-------------|---------|
          * | <strong>Authorized</strong> | 11 | A payout is authorized. These are queued payouts, and nothing happens with them until they're captured. | Authorized |

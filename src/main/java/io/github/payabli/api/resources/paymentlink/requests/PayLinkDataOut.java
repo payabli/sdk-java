@@ -190,7 +190,6 @@ public final class PayLinkDataOut {
 
         /**
          * <p>The entity's entrypoint identifier. <a href="/developers/api-reference/api-overview#entrypoint-vs-entry">Learn more</a></p>
-         * <p>The entity's entrypoint identifier. <a href="/developers/api-reference/api-overview#entrypoint-vs-entry">Learn more</a></p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -201,7 +200,6 @@ public final class PayLinkDataOut {
         }
 
         /**
-         * <p>The vendor number for the vendor being paid with this payment link.</p>
          * <p>The vendor number for the vendor being paid with this payment link.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

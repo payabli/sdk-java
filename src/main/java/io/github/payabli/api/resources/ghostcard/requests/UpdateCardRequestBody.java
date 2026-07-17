@@ -124,7 +124,6 @@ public final class UpdateCardRequestBody {
 
         /**
          * <p>Token that uniquely identifies the card. This is the <code>ReferenceId</code> returned when the card was created.</p>
-         * <p>Token that uniquely identifies the card. This is the <code>ReferenceId</code> returned when the card was created.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

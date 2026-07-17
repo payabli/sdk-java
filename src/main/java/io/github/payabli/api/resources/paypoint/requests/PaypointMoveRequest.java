@@ -151,7 +151,6 @@ public final class PaypointMoveRequest {
 
         /**
          * <p>The ID for the paypoint's new parent organization.</p>
-         * <p>The ID for the paypoint's new parent organization.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

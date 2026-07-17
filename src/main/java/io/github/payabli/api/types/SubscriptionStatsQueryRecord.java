@@ -142,7 +142,6 @@ public final class SubscriptionStatsQueryRecord {
 
         /**
          * <p>Time interval identifier</p>
-         * <p>Time interval identifier</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -154,7 +153,6 @@ public final class SubscriptionStatsQueryRecord {
 
         /**
          * <p>Number of subscriptions</p>
-         * <p>Number of subscriptions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -165,7 +163,6 @@ public final class SubscriptionStatsQueryRecord {
         }
 
         /**
-         * <p>Subscription volume</p>
          * <p>Subscription volume</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -461,7 +461,6 @@ public final class BankAccountVerificationDetailsResponse {
 
         /**
          * <p>Whether the bank account passed verification.</p>
-         * <p>Whether the bank account passed verification.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -31,9 +31,8 @@ public class TokenStorageWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -44,6 +43,10 @@ public class TokenStorageWireTest {
 
     @Test
     public void testAddMethod() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -61,7 +64,7 @@ public class TokenStorageWireTest {
                                 .methodDescription("Primary Visa card")
                                 .paymentMethod(RequestTokenStoragePaymentMethod.of(TokenizeCard.builder()
                                         .method("card")
-                                        .cardexp("02/25")
+                                        .cardexp("12/29")
                                         .cardHolder("John Doe")
                                         .cardnumber("4111111111111111")
                                         .cardcvv(Optional.of("123"))
@@ -70,9 +73,17 @@ public class TokenStorageWireTest {
                                 .source("api")
                                 .build())
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -86,7 +97,7 @@ public class TokenStorageWireTest {
                 + "  \"methodDescription\": \"Primary Visa card\",\n"
                 + "  \"paymentMethod\": {\n"
                 + "    \"cardcvv\": \"123\",\n"
-                + "    \"cardexp\": \"02/25\",\n"
+                + "    \"cardexp\": \"12/29\",\n"
                 + "    \"cardHolder\": \"John Doe\",\n"
                 + "    \"cardnumber\": \"4111111111111111\",\n"
                 + "    \"cardzip\": \"12345\",\n"
@@ -169,6 +180,10 @@ public class TokenStorageWireTest {
 
     @Test
     public void testGetMethod() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(TestResources.loadResource("/wire-tests/TokenStorageWireTest_testGetMethod_response.json")));
@@ -179,9 +194,17 @@ public class TokenStorageWireTest {
                                 .cardExpirationFormat(1)
                                 .includeTemporary(false)
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -221,6 +244,10 @@ public class TokenStorageWireTest {
 
     @Test
     public void testUpdateMethod() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -238,7 +265,7 @@ public class TokenStorageWireTest {
                                         .fallbackAuth(true)
                                         .paymentMethod(RequestTokenStoragePaymentMethod.of(TokenizeCard.builder()
                                                 .method("card")
-                                                .cardexp("02/25")
+                                                .cardexp("12/29")
                                                 .cardHolder("John Doe")
                                                 .cardnumber("4111111111111111")
                                                 .cardcvv(Optional.of("123"))
@@ -246,9 +273,17 @@ public class TokenStorageWireTest {
                                                 .build()))
                                         .build())
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("PUT", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -260,7 +295,7 @@ public class TokenStorageWireTest {
                 + "  \"fallbackAuth\": true,\n"
                 + "  \"paymentMethod\": {\n"
                 + "    \"cardcvv\": \"123\",\n"
-                + "    \"cardexp\": \"02/25\",\n"
+                + "    \"cardexp\": \"12/29\",\n"
                 + "    \"cardHolder\": \"John Doe\",\n"
                 + "    \"cardnumber\": \"4111111111111111\",\n"
                 + "    \"cardzip\": \"12345\",\n"
@@ -340,15 +375,27 @@ public class TokenStorageWireTest {
 
     @Test
     public void testRemoveMethod() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
                         .setBody(
                                 "{\"isSuccess\":true,\"responseData\":{\"referenceId\":\"129-219\",\"resultCode\":1,\"resultText\":\"Removed\"},\"responseText\":\"Success\"}"));
         PayabliApiResponsePaymethodDelete response = client.tokenStorage().removeMethod("32-8877drt00045632-678");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

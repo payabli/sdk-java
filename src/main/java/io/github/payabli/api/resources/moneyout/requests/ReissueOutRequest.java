@@ -144,7 +144,6 @@ public final class ReissueOutRequest {
 
         /**
          * <p>The transaction ID of the payout to reissue.</p>
-         * <p>The transaction ID of the payout to reissue.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -281,7 +281,6 @@ public final class ChargebackMessage {
 
         /**
          * <p>Message identifier.</p>
-         * <p>Message identifier.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -292,7 +291,6 @@ public final class ChargebackMessage {
         }
 
         /**
-         * <p>Room identifier for the message.</p>
          * <p>Room identifier for the message.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -305,7 +303,6 @@ public final class ChargebackMessage {
 
         /**
          * <p>User identifier who sent the message.</p>
-         * <p>User identifier who sent the message.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -316,7 +313,6 @@ public final class ChargebackMessage {
         }
 
         /**
-         * <p>Name of the user who sent the message.</p>
          * <p>Name of the user who sent the message.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -329,7 +325,6 @@ public final class ChargebackMessage {
 
         /**
          * <p>Content of the message.</p>
-         * <p>Content of the message.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -341,7 +336,6 @@ public final class ChargebackMessage {
 
         /**
          * <p>Timestamp when the message was created.</p>
-         * <p>Timestamp when the message was created.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -352,7 +346,6 @@ public final class ChargebackMessage {
         }
 
         /**
-         * <p>Type of message.</p>
          * <p>Type of message.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

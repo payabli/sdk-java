@@ -377,7 +377,6 @@ public final class BillingDataResponse {
 
         /**
          * <p>The bank's ID in Payabli.</p>
-         * <p>The bank's ID in Payabli.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -439,12 +438,6 @@ public final class BillingDataResponse {
         }
 
         /**
-         * <p>Describes whether the bank account is used for deposits or withdrawals in Payabli:</p>
-         * <ul>
-         * <li><code>0</code>: Deposit</li>
-         * <li><code>1</code>: Withdrawal</li>
-         * <li><code>2</code>: Deposit and withdrawal</li>
-         * </ul>
          * <p>Describes whether the bank account is used for deposits or withdrawals in Payabli:</p>
          * <ul>
          * <li><code>0</code>: Deposit</li>

@@ -228,7 +228,6 @@ public final class InvoiceResponseWithoutData {
 
         /**
          * <p>If <code>isSuccess</code> = true, this contains the identifier of the invoice. If <code>isSuccess</code> = false, this contains the reason for the failure.</p>
-         * <p>If <code>isSuccess</code> = true, this contains the identifier of the invoice. If <code>isSuccess</code> = false, this contains the reason for the failure.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

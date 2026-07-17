@@ -167,7 +167,6 @@ public final class AddPayoutSubscriptionResponse {
 
         /**
          * <p>The identifier of the newly created payout subscription.</p>
-         * <p>The identifier of the newly created payout subscription.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -504,7 +504,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Statistical grouping identifier</p>
-         * <p>Statistical grouping identifier</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -515,7 +514,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of active transactions</p>
          * <p>Number of active transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -528,7 +526,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of active transactions</p>
-         * <p>Volume of active transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -539,7 +536,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of transactions sent to approval</p>
          * <p>Number of transactions sent to approval</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -552,7 +548,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of transactions sent to approval</p>
-         * <p>Volume of transactions sent to approval</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -563,7 +558,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of transactions to approval</p>
          * <p>Number of transactions to approval</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -576,7 +570,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of transactions to approval</p>
-         * <p>Volume of transactions to approval</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -587,7 +580,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of approved transactions</p>
          * <p>Number of approved transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -600,7 +592,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of approved transactions</p>
-         * <p>Volume of approved transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -611,7 +602,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of disapproved transactions</p>
          * <p>Number of disapproved transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -624,7 +614,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of disapproved transactions</p>
-         * <p>Volume of disapproved transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -635,7 +624,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of cancelled transactions</p>
          * <p>Number of cancelled transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -648,7 +636,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of cancelled transactions</p>
-         * <p>Volume of cancelled transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -659,7 +646,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of transactions in transit</p>
          * <p>Number of transactions in transit</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -672,7 +658,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Volume of transactions in transit</p>
-         * <p>Volume of transactions in transit</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -684,7 +669,6 @@ public final class StatisticsVendorQueryRecord {
 
         /**
          * <p>Number of paid transactions</p>
-         * <p>Number of paid transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -695,7 +679,6 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of paid transactions</p>
          * <p>Volume of paid transactions</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

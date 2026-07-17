@@ -427,7 +427,6 @@ public final class PayLinkDataInvoice {
 
         /**
          * <p>Invoices section of payment link page. Required. Omitting it returns a <code>400</code> error with code <code>7045</code>.</p>
-         * <p>Invoices section of payment link page. Required. Omitting it returns a <code>400</code> error with code <code>7045</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

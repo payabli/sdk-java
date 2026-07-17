@@ -274,7 +274,6 @@ public final class SearchNotificationLogsRequest {
 
         /**
          * <p>The start date for the search.</p>
-         * <p>The start date for the search.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -285,7 +284,6 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The end date for the search.</p>
          * <p>The end date for the search.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

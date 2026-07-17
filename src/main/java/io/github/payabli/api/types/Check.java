@@ -120,7 +120,6 @@ public final class Check {
 
         /**
          * <p>The checking accountholder's name.</p>
-         * <p>The checking accountholder's name.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -131,7 +130,6 @@ public final class Check {
         }
 
         /**
-         * <p>Method to use for the transaction. Use <code>check</code> for a paper check transaction. When the method is <code>check</code>, then <code>paymentDetails.checkNumber</code> is required.</p>
          * <p>Method to use for the transaction. Use <code>check</code> for a paper check transaction. When the method is <code>check</code>, then <code>paymentDetails.checkNumber</code> is required.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

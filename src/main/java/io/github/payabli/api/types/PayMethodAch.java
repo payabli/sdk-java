@@ -243,7 +243,6 @@ public final class PayMethodAch {
 
         /**
          * <p>Bank account number. This field is <strong>required</strong> when method = 'ach'.</p>
-         * <p>Bank account number. This field is <strong>required</strong> when method = 'ach'.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -261,7 +260,6 @@ public final class PayMethodAch {
         }
 
         /**
-         * <p>ABA/routing number of bank account. This field is <strong>required</strong> when method = 'ach'.</p>
          * <p>ABA/routing number of bank account. This field is <strong>required</strong> when method = 'ach'.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -135,7 +135,6 @@ public final class PayMethodCloud {
 
         /**
          * <p>Method to use for the transaction. For cloud device transactions, the method is <code>cloud</code>.</p>
-         * <p>Method to use for the transaction. For cloud device transactions, the method is <code>cloud</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -14,6 +14,7 @@ The Payabli Java library provides convenient access to the Payabli APIs from Jav
 - [Environments](#environments)
 - [Base Url](#base-url)
 - [Exception Handling](#exception-handling)
+- [Authentication](#authentication)
 - [Advanced](#advanced)
   - [Custom Client](#custom-client)
   - [Retries](#retries)
@@ -77,10 +78,9 @@ import java.util.Optional;
 
 public class Example {
     public static void main(String[] args) {
-        PayabliApiClient client = PayabliApiClient
-            .builder()
-            .apiKey("<value>")
-            .build();
+        PayabliApiClient client = PayabliApiClient.withCredentials("<clientId>", "<clientSecret>")
+            .build()
+        ;
 
         client.moneyIn().getpaidv2(
             RequestPaymentV2
@@ -164,6 +164,32 @@ try{
 } catch (PayabliApiApiException e){
     // Do something with the API exception...
 }
+```
+
+## Authentication
+
+This SDK supports two authentication methods:
+
+### Option 1: Direct Bearer Token
+
+If you already have a valid access token, you can use it directly:
+
+```java
+PayabliApiClient client = PayabliApiClient.builder()
+    .token("your-access-token")
+    .url("https://api.example.com")
+    .build();
+```
+
+### Option 2: OAuth Client Credentials
+
+The SDK can automatically handle token acquisition and refresh:
+
+```java
+PayabliApiClient client = PayabliApiClient.builder()
+    .credentials("client-id", "client-secret")
+    .url("https://api.example.com")
+    .build();
 ```
 
 ## Advanced
@@ -301,7 +327,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:1.0.5'
+  implementation 'io.github.payabli:sdk-java:1.0.6'
 }
 ```
 
@@ -313,7 +339,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 

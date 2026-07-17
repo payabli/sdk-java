@@ -195,7 +195,6 @@ public final class DepositFundsRequest {
 
         /**
          * <p>The amount to deposit, in dollars. Must be greater than zero.</p>
-         * <p>The amount to deposit, in dollars. Must be greater than zero.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -207,7 +206,6 @@ public final class DepositFundsRequest {
 
         /**
          * <p>The entry point identifier for the paypoint receiving the deposit.</p>
-         * <p>The entry point identifier for the paypoint receiving the deposit.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -218,7 +216,6 @@ public final class DepositFundsRequest {
         }
 
         /**
-         * <p>The remittance account ID to withdraw funds from.</p>
          * <p>The remittance account ID to withdraw funds from.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

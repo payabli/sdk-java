@@ -307,7 +307,6 @@ public final class RequestCredit {
 
         /**
          * <p>Object describing the customer/payor.</p>
-         * <p>Object describing the customer/payor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -325,7 +324,6 @@ public final class RequestCredit {
         }
 
         /**
-         * <p>Object describing the ACH payment method to use for transaction.</p>
          * <p>Object describing the ACH payment method to use for transaction.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -292,7 +292,6 @@ public final class VCardSummary {
 
         /**
          * <p>Total amount for the records.</p>
-         * <p>Total amount for the records.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -303,7 +302,6 @@ public final class VCardSummary {
         }
 
         /**
-         * <p>Total number of active vCards.</p>
          * <p>Total number of active vCards.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -316,7 +314,6 @@ public final class VCardSummary {
 
         /**
          * <p>Total amount of active vCards.</p>
-         * <p>Total amount of active vCards.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -327,7 +324,6 @@ public final class VCardSummary {
         }
 
         /**
-         * <p>Total balance of active vCards.</p>
          * <p>Total balance of active vCards.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

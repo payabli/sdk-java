@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +23,9 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = QueryPayoutTransactionSummary.Builder.class)
 public final class QueryPayoutTransactionSummary {
-    private final Optional<String> pageIdentifier;
+    private final Optional<Integer> totalPaid;
 
-    private final Optional<Integer> pageSize;
-
-    private final Optional<Double> totalAmount;
-
-    private final Optional<Integer> totalAuthorized;
-
-    private final Optional<Double> totalAuthorizedAmount;
+    private final Optional<Double> totalPaidAmount;
 
     private final Optional<Integer> totalCanceled;
 
@@ -38,98 +35,89 @@ public final class QueryPayoutTransactionSummary {
 
     private final Optional<Double> totalCapturedAmount;
 
-    private final Optional<Double> totalNetAmount;
+    private final Optional<Integer> totalAuthorized;
 
-    private final Optional<Integer> totalOpen;
-
-    private final Optional<Double> totalOpenAmount;
-
-    private final Optional<Integer> totalPages;
-
-    private final Optional<Integer> totalPaid;
-
-    private final Optional<Double> totalPaidAmount;
-
-    private final Optional<Integer> totalOnHold;
-
-    private final Optional<Double> totalOnHoldAmount;
+    private final Optional<Double> totalAuthorizedAmount;
 
     private final Optional<Integer> totalProcessing;
 
     private final Optional<Double> totalProcessingAmount;
 
+    private final Optional<Integer> totalOpen;
+
+    private final Optional<Double> totalOpenAmount;
+
+    private final Optional<Integer> totalOnHold;
+
+    private final Optional<Double> totalOnHoldAmount;
+
     private final Optional<Integer> totalRecords;
+
+    private final Optional<Double> totalAmount;
+
+    private final Optional<Double> totalNetAmount;
+
+    private final Optional<Integer> totalPages;
+
+    private final Optional<Integer> pageSize;
+
+    private final Optional<String> pageidentifier;
 
     private final Map<String, Object> additionalProperties;
 
     private QueryPayoutTransactionSummary(
-            Optional<String> pageIdentifier,
-            Optional<Integer> pageSize,
-            Optional<Double> totalAmount,
-            Optional<Integer> totalAuthorized,
-            Optional<Double> totalAuthorizedAmount,
+            Optional<Integer> totalPaid,
+            Optional<Double> totalPaidAmount,
             Optional<Integer> totalCanceled,
             Optional<Double> totalCanceledAmount,
             Optional<Integer> totalCaptured,
             Optional<Double> totalCapturedAmount,
-            Optional<Double> totalNetAmount,
-            Optional<Integer> totalOpen,
-            Optional<Double> totalOpenAmount,
-            Optional<Integer> totalPages,
-            Optional<Integer> totalPaid,
-            Optional<Double> totalPaidAmount,
-            Optional<Integer> totalOnHold,
-            Optional<Double> totalOnHoldAmount,
+            Optional<Integer> totalAuthorized,
+            Optional<Double> totalAuthorizedAmount,
             Optional<Integer> totalProcessing,
             Optional<Double> totalProcessingAmount,
+            Optional<Integer> totalOpen,
+            Optional<Double> totalOpenAmount,
+            Optional<Integer> totalOnHold,
+            Optional<Double> totalOnHoldAmount,
             Optional<Integer> totalRecords,
+            Optional<Double> totalAmount,
+            Optional<Double> totalNetAmount,
+            Optional<Integer> totalPages,
+            Optional<Integer> pageSize,
+            Optional<String> pageidentifier,
             Map<String, Object> additionalProperties) {
-        this.pageIdentifier = pageIdentifier;
-        this.pageSize = pageSize;
-        this.totalAmount = totalAmount;
-        this.totalAuthorized = totalAuthorized;
-        this.totalAuthorizedAmount = totalAuthorizedAmount;
+        this.totalPaid = totalPaid;
+        this.totalPaidAmount = totalPaidAmount;
         this.totalCanceled = totalCanceled;
         this.totalCanceledAmount = totalCanceledAmount;
         this.totalCaptured = totalCaptured;
         this.totalCapturedAmount = totalCapturedAmount;
-        this.totalNetAmount = totalNetAmount;
-        this.totalOpen = totalOpen;
-        this.totalOpenAmount = totalOpenAmount;
-        this.totalPages = totalPages;
-        this.totalPaid = totalPaid;
-        this.totalPaidAmount = totalPaidAmount;
-        this.totalOnHold = totalOnHold;
-        this.totalOnHoldAmount = totalOnHoldAmount;
+        this.totalAuthorized = totalAuthorized;
+        this.totalAuthorizedAmount = totalAuthorizedAmount;
         this.totalProcessing = totalProcessing;
         this.totalProcessingAmount = totalProcessingAmount;
+        this.totalOpen = totalOpen;
+        this.totalOpenAmount = totalOpenAmount;
+        this.totalOnHold = totalOnHold;
+        this.totalOnHoldAmount = totalOnHoldAmount;
         this.totalRecords = totalRecords;
+        this.totalAmount = totalAmount;
+        this.totalNetAmount = totalNetAmount;
+        this.totalPages = totalPages;
+        this.pageSize = pageSize;
+        this.pageidentifier = pageidentifier;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("pageIdentifier")
-    public Optional<String> getPageIdentifier() {
-        return pageIdentifier;
+    @JsonProperty("totalPaid")
+    public Optional<Integer> getTotalPaid() {
+        return totalPaid;
     }
 
-    @JsonProperty("pageSize")
-    public Optional<Integer> getPageSize() {
-        return pageSize;
-    }
-
-    @JsonProperty("totalAmount")
-    public Optional<Double> getTotalAmount() {
-        return totalAmount;
-    }
-
-    @JsonProperty("totalAuthorized")
-    public Optional<Integer> getTotalAuthorized() {
-        return totalAuthorized;
-    }
-
-    @JsonProperty("totalAuthorizedAmount")
-    public Optional<Double> getTotalAuthorizedAmount() {
-        return totalAuthorizedAmount;
+    @JsonProperty("totalPaidAmount")
+    public Optional<Double> getTotalPaidAmount() {
+        return totalPaidAmount;
     }
 
     @JsonProperty("totalCanceled")
@@ -152,9 +140,24 @@ public final class QueryPayoutTransactionSummary {
         return totalCapturedAmount;
     }
 
-    @JsonProperty("totalNetAmount")
-    public Optional<Double> getTotalNetAmount() {
-        return totalNetAmount;
+    @JsonProperty("totalAuthorized")
+    public Optional<Integer> getTotalAuthorized() {
+        return totalAuthorized;
+    }
+
+    @JsonProperty("totalAuthorizedAmount")
+    public Optional<Double> getTotalAuthorizedAmount() {
+        return totalAuthorizedAmount;
+    }
+
+    @JsonProperty("totalProcessing")
+    public Optional<Integer> getTotalProcessing() {
+        return totalProcessing;
+    }
+
+    @JsonProperty("totalProcessingAmount")
+    public Optional<Double> getTotalProcessingAmount() {
+        return totalProcessingAmount;
     }
 
     @JsonProperty("totalOpen")
@@ -165,21 +168,6 @@ public final class QueryPayoutTransactionSummary {
     @JsonProperty("totalOpenAmount")
     public Optional<Double> getTotalOpenAmount() {
         return totalOpenAmount;
-    }
-
-    @JsonProperty("totalPages")
-    public Optional<Integer> getTotalPages() {
-        return totalPages;
-    }
-
-    @JsonProperty("totalPaid")
-    public Optional<Integer> getTotalPaid() {
-        return totalPaid;
-    }
-
-    @JsonProperty("totalPaidAmount")
-    public Optional<Double> getTotalPaidAmount() {
-        return totalPaidAmount;
     }
 
     /**
@@ -198,19 +186,43 @@ public final class QueryPayoutTransactionSummary {
         return totalOnHoldAmount;
     }
 
-    @JsonProperty("totalProcessing")
-    public Optional<Integer> getTotalProcessing() {
-        return totalProcessing;
-    }
-
-    @JsonProperty("totalProcessingAmount")
-    public Optional<Double> getTotalProcessingAmount() {
-        return totalProcessingAmount;
-    }
-
     @JsonProperty("totalRecords")
     public Optional<Integer> getTotalRecords() {
         return totalRecords;
+    }
+
+    @JsonProperty("totalAmount")
+    public Optional<Double> getTotalAmount() {
+        return totalAmount;
+    }
+
+    @JsonProperty("totalNetAmount")
+    public Optional<Double> getTotalNetAmount() {
+        return totalNetAmount;
+    }
+
+    @JsonProperty("totalPages")
+    public Optional<Integer> getTotalPages() {
+        return totalPages;
+    }
+
+    @JsonProperty("pageSize")
+    public Optional<Integer> getPageSize() {
+        return pageSize;
+    }
+
+    @JsonIgnore
+    public Optional<String> getPageidentifier() {
+        if (pageidentifier == null) {
+            return Optional.empty();
+        }
+        return pageidentifier;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageidentifier")
+    private Optional<String> _getPageidentifier() {
+        return pageidentifier;
     }
 
     @java.lang.Override
@@ -225,51 +237,51 @@ public final class QueryPayoutTransactionSummary {
     }
 
     private boolean equalTo(QueryPayoutTransactionSummary other) {
-        return pageIdentifier.equals(other.pageIdentifier)
-                && pageSize.equals(other.pageSize)
-                && totalAmount.equals(other.totalAmount)
-                && totalAuthorized.equals(other.totalAuthorized)
-                && totalAuthorizedAmount.equals(other.totalAuthorizedAmount)
+        return totalPaid.equals(other.totalPaid)
+                && totalPaidAmount.equals(other.totalPaidAmount)
                 && totalCanceled.equals(other.totalCanceled)
                 && totalCanceledAmount.equals(other.totalCanceledAmount)
                 && totalCaptured.equals(other.totalCaptured)
                 && totalCapturedAmount.equals(other.totalCapturedAmount)
-                && totalNetAmount.equals(other.totalNetAmount)
-                && totalOpen.equals(other.totalOpen)
-                && totalOpenAmount.equals(other.totalOpenAmount)
-                && totalPages.equals(other.totalPages)
-                && totalPaid.equals(other.totalPaid)
-                && totalPaidAmount.equals(other.totalPaidAmount)
-                && totalOnHold.equals(other.totalOnHold)
-                && totalOnHoldAmount.equals(other.totalOnHoldAmount)
+                && totalAuthorized.equals(other.totalAuthorized)
+                && totalAuthorizedAmount.equals(other.totalAuthorizedAmount)
                 && totalProcessing.equals(other.totalProcessing)
                 && totalProcessingAmount.equals(other.totalProcessingAmount)
-                && totalRecords.equals(other.totalRecords);
+                && totalOpen.equals(other.totalOpen)
+                && totalOpenAmount.equals(other.totalOpenAmount)
+                && totalOnHold.equals(other.totalOnHold)
+                && totalOnHoldAmount.equals(other.totalOnHoldAmount)
+                && totalRecords.equals(other.totalRecords)
+                && totalAmount.equals(other.totalAmount)
+                && totalNetAmount.equals(other.totalNetAmount)
+                && totalPages.equals(other.totalPages)
+                && pageSize.equals(other.pageSize)
+                && pageidentifier.equals(other.pageidentifier);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.pageIdentifier,
-                this.pageSize,
-                this.totalAmount,
-                this.totalAuthorized,
-                this.totalAuthorizedAmount,
+                this.totalPaid,
+                this.totalPaidAmount,
                 this.totalCanceled,
                 this.totalCanceledAmount,
                 this.totalCaptured,
                 this.totalCapturedAmount,
-                this.totalNetAmount,
-                this.totalOpen,
-                this.totalOpenAmount,
-                this.totalPages,
-                this.totalPaid,
-                this.totalPaidAmount,
-                this.totalOnHold,
-                this.totalOnHoldAmount,
+                this.totalAuthorized,
+                this.totalAuthorizedAmount,
                 this.totalProcessing,
                 this.totalProcessingAmount,
-                this.totalRecords);
+                this.totalOpen,
+                this.totalOpenAmount,
+                this.totalOnHold,
+                this.totalOnHoldAmount,
+                this.totalRecords,
+                this.totalAmount,
+                this.totalNetAmount,
+                this.totalPages,
+                this.pageSize,
+                this.pageidentifier);
     }
 
     @java.lang.Override
@@ -283,15 +295,9 @@ public final class QueryPayoutTransactionSummary {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> pageIdentifier = Optional.empty();
+        private Optional<Integer> totalPaid = Optional.empty();
 
-        private Optional<Integer> pageSize = Optional.empty();
-
-        private Optional<Double> totalAmount = Optional.empty();
-
-        private Optional<Integer> totalAuthorized = Optional.empty();
-
-        private Optional<Double> totalAuthorizedAmount = Optional.empty();
+        private Optional<Double> totalPaidAmount = Optional.empty();
 
         private Optional<Integer> totalCanceled = Optional.empty();
 
@@ -301,27 +307,33 @@ public final class QueryPayoutTransactionSummary {
 
         private Optional<Double> totalCapturedAmount = Optional.empty();
 
-        private Optional<Double> totalNetAmount = Optional.empty();
+        private Optional<Integer> totalAuthorized = Optional.empty();
 
-        private Optional<Integer> totalOpen = Optional.empty();
-
-        private Optional<Double> totalOpenAmount = Optional.empty();
-
-        private Optional<Integer> totalPages = Optional.empty();
-
-        private Optional<Integer> totalPaid = Optional.empty();
-
-        private Optional<Double> totalPaidAmount = Optional.empty();
-
-        private Optional<Integer> totalOnHold = Optional.empty();
-
-        private Optional<Double> totalOnHoldAmount = Optional.empty();
+        private Optional<Double> totalAuthorizedAmount = Optional.empty();
 
         private Optional<Integer> totalProcessing = Optional.empty();
 
         private Optional<Double> totalProcessingAmount = Optional.empty();
 
+        private Optional<Integer> totalOpen = Optional.empty();
+
+        private Optional<Double> totalOpenAmount = Optional.empty();
+
+        private Optional<Integer> totalOnHold = Optional.empty();
+
+        private Optional<Double> totalOnHoldAmount = Optional.empty();
+
         private Optional<Integer> totalRecords = Optional.empty();
+
+        private Optional<Double> totalAmount = Optional.empty();
+
+        private Optional<Double> totalNetAmount = Optional.empty();
+
+        private Optional<Integer> totalPages = Optional.empty();
+
+        private Optional<Integer> pageSize = Optional.empty();
+
+        private Optional<String> pageidentifier = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -329,81 +341,48 @@ public final class QueryPayoutTransactionSummary {
         private Builder() {}
 
         public Builder from(QueryPayoutTransactionSummary other) {
-            pageIdentifier(other.getPageIdentifier());
-            pageSize(other.getPageSize());
-            totalAmount(other.getTotalAmount());
-            totalAuthorized(other.getTotalAuthorized());
-            totalAuthorizedAmount(other.getTotalAuthorizedAmount());
+            totalPaid(other.getTotalPaid());
+            totalPaidAmount(other.getTotalPaidAmount());
             totalCanceled(other.getTotalCanceled());
             totalCanceledAmount(other.getTotalCanceledAmount());
             totalCaptured(other.getTotalCaptured());
             totalCapturedAmount(other.getTotalCapturedAmount());
-            totalNetAmount(other.getTotalNetAmount());
-            totalOpen(other.getTotalOpen());
-            totalOpenAmount(other.getTotalOpenAmount());
-            totalPages(other.getTotalPages());
-            totalPaid(other.getTotalPaid());
-            totalPaidAmount(other.getTotalPaidAmount());
-            totalOnHold(other.getTotalOnHold());
-            totalOnHoldAmount(other.getTotalOnHoldAmount());
+            totalAuthorized(other.getTotalAuthorized());
+            totalAuthorizedAmount(other.getTotalAuthorizedAmount());
             totalProcessing(other.getTotalProcessing());
             totalProcessingAmount(other.getTotalProcessingAmount());
+            totalOpen(other.getTotalOpen());
+            totalOpenAmount(other.getTotalOpenAmount());
+            totalOnHold(other.getTotalOnHold());
+            totalOnHoldAmount(other.getTotalOnHoldAmount());
             totalRecords(other.getTotalRecords());
+            totalAmount(other.getTotalAmount());
+            totalNetAmount(other.getTotalNetAmount());
+            totalPages(other.getTotalPages());
+            pageSize(other.getPageSize());
+            pageidentifier(other.getPageidentifier());
             return this;
         }
 
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
-        public Builder pageIdentifier(Optional<String> pageIdentifier) {
-            this.pageIdentifier = pageIdentifier;
+        @JsonSetter(value = "totalPaid", nulls = Nulls.SKIP)
+        public Builder totalPaid(Optional<Integer> totalPaid) {
+            this.totalPaid = totalPaid;
             return this;
         }
 
-        public Builder pageIdentifier(String pageIdentifier) {
-            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+        public Builder totalPaid(Integer totalPaid) {
+            this.totalPaid = Optional.ofNullable(totalPaid);
             return this;
         }
 
-        @JsonSetter(value = "pageSize", nulls = Nulls.SKIP)
-        public Builder pageSize(Optional<Integer> pageSize) {
-            this.pageSize = pageSize;
+        @JsonSetter(value = "totalPaidAmount", nulls = Nulls.SKIP)
+        public Builder totalPaidAmount(Optional<Double> totalPaidAmount) {
+            this.totalPaidAmount = totalPaidAmount;
             return this;
         }
 
-        public Builder pageSize(Integer pageSize) {
-            this.pageSize = Optional.ofNullable(pageSize);
-            return this;
-        }
-
-        @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
-        public Builder totalAmount(Optional<Double> totalAmount) {
-            this.totalAmount = totalAmount;
-            return this;
-        }
-
-        public Builder totalAmount(Double totalAmount) {
-            this.totalAmount = Optional.ofNullable(totalAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "totalAuthorized", nulls = Nulls.SKIP)
-        public Builder totalAuthorized(Optional<Integer> totalAuthorized) {
-            this.totalAuthorized = totalAuthorized;
-            return this;
-        }
-
-        public Builder totalAuthorized(Integer totalAuthorized) {
-            this.totalAuthorized = Optional.ofNullable(totalAuthorized);
-            return this;
-        }
-
-        @JsonSetter(value = "totalAuthorizedAmount", nulls = Nulls.SKIP)
-        public Builder totalAuthorizedAmount(Optional<Double> totalAuthorizedAmount) {
-            this.totalAuthorizedAmount = totalAuthorizedAmount;
-            return this;
-        }
-
-        public Builder totalAuthorizedAmount(Double totalAuthorizedAmount) {
-            this.totalAuthorizedAmount = Optional.ofNullable(totalAuthorizedAmount);
+        public Builder totalPaidAmount(Double totalPaidAmount) {
+            this.totalPaidAmount = Optional.ofNullable(totalPaidAmount);
             return this;
         }
 
@@ -451,14 +430,47 @@ public final class QueryPayoutTransactionSummary {
             return this;
         }
 
-        @JsonSetter(value = "totalNetAmount", nulls = Nulls.SKIP)
-        public Builder totalNetAmount(Optional<Double> totalNetAmount) {
-            this.totalNetAmount = totalNetAmount;
+        @JsonSetter(value = "totalAuthorized", nulls = Nulls.SKIP)
+        public Builder totalAuthorized(Optional<Integer> totalAuthorized) {
+            this.totalAuthorized = totalAuthorized;
             return this;
         }
 
-        public Builder totalNetAmount(Double totalNetAmount) {
-            this.totalNetAmount = Optional.ofNullable(totalNetAmount);
+        public Builder totalAuthorized(Integer totalAuthorized) {
+            this.totalAuthorized = Optional.ofNullable(totalAuthorized);
+            return this;
+        }
+
+        @JsonSetter(value = "totalAuthorizedAmount", nulls = Nulls.SKIP)
+        public Builder totalAuthorizedAmount(Optional<Double> totalAuthorizedAmount) {
+            this.totalAuthorizedAmount = totalAuthorizedAmount;
+            return this;
+        }
+
+        public Builder totalAuthorizedAmount(Double totalAuthorizedAmount) {
+            this.totalAuthorizedAmount = Optional.ofNullable(totalAuthorizedAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "totalProcessing", nulls = Nulls.SKIP)
+        public Builder totalProcessing(Optional<Integer> totalProcessing) {
+            this.totalProcessing = totalProcessing;
+            return this;
+        }
+
+        public Builder totalProcessing(Integer totalProcessing) {
+            this.totalProcessing = Optional.ofNullable(totalProcessing);
+            return this;
+        }
+
+        @JsonSetter(value = "totalProcessingAmount", nulls = Nulls.SKIP)
+        public Builder totalProcessingAmount(Optional<Double> totalProcessingAmount) {
+            this.totalProcessingAmount = totalProcessingAmount;
+            return this;
+        }
+
+        public Builder totalProcessingAmount(Double totalProcessingAmount) {
+            this.totalProcessingAmount = Optional.ofNullable(totalProcessingAmount);
             return this;
         }
 
@@ -481,39 +493,6 @@ public final class QueryPayoutTransactionSummary {
 
         public Builder totalOpenAmount(Double totalOpenAmount) {
             this.totalOpenAmount = Optional.ofNullable(totalOpenAmount);
-            return this;
-        }
-
-        @JsonSetter(value = "totalPages", nulls = Nulls.SKIP)
-        public Builder totalPages(Optional<Integer> totalPages) {
-            this.totalPages = totalPages;
-            return this;
-        }
-
-        public Builder totalPages(Integer totalPages) {
-            this.totalPages = Optional.ofNullable(totalPages);
-            return this;
-        }
-
-        @JsonSetter(value = "totalPaid", nulls = Nulls.SKIP)
-        public Builder totalPaid(Optional<Integer> totalPaid) {
-            this.totalPaid = totalPaid;
-            return this;
-        }
-
-        public Builder totalPaid(Integer totalPaid) {
-            this.totalPaid = Optional.ofNullable(totalPaid);
-            return this;
-        }
-
-        @JsonSetter(value = "totalPaidAmount", nulls = Nulls.SKIP)
-        public Builder totalPaidAmount(Optional<Double> totalPaidAmount) {
-            this.totalPaidAmount = totalPaidAmount;
-            return this;
-        }
-
-        public Builder totalPaidAmount(Double totalPaidAmount) {
-            this.totalPaidAmount = Optional.ofNullable(totalPaidAmount);
             return this;
         }
 
@@ -545,28 +524,6 @@ public final class QueryPayoutTransactionSummary {
             return this;
         }
 
-        @JsonSetter(value = "totalProcessing", nulls = Nulls.SKIP)
-        public Builder totalProcessing(Optional<Integer> totalProcessing) {
-            this.totalProcessing = totalProcessing;
-            return this;
-        }
-
-        public Builder totalProcessing(Integer totalProcessing) {
-            this.totalProcessing = Optional.ofNullable(totalProcessing);
-            return this;
-        }
-
-        @JsonSetter(value = "totalProcessingAmount", nulls = Nulls.SKIP)
-        public Builder totalProcessingAmount(Optional<Double> totalProcessingAmount) {
-            this.totalProcessingAmount = totalProcessingAmount;
-            return this;
-        }
-
-        public Builder totalProcessingAmount(Double totalProcessingAmount) {
-            this.totalProcessingAmount = Optional.ofNullable(totalProcessingAmount);
-            return this;
-        }
-
         @JsonSetter(value = "totalRecords", nulls = Nulls.SKIP)
         public Builder totalRecords(Optional<Integer> totalRecords) {
             this.totalRecords = totalRecords;
@@ -578,28 +535,94 @@ public final class QueryPayoutTransactionSummary {
             return this;
         }
 
+        @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
+        public Builder totalAmount(Optional<Double> totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Builder totalAmount(Double totalAmount) {
+            this.totalAmount = Optional.ofNullable(totalAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "totalNetAmount", nulls = Nulls.SKIP)
+        public Builder totalNetAmount(Optional<Double> totalNetAmount) {
+            this.totalNetAmount = totalNetAmount;
+            return this;
+        }
+
+        public Builder totalNetAmount(Double totalNetAmount) {
+            this.totalNetAmount = Optional.ofNullable(totalNetAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "totalPages", nulls = Nulls.SKIP)
+        public Builder totalPages(Optional<Integer> totalPages) {
+            this.totalPages = totalPages;
+            return this;
+        }
+
+        public Builder totalPages(Integer totalPages) {
+            this.totalPages = Optional.ofNullable(totalPages);
+            return this;
+        }
+
+        @JsonSetter(value = "pageSize", nulls = Nulls.SKIP)
+        public Builder pageSize(Optional<Integer> pageSize) {
+            this.pageSize = pageSize;
+            return this;
+        }
+
+        public Builder pageSize(Integer pageSize) {
+            this.pageSize = Optional.ofNullable(pageSize);
+            return this;
+        }
+
+        @JsonSetter(value = "pageidentifier", nulls = Nulls.SKIP)
+        public Builder pageidentifier(Optional<String> pageidentifier) {
+            this.pageidentifier = pageidentifier;
+            return this;
+        }
+
+        public Builder pageidentifier(String pageidentifier) {
+            this.pageidentifier = Optional.ofNullable(pageidentifier);
+            return this;
+        }
+
+        public Builder pageidentifier(Nullable<String> pageidentifier) {
+            if (pageidentifier.isNull()) {
+                this.pageidentifier = null;
+            } else if (pageidentifier.isEmpty()) {
+                this.pageidentifier = Optional.empty();
+            } else {
+                this.pageidentifier = Optional.of(pageidentifier.get());
+            }
+            return this;
+        }
+
         public QueryPayoutTransactionSummary build() {
             return new QueryPayoutTransactionSummary(
-                    pageIdentifier,
-                    pageSize,
-                    totalAmount,
-                    totalAuthorized,
-                    totalAuthorizedAmount,
+                    totalPaid,
+                    totalPaidAmount,
                     totalCanceled,
                     totalCanceledAmount,
                     totalCaptured,
                     totalCapturedAmount,
-                    totalNetAmount,
-                    totalOpen,
-                    totalOpenAmount,
-                    totalPages,
-                    totalPaid,
-                    totalPaidAmount,
-                    totalOnHold,
-                    totalOnHoldAmount,
+                    totalAuthorized,
+                    totalAuthorizedAmount,
                     totalProcessing,
                     totalProcessingAmount,
+                    totalOpen,
+                    totalOpenAmount,
+                    totalOnHold,
+                    totalOnHoldAmount,
                     totalRecords,
+                    totalAmount,
+                    totalNetAmount,
+                    totalPages,
+                    pageSize,
+                    pageidentifier,
                     additionalProperties);
         }
 

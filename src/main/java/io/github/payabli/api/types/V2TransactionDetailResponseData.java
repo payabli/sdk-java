@@ -527,7 +527,6 @@ public final class V2TransactionDetailResponseData {
 
         /**
          * <p>Unique identifier for the transaction assigned by the payment processor.</p>
-         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -539,7 +538,6 @@ public final class V2TransactionDetailResponseData {
 
         /**
          * <p>Processor-specific response code.</p>
-         * <p>Processor-specific response code.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -550,7 +548,6 @@ public final class V2TransactionDetailResponseData {
         }
 
         /**
-         * <p>Description of the response code.</p>
          * <p>Description of the response code.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

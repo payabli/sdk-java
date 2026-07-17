@@ -271,7 +271,6 @@ public final class ScheduleEnrichmentCallRequest {
 
         /**
          * <p>ID of the vendor to call. Must be active and belong to the entrypoint in the path.</p>
-         * <p>ID of the vendor to call. Must be active and belong to the entrypoint in the path.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

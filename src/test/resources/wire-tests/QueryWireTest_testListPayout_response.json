@@ -1,59 +1,172 @@
 {
   "Records": [
     {
-      "BatchNumber": "BT-2024321",
-      "Bills": [
-        {}
-      ],
-      "CardToken": "CardToken",
-      "CheckNumber": "12345",
-      "Comments": "Deposit for materials",
-      "CreatedAt": "2022-07-01T15:00:01Z",
-      "EntryName": "d193cf9a46",
-      "Events": [
-        {}
-      ],
-      "externalPaypointID": "Paypoint-100",
-      "FeeAmount": 10.25,
-      "Gateway": "TSYS",
       "IdOut": 236,
-      "LastUpdated": "2022-07-01T15:00:01Z",
-      "NetAmount": 3762.87,
-      "ParentOrgName": "PropertyManager Pro",
-      "PaymentData": {
-        "paymentDetails": {
-          "totalAmount": 100
-        }
+      "CreatedAt": "2024-01-15T15:00:01Z",
+      "Comments": "Deposit for materials",
+      "Vendor": {
+        "VendorNumber": "VEN-123",
+        "Name1": "Riverside Plumbing",
+        "Name2": null,
+        "EIN": null,
+        "Phone": "(555) 555-1234",
+        "Email": "vendor@example.com",
+        "RemitEmail": null,
+        "Address1": "100 Main Street",
+        "Address2": null,
+        "City": "Miami",
+        "State": "FL",
+        "Zip": "33131",
+        "Country": "US",
+        "Mcc": null,
+        "LocationCode": null,
+        "Contacts": [
+          {
+            "ContactName": "Alex Doe",
+            "ContactEmail": "contact@example.com",
+            "ContactTitle": "Accounts Receivable",
+            "ContactPhone": "(555) 555-5678"
+          }
+        ],
+        "BillingData": null,
+        "PaymentMethod": "ach",
+        "VendorStatus": 1,
+        "VendorId": 456,
+        "EnrollmentStatus": null,
+        "Summary": null,
+        "PaypointLegalname": "Sunshine Services, LLC",
+        "PaypointId": 3040,
+        "PaypointDbaname": "Sunshine Gutters",
+        "PaypointEntryname": "8cfec329267",
+        "ParentOrgName": "PropertyManager Pro",
+        "ParentOrgId": 123,
+        "CreatedDate": "2024-01-10T15:00:01Z",
+        "LastUpdated": "2024-01-12T15:00:01Z",
+        "remitAddress1": "100 Main Street",
+        "remitAddress2": null,
+        "remitCity": "Miami",
+        "remitState": "FL",
+        "remitZip": "33131",
+        "remitCountry": "US",
+        "payeeName1": null,
+        "payeeName2": null,
+        "customField1": null,
+        "customField2": null,
+        "customerVendorAccount": null,
+        "InternalReferenceId": 12345,
+        "PaymentPortalUrl": null,
+        "CardAccepted": "yes",
+        "AchAccepted": "yes",
+        "CheckAccepted": "no",
+        "EnrichmentStatus": "fully_enriched",
+        "EnrichedBy": "web_search",
+        "EnrichedAt": "2024-01-12T15:00:01Z",
+        "EnrichmentId": null,
+        "additionalData": null,
+        "externalPaypointID": "",
+        "StoredMethods": null
       },
-      "PaymentId": "12345678910",
-      "PaymentMethod": "ach",
-      "PaymentStatus": "Processed",
       "PaypointDbaname": "Sunshine Gutters",
       "PaypointLegalname": "Sunshine Services, LLC",
-      "Source": "api",
+      "PaypointId": 3040,
       "Status": 1,
+      "PaymentId": "01J0ABCDEF2WQ4VS323V5WKZP3",
+      "TransId": null,
+      "TransStatus": null,
+      "TransStatusDetail": null,
+      "TransStatusName": null,
+      "TransStatusCategory": null,
+      "LastUpdated": "2024-01-15T15:00:01Z",
       "TotalAmount": 110.25,
-      "Vendor": {
-        "additionalData": {
-          "key1": {
-            "key": "value"
-          },
-          "key2": {
-            "key": "value"
-          },
-          "key3": {
-            "key": "value"
-          }
+      "NetAmount": 100,
+      "FeeAmount": 10.25,
+      "Source": "api",
+      "ParentOrgName": "PropertyManager Pro",
+      "ParentOrgId": 123,
+      "BatchNumber": "BT-2024321",
+      "PaymentStatus": "Processed",
+      "PaymentMethod": "ach",
+      "CardToken": null,
+      "CheckNumber": "12345",
+      "CheckData": null,
+      "PaymentData": {
+        "MaskedAccount": "1XXXXXX3123",
+        "AccountType": "checking",
+        "AccountExp": "",
+        "AccountZip": "",
+        "HolderName": null,
+        "StoredId": "1ec55af9-7b5a-4ff0-81ed-c12d2f95e135-456",
+        "Initiator": null,
+        "StoredMethodUsageType": null,
+        "Sequence": null,
+        "orderDescription": null,
+        "cloudSignatureData": null,
+        "cloudSignatureFormat": null,
+        "paymentDetails": null,
+        "payorData": null,
+        "accountId": "",
+        "bankAccount": null,
+        "gatewayConnector": null,
+        "binData": null
+      },
+      "Bills": [
+        {
+          "billId": 54323,
+          "LotNumber": null,
+          "AccountingField1": null,
+          "AccountingField2": null,
+          "Terms": null,
+          "AdditionalData": null,
+          "attachments": null,
+          "invoiceNumber": "INV-2345",
+          "netAmount": "100",
+          "invoiceDate": "2024-01-10",
+          "dueDate": "2024-01-20",
+          "comments": "",
+          "identifier": null,
+          "discount": "0",
+          "totalAmount": "100"
+        }
+      ],
+      "Events": [
+        {
+          "TransEvent": "Risk Validated: PASSED",
+          "EventData": "blockedCard, blockedIP, blockedPaypoint, blockedPayor",
+          "EventTime": "2024-01-15T15:00:01Z"
         },
-        "CreatedDate": "2022-07-01T15:00:01Z"
-      }
+        {
+          "TransEvent": "Created",
+          "EventData": "0HNMNN3L95DJB:00000001",
+          "EventTime": "2024-01-15T15:00:02Z"
+        },
+        {
+          "TransEvent": "Authorized",
+          "EventData": "0HNMNN3L95DJB:00000001",
+          "EventTime": "2024-01-15T15:00:03Z"
+        }
+      ],
+      "externalPaypointID": "",
+      "EntryName": "8cfec329267",
+      "Gateway": "BK",
+      "BatchId": 0,
+      "HasVcardTransactions": false,
+      "IsSameDayACH": false,
+      "ScheduleId": 0,
+      "SettlementStatus": "None",
+      "SettlementStatusName": "",
+      "SettlementDate": null,
+      "RiskFlagged": false,
+      "RiskFlaggedOn": "2024-01-15T15:00:01Z",
+      "RiskStatus": "PASSED",
+      "RiskReason": "",
+      "RiskAction": "",
+      "RiskActionCode": 0,
+      "PayoutProgram": "ODP",
+      "AchTraceNumber": null,
+      "EntityId": "01J0ABCDEF9FWATVWMBWGE6MPP"
     }
   ],
   "Summary": {
-    "totalPages": 391,
-    "totalRecords": 7803,
-    "totalAmount": 21435.95,
-    "totalNetAmount": 21435.95,
     "totalPaid": 1,
     "totalPaidAmount": 4,
     "totalCanceled": 1743,
@@ -68,6 +181,11 @@
     "totalOpenAmount": 2,
     "totalOnHold": 0,
     "totalOnHoldAmount": 0,
-    "pageSize": 20
+    "totalRecords": 7803,
+    "totalAmount": 21435.95,
+    "totalNetAmount": 21435.95,
+    "totalPages": 391,
+    "pageSize": 20,
+    "pageidentifier": null
   }
 }

@@ -209,7 +209,6 @@ public final class RequestPaymentValidate {
 
         /**
          * <p>Object describing payment method to use for transaction.</p>
-         * <p>Object describing payment method to use for transaction.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

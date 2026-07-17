@@ -33,6 +33,7 @@ import io.github.payabli.api.resources.query.AsyncQueryClient;
 import io.github.payabli.api.resources.statistic.AsyncStatisticClient;
 import io.github.payabli.api.resources.subscription.AsyncSubscriptionClient;
 import io.github.payabli.api.resources.templates.AsyncTemplatesClient;
+import io.github.payabli.api.resources.token.AsyncTokenClient;
 import io.github.payabli.api.resources.tokenstorage.AsyncTokenStorageClient;
 import io.github.payabli.api.resources.user.AsyncUserClient;
 import io.github.payabli.api.resources.vendor.AsyncVendorClient;
@@ -49,6 +50,8 @@ public class AsyncPayabliApiClient {
     protected final Supplier<AsyncCheckCaptureClient> checkCaptureClient;
 
     protected final Supplier<AsyncMoneyInClient> moneyInClient;
+
+    protected final Supplier<AsyncTokenClient> tokenClient;
 
     protected final Supplier<AsyncSubscriptionClient> subscriptionClient;
 
@@ -112,6 +115,7 @@ public class AsyncPayabliApiClient {
         this.customerClient = Suppliers.memoize(() -> new AsyncCustomerClient(clientOptions));
         this.checkCaptureClient = Suppliers.memoize(() -> new AsyncCheckCaptureClient(clientOptions));
         this.moneyInClient = Suppliers.memoize(() -> new AsyncMoneyInClient(clientOptions));
+        this.tokenClient = Suppliers.memoize(() -> new AsyncTokenClient(clientOptions));
         this.subscriptionClient = Suppliers.memoize(() -> new AsyncSubscriptionClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
         this.paymentLinkClient = Suppliers.memoize(() -> new AsyncPaymentLinkClient(clientOptions));
@@ -156,6 +160,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncMoneyInClient moneyIn() {
         return this.moneyInClient.get();
+    }
+
+    public AsyncTokenClient token() {
+        return this.tokenClient.get();
     }
 
     public AsyncSubscriptionClient subscription() {
@@ -270,7 +278,30 @@ public class AsyncPayabliApiClient {
         return this.chargeBacksClient.get();
     }
 
-    public static AsyncPayabliApiClientBuilder builder() {
-        return new AsyncPayabliApiClientBuilder();
+    /**
+     * Creates a client builder using a pre-generated access token.
+     * @param token The access token to use for authentication
+     * @return A builder configured for token authentication
+     */
+    public static AsyncPayabliApiClientBuilder._TokenAuth withToken(String token) {
+        return AsyncPayabliApiClientBuilder.withToken(token);
+    }
+
+    /**
+     * Creates a client builder using OAuth client credentials.
+     * @param clientId The OAuth client ID
+     * @param clientSecret The OAuth client secret
+     * @return A builder configured for OAuth authentication
+     */
+    public static AsyncPayabliApiClientBuilder._CredentialsAuth withCredentials(String clientId, String clientSecret) {
+        return AsyncPayabliApiClientBuilder.withCredentials(clientId, clientSecret);
+    }
+
+    /**
+     * Creates a new client builder.
+     * @return A builder for configuring and creating the client
+     */
+    public static AsyncPayabliApiClientBuilder._Builder builder() {
+        return AsyncPayabliApiClientBuilder.builder();
     }
 }

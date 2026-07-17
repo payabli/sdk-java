@@ -26,9 +26,8 @@ public class NotificationlogsWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -39,6 +38,10 @@ public class NotificationlogsWireTest {
 
     @Test
     public void testSearchNotificationLogs() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -53,9 +56,17 @@ public class NotificationlogsWireTest {
                         .succeeded(true)
                         .orgId(123L)
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -146,6 +157,10 @@ public class NotificationlogsWireTest {
 
     @Test
     public void testGetNotificationLog() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -153,9 +168,17 @@ public class NotificationlogsWireTest {
                                 "{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":123,\"paypointId\":3040,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false,\"webHeaders\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"},{\"key\":\"User-Agent\",\"value\":\"PaymentSystem/1.0\"}],\"responseHeaders\":[{\"key\":\"Content-Type\",\"value\":[\"application/json\"]},{\"key\":\"X-Request-ID\",\"value\":[\"req_abc123\"]}],\"responseContent\":\"{\\\"status\\\":\\\"received\\\",\\\"id\\\":\\\"wh_123\\\"}\"}"));
         NotificationLogDetail response =
                 client.notificationlogs().getNotificationLog("550e8400-e29b-41d4-a716-446655440000");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -233,6 +256,10 @@ public class NotificationlogsWireTest {
 
     @Test
     public void testRetryNotificationLog() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -240,9 +267,17 @@ public class NotificationlogsWireTest {
                                 "{\"id\":\"550e8400-e29b-41d4-a716-446655440000\",\"orgId\":123,\"paypointId\":3040,\"notificationEvent\":\"ActivatedMerchant\",\"target\":\"https://webhook.example.com/payments\",\"responseStatus\":\"200\",\"success\":true,\"jobData\":\"{\\\"transactionId\\\":\\\"txn_123\\\"}\",\"createdDate\":\"2024-01-15T10:30:00Z\",\"successDate\":\"2024-01-15T10:30:05Z\",\"lastFailedDate\":null,\"isInProgress\":false,\"webHeaders\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"}],\"responseHeaders\":[{\"key\":\"Content-Type\",\"value\":[\"application/json\"]}],\"responseContent\":\"{\\\"status\\\":\\\"received\\\",\\\"id\\\":\\\"wh_123\\\"}\"}"));
         NotificationLogDetail response =
                 client.notificationlogs().retryNotificationLog("550e8400-e29b-41d4-a716-446655440000");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -310,15 +345,27 @@ public class NotificationlogsWireTest {
 
     @Test
     public void testBulkRetryNotificationLogs() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
         client.notificationlogs()
                 .bulkRetryNotificationLogs(Arrays.asList(
                         "550e8400-e29b-41d4-a716-446655440000",
                         "550e8400-e29b-41d4-a716-446655440001",
                         "550e8400-e29b-41d4-a716-446655440002"));
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""

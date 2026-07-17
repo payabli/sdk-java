@@ -284,7 +284,6 @@ public final class V2BadRequestError {
 
         /**
          * <p>A URI reference that identifies the problem type. Points to human-readable documentation for this error type.</p>
-         * <p>A URI reference that identifies the problem type. Points to human-readable documentation for this error type.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -295,7 +294,6 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Always &quot;Bad Request&quot; for 400 errors.</p>
          * <p>Always &quot;Bad Request&quot; for 400 errors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -308,7 +306,6 @@ public final class V2BadRequestError {
 
         /**
          * <p>HTTP status code, always 400 for bad requests.</p>
-         * <p>HTTP status code, always 400 for bad requests.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -319,7 +316,6 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Short description of the error.</p>
          * <p>Short description of the error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -332,7 +328,6 @@ public final class V2BadRequestError {
 
         /**
          * <p>Request URL that caused the error.</p>
-         * <p>Request URL that caused the error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -343,7 +338,6 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
          * <p>Payabli's unified response code for validation errors. Starts with 'E'. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

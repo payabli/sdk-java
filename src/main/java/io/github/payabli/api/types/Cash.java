@@ -99,7 +99,6 @@ public final class Cash {
 
         /**
          * <p>Method to use for the transaction. For cash transactions, use <code>cash</code>.</p>
-         * <p>Method to use for the transaction. For cash transactions, use <code>cash</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

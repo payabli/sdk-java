@@ -167,7 +167,6 @@ public final class DeletePaymentMethodDomainResponse {
 
         /**
          * <p>The deleted domain's domain ID.</p>
-         * <p>The deleted domain's domain ID.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

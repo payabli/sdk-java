@@ -663,7 +663,6 @@ public final class CheckCaptureResponse {
 
         /**
          * <p>Indicates whether the check processing was successful.</p>
-         * <p>Indicates whether the check processing was successful.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -674,7 +673,6 @@ public final class CheckCaptureResponse {
         }
 
         /**
-         * <p>The date and time when the check was processed (ISO 8601 format).</p>
          * <p>The date and time when the check was processed (ISO 8601 format).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -687,7 +685,6 @@ public final class CheckCaptureResponse {
 
         /**
          * <p>Flag indicating whether there's a discrepancy between the provided amount and the OCR-detected amount.</p>
-         * <p>Flag indicating whether there's a discrepancy between the provided amount and the OCR-detected amount.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -699,7 +696,6 @@ public final class CheckCaptureResponse {
 
         /**
          * <p>Flag indicating whether an endorsement was detected on the check.</p>
-         * <p>Flag indicating whether an endorsement was detected on the check.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -710,10 +706,6 @@ public final class CheckCaptureResponse {
         }
 
         /**
-         * <p>Identifier for the type of check.
-         * Personal = 1
-         * Business = 2
-         * Only personal checks are supported for check capture.</p>
          * <p>Identifier for the type of check.
          * Personal = 1
          * Business = 2

@@ -1096,7 +1096,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Primary name for vendor.</p>
-         * <p>Primary name for vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1107,7 +1106,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Secondary name for vendor.</p>
          * <p>Secondary name for vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1120,7 +1118,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>EIN/Tax ID for vendor. In responses, this field is masked, and looks like: <code>&quot;ein&quot;: &quot;XXXXX6789&quot;</code>.</p>
-         * <p>EIN/Tax ID for vendor. In responses, this field is masked, and looks like: <code>&quot;ein&quot;: &quot;XXXXX6789&quot;</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1131,7 +1128,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Vendor's phone number.</p>
          * <p>Vendor's phone number.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1151,7 +1147,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Vendor's address.</p>
-         * <p>Vendor's address.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1162,7 +1157,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Additional line for vendor's address.</p>
          * <p>Additional line for vendor's address.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1175,7 +1169,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Vendor's city.</p>
-         * <p>Vendor's city.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1186,7 +1179,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Vendor's state. Must be a two-character state code.</p>
          * <p>Vendor's state. Must be a two-character state code.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1199,7 +1191,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Vendor's zip code.</p>
-         * <p>Vendor's zip code.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1210,7 +1201,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Vendor's country. Payabli supports only US and Canadian vendors.</p>
          * <p>Vendor's country. Payabli supports only US and Canadian vendors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1237,7 +1227,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Object containing vendor's bank information.</p>
-         * <p>Object containing vendor's bank information.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1248,7 +1237,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Preferred payment method for vendor.</p>
          * <p>Preferred payment method for vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1275,7 +1263,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Vendor bill summary statistics</p>
-         * <p>Vendor bill summary statistics</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1286,7 +1273,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Legal name of the paypoint</p>
          * <p>Legal name of the paypoint</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1299,7 +1285,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>DBA name of the paypoint</p>
-         * <p>DBA name of the paypoint</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1310,7 +1295,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Entry name of the paypoint</p>
          * <p>Entry name of the paypoint</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1323,7 +1307,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Name of the parent organization</p>
-         * <p>Name of the parent organization</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1334,7 +1317,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>ID of the parent organization</p>
          * <p>ID of the parent organization</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1347,7 +1329,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Date when vendor was created</p>
-         * <p>Date when vendor was created</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1358,7 +1339,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Date when vendor was last updated</p>
          * <p>Date when vendor was last updated</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1427,7 +1407,6 @@ public final class VendorDataResponse {
 
         /**
          * <p>Custom field 1 for vendor</p>
-         * <p>Custom field 1 for vendor</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1438,7 +1417,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Custom field 2 for vendor</p>
          * <p>Custom field 2 for vendor</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1457,7 +1435,6 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>External paypoint identifier</p>
          * <p>External paypoint identifier</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

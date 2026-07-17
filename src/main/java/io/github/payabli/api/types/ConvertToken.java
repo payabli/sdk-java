@@ -120,7 +120,6 @@ public final class ConvertToken {
 
         /**
          * <p>The type of payment method to tokenize. When converting a temp token to a permanent token, this should match the <code>method</code> set for the temporary token, either <code>ach</code> or <code>card</code>.</p>
-         * <p>The type of payment method to tokenize. When converting a temp token to a permanent token, this should match the <code>method</code> set for the temporary token, either <code>ach</code> or <code>card</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -131,7 +130,6 @@ public final class ConvertToken {
         }
 
         /**
-         * <p>A temporary stored token ID to be converted to permanent.</p>
          * <p>A temporary stored token ID to be converted to permanent.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

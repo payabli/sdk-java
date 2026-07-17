@@ -31,9 +31,8 @@ public class PaymentMethodDomainWireTest {
     public void setup() throws Exception {
         server = new MockWebServer();
         server.start();
-        client = PayabliApiClient.builder()
+        client = PayabliApiClient.withCredentials("test-client-id", "test-client-secret")
                 .url(server.url("/").toString())
-                .apiKey("test-api-key")
                 .build();
     }
 
@@ -44,6 +43,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testAddPaymentMethodDomain() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -61,9 +64,17 @@ public class PaymentMethodDomainWireTest {
                         .entityId(109L)
                         .entityType("paypoint")
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -189,6 +200,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testCascadePaymentMethodDomain() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -196,9 +211,17 @@ public class PaymentMethodDomainWireTest {
                                 "{\"isSuccess\":true,\"pageidentifier\":\"null\",\"responseData\":{\"id\":\"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\"type\":\"PaymentMethodDomains\",\"entityId\":78,\"entityType\":\"organization\",\"domainName\":\"checkout.example.com\",\"applePay\":{\"isEnabled\":true,\"data\":null},\"googlePay\":{\"isEnabled\":true,\"data\":null},\"ownerEntityId\":78,\"ownerEntityType\":\"organization\",\"cascades\":[{\"jobId\":\"1245697\",\"jobStatus\":\"completed\",\"jobErrorMessage\":null,\"createdAt\":\"2025-04-25T15:37:28.685Z\",\"updatedAt\":\"2025-04-25T15:37:33.228Z\"}],\"createdAt\":\"2025-03-15T10:24:36.207Z\",\"updatedAt\":\"2025-04-25T15:38:46.804Z\"},\"responseText\":\"Success\"}"));
         PaymentMethodDomainGeneralResponse response =
                 client.paymentMethodDomain().cascadePaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -270,6 +293,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testGetPaymentMethodDomain() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -277,9 +304,17 @@ public class PaymentMethodDomainWireTest {
                                 "{\"id\":\"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\"type\":\"PaymentMethodDomains\",\"entityId\":78,\"entityType\":\"organization\",\"domainName\":\"checkout.example.com\",\"applePay\":{\"isEnabled\":true,\"data\":null},\"googlePay\":{\"isEnabled\":true,\"data\":null},\"ownerEntityId\":78,\"ownerEntityType\":\"organization\",\"cascades\":[{\"jobId\":\"1245697\",\"jobStatus\":\"completed\",\"createdAt\":\"2025-04-25T15:37:28.685Z\",\"updatedAt\":\"2025-04-25T15:37:33.228Z\"}],\"createdAt\":\"2025-03-15T10:24:36.207Z\",\"updatedAt\":\"2025-04-25T15:38:46.804Z\"}"));
         PaymentMethodDomainApiResponse response =
                 client.paymentMethodDomain().getPaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -345,6 +380,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testDeletePaymentMethodDomain() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -352,9 +391,17 @@ public class PaymentMethodDomainWireTest {
                                 "{\"isSuccess\":true,\"pageIdentifier\":\"null\",\"responseData\":\"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\"responseText\":\"Success\"}"));
         DeletePaymentMethodDomainResponse response =
                 client.paymentMethodDomain().deletePaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("DELETE", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -399,6 +446,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testUpdatePaymentMethodDomain() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -415,9 +466,17 @@ public class PaymentMethodDomainWireTest {
                                         .isEnabled(false)
                                         .build())
                                 .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("PATCH", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
         // Validate request body
         String actualRequestBody = request.getBody().readUtf8();
         String expectedRequestBody = ""
@@ -526,6 +585,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testListPaymentMethodDomains() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
                 .setBody(TestResources.loadResource(
@@ -535,9 +598,17 @@ public class PaymentMethodDomainWireTest {
                         .entityId(1147L)
                         .entityType("paypoint")
                         .build());
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("GET", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");
@@ -577,6 +648,10 @@ public class PaymentMethodDomainWireTest {
 
     @Test
     public void testVerifyPaymentMethodDomain() throws Exception {
+        // OAuth: enqueue token response (client fetches token before API call)
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"test-token\",\"expires_in\":3600}"));
         server.enqueue(
                 new MockResponse()
                         .setResponseCode(200)
@@ -584,9 +659,17 @@ public class PaymentMethodDomainWireTest {
                                 "{\"isSuccess\":true,\"pageidentifier\":\"null\",\"responseData\":{\"id\":\"pmd_b8237fa45c964d8a9ef27160cd42b8c5\",\"type\":\"PaymentMethodDomains\",\"entityId\":78,\"entityType\":\"organization\",\"domainName\":\"checkout.example.com\",\"applePay\":{\"isEnabled\":true,\"data\":null},\"googlePay\":{\"isEnabled\":true,\"data\":null},\"ownerEntityId\":78,\"ownerEntityType\":\"organization\",\"cascades\":[{\"jobId\":\"1245697\",\"jobStatus\":\"completed\",\"jobErrorMessage\":null,\"createdAt\":\"2025-04-25T15:37:28.685Z\",\"updatedAt\":\"2025-04-25T15:37:33.228Z\"}],\"createdAt\":\"2025-03-15T10:24:36.207Z\",\"updatedAt\":\"2025-04-25T15:45:21.517Z\"},\"responseText\":\"Success\"}"));
         PaymentMethodDomainGeneralResponse response =
                 client.paymentMethodDomain().verifyPaymentMethodDomain("pmd_b8237fa45c964d8a9ef27160cd42b8c5");
+        // OAuth: consume the token request
+        server.takeRequest();
         RecordedRequest request = server.takeRequest();
         Assertions.assertNotNull(request);
         Assertions.assertEquals("POST", request.getMethod());
+
+        // Validate OAuth Authorization header
+        Assertions.assertEquals(
+                "Bearer test-token",
+                request.getHeader("Authorization"),
+                "OAuth Authorization header should contain Bearer token from OAuth flow");
 
         // Validate response body
         Assertions.assertNotNull(response, "Response should not be null");

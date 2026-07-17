@@ -116,6 +116,7 @@ public final class ListTransactionsRequest {
      * <li><code>payaccountLastfour</code> (nct, ct)</li>
      * <li><code>payaccountType</code> (ne, eq, in, nin)</li>
      * <li><code>payaccountCurrency</code> (ne, eq, in, nin)</li>
+     * <li><code>binCardType</code> (eq, ne, in, nin). Filters by card type for card transactions. Accepts <code>CREDIT</code>, <code>DEBIT</code>, or <code>PREPAID</code>. Case-insensitive.</li>
      * <li><code>customerFirstname</code> (ct, nct, eq, ne)</li>
      * <li><code>customerLastname</code> (ct, nct, eq, ne)</li>
      * <li><code>customerName</code> (ct, nct)</li>
@@ -312,6 +313,7 @@ public final class ListTransactionsRequest {
          * <li><code>payaccountLastfour</code> (nct, ct)</li>
          * <li><code>payaccountType</code> (ne, eq, in, nin)</li>
          * <li><code>payaccountCurrency</code> (ne, eq, in, nin)</li>
+         * <li><code>binCardType</code> (eq, ne, in, nin). Filters by card type for card transactions. Accepts <code>CREDIT</code>, <code>DEBIT</code>, or <code>PREPAID</code>. Case-insensitive.</li>
          * <li><code>customerFirstname</code> (ct, nct, eq, ne)</li>
          * <li><code>customerLastname</code> (ct, nct, eq, ne)</li>
          * <li><code>customerName</code> (ct, nct)</li>

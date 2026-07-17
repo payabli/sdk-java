@@ -1026,7 +1026,6 @@ public final class QueryBatchesResponseRecordsItem {
 
         /**
          * <p>The batch status. See <a href="/developers/references/money-in-statuses#batch-status">Batch Status</a> for more.</p>
-         * <p>The batch status. See <a href="/developers/references/money-in-statuses#batch-status">Batch Status</a> for more.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1037,7 +1036,6 @@ public final class QueryBatchesResponseRecordsItem {
         }
 
         /**
-         * <p>The number of records in the batch.</p>
          * <p>The number of records in the batch.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1050,7 +1048,6 @@ public final class QueryBatchesResponseRecordsItem {
 
         /**
          * <p>The entrypoint's parent org.</p>
-         * <p>The entrypoint's parent org.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1061,7 +1058,6 @@ public final class QueryBatchesResponseRecordsItem {
         }
 
         /**
-         * <p>The parent organization ID.</p>
          * <p>The parent organization ID.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

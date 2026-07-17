@@ -202,7 +202,6 @@ public final class CreateApplicationFromPaypointRequest {
 
         /**
          * <p>ID of the existing paypoint to link to this application.</p>
-         * <p>ID of the existing paypoint to link to this application.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -214,7 +213,6 @@ public final class CreateApplicationFromPaypointRequest {
 
         /**
          * <p>ID of the boarding template to use for the new application.</p>
-         * <p>ID of the boarding template to use for the new application.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -225,7 +223,6 @@ public final class CreateApplicationFromPaypointRequest {
         }
 
         /**
-         * <p>Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use <code>returnBoardingAccessInfoInLine</code> to retrieve the link from the response instead.</p>
          * <p>Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use <code>returnBoardingAccessInfoInLine</code> to retrieve the link from the response instead.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

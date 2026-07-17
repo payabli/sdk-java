@@ -296,7 +296,6 @@ public final class AuthorizePaymentMethod {
 
         /**
          * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, &quot;ach&quot;, &quot;wire&quot;, or &quot;rtp&quot;</p>
-         * <p>Payment method type - &quot;managed&quot;, &quot;vcard&quot;, &quot;check&quot;, &quot;ach&quot;, &quot;wire&quot;, or &quot;rtp&quot;</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

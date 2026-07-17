@@ -1186,7 +1186,6 @@ public final class ApplicationDataPayIn {
 
         /**
          * <p>The business's phone number.</p>
-         * <p>The business's phone number.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1197,7 +1196,6 @@ public final class ApplicationDataPayIn {
         }
 
         /**
-         * <p>The business's processing region, either <code>US</code> or <code>CA</code>.</p>
          * <p>The business's processing region, either <code>US</code> or <code>CA</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

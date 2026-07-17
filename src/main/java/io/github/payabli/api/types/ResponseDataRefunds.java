@@ -336,7 +336,6 @@ public final class ResponseDataRefunds {
 
         /**
          * <p>Text description of the transaction result</p>
-         * <p>Text description of the transaction result</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -1017,7 +1017,6 @@ public final class Transfer {
 
         /**
          * <p>The transfer ID.</p>
-         * <p>The transfer ID.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1050,7 +1049,6 @@ public final class Transfer {
 
         /**
          * <p>The ID of the batch the transfer belongs to.</p>
-         * <p>The ID of the batch the transfer belongs to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1061,7 +1059,6 @@ public final class Transfer {
         }
 
         /**
-         * <p>Date when the transfer occurred.</p>
          * <p>Date when the transfer occurred.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1074,7 +1071,6 @@ public final class Transfer {
 
         /**
          * <p>The payment processor used for the transfer.</p>
-         * <p>The payment processor used for the transfer.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1085,7 +1081,6 @@ public final class Transfer {
         }
 
         /**
-         * <p>The current status of the transfer.</p>
          * <p>The current status of the transfer.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1098,7 +1093,6 @@ public final class Transfer {
 
         /**
          * <p>Gross batch is the total amount of the payments grouped in the batch. This amount includes service fees.</p>
-         * <p>Gross batch is the total amount of the payments grouped in the batch. This amount includes service fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1109,7 +1103,6 @@ public final class Transfer {
         }
 
         /**
-         * <p>Amount of chargebacks to be deducted from batch.</p>
          * <p>Amount of chargebacks to be deducted from batch.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1122,7 +1115,6 @@ public final class Transfer {
 
         /**
          * <p>Amount of ACH returns to be deducted from batch.</p>
-         * <p>Amount of ACH returns to be deducted from batch.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1133,7 +1125,6 @@ public final class Transfer {
         }
 
         /**
-         * <p>Amount being held for fraud or risk concerns.</p>
          * <p>Amount being held for fraud or risk concerns.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1146,7 +1137,6 @@ public final class Transfer {
 
         /**
          * <p>Amount of previously held funds that have been released after a risk review.</p>
-         * <p>Amount of previously held funds that have been released after a risk review.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1157,7 +1147,6 @@ public final class Transfer {
         }
 
         /**
-         * <p>Amount of charges and fees applied for services and transactions.</p>
          * <p>Amount of charges and fees applied for services and transactions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1170,7 +1159,6 @@ public final class Transfer {
 
         /**
          * <p>Amount of payments captured in the batch cycle that are deposited separately. For example, checks or cash payments recorded in the batch but not deposited via Payabli, or card brands making a direct transfer in certain situations.</p>
-         * <p>Amount of payments captured in the batch cycle that are deposited separately. For example, checks or cash payments recorded in the batch but not deposited via Payabli, or card brands making a direct transfer in certain situations.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1182,7 +1170,6 @@ public final class Transfer {
 
         /**
          * <p>Amount of corrections applied to Billing &amp; Fees charges.</p>
-         * <p>Amount of corrections applied to Billing &amp; Fees charges.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1193,7 +1180,6 @@ public final class Transfer {
         }
 
         /**
-         * <p>The net transfer amount after all deductions and additions.</p>
          * <p>The net transfer amount after all deductions and additions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -528,7 +528,6 @@ public final class NotificationLogDetail implements INotificationLog {
 
         /**
          * <p>The unique identifier for the notification.</p>
-         * <p>The unique identifier for the notification.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -539,7 +538,6 @@ public final class NotificationLogDetail implements INotificationLog {
         }
 
         /**
-         * <p>Indicates whether the notification was successful.</p>
          * <p>Indicates whether the notification was successful.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -552,7 +550,6 @@ public final class NotificationLogDetail implements INotificationLog {
 
         /**
          * <p>The date and time when the notification was created.</p>
-         * <p>The date and time when the notification was created.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -563,7 +560,6 @@ public final class NotificationLogDetail implements INotificationLog {
         }
 
         /**
-         * <p>Indicates whether the notification is currently in progress.</p>
          * <p>Indicates whether the notification is currently in progress.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
