@@ -8,10 +8,10 @@
     "enable-wire-tests": false,
     "enable-forward-compatible-enums": true
   },
-  "originGitCommit": "4a292ff89b1a47f4e159d99e6b8ac1d9af84a653",
+  "originGitCommit": "8e7b153d0f8390781b6cfe7998f39d1bc837043e",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.8",
+  "requestedVersion": "1.0.9",
   "ciProvider": "github",
-  "sdkVersion": "1.0.8"
+  "sdkVersion": "1.0.9"
 }

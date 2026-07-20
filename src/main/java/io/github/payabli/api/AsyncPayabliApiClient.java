@@ -278,30 +278,7 @@ public class AsyncPayabliApiClient {
         return this.chargeBacksClient.get();
     }
 
-    /**
-     * Creates a client builder using a pre-generated access token.
-     * @param token The access token to use for authentication
-     * @return A builder configured for token authentication
-     */
-    public static AsyncPayabliApiClientBuilder._TokenAuth withToken(String token) {
-        return AsyncPayabliApiClientBuilder.withToken(token);
-    }
-
-    /**
-     * Creates a client builder using OAuth client credentials.
-     * @param clientId The OAuth client ID
-     * @param clientSecret The OAuth client secret
-     * @return A builder configured for OAuth authentication
-     */
-    public static AsyncPayabliApiClientBuilder._CredentialsAuth withCredentials(String clientId, String clientSecret) {
-        return AsyncPayabliApiClientBuilder.withCredentials(clientId, clientSecret);
-    }
-
-    /**
-     * Creates a new client builder.
-     * @return A builder for configuring and creating the client
-     */
-    public static AsyncPayabliApiClientBuilder._Builder builder() {
-        return AsyncPayabliApiClientBuilder.builder();
+    public static AsyncPayabliApiClientBuilder builder() {
+        return new AsyncPayabliApiClientBuilder();
     }
 }
