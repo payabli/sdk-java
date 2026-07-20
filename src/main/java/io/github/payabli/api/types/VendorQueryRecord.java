@@ -125,7 +125,7 @@ public final class VendorQueryRecord {
 
     private final Optional<String> enrichmentId;
 
-    private final Optional<Map<String, Map<String, Object>>> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> externalPaypointId;
 
@@ -184,7 +184,7 @@ public final class VendorQueryRecord {
             Optional<String> enrichedBy,
             Optional<OffsetDateTime> enrichedAt,
             Optional<String> enrichmentId,
-            Optional<Map<String, Map<String, Object>>> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> externalPaypointId,
             Optional<List<VendorResponseStoredMethod>> storedMethods,
             Map<String, Object> additionalProperties) {
@@ -537,7 +537,7 @@ public final class VendorQueryRecord {
     }
 
     @JsonProperty("additionalData")
-    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -811,7 +811,7 @@ public final class VendorQueryRecord {
 
         private Optional<String> enrichmentId = Optional.empty();
 
-        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
 
@@ -1504,12 +1504,12 @@ public final class VendorQueryRecord {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
