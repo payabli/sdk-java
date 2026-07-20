@@ -31,7 +31,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:5.2.1'
 }
 
 
@@ -58,7 +57,7 @@ java {
 
 group = 'io.github.payabli'
 
-version = '1.0.6'
+version = '1.0.7'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
@@ -89,7 +88,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'io.github.payabli'
             artifactId = 'sdk-java'
-            version = '1.0.6'
+            version = '1.0.7'
             from components.java
             pom {
                 name = 'Payabli Docs Team'
