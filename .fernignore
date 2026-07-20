@@ -6,5 +6,3 @@ CONTRIBUTING.md
 .github/workflows/compile.yml
 .github/workflows/publish.yml
 .github/workflows/test.yml
-
-src/test/java/io/github/payabli/api/MoneyInWireTest.java
