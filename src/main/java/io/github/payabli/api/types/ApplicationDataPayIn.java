@@ -135,7 +135,7 @@ public final class ApplicationDataPayIn {
 
     private final Optional<String> repOffice;
 
-    private final Optional<String> onCreate;
+    private final Optional<List<String>> onCreate;
 
     private final Map<String, Object> additionalProperties;
 
@@ -196,7 +196,7 @@ public final class ApplicationDataPayIn {
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
-            Optional<String> onCreate,
+            Optional<List<String>> onCreate,
             Map<String, Object> additionalProperties) {
         this.services = services;
         this.annualRevenue = annualRevenue;
@@ -569,7 +569,7 @@ public final class ApplicationDataPayIn {
     }
 
     @JsonProperty("onCreate")
-    public Optional<String> getOnCreate() {
+    public Optional<List<String>> getOnCreate() {
         return onCreate;
     }
 
@@ -980,9 +980,9 @@ public final class ApplicationDataPayIn {
 
         _FinalStage repOffice(String repOffice);
 
-        _FinalStage onCreate(Optional<String> onCreate);
+        _FinalStage onCreate(Optional<List<String>> onCreate);
 
-        _FinalStage onCreate(String onCreate);
+        _FinalStage onCreate(List<String> onCreate);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -1012,7 +1012,7 @@ public final class ApplicationDataPayIn {
 
         private Whenrefunded whenRefunded;
 
-        private Optional<String> onCreate = Optional.empty();
+        private Optional<List<String>> onCreate = Optional.empty();
 
         private Optional<String> repOffice = Optional.empty();
 
@@ -1242,14 +1242,14 @@ public final class ApplicationDataPayIn {
         }
 
         @java.lang.Override
-        public _FinalStage onCreate(String onCreate) {
+        public _FinalStage onCreate(List<String> onCreate) {
             this.onCreate = Optional.ofNullable(onCreate);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "onCreate", nulls = Nulls.SKIP)
-        public _FinalStage onCreate(Optional<String> onCreate) {
+        public _FinalStage onCreate(Optional<List<String>> onCreate) {
             this.onCreate = onCreate;
             return this;
         }

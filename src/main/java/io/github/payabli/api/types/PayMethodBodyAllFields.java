@@ -43,7 +43,7 @@ public final class PayMethodBodyAllFields {
 
     private final Optional<String> device;
 
-    private final Optional<String> initator;
+    private final Optional<String> initiator;
 
     private final Optional<Methodall> method;
 
@@ -67,7 +67,7 @@ public final class PayMethodBodyAllFields {
             Optional<String> cardnumber,
             Optional<String> cardzip,
             Optional<String> device,
-            Optional<String> initator,
+            Optional<String> initiator,
             Optional<Methodall> method,
             Optional<Boolean> saveIfSuccess,
             Optional<String> storedMethodId,
@@ -84,7 +84,7 @@ public final class PayMethodBodyAllFields {
         this.cardnumber = cardnumber;
         this.cardzip = cardzip;
         this.device = device;
-        this.initator = initator;
+        this.initiator = initiator;
         this.method = method;
         this.saveIfSuccess = saveIfSuccess;
         this.storedMethodId = storedMethodId;
@@ -153,9 +153,9 @@ public final class PayMethodBodyAllFields {
         return device;
     }
 
-    @JsonProperty("initator")
-    public Optional<String> getInitator() {
-        return initator;
+    @JsonProperty("initiator")
+    public Optional<String> getInitiator() {
+        return initiator;
     }
 
     @JsonProperty("method")
@@ -201,7 +201,7 @@ public final class PayMethodBodyAllFields {
                 && cardnumber.equals(other.cardnumber)
                 && cardzip.equals(other.cardzip)
                 && device.equals(other.device)
-                && initator.equals(other.initator)
+                && initiator.equals(other.initiator)
                 && method.equals(other.method)
                 && saveIfSuccess.equals(other.saveIfSuccess)
                 && storedMethodId.equals(other.storedMethodId)
@@ -222,7 +222,7 @@ public final class PayMethodBodyAllFields {
                 this.cardnumber,
                 this.cardzip,
                 this.device,
-                this.initator,
+                this.initiator,
                 this.method,
                 this.saveIfSuccess,
                 this.storedMethodId,
@@ -297,9 +297,9 @@ public final class PayMethodBodyAllFields {
 
         _FinalStage device(String device);
 
-        _FinalStage initator(Optional<String> initator);
+        _FinalStage initiator(Optional<String> initiator);
 
-        _FinalStage initator(String initator);
+        _FinalStage initiator(String initiator);
 
         _FinalStage method(Optional<Methodall> method);
 
@@ -334,7 +334,7 @@ public final class PayMethodBodyAllFields {
 
         private Optional<Methodall> method = Optional.empty();
 
-        private Optional<String> initator = Optional.empty();
+        private Optional<String> initiator = Optional.empty();
 
         private Optional<String> device = Optional.empty();
 
@@ -370,7 +370,7 @@ public final class PayMethodBodyAllFields {
             cardnumber(other.getCardnumber());
             cardzip(other.getCardzip());
             device(other.getDevice());
-            initator(other.getInitator());
+            initiator(other.getInitiator());
             method(other.getMethod());
             saveIfSuccess(other.getSaveIfSuccess());
             storedMethodId(other.getStoredMethodId());
@@ -460,15 +460,15 @@ public final class PayMethodBodyAllFields {
         }
 
         @java.lang.Override
-        public _FinalStage initator(String initator) {
-            this.initator = Optional.ofNullable(initator);
+        public _FinalStage initiator(String initiator) {
+            this.initiator = Optional.ofNullable(initiator);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "initator", nulls = Nulls.SKIP)
-        public _FinalStage initator(Optional<String> initator) {
-            this.initator = initator;
+        @JsonSetter(value = "initiator", nulls = Nulls.SKIP)
+        public _FinalStage initiator(Optional<String> initiator) {
+            this.initiator = initiator;
             return this;
         }
 
@@ -590,7 +590,7 @@ public final class PayMethodBodyAllFields {
                     cardnumber,
                     cardzip,
                     device,
-                    initator,
+                    initiator,
                     method,
                     saveIfSuccess,
                     storedMethodId,

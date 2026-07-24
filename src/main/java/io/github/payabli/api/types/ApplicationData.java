@@ -131,7 +131,7 @@ public final class ApplicationData {
 
     private final Optional<String> repOffice;
 
-    private final Optional<String> onCreate;
+    private final Optional<List<String>> onCreate;
 
     private final Map<String, Object> additionalProperties;
 
@@ -191,7 +191,7 @@ public final class ApplicationData {
             Optional<String> repCode,
             Optional<String> repName,
             Optional<String> repOffice,
-            Optional<String> onCreate,
+            Optional<List<String>> onCreate,
             Map<String, Object> additionalProperties) {
         this.services = services;
         this.annualRevenue = annualRevenue;
@@ -531,7 +531,7 @@ public final class ApplicationData {
     }
 
     @JsonProperty("onCreate")
-    public Optional<String> getOnCreate() {
+    public Optional<List<String>> getOnCreate() {
         return onCreate;
     }
 
@@ -787,7 +787,7 @@ public final class ApplicationData {
 
         private Optional<String> repOffice = Optional.empty();
 
-        private Optional<String> onCreate = Optional.empty();
+        private Optional<List<String>> onCreate = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -1463,12 +1463,12 @@ public final class ApplicationData {
         }
 
         @JsonSetter(value = "onCreate", nulls = Nulls.SKIP)
-        public Builder onCreate(Optional<String> onCreate) {
+        public Builder onCreate(Optional<List<String>> onCreate) {
             this.onCreate = onCreate;
             return this;
         }
 
-        public Builder onCreate(String onCreate) {
+        public Builder onCreate(List<String> onCreate) {
             this.onCreate = Optional.ofNullable(onCreate);
             return this;
         }
