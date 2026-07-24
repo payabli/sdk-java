@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.tokenstorage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
+import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.core.PayabliApiApiException;
@@ -26,6 +27,8 @@ import io.github.payabli.api.types.PayabliApiResponsePaymethodDelete;
 import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.RequestTokenStorage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -102,10 +105,14 @@ public class RawTokenStorageClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json");
         if (request.getIdempotencyKey().isPresent()) {
@@ -209,10 +216,14 @@ public class RawTokenStorageClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
@@ -314,10 +325,14 @@ public class RawTokenStorageClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
@@ -374,10 +389,14 @@ public class RawTokenStorageClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
                 .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();

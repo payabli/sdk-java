@@ -278,6 +278,16 @@ public class PayabliApiClient {
         return this.chargeBacksClient.get();
     }
 
+    /**
+     * Creates a client builder pre-configured with OAuth client credentials.
+     * @param clientId The OAuth client ID
+     * @param clientSecret The OAuth client secret
+     * @return A builder configured with the provided OAuth credentials
+     */
+    public static PayabliApiClientBuilder withCredentials(String clientId, String clientSecret) {
+        return builder().clientId(clientId).clientSecret(clientSecret);
+    }
+
     public static PayabliApiClientBuilder builder() {
         return new PayabliApiClientBuilder();
     }

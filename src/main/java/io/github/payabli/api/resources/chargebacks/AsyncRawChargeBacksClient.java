@@ -5,6 +5,7 @@ package io.github.payabli.api.resources.chargebacks;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
+import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.core.PayabliApiApiException;
@@ -21,6 +22,8 @@ import io.github.payabli.api.types.AddResponseResponse;
 import io.github.payabli.api.types.ChargebackQueryRecords;
 import io.github.payabli.api.types.PayabliErrorBody;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -84,10 +87,14 @@ public class AsyncRawChargeBacksClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json");
         if (request.getIdempotencyKey().isPresent()) {
@@ -187,10 +194,14 @@ public class AsyncRawChargeBacksClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
@@ -286,10 +297,14 @@ public class AsyncRawChargeBacksClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .headers(Headers.of(_headers))
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();

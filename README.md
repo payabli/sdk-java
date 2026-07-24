@@ -78,10 +78,9 @@ import java.util.Optional;
 
 public class Example {
     public static void main(String[] args) {
-        PayabliApiClient client = PayabliApiClient
-            .builder()
-            .apiKey("<value>")
-            .build();
+        PayabliApiClient client = PayabliApiClient.withCredentials("<clientId>", "<clientSecret>")
+            .build()
+        ;
 
         client.moneyIn().getpaidv2(
             RequestPaymentV2
@@ -328,7 +327,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:1.0.10'
+  implementation 'io.github.payabli:sdk-java:1.0.11'
 }
 ```
 
@@ -340,7 +339,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>1.0.10</version>
+  <version>1.0.11</version>
 </dependency>
 ```
 

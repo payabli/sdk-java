@@ -3,10 +3,15 @@
  */
 package io.github.payabli.api;
 
+import io.github.payabli.api.core.ApiKeyAuthProvider;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.Environment;
 import io.github.payabli.api.core.LogConfig;
+import io.github.payabli.api.core.OAuthAuthProvider;
+import io.github.payabli.api.core.RoutingAuthProvider;
+import io.github.payabli.api.resources.token.TokenClient;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import okhttp3.OkHttpClient;
@@ -24,6 +29,16 @@ public class AsyncPayabliApiClientBuilder {
 
     private final Map<String, String> customHeaders = new HashMap<>();
 
+    private String token = null;
+
+    private String clientId = System.getenv("OAUTH_CLIENT_ID");
+
+    private String clientSecret = System.getenv("OAUTH_CLIENT_SECRET");
+
+    private Optional<String> state = Optional.empty();
+
+    private Optional<List<String>> permissions = Optional.empty();
+
     private String apiKey = null;
 
     private Environment environment = Environment.SANDBOX;
@@ -31,6 +46,67 @@ public class AsyncPayabliApiClientBuilder {
     private OkHttpClient httpClient;
 
     private Optional<LogConfig> logging = Optional.empty();
+
+    /**
+     * Sets a pre-generated access token for authentication, bypassing the OAuth client credentials flow.
+     * Use this when you already have a valid access token.
+     * @param token The access token to use for Authorization header
+     * @return This builder for method chaining
+     */
+    public AsyncPayabliApiClientBuilder token(String token) {
+        this.token = token;
+        return this;
+    }
+
+    /**
+     * Sets clientId.
+     * Defaults to the OAUTH_CLIENT_ID environment variable.
+     */
+    public AsyncPayabliApiClientBuilder clientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Sets clientSecret.
+     * Defaults to the OAUTH_CLIENT_SECRET environment variable.
+     */
+    public AsyncPayabliApiClientBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Sets state
+     */
+    public AsyncPayabliApiClientBuilder state(Optional<String> state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
+     * Sets state
+     */
+    public AsyncPayabliApiClientBuilder state(String state) {
+        this.state = Optional.ofNullable(state);
+        return this;
+    }
+
+    /**
+     * Sets permissions
+     */
+    public AsyncPayabliApiClientBuilder permissions(Optional<List<String>> permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Sets permissions
+     */
+    public AsyncPayabliApiClientBuilder permissions(List<String> permissions) {
+        this.permissions = Optional.ofNullable(permissions);
+        return this;
+    }
 
     /**
      * Sets apiKey
@@ -160,9 +236,22 @@ public class AsyncPayabliApiClientBuilder {
      * }</pre>
      */
     protected void setAuthentication(ClientOptions.Builder builder) {
-        if (this.apiKey != null) {
-            builder.addHeader("requestToken", this.apiKey);
+        RoutingAuthProvider.Builder routingBuilder = RoutingAuthProvider.builder();
+        if (this.clientId != null && this.clientSecret != null) {
+            // OAuth requires building an auth client for token fetching
+            ClientOptions.Builder oauthClientOptionsBuilder =
+                    ClientOptions.builder().environment(this.environment);
+            TokenClient oauthAuthClient = new TokenClient(oauthClientOptionsBuilder.build());
+            routingBuilder.addAuthProvider(
+                    "OAuth",
+                    new OAuthAuthProvider(() -> this.clientId, () -> this.clientSecret, oauthAuthClient),
+                    "Please provide clientId and clientSecret via .clientId()/.clientSecret() or set OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET environment variables");
         }
+        if (this.apiKey != null) {
+            routingBuilder.addAuthProvider(
+                    "APIKeyAuth", new ApiKeyAuthProvider(() -> this.apiKey), "Please provide apiKey via .apiKey()");
+        }
+        builder.authProvider(routingBuilder.build());
     }
 
     /**
@@ -259,9 +348,6 @@ public class AsyncPayabliApiClientBuilder {
     protected void validateConfiguration() {}
 
     public AsyncPayabliApiClient build() {
-        if (apiKey == null) {
-            throw new RuntimeException("Please provide apiKey");
-        }
         validateConfiguration();
         return new AsyncPayabliApiClient(buildClientOptions());
     }

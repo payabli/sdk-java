@@ -29,6 +29,8 @@ public final class ClientOptions {
 
     private final Optional<Double> retryJitterFactor;
 
+    private final AuthProvider authProvider;
+
     private final Optional<LogConfig> logging;
 
     private ClientOptions(
@@ -41,16 +43,17 @@ public final class ClientOptions {
             Optional<Long> initialRetryDelayMillis,
             Optional<Long> maxRetryDelayMillis,
             Optional<Double> retryJitterFactor,
+            AuthProvider authProvider,
             Optional<LogConfig> logging) {
         this.environment = environment;
         this.headers = new HashMap<>();
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "io.github.payabli.sdk-java/1.0.10");
+                put("User-Agent", "io.github.payabli.sdk-java/1.0.11");
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.payabli.fern:api-sdk");
-                put("X-Fern-SDK-Version", "1.0.10");
+                put("X-Fern-SDK-Version", "1.0.11");
             }
         });
         this.headerSuppliers = headerSuppliers;
@@ -60,6 +63,7 @@ public final class ClientOptions {
         this.initialRetryDelayMillis = initialRetryDelayMillis;
         this.maxRetryDelayMillis = maxRetryDelayMillis;
         this.retryJitterFactor = retryJitterFactor;
+        this.authProvider = authProvider;
         this.logging = logging;
     }
 
@@ -122,6 +126,13 @@ public final class ClientOptions {
         return this.logging;
     }
 
+    public Map<String, String> getAuthHeaders(EndpointMetadata endpointMetadata) {
+        if (this.authProvider == null) {
+            return new HashMap<>();
+        }
+        return this.authProvider.getAuthHeaders(endpointMetadata);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -146,6 +157,8 @@ public final class ClientOptions {
         private OkHttpClient httpClient = null;
 
         private Optional<LogConfig> logging = Optional.empty();
+
+        private AuthProvider authProvider;
 
         public Builder environment(Environment environment) {
             this.environment = environment;
@@ -218,6 +231,14 @@ public final class ClientOptions {
         }
 
         /**
+         * Set the authentication provider for routing auth to endpoints.
+         */
+        public Builder authProvider(AuthProvider authProvider) {
+            this.authProvider = authProvider;
+            return this;
+        }
+
+        /**
          * Configure logging for the SDK. Silent by default — no log output unless explicitly configured.
          */
         public Builder logging(LogConfig logging) {
@@ -265,6 +286,7 @@ public final class ClientOptions {
                     this.initialRetryDelayMillis,
                     this.maxRetryDelayMillis,
                     this.retryJitterFactor,
+                    this.authProvider,
                     this.logging);
         }
 
