@@ -25,13 +25,19 @@ import java.util.Optional;
 public final class CaptureAllOutRequest {
     private final Optional<String> idempotencyKey;
 
+    private final Optional<Boolean> autoConvertSameDayAch;
+
     private final List<String> body;
 
     private final Map<String, Object> additionalProperties;
 
     private CaptureAllOutRequest(
-            Optional<String> idempotencyKey, List<String> body, Map<String, Object> additionalProperties) {
+            Optional<String> idempotencyKey,
+            Optional<Boolean> autoConvertSameDayAch,
+            List<String> body,
+            Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
+        this.autoConvertSameDayAch = autoConvertSameDayAch;
         this.body = body;
         this.additionalProperties = additionalProperties;
     }
@@ -42,6 +48,15 @@ public final class CaptureAllOutRequest {
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
+    }
+
+    /**
+     * @return Controls what happens to a payout authorized with <code>sameDayACH</code> set to <code>true</code> when you capture it after the same-day ACH cutoff. When <code>true</code>, Payabli converts the payout to a standard ACH payment and captures it. When <code>false</code>, the capture is declined.
+     * <p>This parameter has no effect on payouts that weren't authorized for same-day ACH.</p>
+     */
+    @JsonProperty("autoConvertSameDayAch")
+    public Optional<Boolean> getAutoConvertSameDayAch() {
+        return autoConvertSameDayAch;
     }
 
     @JsonProperty("body")
@@ -61,12 +76,14 @@ public final class CaptureAllOutRequest {
     }
 
     private boolean equalTo(CaptureAllOutRequest other) {
-        return idempotencyKey.equals(other.idempotencyKey) && body.equals(other.body);
+        return idempotencyKey.equals(other.idempotencyKey)
+                && autoConvertSameDayAch.equals(other.autoConvertSameDayAch)
+                && body.equals(other.body);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey, this.body);
+        return Objects.hash(this.idempotencyKey, this.autoConvertSameDayAch, this.body);
     }
 
     @java.lang.Override
@@ -82,6 +99,8 @@ public final class CaptureAllOutRequest {
     public static final class Builder {
         private Optional<String> idempotencyKey = Optional.empty();
 
+        private Optional<Boolean> autoConvertSameDayAch = Optional.empty();
+
         private List<String> body = new ArrayList<>();
 
         @JsonAnySetter
@@ -91,6 +110,7 @@ public final class CaptureAllOutRequest {
 
         public Builder from(CaptureAllOutRequest other) {
             idempotencyKey(other.getIdempotencyKey());
+            autoConvertSameDayAch(other.getAutoConvertSameDayAch());
             body(other.getBody());
             return this;
         }
@@ -105,6 +125,21 @@ public final class CaptureAllOutRequest {
 
         public Builder idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = Optional.ofNullable(idempotencyKey);
+            return this;
+        }
+
+        /**
+         * <p>Controls what happens to a payout authorized with <code>sameDayACH</code> set to <code>true</code> when you capture it after the same-day ACH cutoff. When <code>true</code>, Payabli converts the payout to a standard ACH payment and captures it. When <code>false</code>, the capture is declined.</p>
+         * <p>This parameter has no effect on payouts that weren't authorized for same-day ACH.</p>
+         */
+        @JsonSetter(value = "autoConvertSameDayAch", nulls = Nulls.SKIP)
+        public Builder autoConvertSameDayAch(Optional<Boolean> autoConvertSameDayAch) {
+            this.autoConvertSameDayAch = autoConvertSameDayAch;
+            return this;
+        }
+
+        public Builder autoConvertSameDayAch(Boolean autoConvertSameDayAch) {
+            this.autoConvertSameDayAch = Optional.ofNullable(autoConvertSameDayAch);
             return this;
         }
 
@@ -130,7 +165,7 @@ public final class CaptureAllOutRequest {
         }
 
         public CaptureAllOutRequest build() {
-            return new CaptureAllOutRequest(idempotencyKey, body, additionalProperties);
+            return new CaptureAllOutRequest(idempotencyKey, autoConvertSameDayAch, body, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

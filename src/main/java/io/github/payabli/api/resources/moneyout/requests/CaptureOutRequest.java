@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
@@ -20,10 +23,16 @@ import java.util.Optional;
 public final class CaptureOutRequest {
     private final Optional<String> idempotencyKey;
 
+    private final Optional<Boolean> autoConvertSameDayAch;
+
     private final Map<String, Object> additionalProperties;
 
-    private CaptureOutRequest(Optional<String> idempotencyKey, Map<String, Object> additionalProperties) {
+    private CaptureOutRequest(
+            Optional<String> idempotencyKey,
+            Optional<Boolean> autoConvertSameDayAch,
+            Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
+        this.autoConvertSameDayAch = autoConvertSameDayAch;
         this.additionalProperties = additionalProperties;
     }
 
@@ -33,6 +42,15 @@ public final class CaptureOutRequest {
     @JsonIgnore
     public Optional<String> getIdempotencyKey() {
         return idempotencyKey;
+    }
+
+    /**
+     * @return Controls what happens to a payout authorized with <code>sameDayACH</code> set to <code>true</code> when you capture it after the same-day ACH cutoff. When <code>true</code>, Payabli converts the payout to a standard ACH payment and captures it. When <code>false</code>, the capture is declined.
+     * <p>This parameter has no effect on payouts that weren't authorized for same-day ACH.</p>
+     */
+    @JsonProperty("autoConvertSameDayAch")
+    public Optional<Boolean> getAutoConvertSameDayAch() {
+        return autoConvertSameDayAch;
     }
 
     @java.lang.Override
@@ -47,12 +65,12 @@ public final class CaptureOutRequest {
     }
 
     private boolean equalTo(CaptureOutRequest other) {
-        return idempotencyKey.equals(other.idempotencyKey);
+        return idempotencyKey.equals(other.idempotencyKey) && autoConvertSameDayAch.equals(other.autoConvertSameDayAch);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey);
+        return Objects.hash(this.idempotencyKey, this.autoConvertSameDayAch);
     }
 
     @java.lang.Override
@@ -68,6 +86,8 @@ public final class CaptureOutRequest {
     public static final class Builder {
         private Optional<String> idempotencyKey = Optional.empty();
 
+        private Optional<Boolean> autoConvertSameDayAch = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -75,6 +95,7 @@ public final class CaptureOutRequest {
 
         public Builder from(CaptureOutRequest other) {
             idempotencyKey(other.getIdempotencyKey());
+            autoConvertSameDayAch(other.getAutoConvertSameDayAch());
             return this;
         }
 
@@ -91,8 +112,23 @@ public final class CaptureOutRequest {
             return this;
         }
 
+        /**
+         * <p>Controls what happens to a payout authorized with <code>sameDayACH</code> set to <code>true</code> when you capture it after the same-day ACH cutoff. When <code>true</code>, Payabli converts the payout to a standard ACH payment and captures it. When <code>false</code>, the capture is declined.</p>
+         * <p>This parameter has no effect on payouts that weren't authorized for same-day ACH.</p>
+         */
+        @JsonSetter(value = "autoConvertSameDayAch", nulls = Nulls.SKIP)
+        public Builder autoConvertSameDayAch(Optional<Boolean> autoConvertSameDayAch) {
+            this.autoConvertSameDayAch = autoConvertSameDayAch;
+            return this;
+        }
+
+        public Builder autoConvertSameDayAch(Boolean autoConvertSameDayAch) {
+            this.autoConvertSameDayAch = Optional.ofNullable(autoConvertSameDayAch);
+            return this;
+        }
+
         public CaptureOutRequest build() {
-            return new CaptureOutRequest(idempotencyKey, additionalProperties);
+            return new CaptureOutRequest(idempotencyKey, autoConvertSameDayAch, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -7,6 +7,7 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.Suppliers;
 import io.github.payabli.api.resources.bill.AsyncBillClient;
 import io.github.payabli.api.resources.boarding.AsyncBoardingClient;
+import io.github.payabli.api.resources.casemanagement.AsyncCaseManagementClient;
 import io.github.payabli.api.resources.chargebacks.AsyncChargeBacksClient;
 import io.github.payabli.api.resources.checkcapture.AsyncCheckCaptureClient;
 import io.github.payabli.api.resources.cloud.AsyncCloudClient;
@@ -109,6 +110,8 @@ public class AsyncPayabliApiClient {
 
     protected final Supplier<AsyncChargeBacksClient> chargeBacksClient;
 
+    protected final Supplier<AsyncCaseManagementClient> caseManagementClient;
+
     public AsyncPayabliApiClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.billClient = Suppliers.memoize(() -> new AsyncBillClient(clientOptions));
@@ -144,6 +147,7 @@ public class AsyncPayabliApiClient {
         this.walletClient = Suppliers.memoize(() -> new AsyncWalletClient(clientOptions));
         this.payoutSubscriptionClient = Suppliers.memoize(() -> new AsyncPayoutSubscriptionClient(clientOptions));
         this.chargeBacksClient = Suppliers.memoize(() -> new AsyncChargeBacksClient(clientOptions));
+        this.caseManagementClient = Suppliers.memoize(() -> new AsyncCaseManagementClient(clientOptions));
     }
 
     public AsyncBillClient bill() {
@@ -276,6 +280,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncChargeBacksClient chargeBacks() {
         return this.chargeBacksClient.get();
+    }
+
+    public AsyncCaseManagementClient caseManagement() {
+        return this.caseManagementClient.get();
     }
 
     /**

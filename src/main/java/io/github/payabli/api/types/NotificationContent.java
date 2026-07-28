@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationContent.Builder.class)
 public final class NotificationContent {
-    private final Optional<NotificationContentEventType> eventType;
+    private final Optional<String> eventType;
 
     private final Optional<NotificationContentFileFormat> fileFormat;
 
@@ -38,7 +38,7 @@ public final class NotificationContent {
     private final Map<String, Object> additionalProperties;
 
     private NotificationContent(
-            Optional<NotificationContentEventType> eventType,
+            Optional<String> eventType,
             Optional<NotificationContentFileFormat> fileFormat,
             Optional<List<KeyValueDuo>> internalData,
             Optional<NotificationContentReportName> reportName,
@@ -60,7 +60,7 @@ public final class NotificationContent {
      * @return The notification's event name.
      */
     @JsonProperty("eventType")
-    public Optional<NotificationContentEventType> getEventType() {
+    public Optional<String> getEventType() {
         return eventType;
     }
 
@@ -154,7 +154,7 @@ public final class NotificationContent {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<NotificationContentEventType> eventType = Optional.empty();
+        private Optional<String> eventType = Optional.empty();
 
         private Optional<NotificationContentFileFormat> fileFormat = Optional.empty();
 
@@ -188,12 +188,12 @@ public final class NotificationContent {
          * <p>The notification's event name.</p>
          */
         @JsonSetter(value = "eventType", nulls = Nulls.SKIP)
-        public Builder eventType(Optional<NotificationContentEventType> eventType) {
+        public Builder eventType(Optional<String> eventType) {
             this.eventType = eventType;
             return this;
         }
 
-        public Builder eventType(NotificationContentEventType eventType) {
+        public Builder eventType(String eventType) {
             this.eventType = Optional.ofNullable(eventType);
             return this;
         }

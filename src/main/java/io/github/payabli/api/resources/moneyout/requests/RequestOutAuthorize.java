@@ -36,6 +36,8 @@ public final class RequestOutAuthorize {
 
     private final Optional<Boolean> forceVendorCreation;
 
+    private final Optional<Boolean> sameDayAch;
+
     private final String entryPoint;
 
     private final Optional<String> source;
@@ -67,6 +69,7 @@ public final class RequestOutAuthorize {
             Optional<Boolean> allowDuplicatedBills,
             Optional<Boolean> doNotCreateBills,
             Optional<Boolean> forceVendorCreation,
+            Optional<Boolean> sameDayAch,
             String entryPoint,
             Optional<String> source,
             Optional<String> orderId,
@@ -84,6 +87,7 @@ public final class RequestOutAuthorize {
         this.allowDuplicatedBills = allowDuplicatedBills;
         this.doNotCreateBills = doNotCreateBills;
         this.forceVendorCreation = forceVendorCreation;
+        this.sameDayAch = sameDayAch;
         this.entryPoint = entryPoint;
         this.source = source;
         this.orderId = orderId;
@@ -129,6 +133,15 @@ public final class RequestOutAuthorize {
     @JsonIgnore
     public Optional<Boolean> getForceVendorCreation() {
         return forceVendorCreation;
+    }
+
+    /**
+     * @return When <code>true</code>, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a <code>400</code> response and <code>responseCode</code> <code>3492</code>. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
+     * <p>Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass <code>autoConvertSameDayAch</code> with a value of <code>true</code> when you capture it.</p>
+     */
+    @JsonIgnore
+    public Optional<Boolean> getSameDayAch() {
+        return sameDayAch;
     }
 
     @JsonProperty("entryPoint")
@@ -216,6 +229,7 @@ public final class RequestOutAuthorize {
                 && allowDuplicatedBills.equals(other.allowDuplicatedBills)
                 && doNotCreateBills.equals(other.doNotCreateBills)
                 && forceVendorCreation.equals(other.forceVendorCreation)
+                && sameDayAch.equals(other.sameDayAch)
                 && entryPoint.equals(other.entryPoint)
                 && source.equals(other.source)
                 && orderId.equals(other.orderId)
@@ -237,6 +251,7 @@ public final class RequestOutAuthorize {
                 this.allowDuplicatedBills,
                 this.doNotCreateBills,
                 this.forceVendorCreation,
+                this.sameDayAch,
                 this.entryPoint,
                 this.source,
                 this.orderId,
@@ -319,6 +334,14 @@ public final class RequestOutAuthorize {
 
         _FinalStage forceVendorCreation(Boolean forceVendorCreation);
 
+        /**
+         * <p>When <code>true</code>, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a <code>400</code> response and <code>responseCode</code> <code>3492</code>. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.</p>
+         * <p>Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass <code>autoConvertSameDayAch</code> with a value of <code>true</code> when you capture it.</p>
+         */
+        _FinalStage sameDayAch(Optional<Boolean> sameDayAch);
+
+        _FinalStage sameDayAch(Boolean sameDayAch);
+
         _FinalStage source(Optional<String> source);
 
         _FinalStage source(String source);
@@ -384,6 +407,8 @@ public final class RequestOutAuthorize {
 
         private Optional<String> source = Optional.empty();
 
+        private Optional<Boolean> sameDayAch = Optional.empty();
+
         private Optional<Boolean> forceVendorCreation = Optional.empty();
 
         private Optional<Boolean> doNotCreateBills = Optional.empty();
@@ -403,6 +428,7 @@ public final class RequestOutAuthorize {
             allowDuplicatedBills(other.getAllowDuplicatedBills());
             doNotCreateBills(other.getDoNotCreateBills());
             forceVendorCreation(other.getForceVendorCreation());
+            sameDayAch(other.getSameDayAch());
             entryPoint(other.getEntryPoint());
             source(other.getSource());
             orderId(other.getOrderId());
@@ -581,6 +607,28 @@ public final class RequestOutAuthorize {
         }
 
         /**
+         * <p>When <code>true</code>, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a <code>400</code> response and <code>responseCode</code> <code>3492</code>. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.</p>
+         * <p>Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass <code>autoConvertSameDayAch</code> with a value of <code>true</code> when you capture it.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage sameDayAch(Boolean sameDayAch) {
+            this.sameDayAch = Optional.ofNullable(sameDayAch);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a <code>400</code> response and <code>responseCode</code> <code>3492</code>. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.</p>
+         * <p>Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass <code>autoConvertSameDayAch</code> with a value of <code>true</code> when you capture it.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "sameDayACH", nulls = Nulls.SKIP)
+        public _FinalStage sameDayAch(Optional<Boolean> sameDayAch) {
+            this.sameDayAch = sameDayAch;
+            return this;
+        }
+
+        /**
          * <p>When <code>true</code>, the request creates a new vendor record, regardless of whether the vendor already exists.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -666,6 +714,7 @@ public final class RequestOutAuthorize {
                     allowDuplicatedBills,
                     doNotCreateBills,
                     forceVendorCreation,
+                    sameDayAch,
                     entryPoint,
                     source,
                     orderId,

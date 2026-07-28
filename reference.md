@@ -23349,7 +23349,7 @@ client.notification().addNotification(
                 Optional.of(
                     NotificationStandardRequestContent
                         .builder()
-                        .eventType(Optional.of(NotificationStandardRequestContentEventType.CREATED_APPLICATION))
+                        .eventType(Optional.of(NotificationStandardRequestContentEventType.CREATEDAPPLICATION))
                         .build()
                 )
             )
@@ -23478,7 +23478,7 @@ client.notification().updateNotification(
                 Optional.of(
                     NotificationStandardRequestContent
                         .builder()
-                        .eventType(Optional.of(NotificationStandardRequestContentEventType.APPROVED_PAYMENT))
+                        .eventType(Optional.of(NotificationStandardRequestContentEventType.APPROVEDPAYMENT))
                         .build()
                 )
             )
@@ -25315,7 +25315,7 @@ Authorizes a transaction for payout.
 
 If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
 
-When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/api-reference/webhooks-overview/payout-transaction-approved-captured) webhook event.
+When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
 
 If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 
@@ -25400,6 +25400,18 @@ client.moneyOut().authorizeOut(
 <dd>
 
 **forceVendorCreation:** `Optional<Boolean>` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sameDayAch:** `Optional<Boolean>` 
+
+When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
+
+Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass `autoConvertSameDayAch` with a value of `true` when you capture it.
     
 </dd>
 </dl>
@@ -25728,6 +25740,18 @@ client.moneyOut().captureAllOut(
 <dl>
 <dd>
 
+**autoConvertSameDayAch:** `Optional<Boolean>` 
+
+Controls what happens to a payout authorized with `sameDayACH` set to `true` when you capture it after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+
+This parameter has no effect on payouts that weren't authorized for same-day ACH.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
@@ -25798,6 +25822,18 @@ client.moneyOut().captureOut(
 <dd>
 
 **referenceId:** `String` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autoConvertSameDayAch:** `Optional<Boolean>` 
+
+Controls what happens to a payout authorized with `sameDayACH` set to `true` when you capture it after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+
+This parameter has no effect on payouts that weren't authorized for same-day ACH.
     
 </dd>
 </dl>
@@ -27199,7 +27235,7 @@ client.chargeBacks().getChargeback(1000000L);
 <dl>
 <dd>
 
-**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
+**id:** `Long` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/developers/webhooks/payops-chargeback-received) and [ReceivedAchReturn](/developers/webhooks/payops-ach-return-received) webhook notifications.
     
 </dd>
 </dl>
@@ -27262,6 +27298,1089 @@ client.chargeBacks().getChargebackAttachment(1000000L, "fileName");
 <dd>
 
 **fileName:** `String` — The chargeback attachment's file name.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Case Management
+<details><summary><code>client.caseManagement.validateBankAccountChange(paypointId, request) -> PreCreationValidationResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Validates a bank account change for a paypoint without creating a case.
+Runs the same checks the create endpoint runs, and returns blocking
+conditions and warnings. Blocking conditions prevent creation; warnings
+don't.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().validateBankAccountChange(
+    3040L,
+    ValidateBankAccountChangeRequest
+        .builder()
+        .routingNumber("123456789")
+        .accountNumber("987654321")
+        .accountType("checking")
+        .bankAccountHolderType("business")
+        .bankAccountFunction(CaseManagementBankAccountFunction.DEPOSITS)
+        .services(
+            BankAccountServices
+                .builder()
+                .moneyIn(
+                    Optional.of(
+                        Arrays.asList(MoneyInService.ACH)
+                    )
+                )
+                .moneyOut(
+                    Optional.of(
+                        Arrays.asList(MoneyOutService.ACH)
+                    )
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `Long` — The paypoint's numeric identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `String` — The 9-digit bank routing number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `String` — The bank account number (4 to 17 digits).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `String` — The account type. Must be `checking` or `savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountHolderType:** `String` — The account holder type. Must be `personal` or `business`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountFunction:** `CaseManagementBankAccountFunction` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `BankAccountServices` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.createBankAccountChange(paypointId, request) -> CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a bank-account-change case for a paypoint. The account and
+routing numbers are validated and tokenized before the case is saved —
+the raw numbers are never stored or returned. The account holder name is
+taken from the paypoint's legal name. On success the case is created in
+`Submitted` and asynchronous verification starts.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().createBankAccountChange(
+    3040L,
+    CreateBankAccountChangeCaseRequest
+        .builder()
+        .nickname("Main Settlement Account")
+        .bankName("First National Bank")
+        .routingNumber("123456789")
+        .accountNumber("987654321")
+        .accountType("checking")
+        .bankAccountHolderType("business")
+        .bankAccountFunction(CaseManagementBankAccountFunction.DEPOSITS)
+        .services(
+            BankAccountServices
+                .builder()
+                .moneyIn(
+                    Optional.of(
+                        Arrays.asList(MoneyInService.ACH)
+                    )
+                )
+                .moneyOut(
+                    Optional.of(
+                        Arrays.asList(MoneyOutService.ACH)
+                    )
+                )
+                .build()
+        )
+        .default_(true)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `Long` — The paypoint's numeric identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nickname:** `String` — A label for the account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankName:** `String` — The name of the bank.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `String` — The 9-digit bank routing number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `String` — The bank account number (4 to 17 digits).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `String` — The account type. Must be `checking` or `savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountHolderType:** `String` — The account holder type. Must be `personal` or `business`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountFunction:** `CaseManagementBankAccountFunction` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `BankAccountServices` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**default_:** `Boolean` — Whether this is the default account for the selected services.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleFor:** `Optional<OffsetDateTime>` 
+
+When to run the change, as a UTC timestamp (trailing `Z`). Must be at
+least 1 hour and at most 30 days in the future. Omit to run as soon as
+the case is approved.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.getCase(uuid) -> CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a case by its UUID, including its current state, parameters,
+state history, verification metadata, and attachments.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().getCase("9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.listCases(organizationId) -> CaseListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists cases for an organization, climbing the platform org hierarchy.
+Supports pagination and sorting through query parameters, and filtering
+through repeatable `parameters[field(op)]=value` query parameters (for
+example `parameters[state(in)]=Assigned|PendingReview`). Filterable
+fields include `state`, `caseType`, `paypointId`, `createdAt`,
+`updatedAt`, `scheduleFor`, and `createdBy`.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().listCases(
+    123L,
+    ListCasesCaseManagementRequest
+        .builder()
+        .fromRecord(0)
+        .limitRecord(20)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**organizationId:** `Long` — The organization's numeric identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The zero-based index of the first record to return.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The maximum number of records to return (1 to 200).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — Sort expression, such as `desc(createdAt)` or `asc(state)`. Defaults to `desc(createdAt)`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.listMessages(caseUuid) -> MessagePage</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the notes on a case, ordered oldest to newest. Cursor-paginated.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().listMessages(
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    ListMessagesCaseManagementRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — The maximum number of notes to return (default 50, max 200).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — An opaque cursor for the next page.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.postMessage(caseUuid, request) -> PostedMessage</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds a note to a case.
+
+Available to both Platform and Enterprise Partners.
+
+This endpoint is in development and not yet available for API use. To
+add a note for now, use Case Management in the
+[Payabli Portal](/guides/pay-ops-portal-bank-account-changes-manage).
+To read existing notes on a case, use
+[List case notes](/developers/api-reference/caseManagement/list-case-notes).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().postMessage(
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    PostCaseMessageRequest
+        .builder()
+        .content("Reviewed supporting documents; account ownership confirmed.")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `String` — The note text (1 to 4000 characters).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.listTransitions(uuid) -> AvailableTransitionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the review actions currently available on a case. The list is
+empty when no user action is available (for example while the case is
+mid-automation).
+
+Available to both Platform and Enterprise Partners, though only
+Enterprise Partners can fire the returned actions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().listTransitions("9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.transition(uuid, request) -> CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Fires a review action on a case, such as `Approve`, `Deny`, `Escalate`,
+or `RequestReview`. Assigning a case uses the dedicated assign endpoint,
+not this one. Firing an action that isn't valid for the case's current
+state returns `409`.
+
+Available to Enterprise Partners only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().transition(
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    TransitionCaseRequest
+        .builder()
+        .trigger(CaseTrigger.APPROVE)
+        .reason("Account ownership confirmed with the merchant by phone.")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trigger:** `CaseTrigger` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `String` — The reason for the action.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**declineReason:** `Optional<BankReviewDecisionReason>` — The decline reason. Required when the trigger is `Deny`, and must be omitted otherwise.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.assignCase(uuid, request) -> CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Assigns a case to a reviewer.
+
+Available to Enterprise Partners only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().assignCase(
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    AssignCaseRequest
+        .builder()
+        .assigneeId(4238L)
+        .reason("Routing to the risk team for review.")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**assigneeId:** `Long` — The numeric id of the reviewer to assign the case to.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `Optional<String>` — An optional reason for the assignment.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.listAttachments(caseUuid) -> List&amp;lt;AttachmentResponse&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the files attached to a case.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().listAttachments("9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.uploadAttachment(caseUuid, request) -> AttachmentResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Uploads a file to a case as multipart form data. The maximum size is
+25 MiB, and the content type must be an allowed type such as PDF, PNG,
+JPEG, CSV, XLSX, DOCX, or plain text.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().uploadAttachment(
+    "caseUuid",
+    null,
+    UploadAttachmentCaseManagementRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.getAttachment(caseUuid, attachmentId) -> InputStream</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Streams the file content of an attachment.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().getAttachment("caseUuid", "attachmentId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachmentId:** `String` — The attachment's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.caseManagement.deleteAttachment(caseUuid, attachmentId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes an attachment from a case.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.caseManagement().deleteAttachment("caseUuid", "attachmentId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `String` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachmentId:** `String` — The attachment's UUID.
     
 </dd>
 </dl>
