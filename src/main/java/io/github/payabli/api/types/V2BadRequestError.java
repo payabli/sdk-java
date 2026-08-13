@@ -114,7 +114,7 @@ public final class V2BadRequestError {
     }
 
     /**
-     * @return Dictionary of field-specific validation errors. Keys are field paths (e.g., &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.
+     * @return Dictionary of field-specific validation errors. Keys are field paths (for example, &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.
      */
     @JsonProperty("errors")
     public Map<String, List<V2BadRequestErrorDetail>> getErrors() {
@@ -227,7 +227,7 @@ public final class V2BadRequestError {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>Dictionary of field-specific validation errors. Keys are field paths (e.g., &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
+         * <p>Dictionary of field-specific validation errors. Keys are field paths (for example, &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
          */
         _FinalStage errors(Map<String, List<V2BadRequestErrorDetail>> errors);
 
@@ -385,7 +385,7 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Dictionary of field-specific validation errors. Keys are field paths (e.g., &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
+         * <p>Dictionary of field-specific validation errors. Keys are field paths (for example, &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -395,7 +395,7 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Dictionary of field-specific validation errors. Keys are field paths (e.g., &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
+         * <p>Dictionary of field-specific validation errors. Keys are field paths (for example, &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -407,7 +407,7 @@ public final class V2BadRequestError {
         }
 
         /**
-         * <p>Dictionary of field-specific validation errors. Keys are field paths (e.g., &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
+         * <p>Dictionary of field-specific validation errors. Keys are field paths (for example, &quot;paymentMethod.cardnumber&quot;) and values are arrays of error details.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "errors", nulls = Nulls.SKIP)

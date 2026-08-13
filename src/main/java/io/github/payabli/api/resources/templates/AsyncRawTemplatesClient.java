@@ -7,9 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -47,14 +47,15 @@ public class AsyncRawTemplatesClient {
     /**
      * Deletes a template by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(double templateId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(
+            double templateId) {
         return deleteTemplate(templateId, null);
     }
 
     /**
      * Deletes a template by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(
             double templateId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -88,14 +89,15 @@ public class AsyncRawTemplatesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseTemplateId>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseTemplateId>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponseTemplateId.class),
                                 response));
@@ -128,20 +130,21 @@ public class AsyncRawTemplatesClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -150,7 +153,7 @@ public class AsyncRawTemplatesClient {
     /**
      * Generates a boarding link from a boarding template.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
             double templateId, boolean ignoreEmpty) {
         return getlinkTemplate(templateId, ignoreEmpty, null);
     }
@@ -158,7 +161,7 @@ public class AsyncRawTemplatesClient {
     /**
      * Generates a boarding link from a boarding template.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
             double templateId, boolean ignoreEmpty, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -193,14 +196,14 @@ public class AsyncRawTemplatesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<BoardingLinkApiResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkApiResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkApiResponse.class),
                                 response));
                         return;
@@ -232,20 +235,21 @@ public class AsyncRawTemplatesClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -254,14 +258,14 @@ public class AsyncRawTemplatesClient {
     /**
      * Retrieves a boarding template's details by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryRecord>> getTemplate(double templateId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryRecord>> getTemplate(double templateId) {
         return getTemplate(templateId, null);
     }
 
     /**
      * Retrieves a boarding template's details by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryRecord>> getTemplate(
+    public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryRecord>> getTemplate(
             double templateId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -295,14 +299,14 @@ public class AsyncRawTemplatesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TemplateQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TemplateQueryRecord.class),
                                 response));
                         return;
@@ -334,20 +338,21 @@ public class AsyncRawTemplatesClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -356,14 +361,14 @@ public class AsyncRawTemplatesClient {
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> listTemplates(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(int orgId) {
         return listTemplates(orgId, ListTemplatesRequest.builder().build());
     }
 
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> listTemplates(
+    public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(
             int orgId, RequestOptions requestOptions) {
         return listTemplates(orgId, ListTemplatesRequest.builder().build(), requestOptions);
     }
@@ -371,7 +376,7 @@ public class AsyncRawTemplatesClient {
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> listTemplates(
+    public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(
             int orgId, ListTemplatesRequest request) {
         return listTemplates(orgId, request, null);
     }
@@ -379,7 +384,7 @@ public class AsyncRawTemplatesClient {
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> listTemplates(
+    public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(
             int orgId, ListTemplatesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -429,14 +434,14 @@ public class AsyncRawTemplatesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TemplateQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TemplateQueryResponse.class),
                                 response));
                         return;
@@ -468,20 +473,21 @@ public class AsyncRawTemplatesClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

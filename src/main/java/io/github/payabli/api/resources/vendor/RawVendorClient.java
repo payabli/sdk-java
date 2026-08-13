@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
@@ -48,28 +48,29 @@ public class RawVendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(String entry) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> addVendor(String entry) {
         return addVendor(entry, VendorData.builder().build());
     }
 
     /**
      * Creates a vendor in an entrypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> addVendor(
+            String entry, RequestOptions requestOptions) {
         return addVendor(entry, VendorData.builder().build(), requestOptions);
     }
 
     /**
      * Creates a vendor in an entrypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(String entry, VendorData request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> addVendor(String entry, VendorData request) {
         return addVendor(entry, request, null);
     }
 
     /**
      * Creates a vendor in an entrypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> addVendor(
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> addVendor(
             String entry, VendorData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -85,7 +86,7 @@ public class RawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -115,7 +116,7 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseVendors.class),
                         response);
             }
@@ -140,26 +141,26 @@ public class RawVendorClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor) {
+    public PayabliApiClientHttpResponse<VendorQueryRecord> getVendor(int idVendor) {
         return getVendor(idVendor, null);
     }
 
     /**
      * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public PayabliApiHttpResponse<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<VendorQueryRecord> getVendor(int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
@@ -196,44 +197,45 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class), response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor) {
         return editVendor(idVendor, VendorData.builder().build());
     }
 
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> editVendor(
+            int idVendor, RequestOptions requestOptions) {
         return editVendor(idVendor, VendorData.builder().build(), requestOptions);
     }
 
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor, VendorData request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> editVendor(int idVendor, VendorData request) {
         return editVendor(idVendor, request, null);
     }
 
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> editVendor(
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> editVendor(
             int idVendor, VendorData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -249,7 +251,7 @@ public class RawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -279,7 +281,7 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseVendors.class),
                         response);
             }
@@ -304,26 +306,27 @@ public class RawVendorClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Delete a vendor.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor) {
         return deleteVendor(idVendor, null);
     }
 
     /**
      * Delete a vendor.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseVendors> deleteVendor(int idVendor, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseVendors> deleteVendor(
+            int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Vendor")
@@ -360,7 +363,7 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseVendors.class),
                         response);
             }
@@ -385,26 +388,26 @@ public class RawVendorClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
      */
-    public PayabliApiHttpResponse<VendorEnrichResponse> enrichVendor(String entry, VendorEnrichRequest request) {
+    public PayabliApiClientHttpResponse<VendorEnrichResponse> enrichVendor(String entry, VendorEnrichRequest request) {
         return enrichVendor(entry, request, null);
     }
 
     /**
      * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
      */
-    public PayabliApiHttpResponse<VendorEnrichResponse> enrichVendor(
+    public PayabliApiClientHttpResponse<VendorEnrichResponse> enrichVendor(
             String entry, VendorEnrichRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -420,7 +423,7 @@ public class RawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -450,7 +453,7 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorEnrichResponse.class), response);
             }
             try {
@@ -474,19 +477,19 @@ public class RawVendorClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
      */
-    public PayabliApiHttpResponse<VendorScheduleCallResponse> scheduleEnrichmentCall(
+    public PayabliApiClientHttpResponse<VendorScheduleCallResponse> scheduleEnrichmentCall(
             String entry, ScheduleEnrichmentCallRequest request) {
         return scheduleEnrichmentCall(entry, request, null);
     }
@@ -494,7 +497,7 @@ public class RawVendorClient {
     /**
      * Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
      */
-    public PayabliApiHttpResponse<VendorScheduleCallResponse> scheduleEnrichmentCall(
+    public PayabliApiClientHttpResponse<VendorScheduleCallResponse> scheduleEnrichmentCall(
             String entry, ScheduleEnrichmentCallRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -510,7 +513,7 @@ public class RawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -540,7 +543,7 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorScheduleCallResponse.class),
                         response);
             }
@@ -569,26 +572,26 @@ public class RawVendorClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns the latest AI outreach call activity for a vendor. The response is a composite object with a <code>state</code> discriminator (<code>none</code>, <code>scheduled</code>, <code>successful</code>, or <code>failed</code>); the block that matches the current state is populated. When the vendor has no call activity, <code>state</code> is <code>none</code> and the response returns HTTP 200.
      */
-    public PayabliApiHttpResponse<VendorCallStatusResponse> getEnrichmentCallStatus(long idVendor) {
+    public PayabliApiClientHttpResponse<VendorCallStatusResponse> getEnrichmentCallStatus(long idVendor) {
         return getEnrichmentCallStatus(idVendor, null);
     }
 
     /**
      * Returns the latest AI outreach call activity for a vendor. The response is a composite object with a <code>state</code> discriminator (<code>none</code>, <code>scheduled</code>, <code>successful</code>, or <code>failed</code>); the block that matches the current state is populated. When the vendor has no call activity, <code>state</code> is <code>none</code> and the response returns HTTP 200.
      */
-    public PayabliApiHttpResponse<VendorCallStatusResponse> getEnrichmentCallStatus(
+    public PayabliApiClientHttpResponse<VendorCallStatusResponse> getEnrichmentCallStatus(
             long idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -628,7 +631,7 @@ public class RawVendorClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorCallStatusResponse.class),
                         response);
             }
@@ -650,12 +653,12 @@ public class RawVendorClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

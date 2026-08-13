@@ -9,9 +9,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -58,7 +58,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> addInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> addInvoice(
             String entry, InvoiceDataRequest body) {
         return addInvoice(entry, AddInvoiceRequest.builder().body(body).build());
     }
@@ -66,7 +66,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> addInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> addInvoice(
             String entry, InvoiceDataRequest body, RequestOptions requestOptions) {
         return addInvoice(entry, AddInvoiceRequest.builder().body(body).build(), requestOptions);
     }
@@ -74,7 +74,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> addInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> addInvoice(
             String entry, AddInvoiceRequest request) {
         return addInvoice(entry, request, null);
     }
@@ -82,7 +82,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> addInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> addInvoice(
             String entry, AddInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -135,14 +135,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InvoiceResponseWithoutData.class),
                                 response));
@@ -175,20 +175,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -197,7 +198,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<FileContent>> getAttachedFileFromInvoice(
             int idInvoice, String filename) {
         return getAttachedFileFromInvoice(
                 idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
@@ -206,7 +207,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<FileContent>> getAttachedFileFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {
         return getAttachedFileFromInvoice(
                 idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
@@ -215,7 +216,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<FileContent>> getAttachedFileFromInvoice(
             int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
         return getAttachedFileFromInvoice(idInvoice, filename, request, null);
     }
@@ -223,7 +224,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public CompletableFuture<PayabliApiHttpResponse<FileContent>> getAttachedFileFromInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<FileContent>> getAttachedFileFromInvoice(
             int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -262,14 +263,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<FileContent>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<FileContent>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response));
                         return;
                     }
@@ -300,20 +301,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -322,7 +324,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Deletes a file attached to an invoice.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteAttachedFromInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> deleteAttachedFromInvoice(
             int idInvoice, String filename) {
         return deleteAttachedFromInvoice(idInvoice, filename, null);
     }
@@ -330,7 +332,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Deletes a file attached to an invoice.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteAttachedFromInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -365,14 +367,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InvoiceResponseWithoutData.class),
                                 response));
@@ -405,20 +407,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -427,14 +430,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Retrieves a single invoice by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> getInvoice(int idInvoice) {
+    public CompletableFuture<PayabliApiClientHttpResponse<GetInvoiceRecord>> getInvoice(int idInvoice) {
         return getInvoice(idInvoice, null);
     }
 
     /**
      * Retrieves a single invoice by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> getInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetInvoiceRecord>> getInvoice(
             int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -468,14 +471,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<GetInvoiceRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<GetInvoiceRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetInvoiceRecord.class),
                                 response));
                         return;
@@ -507,20 +510,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -529,7 +533,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> editInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> editInvoice(
             int idInvoice, InvoiceDataRequest body) {
         return editInvoice(idInvoice, EditInvoiceRequest.builder().body(body).build());
     }
@@ -537,7 +541,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> editInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> editInvoice(
             int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
         return editInvoice(idInvoice, EditInvoiceRequest.builder().body(body).build(), requestOptions);
     }
@@ -545,7 +549,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> editInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> editInvoice(
             int idInvoice, EditInvoiceRequest request) {
         return editInvoice(idInvoice, request, null);
     }
@@ -553,7 +557,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> editInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> editInvoice(
             int idInvoice, EditInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -602,14 +606,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InvoiceResponseWithoutData.class),
                                 response));
@@ -642,20 +646,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -664,14 +669,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Deletes a single invoice from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(int idInvoice) {
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(int idInvoice) {
         return deleteInvoice(idInvoice, null);
     }
 
     /**
      * Deletes a single invoice from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> deleteInvoice(
             int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -705,14 +710,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<InvoiceResponseWithoutData>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InvoiceResponseWithoutData.class),
                                 response));
@@ -745,20 +750,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -767,14 +773,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Retrieves the next available invoice number for a paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceNumberResponse>> getInvoiceNumber(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceNumberResponse>> getInvoiceNumber(String entry) {
         return getInvoiceNumber(entry, null);
     }
 
     /**
      * Retrieves the next available invoice number for a paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<InvoiceNumberResponse>> getInvoiceNumber(
+    public CompletableFuture<PayabliApiClientHttpResponse<InvoiceNumberResponse>> getInvoiceNumber(
             String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -808,14 +814,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<InvoiceNumberResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<InvoiceNumberResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceNumberResponse.class),
                                 response));
                         return;
@@ -847,20 +853,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -869,14 +876,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoices(String entry) {
         return listInvoices(entry, ListInvoicesRequest.builder().build());
     }
 
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoices(
             String entry, RequestOptions requestOptions) {
         return listInvoices(entry, ListInvoicesRequest.builder().build(), requestOptions);
     }
@@ -884,7 +891,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoices(
             String entry, ListInvoicesRequest request) {
         return listInvoices(entry, request, null);
     }
@@ -892,7 +899,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoices(
             String entry, ListInvoicesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -946,14 +953,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryInvoiceResponse.class),
                                 response));
                         return;
@@ -985,20 +992,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1007,14 +1015,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(int orgId) {
         return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build());
     }
 
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
             int orgId, RequestOptions requestOptions) {
         return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build(), requestOptions);
     }
@@ -1022,7 +1030,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request) {
         return listInvoicesOrg(orgId, request, null);
     }
@@ -1030,7 +1038,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1084,14 +1092,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryInvoiceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryInvoiceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryInvoiceResponse.class),
                                 response));
                         return;
@@ -1123,20 +1131,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1145,14 +1154,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public CompletableFuture<PayabliApiHttpResponse<SendInvoiceResponse>> sendInvoice(int idInvoice) {
+    public CompletableFuture<PayabliApiClientHttpResponse<SendInvoiceResponse>> sendInvoice(int idInvoice) {
         return sendInvoice(idInvoice, SendInvoiceRequest.builder().build());
     }
 
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public CompletableFuture<PayabliApiHttpResponse<SendInvoiceResponse>> sendInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<SendInvoiceResponse>> sendInvoice(
             int idInvoice, RequestOptions requestOptions) {
         return sendInvoice(idInvoice, SendInvoiceRequest.builder().build(), requestOptions);
     }
@@ -1160,7 +1169,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public CompletableFuture<PayabliApiHttpResponse<SendInvoiceResponse>> sendInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<SendInvoiceResponse>> sendInvoice(
             int idInvoice, SendInvoiceRequest request) {
         return sendInvoice(idInvoice, request, null);
     }
@@ -1168,7 +1177,7 @@ public class AsyncRawInvoiceClient {
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public CompletableFuture<PayabliApiHttpResponse<SendInvoiceResponse>> sendInvoice(
+    public CompletableFuture<PayabliApiClientHttpResponse<SendInvoiceResponse>> sendInvoice(
             int idInvoice, SendInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1210,14 +1219,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<SendInvoiceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<SendInvoiceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SendInvoiceResponse.class),
                                 response));
                         return;
@@ -1249,20 +1258,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1271,14 +1281,14 @@ public class AsyncRawInvoiceClient {
     /**
      * Export a single invoice in PDF format.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> getInvoicePdf(int idInvoice) {
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> getInvoicePdf(int idInvoice) {
         return getInvoicePdf(idInvoice, null);
     }
 
     /**
      * Export a single invoice in PDF format.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> getInvoicePdf(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> getInvoicePdf(
             int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1312,14 +1322,14 @@ public class AsyncRawInvoiceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1352,20 +1362,21 @@ public class AsyncRawInvoiceClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

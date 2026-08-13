@@ -54,7 +54,7 @@ public final class SettingElement {
     }
 
     /**
-     * @return Fields to display on the reciept.
+     * @return Fields to display on the receipt.
      */
     @JsonProperty("fields")
     public Optional<List<DisplayProperty>> getFields() {
@@ -75,7 +75,7 @@ public final class SettingElement {
     }
 
     /**
-     * @return When <code>true</code>, you must send the reciept to the payor manually using the <a href="/developers/api-reference/moneyin/send-receipt-for-transaction">/MoneyIn/sendreceipt/{transId}</a> endpoint.
+     * @return When <code>true</code>, you must send the receipt to the payor manually using the <a href="/developers/api-reference/moneyin/send-receipt-for-transaction">/MoneyIn/sendreceipt/{transId}</a> endpoint.
      */
     @JsonProperty("sendManual")
     public Optional<Boolean> getSendManual() {
@@ -153,7 +153,7 @@ public final class SettingElement {
         }
 
         /**
-         * <p>Fields to display on the reciept.</p>
+         * <p>Fields to display on the receipt.</p>
          */
         @JsonSetter(value = "fields", nulls = Nulls.SKIP)
         public Builder fields(Optional<List<DisplayProperty>> fields) {
@@ -192,7 +192,7 @@ public final class SettingElement {
         }
 
         /**
-         * <p>When <code>true</code>, you must send the reciept to the payor manually using the <a href="/developers/api-reference/moneyin/send-receipt-for-transaction">/MoneyIn/sendreceipt/{transId}</a> endpoint.</p>
+         * <p>When <code>true</code>, you must send the receipt to the payor manually using the <a href="/developers/api-reference/moneyin/send-receipt-for-transaction">/MoneyIn/sendreceipt/{transId}</a> endpoint.</p>
          */
         @JsonSetter(value = "sendManual", nulls = Nulls.SKIP)
         public Builder sendManual(Optional<Boolean> sendManual) {

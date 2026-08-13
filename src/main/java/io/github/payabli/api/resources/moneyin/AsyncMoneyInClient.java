@@ -499,7 +499,7 @@ public class AsyncMoneyInClient {
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2Amount(String transId, double amount) {
@@ -510,7 +510,7 @@ public class AsyncMoneyInClient {
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2Amount(
@@ -522,7 +522,7 @@ public class AsyncMoneyInClient {
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2Amount(
@@ -534,7 +534,7 @@ public class AsyncMoneyInClient {
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
     public CompletableFuture<V2TransactionResponseWrapper> refundv2Amount(

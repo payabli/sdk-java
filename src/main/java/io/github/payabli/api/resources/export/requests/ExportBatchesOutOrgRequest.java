@@ -68,14 +68,13 @@ public final class ExportBatchesOutOrgRequest {
      * @return Collection of field names, conditions, and values used to filter the query
      * <p>&lt;Info&gt;
      *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-     * <p>For example:</p>
+     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
      * <p>should become:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
      * &lt;/Info&gt;</p>
      * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-     * <p>List of field names accepted:</p>
+     * <p><strong>Accepted field names:</strong></p>
      * <ul>
      * <li><code>batchDate</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>batchNumber</code> (ne, eq)</li>
@@ -86,7 +85,7 @@ public final class ExportBatchesOutOrgRequest {
      * <li><code>orgName</code> (ne, eq, ct, nct, nin, in)</li>
      * <li><code>paypointId</code> (ne, eq)</li>
      * <li><code>externalPaypointID</code> (ct, nct, eq, ne)
-     * List of parameters accepted:</li>
+     * Accepted parameters:</li>
      * <li>limitRecord: max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
      * <li>fromRecord: initial record in query</li>
      * </ul>
@@ -195,14 +194,13 @@ public final class ExportBatchesOutOrgRequest {
          * <p>Collection of field names, conditions, and values used to filter the query</p>
          * <p>&lt;Info&gt;
          *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-         * <p>For example:</p>
+         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
          * <p>should become:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
          * &lt;/Info&gt;</p>
          * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-         * <p>List of field names accepted:</p>
+         * <p><strong>Accepted field names:</strong></p>
          * <ul>
          * <li><code>batchDate</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>batchNumber</code> (ne, eq)</li>
@@ -213,7 +211,7 @@ public final class ExportBatchesOutOrgRequest {
          * <li><code>orgName</code> (ne, eq, ct, nct, nin, in)</li>
          * <li><code>paypointId</code> (ne, eq)</li>
          * <li><code>externalPaypointID</code> (ct, nct, eq, ne)
-         * List of parameters accepted:</li>
+         * Accepted parameters:</li>
          * <li>limitRecord: max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
          * <li>fromRecord: initial record in query</li>
          * </ul>

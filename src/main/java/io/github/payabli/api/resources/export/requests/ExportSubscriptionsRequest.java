@@ -68,14 +68,13 @@ public final class ExportSubscriptionsRequest {
      * @return Collection of field names, conditions, and values used to filter the query
      * <p>&lt;Info&gt;
      *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-     * <p>For example:</p>
+     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
      * <p>should become:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
      * &lt;/Info&gt;</p>
      * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-     * <p>List of field names accepted:</p>
+     * <p><strong>Accepted field names:</strong></p>
      * <ul>
      * <li><code>startDate</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>endDate</code> (gt, ge, lt, le, eq, ne)</li>
@@ -114,7 +113,7 @@ public final class ExportSubscriptionsRequest {
      * <li><code>orgName</code> (ne, eq, ct, nct)</li>
      * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name</li>
      * </ul>
-     * <p>List of comparison accepted - enclosed between parentheses:</p>
+     * <p>Accepted comparison operators - enclosed between parentheses:</p>
      * <ul>
      * <li>eq or empty =&gt; equal</li>
      * <li>gt =&gt; greater than</li>
@@ -127,7 +126,7 @@ public final class ExportSubscriptionsRequest {
      * <li>in =&gt; inside array</li>
      * <li>nin =&gt; not inside array</li>
      * </ul>
-     * <p>List of parameters accepted:</p>
+     * <p>Accepted parameters:</p>
      * <ul>
      * <li>limitRecord : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
      * <li>fromRecord : initial record in query</li>
@@ -237,14 +236,13 @@ public final class ExportSubscriptionsRequest {
          * <p>Collection of field names, conditions, and values used to filter the query</p>
          * <p>&lt;Info&gt;
          *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-         * <p>For example:</p>
+         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
          * <p>should become:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
          * &lt;/Info&gt;</p>
          * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-         * <p>List of field names accepted:</p>
+         * <p><strong>Accepted field names:</strong></p>
          * <ul>
          * <li><code>startDate</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>endDate</code> (gt, ge, lt, le, eq, ne)</li>
@@ -283,7 +281,7 @@ public final class ExportSubscriptionsRequest {
          * <li><code>orgName</code> (ne, eq, ct, nct)</li>
          * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name</li>
          * </ul>
-         * <p>List of comparison accepted - enclosed between parentheses:</p>
+         * <p>Accepted comparison operators - enclosed between parentheses:</p>
          * <ul>
          * <li>eq or empty =&gt; equal</li>
          * <li>gt =&gt; greater than</li>
@@ -296,7 +294,7 @@ public final class ExportSubscriptionsRequest {
          * <li>in =&gt; inside array</li>
          * <li>nin =&gt; not inside array</li>
          * </ul>
-         * <p>List of parameters accepted:</p>
+         * <p>Accepted parameters:</p>
          * <ul>
          * <li>limitRecord : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
          * <li>fromRecord : initial record in query</li>

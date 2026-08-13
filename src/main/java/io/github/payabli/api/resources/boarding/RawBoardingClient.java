@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -55,7 +55,7 @@ public class RawBoardingClient {
     /**
      * Creates a boarding application in an organization. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> addApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> addApplication(
             AddApplicationRequest request) {
         return addApplication(request, null);
     }
@@ -63,7 +63,7 @@ public class RawBoardingClient {
     /**
      * Creates a boarding application in an organization. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> addApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> addApplication(
             AddApplicationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -78,7 +78,7 @@ public class RawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -108,7 +108,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -134,26 +134,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(int appId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(int appId) {
         return updateApplication(appId, ApplicationData.builder().build());
     }
 
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(
             int appId, RequestOptions requestOptions) {
         return updateApplication(appId, ApplicationData.builder().build(), requestOptions);
     }
@@ -161,7 +161,7 @@ public class RawBoardingClient {
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(
             int appId, ApplicationData request) {
         return updateApplication(appId, request, null);
     }
@@ -169,7 +169,7 @@ public class RawBoardingClient {
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateApplication(
             int appId, ApplicationData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -185,7 +185,7 @@ public class RawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -215,7 +215,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -241,26 +241,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a boarding application by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteApplication(int appId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteApplication(int appId) {
         return deleteApplication(appId, null);
     }
 
     /**
      * Deletes a boarding application by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteApplication(
             int appId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -298,7 +298,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -324,26 +324,27 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves the details for a boarding application by ID.
      */
-    public PayabliApiHttpResponse<ApplicationDetailsRecord> getApplication(int appId) {
+    public PayabliApiClientHttpResponse<ApplicationDetailsRecord> getApplication(int appId) {
         return getApplication(appId, null);
     }
 
     /**
      * Retrieves the details for a boarding application by ID.
      */
-    public PayabliApiHttpResponse<ApplicationDetailsRecord> getApplication(int appId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<ApplicationDetailsRecord> getApplication(
+            int appId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/read")
@@ -380,7 +381,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApplicationDetailsRecord.class),
                         response);
             }
@@ -405,26 +406,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public PayabliApiHttpResponse<ApplicationQueryRecord> getApplicationByAuth(String xId) {
+    public PayabliApiClientHttpResponse<ApplicationQueryRecord> getApplicationByAuth(String xId) {
         return getApplicationByAuth(xId, RequestAppByAuth.builder().build());
     }
 
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public PayabliApiHttpResponse<ApplicationQueryRecord> getApplicationByAuth(
+    public PayabliApiClientHttpResponse<ApplicationQueryRecord> getApplicationByAuth(
             String xId, RequestOptions requestOptions) {
         return getApplicationByAuth(xId, RequestAppByAuth.builder().build(), requestOptions);
     }
@@ -432,14 +433,15 @@ public class RawBoardingClient {
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public PayabliApiHttpResponse<ApplicationQueryRecord> getApplicationByAuth(String xId, RequestAppByAuth request) {
+    public PayabliApiClientHttpResponse<ApplicationQueryRecord> getApplicationByAuth(
+            String xId, RequestAppByAuth request) {
         return getApplicationByAuth(xId, request, null);
     }
 
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public PayabliApiHttpResponse<ApplicationQueryRecord> getApplicationByAuth(
+    public PayabliApiClientHttpResponse<ApplicationQueryRecord> getApplicationByAuth(
             String xId, RequestAppByAuth request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -455,7 +457,7 @@ public class RawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -485,7 +487,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApplicationQueryRecord.class),
                         response);
             }
@@ -510,26 +512,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves details for a boarding link, by ID.
      */
-    public PayabliApiHttpResponse<BoardingLinkQueryRecord> getByIdLinkApplication(int boardingLinkId) {
+    public PayabliApiClientHttpResponse<BoardingLinkQueryRecord> getByIdLinkApplication(int boardingLinkId) {
         return getByIdLinkApplication(boardingLinkId, null);
     }
 
     /**
      * Retrieves details for a boarding link, by ID.
      */
-    public PayabliApiHttpResponse<BoardingLinkQueryRecord> getByIdLinkApplication(
+    public PayabliApiClientHttpResponse<BoardingLinkQueryRecord> getByIdLinkApplication(
             int boardingLinkId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -567,7 +569,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkQueryRecord.class),
                         response);
             }
@@ -592,26 +594,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<BoardingLinkQueryRecord> getByTemplateIdLinkApplication(double templateId) {
+    public PayabliApiClientHttpResponse<BoardingLinkQueryRecord> getByTemplateIdLinkApplication(double templateId) {
         return getByTemplateIdLinkApplication(templateId, null);
     }
 
     /**
      * Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<BoardingLinkQueryRecord> getByTemplateIdLinkApplication(
+    public PayabliApiClientHttpResponse<BoardingLinkQueryRecord> getByTemplateIdLinkApplication(
             double templateId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -649,7 +651,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkQueryRecord.class),
                         response);
             }
@@ -674,19 +676,19 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00> getExternalApplication(int appId, String mail2) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00> getExternalApplication(int appId, String mail2) {
         return getExternalApplication(
                 appId, mail2, GetExternalApplicationRequest.builder().build());
     }
@@ -694,7 +696,7 @@ public class RawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00> getExternalApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00> getExternalApplication(
             int appId, String mail2, RequestOptions requestOptions) {
         return getExternalApplication(
                 appId, mail2, GetExternalApplicationRequest.builder().build(), requestOptions);
@@ -703,7 +705,7 @@ public class RawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00> getExternalApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00> getExternalApplication(
             int appId, String mail2, GetExternalApplicationRequest request) {
         return getExternalApplication(appId, mail2, request, null);
     }
@@ -711,7 +713,7 @@ public class RawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00> getExternalApplication(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00> getExternalApplication(
             int appId, String mail2, GetExternalApplicationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -754,7 +756,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse00.class), response);
             }
             try {
@@ -778,26 +780,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<BoardingLinkQueryRecord> getLinkApplication(String boardingLinkReference) {
+    public PayabliApiClientHttpResponse<BoardingLinkQueryRecord> getLinkApplication(String boardingLinkReference) {
         return getLinkApplication(boardingLinkReference, null);
     }
 
     /**
      * Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<BoardingLinkQueryRecord> getLinkApplication(
+    public PayabliApiClientHttpResponse<BoardingLinkQueryRecord> getLinkApplication(
             String boardingLinkReference, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -835,7 +837,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkQueryRecord.class),
                         response);
             }
@@ -860,26 +862,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBoardingAppsListResponse> listApplications(int orgId) {
+    public PayabliApiClientHttpResponse<QueryBoardingAppsListResponse> listApplications(int orgId) {
         return listApplications(orgId, ListApplicationsRequest.builder().build());
     }
 
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBoardingAppsListResponse> listApplications(
+    public PayabliApiClientHttpResponse<QueryBoardingAppsListResponse> listApplications(
             int orgId, RequestOptions requestOptions) {
         return listApplications(orgId, ListApplicationsRequest.builder().build(), requestOptions);
     }
@@ -887,7 +889,7 @@ public class RawBoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBoardingAppsListResponse> listApplications(
+    public PayabliApiClientHttpResponse<QueryBoardingAppsListResponse> listApplications(
             int orgId, ListApplicationsRequest request) {
         return listApplications(orgId, request, null);
     }
@@ -895,7 +897,7 @@ public class RawBoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBoardingAppsListResponse> listApplications(
+    public PayabliApiClientHttpResponse<QueryBoardingAppsListResponse> listApplications(
             int orgId, ListApplicationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -953,7 +955,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBoardingAppsListResponse.class),
                         response);
             }
@@ -978,26 +980,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(int orgId) {
+    public PayabliApiClientHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(int orgId) {
         return listBoardingLinks(orgId, ListBoardingLinksRequest.builder().build());
     }
 
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(
+    public PayabliApiClientHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(
             int orgId, RequestOptions requestOptions) {
         return listBoardingLinks(orgId, ListBoardingLinksRequest.builder().build(), requestOptions);
     }
@@ -1005,7 +1007,7 @@ public class RawBoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(
+    public PayabliApiClientHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(
             int orgId, ListBoardingLinksRequest request) {
         return listBoardingLinks(orgId, request, null);
     }
@@ -1013,7 +1015,7 @@ public class RawBoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(
+    public PayabliApiClientHttpResponse<QueryBoardingLinksResponse> listBoardingLinks(
             int orgId, ListBoardingLinksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1067,7 +1069,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBoardingLinksResponse.class),
                         response);
             }
@@ -1092,19 +1094,19 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public PayabliApiHttpResponse<CreateApplicationFromPaypointResponse> addServiceToPaypointFromApp(
+    public PayabliApiClientHttpResponse<CreateApplicationFromPaypointResponse> addServiceToPaypointFromApp(
             CreateApplicationFromPaypointRequest request) {
         return addServiceToPaypointFromApp(request, null);
     }
@@ -1112,7 +1114,7 @@ public class RawBoardingClient {
     /**
      * Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public PayabliApiHttpResponse<CreateApplicationFromPaypointResponse> addServiceToPaypointFromApp(
+    public PayabliApiClientHttpResponse<CreateApplicationFromPaypointResponse> addServiceToPaypointFromApp(
             CreateApplicationFromPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1127,7 +1129,7 @@ public class RawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -1157,7 +1159,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, CreateApplicationFromPaypointResponse.class),
                         response);
@@ -1183,26 +1185,26 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public PayabliApiHttpResponse<QueryBoardingAppsListResponse> getApplicationsByPaypointId(long paypointId) {
+    public PayabliApiClientHttpResponse<QueryBoardingAppsListResponse> getApplicationsByPaypointId(long paypointId) {
         return getApplicationsByPaypointId(paypointId, null);
     }
 
     /**
      * Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public PayabliApiHttpResponse<QueryBoardingAppsListResponse> getApplicationsByPaypointId(
+    public PayabliApiClientHttpResponse<QueryBoardingAppsListResponse> getApplicationsByPaypointId(
             long paypointId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1240,7 +1242,7 @@ public class RawBoardingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBoardingAppsListResponse.class),
                         response);
             }
@@ -1265,12 +1267,12 @@ public class RawBoardingClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

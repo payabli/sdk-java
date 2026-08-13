@@ -9,9 +9,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -54,7 +54,7 @@ public class AsyncRawNotificationlogsClient {
      * </ul>
      * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<NotificationLog>>> searchNotificationLogs(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<NotificationLog>>> searchNotificationLogs(
             SearchNotificationLogsRequest request) {
         return searchNotificationLogs(request, null);
     }
@@ -67,7 +67,7 @@ public class AsyncRawNotificationlogsClient {
      * </ul>
      * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<NotificationLog>>> searchNotificationLogs(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<NotificationLog>>> searchNotificationLogs(
             SearchNotificationLogsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -116,14 +116,14 @@ public class AsyncRawNotificationlogsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<List<NotificationLog>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<List<NotificationLog>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<List<NotificationLog>>() {}),
                                 response));
@@ -156,20 +156,21 @@ public class AsyncRawNotificationlogsClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -179,7 +180,7 @@ public class AsyncRawNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> getNotificationLog(String uuid) {
+    public CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> getNotificationLog(String uuid) {
         return getNotificationLog(uuid, null);
     }
 
@@ -187,7 +188,7 @@ public class AsyncRawNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> getNotificationLog(
+    public CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> getNotificationLog(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -221,14 +222,14 @@ public class AsyncRawNotificationlogsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class),
                                 response));
                         return;
@@ -260,20 +261,21 @@ public class AsyncRawNotificationlogsClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -283,7 +285,7 @@ public class AsyncRawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> retryNotificationLog(String uuid) {
+    public CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> retryNotificationLog(String uuid) {
         return retryNotificationLog(uuid, null);
     }
 
@@ -291,7 +293,7 @@ public class AsyncRawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> retryNotificationLog(
+    public CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> retryNotificationLog(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -326,14 +328,14 @@ public class AsyncRawNotificationlogsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<NotificationLogDetail>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class),
                                 response));
                         return;
@@ -365,20 +367,21 @@ public class AsyncRawNotificationlogsClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -389,7 +392,7 @@ public class AsyncRawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<Void>> bulkRetryNotificationLogs(List<String> request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<Void>> bulkRetryNotificationLogs(List<String> request) {
         return bulkRetryNotificationLogs(request, null);
     }
 
@@ -398,7 +401,7 @@ public class AsyncRawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<Void>> bulkRetryNotificationLogs(
+    public CompletableFuture<PayabliApiClientHttpResponse<Void>> bulkRetryNotificationLogs(
             List<String> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -413,7 +416,7 @@ public class AsyncRawNotificationlogsClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -438,31 +441,32 @@ public class AsyncRawNotificationlogsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Void>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(null, response));
+                        future.complete(new PayabliApiClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

@@ -3,10 +3,10 @@
  */
 package io.github.payabli.api.errors;
 
-import io.github.payabli.api.core.PayabliApiApiException;
+import io.github.payabli.api.core.PayabliApiClientApiException;
 import okhttp3.Response;
 
-public final class ConflictError extends PayabliApiApiException {
+public final class ConflictError extends PayabliApiClientApiException {
     /**
      * The body of the response that triggered the exception.
      */

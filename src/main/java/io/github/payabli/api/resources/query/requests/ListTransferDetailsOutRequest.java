@@ -69,7 +69,7 @@ public final class ListTransferDetailsOutRequest {
      * <p>should become:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
      * &lt;/Info&gt;
-     * List of field names accepted:</p>
+     * Accepted field names:</p>
      * <ul>
      * <li><code>grossAmount</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>returnedAmount</code> (gt, ge, lt, le, eq, ne)</li>
@@ -190,7 +190,7 @@ public final class ListTransferDetailsOutRequest {
          * <p>should become:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
          * &lt;/Info&gt;
-         * List of field names accepted:</p>
+         * Accepted field names:</p>
          * <ul>
          * <li><code>grossAmount</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>returnedAmount</code> (gt, ge, lt, le, eq, ne)</li>

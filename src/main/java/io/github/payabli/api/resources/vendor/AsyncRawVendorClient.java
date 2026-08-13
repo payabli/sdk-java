@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
@@ -52,14 +52,14 @@ public class AsyncRawVendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> addVendor(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> addVendor(String entry) {
         return addVendor(entry, VendorData.builder().build());
     }
 
     /**
      * Creates a vendor in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> addVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> addVendor(
             String entry, RequestOptions requestOptions) {
         return addVendor(entry, VendorData.builder().build(), requestOptions);
     }
@@ -67,7 +67,7 @@ public class AsyncRawVendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> addVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> addVendor(
             String entry, VendorData request) {
         return addVendor(entry, request, null);
     }
@@ -75,7 +75,7 @@ public class AsyncRawVendorClient {
     /**
      * Creates a vendor in an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> addVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> addVendor(
             String entry, VendorData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -91,7 +91,7 @@ public class AsyncRawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -117,14 +117,14 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponseVendors.class),
                                 response));
@@ -157,20 +157,21 @@ public class AsyncRawVendorClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -179,14 +180,14 @@ public class AsyncRawVendorClient {
     /**
      * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> getVendor(int idVendor) {
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorQueryRecord>> getVendor(int idVendor) {
         return getVendor(idVendor, null);
     }
 
     /**
      * Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> getVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorQueryRecord>> getVendor(
             int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -220,33 +221,34 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VendorQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VendorQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorQueryRecord.class),
                                 response));
                         return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -255,14 +257,14 @@ public class AsyncRawVendorClient {
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> editVendor(int idVendor) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> editVendor(int idVendor) {
         return editVendor(idVendor, VendorData.builder().build());
     }
 
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> editVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> editVendor(
             int idVendor, RequestOptions requestOptions) {
         return editVendor(idVendor, VendorData.builder().build(), requestOptions);
     }
@@ -270,7 +272,7 @@ public class AsyncRawVendorClient {
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> editVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> editVendor(
             int idVendor, VendorData request) {
         return editVendor(idVendor, request, null);
     }
@@ -278,7 +280,7 @@ public class AsyncRawVendorClient {
     /**
      * Updates a vendor's information. Send only the fields you need to update.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> editVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> editVendor(
             int idVendor, VendorData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -294,7 +296,7 @@ public class AsyncRawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -320,14 +322,14 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponseVendors.class),
                                 response));
@@ -360,20 +362,21 @@ public class AsyncRawVendorClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -382,14 +385,14 @@ public class AsyncRawVendorClient {
     /**
      * Delete a vendor.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> deleteVendor(int idVendor) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> deleteVendor(int idVendor) {
         return deleteVendor(idVendor, null);
     }
 
     /**
      * Delete a vendor.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> deleteVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> deleteVendor(
             int idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -423,14 +426,14 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseVendors>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponseVendors.class),
                                 response));
@@ -463,20 +466,21 @@ public class AsyncRawVendorClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -485,7 +489,7 @@ public class AsyncRawVendorClient {
     /**
      * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorEnrichResponse>> enrichVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorEnrichResponse>> enrichVendor(
             String entry, VendorEnrichRequest request) {
         return enrichVendor(entry, request, null);
     }
@@ -493,7 +497,7 @@ public class AsyncRawVendorClient {
     /**
      * Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the <code>scope</code> parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorEnrichResponse>> enrichVendor(
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorEnrichResponse>> enrichVendor(
             String entry, VendorEnrichRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -509,7 +513,7 @@ public class AsyncRawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -535,14 +539,14 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VendorEnrichResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VendorEnrichResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorEnrichResponse.class),
                                 response));
                         return;
@@ -574,20 +578,21 @@ public class AsyncRawVendorClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -596,7 +601,7 @@ public class AsyncRawVendorClient {
     /**
      * Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorScheduleCallResponse>> scheduleEnrichmentCall(
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorScheduleCallResponse>> scheduleEnrichmentCall(
             String entry, ScheduleEnrichmentCallRequest request) {
         return scheduleEnrichmentCall(entry, request, null);
     }
@@ -604,7 +609,7 @@ public class AsyncRawVendorClient {
     /**
      * Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorScheduleCallResponse>> scheduleEnrichmentCall(
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorScheduleCallResponse>> scheduleEnrichmentCall(
             String entry, ScheduleEnrichmentCallRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -620,7 +625,7 @@ public class AsyncRawVendorClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -646,14 +651,14 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VendorScheduleCallResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VendorScheduleCallResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, VendorScheduleCallResponse.class),
                                 response));
@@ -691,20 +696,21 @@ public class AsyncRawVendorClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -713,14 +719,15 @@ public class AsyncRawVendorClient {
     /**
      * Returns the latest AI outreach call activity for a vendor. The response is a composite object with a <code>state</code> discriminator (<code>none</code>, <code>scheduled</code>, <code>successful</code>, or <code>failed</code>); the block that matches the current state is populated. When the vendor has no call activity, <code>state</code> is <code>none</code> and the response returns HTTP 200.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorCallStatusResponse>> getEnrichmentCallStatus(long idVendor) {
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorCallStatusResponse>> getEnrichmentCallStatus(
+            long idVendor) {
         return getEnrichmentCallStatus(idVendor, null);
     }
 
     /**
      * Returns the latest AI outreach call activity for a vendor. The response is a composite object with a <code>state</code> discriminator (<code>none</code>, <code>scheduled</code>, <code>successful</code>, or <code>failed</code>); the block that matches the current state is populated. When the vendor has no call activity, <code>state</code> is <code>none</code> and the response returns HTTP 200.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VendorCallStatusResponse>> getEnrichmentCallStatus(
+    public CompletableFuture<PayabliApiClientHttpResponse<VendorCallStatusResponse>> getEnrichmentCallStatus(
             long idVendor, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -756,14 +763,14 @@ public class AsyncRawVendorClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VendorCallStatusResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VendorCallStatusResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VendorCallStatusResponse.class),
                                 response));
                         return;
@@ -790,20 +797,21 @@ public class AsyncRawVendorClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

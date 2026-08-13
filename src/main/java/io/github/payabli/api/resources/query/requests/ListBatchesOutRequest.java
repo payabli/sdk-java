@@ -74,7 +74,7 @@ public final class ListBatchesOutRequest {
 
     /**
      * @return Collection of field names, conditions, and values used to filter the query. See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for more information.
-     * <p><strong>List of field names accepted</strong>:</p>
+     * <p><strong>Accepted field names</strong>:</p>
      * <ul>
      * <li><code>batchDate</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>batchNumber</code> (ne, eq)</li>
@@ -205,7 +205,7 @@ public final class ListBatchesOutRequest {
 
         /**
          * <p>Collection of field names, conditions, and values used to filter the query. See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for more information.</p>
-         * <p><strong>List of field names accepted</strong>:</p>
+         * <p><strong>Accepted field names</strong>:</p>
          * <ul>
          * <li><code>batchDate</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>batchNumber</code> (ne, eq)</li>

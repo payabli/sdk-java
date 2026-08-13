@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -59,7 +59,7 @@ public class AsyncRawBoardingClient {
     /**
      * Creates a boarding application in an organization. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> addApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> addApplication(
             AddApplicationRequest request) {
         return addApplication(request, null);
     }
@@ -67,7 +67,7 @@ public class AsyncRawBoardingClient {
     /**
      * Creates a boarding application in an organization. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> addApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> addApplication(
             AddApplicationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -82,7 +82,7 @@ public class AsyncRawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -108,7 +108,7 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -116,7 +116,7 @@ public class AsyncRawBoardingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                                 response));
@@ -149,20 +149,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -171,7 +172,7 @@ public class AsyncRawBoardingClient {
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
             int appId) {
         return updateApplication(appId, ApplicationData.builder().build());
     }
@@ -179,7 +180,7 @@ public class AsyncRawBoardingClient {
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
             int appId, RequestOptions requestOptions) {
         return updateApplication(appId, ApplicationData.builder().build(), requestOptions);
     }
@@ -187,7 +188,7 @@ public class AsyncRawBoardingClient {
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
             int appId, ApplicationData request) {
         return updateApplication(appId, request, null);
     }
@@ -195,7 +196,7 @@ public class AsyncRawBoardingClient {
     /**
      * Updates a boarding application by ID. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> updateApplication(
             int appId, ApplicationData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -211,7 +212,7 @@ public class AsyncRawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -237,7 +238,7 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -245,7 +246,7 @@ public class AsyncRawBoardingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                                 response));
@@ -278,20 +279,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -300,7 +302,7 @@ public class AsyncRawBoardingClient {
     /**
      * Deletes a boarding application by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> deleteApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> deleteApplication(
             int appId) {
         return deleteApplication(appId, null);
     }
@@ -308,7 +310,7 @@ public class AsyncRawBoardingClient {
     /**
      * Deletes a boarding application by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> deleteApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> deleteApplication(
             int appId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -342,7 +344,7 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -350,7 +352,7 @@ public class AsyncRawBoardingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                                 response));
@@ -383,20 +385,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -405,14 +408,14 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves the details for a boarding application by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ApplicationDetailsRecord>> getApplication(int appId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<ApplicationDetailsRecord>> getApplication(int appId) {
         return getApplication(appId, null);
     }
 
     /**
      * Retrieves the details for a boarding application by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ApplicationDetailsRecord>> getApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<ApplicationDetailsRecord>> getApplication(
             int appId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -446,14 +449,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<ApplicationDetailsRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<ApplicationDetailsRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApplicationDetailsRecord.class),
                                 response));
                         return;
@@ -485,20 +488,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -507,14 +511,14 @@ public class AsyncRawBoardingClient {
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(String xId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(String xId) {
         return getApplicationByAuth(xId, RequestAppByAuth.builder().build());
     }
 
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
+    public CompletableFuture<PayabliApiClientHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
             String xId, RequestOptions requestOptions) {
         return getApplicationByAuth(xId, RequestAppByAuth.builder().build(), requestOptions);
     }
@@ -522,7 +526,7 @@ public class AsyncRawBoardingClient {
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
+    public CompletableFuture<PayabliApiClientHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
             String xId, RequestAppByAuth request) {
         return getApplicationByAuth(xId, request, null);
     }
@@ -530,7 +534,7 @@ public class AsyncRawBoardingClient {
     /**
      * Gets a boarding application by authentication information. This endpoint requires an <code>application</code> API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
+    public CompletableFuture<PayabliApiClientHttpResponse<ApplicationQueryRecord>> getApplicationByAuth(
             String xId, RequestAppByAuth request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -546,7 +550,7 @@ public class AsyncRawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -572,14 +576,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<ApplicationQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<ApplicationQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApplicationQueryRecord.class),
                                 response));
                         return;
@@ -611,20 +615,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -633,7 +638,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves details for a boarding link, by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getByIdLinkApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> getByIdLinkApplication(
             int boardingLinkId) {
         return getByIdLinkApplication(boardingLinkId, null);
     }
@@ -641,7 +646,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves details for a boarding link, by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getByIdLinkApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> getByIdLinkApplication(
             int boardingLinkId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -675,14 +680,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkQueryRecord.class),
                                 response));
                         return;
@@ -714,20 +719,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -736,7 +742,7 @@ public class AsyncRawBoardingClient {
     /**
      * Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getByTemplateIdLinkApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> getByTemplateIdLinkApplication(
             double templateId) {
         return getByTemplateIdLinkApplication(templateId, null);
     }
@@ -744,7 +750,7 @@ public class AsyncRawBoardingClient {
     /**
      * Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getByTemplateIdLinkApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> getByTemplateIdLinkApplication(
             double templateId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -778,14 +784,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkQueryRecord.class),
                                 response));
                         return;
@@ -817,20 +823,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -839,7 +846,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> getExternalApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00>> getExternalApplication(
             int appId, String mail2) {
         return getExternalApplication(
                 appId, mail2, GetExternalApplicationRequest.builder().build());
@@ -848,7 +855,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> getExternalApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00>> getExternalApplication(
             int appId, String mail2, RequestOptions requestOptions) {
         return getExternalApplication(
                 appId, mail2, GetExternalApplicationRequest.builder().build(), requestOptions);
@@ -857,7 +864,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> getExternalApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00>> getExternalApplication(
             int appId, String mail2, GetExternalApplicationRequest request) {
         return getExternalApplication(appId, mail2, request, null);
     }
@@ -865,7 +872,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> getExternalApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00>> getExternalApplication(
             int appId, String mail2, GetExternalApplicationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -904,14 +911,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse00>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse00>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse00.class),
                                 response));
                         return;
@@ -943,20 +950,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -965,7 +973,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getLinkApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> getLinkApplication(
             String boardingLinkReference) {
         return getLinkApplication(boardingLinkReference, null);
     }
@@ -973,7 +981,7 @@ public class AsyncRawBoardingClient {
     /**
      * Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
      */
-    public CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> getLinkApplication(
+    public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> getLinkApplication(
             String boardingLinkReference, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1007,14 +1015,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<BoardingLinkQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkQueryRecord.class),
                                 response));
                         return;
@@ -1046,20 +1054,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1068,14 +1077,14 @@ public class AsyncRawBoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> listApplications(int orgId) {
         return listApplications(orgId, ListApplicationsRequest.builder().build());
     }
 
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> listApplications(
             int orgId, RequestOptions requestOptions) {
         return listApplications(orgId, ListApplicationsRequest.builder().build(), requestOptions);
     }
@@ -1083,7 +1092,7 @@ public class AsyncRawBoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> listApplications(
             int orgId, ListApplicationsRequest request) {
         return listApplications(orgId, request, null);
     }
@@ -1091,7 +1100,7 @@ public class AsyncRawBoardingClient {
     /**
      * Returns a list of boarding applications for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> listApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> listApplications(
             int orgId, ListApplicationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1145,14 +1154,15 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryBoardingAppsListResponse.class),
                                 response));
@@ -1185,20 +1195,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1207,14 +1218,14 @@ public class AsyncRawBoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(int orgId) {
         return listBoardingLinks(orgId, ListBoardingLinksRequest.builder().build());
     }
 
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
             int orgId, RequestOptions requestOptions) {
         return listBoardingLinks(orgId, ListBoardingLinksRequest.builder().build(), requestOptions);
     }
@@ -1222,7 +1233,7 @@ public class AsyncRawBoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
             int orgId, ListBoardingLinksRequest request) {
         return listBoardingLinks(orgId, request, null);
     }
@@ -1230,7 +1241,7 @@ public class AsyncRawBoardingClient {
     /**
      * Return a list of boarding links for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingLinksResponse>> listBoardingLinks(
             int orgId, ListBoardingLinksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1280,14 +1291,14 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBoardingLinksResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingLinksResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryBoardingLinksResponse.class),
                                 response));
@@ -1320,20 +1331,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1342,16 +1354,16 @@ public class AsyncRawBoardingClient {
     /**
      * Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public CompletableFuture<PayabliApiHttpResponse<CreateApplicationFromPaypointResponse>> addServiceToPaypointFromApp(
-            CreateApplicationFromPaypointRequest request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<CreateApplicationFromPaypointResponse>>
+            addServiceToPaypointFromApp(CreateApplicationFromPaypointRequest request) {
         return addServiceToPaypointFromApp(request, null);
     }
 
     /**
      * Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public CompletableFuture<PayabliApiHttpResponse<CreateApplicationFromPaypointResponse>> addServiceToPaypointFromApp(
-            CreateApplicationFromPaypointRequest request, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiClientHttpResponse<CreateApplicationFromPaypointResponse>>
+            addServiceToPaypointFromApp(CreateApplicationFromPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Boarding/applications");
@@ -1365,7 +1377,7 @@ public class AsyncRawBoardingClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -1391,7 +1403,7 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<CreateApplicationFromPaypointResponse>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<CreateApplicationFromPaypointResponse>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -1399,7 +1411,7 @@ public class AsyncRawBoardingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, CreateApplicationFromPaypointResponse.class),
                                 response));
@@ -1432,20 +1444,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1454,7 +1467,7 @@ public class AsyncRawBoardingClient {
     /**
      * Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> getApplicationsByPaypointId(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> getApplicationsByPaypointId(
             long paypointId) {
         return getApplicationsByPaypointId(paypointId, null);
     }
@@ -1462,7 +1475,7 @@ public class AsyncRawBoardingClient {
     /**
      * Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the <a href="/guides/pay-ops-developer-boarding-multi-product">Multi-product boarding</a> guide for the full flow.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> getApplicationsByPaypointId(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> getApplicationsByPaypointId(
             long paypointId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1496,14 +1509,15 @@ public class AsyncRawBoardingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBoardingAppsListResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBoardingAppsListResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryBoardingAppsListResponse.class),
                                 response));
@@ -1536,20 +1550,21 @@ public class AsyncRawBoardingClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

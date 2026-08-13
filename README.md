@@ -157,11 +157,11 @@ PayabliApiClient client = PayabliApiClient
 When the API returns a non-success status code (4xx or 5xx response), an API exception will be thrown.
 
 ```java
-import io.github.payabli.api.core.PayabliApiApiException;
+import io.github.payabli.api.core.PayabliApiClientApiException;
 
 try{
     client.moneyIn().getpaidv2(...);
-} catch (PayabliApiApiException e){
+} catch (PayabliApiClientApiException e){
     // Do something with the API exception...
 }
 ```
@@ -300,7 +300,7 @@ The `withRawResponse()` method returns a raw client that wraps all responses wit
 (A normal client's `response` is identical to a raw client's `response.body()`.)
 
 ```java
-PayabliApiHttpResponse response = client.moneyIn().withRawResponse().getpaidv2(...);
+PayabliApiClientHttpResponse response = client.moneyIn().withRawResponse().getpaidv2(...);
 
 System.out.println(response.body());
 System.out.println(response.headers().get("X-My-Header"));
@@ -327,7 +327,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:1.0.12'
+  implementation 'io.github.payabli:sdk-java:1.0.13'
 }
 ```
 
@@ -339,7 +339,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>1.0.12</version>
+  <version>1.0.13</version>
 </dependency>
 ```
 

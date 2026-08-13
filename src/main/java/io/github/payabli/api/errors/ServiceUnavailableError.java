@@ -3,11 +3,11 @@
  */
 package io.github.payabli.api.errors;
 
-import io.github.payabli.api.core.PayabliApiApiException;
+import io.github.payabli.api.core.PayabliApiClientApiException;
 import io.github.payabli.api.types.PayabliErrorBody;
 import okhttp3.Response;
 
-public final class ServiceUnavailableError extends PayabliApiApiException {
+public final class ServiceUnavailableError extends PayabliApiClientApiException {
     /**
      * The body of the response that triggered the exception.
      */

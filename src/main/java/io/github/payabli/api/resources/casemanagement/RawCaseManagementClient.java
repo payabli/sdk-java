@@ -10,9 +10,9 @@ import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.FileStream;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.ResponseBodyInputStream;
@@ -70,7 +70,7 @@ public class RawCaseManagementClient {
      * don't.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<PreCreationValidationResult> validateBankAccountChange(
+    public PayabliApiClientHttpResponse<PreCreationValidationResult> validateBankAccountChange(
             long paypointId, ValidateBankAccountChangeRequest request) {
         return validateBankAccountChange(paypointId, request, null);
     }
@@ -82,7 +82,7 @@ public class RawCaseManagementClient {
      * don't.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<PreCreationValidationResult> validateBankAccountChange(
+    public PayabliApiClientHttpResponse<PreCreationValidationResult> validateBankAccountChange(
             long paypointId, ValidateBankAccountChangeRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -99,7 +99,7 @@ public class RawCaseManagementClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(
@@ -128,7 +128,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PreCreationValidationResult.class),
                         response);
             }
@@ -153,12 +153,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -170,7 +170,7 @@ public class RawCaseManagementClient {
      * <code>Submitted</code> and asynchronous verification starts.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> createBankAccountChange(
+    public PayabliApiClientHttpResponse<CaseResponse> createBankAccountChange(
             long paypointId, CreateBankAccountChangeCaseRequest request) {
         return createBankAccountChange(paypointId, request, null);
     }
@@ -183,7 +183,7 @@ public class RawCaseManagementClient {
      * <code>Submitted</code> and asynchronous verification starts.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> createBankAccountChange(
+    public PayabliApiClientHttpResponse<CaseResponse> createBankAccountChange(
             long paypointId, CreateBankAccountChangeCaseRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -199,7 +199,7 @@ public class RawCaseManagementClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(
@@ -228,7 +228,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaseResponse.class), response);
             }
             try {
@@ -252,12 +252,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -266,7 +266,7 @@ public class RawCaseManagementClient {
      * state history, verification metadata, and attachments.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> getCase(String uuid) {
+    public PayabliApiClientHttpResponse<CaseResponse> getCase(String uuid) {
         return getCase(uuid, null);
     }
 
@@ -275,7 +275,7 @@ public class RawCaseManagementClient {
      * state history, verification metadata, and attachments.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> getCase(String uuid, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<CaseResponse> getCase(String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/cases")
@@ -311,7 +311,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaseResponse.class), response);
             }
             try {
@@ -335,12 +335,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -353,7 +353,7 @@ public class RawCaseManagementClient {
      * <code>updatedAt</code>, <code>scheduleFor</code>, and <code>createdBy</code>.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseListResponse> listCases(long organizationId) {
+    public PayabliApiClientHttpResponse<CaseListResponse> listCases(long organizationId) {
         return listCases(
                 organizationId, ListCasesCaseManagementRequest.builder().build());
     }
@@ -367,7 +367,8 @@ public class RawCaseManagementClient {
      * <code>updatedAt</code>, <code>scheduleFor</code>, and <code>createdBy</code>.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseListResponse> listCases(long organizationId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<CaseListResponse> listCases(
+            long organizationId, RequestOptions requestOptions) {
         return listCases(
                 organizationId, ListCasesCaseManagementRequest.builder().build(), requestOptions);
     }
@@ -381,7 +382,7 @@ public class RawCaseManagementClient {
      * <code>updatedAt</code>, <code>scheduleFor</code>, and <code>createdBy</code>.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseListResponse> listCases(
+    public PayabliApiClientHttpResponse<CaseListResponse> listCases(
             long organizationId, ListCasesCaseManagementRequest request) {
         return listCases(organizationId, request, null);
     }
@@ -395,7 +396,7 @@ public class RawCaseManagementClient {
      * <code>updatedAt</code>, <code>scheduleFor</code>, and <code>createdBy</code>.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<CaseListResponse> listCases(
+    public PayabliApiClientHttpResponse<CaseListResponse> listCases(
             long organizationId, ListCasesCaseManagementRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -444,7 +445,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaseListResponse.class), response);
             }
             try {
@@ -468,12 +469,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -481,7 +482,7 @@ public class RawCaseManagementClient {
      * Lists the notes on a case, ordered oldest to newest. Cursor-paginated.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<MessagePage> listMessages(String caseUuid) {
+    public PayabliApiClientHttpResponse<MessagePage> listMessages(String caseUuid) {
         return listMessages(
                 caseUuid, ListMessagesCaseManagementRequest.builder().build());
     }
@@ -490,7 +491,7 @@ public class RawCaseManagementClient {
      * Lists the notes on a case, ordered oldest to newest. Cursor-paginated.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<MessagePage> listMessages(String caseUuid, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<MessagePage> listMessages(String caseUuid, RequestOptions requestOptions) {
         return listMessages(
                 caseUuid, ListMessagesCaseManagementRequest.builder().build(), requestOptions);
     }
@@ -499,7 +500,7 @@ public class RawCaseManagementClient {
      * Lists the notes on a case, ordered oldest to newest. Cursor-paginated.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<MessagePage> listMessages(
+    public PayabliApiClientHttpResponse<MessagePage> listMessages(
             String caseUuid, ListMessagesCaseManagementRequest request) {
         return listMessages(caseUuid, request, null);
     }
@@ -508,7 +509,7 @@ public class RawCaseManagementClient {
      * Lists the notes on a case, ordered oldest to newest. Cursor-paginated.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<MessagePage> listMessages(
+    public PayabliApiClientHttpResponse<MessagePage> listMessages(
             String caseUuid, ListMessagesCaseManagementRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -554,7 +555,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MessagePage.class), response);
             }
             try {
@@ -578,12 +579,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -596,7 +597,7 @@ public class RawCaseManagementClient {
      * To read existing notes on a case, use
      * <a href="/developers/api-reference/caseManagement/list-case-notes">List case notes</a>.</p>
      */
-    public PayabliApiHttpResponse<PostedMessage> postMessage(String caseUuid, PostCaseMessageRequest request) {
+    public PayabliApiClientHttpResponse<PostedMessage> postMessage(String caseUuid, PostCaseMessageRequest request) {
         return postMessage(caseUuid, request, null);
     }
 
@@ -609,7 +610,7 @@ public class RawCaseManagementClient {
      * To read existing notes on a case, use
      * <a href="/developers/api-reference/caseManagement/list-case-notes">List case notes</a>.</p>
      */
-    public PayabliApiHttpResponse<PostedMessage> postMessage(
+    public PayabliApiClientHttpResponse<PostedMessage> postMessage(
             String caseUuid, PostCaseMessageRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -626,7 +627,7 @@ public class RawCaseManagementClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(
@@ -655,7 +656,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PostedMessage.class), response);
             }
             try {
@@ -682,12 +683,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -698,7 +699,7 @@ public class RawCaseManagementClient {
      * <p>Available to both Platform and Enterprise Partners, though only
      * Enterprise Partners can fire the returned actions.</p>
      */
-    public PayabliApiHttpResponse<AvailableTransitionsResponse> listTransitions(String uuid) {
+    public PayabliApiClientHttpResponse<AvailableTransitionsResponse> listTransitions(String uuid) {
         return listTransitions(uuid, null);
     }
 
@@ -709,7 +710,7 @@ public class RawCaseManagementClient {
      * <p>Available to both Platform and Enterprise Partners, though only
      * Enterprise Partners can fire the returned actions.</p>
      */
-    public PayabliApiHttpResponse<AvailableTransitionsResponse> listTransitions(
+    public PayabliApiClientHttpResponse<AvailableTransitionsResponse> listTransitions(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -747,7 +748,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AvailableTransitionsResponse.class),
                         response);
             }
@@ -772,12 +773,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -788,7 +789,7 @@ public class RawCaseManagementClient {
      * state returns <code>409</code>.
      * <p>Available to Enterprise Partners only.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> transition(String uuid, TransitionCaseRequest request) {
+    public PayabliApiClientHttpResponse<CaseResponse> transition(String uuid, TransitionCaseRequest request) {
         return transition(uuid, request, null);
     }
 
@@ -799,7 +800,7 @@ public class RawCaseManagementClient {
      * state returns <code>409</code>.
      * <p>Available to Enterprise Partners only.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> transition(
+    public PayabliApiClientHttpResponse<CaseResponse> transition(
             String uuid, TransitionCaseRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -816,7 +817,7 @@ public class RawCaseManagementClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(
@@ -845,7 +846,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaseResponse.class), response);
             }
             try {
@@ -875,12 +876,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -888,7 +889,7 @@ public class RawCaseManagementClient {
      * Assigns a case to a reviewer.
      * <p>Available to Enterprise Partners only.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> assignCase(String uuid, AssignCaseRequest request) {
+    public PayabliApiClientHttpResponse<CaseResponse> assignCase(String uuid, AssignCaseRequest request) {
         return assignCase(uuid, request, null);
     }
 
@@ -896,7 +897,7 @@ public class RawCaseManagementClient {
      * Assigns a case to a reviewer.
      * <p>Available to Enterprise Partners only.</p>
      */
-    public PayabliApiHttpResponse<CaseResponse> assignCase(
+    public PayabliApiClientHttpResponse<CaseResponse> assignCase(
             String uuid, AssignCaseRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -913,7 +914,7 @@ public class RawCaseManagementClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(
@@ -942,7 +943,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaseResponse.class), response);
             }
             try {
@@ -972,12 +973,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -985,7 +986,7 @@ public class RawCaseManagementClient {
      * Lists the files attached to a case.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<List<AttachmentResponse>> listAttachments(String caseUuid) {
+    public PayabliApiClientHttpResponse<List<AttachmentResponse>> listAttachments(String caseUuid) {
         return listAttachments(caseUuid, null);
     }
 
@@ -993,7 +994,7 @@ public class RawCaseManagementClient {
      * Lists the files attached to a case.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<List<AttachmentResponse>> listAttachments(
+    public PayabliApiClientHttpResponse<List<AttachmentResponse>> listAttachments(
             String caseUuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1031,7 +1032,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<AttachmentResponse>>() {}),
                         response);
@@ -1057,12 +1058,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1072,7 +1073,7 @@ public class RawCaseManagementClient {
      * JPEG, CSV, XLSX, DOCX, or plain text.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<AttachmentResponse> uploadAttachment(
+    public PayabliApiClientHttpResponse<AttachmentResponse> uploadAttachment(
             String caseUuid, File file, UploadAttachmentCaseManagementRequest request) {
         return uploadAttachment(caseUuid, file, request, null);
     }
@@ -1083,7 +1084,7 @@ public class RawCaseManagementClient {
      * JPEG, CSV, XLSX, DOCX, or plain text.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<AttachmentResponse> uploadAttachment(
+    public PayabliApiClientHttpResponse<AttachmentResponse> uploadAttachment(
             String caseUuid, File file, UploadAttachmentCaseManagementRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1130,7 +1131,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AttachmentResponse.class), response);
             }
             try {
@@ -1157,16 +1158,16 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
-    public PayabliApiHttpResponse<AttachmentResponse> uploadAttachment(
+    public PayabliApiClientHttpResponse<AttachmentResponse> uploadAttachment(
             String caseUuid, InputStream stream, String filename) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1187,7 +1188,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AttachmentResponse.class), response);
             }
             try {
@@ -1214,16 +1215,16 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
-    public PayabliApiHttpResponse<AttachmentResponse> uploadAttachment(
+    public PayabliApiClientHttpResponse<AttachmentResponse> uploadAttachment(
             String caseUuid, InputStream stream, String filename, MediaType mediaType) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1244,7 +1245,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AttachmentResponse.class), response);
             }
             try {
@@ -1271,16 +1272,16 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
-    public PayabliApiHttpResponse<AttachmentResponse> uploadAttachment(
+    public PayabliApiClientHttpResponse<AttachmentResponse> uploadAttachment(
             String caseUuid, InputStream stream, String filename, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1318,7 +1319,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AttachmentResponse.class), response);
             }
             try {
@@ -1345,16 +1346,16 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
-    public PayabliApiHttpResponse<AttachmentResponse> uploadAttachment(
+    public PayabliApiClientHttpResponse<AttachmentResponse> uploadAttachment(
             String caseUuid, InputStream stream, String filename, MediaType mediaType, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1392,7 +1393,7 @@ public class RawCaseManagementClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AttachmentResponse.class), response);
             }
             try {
@@ -1419,12 +1420,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1432,7 +1433,7 @@ public class RawCaseManagementClient {
      * Streams the file content of an attachment.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<InputStream> getAttachment(String caseUuid, String attachmentId) {
+    public PayabliApiClientHttpResponse<InputStream> getAttachment(String caseUuid, String attachmentId) {
         return getAttachment(caseUuid, attachmentId, null);
     }
 
@@ -1440,7 +1441,7 @@ public class RawCaseManagementClient {
      * Streams the file content of an attachment.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<InputStream> getAttachment(
+    public PayabliApiClientHttpResponse<InputStream> getAttachment(
             String caseUuid, String attachmentId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1479,7 +1480,7 @@ public class RawCaseManagementClient {
             Response response = client.newCall(okhttpRequest).execute();
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(new ResponseBodyInputStream(response), response);
+                return new PayabliApiClientHttpResponse<>(new ResponseBodyInputStream(response), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -1503,12 +1504,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1516,7 +1517,7 @@ public class RawCaseManagementClient {
      * Deletes an attachment from a case.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<Void> deleteAttachment(String caseUuid, String attachmentId) {
+    public PayabliApiClientHttpResponse<Void> deleteAttachment(String caseUuid, String attachmentId) {
         return deleteAttachment(caseUuid, attachmentId, null);
     }
 
@@ -1524,7 +1525,7 @@ public class RawCaseManagementClient {
      * Deletes an attachment from a case.
      * <p>Available to both Platform and Enterprise Partners.</p>
      */
-    public PayabliApiHttpResponse<Void> deleteAttachment(
+    public PayabliApiClientHttpResponse<Void> deleteAttachment(
             String caseUuid, String attachmentId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1562,7 +1563,7 @@ public class RawCaseManagementClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(null, response);
+                return new PayabliApiClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -1586,12 +1587,12 @@ public class RawCaseManagementClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

@@ -65,11 +65,19 @@ public final class DeviceQueryRecord {
 
     private final Optional<String> paypointEntry;
 
+    private final Optional<String> paypointLogo;
+
     private final Optional<String> externalPaypointId;
 
     private final Optional<Integer> parentOrgId;
 
     private final Optional<String> parentOrgName;
+
+    private final Optional<String> parentOrgLogo;
+
+    private final int transactionCount;
+
+    private final double volumeProcessed;
 
     private final Map<String, Object> additionalProperties;
 
@@ -95,9 +103,13 @@ public final class DeviceQueryRecord {
             Optional<String> paypointDba,
             Optional<String> paypointLegal,
             Optional<String> paypointEntry,
+            Optional<String> paypointLogo,
             Optional<String> externalPaypointId,
             Optional<Integer> parentOrgId,
             Optional<String> parentOrgName,
+            Optional<String> parentOrgLogo,
+            int transactionCount,
+            double volumeProcessed,
             Map<String, Object> additionalProperties) {
         this.deviceId = deviceId;
         this.idCloud = idCloud;
@@ -120,9 +132,13 @@ public final class DeviceQueryRecord {
         this.paypointDba = paypointDba;
         this.paypointLegal = paypointLegal;
         this.paypointEntry = paypointEntry;
+        this.paypointLogo = paypointLogo;
         this.externalPaypointId = externalPaypointId;
         this.parentOrgId = parentOrgId;
         this.parentOrgName = parentOrgName;
+        this.parentOrgLogo = parentOrgLogo;
+        this.transactionCount = transactionCount;
+        this.volumeProcessed = volumeProcessed;
         this.additionalProperties = additionalProperties;
     }
 
@@ -358,6 +374,17 @@ public final class DeviceQueryRecord {
     }
 
     /**
+     * @return URL of the paypoint's logo, when available.
+     */
+    @JsonIgnore
+    public Optional<String> getPaypointLogo() {
+        if (paypointLogo == null) {
+            return Optional.empty();
+        }
+        return paypointLogo;
+    }
+
+    /**
      * @return External identifier for the paypoint.
      */
     @JsonIgnore
@@ -388,6 +415,33 @@ public final class DeviceQueryRecord {
             return Optional.empty();
         }
         return parentOrgName;
+    }
+
+    /**
+     * @return URL of the parent organization's logo, when available.
+     */
+    @JsonIgnore
+    public Optional<String> getParentOrgLogo() {
+        if (parentOrgLogo == null) {
+            return Optional.empty();
+        }
+        return parentOrgLogo;
+    }
+
+    /**
+     * @return Total number of transactions processed by this device.
+     */
+    @JsonProperty("transactionCount")
+    public int getTransactionCount() {
+        return transactionCount;
+    }
+
+    /**
+     * @return Total volume processed by this device, as the sum of net transaction amounts.
+     */
+    @JsonProperty("volumeProcessed")
+    public double getVolumeProcessed() {
+        return volumeProcessed;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -517,6 +571,12 @@ public final class DeviceQueryRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("paypointLogo")
+    private Optional<String> _getPaypointLogo() {
+        return paypointLogo;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("externalPaypointId")
     private Optional<String> _getExternalPaypointId() {
         return externalPaypointId;
@@ -532,6 +592,12 @@ public final class DeviceQueryRecord {
     @JsonProperty("parentOrgName")
     private Optional<String> _getParentOrgName() {
         return parentOrgName;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("parentOrgLogo")
+    private Optional<String> _getParentOrgLogo() {
+        return parentOrgLogo;
     }
 
     @java.lang.Override
@@ -567,9 +633,13 @@ public final class DeviceQueryRecord {
                 && paypointDba.equals(other.paypointDba)
                 && paypointLegal.equals(other.paypointLegal)
                 && paypointEntry.equals(other.paypointEntry)
+                && paypointLogo.equals(other.paypointLogo)
                 && externalPaypointId.equals(other.externalPaypointId)
                 && parentOrgId.equals(other.parentOrgId)
-                && parentOrgName.equals(other.parentOrgName);
+                && parentOrgName.equals(other.parentOrgName)
+                && parentOrgLogo.equals(other.parentOrgLogo)
+                && transactionCount == other.transactionCount
+                && volumeProcessed == other.volumeProcessed;
     }
 
     @java.lang.Override
@@ -596,9 +666,13 @@ public final class DeviceQueryRecord {
                 this.paypointDba,
                 this.paypointLegal,
                 this.paypointEntry,
+                this.paypointLogo,
                 this.externalPaypointId,
                 this.parentOrgId,
-                this.parentOrgName);
+                this.parentOrgName,
+                this.parentOrgLogo,
+                this.transactionCount,
+                this.volumeProcessed);
     }
 
     @java.lang.Override
@@ -606,65 +680,332 @@ public final class DeviceQueryRecord {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static TransactionCountStage builder() {
         return new Builder();
     }
 
+    public interface TransactionCountStage {
+        /**
+         * <p>Total number of transactions processed by this device.</p>
+         */
+        VolumeProcessedStage transactionCount(int transactionCount);
+
+        Builder from(DeviceQueryRecord other);
+    }
+
+    public interface VolumeProcessedStage {
+        /**
+         * <p>Total volume processed by this device, as the sum of net transaction amounts.</p>
+         */
+        _FinalStage volumeProcessed(double volumeProcessed);
+    }
+
+    public interface _FinalStage {
+        DeviceQueryRecord build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>Unique identifier for the cloud device.</p>
+         */
+        _FinalStage deviceId(Optional<String> deviceId);
+
+        _FinalStage deviceId(String deviceId);
+
+        _FinalStage deviceId(Nullable<String> deviceId);
+
+        /**
+         * <p>Internal cloud device record ID.</p>
+         */
+        _FinalStage idCloud(Optional<Integer> idCloud);
+
+        _FinalStage idCloud(Integer idCloud);
+
+        _FinalStage idCloud(Nullable<Integer> idCloud);
+
+        /**
+         * <p>Description of the device.</p>
+         */
+        _FinalStage description(Optional<String> description);
+
+        _FinalStage description(String description);
+
+        _FinalStage description(Nullable<String> description);
+
+        /**
+         * <p>Serial number of the device.</p>
+         */
+        _FinalStage serialNumber(Optional<String> serialNumber);
+
+        _FinalStage serialNumber(String serialNumber);
+
+        _FinalStage serialNumber(Nullable<String> serialNumber);
+
+        /**
+         * <p>Human-readable name for the device.</p>
+         */
+        _FinalStage friendlyName(Optional<String> friendlyName);
+
+        _FinalStage friendlyName(String friendlyName);
+
+        _FinalStage friendlyName(Nullable<String> friendlyName);
+
+        /**
+         * <p>Manufacturer of the device.</p>
+         */
+        _FinalStage make(Optional<String> make);
+
+        _FinalStage make(String make);
+
+        _FinalStage make(Nullable<String> make);
+
+        /**
+         * <p>Model name of the device.</p>
+         */
+        _FinalStage model(Optional<String> model);
+
+        _FinalStage model(String model);
+
+        _FinalStage model(Nullable<String> model);
+
+        /**
+         * <p>Type of device.</p>
+         */
+        _FinalStage deviceType(Optional<Integer> deviceType);
+
+        _FinalStage deviceType(Integer deviceType);
+
+        _FinalStage deviceType(Nullable<Integer> deviceType);
+
+        /**
+         * <p>Current status of the device.</p>
+         */
+        _FinalStage deviceStatus(Optional<Integer> deviceStatus);
+
+        _FinalStage deviceStatus(Integer deviceStatus);
+
+        _FinalStage deviceStatus(Nullable<Integer> deviceStatus);
+
+        /**
+         * <p>Operating system of the device.</p>
+         */
+        _FinalStage deviceOs(Optional<Integer> deviceOs);
+
+        _FinalStage deviceOs(Integer deviceOs);
+
+        _FinalStage deviceOs(Nullable<Integer> deviceOs);
+
+        /**
+         * <p>MAC address of the device.</p>
+         */
+        _FinalStage macAddress(Optional<String> macAddress);
+
+        _FinalStage macAddress(String macAddress);
+
+        _FinalStage macAddress(Nullable<String> macAddress);
+
+        /**
+         * <p>Timestamp of the last health check from the device.</p>
+         */
+        _FinalStage lastHealthCheck(Optional<String> lastHealthCheck);
+
+        _FinalStage lastHealthCheck(String lastHealthCheck);
+
+        _FinalStage lastHealthCheck(Nullable<String> lastHealthCheck);
+
+        /**
+         * <p>Registration code used to activate the device.</p>
+         */
+        _FinalStage registrationCode(Optional<String> registrationCode);
+
+        _FinalStage registrationCode(String registrationCode);
+
+        _FinalStage registrationCode(Nullable<String> registrationCode);
+
+        /**
+         * <p>Number of activation attempts for the device.</p>
+         */
+        _FinalStage activationAttempts(Optional<Integer> activationAttempts);
+
+        _FinalStage activationAttempts(Integer activationAttempts);
+
+        _FinalStage activationAttempts(Nullable<Integer> activationAttempts);
+
+        /**
+         * <p>Expiration timestamp for the device activation code.</p>
+         */
+        _FinalStage activationCodeExpiry(Optional<String> activationCodeExpiry);
+
+        _FinalStage activationCodeExpiry(String activationCodeExpiry);
+
+        _FinalStage activationCodeExpiry(Nullable<String> activationCodeExpiry);
+
+        /**
+         * <p>Timestamp when the device record was created.</p>
+         */
+        _FinalStage createdAt(Optional<String> createdAt);
+
+        _FinalStage createdAt(String createdAt);
+
+        _FinalStage createdAt(Nullable<String> createdAt);
+
+        /**
+         * <p>Timestamp when the device record was last updated.</p>
+         */
+        _FinalStage updatedAt(Optional<String> updatedAt);
+
+        _FinalStage updatedAt(String updatedAt);
+
+        _FinalStage updatedAt(Nullable<String> updatedAt);
+
+        /**
+         * <p>Numeric identifier for the paypoint.</p>
+         */
+        _FinalStage paypointId(Optional<Integer> paypointId);
+
+        _FinalStage paypointId(Integer paypointId);
+
+        _FinalStage paypointId(Nullable<Integer> paypointId);
+
+        /**
+         * <p>DBA name for the paypoint.</p>
+         */
+        _FinalStage paypointDba(Optional<String> paypointDba);
+
+        _FinalStage paypointDba(String paypointDba);
+
+        _FinalStage paypointDba(Nullable<String> paypointDba);
+
+        /**
+         * <p>Legal name for the paypoint.</p>
+         */
+        _FinalStage paypointLegal(Optional<String> paypointLegal);
+
+        _FinalStage paypointLegal(String paypointLegal);
+
+        _FinalStage paypointLegal(Nullable<String> paypointLegal);
+
+        /**
+         * <p>Entry identifier for the paypoint.</p>
+         */
+        _FinalStage paypointEntry(Optional<String> paypointEntry);
+
+        _FinalStage paypointEntry(String paypointEntry);
+
+        _FinalStage paypointEntry(Nullable<String> paypointEntry);
+
+        /**
+         * <p>URL of the paypoint's logo, when available.</p>
+         */
+        _FinalStage paypointLogo(Optional<String> paypointLogo);
+
+        _FinalStage paypointLogo(String paypointLogo);
+
+        _FinalStage paypointLogo(Nullable<String> paypointLogo);
+
+        /**
+         * <p>External identifier for the paypoint.</p>
+         */
+        _FinalStage externalPaypointId(Optional<String> externalPaypointId);
+
+        _FinalStage externalPaypointId(String externalPaypointId);
+
+        _FinalStage externalPaypointId(Nullable<String> externalPaypointId);
+
+        /**
+         * <p>Numeric identifier for the parent organization.</p>
+         */
+        _FinalStage parentOrgId(Optional<Integer> parentOrgId);
+
+        _FinalStage parentOrgId(Integer parentOrgId);
+
+        _FinalStage parentOrgId(Nullable<Integer> parentOrgId);
+
+        /**
+         * <p>Name of the parent organization.</p>
+         */
+        _FinalStage parentOrgName(Optional<String> parentOrgName);
+
+        _FinalStage parentOrgName(String parentOrgName);
+
+        _FinalStage parentOrgName(Nullable<String> parentOrgName);
+
+        /**
+         * <p>URL of the parent organization's logo, when available.</p>
+         */
+        _FinalStage parentOrgLogo(Optional<String> parentOrgLogo);
+
+        _FinalStage parentOrgLogo(String parentOrgLogo);
+
+        _FinalStage parentOrgLogo(Nullable<String> parentOrgLogo);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> deviceId = Optional.empty();
+    public static final class Builder implements TransactionCountStage, VolumeProcessedStage, _FinalStage {
+        private int transactionCount;
 
-        private Optional<Integer> idCloud = Optional.empty();
+        private double volumeProcessed;
 
-        private Optional<String> description = Optional.empty();
+        private Optional<String> parentOrgLogo = Optional.empty();
 
-        private Optional<String> serialNumber = Optional.empty();
-
-        private Optional<String> friendlyName = Optional.empty();
-
-        private Optional<String> make = Optional.empty();
-
-        private Optional<String> model = Optional.empty();
-
-        private Optional<Integer> deviceType = Optional.empty();
-
-        private Optional<Integer> deviceStatus = Optional.empty();
-
-        private Optional<Integer> deviceOs = Optional.empty();
-
-        private Optional<String> macAddress = Optional.empty();
-
-        private Optional<String> lastHealthCheck = Optional.empty();
-
-        private Optional<String> registrationCode = Optional.empty();
-
-        private Optional<Integer> activationAttempts = Optional.empty();
-
-        private Optional<String> activationCodeExpiry = Optional.empty();
-
-        private Optional<String> createdAt = Optional.empty();
-
-        private Optional<String> updatedAt = Optional.empty();
-
-        private Optional<Integer> paypointId = Optional.empty();
-
-        private Optional<String> paypointDba = Optional.empty();
-
-        private Optional<String> paypointLegal = Optional.empty();
-
-        private Optional<String> paypointEntry = Optional.empty();
-
-        private Optional<String> externalPaypointId = Optional.empty();
+        private Optional<String> parentOrgName = Optional.empty();
 
         private Optional<Integer> parentOrgId = Optional.empty();
 
-        private Optional<String> parentOrgName = Optional.empty();
+        private Optional<String> externalPaypointId = Optional.empty();
+
+        private Optional<String> paypointLogo = Optional.empty();
+
+        private Optional<String> paypointEntry = Optional.empty();
+
+        private Optional<String> paypointLegal = Optional.empty();
+
+        private Optional<String> paypointDba = Optional.empty();
+
+        private Optional<Integer> paypointId = Optional.empty();
+
+        private Optional<String> updatedAt = Optional.empty();
+
+        private Optional<String> createdAt = Optional.empty();
+
+        private Optional<String> activationCodeExpiry = Optional.empty();
+
+        private Optional<Integer> activationAttempts = Optional.empty();
+
+        private Optional<String> registrationCode = Optional.empty();
+
+        private Optional<String> lastHealthCheck = Optional.empty();
+
+        private Optional<String> macAddress = Optional.empty();
+
+        private Optional<Integer> deviceOs = Optional.empty();
+
+        private Optional<Integer> deviceStatus = Optional.empty();
+
+        private Optional<Integer> deviceType = Optional.empty();
+
+        private Optional<String> model = Optional.empty();
+
+        private Optional<String> make = Optional.empty();
+
+        private Optional<String> friendlyName = Optional.empty();
+
+        private Optional<String> serialNumber = Optional.empty();
+
+        private Optional<String> description = Optional.empty();
+
+        private Optional<Integer> idCloud = Optional.empty();
+
+        private Optional<String> deviceId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(DeviceQueryRecord other) {
             deviceId(other.getDeviceId());
             idCloud(other.getIdCloud());
@@ -687,577 +1028,116 @@ public final class DeviceQueryRecord {
             paypointDba(other.getPaypointDba());
             paypointLegal(other.getPaypointLegal());
             paypointEntry(other.getPaypointEntry());
+            paypointLogo(other.getPaypointLogo());
             externalPaypointId(other.getExternalPaypointId());
             parentOrgId(other.getParentOrgId());
             parentOrgName(other.getParentOrgName());
+            parentOrgLogo(other.getParentOrgLogo());
+            transactionCount(other.getTransactionCount());
+            volumeProcessed(other.getVolumeProcessed());
             return this;
         }
 
         /**
-         * <p>Unique identifier for the cloud device.</p>
+         * <p>Total number of transactions processed by this device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "deviceId", nulls = Nulls.SKIP)
-        public Builder deviceId(Optional<String> deviceId) {
-            this.deviceId = deviceId;
+        @java.lang.Override
+        @JsonSetter("transactionCount")
+        public VolumeProcessedStage transactionCount(int transactionCount) {
+            this.transactionCount = transactionCount;
             return this;
         }
 
-        public Builder deviceId(String deviceId) {
-            this.deviceId = Optional.ofNullable(deviceId);
+        /**
+         * <p>Total volume processed by this device, as the sum of net transaction amounts.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("volumeProcessed")
+        public _FinalStage volumeProcessed(double volumeProcessed) {
+            this.volumeProcessed = volumeProcessed;
             return this;
         }
 
-        public Builder deviceId(Nullable<String> deviceId) {
-            if (deviceId.isNull()) {
-                this.deviceId = null;
-            } else if (deviceId.isEmpty()) {
-                this.deviceId = Optional.empty();
+        /**
+         * <p>URL of the parent organization's logo, when available.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parentOrgLogo(Nullable<String> parentOrgLogo) {
+            if (parentOrgLogo.isNull()) {
+                this.parentOrgLogo = null;
+            } else if (parentOrgLogo.isEmpty()) {
+                this.parentOrgLogo = Optional.empty();
             } else {
-                this.deviceId = Optional.of(deviceId.get());
+                this.parentOrgLogo = Optional.of(parentOrgLogo.get());
             }
             return this;
         }
 
         /**
-         * <p>Internal cloud device record ID.</p>
+         * <p>URL of the parent organization's logo, when available.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "idCloud", nulls = Nulls.SKIP)
-        public Builder idCloud(Optional<Integer> idCloud) {
-            this.idCloud = idCloud;
+        @java.lang.Override
+        public _FinalStage parentOrgLogo(String parentOrgLogo) {
+            this.parentOrgLogo = Optional.ofNullable(parentOrgLogo);
             return this;
         }
 
-        public Builder idCloud(Integer idCloud) {
-            this.idCloud = Optional.ofNullable(idCloud);
+        /**
+         * <p>URL of the parent organization's logo, when available.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "parentOrgLogo", nulls = Nulls.SKIP)
+        public _FinalStage parentOrgLogo(Optional<String> parentOrgLogo) {
+            this.parentOrgLogo = parentOrgLogo;
             return this;
         }
 
-        public Builder idCloud(Nullable<Integer> idCloud) {
-            if (idCloud.isNull()) {
-                this.idCloud = null;
-            } else if (idCloud.isEmpty()) {
-                this.idCloud = Optional.empty();
+        /**
+         * <p>Name of the parent organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage parentOrgName(Nullable<String> parentOrgName) {
+            if (parentOrgName.isNull()) {
+                this.parentOrgName = null;
+            } else if (parentOrgName.isEmpty()) {
+                this.parentOrgName = Optional.empty();
             } else {
-                this.idCloud = Optional.of(idCloud.get());
+                this.parentOrgName = Optional.of(parentOrgName.get());
             }
             return this;
         }
 
         /**
-         * <p>Description of the device.</p>
+         * <p>Name of the parent organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "description", nulls = Nulls.SKIP)
-        public Builder description(Optional<String> description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder description(String description) {
-            this.description = Optional.ofNullable(description);
-            return this;
-        }
-
-        public Builder description(Nullable<String> description) {
-            if (description.isNull()) {
-                this.description = null;
-            } else if (description.isEmpty()) {
-                this.description = Optional.empty();
-            } else {
-                this.description = Optional.of(description.get());
-            }
+        @java.lang.Override
+        public _FinalStage parentOrgName(String parentOrgName) {
+            this.parentOrgName = Optional.ofNullable(parentOrgName);
             return this;
         }
 
         /**
-         * <p>Serial number of the device.</p>
+         * <p>Name of the parent organization.</p>
          */
-        @JsonSetter(value = "serialNumber", nulls = Nulls.SKIP)
-        public Builder serialNumber(Optional<String> serialNumber) {
-            this.serialNumber = serialNumber;
-            return this;
-        }
-
-        public Builder serialNumber(String serialNumber) {
-            this.serialNumber = Optional.ofNullable(serialNumber);
-            return this;
-        }
-
-        public Builder serialNumber(Nullable<String> serialNumber) {
-            if (serialNumber.isNull()) {
-                this.serialNumber = null;
-            } else if (serialNumber.isEmpty()) {
-                this.serialNumber = Optional.empty();
-            } else {
-                this.serialNumber = Optional.of(serialNumber.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Human-readable name for the device.</p>
-         */
-        @JsonSetter(value = "friendlyName", nulls = Nulls.SKIP)
-        public Builder friendlyName(Optional<String> friendlyName) {
-            this.friendlyName = friendlyName;
-            return this;
-        }
-
-        public Builder friendlyName(String friendlyName) {
-            this.friendlyName = Optional.ofNullable(friendlyName);
-            return this;
-        }
-
-        public Builder friendlyName(Nullable<String> friendlyName) {
-            if (friendlyName.isNull()) {
-                this.friendlyName = null;
-            } else if (friendlyName.isEmpty()) {
-                this.friendlyName = Optional.empty();
-            } else {
-                this.friendlyName = Optional.of(friendlyName.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Manufacturer of the device.</p>
-         */
-        @JsonSetter(value = "make", nulls = Nulls.SKIP)
-        public Builder make(Optional<String> make) {
-            this.make = make;
-            return this;
-        }
-
-        public Builder make(String make) {
-            this.make = Optional.ofNullable(make);
-            return this;
-        }
-
-        public Builder make(Nullable<String> make) {
-            if (make.isNull()) {
-                this.make = null;
-            } else if (make.isEmpty()) {
-                this.make = Optional.empty();
-            } else {
-                this.make = Optional.of(make.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Model name of the device.</p>
-         */
-        @JsonSetter(value = "model", nulls = Nulls.SKIP)
-        public Builder model(Optional<String> model) {
-            this.model = model;
-            return this;
-        }
-
-        public Builder model(String model) {
-            this.model = Optional.ofNullable(model);
-            return this;
-        }
-
-        public Builder model(Nullable<String> model) {
-            if (model.isNull()) {
-                this.model = null;
-            } else if (model.isEmpty()) {
-                this.model = Optional.empty();
-            } else {
-                this.model = Optional.of(model.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Type of device.</p>
-         */
-        @JsonSetter(value = "deviceType", nulls = Nulls.SKIP)
-        public Builder deviceType(Optional<Integer> deviceType) {
-            this.deviceType = deviceType;
-            return this;
-        }
-
-        public Builder deviceType(Integer deviceType) {
-            this.deviceType = Optional.ofNullable(deviceType);
-            return this;
-        }
-
-        public Builder deviceType(Nullable<Integer> deviceType) {
-            if (deviceType.isNull()) {
-                this.deviceType = null;
-            } else if (deviceType.isEmpty()) {
-                this.deviceType = Optional.empty();
-            } else {
-                this.deviceType = Optional.of(deviceType.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Current status of the device.</p>
-         */
-        @JsonSetter(value = "deviceStatus", nulls = Nulls.SKIP)
-        public Builder deviceStatus(Optional<Integer> deviceStatus) {
-            this.deviceStatus = deviceStatus;
-            return this;
-        }
-
-        public Builder deviceStatus(Integer deviceStatus) {
-            this.deviceStatus = Optional.ofNullable(deviceStatus);
-            return this;
-        }
-
-        public Builder deviceStatus(Nullable<Integer> deviceStatus) {
-            if (deviceStatus.isNull()) {
-                this.deviceStatus = null;
-            } else if (deviceStatus.isEmpty()) {
-                this.deviceStatus = Optional.empty();
-            } else {
-                this.deviceStatus = Optional.of(deviceStatus.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Operating system of the device.</p>
-         */
-        @JsonSetter(value = "deviceOs", nulls = Nulls.SKIP)
-        public Builder deviceOs(Optional<Integer> deviceOs) {
-            this.deviceOs = deviceOs;
-            return this;
-        }
-
-        public Builder deviceOs(Integer deviceOs) {
-            this.deviceOs = Optional.ofNullable(deviceOs);
-            return this;
-        }
-
-        public Builder deviceOs(Nullable<Integer> deviceOs) {
-            if (deviceOs.isNull()) {
-                this.deviceOs = null;
-            } else if (deviceOs.isEmpty()) {
-                this.deviceOs = Optional.empty();
-            } else {
-                this.deviceOs = Optional.of(deviceOs.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>MAC address of the device.</p>
-         */
-        @JsonSetter(value = "macAddress", nulls = Nulls.SKIP)
-        public Builder macAddress(Optional<String> macAddress) {
-            this.macAddress = macAddress;
-            return this;
-        }
-
-        public Builder macAddress(String macAddress) {
-            this.macAddress = Optional.ofNullable(macAddress);
-            return this;
-        }
-
-        public Builder macAddress(Nullable<String> macAddress) {
-            if (macAddress.isNull()) {
-                this.macAddress = null;
-            } else if (macAddress.isEmpty()) {
-                this.macAddress = Optional.empty();
-            } else {
-                this.macAddress = Optional.of(macAddress.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Timestamp of the last health check from the device.</p>
-         */
-        @JsonSetter(value = "lastHealthCheck", nulls = Nulls.SKIP)
-        public Builder lastHealthCheck(Optional<String> lastHealthCheck) {
-            this.lastHealthCheck = lastHealthCheck;
-            return this;
-        }
-
-        public Builder lastHealthCheck(String lastHealthCheck) {
-            this.lastHealthCheck = Optional.ofNullable(lastHealthCheck);
-            return this;
-        }
-
-        public Builder lastHealthCheck(Nullable<String> lastHealthCheck) {
-            if (lastHealthCheck.isNull()) {
-                this.lastHealthCheck = null;
-            } else if (lastHealthCheck.isEmpty()) {
-                this.lastHealthCheck = Optional.empty();
-            } else {
-                this.lastHealthCheck = Optional.of(lastHealthCheck.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Registration code used to activate the device.</p>
-         */
-        @JsonSetter(value = "registrationCode", nulls = Nulls.SKIP)
-        public Builder registrationCode(Optional<String> registrationCode) {
-            this.registrationCode = registrationCode;
-            return this;
-        }
-
-        public Builder registrationCode(String registrationCode) {
-            this.registrationCode = Optional.ofNullable(registrationCode);
-            return this;
-        }
-
-        public Builder registrationCode(Nullable<String> registrationCode) {
-            if (registrationCode.isNull()) {
-                this.registrationCode = null;
-            } else if (registrationCode.isEmpty()) {
-                this.registrationCode = Optional.empty();
-            } else {
-                this.registrationCode = Optional.of(registrationCode.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Number of activation attempts for the device.</p>
-         */
-        @JsonSetter(value = "activationAttempts", nulls = Nulls.SKIP)
-        public Builder activationAttempts(Optional<Integer> activationAttempts) {
-            this.activationAttempts = activationAttempts;
-            return this;
-        }
-
-        public Builder activationAttempts(Integer activationAttempts) {
-            this.activationAttempts = Optional.ofNullable(activationAttempts);
-            return this;
-        }
-
-        public Builder activationAttempts(Nullable<Integer> activationAttempts) {
-            if (activationAttempts.isNull()) {
-                this.activationAttempts = null;
-            } else if (activationAttempts.isEmpty()) {
-                this.activationAttempts = Optional.empty();
-            } else {
-                this.activationAttempts = Optional.of(activationAttempts.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Expiration timestamp for the device activation code.</p>
-         */
-        @JsonSetter(value = "activationCodeExpiry", nulls = Nulls.SKIP)
-        public Builder activationCodeExpiry(Optional<String> activationCodeExpiry) {
-            this.activationCodeExpiry = activationCodeExpiry;
-            return this;
-        }
-
-        public Builder activationCodeExpiry(String activationCodeExpiry) {
-            this.activationCodeExpiry = Optional.ofNullable(activationCodeExpiry);
-            return this;
-        }
-
-        public Builder activationCodeExpiry(Nullable<String> activationCodeExpiry) {
-            if (activationCodeExpiry.isNull()) {
-                this.activationCodeExpiry = null;
-            } else if (activationCodeExpiry.isEmpty()) {
-                this.activationCodeExpiry = Optional.empty();
-            } else {
-                this.activationCodeExpiry = Optional.of(activationCodeExpiry.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Timestamp when the device record was created.</p>
-         */
-        @JsonSetter(value = "createdAt", nulls = Nulls.SKIP)
-        public Builder createdAt(Optional<String> createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public Builder createdAt(String createdAt) {
-            this.createdAt = Optional.ofNullable(createdAt);
-            return this;
-        }
-
-        public Builder createdAt(Nullable<String> createdAt) {
-            if (createdAt.isNull()) {
-                this.createdAt = null;
-            } else if (createdAt.isEmpty()) {
-                this.createdAt = Optional.empty();
-            } else {
-                this.createdAt = Optional.of(createdAt.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Timestamp when the device record was last updated.</p>
-         */
-        @JsonSetter(value = "updatedAt", nulls = Nulls.SKIP)
-        public Builder updatedAt(Optional<String> updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public Builder updatedAt(String updatedAt) {
-            this.updatedAt = Optional.ofNullable(updatedAt);
-            return this;
-        }
-
-        public Builder updatedAt(Nullable<String> updatedAt) {
-            if (updatedAt.isNull()) {
-                this.updatedAt = null;
-            } else if (updatedAt.isEmpty()) {
-                this.updatedAt = Optional.empty();
-            } else {
-                this.updatedAt = Optional.of(updatedAt.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Numeric identifier for the paypoint.</p>
-         */
-        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
-        public Builder paypointId(Optional<Integer> paypointId) {
-            this.paypointId = paypointId;
-            return this;
-        }
-
-        public Builder paypointId(Integer paypointId) {
-            this.paypointId = Optional.ofNullable(paypointId);
-            return this;
-        }
-
-        public Builder paypointId(Nullable<Integer> paypointId) {
-            if (paypointId.isNull()) {
-                this.paypointId = null;
-            } else if (paypointId.isEmpty()) {
-                this.paypointId = Optional.empty();
-            } else {
-                this.paypointId = Optional.of(paypointId.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>DBA name for the paypoint.</p>
-         */
-        @JsonSetter(value = "paypointDba", nulls = Nulls.SKIP)
-        public Builder paypointDba(Optional<String> paypointDba) {
-            this.paypointDba = paypointDba;
-            return this;
-        }
-
-        public Builder paypointDba(String paypointDba) {
-            this.paypointDba = Optional.ofNullable(paypointDba);
-            return this;
-        }
-
-        public Builder paypointDba(Nullable<String> paypointDba) {
-            if (paypointDba.isNull()) {
-                this.paypointDba = null;
-            } else if (paypointDba.isEmpty()) {
-                this.paypointDba = Optional.empty();
-            } else {
-                this.paypointDba = Optional.of(paypointDba.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Legal name for the paypoint.</p>
-         */
-        @JsonSetter(value = "paypointLegal", nulls = Nulls.SKIP)
-        public Builder paypointLegal(Optional<String> paypointLegal) {
-            this.paypointLegal = paypointLegal;
-            return this;
-        }
-
-        public Builder paypointLegal(String paypointLegal) {
-            this.paypointLegal = Optional.ofNullable(paypointLegal);
-            return this;
-        }
-
-        public Builder paypointLegal(Nullable<String> paypointLegal) {
-            if (paypointLegal.isNull()) {
-                this.paypointLegal = null;
-            } else if (paypointLegal.isEmpty()) {
-                this.paypointLegal = Optional.empty();
-            } else {
-                this.paypointLegal = Optional.of(paypointLegal.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>Entry identifier for the paypoint.</p>
-         */
-        @JsonSetter(value = "paypointEntry", nulls = Nulls.SKIP)
-        public Builder paypointEntry(Optional<String> paypointEntry) {
-            this.paypointEntry = paypointEntry;
-            return this;
-        }
-
-        public Builder paypointEntry(String paypointEntry) {
-            this.paypointEntry = Optional.ofNullable(paypointEntry);
-            return this;
-        }
-
-        public Builder paypointEntry(Nullable<String> paypointEntry) {
-            if (paypointEntry.isNull()) {
-                this.paypointEntry = null;
-            } else if (paypointEntry.isEmpty()) {
-                this.paypointEntry = Optional.empty();
-            } else {
-                this.paypointEntry = Optional.of(paypointEntry.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>External identifier for the paypoint.</p>
-         */
-        @JsonSetter(value = "externalPaypointId", nulls = Nulls.SKIP)
-        public Builder externalPaypointId(Optional<String> externalPaypointId) {
-            this.externalPaypointId = externalPaypointId;
-            return this;
-        }
-
-        public Builder externalPaypointId(String externalPaypointId) {
-            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
-            return this;
-        }
-
-        public Builder externalPaypointId(Nullable<String> externalPaypointId) {
-            if (externalPaypointId.isNull()) {
-                this.externalPaypointId = null;
-            } else if (externalPaypointId.isEmpty()) {
-                this.externalPaypointId = Optional.empty();
-            } else {
-                this.externalPaypointId = Optional.of(externalPaypointId.get());
-            }
+        @java.lang.Override
+        @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
+        public _FinalStage parentOrgName(Optional<String> parentOrgName) {
+            this.parentOrgName = parentOrgName;
             return this;
         }
 
         /**
          * <p>Numeric identifier for the parent organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "parentOrgId", nulls = Nulls.SKIP)
-        public Builder parentOrgId(Optional<Integer> parentOrgId) {
-            this.parentOrgId = parentOrgId;
-            return this;
-        }
-
-        public Builder parentOrgId(Integer parentOrgId) {
-            this.parentOrgId = Optional.ofNullable(parentOrgId);
-            return this;
-        }
-
-        public Builder parentOrgId(Nullable<Integer> parentOrgId) {
+        @java.lang.Override
+        public _FinalStage parentOrgId(Nullable<Integer> parentOrgId) {
             if (parentOrgId.isNull()) {
                 this.parentOrgId = null;
             } else if (parentOrgId.isEmpty()) {
@@ -1269,30 +1149,854 @@ public final class DeviceQueryRecord {
         }
 
         /**
-         * <p>Name of the parent organization.</p>
+         * <p>Numeric identifier for the parent organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "parentOrgName", nulls = Nulls.SKIP)
-        public Builder parentOrgName(Optional<String> parentOrgName) {
-            this.parentOrgName = parentOrgName;
+        @java.lang.Override
+        public _FinalStage parentOrgId(Integer parentOrgId) {
+            this.parentOrgId = Optional.ofNullable(parentOrgId);
             return this;
         }
 
-        public Builder parentOrgName(String parentOrgName) {
-            this.parentOrgName = Optional.ofNullable(parentOrgName);
+        /**
+         * <p>Numeric identifier for the parent organization.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "parentOrgId", nulls = Nulls.SKIP)
+        public _FinalStage parentOrgId(Optional<Integer> parentOrgId) {
+            this.parentOrgId = parentOrgId;
             return this;
         }
 
-        public Builder parentOrgName(Nullable<String> parentOrgName) {
-            if (parentOrgName.isNull()) {
-                this.parentOrgName = null;
-            } else if (parentOrgName.isEmpty()) {
-                this.parentOrgName = Optional.empty();
+        /**
+         * <p>External identifier for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalPaypointId(Nullable<String> externalPaypointId) {
+            if (externalPaypointId.isNull()) {
+                this.externalPaypointId = null;
+            } else if (externalPaypointId.isEmpty()) {
+                this.externalPaypointId = Optional.empty();
             } else {
-                this.parentOrgName = Optional.of(parentOrgName.get());
+                this.externalPaypointId = Optional.of(externalPaypointId.get());
             }
             return this;
         }
 
+        /**
+         * <p>External identifier for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        /**
+         * <p>External identifier for the paypoint.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "externalPaypointId", nulls = Nulls.SKIP)
+        public _FinalStage externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
+            return this;
+        }
+
+        /**
+         * <p>URL of the paypoint's logo, when available.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLogo(Nullable<String> paypointLogo) {
+            if (paypointLogo.isNull()) {
+                this.paypointLogo = null;
+            } else if (paypointLogo.isEmpty()) {
+                this.paypointLogo = Optional.empty();
+            } else {
+                this.paypointLogo = Optional.of(paypointLogo.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>URL of the paypoint's logo, when available.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLogo(String paypointLogo) {
+            this.paypointLogo = Optional.ofNullable(paypointLogo);
+            return this;
+        }
+
+        /**
+         * <p>URL of the paypoint's logo, when available.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointLogo", nulls = Nulls.SKIP)
+        public _FinalStage paypointLogo(Optional<String> paypointLogo) {
+            this.paypointLogo = paypointLogo;
+            return this;
+        }
+
+        /**
+         * <p>Entry identifier for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointEntry(Nullable<String> paypointEntry) {
+            if (paypointEntry.isNull()) {
+                this.paypointEntry = null;
+            } else if (paypointEntry.isEmpty()) {
+                this.paypointEntry = Optional.empty();
+            } else {
+                this.paypointEntry = Optional.of(paypointEntry.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Entry identifier for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointEntry(String paypointEntry) {
+            this.paypointEntry = Optional.ofNullable(paypointEntry);
+            return this;
+        }
+
+        /**
+         * <p>Entry identifier for the paypoint.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointEntry", nulls = Nulls.SKIP)
+        public _FinalStage paypointEntry(Optional<String> paypointEntry) {
+            this.paypointEntry = paypointEntry;
+            return this;
+        }
+
+        /**
+         * <p>Legal name for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLegal(Nullable<String> paypointLegal) {
+            if (paypointLegal.isNull()) {
+                this.paypointLegal = null;
+            } else if (paypointLegal.isEmpty()) {
+                this.paypointLegal = Optional.empty();
+            } else {
+                this.paypointLegal = Optional.of(paypointLegal.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Legal name for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointLegal(String paypointLegal) {
+            this.paypointLegal = Optional.ofNullable(paypointLegal);
+            return this;
+        }
+
+        /**
+         * <p>Legal name for the paypoint.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointLegal", nulls = Nulls.SKIP)
+        public _FinalStage paypointLegal(Optional<String> paypointLegal) {
+            this.paypointLegal = paypointLegal;
+            return this;
+        }
+
+        /**
+         * <p>DBA name for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointDba(Nullable<String> paypointDba) {
+            if (paypointDba.isNull()) {
+                this.paypointDba = null;
+            } else if (paypointDba.isEmpty()) {
+                this.paypointDba = Optional.empty();
+            } else {
+                this.paypointDba = Optional.of(paypointDba.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>DBA name for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointDba(String paypointDba) {
+            this.paypointDba = Optional.ofNullable(paypointDba);
+            return this;
+        }
+
+        /**
+         * <p>DBA name for the paypoint.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointDba", nulls = Nulls.SKIP)
+        public _FinalStage paypointDba(Optional<String> paypointDba) {
+            this.paypointDba = paypointDba;
+            return this;
+        }
+
+        /**
+         * <p>Numeric identifier for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointId(Nullable<Integer> paypointId) {
+            if (paypointId.isNull()) {
+                this.paypointId = null;
+            } else if (paypointId.isEmpty()) {
+                this.paypointId = Optional.empty();
+            } else {
+                this.paypointId = Optional.of(paypointId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Numeric identifier for the paypoint.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointId(Integer paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
+            return this;
+        }
+
+        /**
+         * <p>Numeric identifier for the paypoint.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
+        public _FinalStage paypointId(Optional<Integer> paypointId) {
+            this.paypointId = paypointId;
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the device record was last updated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage updatedAt(Nullable<String> updatedAt) {
+            if (updatedAt.isNull()) {
+                this.updatedAt = null;
+            } else if (updatedAt.isEmpty()) {
+                this.updatedAt = Optional.empty();
+            } else {
+                this.updatedAt = Optional.of(updatedAt.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the device record was last updated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage updatedAt(String updatedAt) {
+            this.updatedAt = Optional.ofNullable(updatedAt);
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the device record was last updated.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "updatedAt", nulls = Nulls.SKIP)
+        public _FinalStage updatedAt(Optional<String> updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the device record was created.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage createdAt(Nullable<String> createdAt) {
+            if (createdAt.isNull()) {
+                this.createdAt = null;
+            } else if (createdAt.isEmpty()) {
+                this.createdAt = Optional.empty();
+            } else {
+                this.createdAt = Optional.of(createdAt.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the device record was created.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage createdAt(String createdAt) {
+            this.createdAt = Optional.ofNullable(createdAt);
+            return this;
+        }
+
+        /**
+         * <p>Timestamp when the device record was created.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "createdAt", nulls = Nulls.SKIP)
+        public _FinalStage createdAt(Optional<String> createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        /**
+         * <p>Expiration timestamp for the device activation code.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage activationCodeExpiry(Nullable<String> activationCodeExpiry) {
+            if (activationCodeExpiry.isNull()) {
+                this.activationCodeExpiry = null;
+            } else if (activationCodeExpiry.isEmpty()) {
+                this.activationCodeExpiry = Optional.empty();
+            } else {
+                this.activationCodeExpiry = Optional.of(activationCodeExpiry.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Expiration timestamp for the device activation code.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage activationCodeExpiry(String activationCodeExpiry) {
+            this.activationCodeExpiry = Optional.ofNullable(activationCodeExpiry);
+            return this;
+        }
+
+        /**
+         * <p>Expiration timestamp for the device activation code.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "activationCodeExpiry", nulls = Nulls.SKIP)
+        public _FinalStage activationCodeExpiry(Optional<String> activationCodeExpiry) {
+            this.activationCodeExpiry = activationCodeExpiry;
+            return this;
+        }
+
+        /**
+         * <p>Number of activation attempts for the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage activationAttempts(Nullable<Integer> activationAttempts) {
+            if (activationAttempts.isNull()) {
+                this.activationAttempts = null;
+            } else if (activationAttempts.isEmpty()) {
+                this.activationAttempts = Optional.empty();
+            } else {
+                this.activationAttempts = Optional.of(activationAttempts.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Number of activation attempts for the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage activationAttempts(Integer activationAttempts) {
+            this.activationAttempts = Optional.ofNullable(activationAttempts);
+            return this;
+        }
+
+        /**
+         * <p>Number of activation attempts for the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "activationAttempts", nulls = Nulls.SKIP)
+        public _FinalStage activationAttempts(Optional<Integer> activationAttempts) {
+            this.activationAttempts = activationAttempts;
+            return this;
+        }
+
+        /**
+         * <p>Registration code used to activate the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage registrationCode(Nullable<String> registrationCode) {
+            if (registrationCode.isNull()) {
+                this.registrationCode = null;
+            } else if (registrationCode.isEmpty()) {
+                this.registrationCode = Optional.empty();
+            } else {
+                this.registrationCode = Optional.of(registrationCode.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Registration code used to activate the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage registrationCode(String registrationCode) {
+            this.registrationCode = Optional.ofNullable(registrationCode);
+            return this;
+        }
+
+        /**
+         * <p>Registration code used to activate the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "registrationCode", nulls = Nulls.SKIP)
+        public _FinalStage registrationCode(Optional<String> registrationCode) {
+            this.registrationCode = registrationCode;
+            return this;
+        }
+
+        /**
+         * <p>Timestamp of the last health check from the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage lastHealthCheck(Nullable<String> lastHealthCheck) {
+            if (lastHealthCheck.isNull()) {
+                this.lastHealthCheck = null;
+            } else if (lastHealthCheck.isEmpty()) {
+                this.lastHealthCheck = Optional.empty();
+            } else {
+                this.lastHealthCheck = Optional.of(lastHealthCheck.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Timestamp of the last health check from the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage lastHealthCheck(String lastHealthCheck) {
+            this.lastHealthCheck = Optional.ofNullable(lastHealthCheck);
+            return this;
+        }
+
+        /**
+         * <p>Timestamp of the last health check from the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "lastHealthCheck", nulls = Nulls.SKIP)
+        public _FinalStage lastHealthCheck(Optional<String> lastHealthCheck) {
+            this.lastHealthCheck = lastHealthCheck;
+            return this;
+        }
+
+        /**
+         * <p>MAC address of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage macAddress(Nullable<String> macAddress) {
+            if (macAddress.isNull()) {
+                this.macAddress = null;
+            } else if (macAddress.isEmpty()) {
+                this.macAddress = Optional.empty();
+            } else {
+                this.macAddress = Optional.of(macAddress.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>MAC address of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage macAddress(String macAddress) {
+            this.macAddress = Optional.ofNullable(macAddress);
+            return this;
+        }
+
+        /**
+         * <p>MAC address of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "macAddress", nulls = Nulls.SKIP)
+        public _FinalStage macAddress(Optional<String> macAddress) {
+            this.macAddress = macAddress;
+            return this;
+        }
+
+        /**
+         * <p>Operating system of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceOs(Nullable<Integer> deviceOs) {
+            if (deviceOs.isNull()) {
+                this.deviceOs = null;
+            } else if (deviceOs.isEmpty()) {
+                this.deviceOs = Optional.empty();
+            } else {
+                this.deviceOs = Optional.of(deviceOs.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Operating system of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceOs(Integer deviceOs) {
+            this.deviceOs = Optional.ofNullable(deviceOs);
+            return this;
+        }
+
+        /**
+         * <p>Operating system of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "deviceOs", nulls = Nulls.SKIP)
+        public _FinalStage deviceOs(Optional<Integer> deviceOs) {
+            this.deviceOs = deviceOs;
+            return this;
+        }
+
+        /**
+         * <p>Current status of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceStatus(Nullable<Integer> deviceStatus) {
+            if (deviceStatus.isNull()) {
+                this.deviceStatus = null;
+            } else if (deviceStatus.isEmpty()) {
+                this.deviceStatus = Optional.empty();
+            } else {
+                this.deviceStatus = Optional.of(deviceStatus.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Current status of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceStatus(Integer deviceStatus) {
+            this.deviceStatus = Optional.ofNullable(deviceStatus);
+            return this;
+        }
+
+        /**
+         * <p>Current status of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "deviceStatus", nulls = Nulls.SKIP)
+        public _FinalStage deviceStatus(Optional<Integer> deviceStatus) {
+            this.deviceStatus = deviceStatus;
+            return this;
+        }
+
+        /**
+         * <p>Type of device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceType(Nullable<Integer> deviceType) {
+            if (deviceType.isNull()) {
+                this.deviceType = null;
+            } else if (deviceType.isEmpty()) {
+                this.deviceType = Optional.empty();
+            } else {
+                this.deviceType = Optional.of(deviceType.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Type of device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceType(Integer deviceType) {
+            this.deviceType = Optional.ofNullable(deviceType);
+            return this;
+        }
+
+        /**
+         * <p>Type of device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "deviceType", nulls = Nulls.SKIP)
+        public _FinalStage deviceType(Optional<Integer> deviceType) {
+            this.deviceType = deviceType;
+            return this;
+        }
+
+        /**
+         * <p>Model name of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage model(Nullable<String> model) {
+            if (model.isNull()) {
+                this.model = null;
+            } else if (model.isEmpty()) {
+                this.model = Optional.empty();
+            } else {
+                this.model = Optional.of(model.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Model name of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage model(String model) {
+            this.model = Optional.ofNullable(model);
+            return this;
+        }
+
+        /**
+         * <p>Model name of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "model", nulls = Nulls.SKIP)
+        public _FinalStage model(Optional<String> model) {
+            this.model = model;
+            return this;
+        }
+
+        /**
+         * <p>Manufacturer of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage make(Nullable<String> make) {
+            if (make.isNull()) {
+                this.make = null;
+            } else if (make.isEmpty()) {
+                this.make = Optional.empty();
+            } else {
+                this.make = Optional.of(make.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Manufacturer of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage make(String make) {
+            this.make = Optional.ofNullable(make);
+            return this;
+        }
+
+        /**
+         * <p>Manufacturer of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "make", nulls = Nulls.SKIP)
+        public _FinalStage make(Optional<String> make) {
+            this.make = make;
+            return this;
+        }
+
+        /**
+         * <p>Human-readable name for the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage friendlyName(Nullable<String> friendlyName) {
+            if (friendlyName.isNull()) {
+                this.friendlyName = null;
+            } else if (friendlyName.isEmpty()) {
+                this.friendlyName = Optional.empty();
+            } else {
+                this.friendlyName = Optional.of(friendlyName.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Human-readable name for the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage friendlyName(String friendlyName) {
+            this.friendlyName = Optional.ofNullable(friendlyName);
+            return this;
+        }
+
+        /**
+         * <p>Human-readable name for the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "friendlyName", nulls = Nulls.SKIP)
+        public _FinalStage friendlyName(Optional<String> friendlyName) {
+            this.friendlyName = friendlyName;
+            return this;
+        }
+
+        /**
+         * <p>Serial number of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage serialNumber(Nullable<String> serialNumber) {
+            if (serialNumber.isNull()) {
+                this.serialNumber = null;
+            } else if (serialNumber.isEmpty()) {
+                this.serialNumber = Optional.empty();
+            } else {
+                this.serialNumber = Optional.of(serialNumber.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Serial number of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage serialNumber(String serialNumber) {
+            this.serialNumber = Optional.ofNullable(serialNumber);
+            return this;
+        }
+
+        /**
+         * <p>Serial number of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "serialNumber", nulls = Nulls.SKIP)
+        public _FinalStage serialNumber(Optional<String> serialNumber) {
+            this.serialNumber = serialNumber;
+            return this;
+        }
+
+        /**
+         * <p>Description of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage description(Nullable<String> description) {
+            if (description.isNull()) {
+                this.description = null;
+            } else if (description.isEmpty()) {
+                this.description = Optional.empty();
+            } else {
+                this.description = Optional.of(description.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Description of the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage description(String description) {
+            this.description = Optional.ofNullable(description);
+            return this;
+        }
+
+        /**
+         * <p>Description of the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "description", nulls = Nulls.SKIP)
+        public _FinalStage description(Optional<String> description) {
+            this.description = description;
+            return this;
+        }
+
+        /**
+         * <p>Internal cloud device record ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage idCloud(Nullable<Integer> idCloud) {
+            if (idCloud.isNull()) {
+                this.idCloud = null;
+            } else if (idCloud.isEmpty()) {
+                this.idCloud = Optional.empty();
+            } else {
+                this.idCloud = Optional.of(idCloud.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Internal cloud device record ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage idCloud(Integer idCloud) {
+            this.idCloud = Optional.ofNullable(idCloud);
+            return this;
+        }
+
+        /**
+         * <p>Internal cloud device record ID.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "idCloud", nulls = Nulls.SKIP)
+        public _FinalStage idCloud(Optional<Integer> idCloud) {
+            this.idCloud = idCloud;
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the cloud device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceId(Nullable<String> deviceId) {
+            if (deviceId.isNull()) {
+                this.deviceId = null;
+            } else if (deviceId.isEmpty()) {
+                this.deviceId = Optional.empty();
+            } else {
+                this.deviceId = Optional.of(deviceId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the cloud device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deviceId(String deviceId) {
+            this.deviceId = Optional.ofNullable(deviceId);
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the cloud device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "deviceId", nulls = Nulls.SKIP)
+        public _FinalStage deviceId(Optional<String> deviceId) {
+            this.deviceId = deviceId;
+            return this;
+        }
+
+        @java.lang.Override
         public DeviceQueryRecord build() {
             return new DeviceQueryRecord(
                     deviceId,
@@ -1316,17 +2020,23 @@ public final class DeviceQueryRecord {
                     paypointDba,
                     paypointLegal,
                     paypointEntry,
+                    paypointLogo,
                     externalPaypointId,
                     parentOrgId,
                     parentOrgName,
+                    parentOrgLogo,
+                    transactionCount,
+                    volumeProcessed,
                     additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

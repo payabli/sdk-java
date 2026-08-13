@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
@@ -49,7 +49,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
             RequestPayoutSchedule request) {
         return createPayoutSubscription(request, null);
     }
@@ -57,7 +57,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
             RequestPayoutSchedule request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -102,14 +102,15 @@ public class AsyncRawPayoutSubscriptionClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<AddPayoutSubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<AddPayoutSubscriptionResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AddPayoutSubscriptionResponse.class),
                                 response));
@@ -142,20 +143,21 @@ public class AsyncRawPayoutSubscriptionClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -164,14 +166,15 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Retrieves a single payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetPayoutSubscriptionResponse>> getPayoutSubscription(long id) {
+    public CompletableFuture<PayabliApiClientHttpResponse<GetPayoutSubscriptionResponse>> getPayoutSubscription(
+            long id) {
         return getPayoutSubscription(id, null);
     }
 
     /**
      * Retrieves a single payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetPayoutSubscriptionResponse>> getPayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetPayoutSubscriptionResponse>> getPayoutSubscription(
             long id, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -205,14 +208,15 @@ public class AsyncRawPayoutSubscriptionClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<GetPayoutSubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<GetPayoutSubscriptionResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, GetPayoutSubscriptionResponse.class),
                                 response));
@@ -245,20 +249,21 @@ public class AsyncRawPayoutSubscriptionClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -267,7 +272,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id) {
         return updatePayoutSubscription(
                 id, UpdatePayoutSubscriptionBody.builder().build());
@@ -276,7 +281,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id, RequestOptions requestOptions) {
         return updatePayoutSubscription(
                 id, UpdatePayoutSubscriptionBody.builder().build(), requestOptions);
@@ -285,7 +290,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id, UpdatePayoutSubscriptionBody request) {
         return updatePayoutSubscription(id, request, null);
     }
@@ -293,7 +298,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id, UpdatePayoutSubscriptionBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -309,7 +314,7 @@ public class AsyncRawPayoutSubscriptionClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -335,14 +340,15 @@ public class AsyncRawPayoutSubscriptionClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<UpdatePayoutSubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, UpdatePayoutSubscriptionResponse.class),
                                 response));
@@ -375,20 +381,21 @@ public class AsyncRawPayoutSubscriptionClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -397,7 +404,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeletePayoutSubscriptionResponse>> deletePayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<DeletePayoutSubscriptionResponse>> deletePayoutSubscription(
             long id) {
         return deletePayoutSubscription(id, null);
     }
@@ -405,7 +412,7 @@ public class AsyncRawPayoutSubscriptionClient {
     /**
      * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeletePayoutSubscriptionResponse>> deletePayoutSubscription(
+    public CompletableFuture<PayabliApiClientHttpResponse<DeletePayoutSubscriptionResponse>> deletePayoutSubscription(
             long id, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -439,14 +446,15 @@ public class AsyncRawPayoutSubscriptionClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<DeletePayoutSubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<DeletePayoutSubscriptionResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, DeletePayoutSubscriptionResponse.class),
                                 response));
@@ -479,20 +487,21 @@ public class AsyncRawPayoutSubscriptionClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

@@ -8,9 +8,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -52,7 +52,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
             String mode, String freq, int level, long entryId) {
         return basicStats(
                 mode, freq, level, entryId, BasicStatsRequest.builder().build());
@@ -61,7 +61,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
             String mode, String freq, int level, long entryId, RequestOptions requestOptions) {
         return basicStats(
                 mode, freq, level, entryId, BasicStatsRequest.builder().build(), requestOptions);
@@ -70,7 +70,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
             String mode, String freq, int level, long entryId, BasicStatsRequest request) {
         return basicStats(mode, freq, level, entryId, request, null);
     }
@@ -78,7 +78,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>>> basicStats(
             String mode,
             String freq,
             int level,
@@ -132,7 +132,7 @@ public class AsyncRawStatisticClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -140,7 +140,7 @@ public class AsyncRawStatisticClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<List<StatBasicExtendedQueryRecord>>() {}),
                                 response));
@@ -173,20 +173,21 @@ public class AsyncRawStatisticClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -195,7 +196,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
             String mode, String freq, int customerId) {
         return customerBasicStats(
                 mode, freq, customerId, CustomerBasicStatsRequest.builder().build());
@@ -204,7 +205,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
             String mode, String freq, int customerId, RequestOptions requestOptions) {
         return customerBasicStats(
                 mode, freq, customerId, CustomerBasicStatsRequest.builder().build(), requestOptions);
@@ -213,7 +214,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
             String mode, String freq, int customerId, CustomerBasicStatsRequest request) {
         return customerBasicStats(mode, freq, customerId, request, null);
     }
@@ -221,7 +222,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>>> customerBasicStats(
             String mode,
             String freq,
             int customerId,
@@ -265,7 +266,7 @@ public class AsyncRawStatisticClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -273,7 +274,7 @@ public class AsyncRawStatisticClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<List<SubscriptionStatsQueryRecord>>() {}),
                                 response));
@@ -306,20 +307,21 @@ public class AsyncRawStatisticClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -328,7 +330,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicQueryRecord>>> subStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicQueryRecord>>> subStats(
             String interval, int level, long entryId) {
         return subStats(interval, level, entryId, SubStatsRequest.builder().build());
     }
@@ -336,7 +338,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicQueryRecord>>> subStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicQueryRecord>>> subStats(
             String interval, int level, long entryId, RequestOptions requestOptions) {
         return subStats(interval, level, entryId, SubStatsRequest.builder().build(), requestOptions);
     }
@@ -344,7 +346,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicQueryRecord>>> subStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicQueryRecord>>> subStats(
             String interval, int level, long entryId, SubStatsRequest request) {
         return subStats(interval, level, entryId, request, null);
     }
@@ -352,7 +354,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatBasicQueryRecord>>> subStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicQueryRecord>>> subStats(
             String interval, int level, long entryId, SubStatsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -392,14 +394,14 @@ public class AsyncRawStatisticClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<List<StatBasicQueryRecord>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<List<StatBasicQueryRecord>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<List<StatBasicQueryRecord>>() {}),
                                 response));
@@ -432,20 +434,21 @@ public class AsyncRawStatisticClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -454,7 +457,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
             String mode, String freq, int idVendor) {
         return vendorBasicStats(
                 mode, freq, idVendor, VendorBasicStatsRequest.builder().build());
@@ -463,7 +466,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
             String mode, String freq, int idVendor, RequestOptions requestOptions) {
         return vendorBasicStats(
                 mode, freq, idVendor, VendorBasicStatsRequest.builder().build(), requestOptions);
@@ -472,7 +475,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
             String mode, String freq, int idVendor, VendorBasicStatsRequest request) {
         return vendorBasicStats(mode, freq, idVendor, request, null);
     }
@@ -480,7 +483,7 @@ public class AsyncRawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public CompletableFuture<PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
+    public CompletableFuture<PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>>> vendorBasicStats(
             String mode, String freq, int idVendor, VendorBasicStatsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -520,14 +523,15 @@ public class AsyncRawStatisticClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<List<StatisticsVendorQueryRecord>>() {}),
                                 response));
@@ -560,20 +564,21 @@ public class AsyncRawStatisticClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

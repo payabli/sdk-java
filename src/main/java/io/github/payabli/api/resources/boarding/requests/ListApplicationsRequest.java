@@ -75,7 +75,7 @@ public final class ListApplicationsRequest {
     /**
      * @return Collection of field names, conditions, and values used to filter the query
      * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-     * <p>List of field names accepted:</p>
+     * <p>Accepted field names:</p>
      * <ul>
      * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>startDate</code> (gt, ge, lt, le, eq, ne)</li>
@@ -96,7 +96,7 @@ public final class ListApplicationsRequest {
      * <li><code>repCode</code> (ct, nct, eq, ne)</li>
      * <li><code>repName</code> (ct, nct, eq, ne)</li>
      * <li><code>repOffice</code> (ct, nct, eq, ne)
-     * List of comparison accepted - enclosed between parentheses:</li>
+     * Accepted comparison operators - enclosed between parentheses:</li>
      * <li>eq or empty =&gt; equal</li>
      * <li>gt =&gt; greater than</li>
      * <li>ge =&gt; greater or equal</li>
@@ -226,7 +226,7 @@ public final class ListApplicationsRequest {
         /**
          * <p>Collection of field names, conditions, and values used to filter the query</p>
          * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-         * <p>List of field names accepted:</p>
+         * <p>Accepted field names:</p>
          * <ul>
          * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>startDate</code> (gt, ge, lt, le, eq, ne)</li>
@@ -247,7 +247,7 @@ public final class ListApplicationsRequest {
          * <li><code>repCode</code> (ct, nct, eq, ne)</li>
          * <li><code>repName</code> (ct, nct, eq, ne)</li>
          * <li><code>repOffice</code> (ct, nct, eq, ne)
-         * List of comparison accepted - enclosed between parentheses:</li>
+         * Accepted comparison operators - enclosed between parentheses:</li>
          * <li>eq or empty =&gt; equal</li>
          * <li>gt =&gt; greater than</li>
          * <li>ge =&gt; greater or equal</li>

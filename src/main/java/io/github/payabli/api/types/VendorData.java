@@ -176,6 +176,7 @@ public final class VendorData {
 
     /**
      * @return Vendor's street address. If any address field is provided, this field is required along with <code>city</code>, <code>state</code>, and <code>zip</code>. Allowed characters are letters, numbers, spaces, and `. ,
+     * <p>For a PO Box address, include only the PO Box in this field, for example <code>PO Box 29652</code>. Put the rest of the address, such as a department number, in <code>address2</code>.</p>
      */
     @JsonProperty("address1")
     public Optional<String> getAddress1() {
@@ -184,6 +185,7 @@ public final class VendorData {
 
     /**
      * @return Additional line for vendor's address, such as a suite or unit number. Always optional.
+     * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
      */
     @JsonProperty("address2")
     public Optional<String> getAddress2() {
@@ -617,6 +619,7 @@ public final class VendorData {
 
         /**
          * <p>Vendor's street address. If any address field is provided, this field is required along with <code>city</code>, <code>state</code>, and <code>zip</code>. Allowed characters are letters, numbers, spaces, and `. ,</p>
+         * <p>For a PO Box address, include only the PO Box in this field, for example <code>PO Box 29652</code>. Put the rest of the address, such as a department number, in <code>address2</code>.</p>
          */
         @JsonSetter(value = "address1", nulls = Nulls.SKIP)
         public Builder address1(Optional<String> address1) {
@@ -631,6 +634,7 @@ public final class VendorData {
 
         /**
          * <p>Additional line for vendor's address, such as a suite or unit number. Always optional.</p>
+         * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
          */
         @JsonSetter(value = "address2", nulls = Nulls.SKIP)
         public Builder address2(Optional<String> address2) {

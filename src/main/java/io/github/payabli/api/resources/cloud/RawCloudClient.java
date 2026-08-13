@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -45,28 +45,28 @@ public class RawCloudClient {
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public PayabliApiHttpResponse<AddDeviceResponse> addDevice(String entry) {
+    public PayabliApiClientHttpResponse<AddDeviceResponse> addDevice(String entry) {
         return addDevice(entry, DeviceEntry.builder().build());
     }
 
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public PayabliApiHttpResponse<AddDeviceResponse> addDevice(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AddDeviceResponse> addDevice(String entry, RequestOptions requestOptions) {
         return addDevice(entry, DeviceEntry.builder().build(), requestOptions);
     }
 
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public PayabliApiHttpResponse<AddDeviceResponse> addDevice(String entry, DeviceEntry request) {
+    public PayabliApiClientHttpResponse<AddDeviceResponse> addDevice(String entry, DeviceEntry request) {
         return addDevice(entry, request, null);
     }
 
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public PayabliApiHttpResponse<AddDeviceResponse> addDevice(
+    public PayabliApiClientHttpResponse<AddDeviceResponse> addDevice(
             String entry, DeviceEntry request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -116,7 +116,7 @@ public class RawCloudClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddDeviceResponse.class), response);
             }
             try {
@@ -140,26 +140,26 @@ public class RawCloudClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public PayabliApiHttpResponse<RemoveDeviceResponse> removeDevice(String entry, String deviceId) {
+    public PayabliApiClientHttpResponse<RemoveDeviceResponse> removeDevice(String entry, String deviceId) {
         return removeDevice(entry, deviceId, null);
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public PayabliApiHttpResponse<RemoveDeviceResponse> removeDevice(
+    public PayabliApiClientHttpResponse<RemoveDeviceResponse> removeDevice(
             String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -198,7 +198,7 @@ public class RawCloudClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RemoveDeviceResponse.class), response);
             }
             try {
@@ -222,26 +222,26 @@ public class RawCloudClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve the registration history for a device.
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> historyDevice(String entry, String deviceId) {
+    public PayabliApiClientHttpResponse<CloudQueryApiResponse> historyDevice(String entry, String deviceId) {
         return historyDevice(entry, deviceId, null);
     }
 
     /**
      * Retrieve the registration history for a device.
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> historyDevice(
+    public PayabliApiClientHttpResponse<CloudQueryApiResponse> historyDevice(
             String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -280,7 +280,7 @@ public class RawCloudClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CloudQueryApiResponse.class), response);
             }
             try {
@@ -304,12 +304,12 @@ public class RawCloudClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -317,7 +317,7 @@ public class RawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(String entry) {
+    public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(String entry) {
         return listDevice(entry, ListDeviceRequest.builder().build());
     }
 
@@ -325,7 +325,7 @@ public class RawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(String entry, RequestOptions requestOptions) {
         return listDevice(entry, ListDeviceRequest.builder().build(), requestOptions);
     }
 
@@ -333,7 +333,7 @@ public class RawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(String entry, ListDeviceRequest request) {
+    public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(String entry, ListDeviceRequest request) {
         return listDevice(entry, request, null);
     }
 
@@ -341,7 +341,7 @@ public class RawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public PayabliApiHttpResponse<CloudQueryApiResponse> listDevice(
+    public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(
             String entry, ListDeviceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -383,7 +383,7 @@ public class RawCloudClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CloudQueryApiResponse.class), response);
             }
             try {
@@ -407,12 +407,12 @@ public class RawCloudClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

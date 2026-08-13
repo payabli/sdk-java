@@ -9,9 +9,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -50,7 +50,8 @@ public class RawNotificationlogsClient {
      * </ul>
      * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
      */
-    public PayabliApiHttpResponse<List<NotificationLog>> searchNotificationLogs(SearchNotificationLogsRequest request) {
+    public PayabliApiClientHttpResponse<List<NotificationLog>> searchNotificationLogs(
+            SearchNotificationLogsRequest request) {
         return searchNotificationLogs(request, null);
     }
 
@@ -62,7 +63,7 @@ public class RawNotificationlogsClient {
      * </ul>
      * <p>This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.</p>
      */
-    public PayabliApiHttpResponse<List<NotificationLog>> searchNotificationLogs(
+    public PayabliApiClientHttpResponse<List<NotificationLog>> searchNotificationLogs(
             SearchNotificationLogsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -115,7 +116,7 @@ public class RawNotificationlogsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<NotificationLog>>() {}),
                         response);
@@ -141,12 +142,12 @@ public class RawNotificationlogsClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -154,7 +155,7 @@ public class RawNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> getNotificationLog(String uuid) {
+    public PayabliApiClientHttpResponse<NotificationLogDetail> getNotificationLog(String uuid) {
         return getNotificationLog(uuid, null);
     }
 
@@ -162,7 +163,7 @@ public class RawNotificationlogsClient {
      * Get detailed information for a specific notification log entry.
      * This endpoint requires the <code>notifications_create</code> OR <code>notifications_read</code> permission.
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> getNotificationLog(
+    public PayabliApiClientHttpResponse<NotificationLogDetail> getNotificationLog(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -200,7 +201,7 @@ public class RawNotificationlogsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class), response);
             }
             try {
@@ -224,12 +225,12 @@ public class RawNotificationlogsClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -237,7 +238,7 @@ public class RawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> retryNotificationLog(String uuid) {
+    public PayabliApiClientHttpResponse<NotificationLogDetail> retryNotificationLog(String uuid) {
         return retryNotificationLog(uuid, null);
     }
 
@@ -245,7 +246,7 @@ public class RawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public PayabliApiHttpResponse<NotificationLogDetail> retryNotificationLog(
+    public PayabliApiClientHttpResponse<NotificationLogDetail> retryNotificationLog(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -284,7 +285,7 @@ public class RawNotificationlogsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class), response);
             }
             try {
@@ -308,12 +309,12 @@ public class RawNotificationlogsClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -322,7 +323,7 @@ public class RawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public PayabliApiHttpResponse<Void> bulkRetryNotificationLogs(List<String> request) {
+    public PayabliApiClientHttpResponse<Void> bulkRetryNotificationLogs(List<String> request) {
         return bulkRetryNotificationLogs(request, null);
     }
 
@@ -331,7 +332,8 @@ public class RawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public PayabliApiHttpResponse<Void> bulkRetryNotificationLogs(List<String> request, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<Void> bulkRetryNotificationLogs(
+            List<String> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/notificationlogs/retry");
@@ -345,7 +347,7 @@ public class RawNotificationlogsClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -373,16 +375,16 @@ public class RawNotificationlogsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(null, response);
+                return new PayabliApiClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

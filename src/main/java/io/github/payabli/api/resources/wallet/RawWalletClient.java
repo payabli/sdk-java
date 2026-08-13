@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
@@ -46,7 +46,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization() {
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization() {
         return configureApplePayOrganization(
                 ConfigureOrganizationRequestApplePay.builder().build());
     }
@@ -54,7 +54,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
             RequestOptions requestOptions) {
         return configureApplePayOrganization(
                 ConfigureOrganizationRequestApplePay.builder().build(), requestOptions);
@@ -63,7 +63,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
             ConfigureOrganizationRequestApplePay request) {
         return configureApplePayOrganization(request, null);
     }
@@ -71,7 +71,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureApplePayOrganization(
             ConfigureOrganizationRequestApplePay request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -86,7 +86,7 @@ public class RawWalletClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -116,7 +116,7 @@ public class RawWalletClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, ConfigureApplePayOrganizationApiResponse.class),
                         response);
@@ -142,19 +142,19 @@ public class RawWalletClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Configure and activate Apple Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint() {
+    public PayabliApiClientHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint() {
         return configureApplePayPaypoint(
                 ConfigurePaypointRequestApplePay.builder().build());
     }
@@ -162,7 +162,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
+    public PayabliApiClientHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
             RequestOptions requestOptions) {
         return configureApplePayPaypoint(
                 ConfigurePaypointRequestApplePay.builder().build(), requestOptions);
@@ -171,7 +171,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
+    public PayabliApiClientHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
             ConfigurePaypointRequestApplePay request) {
         return configureApplePayPaypoint(request, null);
     }
@@ -179,7 +179,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Apple Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
+    public PayabliApiClientHttpResponse<ConfigureApplePaypointApiResponse> configureApplePayPaypoint(
             ConfigurePaypointRequestApplePay request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -194,7 +194,7 @@ public class RawWalletClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -224,7 +224,7 @@ public class RawWalletClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, ConfigureApplePaypointApiResponse.class),
                         response);
@@ -250,19 +250,19 @@ public class RawWalletClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Configure and activate Google Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization() {
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization() {
         return configureGooglePayOrganization(
                 ConfigureOrganizationRequestGooglePay.builder().build());
     }
@@ -270,7 +270,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Google Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
             RequestOptions requestOptions) {
         return configureGooglePayOrganization(
                 ConfigureOrganizationRequestGooglePay.builder().build(), requestOptions);
@@ -279,7 +279,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Google Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
             ConfigureOrganizationRequestGooglePay request) {
         return configureGooglePayOrganization(request, null);
     }
@@ -287,7 +287,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Google Pay for a Payabli organization
      */
-    public PayabliApiHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
+    public PayabliApiClientHttpResponse<ConfigureApplePayOrganizationApiResponse> configureGooglePayOrganization(
             ConfigureOrganizationRequestGooglePay request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -302,7 +302,7 @@ public class RawWalletClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -332,7 +332,7 @@ public class RawWalletClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, ConfigureApplePayOrganizationApiResponse.class),
                         response);
@@ -358,19 +358,19 @@ public class RawWalletClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Configure and activate Google Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint() {
+    public PayabliApiClientHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint() {
         return configureGooglePayPaypoint(
                 ConfigurePaypointRequestGooglePay.builder().build());
     }
@@ -378,7 +378,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Google Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
+    public PayabliApiClientHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
             RequestOptions requestOptions) {
         return configureGooglePayPaypoint(
                 ConfigurePaypointRequestGooglePay.builder().build(), requestOptions);
@@ -387,7 +387,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Google Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
+    public PayabliApiClientHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
             ConfigurePaypointRequestGooglePay request) {
         return configureGooglePayPaypoint(request, null);
     }
@@ -395,7 +395,7 @@ public class RawWalletClient {
     /**
      * Configure and activate Google Pay for a Payabli paypoint
      */
-    public PayabliApiHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
+    public PayabliApiClientHttpResponse<ConfigureGooglePaypointApiResponse> configureGooglePayPaypoint(
             ConfigurePaypointRequestGooglePay request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -410,7 +410,7 @@ public class RawWalletClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -440,7 +440,7 @@ public class RawWalletClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, ConfigureGooglePaypointApiResponse.class),
                         response);
@@ -466,12 +466,12 @@ public class RawWalletClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
@@ -46,14 +46,14 @@ public class RawOrganizationClient {
     /**
      * Creates an organization under a parent organization. This is also referred to as a suborganization.
      */
-    public PayabliApiHttpResponse<AddOrganizationResponse> addOrganization(AddOrganizationRequest request) {
+    public PayabliApiClientHttpResponse<AddOrganizationResponse> addOrganization(AddOrganizationRequest request) {
         return addOrganization(request, null);
     }
 
     /**
      * Creates an organization under a parent organization. This is also referred to as a suborganization.
      */
-    public PayabliApiHttpResponse<AddOrganizationResponse> addOrganization(
+    public PayabliApiClientHttpResponse<AddOrganizationResponse> addOrganization(
             AddOrganizationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -102,7 +102,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddOrganizationResponse.class),
                         response);
             }
@@ -127,45 +127,47 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates an organization's details by ID.
      */
-    public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(int orgId) {
-        return editOrganization(orgId, OrganizationData.builder().build());
+    public PayabliApiClientHttpResponse<EditOrganizationResponse> editOrganization(int orgIdPathParam) {
+        return editOrganization(orgIdPathParam, OrganizationData.builder().build());
     }
 
     /**
      * Updates an organization's details by ID.
      */
-    public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(int orgId, RequestOptions requestOptions) {
-        return editOrganization(orgId, OrganizationData.builder().build(), requestOptions);
+    public PayabliApiClientHttpResponse<EditOrganizationResponse> editOrganization(
+            int orgIdPathParam, RequestOptions requestOptions) {
+        return editOrganization(orgIdPathParam, OrganizationData.builder().build(), requestOptions);
     }
 
     /**
      * Updates an organization's details by ID.
      */
-    public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(int orgId, OrganizationData request) {
-        return editOrganization(orgId, request, null);
+    public PayabliApiClientHttpResponse<EditOrganizationResponse> editOrganization(
+            int orgIdPathParam, OrganizationData request) {
+        return editOrganization(orgIdPathParam, request, null);
     }
 
     /**
      * Updates an organization's details by ID.
      */
-    public PayabliApiHttpResponse<EditOrganizationResponse> editOrganization(
-            int orgId, OrganizationData request, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<EditOrganizationResponse> editOrganization(
+            int orgIdPathParam, OrganizationData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization")
-                .addPathSegment(Integer.toString(orgId));
+                .addPathSegment(Integer.toString(orgIdPathParam));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -176,7 +178,7 @@ public class RawOrganizationClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -206,7 +208,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, EditOrganizationResponse.class),
                         response);
             }
@@ -231,26 +233,26 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Delete an organization by ID.
      */
-    public PayabliApiHttpResponse<DeleteOrganizationResponse> deleteOrganization(int orgId) {
+    public PayabliApiClientHttpResponse<DeleteOrganizationResponse> deleteOrganization(int orgId) {
         return deleteOrganization(orgId, null);
     }
 
     /**
      * Delete an organization by ID.
      */
-    public PayabliApiHttpResponse<DeleteOrganizationResponse> deleteOrganization(
+    public PayabliApiClientHttpResponse<DeleteOrganizationResponse> deleteOrganization(
             int orgId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -288,7 +290,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, DeleteOrganizationResponse.class),
                         response);
             }
@@ -313,26 +315,26 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public PayabliApiHttpResponse<OrganizationQueryRecord> getBasicOrganization(String entry) {
+    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganization(String entry) {
         return getBasicOrganization(entry, null);
     }
 
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public PayabliApiHttpResponse<OrganizationQueryRecord> getBasicOrganization(
+    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganization(
             String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -370,7 +372,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
                         response);
             }
@@ -395,26 +397,26 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Gets an organization's basic details by org ID.
      */
-    public PayabliApiHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(int orgId) {
+    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(int orgId) {
         return getBasicOrganizationById(orgId, null);
     }
 
     /**
      * Gets an organization's basic details by org ID.
      */
-    public PayabliApiHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(
+    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(
             int orgId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -452,7 +454,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
                         response);
             }
@@ -477,26 +479,27 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves details for an organization by ID.
      */
-    public PayabliApiHttpResponse<OrganizationQueryRecord> getOrganization(int orgId) {
+    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getOrganization(int orgId) {
         return getOrganization(orgId, null);
     }
 
     /**
      * Retrieves details for an organization by ID.
      */
-    public PayabliApiHttpResponse<OrganizationQueryRecord> getOrganization(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getOrganization(
+            int orgId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Organization/read")
@@ -533,7 +536,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
                         response);
             }
@@ -558,26 +561,26 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves an organization's settings.
      */
-    public PayabliApiHttpResponse<SettingsQueryRecord> getSettingsOrganization(int orgId) {
+    public PayabliApiClientHttpResponse<SettingsQueryRecord> getSettingsOrganization(int orgId) {
         return getSettingsOrganization(orgId, null);
     }
 
     /**
      * Retrieves an organization's settings.
      */
-    public PayabliApiHttpResponse<SettingsQueryRecord> getSettingsOrganization(
+    public PayabliApiClientHttpResponse<SettingsQueryRecord> getSettingsOrganization(
             int orgId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -615,7 +618,7 @@ public class RawOrganizationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SettingsQueryRecord.class), response);
             }
             try {
@@ -639,12 +642,12 @@ public class RawOrganizationClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -70,7 +70,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<AuthResponse> authorize(TransRequestBody body) {
+    public PayabliApiClientHttpResponse<AuthResponse> authorize(TransRequestBody body) {
         return authorize(RequestPaymentAuthorize.builder().body(body).build());
     }
 
@@ -81,7 +81,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<AuthResponse> authorize(TransRequestBody body, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AuthResponse> authorize(TransRequestBody body, RequestOptions requestOptions) {
         return authorize(RequestPaymentAuthorize.builder().body(body).build(), requestOptions);
     }
 
@@ -92,7 +92,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<AuthResponse> authorize(RequestPaymentAuthorize request) {
+    public PayabliApiClientHttpResponse<AuthResponse> authorize(RequestPaymentAuthorize request) {
         return authorize(request, null);
     }
 
@@ -103,7 +103,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until <a href="/developers/api-reference/moneyin/capture-an-authorized-transaction">captured</a>.
      * <p>Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<AuthResponse> authorize(
+    public PayabliApiClientHttpResponse<AuthResponse> authorize(
             RequestPaymentAuthorize request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -159,7 +159,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthResponse.class), response);
             }
             try {
@@ -183,12 +183,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -199,7 +199,7 @@ public class RawMoneyInClient {
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public PayabliApiHttpResponse<CaptureResponse> capture(String transId, double amount) {
+    public PayabliApiClientHttpResponse<CaptureResponse> capture(String transId, double amount) {
         return capture(transId, amount, null);
     }
 
@@ -210,7 +210,7 @@ public class RawMoneyInClient {
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized
      * transaction</a> to complete the transaction and move funds from the customer to merchant account.
      */
-    public PayabliApiHttpResponse<CaptureResponse> capture(
+    public PayabliApiClientHttpResponse<CaptureResponse> capture(
             String transId, double amount, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -249,7 +249,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaptureResponse.class), response);
             }
             try {
@@ -273,12 +273,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -289,7 +289,7 @@ public class RawMoneyInClient {
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
      */
-    public PayabliApiHttpResponse<CaptureResponse> captureAuth(String transId, CaptureRequest request) {
+    public PayabliApiClientHttpResponse<CaptureResponse> captureAuth(String transId, CaptureRequest request) {
         return captureAuth(transId, request, null);
     }
 
@@ -300,7 +300,7 @@ public class RawMoneyInClient {
      * Capture an <a href="/developers/api-reference/moneyin/authorize-a-transaction">authorized transaction</a> to complete the transaction and move funds from the customer to merchant account.
      * <p>You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See <a href="/developers/developer-guides/pay-in-auth-and-capture">Capture an authorized transaction</a> for more information about this endpoint.</p>
      */
-    public PayabliApiHttpResponse<CaptureResponse> captureAuth(
+    public PayabliApiClientHttpResponse<CaptureResponse> captureAuth(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -316,7 +316,7 @@ public class RawMoneyInClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -346,7 +346,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CaptureResponse.class), response);
             }
             try {
@@ -370,12 +370,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -383,7 +383,7 @@ public class RawMoneyInClient {
      * Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with <code>reverseCredit</code>. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
      * <p>This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.</p>
      */
-    public PayabliApiHttpResponse<PayabliApiResponse0> credit(RequestCredit request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse0> credit(RequestCredit request) {
         return credit(request, null);
     }
 
@@ -391,7 +391,8 @@ public class RawMoneyInClient {
      * Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with <code>reverseCredit</code>. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
      * <p>This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.</p>
      */
-    public PayabliApiHttpResponse<PayabliApiResponse0> credit(RequestCredit request, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse0> credit(
+            RequestCredit request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/makecredit");
@@ -446,7 +447,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse0.class), response);
             }
             try {
@@ -470,26 +471,26 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a processed transaction's details.
      */
-    public PayabliApiHttpResponse<TransactionQueryRecordsCustomer> details(String transId) {
+    public PayabliApiClientHttpResponse<TransactionQueryRecordsCustomer> details(String transId) {
         return details(transId, null);
     }
 
     /**
      * Retrieve a processed transaction's details.
      */
-    public PayabliApiHttpResponse<TransactionQueryRecordsCustomer> details(
+    public PayabliApiClientHttpResponse<TransactionQueryRecordsCustomer> details(
             String transId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -527,7 +528,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransactionQueryRecordsCustomer.class),
                         response);
             }
@@ -552,12 +553,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -567,7 +568,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseGetPaid> getpaid(TransRequestBody body) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseGetPaid> getpaid(TransRequestBody body) {
         return getpaid(RequestPayment.builder().body(body).build());
     }
 
@@ -577,7 +578,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseGetPaid> getpaid(
+    public PayabliApiClientHttpResponse<PayabliApiResponseGetPaid> getpaid(
             TransRequestBody body, RequestOptions requestOptions) {
         return getpaid(RequestPayment.builder().body(body).build(), requestOptions);
     }
@@ -588,7 +589,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseGetPaid> getpaid(RequestPayment request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseGetPaid> getpaid(RequestPayment request) {
         return getpaid(request, null);
     }
 
@@ -598,7 +599,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Make a single transaction. This method authorizes and captures a payment in one step.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseGetPaid> getpaid(
+    public PayabliApiClientHttpResponse<PayabliApiResponseGetPaid> getpaid(
             RequestPayment request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -666,7 +667,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseGetPaid.class),
                         response);
             }
@@ -691,12 +692,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -706,7 +707,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the legacy endpoints. For transactions made with the current endpoints, check the transaction's settlement status and call void or refund based on the result.
      */
-    public PayabliApiHttpResponse<ReverseResponse> reverse(String transId, double amount) {
+    public PayabliApiClientHttpResponse<ReverseResponse> reverse(String transId, double amount) {
         return reverse(transId, amount, null);
     }
 
@@ -716,7 +717,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the legacy endpoints. For transactions made with the current endpoints, check the transaction's settlement status and call void or refund based on the result.
      */
-    public PayabliApiHttpResponse<ReverseResponse> reverse(
+    public PayabliApiClientHttpResponse<ReverseResponse> reverse(
             String transId, double amount, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -755,7 +756,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ReverseResponse.class), response);
             }
             try {
@@ -779,12 +780,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -794,7 +795,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public PayabliApiHttpResponse<RefundResponse> refund(String transId, double amount) {
+    public PayabliApiClientHttpResponse<RefundResponse> refund(String transId, double amount) {
         return refund(transId, amount, null);
     }
 
@@ -804,7 +805,8 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
      */
-    public PayabliApiHttpResponse<RefundResponse> refund(String transId, double amount, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<RefundResponse> refund(
+            String transId, double amount, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/refund")
@@ -842,7 +844,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RefundResponse.class), response);
             }
             try {
@@ -866,12 +868,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -881,7 +883,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
-    public PayabliApiHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(String transId) {
+    public PayabliApiClientHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(String transId) {
         return refundWithInstructions(transId, RequestRefund.builder().build());
     }
 
@@ -891,7 +893,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
-    public PayabliApiHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(
+    public PayabliApiClientHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(
             String transId, RequestOptions requestOptions) {
         return refundWithInstructions(transId, RequestRefund.builder().build(), requestOptions);
     }
@@ -902,7 +904,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
-    public PayabliApiHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(
+    public PayabliApiClientHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(
             String transId, RequestRefund request) {
         return refundWithInstructions(transId, request, null);
     }
@@ -913,7 +915,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Refunds a settled transaction with split instructions.
      */
-    public PayabliApiHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(
+    public PayabliApiClientHttpResponse<RefundWithInstructionsResponse> refundWithInstructions(
             String transId, RequestRefund request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -963,7 +965,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RefundWithInstructionsResponse.class),
                         response);
             }
@@ -988,26 +990,27 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Reverse microdeposits that are used to verify customer account ownership and access. The <code>transId</code> value is returned in the success response for the original credit transaction made with <code>api/MoneyIn/makecredit</code>.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse> reverseCredit(String transId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse> reverseCredit(String transId) {
         return reverseCredit(transId, null);
     }
 
     /**
      * Reverse microdeposits that are used to verify customer account ownership and access. The <code>transId</code> value is returned in the success response for the original credit transaction made with <code>api/MoneyIn/makecredit</code>.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse> reverseCredit(String transId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse> reverseCredit(
+            String transId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/reverseCredit")
@@ -1044,7 +1047,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class), response);
             }
             try {
@@ -1068,40 +1071,42 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Send a payment receipt for a transaction.
      */
-    public PayabliApiHttpResponse<ReceiptResponse> sendReceipt2Trans(String transId) {
+    public PayabliApiClientHttpResponse<ReceiptResponse> sendReceipt2Trans(String transId) {
         return sendReceipt2Trans(transId, SendReceipt2TransRequest.builder().build());
     }
 
     /**
      * Send a payment receipt for a transaction.
      */
-    public PayabliApiHttpResponse<ReceiptResponse> sendReceipt2Trans(String transId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<ReceiptResponse> sendReceipt2Trans(
+            String transId, RequestOptions requestOptions) {
         return sendReceipt2Trans(transId, SendReceipt2TransRequest.builder().build(), requestOptions);
     }
 
     /**
      * Send a payment receipt for a transaction.
      */
-    public PayabliApiHttpResponse<ReceiptResponse> sendReceipt2Trans(String transId, SendReceipt2TransRequest request) {
+    public PayabliApiClientHttpResponse<ReceiptResponse> sendReceipt2Trans(
+            String transId, SendReceipt2TransRequest request) {
         return sendReceipt2Trans(transId, request, null);
     }
 
     /**
      * Send a payment receipt for a transaction.
      */
-    public PayabliApiHttpResponse<ReceiptResponse> sendReceipt2Trans(
+    public PayabliApiClientHttpResponse<ReceiptResponse> sendReceipt2Trans(
             String transId, SendReceipt2TransRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1143,7 +1148,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ReceiptResponse.class), response);
             }
             try {
@@ -1167,26 +1172,26 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Validates a card number without running a transaction or authorizing a charge.
      */
-    public PayabliApiHttpResponse<ValidateResponse> validate(RequestPaymentValidate request) {
+    public PayabliApiClientHttpResponse<ValidateResponse> validate(RequestPaymentValidate request) {
         return validate(request, null);
     }
 
     /**
      * Validates a card number without running a transaction or authorizing a charge.
      */
-    public PayabliApiHttpResponse<ValidateResponse> validate(
+    public PayabliApiClientHttpResponse<ValidateResponse> validate(
             RequestPaymentValidate request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1235,7 +1240,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ValidateResponse.class), response);
             }
             try {
@@ -1259,12 +1264,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1274,7 +1279,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
      */
-    public PayabliApiHttpResponse<VoidResponse> void_(String transId) {
+    public PayabliApiClientHttpResponse<VoidResponse> void_(String transId) {
         return void_(transId, null);
     }
 
@@ -1284,7 +1289,7 @@ public class RawMoneyInClient {
      * &lt;/Warning&gt;</p>
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
      */
-    public PayabliApiHttpResponse<VoidResponse> void_(String transId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<VoidResponse> void_(String transId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("MoneyIn/void")
@@ -1321,7 +1326,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VoidResponse.class), response);
             }
             try {
@@ -1345,26 +1350,26 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> getpaidv2(TransRequestBody body) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> getpaidv2(TransRequestBody body) {
         return getpaidv2(RequestPaymentV2.builder().body(body).build());
     }
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> getpaidv2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> getpaidv2(
             TransRequestBody body, RequestOptions requestOptions) {
         return getpaidv2(RequestPaymentV2.builder().body(body).build(), requestOptions);
     }
@@ -1372,14 +1377,14 @@ public class RawMoneyInClient {
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> getpaidv2(RequestPaymentV2 request) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> getpaidv2(RequestPaymentV2 request) {
         return getpaidv2(request, null);
     }
 
     /**
      * Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the <code>api/MoneyIn/getpaid</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> getpaidv2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> getpaidv2(
             RequestPaymentV2 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1443,7 +1448,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2TransactionResponseWrapper.class),
                         response);
             }
@@ -1469,12 +1474,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1482,7 +1487,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> authorizev2(TransRequestBody body) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> authorizev2(TransRequestBody body) {
         return authorizev2(RequestPaymentAuthorizeV2.builder().body(body).build());
     }
 
@@ -1490,7 +1495,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> authorizev2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> authorizev2(
             TransRequestBody body, RequestOptions requestOptions) {
         return authorizev2(RequestPaymentAuthorizeV2.builder().body(body).build(), requestOptions);
     }
@@ -1499,7 +1504,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> authorizev2(RequestPaymentAuthorizeV2 request) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> authorizev2(RequestPaymentAuthorizeV2 request) {
         return authorizev2(request, null);
     }
 
@@ -1507,7 +1512,7 @@ public class RawMoneyInClient {
      * Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the <code>api/MoneyIn/authorize</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      * <p><strong>Note</strong>: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> authorizev2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> authorizev2(
             RequestPaymentAuthorizeV2 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1563,7 +1568,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2TransactionResponseWrapper.class),
                         response);
             }
@@ -1589,26 +1594,27 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> capturev2(String transId, CaptureRequest request) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> capturev2(
+            String transId, CaptureRequest request) {
         return capturev2(transId, request, null);
     }
 
     /**
      * Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the <code>api/MoneyIn/capture/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> capturev2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> capturev2(
             String transId, CaptureRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1624,7 +1630,7 @@ public class RawMoneyInClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -1654,7 +1660,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2TransactionResponseWrapper.class),
                         response);
             }
@@ -1680,12 +1686,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1696,8 +1702,8 @@ public class RawMoneyInClient {
      *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2(String transId) {
-        return refundv2(transId, RefundV2Request.builder().build());
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2(String transId) {
+        return refundv2(transId, (RefundV2Request) null);
     }
 
     /**
@@ -1707,9 +1713,9 @@ public class RawMoneyInClient {
      *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2(
             String transId, RequestOptions requestOptions) {
-        return refundv2(transId, RefundV2Request.builder().build(), requestOptions);
+        return refundv2(transId, (RefundV2Request) null, requestOptions);
     }
 
     /**
@@ -1719,7 +1725,8 @@ public class RawMoneyInClient {
      *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2(String transId, RefundV2Request request) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2(
+            String transId, RefundV2Request request) {
         return refundv2(transId, request, null);
     }
 
@@ -1730,7 +1737,7 @@ public class RawMoneyInClient {
      *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2(
             String transId, RefundV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1743,22 +1750,27 @@ public class RawMoneyInClient {
         }
         RequestBody body;
         try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+            body = RequestBody.create("", null);
+            if (request != null) {
+                body = RequestBody.create(
+                        ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+            }
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
                 EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
                 EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
-        Request okhttpRequest = new Request.Builder()
+        Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(_headers))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
+                .addHeader("Accept", "application/json");
+        if (request != null) {
+            _requestBuilder.addHeader("Content-Type", "application/json");
+        }
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -1776,7 +1788,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2TransactionResponseWrapper.class),
                         response);
             }
@@ -1802,12 +1814,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -1815,33 +1827,33 @@ public class RawMoneyInClient {
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2Amount(String transId, double amount) {
-        return refundv2Amount(transId, amount, RefundV2Request.builder().build());
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2Amount(String transId, double amount) {
+        return refundv2Amount(transId, amount, (RefundV2Request) null);
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2Amount(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2Amount(
             String transId, double amount, RequestOptions requestOptions) {
-        return refundv2Amount(transId, amount, RefundV2Request.builder().build(), requestOptions);
+        return refundv2Amount(transId, amount, (RefundV2Request) null, requestOptions);
     }
 
     /**
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2Amount(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2Amount(
             String transId, double amount, RefundV2Request request) {
         return refundv2Amount(transId, amount, request, null);
     }
@@ -1850,10 +1862,10 @@ public class RawMoneyInClient {
      * Refund a transaction that has settled and send money back to the account holder. If <code>amount</code> is set to 0, performs a full refund. When a non-zero <code>amount</code> is provided, this endpoint performs a partial refund.
      * <p>This is the v2 version of the refund endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.</p>
      * <p>&lt;Note&gt;
-     *   To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+     *   For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
      * &lt;/Note&gt;</p>
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> refundv2Amount(
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> refundv2Amount(
             String transId, double amount, RefundV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1867,22 +1879,27 @@ public class RawMoneyInClient {
         }
         RequestBody body;
         try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+            body = RequestBody.create("", null);
+            if (request != null) {
+                body = RequestBody.create(
+                        ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+            }
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
                 EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
                 EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
-        Request okhttpRequest = new Request.Builder()
+        Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(_headers))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
+                .addHeader("Accept", "application/json");
+        if (request != null) {
+            _requestBuilder.addHeader("Content-Type", "application/json");
+        }
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -1900,7 +1917,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2TransactionResponseWrapper.class),
                         response);
             }
@@ -1926,26 +1943,27 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> voidv2(String transId) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> voidv2(String transId) {
         return voidv2(transId, null);
     }
 
     /**
      * Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the <code>api/MoneyIn/void/{transId}</code> endpoint, and returns the unified response format. See <a href="/guides/pay-in-unified-response-codes-reference">Pay In unified response codes reference</a> for more information.
      */
-    public PayabliApiHttpResponse<V2TransactionResponseWrapper> voidv2(String transId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<V2TransactionResponseWrapper> voidv2(
+            String transId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("v2/MoneyIn/void")
@@ -1982,7 +2000,7 @@ public class RawMoneyInClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, V2TransactionResponseWrapper.class),
                         response);
             }
@@ -2008,12 +2026,12 @@ public class RawMoneyInClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

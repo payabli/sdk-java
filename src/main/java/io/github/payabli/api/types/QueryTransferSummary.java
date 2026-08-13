@@ -214,7 +214,7 @@ public final class QueryTransferSummary {
     }
 
     /**
-     * @return Service fees are any pass-through fees charged to the customer at the time of payment.  These aren't transferred to the merchant when the batch is transferred and funded.
+     * @return Service fees are any pass-through fees charged to the customer at the time of payment. These aren't transferred to the merchant when the batch is transferred and funded.
      */
     @JsonIgnore
     public Optional<Double> getServiceFees() {
@@ -237,7 +237,7 @@ public final class QueryTransferSummary {
     }
 
     /**
-     * @return The transfer amount is the net batch amount plus or minus any returns, refunds,  billing and fees items, chargebacks, adjustments, and third party payments.  This is the amount from the batch that is transferred to the merchant bank account.
+     * @return The transfer amount is the net batch amount plus or minus any returns, refunds, billing and fees items, chargebacks, adjustments, and third party payments. This is the amount from the batch that is transferred to the merchant bank account.
      */
     @JsonIgnore
     public Optional<Double> getTransferAmount() {
@@ -842,7 +842,7 @@ public final class QueryTransferSummary {
         }
 
         /**
-         * <p>Service fees are any pass-through fees charged to the customer at the time of payment.  These aren't transferred to the merchant when the batch is transferred and funded.</p>
+         * <p>Service fees are any pass-through fees charged to the customer at the time of payment. These aren't transferred to the merchant when the batch is transferred and funded.</p>
          */
         @JsonSetter(value = "serviceFees", nulls = Nulls.SKIP)
         public Builder serviceFees(Optional<Double> serviceFees) {
@@ -893,7 +893,7 @@ public final class QueryTransferSummary {
         }
 
         /**
-         * <p>The transfer amount is the net batch amount plus or minus any returns, refunds,  billing and fees items, chargebacks, adjustments, and third party payments.  This is the amount from the batch that is transferred to the merchant bank account.</p>
+         * <p>The transfer amount is the net batch amount plus or minus any returns, refunds, billing and fees items, chargebacks, adjustments, and third party payments. This is the amount from the batch that is transferred to the merchant bank account.</p>
          */
         @JsonSetter(value = "transferAmount", nulls = Nulls.SKIP)
         public Builder transferAmount(Optional<Double> transferAmount) {

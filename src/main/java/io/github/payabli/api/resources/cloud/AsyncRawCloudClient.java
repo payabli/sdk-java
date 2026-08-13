@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -49,14 +49,14 @@ public class AsyncRawCloudClient {
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<AddDeviceResponse>> addDevice(String entry) {
         return addDevice(entry, DeviceEntry.builder().build());
     }
 
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddDeviceResponse>> addDevice(
             String entry, RequestOptions requestOptions) {
         return addDevice(entry, DeviceEntry.builder().build(), requestOptions);
     }
@@ -64,14 +64,15 @@ public class AsyncRawCloudClient {
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(String entry, DeviceEntry request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<AddDeviceResponse>> addDevice(
+            String entry, DeviceEntry request) {
         return addDevice(entry, request, null);
     }
 
     /**
      * Register a cloud device to an entrypoint. See <a href="/developers/developer-guides/devices-quickstart#devices-quickstart">Devices Quickstart</a> for a complete guide.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> addDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddDeviceResponse>> addDevice(
             String entry, DeviceEntry request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -117,14 +118,14 @@ public class AsyncRawCloudClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<AddDeviceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<AddDeviceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddDeviceResponse.class),
                                 response));
                         return;
@@ -156,20 +157,21 @@ public class AsyncRawCloudClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -178,14 +180,15 @@ public class AsyncRawCloudClient {
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> removeDevice(String entry, String deviceId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<RemoveDeviceResponse>> removeDevice(
+            String entry, String deviceId) {
         return removeDevice(entry, deviceId, null);
     }
 
     /**
      * Remove a cloud device from an entrypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> removeDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<RemoveDeviceResponse>> removeDevice(
             String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -220,14 +223,14 @@ public class AsyncRawCloudClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<RemoveDeviceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<RemoveDeviceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RemoveDeviceResponse.class),
                                 response));
                         return;
@@ -259,20 +262,21 @@ public class AsyncRawCloudClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -281,7 +285,7 @@ public class AsyncRawCloudClient {
     /**
      * Retrieve the registration history for a device.
      */
-    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> historyDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> historyDevice(
             String entry, String deviceId) {
         return historyDevice(entry, deviceId, null);
     }
@@ -289,7 +293,7 @@ public class AsyncRawCloudClient {
     /**
      * Retrieve the registration history for a device.
      */
-    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> historyDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> historyDevice(
             String entry, String deviceId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -324,14 +328,14 @@ public class AsyncRawCloudClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CloudQueryApiResponse.class),
                                 response));
                         return;
@@ -363,20 +367,21 @@ public class AsyncRawCloudClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -386,7 +391,7 @@ public class AsyncRawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> listDevice(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> listDevice(String entry) {
         return listDevice(entry, ListDeviceRequest.builder().build());
     }
 
@@ -394,7 +399,7 @@ public class AsyncRawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> listDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> listDevice(
             String entry, RequestOptions requestOptions) {
         return listDevice(entry, ListDeviceRequest.builder().build(), requestOptions);
     }
@@ -403,7 +408,7 @@ public class AsyncRawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> listDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> listDevice(
             String entry, ListDeviceRequest request) {
         return listDevice(entry, request, null);
     }
@@ -412,7 +417,7 @@ public class AsyncRawCloudClient {
      * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
-    public CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> listDevice(
+    public CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> listDevice(
             String entry, ListDeviceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -450,14 +455,14 @@ public class AsyncRawCloudClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<CloudQueryApiResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<CloudQueryApiResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CloudQueryApiResponse.class),
                                 response));
                         return;
@@ -489,20 +494,21 @@ public class AsyncRawCloudClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

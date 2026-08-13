@@ -8,9 +8,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -76,7 +76,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportApplications(
             ExportFormat1 format, int orgId) {
         return exportApplications(
                 format, orgId, ExportApplicationsRequest.builder().build());
@@ -88,7 +88,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportApplications(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportApplications(
                 format, orgId, ExportApplicationsRequest.builder().build(), requestOptions);
@@ -100,7 +100,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportApplications(
             ExportFormat1 format, int orgId, ExportApplicationsRequest request) {
         return exportApplications(format, orgId, request, null);
     }
@@ -111,7 +111,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of boarding applications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportApplications(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportApplications(
             ExportFormat1 format, int orgId, ExportApplicationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -162,14 +162,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -202,20 +202,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -227,7 +228,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetails(
             ExportFormat1 format, String entry) {
         return exportBatchDetails(
                 format, entry, ExportBatchDetailsRequest.builder().build());
@@ -239,7 +240,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetails(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportBatchDetails(
                 format, entry, ExportBatchDetailsRequest.builder().build(), requestOptions);
@@ -251,7 +252,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetails(
             ExportFormat1 format, String entry, ExportBatchDetailsRequest request) {
         return exportBatchDetails(format, entry, request, null);
     }
@@ -262,7 +263,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetails(
             ExportFormat1 format, String entry, ExportBatchDetailsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -313,14 +314,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -353,20 +354,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -378,7 +380,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId) {
         return exportBatchDetailsOrg(
                 format, orgId, ExportBatchDetailsOrgRequest.builder().build());
@@ -390,7 +392,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportBatchDetailsOrg(
                 format, orgId, ExportBatchDetailsOrgRequest.builder().build(), requestOptions);
@@ -402,7 +404,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request) {
         return exportBatchDetailsOrg(format, orgId, request, null);
     }
@@ -413,7 +415,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export batch details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchDetailsOrg(
             ExportFormat1 format, int orgId, ExportBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -465,14 +467,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -505,20 +507,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -530,7 +533,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatches(
             ExportFormat1 format, String entry) {
         return exportBatches(format, entry, ExportBatchesRequest.builder().build());
     }
@@ -541,7 +544,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatches(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportBatches(format, entry, ExportBatchesRequest.builder().build(), requestOptions);
     }
@@ -552,7 +555,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatches(
             ExportFormat1 format, String entry, ExportBatchesRequest request) {
         return exportBatches(format, entry, request, null);
     }
@@ -563,7 +566,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatches(
             ExportFormat1 format, String entry, ExportBatchesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -614,14 +617,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -654,20 +657,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -679,7 +683,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOrg(
             ExportFormat1 format, int orgId) {
         return exportBatchesOrg(format, orgId, ExportBatchesOrgRequest.builder().build());
     }
@@ -690,7 +694,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportBatchesOrg(format, orgId, ExportBatchesOrgRequest.builder().build(), requestOptions);
     }
@@ -701,7 +705,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOrg(
             ExportFormat1 format, int orgId, ExportBatchesOrgRequest request) {
         return exportBatchesOrg(format, orgId, request, null);
     }
@@ -712,7 +716,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOrg(
             ExportFormat1 format, int orgId, ExportBatchesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -764,14 +768,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -804,20 +808,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -829,7 +834,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOut(
             ExportFormat1 format, String entry) {
         return exportBatchesOut(format, entry, ExportBatchesOutRequest.builder().build());
     }
@@ -840,7 +845,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOut(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportBatchesOut(format, entry, ExportBatchesOutRequest.builder().build(), requestOptions);
     }
@@ -851,7 +856,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOut(
             ExportFormat1 format, String entry, ExportBatchesOutRequest request) {
         return exportBatchesOut(format, entry, request, null);
     }
@@ -862,7 +867,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOut(
             ExportFormat1 format, String entry, ExportBatchesOutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -913,14 +918,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -953,20 +958,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -978,7 +984,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
             ExportFormat1 format, int orgId) {
         return exportBatchesOutOrg(
                 format, orgId, ExportBatchesOutOrgRequest.builder().build());
@@ -990,7 +996,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportBatchesOutOrg(
                 format, orgId, ExportBatchesOutOrgRequest.builder().build(), requestOptions);
@@ -1002,7 +1008,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
             ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request) {
         return exportBatchesOutOrg(format, orgId, request, null);
     }
@@ -1013,7 +1019,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of money out batches for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBatchesOutOrg(
             ExportFormat1 format, int orgId, ExportBatchesOutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1065,14 +1071,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1105,20 +1111,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1130,7 +1137,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBills(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBills(
             ExportFormat1 format, String entry) {
         return exportBills(format, entry, ExportBillsRequest.builder().build());
     }
@@ -1141,7 +1148,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBills(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBills(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportBills(format, entry, ExportBillsRequest.builder().build(), requestOptions);
     }
@@ -1152,7 +1159,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBills(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBills(
             ExportFormat1 format, String entry, ExportBillsRequest request) {
         return exportBills(format, entry, request, null);
     }
@@ -1163,7 +1170,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBills(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBills(
             ExportFormat1 format, String entry, ExportBillsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1214,14 +1221,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1254,20 +1261,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1279,7 +1287,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBillsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBillsOrg(
             ExportFormat1 format, int orgId) {
         return exportBillsOrg(format, orgId, ExportBillsOrgRequest.builder().build());
     }
@@ -1290,7 +1298,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBillsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBillsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportBillsOrg(format, orgId, ExportBillsOrgRequest.builder().build(), requestOptions);
     }
@@ -1301,7 +1309,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBillsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBillsOrg(
             ExportFormat1 format, int orgId, ExportBillsOrgRequest request) {
         return exportBillsOrg(format, orgId, request, null);
     }
@@ -1312,7 +1320,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of bills for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportBillsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportBillsOrg(
             ExportFormat1 format, int orgId, ExportBillsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1364,14 +1372,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1404,20 +1412,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1429,7 +1438,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacks(
             ExportFormat1 format, String entry) {
         return exportChargebacks(
                 format, entry, ExportChargebacksRequest.builder().build());
@@ -1441,7 +1450,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacks(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportChargebacks(
                 format, entry, ExportChargebacksRequest.builder().build(), requestOptions);
@@ -1453,7 +1462,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacks(
             ExportFormat1 format, String entry, ExportChargebacksRequest request) {
         return exportChargebacks(format, entry, request, null);
     }
@@ -1464,7 +1473,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacks(
             ExportFormat1 format, String entry, ExportChargebacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1515,14 +1524,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1555,20 +1564,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1580,7 +1590,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacksOrg(
             ExportFormat1 format, int orgId) {
         return exportChargebacksOrg(
                 format, orgId, ExportChargebacksOrgRequest.builder().build());
@@ -1592,7 +1602,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacksOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportChargebacksOrg(
                 format, orgId, ExportChargebacksOrgRequest.builder().build(), requestOptions);
@@ -1604,7 +1614,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacksOrg(
             ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request) {
         return exportChargebacksOrg(format, orgId, request, null);
     }
@@ -1615,7 +1625,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportChargebacksOrg(
             ExportFormat1 format, int orgId, ExportChargebacksOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1667,14 +1677,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1707,20 +1717,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1732,7 +1743,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomers(
             ExportFormat1 format, String entry) {
         return exportCustomers(format, entry, ExportCustomersRequest.builder().build());
     }
@@ -1743,7 +1754,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomers(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportCustomers(format, entry, ExportCustomersRequest.builder().build(), requestOptions);
     }
@@ -1754,7 +1765,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomers(
             ExportFormat1 format, String entry, ExportCustomersRequest request) {
         return exportCustomers(format, entry, request, null);
     }
@@ -1765,7 +1776,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of customers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomers(
             ExportFormat1 format, String entry, ExportCustomersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1816,14 +1827,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -1856,20 +1867,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1881,7 +1893,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomersOrg(
             ExportFormat1 format, int orgId) {
         return exportCustomersOrg(
                 format, orgId, ExportCustomersOrgRequest.builder().build());
@@ -1893,7 +1905,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomersOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportCustomersOrg(
                 format, orgId, ExportCustomersOrgRequest.builder().build(), requestOptions);
@@ -1905,7 +1917,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomersOrg(
             ExportFormat1 format, int orgId, ExportCustomersOrgRequest request) {
         return exportCustomersOrg(format, orgId, request, null);
     }
@@ -1916,7 +1928,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Exports a list of customers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportCustomersOrg(
             ExportFormat1 format, int orgId, ExportCustomersOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1968,14 +1980,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2008,20 +2020,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2033,7 +2046,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoices(
             ExportFormat1 format, String entry) {
         return exportInvoices(format, entry, ExportInvoicesRequest.builder().build());
     }
@@ -2044,7 +2057,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoices(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportInvoices(format, entry, ExportInvoicesRequest.builder().build(), requestOptions);
     }
@@ -2055,7 +2068,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoices(
             ExportFormat1 format, String entry, ExportInvoicesRequest request) {
         return exportInvoices(format, entry, request, null);
     }
@@ -2066,7 +2079,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export list of invoices for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoices(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoices(
             ExportFormat1 format, String entry, ExportInvoicesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2117,14 +2130,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2157,20 +2170,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2182,7 +2196,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoicesOrg(
             ExportFormat1 format, int orgId) {
         return exportInvoicesOrg(
                 format, orgId, ExportInvoicesOrgRequest.builder().build());
@@ -2194,7 +2208,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoicesOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportInvoicesOrg(
                 format, orgId, ExportInvoicesOrgRequest.builder().build(), requestOptions);
@@ -2206,7 +2220,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoicesOrg(
             ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request) {
         return exportInvoicesOrg(format, orgId, request, null);
     }
@@ -2217,7 +2231,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of invoices for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportInvoicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportInvoicesOrg(
             ExportFormat1 format, int orgId, ExportInvoicesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2269,14 +2283,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2309,20 +2323,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2334,7 +2349,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportOrganizations(
             ExportFormat1 format, int orgId) {
         return exportOrganizations(
                 format, orgId, ExportOrganizationsRequest.builder().build());
@@ -2346,7 +2361,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportOrganizations(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportOrganizations(
                 format, orgId, ExportOrganizationsRequest.builder().build(), requestOptions);
@@ -2358,7 +2373,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportOrganizations(
             ExportFormat1 format, int orgId, ExportOrganizationsRequest request) {
         return exportOrganizations(format, orgId, request, null);
     }
@@ -2369,7 +2384,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of child organizations (suborganizations) for a parent organization.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportOrganizations(
             ExportFormat1 format, int orgId, ExportOrganizationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2421,14 +2436,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2461,20 +2476,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2486,7 +2502,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayout(
             ExportFormat1 format, String entry) {
         return exportPayout(format, entry, ExportPayoutRequest.builder().build());
     }
@@ -2497,7 +2513,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayout(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportPayout(format, entry, ExportPayoutRequest.builder().build(), requestOptions);
     }
@@ -2508,7 +2524,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayout(
             ExportFormat1 format, String entry, ExportPayoutRequest request) {
         return exportPayout(format, entry, request, null);
     }
@@ -2519,7 +2535,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayout(
             ExportFormat1 format, String entry, ExportPayoutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2570,14 +2586,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2610,20 +2626,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2635,7 +2652,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayoutOrg(
             ExportFormat1 format, int orgId) {
         return exportPayoutOrg(format, orgId, ExportPayoutOrgRequest.builder().build());
     }
@@ -2646,7 +2663,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayoutOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportPayoutOrg(format, orgId, ExportPayoutOrgRequest.builder().build(), requestOptions);
     }
@@ -2657,7 +2674,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayoutOrg(
             ExportFormat1 format, int orgId, ExportPayoutOrgRequest request) {
         return exportPayoutOrg(format, orgId, request, null);
     }
@@ -2668,7 +2685,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of payouts and their details for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPayoutOrg(
             ExportFormat1 format, int orgId, ExportPayoutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2720,14 +2737,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2760,20 +2777,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2785,7 +2803,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPaypoints(
             ExportFormat1 format, int orgId) {
         return exportPaypoints(format, orgId, ExportPaypointsRequest.builder().build());
     }
@@ -2796,7 +2814,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPaypoints(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportPaypoints(format, orgId, ExportPaypointsRequest.builder().build(), requestOptions);
     }
@@ -2807,7 +2825,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPaypoints(
             ExportFormat1 format, int orgId, ExportPaypointsRequest request) {
         return exportPaypoints(format, orgId, request, null);
     }
@@ -2818,7 +2836,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of paypoints in an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportPaypoints(
             ExportFormat1 format, int orgId, ExportPaypointsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2869,14 +2887,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -2909,20 +2927,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2934,7 +2953,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlements(
             ExportFormat1 format, String entry) {
         return exportSettlements(
                 format, entry, ExportSettlementsRequest.builder().build());
@@ -2946,7 +2965,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlements(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportSettlements(
                 format, entry, ExportSettlementsRequest.builder().build(), requestOptions);
@@ -2958,7 +2977,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlements(
             ExportFormat1 format, String entry, ExportSettlementsRequest request) {
         return exportSettlements(format, entry, request, null);
     }
@@ -2969,7 +2988,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlements(
             ExportFormat1 format, String entry, ExportSettlementsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3020,14 +3039,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3060,20 +3079,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3085,7 +3105,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlementsOrg(
             ExportFormat1 format, int orgId) {
         return exportSettlementsOrg(
                 format, orgId, ExportSettlementsOrgRequest.builder().build());
@@ -3097,7 +3117,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlementsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportSettlementsOrg(
                 format, orgId, ExportSettlementsOrgRequest.builder().build(), requestOptions);
@@ -3109,7 +3129,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlementsOrg(
             ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request) {
         return exportSettlementsOrg(format, orgId, request, null);
     }
@@ -3120,7 +3140,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of settled transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSettlementsOrg(
             ExportFormat1 format, int orgId, ExportSettlementsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3172,14 +3192,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3212,20 +3232,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3237,7 +3258,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptions(
             ExportFormat1 format, String entry) {
         return exportSubscriptions(
                 format, entry, ExportSubscriptionsRequest.builder().build());
@@ -3249,7 +3270,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptions(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportSubscriptions(
                 format, entry, ExportSubscriptionsRequest.builder().build(), requestOptions);
@@ -3261,7 +3282,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptions(
             ExportFormat1 format, String entry, ExportSubscriptionsRequest request) {
         return exportSubscriptions(format, entry, request, null);
     }
@@ -3272,7 +3293,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptions(
             ExportFormat1 format, String entry, ExportSubscriptionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3323,14 +3344,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3363,20 +3384,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3388,7 +3410,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
             ExportFormat1 format, int orgId) {
         return exportSubscriptionsOrg(
                 format, orgId, ExportSubscriptionsOrgRequest.builder().build());
@@ -3400,7 +3422,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportSubscriptionsOrg(
                 format, orgId, ExportSubscriptionsOrgRequest.builder().build(), requestOptions);
@@ -3412,7 +3434,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
             ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request) {
         return exportSubscriptionsOrg(format, orgId, request, null);
     }
@@ -3423,7 +3445,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of subscriptions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportSubscriptionsOrg(
             ExportFormat1 format, int orgId, ExportSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3475,14 +3497,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3515,20 +3537,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3540,7 +3563,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactions(
             ExportFormat1 format, String entry) {
         return exportTransactions(
                 format, entry, ExportTransactionsRequest.builder().build());
@@ -3552,7 +3575,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactions(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportTransactions(
                 format, entry, ExportTransactionsRequest.builder().build(), requestOptions);
@@ -3564,7 +3587,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactions(
             ExportFormat1 format, String entry, ExportTransactionsRequest request) {
         return exportTransactions(format, entry, request, null);
     }
@@ -3575,7 +3598,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactions(
             ExportFormat1 format, String entry, ExportTransactionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3626,14 +3649,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3666,20 +3689,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3691,7 +3715,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactionsOrg(
             ExportFormat1 format, int orgId) {
         return exportTransactionsOrg(
                 format, orgId, ExportTransactionsOrgRequest.builder().build());
@@ -3703,7 +3727,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactionsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportTransactionsOrg(
                 format, orgId, ExportTransactionsOrgRequest.builder().build(), requestOptions);
@@ -3715,7 +3739,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactionsOrg(
             ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request) {
         return exportTransactionsOrg(format, orgId, request, null);
     }
@@ -3726,7 +3750,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransactionsOrg(
             ExportFormat1 format, int orgId, ExportTransactionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3778,14 +3802,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3818,20 +3842,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3843,7 +3868,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransferDetails(
             ExportFormat1 format, String entry, long transferId) {
         return exportTransferDetails(
                 format,
@@ -3858,7 +3883,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransferDetails(
             ExportFormat1 format, String entry, long transferId, RequestOptions requestOptions) {
         return exportTransferDetails(
                 format,
@@ -3874,7 +3899,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransferDetails(
             ExportFormat1 format, String entry, long transferId, ExportTransferDetailsRequest request) {
         return exportTransferDetails(format, entry, transferId, request, null);
     }
@@ -3885,7 +3910,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of transfer details for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransferDetails(
             ExportFormat1 format,
             String entry,
             long transferId,
@@ -3945,14 +3970,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -3985,20 +4010,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4010,7 +4036,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransfers(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransfers(String entry) {
         return exportTransfers(entry, ExportTransfersRequest.builder().build());
     }
 
@@ -4020,7 +4046,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransfers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransfers(
             String entry, RequestOptions requestOptions) {
         return exportTransfers(entry, ExportTransfersRequest.builder().build(), requestOptions);
     }
@@ -4031,7 +4057,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransfers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransfers(
             String entry, ExportTransfersRequest request) {
         return exportTransfers(entry, request, null);
     }
@@ -4042,7 +4068,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Get a list of transfers for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportTransfers(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportTransfers(
             String entry, ExportTransfersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4096,14 +4122,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -4136,20 +4162,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4161,7 +4188,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendors(
             ExportFormat1 format, String entry) {
         return exportVendors(format, entry, ExportVendorsRequest.builder().build());
     }
@@ -4172,7 +4199,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendors(
             ExportFormat1 format, String entry, RequestOptions requestOptions) {
         return exportVendors(format, entry, ExportVendorsRequest.builder().build(), requestOptions);
     }
@@ -4183,7 +4210,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendors(
             ExportFormat1 format, String entry, ExportVendorsRequest request) {
         return exportVendors(format, entry, request, null);
     }
@@ -4194,7 +4221,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendors(
             ExportFormat1 format, String entry, ExportVendorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4245,14 +4272,14 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -4285,20 +4312,21 @@ public class AsyncRawExportClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4310,7 +4338,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendorsOrg(
             ExportFormat1 format, int orgId) {
         return exportVendorsOrg(format, orgId, ExportVendorsOrgRequest.builder().build());
     }
@@ -4321,7 +4349,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendorsOrg(
             ExportFormat1 format, int orgId, RequestOptions requestOptions) {
         return exportVendorsOrg(format, orgId, ExportVendorsOrgRequest.builder().build(), requestOptions);
     }
@@ -4332,7 +4360,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendorsOrg(
             ExportFormat1 format, int orgId, ExportVendorsOrgRequest request) {
         return exportVendorsOrg(format, orgId, request, null);
     }
@@ -4343,7 +4371,7 @@ public class AsyncRawExportClient {
      * &lt;/Warning&gt;</p>
      * Export a list of vendors for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> exportVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> exportVendorsOrg(
             ExportFormat1 format, int orgId, ExportVendorsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4395,34 +4423,35 @@ public class AsyncRawExportClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
                         return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

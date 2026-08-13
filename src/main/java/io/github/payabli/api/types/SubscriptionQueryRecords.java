@@ -157,7 +157,7 @@ public final class SubscriptionQueryRecords {
     }
 
     /**
-     * @return Timestamp of when the subscription ws created, in UTC.
+     * @return Timestamp of when the subscription was created, in UTC.
      */
     @JsonProperty("CreatedAt")
     public Optional<OffsetDateTime> getCreatedAt() {
@@ -638,7 +638,7 @@ public final class SubscriptionQueryRecords {
         }
 
         /**
-         * <p>Timestamp of when the subscription ws created, in UTC.</p>
+         * <p>Timestamp of when the subscription was created, in UTC.</p>
          */
         @JsonSetter(value = "CreatedAt", nulls = Nulls.SKIP)
         public Builder createdAt(Optional<OffsetDateTime> createdAt) {

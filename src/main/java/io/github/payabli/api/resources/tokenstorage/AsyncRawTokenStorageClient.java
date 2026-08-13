@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -51,14 +51,14 @@ public class AsyncRawTokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(RequestTokenStorage body) {
+    public CompletableFuture<PayabliApiClientHttpResponse<AddMethodResponse>> addMethod(RequestTokenStorage body) {
         return addMethod(AddMethodRequest.builder().body(body).build());
     }
 
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddMethodResponse>> addMethod(
             RequestTokenStorage body, RequestOptions requestOptions) {
         return addMethod(AddMethodRequest.builder().body(body).build(), requestOptions);
     }
@@ -66,14 +66,14 @@ public class AsyncRawTokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(AddMethodRequest request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<AddMethodResponse>> addMethod(AddMethodRequest request) {
         return addMethod(request, null);
     }
 
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> addMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddMethodResponse>> addMethod(
             AddMethodRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -137,14 +137,14 @@ public class AsyncRawTokenStorageClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<AddMethodResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<AddMethodResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddMethodResponse.class),
                                 response));
                         return;
@@ -176,20 +176,21 @@ public class AsyncRawTokenStorageClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -198,14 +199,14 @@ public class AsyncRawTokenStorageClient {
     /**
      * Retrieves details for a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetMethodResponse>> getMethod(String methodId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<GetMethodResponse>> getMethod(String methodId) {
         return getMethod(methodId, GetMethodRequest.builder().build());
     }
 
     /**
      * Retrieves details for a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetMethodResponse>> getMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetMethodResponse>> getMethod(
             String methodId, RequestOptions requestOptions) {
         return getMethod(methodId, GetMethodRequest.builder().build(), requestOptions);
     }
@@ -213,7 +214,7 @@ public class AsyncRawTokenStorageClient {
     /**
      * Retrieves details for a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetMethodResponse>> getMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetMethodResponse>> getMethod(
             String methodId, GetMethodRequest request) {
         return getMethod(methodId, request, null);
     }
@@ -221,7 +222,7 @@ public class AsyncRawTokenStorageClient {
     /**
      * Retrieves details for a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<GetMethodResponse>> getMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetMethodResponse>> getMethod(
             String methodId, GetMethodRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -266,14 +267,14 @@ public class AsyncRawTokenStorageClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<GetMethodResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<GetMethodResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetMethodResponse.class),
                                 response));
                         return;
@@ -305,20 +306,21 @@ public class AsyncRawTokenStorageClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -327,7 +329,7 @@ public class AsyncRawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
             String methodId, RequestTokenStorage body) {
         return updateMethod(methodId, UpdateMethodRequest.builder().body(body).build());
     }
@@ -335,7 +337,7 @@ public class AsyncRawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
             String methodId, RequestTokenStorage body, RequestOptions requestOptions) {
         return updateMethod(methodId, UpdateMethodRequest.builder().body(body).build(), requestOptions);
     }
@@ -343,7 +345,7 @@ public class AsyncRawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
             String methodId, UpdateMethodRequest request) {
         return updateMethod(methodId, request, null);
     }
@@ -351,7 +353,7 @@ public class AsyncRawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> updateMethod(
             String methodId, UpdateMethodRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -397,34 +399,36 @@ public class AsyncRawTokenStorageClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponsePaymethodDelete.class),
                                 response));
                         return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -433,14 +437,15 @@ public class AsyncRawTokenStorageClient {
     /**
      * Deletes a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> removeMethod(String methodId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> removeMethod(
+            String methodId) {
         return removeMethod(methodId, null);
     }
 
     /**
      * Deletes a saved payment method.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> removeMethod(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> removeMethod(
             String methodId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -474,14 +479,15 @@ public class AsyncRawTokenStorageClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PayabliApiResponsePaymethodDelete.class),
                                 response));
@@ -514,20 +520,21 @@ public class AsyncRawTokenStorageClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

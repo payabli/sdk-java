@@ -48,7 +48,7 @@ public final class CheckCaptureRequestBody {
     }
 
     /**
-     * @return Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
+     * @return Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.
      */
     @JsonProperty("frontImage")
     public String getFrontImage() {
@@ -56,7 +56,7 @@ public final class CheckCaptureRequestBody {
     }
 
     /**
-     * @return Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
+     * @return Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.
      */
     @JsonProperty("rearImage")
     public String getRearImage() {
@@ -111,14 +111,14 @@ public final class CheckCaptureRequestBody {
 
     public interface FrontImageStage {
         /**
-         * <p>Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
+         * <p>Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.</p>
          */
         RearImageStage frontImage(@NotNull String frontImage);
     }
 
     public interface RearImageStage {
         /**
-         * <p>Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
+         * <p>Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.</p>
          */
         CheckAmountStage rearImage(@NotNull String rearImage);
     }
@@ -171,7 +171,7 @@ public final class CheckCaptureRequestBody {
         }
 
         /**
-         * <p>Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
+         * <p>Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -182,7 +182,7 @@ public final class CheckCaptureRequestBody {
         }
 
         /**
-         * <p>Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.</p>
+         * <p>Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

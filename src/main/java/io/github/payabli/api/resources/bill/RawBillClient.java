@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -56,28 +56,29 @@ public class RawBillClient {
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiHttpResponse<BillResponse> addBill(String entry, BillOutData body) {
+    public PayabliApiClientHttpResponse<BillResponse> addBill(String entry, BillOutData body) {
         return addBill(entry, AddBillRequest.builder().body(body).build());
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiHttpResponse<BillResponse> addBill(String entry, BillOutData body, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<BillResponse> addBill(
+            String entry, BillOutData body, RequestOptions requestOptions) {
         return addBill(entry, AddBillRequest.builder().body(body).build(), requestOptions);
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiHttpResponse<BillResponse> addBill(String entry, AddBillRequest request) {
+    public PayabliApiClientHttpResponse<BillResponse> addBill(String entry, AddBillRequest request) {
         return addBill(entry, request, null);
     }
 
     /**
      * Creates a bill in an entrypoint.
      */
-    public PayabliApiHttpResponse<BillResponse> addBill(
+    public PayabliApiClientHttpResponse<BillResponse> addBill(
             String entry, AddBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -127,7 +128,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
             }
             try {
@@ -151,26 +152,26 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a bill by ID from an entrypoint.
      */
-    public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill) {
+    public PayabliApiClientHttpResponse<GetBillResponse> getBill(int idBill) {
         return getBill(idBill, null);
     }
 
     /**
      * Retrieves a bill by ID from an entrypoint.
      */
-    public PayabliApiHttpResponse<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<GetBillResponse> getBill(int idBill, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
@@ -207,7 +208,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBillResponse.class), response);
             }
             try {
@@ -231,40 +232,40 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a bill by ID.
      */
-    public PayabliApiHttpResponse<EditBillResponse> editBill(int idBill) {
+    public PayabliApiClientHttpResponse<EditBillResponse> editBill(int idBill) {
         return editBill(idBill, BillOutData.builder().build());
     }
 
     /**
      * Updates a bill by ID.
      */
-    public PayabliApiHttpResponse<EditBillResponse> editBill(int idBill, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<EditBillResponse> editBill(int idBill, RequestOptions requestOptions) {
         return editBill(idBill, BillOutData.builder().build(), requestOptions);
     }
 
     /**
      * Updates a bill by ID.
      */
-    public PayabliApiHttpResponse<EditBillResponse> editBill(int idBill, BillOutData request) {
+    public PayabliApiClientHttpResponse<EditBillResponse> editBill(int idBill, BillOutData request) {
         return editBill(idBill, request, null);
     }
 
     /**
      * Updates a bill by ID.
      */
-    public PayabliApiHttpResponse<EditBillResponse> editBill(
+    public PayabliApiClientHttpResponse<EditBillResponse> editBill(
             int idBill, BillOutData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -280,7 +281,7 @@ public class RawBillClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -310,7 +311,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, EditBillResponse.class), response);
             }
             try {
@@ -334,26 +335,26 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a bill by ID.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill) {
+    public PayabliApiClientHttpResponse<BillResponse> deleteBill(int idBill) {
         return deleteBill(idBill, null);
     }
 
     /**
      * Deletes a bill by ID.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<BillResponse> deleteBill(int idBill, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Bill")
@@ -390,7 +391,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
             }
             try {
@@ -414,19 +415,19 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(int idBill, String filename) {
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFromBill(int idBill, String filename) {
         return getAttachedFromBill(
                 idBill, filename, GetAttachedFromBillRequest.builder().build());
     }
@@ -434,7 +435,7 @@ public class RawBillClient {
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFromBill(
             int idBill, String filename, RequestOptions requestOptions) {
         return getAttachedFromBill(
                 idBill, filename, GetAttachedFromBillRequest.builder().build(), requestOptions);
@@ -443,7 +444,7 @@ public class RawBillClient {
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFromBill(
             int idBill, String filename, GetAttachedFromBillRequest request) {
         return getAttachedFromBill(idBill, filename, request, null);
     }
@@ -451,7 +452,7 @@ public class RawBillClient {
     /**
      * Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFromBill(
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFromBill(
             int idBill, String filename, GetAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -494,7 +495,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response);
             }
             try {
@@ -518,19 +519,19 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
+    public PayabliApiClientHttpResponse<BillResponse> deleteAttachedFromBill(int idBill, String filename) {
         return deleteAttachedFromBill(
                 idBill, filename, DeleteAttachedFromBillRequest.builder().build());
     }
@@ -538,7 +539,7 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+    public PayabliApiClientHttpResponse<BillResponse> deleteAttachedFromBill(
             int idBill, String filename, RequestOptions requestOptions) {
         return deleteAttachedFromBill(
                 idBill, filename, DeleteAttachedFromBillRequest.builder().build(), requestOptions);
@@ -547,7 +548,7 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+    public PayabliApiClientHttpResponse<BillResponse> deleteAttachedFromBill(
             int idBill, String filename, DeleteAttachedFromBillRequest request) {
         return deleteAttachedFromBill(idBill, filename, request, null);
     }
@@ -555,7 +556,7 @@ public class RawBillClient {
     /**
      * Delete a file attached to a bill.
      */
-    public PayabliApiHttpResponse<BillResponse> deleteAttachedFromBill(
+    public PayabliApiClientHttpResponse<BillResponse> deleteAttachedFromBill(
             int idBill, String filename, DeleteAttachedFromBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -598,7 +599,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
             }
             try {
@@ -622,19 +623,19 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
+    public PayabliApiClientHttpResponse<BillResponse> sendToApprovalBill(int idBill, List<String> body) {
         return sendToApprovalBill(
                 idBill, SendToApprovalBillRequest.builder().body(body).build());
     }
@@ -642,7 +643,7 @@ public class RawBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
+    public PayabliApiClientHttpResponse<BillResponse> sendToApprovalBill(
             int idBill, List<String> body, RequestOptions requestOptions) {
         return sendToApprovalBill(
                 idBill, SendToApprovalBillRequest.builder().body(body).build(), requestOptions);
@@ -651,14 +652,15 @@ public class RawBillClient {
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(int idBill, SendToApprovalBillRequest request) {
+    public PayabliApiClientHttpResponse<BillResponse> sendToApprovalBill(
+            int idBill, SendToApprovalBillRequest request) {
         return sendToApprovalBill(idBill, request, null);
     }
 
     /**
      * Send a bill to a user or list of users to approve.
      */
-    public PayabliApiHttpResponse<BillResponse> sendToApprovalBill(
+    public PayabliApiClientHttpResponse<BillResponse> sendToApprovalBill(
             int idBill, SendToApprovalBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -712,7 +714,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillResponse.class), response);
             }
             try {
@@ -736,26 +738,27 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Modify the list of users the bill is sent to for approval.
      */
-    public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(int idBill, List<String> request) {
+    public PayabliApiClientHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(
+            int idBill, List<String> request) {
         return modifyApprovalBill(idBill, request, null);
     }
 
     /**
      * Modify the list of users the bill is sent to for approval.
      */
-    public PayabliApiHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(
+    public PayabliApiClientHttpResponse<ModifyApprovalBillResponse> modifyApprovalBill(
             int idBill, List<String> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -771,7 +774,7 @@ public class RawBillClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -801,7 +804,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ModifyApprovalBillResponse.class),
                         response);
             }
@@ -826,19 +829,19 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Approve or disapprove a bill by ID.
      */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
+    public PayabliApiClientHttpResponse<SetApprovedBillResponse> setApprovedBill(int idBill, String approved) {
         return setApprovedBill(
                 idBill, approved, SetApprovedBillRequest.builder().build());
     }
@@ -846,7 +849,7 @@ public class RawBillClient {
     /**
      * Approve or disapprove a bill by ID.
      */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+    public PayabliApiClientHttpResponse<SetApprovedBillResponse> setApprovedBill(
             int idBill, String approved, RequestOptions requestOptions) {
         return setApprovedBill(
                 idBill, approved, SetApprovedBillRequest.builder().build(), requestOptions);
@@ -855,7 +858,7 @@ public class RawBillClient {
     /**
      * Approve or disapprove a bill by ID.
      */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+    public PayabliApiClientHttpResponse<SetApprovedBillResponse> setApprovedBill(
             int idBill, String approved, SetApprovedBillRequest request) {
         return setApprovedBill(idBill, approved, request, null);
     }
@@ -863,7 +866,7 @@ public class RawBillClient {
     /**
      * Approve or disapprove a bill by ID.
      */
-    public PayabliApiHttpResponse<SetApprovedBillResponse> setApprovedBill(
+    public PayabliApiClientHttpResponse<SetApprovedBillResponse> setApprovedBill(
             int idBill, String approved, SetApprovedBillRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -906,7 +909,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SetApprovedBillResponse.class),
                         response);
             }
@@ -931,40 +934,40 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry) {
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBills(String entry) {
         return listBills(entry, ListBillsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBills(String entry, RequestOptions requestOptions) {
         return listBills(entry, ListBillsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBills(String entry, ListBillsRequest request) {
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBills(String entry, ListBillsRequest request) {
         return listBills(entry, request, null);
     }
 
     /**
      * Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBills(
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBills(
             String entry, ListBillsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1022,7 +1025,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillQueryResponse.class), response);
             }
             try {
@@ -1046,40 +1049,40 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBillsOrg(int orgId) {
         return listBillsOrg(orgId, ListBillsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBillsOrg(int orgId, RequestOptions requestOptions) {
         return listBillsOrg(orgId, ListBillsOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(int orgId, ListBillsOrgRequest request) {
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBillsOrg(int orgId, ListBillsOrgRequest request) {
         return listBillsOrg(orgId, request, null);
     }
 
     /**
      * Retrieve a list of bills for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<BillQueryResponse> listBillsOrg(
+    public PayabliApiClientHttpResponse<BillQueryResponse> listBillsOrg(
             int orgId, ListBillsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1137,7 +1140,7 @@ public class RawBillClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BillQueryResponse.class), response);
             }
             try {
@@ -1161,12 +1164,12 @@ public class RawBillClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

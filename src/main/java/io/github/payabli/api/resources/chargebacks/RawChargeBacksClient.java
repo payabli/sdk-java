@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
@@ -42,28 +42,28 @@ public class RawChargeBacksClient {
     /**
      * Add a response to a chargeback or ACH return.
      */
-    public PayabliApiHttpResponse<AddResponseResponse> addResponse(long id) {
+    public PayabliApiClientHttpResponse<AddResponseResponse> addResponse(long id) {
         return addResponse(id, ResponseChargeBack.builder().build());
     }
 
     /**
      * Add a response to a chargeback or ACH return.
      */
-    public PayabliApiHttpResponse<AddResponseResponse> addResponse(long id, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AddResponseResponse> addResponse(long id, RequestOptions requestOptions) {
         return addResponse(id, ResponseChargeBack.builder().build(), requestOptions);
     }
 
     /**
      * Add a response to a chargeback or ACH return.
      */
-    public PayabliApiHttpResponse<AddResponseResponse> addResponse(long id, ResponseChargeBack request) {
+    public PayabliApiClientHttpResponse<AddResponseResponse> addResponse(long id, ResponseChargeBack request) {
         return addResponse(id, request, null);
     }
 
     /**
      * Add a response to a chargeback or ACH return.
      */
-    public PayabliApiHttpResponse<AddResponseResponse> addResponse(
+    public PayabliApiClientHttpResponse<AddResponseResponse> addResponse(
             long id, ResponseChargeBack request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -113,7 +113,7 @@ public class RawChargeBacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddResponseResponse.class), response);
             }
             try {
@@ -137,26 +137,26 @@ public class RawChargeBacksClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a chargeback record and its details.
      */
-    public PayabliApiHttpResponse<ChargebackQueryRecords> getChargeback(long id) {
+    public PayabliApiClientHttpResponse<ChargebackQueryRecords> getChargeback(long id) {
         return getChargeback(id, null);
     }
 
     /**
      * Retrieves a chargeback record and its details.
      */
-    public PayabliApiHttpResponse<ChargebackQueryRecords> getChargeback(long id, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<ChargebackQueryRecords> getChargeback(long id, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("ChargeBacks/read")
@@ -193,7 +193,7 @@ public class RawChargeBacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ChargebackQueryRecords.class),
                         response);
             }
@@ -218,26 +218,26 @@ public class RawChargeBacksClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a chargeback attachment file by its file name.
      */
-    public PayabliApiHttpResponse<String> getChargebackAttachment(long id, String fileName) {
+    public PayabliApiClientHttpResponse<String> getChargebackAttachment(long id, String fileName) {
         return getChargebackAttachment(id, fileName, null);
     }
 
     /**
      * Retrieves a chargeback attachment file by its file name.
      */
-    public PayabliApiHttpResponse<String> getChargebackAttachment(
+    public PayabliApiClientHttpResponse<String> getChargebackAttachment(
             long id, String fileName, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -276,7 +276,7 @@ public class RawChargeBacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, String.class), response);
             }
             try {
@@ -300,12 +300,12 @@ public class RawChargeBacksClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

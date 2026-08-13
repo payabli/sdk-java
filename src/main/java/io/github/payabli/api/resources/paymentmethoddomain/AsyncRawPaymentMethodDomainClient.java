@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -52,14 +52,14 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Add a payment method domain to an organization or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain() {
+    public CompletableFuture<PayabliApiClientHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain() {
         return addPaymentMethodDomain(AddPaymentMethodDomainRequest.builder().build());
     }
 
     /**
      * Add a payment method domain to an organization or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
             RequestOptions requestOptions) {
         return addPaymentMethodDomain(AddPaymentMethodDomainRequest.builder().build(), requestOptions);
     }
@@ -67,7 +67,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Add a payment method domain to an organization or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
             AddPaymentMethodDomainRequest request) {
         return addPaymentMethodDomain(request, null);
     }
@@ -75,7 +75,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Add a payment method domain to an organization or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<AddPaymentMethodDomainApiResponse>> addPaymentMethodDomain(
             AddPaymentMethodDomainRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -90,7 +90,7 @@ public class AsyncRawPaymentMethodDomainClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -116,14 +116,15 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<AddPaymentMethodDomainApiResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<AddPaymentMethodDomainApiResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AddPaymentMethodDomainApiResponse.class),
                                 response));
@@ -156,20 +157,21 @@ public class AsyncRawPaymentMethodDomainClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -178,16 +180,16 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Cascades a payment method domain to all child entities. All paypoints and suborganization under this parent will inherit this domain and its settings.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> cascadePaymentMethodDomain(
-            String domainId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            cascadePaymentMethodDomain(String domainId) {
         return cascadePaymentMethodDomain(domainId, null);
     }
 
     /**
      * Cascades a payment method domain to all child entities. All paypoints and suborganization under this parent will inherit this domain and its settings.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> cascadePaymentMethodDomain(
-            String domainId, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            cascadePaymentMethodDomain(String domainId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
@@ -221,7 +223,7 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -229,7 +231,7 @@ public class AsyncRawPaymentMethodDomainClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PaymentMethodDomainGeneralResponse.class),
                                 response));
@@ -262,20 +264,21 @@ public class AsyncRawPaymentMethodDomainClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -284,7 +287,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Get the details for a payment method domain.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainApiResponse>> getPaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainApiResponse>> getPaymentMethodDomain(
             String domainId) {
         return getPaymentMethodDomain(domainId, null);
     }
@@ -292,7 +295,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Get the details for a payment method domain.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainApiResponse>> getPaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainApiResponse>> getPaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -326,14 +329,15 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainApiResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainApiResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PaymentMethodDomainApiResponse.class),
                                 response));
@@ -366,20 +370,21 @@ public class AsyncRawPaymentMethodDomainClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -388,7 +393,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeletePaymentMethodDomainResponse>> deletePaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<DeletePaymentMethodDomainResponse>> deletePaymentMethodDomain(
             String domainId) {
         return deletePaymentMethodDomain(domainId, null);
     }
@@ -396,7 +401,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeletePaymentMethodDomainResponse>> deletePaymentMethodDomain(
+    public CompletableFuture<PayabliApiClientHttpResponse<DeletePaymentMethodDomainResponse>> deletePaymentMethodDomain(
             String domainId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -430,14 +435,15 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<DeletePaymentMethodDomainResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<DeletePaymentMethodDomainResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, DeletePaymentMethodDomainResponse.class),
                                 response));
@@ -470,20 +476,21 @@ public class AsyncRawPaymentMethodDomainClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -492,8 +499,8 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Update a payment method domain's configuration values.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
-            String domainId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            updatePaymentMethodDomain(String domainId) {
         return updatePaymentMethodDomain(
                 domainId, UpdatePaymentMethodDomainRequest.builder().build());
     }
@@ -501,8 +508,8 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Update a payment method domain's configuration values.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
-            String domainId, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            updatePaymentMethodDomain(String domainId, RequestOptions requestOptions) {
         return updatePaymentMethodDomain(
                 domainId, UpdatePaymentMethodDomainRequest.builder().build(), requestOptions);
     }
@@ -510,16 +517,17 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Update a payment method domain's configuration values.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
-            String domainId, UpdatePaymentMethodDomainRequest request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            updatePaymentMethodDomain(String domainId, UpdatePaymentMethodDomainRequest request) {
         return updatePaymentMethodDomain(domainId, request, null);
     }
 
     /**
      * Update a payment method domain's configuration values.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> updatePaymentMethodDomain(
-            String domainId, UpdatePaymentMethodDomainRequest request, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            updatePaymentMethodDomain(
+                    String domainId, UpdatePaymentMethodDomainRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
@@ -534,7 +542,7 @@ public class AsyncRawPaymentMethodDomainClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -560,7 +568,7 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -568,7 +576,7 @@ public class AsyncRawPaymentMethodDomainClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PaymentMethodDomainGeneralResponse.class),
                                 response));
@@ -601,20 +609,21 @@ public class AsyncRawPaymentMethodDomainClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -623,7 +632,8 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains() {
+    public CompletableFuture<PayabliApiClientHttpResponse<ListPaymentMethodDomainsResponse>>
+            listPaymentMethodDomains() {
         return listPaymentMethodDomains(
                 ListPaymentMethodDomainsRequest.builder().build());
     }
@@ -631,7 +641,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
+    public CompletableFuture<PayabliApiClientHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
             RequestOptions requestOptions) {
         return listPaymentMethodDomains(
                 ListPaymentMethodDomainsRequest.builder().build(), requestOptions);
@@ -640,7 +650,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
+    public CompletableFuture<PayabliApiClientHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
             ListPaymentMethodDomainsRequest request) {
         return listPaymentMethodDomains(request, null);
     }
@@ -648,7 +658,7 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Get a list of payment method domains that belong to a PSP, organization, or paypoint.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
+    public CompletableFuture<PayabliApiClientHttpResponse<ListPaymentMethodDomainsResponse>> listPaymentMethodDomains(
             ListPaymentMethodDomainsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -697,14 +707,15 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<ListPaymentMethodDomainsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<ListPaymentMethodDomainsResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, ListPaymentMethodDomainsResponse.class),
                                 response));
@@ -737,20 +748,21 @@ public class AsyncRawPaymentMethodDomainClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -759,16 +771,16 @@ public class AsyncRawPaymentMethodDomainClient {
     /**
      * Verify a new payment method domain. If verification is successful, Apple Pay is automatically activated for the domain.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> verifyPaymentMethodDomain(
-            String domainId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            verifyPaymentMethodDomain(String domainId) {
         return verifyPaymentMethodDomain(domainId, null);
     }
 
     /**
      * Verify a new payment method domain. If verification is successful, Apple Pay is automatically activated for the domain.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> verifyPaymentMethodDomain(
-            String domainId, RequestOptions requestOptions) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>>
+            verifyPaymentMethodDomain(String domainId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("PaymentMethodDomain")
@@ -802,7 +814,7 @@ public class AsyncRawPaymentMethodDomainClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PaymentMethodDomainGeneralResponse>> future =
+        CompletableFuture<PayabliApiClientHttpResponse<PaymentMethodDomainGeneralResponse>> future =
                 new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
@@ -810,27 +822,28 @@ public class AsyncRawPaymentMethodDomainClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, PaymentMethodDomainGeneralResponse.class),
                                 response));
                         return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

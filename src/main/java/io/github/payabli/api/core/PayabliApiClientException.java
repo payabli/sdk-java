@@ -6,12 +6,12 @@ package io.github.payabli.api.core;
 /**
  * This class serves as the base exception for all errors in the SDK.
  */
-public class PayabliApiException extends RuntimeException {
-    public PayabliApiException(String message) {
+public class PayabliApiClientException extends RuntimeException {
+    public PayabliApiClientException(String message) {
         super(message);
     }
 
-    public PayabliApiException(String message, Exception e) {
+    public PayabliApiClientException(String message, Exception e) {
         super(message, e);
     }
 }

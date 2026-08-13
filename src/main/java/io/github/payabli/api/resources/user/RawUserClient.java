@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -57,28 +57,28 @@ public class RawUserClient {
     /**
      * Use this endpoint to add a new user to an organization.
      */
-    public PayabliApiHttpResponse<AddUserResponse> addUser() {
+    public PayabliApiClientHttpResponse<AddUserResponse> addUser() {
         return addUser(UserData.builder().build());
     }
 
     /**
      * Use this endpoint to add a new user to an organization.
      */
-    public PayabliApiHttpResponse<AddUserResponse> addUser(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AddUserResponse> addUser(RequestOptions requestOptions) {
         return addUser(UserData.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to add a new user to an organization.
      */
-    public PayabliApiHttpResponse<AddUserResponse> addUser(UserData request) {
+    public PayabliApiClientHttpResponse<AddUserResponse> addUser(UserData request) {
         return addUser(request, null);
     }
 
     /**
      * Use this endpoint to add a new user to an organization.
      */
-    public PayabliApiHttpResponse<AddUserResponse> addUser(UserData request, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AddUserResponse> addUser(UserData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User");
@@ -92,7 +92,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -122,7 +122,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddUserResponse.class), response);
             }
             try {
@@ -146,40 +146,40 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to retrieve information about a specific user within an organization.
      */
-    public PayabliApiHttpResponse<UserQueryRecord> getUser(long userId) {
+    public PayabliApiClientHttpResponse<UserQueryRecord> getUser(long userId) {
         return getUser(userId, GetUserRequest.builder().build());
     }
 
     /**
      * Use this endpoint to retrieve information about a specific user within an organization.
      */
-    public PayabliApiHttpResponse<UserQueryRecord> getUser(long userId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<UserQueryRecord> getUser(long userId, RequestOptions requestOptions) {
         return getUser(userId, GetUserRequest.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to retrieve information about a specific user within an organization.
      */
-    public PayabliApiHttpResponse<UserQueryRecord> getUser(long userId, GetUserRequest request) {
+    public PayabliApiClientHttpResponse<UserQueryRecord> getUser(long userId, GetUserRequest request) {
         return getUser(userId, request, null);
     }
 
     /**
      * Use this endpoint to retrieve information about a specific user within an organization.
      */
-    public PayabliApiHttpResponse<UserQueryRecord> getUser(
+    public PayabliApiClientHttpResponse<UserQueryRecord> getUser(
             long userId, GetUserRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -225,7 +225,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UserQueryRecord.class), response);
             }
             try {
@@ -249,40 +249,40 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse> editUser(long userId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse> editUser(long userId) {
         return editUser(userId, UserData.builder().build());
     }
 
     /**
      * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse> editUser(long userId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse> editUser(long userId, RequestOptions requestOptions) {
         return editUser(userId, UserData.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse> editUser(long userId, UserData request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse> editUser(long userId, UserData request) {
         return editUser(userId, request, null);
     }
 
     /**
      * Use this endpoint to modify the details of a specific user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse> editUser(
+    public PayabliApiClientHttpResponse<PayabliApiResponse> editUser(
             long userId, UserData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -298,7 +298,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -328,7 +328,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse.class), response);
             }
             try {
@@ -352,26 +352,26 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to delete a specific user within an organization.
      */
-    public PayabliApiHttpResponse<DeleteUserResponse> deleteUser(long userId) {
+    public PayabliApiClientHttpResponse<DeleteUserResponse> deleteUser(long userId) {
         return deleteUser(userId, null);
     }
 
     /**
      * Use this endpoint to delete a specific user within an organization.
      */
-    public PayabliApiHttpResponse<DeleteUserResponse> deleteUser(long userId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<DeleteUserResponse> deleteUser(long userId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User")
@@ -408,7 +408,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, DeleteUserResponse.class), response);
             }
             try {
@@ -432,40 +432,41 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> authUser(String provider) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseMfaBasic> authUser(String provider) {
         return authUser(provider, UserAuthRequest.builder().build());
     }
 
     /**
      * This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> authUser(String provider, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseMfaBasic> authUser(
+            String provider, RequestOptions requestOptions) {
         return authUser(provider, UserAuthRequest.builder().build(), requestOptions);
     }
 
     /**
      * This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> authUser(String provider, UserAuthRequest request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseMfaBasic> authUser(String provider, UserAuthRequest request) {
         return authUser(provider, request, null);
     }
 
     /**
      * This endpoint requires an application API token.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> authUser(
+    public PayabliApiClientHttpResponse<PayabliApiResponseMfaBasic> authUser(
             String provider, UserAuthRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -481,7 +482,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -511,7 +512,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseMfaBasic.class),
                         response);
             }
@@ -536,26 +537,26 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to refresh the authentication token for a user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseUserMfa> authRefreshUser() {
+    public PayabliApiClientHttpResponse<PayabliApiResponseUserMfa> authRefreshUser() {
         return authRefreshUser(null);
     }
 
     /**
      * Use this endpoint to refresh the authentication token for a user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseUserMfa> authRefreshUser(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseUserMfa> authRefreshUser(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User/authrefresh");
@@ -591,7 +592,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseUserMfa.class),
                         response);
             }
@@ -616,40 +617,40 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to initiate a password reset for a user within an organization.
      */
-    public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser() {
+    public PayabliApiClientHttpResponse<AuthResetUserResponse> authResetUser() {
         return authResetUser(UserAuthResetRequest.builder().build());
     }
 
     /**
      * Use this endpoint to initiate a password reset for a user within an organization.
      */
-    public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AuthResetUserResponse> authResetUser(RequestOptions requestOptions) {
         return authResetUser(UserAuthResetRequest.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to initiate a password reset for a user within an organization.
      */
-    public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser(UserAuthResetRequest request) {
+    public PayabliApiClientHttpResponse<AuthResetUserResponse> authResetUser(UserAuthResetRequest request) {
         return authResetUser(request, null);
     }
 
     /**
      * Use this endpoint to initiate a password reset for a user within an organization.
      */
-    public PayabliApiHttpResponse<AuthResetUserResponse> authResetUser(
+    public PayabliApiClientHttpResponse<AuthResetUserResponse> authResetUser(
             UserAuthResetRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -664,7 +665,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -694,7 +695,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthResetUserResponse.class), response);
             }
             try {
@@ -718,40 +719,40 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to change the password for a user within an organization.
      */
-    public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser() {
+    public PayabliApiClientHttpResponse<ChangePswUserResponse> changePswUser() {
         return changePswUser(UserAuthPswResetRequest.builder().build());
     }
 
     /**
      * Use this endpoint to change the password for a user within an organization.
      */
-    public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<ChangePswUserResponse> changePswUser(RequestOptions requestOptions) {
         return changePswUser(UserAuthPswResetRequest.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to change the password for a user within an organization.
      */
-    public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser(UserAuthPswResetRequest request) {
+    public PayabliApiClientHttpResponse<ChangePswUserResponse> changePswUser(UserAuthPswResetRequest request) {
         return changePswUser(request, null);
     }
 
     /**
      * Use this endpoint to change the password for a user within an organization.
      */
-    public PayabliApiHttpResponse<ChangePswUserResponse> changePswUser(
+    public PayabliApiClientHttpResponse<ChangePswUserResponse> changePswUser(
             UserAuthPswResetRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -766,7 +767,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -796,7 +797,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ChangePswUserResponse.class), response);
             }
             try {
@@ -820,26 +821,26 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to log a user out from the system.
      */
-    public PayabliApiHttpResponse<LogoutUserResponse> logoutUser() {
+    public PayabliApiClientHttpResponse<LogoutUserResponse> logoutUser() {
         return logoutUser(null);
     }
 
     /**
      * Use this endpoint to log a user out from the system.
      */
-    public PayabliApiHttpResponse<LogoutUserResponse> logoutUser(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<LogoutUserResponse> logoutUser(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("User/authlogout");
@@ -875,7 +876,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, LogoutUserResponse.class), response);
             }
             try {
@@ -899,40 +900,40 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser() {
+    public PayabliApiClientHttpResponse<PayabliApiResponseUserMfa> validateMfaUser() {
         return validateMfaUser(MfaValidationData.builder().build());
     }
 
     /**
      * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(RequestOptions requestOptions) {
         return validateMfaUser(MfaValidationData.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(MfaValidationData request) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(MfaValidationData request) {
         return validateMfaUser(request, null);
     }
 
     /**
      * Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(
+    public PayabliApiClientHttpResponse<PayabliApiResponseUserMfa> validateMfaUser(
             MfaValidationData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -947,7 +948,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -977,45 +978,45 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseUserMfa.class),
                         response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
      */
-    public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(long userId) {
+    public PayabliApiClientHttpResponse<EditMfaUserResponse> editMfaUser(long userId) {
         return editMfaUser(userId, MfaData.builder().build());
     }
 
     /**
      * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
      */
-    public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(long userId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<EditMfaUserResponse> editMfaUser(long userId, RequestOptions requestOptions) {
         return editMfaUser(userId, MfaData.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
      */
-    public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(long userId, MfaData request) {
+    public PayabliApiClientHttpResponse<EditMfaUserResponse> editMfaUser(long userId, MfaData request) {
         return editMfaUser(userId, request, null);
     }
 
     /**
      * Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
      */
-    public PayabliApiHttpResponse<EditMfaUserResponse> editMfaUser(
+    public PayabliApiClientHttpResponse<EditMfaUserResponse> editMfaUser(
             long userId, MfaData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1031,7 +1032,7 @@ public class RawUserClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -1061,7 +1062,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, EditMfaUserResponse.class), response);
             }
             try {
@@ -1085,19 +1086,19 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Resends the MFA code to the user via the selected MFA mode (email or SMS).
      */
-    public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> resendMfaCode(
+    public PayabliApiClientHttpResponse<PayabliApiResponseMfaBasic> resendMfaCode(
             String usrname, String entry, int entryType) {
         return resendMfaCode(usrname, entry, entryType, null);
     }
@@ -1105,7 +1106,7 @@ public class RawUserClient {
     /**
      * Resends the MFA code to the user via the selected MFA mode (email or SMS).
      */
-    public PayabliApiHttpResponse<PayabliApiResponseMfaBasic> resendMfaCode(
+    public PayabliApiClientHttpResponse<PayabliApiResponseMfaBasic> resendMfaCode(
             String usrname, String entry, int entryType, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1145,7 +1146,7 @@ public class RawUserClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseMfaBasic.class),
                         response);
             }
@@ -1170,12 +1171,12 @@ public class RawUserClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

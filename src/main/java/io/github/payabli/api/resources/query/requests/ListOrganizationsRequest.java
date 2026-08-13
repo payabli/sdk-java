@@ -76,13 +76,12 @@ public final class ListOrganizationsRequest {
      * @return Collection of field names, conditions, and values used to filter the query.
      * &lt;Info&gt;
      * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong>
-     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-     * <p>For example:</p>
+     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
      * <p>should become:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
      * &lt;/Info&gt;
-     * <strong>List of field names accepted:</strong></p>
+     * <strong>Accepted field names:</strong></p>
      * <ul>
      * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>startDate</code> (gt, ge, lt, le, eq, ne)</li>
@@ -101,7 +100,7 @@ public final class ListOrganizationsRequest {
      * <li><code>boardingId</code> (eq, ne)</li>
      * <li><code>entryName</code>  (ct, nct)</li>
      * </ul>
-     * <p><strong>List of comparison accepted - enclosed between parentheses:</strong></p>
+     * <p><strong>Accepted comparison operators - enclosed between parentheses:</strong></p>
      * <ul>
      * <li><code>eq</code> or empty =&gt; equal</li>
      * <li><code>gt</code> =&gt; greater than</li>
@@ -114,7 +113,7 @@ public final class ListOrganizationsRequest {
      * <li><code>in</code> =&gt; inside array</li>
      * <li><code>nin</code> =&gt; not inside array</li>
      * </ul>
-     * <p><strong>List of parameters accepted:</strong></p>
+     * <p><strong>Accepted parameters:</strong></p>
      * <ul>
      * <li><code>limitRecord</code> : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
      * <li><code>fromRecord</code> : initial record in query</li>
@@ -239,13 +238,12 @@ public final class ListOrganizationsRequest {
          * <p>Collection of field names, conditions, and values used to filter the query.
          * &lt;Info&gt;
          * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong></p>
-         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-         * <p>For example:</p>
+         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
          * <p>should become:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20
          * &lt;/Info&gt;
-         * <strong>List of field names accepted:</strong></p>
+         * <strong>Accepted field names:</strong></p>
          * <ul>
          * <li><code>createdAt</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>startDate</code> (gt, ge, lt, le, eq, ne)</li>
@@ -264,7 +262,7 @@ public final class ListOrganizationsRequest {
          * <li><code>boardingId</code> (eq, ne)</li>
          * <li><code>entryName</code>  (ct, nct)</li>
          * </ul>
-         * <p><strong>List of comparison accepted - enclosed between parentheses:</strong></p>
+         * <p><strong>Accepted comparison operators - enclosed between parentheses:</strong></p>
          * <ul>
          * <li><code>eq</code> or empty =&gt; equal</li>
          * <li><code>gt</code> =&gt; greater than</li>
@@ -277,7 +275,7 @@ public final class ListOrganizationsRequest {
          * <li><code>in</code> =&gt; inside array</li>
          * <li><code>nin</code> =&gt; not inside array</li>
          * </ul>
-         * <p><strong>List of parameters accepted:</strong></p>
+         * <p><strong>Accepted parameters:</strong></p>
          * <ul>
          * <li><code>limitRecord</code> : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
          * <li><code>fromRecord</code> : initial record in query</li>

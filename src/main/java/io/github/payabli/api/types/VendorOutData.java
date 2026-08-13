@@ -156,6 +156,7 @@ public final class VendorOutData {
 
     /**
      * @return Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,
+     * <p>For a PO Box address, this field holds only the PO Box, for example <code>PO Box 29652</code>, and the rest of the address, such as a department number, is in <code>Address2</code>.</p>
      */
     @JsonProperty("Address1")
     public Optional<String> getAddress1() {
@@ -164,6 +165,7 @@ public final class VendorOutData {
 
     /**
      * @return Additional line for vendor's address, such as a suite or unit number.
+     * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
      */
     @JsonProperty("Address2")
     public Optional<String> getAddress2() {
@@ -499,6 +501,7 @@ public final class VendorOutData {
 
         /**
          * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
+         * <p>For a PO Box address, this field holds only the PO Box, for example <code>PO Box 29652</code>, and the rest of the address, such as a department number, is in <code>Address2</code>.</p>
          */
         _FinalStage address1(Optional<String> address1);
 
@@ -506,6 +509,7 @@ public final class VendorOutData {
 
         /**
          * <p>Additional line for vendor's address, such as a suite or unit number.</p>
+         * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
          */
         _FinalStage address2(Optional<String> address2);
 
@@ -1104,6 +1108,7 @@ public final class VendorOutData {
 
         /**
          * <p>Additional line for vendor's address, such as a suite or unit number.</p>
+         * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1114,6 +1119,7 @@ public final class VendorOutData {
 
         /**
          * <p>Additional line for vendor's address, such as a suite or unit number.</p>
+         * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "Address2", nulls = Nulls.SKIP)
@@ -1124,6 +1130,7 @@ public final class VendorOutData {
 
         /**
          * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
+         * <p>For a PO Box address, this field holds only the PO Box, for example <code>PO Box 29652</code>, and the rest of the address, such as a department number, is in <code>Address2</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1134,6 +1141,7 @@ public final class VendorOutData {
 
         /**
          * <p>Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,</p>
+         * <p>For a PO Box address, this field holds only the PO Box, for example <code>PO Box 29652</code>, and the rest of the address, such as a department number, is in <code>Address2</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "Address1", nulls = Nulls.SKIP)

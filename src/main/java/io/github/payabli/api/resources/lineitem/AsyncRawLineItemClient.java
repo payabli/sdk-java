@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -51,14 +51,14 @@ public class AsyncRawLineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(String entry, LineItem body) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> addItem(String entry, LineItem body) {
         return addItem(entry, AddItemRequest.builder().body(body).build());
     }
 
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> addItem(
             String entry, LineItem body, RequestOptions requestOptions) {
         return addItem(entry, AddItemRequest.builder().body(body).build(), requestOptions);
     }
@@ -66,7 +66,7 @@ public class AsyncRawLineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> addItem(
             String entry, AddItemRequest request) {
         return addItem(entry, request, null);
     }
@@ -74,7 +74,7 @@ public class AsyncRawLineItemClient {
     /**
      * Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, &quot;responseData&quot; displays the item's code.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> addItem(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> addItem(
             String entry, AddItemRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -120,14 +120,14 @@ public class AsyncRawLineItemClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse6.class),
                                 response));
                         return;
@@ -159,20 +159,21 @@ public class AsyncRawLineItemClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -181,14 +182,14 @@ public class AsyncRawLineItemClient {
     /**
      * Gets an item by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<LineItemQueryRecord>> getItem(int lineItemId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<LineItemQueryRecord>> getItem(int lineItemId) {
         return getItem(lineItemId, null);
     }
 
     /**
      * Gets an item by ID.
      */
-    public CompletableFuture<PayabliApiHttpResponse<LineItemQueryRecord>> getItem(
+    public CompletableFuture<PayabliApiClientHttpResponse<LineItemQueryRecord>> getItem(
             int lineItemId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -222,14 +223,14 @@ public class AsyncRawLineItemClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<LineItemQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<LineItemQueryRecord>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, LineItemQueryRecord.class),
                                 response));
                         return;
@@ -261,20 +262,21 @@ public class AsyncRawLineItemClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -283,14 +285,15 @@ public class AsyncRawLineItemClient {
     /**
      * Updates an item.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> updateItem(int lineItemId, LineItem request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> updateItem(
+            int lineItemId, LineItem request) {
         return updateItem(lineItemId, request, null);
     }
 
     /**
      * Updates an item.
      */
-    public CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> updateItem(
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> updateItem(
             int lineItemId, LineItem request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -306,7 +309,7 @@ public class AsyncRawLineItemClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -332,14 +335,14 @@ public class AsyncRawLineItemClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<PayabliApiResponse6>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponse6>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponse6.class),
                                 response));
                         return;
@@ -371,20 +374,21 @@ public class AsyncRawLineItemClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -393,14 +397,14 @@ public class AsyncRawLineItemClient {
     /**
      * Deletes an item.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeleteItemResponse>> deleteItem(int lineItemId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<DeleteItemResponse>> deleteItem(int lineItemId) {
         return deleteItem(lineItemId, null);
     }
 
     /**
      * Deletes an item.
      */
-    public CompletableFuture<PayabliApiHttpResponse<DeleteItemResponse>> deleteItem(
+    public CompletableFuture<PayabliApiClientHttpResponse<DeleteItemResponse>> deleteItem(
             int lineItemId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -434,14 +438,14 @@ public class AsyncRawLineItemClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<DeleteItemResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<DeleteItemResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, DeleteItemResponse.class),
                                 response));
                         return;
@@ -473,20 +477,21 @@ public class AsyncRawLineItemClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -495,14 +500,14 @@ public class AsyncRawLineItemClient {
     /**
      * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> listLineItems(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseItems>> listLineItems(String entry) {
         return listLineItems(entry, ListLineItemsRequest.builder().build());
     }
 
     /**
      * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> listLineItems(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseItems>> listLineItems(
             String entry, RequestOptions requestOptions) {
         return listLineItems(entry, ListLineItemsRequest.builder().build(), requestOptions);
     }
@@ -510,7 +515,7 @@ public class AsyncRawLineItemClient {
     /**
      * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> listLineItems(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseItems>> listLineItems(
             String entry, ListLineItemsRequest request) {
         return listLineItems(entry, request, null);
     }
@@ -518,7 +523,7 @@ public class AsyncRawLineItemClient {
     /**
      * Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> listLineItems(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseItems>> listLineItems(
             String entry, ListLineItemsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -568,14 +573,14 @@ public class AsyncRawLineItemClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseItems>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseItems>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseItems.class),
                                 response));
                         return;
@@ -607,20 +612,21 @@ public class AsyncRawLineItemClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

@@ -77,8 +77,7 @@ public final class ListDevicesOrgRequest {
      * the query.
      * <p>&lt;Info&gt;
      *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-     * <p>For example:</p>
+     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&amp;limitRecord=20</p>
      * <p>should become:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&amp;limitRecord=20
@@ -86,7 +85,7 @@ public final class ListDevicesOrgRequest {
      * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions
      * Reference</a>
      * for more information.</p>
-     * <p><strong>List of field names accepted:</strong></p>
+     * <p><strong>Accepted field names:</strong></p>
      * <ul>
      * <li>
      * <p><code>deviceId</code> (eq, ne, ct, nct)</p>
@@ -157,8 +156,20 @@ public final class ListDevicesOrgRequest {
      * <li>
      * <p><code>parentOrgName</code> (eq, ne, ct, nct)</p>
      * </li>
+     * <li>
+     * <p><code>paypointLogo</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>parentOrgLogo</code> (eq, ne, ct, nct)</p>
+     * </li>
+     * <li>
+     * <p><code>transactionCount</code> (eq, ne, gt, ge, lt, le)</p>
+     * </li>
+     * <li>
+     * <p><code>volumeProcessed</code> (eq, ne, gt, ge, lt, le)</p>
+     * </li>
      * </ul>
-     * <p><strong>List of comparison operators accepted:</strong></p>
+     * <p><strong>Accepted comparison operators:</strong></p>
      * <ul>
      * <li>
      * <p><code>eq</code> or empty =&gt; equal</p>
@@ -311,8 +322,7 @@ public final class ListDevicesOrgRequest {
          * the query.</p>
          * <p>&lt;Info&gt;
          *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-         * <p>For example:</p>
+         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&amp;limitRecord=20</p>
          * <p>should become:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&amp;limitRecord=20
@@ -320,7 +330,7 @@ public final class ListDevicesOrgRequest {
          * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions
          * Reference</a>
          * for more information.</p>
-         * <p><strong>List of field names accepted:</strong></p>
+         * <p><strong>Accepted field names:</strong></p>
          * <ul>
          * <li>
          * <p><code>deviceId</code> (eq, ne, ct, nct)</p>
@@ -391,8 +401,20 @@ public final class ListDevicesOrgRequest {
          * <li>
          * <p><code>parentOrgName</code> (eq, ne, ct, nct)</p>
          * </li>
+         * <li>
+         * <p><code>paypointLogo</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>parentOrgLogo</code> (eq, ne, ct, nct)</p>
+         * </li>
+         * <li>
+         * <p><code>transactionCount</code> (eq, ne, gt, ge, lt, le)</p>
+         * </li>
+         * <li>
+         * <p><code>volumeProcessed</code> (eq, ne, gt, ge, lt, le)</p>
+         * </li>
          * </ul>
-         * <p><strong>List of comparison operators accepted:</strong></p>
+         * <p><strong>Accepted comparison operators:</strong></p>
          * <ul>
          * <li>
          * <p><code>eq</code> or empty =&gt; equal</p>

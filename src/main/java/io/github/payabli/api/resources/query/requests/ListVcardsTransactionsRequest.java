@@ -63,13 +63,12 @@ public final class ListVcardsTransactionsRequest {
      * @return Collection of field names, conditions, and values used to filter the query.
      * <p>&lt;Info&gt;
      *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-     * <p>For example:</p>
+     * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
      * <p>should become:</p>
      * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?transactionAmount(gt)=100&amp;limitRecord=20
      * &lt;/Info&gt;</p>
-     * <p>List of field names accepted:</p>
+     * <p>Accepted field names:</p>
      * <ul>
      * <li><code>identifier</code> (eq, ne, ct, nct)</li>
      * <li><code>transactionType</code> (eq, ne, ct, nct)</li>
@@ -94,7 +93,7 @@ public final class ListVcardsTransactionsRequest {
      * <li><code>externalPaypointID</code> (ct, nct, eq, ne)</li>
      * <li><code>paypointId</code> (gt, lt, eq, ne)</li>
      * </ul>
-     * <p>List of comparison accepted - enclosed between parentheses:</p>
+     * <p>Accepted comparison operators - enclosed between parentheses:</p>
      * <ul>
      * <li>eq or empty =&gt; equal</li>
      * <li>gt =&gt; greater than</li>
@@ -208,13 +207,12 @@ public final class ListVcardsTransactionsRequest {
          * <p>Collection of field names, conditions, and values used to filter the query.</p>
          * <p>&lt;Info&gt;
          *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
-         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.</p>
-         * <p>For example:</p>
+         * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
          * <p>should become:</p>
          * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?transactionAmount(gt)=100&amp;limitRecord=20
          * &lt;/Info&gt;</p>
-         * <p>List of field names accepted:</p>
+         * <p>Accepted field names:</p>
          * <ul>
          * <li><code>identifier</code> (eq, ne, ct, nct)</li>
          * <li><code>transactionType</code> (eq, ne, ct, nct)</li>
@@ -239,7 +237,7 @@ public final class ListVcardsTransactionsRequest {
          * <li><code>externalPaypointID</code> (ct, nct, eq, ne)</li>
          * <li><code>paypointId</code> (gt, lt, eq, ne)</li>
          * </ul>
-         * <p>List of comparison accepted - enclosed between parentheses:</p>
+         * <p>Accepted comparison operators - enclosed between parentheses:</p>
          * <ul>
          * <li>eq or empty =&gt; equal</li>
          * <li>gt =&gt; greater than</li>

@@ -291,7 +291,7 @@ public final class VendorDataResponse {
     }
 
     /**
-     * @return Vendor's zip code.
+     * @return Vendor's ZIP code.
      */
     @JsonProperty("Zip")
     public String getZip() {
@@ -696,7 +696,7 @@ public final class VendorDataResponse {
 
     public interface ZipStage {
         /**
-         * <p>Vendor's zip code.</p>
+         * <p>Vendor's ZIP code.</p>
          */
         CountryStage zip(@NotNull String zip);
     }
@@ -1190,7 +1190,7 @@ public final class VendorDataResponse {
         }
 
         /**
-         * <p>Vendor's zip code.</p>
+         * <p>Vendor's ZIP code.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

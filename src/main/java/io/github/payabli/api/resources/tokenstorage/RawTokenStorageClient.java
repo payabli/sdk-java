@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -47,14 +47,14 @@ public class RawTokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public PayabliApiHttpResponse<AddMethodResponse> addMethod(RequestTokenStorage body) {
+    public PayabliApiClientHttpResponse<AddMethodResponse> addMethod(RequestTokenStorage body) {
         return addMethod(AddMethodRequest.builder().body(body).build());
     }
 
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public PayabliApiHttpResponse<AddMethodResponse> addMethod(
+    public PayabliApiClientHttpResponse<AddMethodResponse> addMethod(
             RequestTokenStorage body, RequestOptions requestOptions) {
         return addMethod(AddMethodRequest.builder().body(body).build(), requestOptions);
     }
@@ -62,14 +62,14 @@ public class RawTokenStorageClient {
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public PayabliApiHttpResponse<AddMethodResponse> addMethod(AddMethodRequest request) {
+    public PayabliApiClientHttpResponse<AddMethodResponse> addMethod(AddMethodRequest request) {
         return addMethod(request, null);
     }
 
     /**
      * Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The <code>ReferenceId</code> value in the response is the <code>storedMethodId</code> to use with transactions.
      */
-    public PayabliApiHttpResponse<AddMethodResponse> addMethod(
+    public PayabliApiClientHttpResponse<AddMethodResponse> addMethod(
             AddMethodRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -137,7 +137,7 @@ public class RawTokenStorageClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddMethodResponse.class), response);
             }
             try {
@@ -161,40 +161,40 @@ public class RawTokenStorageClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves details for a saved payment method.
      */
-    public PayabliApiHttpResponse<GetMethodResponse> getMethod(String methodId) {
+    public PayabliApiClientHttpResponse<GetMethodResponse> getMethod(String methodId) {
         return getMethod(methodId, GetMethodRequest.builder().build());
     }
 
     /**
      * Retrieves details for a saved payment method.
      */
-    public PayabliApiHttpResponse<GetMethodResponse> getMethod(String methodId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<GetMethodResponse> getMethod(String methodId, RequestOptions requestOptions) {
         return getMethod(methodId, GetMethodRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves details for a saved payment method.
      */
-    public PayabliApiHttpResponse<GetMethodResponse> getMethod(String methodId, GetMethodRequest request) {
+    public PayabliApiClientHttpResponse<GetMethodResponse> getMethod(String methodId, GetMethodRequest request) {
         return getMethod(methodId, request, null);
     }
 
     /**
      * Retrieves details for a saved payment method.
      */
-    public PayabliApiHttpResponse<GetMethodResponse> getMethod(
+    public PayabliApiClientHttpResponse<GetMethodResponse> getMethod(
             String methodId, GetMethodRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -243,7 +243,7 @@ public class RawTokenStorageClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetMethodResponse.class), response);
             }
             try {
@@ -267,19 +267,19 @@ public class RawTokenStorageClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a saved payment method.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
             String methodId, RequestTokenStorage body) {
         return updateMethod(methodId, UpdateMethodRequest.builder().body(body).build());
     }
@@ -287,7 +287,7 @@ public class RawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
             String methodId, RequestTokenStorage body, RequestOptions requestOptions) {
         return updateMethod(methodId, UpdateMethodRequest.builder().body(body).build(), requestOptions);
     }
@@ -295,7 +295,7 @@ public class RawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
             String methodId, UpdateMethodRequest request) {
         return updateMethod(methodId, request, null);
     }
@@ -303,7 +303,7 @@ public class RawTokenStorageClient {
     /**
      * Updates a saved payment method.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete> updateMethod(
             String methodId, UpdateMethodRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -353,32 +353,32 @@ public class RawTokenStorageClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponsePaymethodDelete.class),
                         response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a saved payment method.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(String methodId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(String methodId) {
         return removeMethod(methodId, null);
     }
 
     /**
      * Deletes a saved payment method.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymethodDelete> removeMethod(
             String methodId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -416,7 +416,7 @@ public class RawTokenStorageClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponsePaymethodDelete.class),
                         response);
@@ -442,12 +442,12 @@ public class RawTokenStorageClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

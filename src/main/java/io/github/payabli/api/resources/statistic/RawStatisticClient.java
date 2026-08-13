@@ -8,9 +8,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -48,7 +48,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+    public PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId) {
         return basicStats(
                 mode, freq, level, entryId, BasicStatsRequest.builder().build());
@@ -57,7 +57,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+    public PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId, RequestOptions requestOptions) {
         return basicStats(
                 mode, freq, level, entryId, BasicStatsRequest.builder().build(), requestOptions);
@@ -66,7 +66,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+    public PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId, BasicStatsRequest request) {
         return basicStats(mode, freq, level, entryId, request, null);
     }
@@ -74,7 +74,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
      */
-    public PayabliApiHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
+    public PayabliApiClientHttpResponse<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode,
             String freq,
             int level,
@@ -132,7 +132,7 @@ public class RawStatisticClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<StatBasicExtendedQueryRecord>>() {}),
                         response);
@@ -158,19 +158,19 @@ public class RawStatisticClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+    public PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId) {
         return customerBasicStats(
                 mode, freq, customerId, CustomerBasicStatsRequest.builder().build());
@@ -179,7 +179,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+    public PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId, RequestOptions requestOptions) {
         return customerBasicStats(
                 mode, freq, customerId, CustomerBasicStatsRequest.builder().build(), requestOptions);
@@ -188,7 +188,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+    public PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId, CustomerBasicStatsRequest request) {
         return customerBasicStats(mode, freq, customerId, request, null);
     }
@@ -196,7 +196,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
      */
-    public PayabliApiHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+    public PayabliApiClientHttpResponse<List<SubscriptionStatsQueryRecord>> customerBasicStats(
             String mode,
             String freq,
             int customerId,
@@ -244,7 +244,7 @@ public class RawStatisticClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<SubscriptionStatsQueryRecord>>() {}),
                         response);
@@ -270,26 +270,26 @@ public class RawStatisticClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(String interval, int level, long entryId) {
+    public PayabliApiClientHttpResponse<List<StatBasicQueryRecord>> subStats(String interval, int level, long entryId) {
         return subStats(interval, level, entryId, SubStatsRequest.builder().build());
     }
 
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
+    public PayabliApiClientHttpResponse<List<StatBasicQueryRecord>> subStats(
             String interval, int level, long entryId, RequestOptions requestOptions) {
         return subStats(interval, level, entryId, SubStatsRequest.builder().build(), requestOptions);
     }
@@ -297,7 +297,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
+    public PayabliApiClientHttpResponse<List<StatBasicQueryRecord>> subStats(
             String interval, int level, long entryId, SubStatsRequest request) {
         return subStats(interval, level, entryId, request, null);
     }
@@ -305,7 +305,7 @@ public class RawStatisticClient {
     /**
      * Retrieves the subscription statistics for a given interval for a paypoint or organization.
      */
-    public PayabliApiHttpResponse<List<StatBasicQueryRecord>> subStats(
+    public PayabliApiClientHttpResponse<List<StatBasicQueryRecord>> subStats(
             String interval, int level, long entryId, SubStatsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -349,7 +349,7 @@ public class RawStatisticClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<StatBasicQueryRecord>>() {}),
                         response);
@@ -375,19 +375,19 @@ public class RawStatisticClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
+    public PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor) {
         return vendorBasicStats(
                 mode, freq, idVendor, VendorBasicStatsRequest.builder().build());
@@ -396,7 +396,7 @@ public class RawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
+    public PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor, RequestOptions requestOptions) {
         return vendorBasicStats(
                 mode, freq, idVendor, VendorBasicStatsRequest.builder().build(), requestOptions);
@@ -405,7 +405,7 @@ public class RawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
+    public PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor, VendorBasicStatsRequest request) {
         return vendorBasicStats(mode, freq, idVendor, request, null);
     }
@@ -413,7 +413,7 @@ public class RawStatisticClient {
     /**
      * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
      */
-    public PayabliApiHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
+    public PayabliApiClientHttpResponse<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor, VendorBasicStatsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -457,7 +457,7 @@ public class RawStatisticClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<StatisticsVendorQueryRecord>>() {}),
                         response);
@@ -483,12 +483,12 @@ public class RawStatisticClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

@@ -7,9 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -104,7 +104,7 @@ public class RawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetails(String entry) {
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetails(String entry) {
         return listBatchDetails(entry, ListBatchDetailsRequest.builder().build());
     }
 
@@ -112,7 +112,7 @@ public class RawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetails(
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetails(
             String entry, RequestOptions requestOptions) {
         return listBatchDetails(entry, ListBatchDetailsRequest.builder().build(), requestOptions);
     }
@@ -121,7 +121,7 @@ public class RawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetails(
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetails(
             String entry, ListBatchDetailsRequest request) {
         return listBatchDetails(entry, request, null);
     }
@@ -130,7 +130,7 @@ public class RawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetails(
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetails(
             String entry, ListBatchDetailsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -188,7 +188,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesDetailResponse.class),
                         response);
             }
@@ -213,26 +213,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(int orgId) {
         return listBatchDetailsOrg(orgId, ListBatchDetailsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(
             int orgId, RequestOptions requestOptions) {
         return listBatchDetailsOrg(orgId, ListBatchDetailsOrgRequest.builder().build(), requestOptions);
     }
@@ -240,7 +240,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request) {
         return listBatchDetailsOrg(orgId, request, null);
     }
@@ -248,7 +248,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(
+    public PayabliApiClientHttpResponse<QueryBatchesDetailResponse> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -306,7 +306,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesDetailResponse.class),
                         response);
             }
@@ -331,40 +331,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatches(String entry) {
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatches(String entry) {
         return listBatches(entry, ListBatchesRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatches(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatches(String entry, RequestOptions requestOptions) {
         return listBatches(entry, ListBatchesRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatches(String entry, ListBatchesRequest request) {
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatches(String entry, ListBatchesRequest request) {
         return listBatches(entry, request, null);
     }
 
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatches(
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatches(
             String entry, ListBatchesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -422,7 +422,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesResponse.class), response);
             }
             try {
@@ -446,40 +446,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatchesOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatchesOrg(int orgId) {
         return listBatchesOrg(orgId, ListBatchesOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatchesOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatchesOrg(int orgId, RequestOptions requestOptions) {
         return listBatchesOrg(orgId, ListBatchesOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatchesOrg(int orgId, ListBatchesOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatchesOrg(int orgId, ListBatchesOrgRequest request) {
         return listBatchesOrg(orgId, request, null);
     }
 
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesResponse> listBatchesOrg(
+    public PayabliApiClientHttpResponse<QueryBatchesResponse> listBatchesOrg(
             int orgId, ListBatchesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -537,7 +537,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesResponse.class), response);
             }
             try {
@@ -561,40 +561,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOut(String entry) {
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOut(String entry) {
         return listBatchesOut(entry, ListBatchesOutRequest.builder().build());
     }
 
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOut(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOut(
+            String entry, RequestOptions requestOptions) {
         return listBatchesOut(entry, ListBatchesOutRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOut(String entry, ListBatchesOutRequest request) {
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOut(
+            String entry, ListBatchesOutRequest request) {
         return listBatchesOut(entry, request, null);
     }
 
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOut(
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOut(
             String entry, ListBatchesOutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -652,7 +654,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesOutResponse.class),
                         response);
             }
@@ -677,33 +679,34 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(int orgId) {
         return listBatchesOutOrg(orgId, ListBatchesOutOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(
+            int orgId, RequestOptions requestOptions) {
         return listBatchesOutOrg(orgId, ListBatchesOutOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(
             int orgId, ListBatchesOutOrgRequest request) {
         return listBatchesOutOrg(orgId, request, null);
     }
@@ -711,7 +714,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(
+    public PayabliApiClientHttpResponse<QueryBatchesOutResponse> listBatchesOutOrg(
             int orgId, ListBatchesOutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -769,7 +772,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesOutResponse.class),
                         response);
             }
@@ -794,26 +797,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacks(String entry) {
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacks(String entry) {
         return listChargebacks(entry, ListChargebacksRequest.builder().build());
     }
 
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacks(
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacks(
             String entry, RequestOptions requestOptions) {
         return listChargebacks(entry, ListChargebacksRequest.builder().build(), requestOptions);
     }
@@ -821,7 +824,7 @@ public class RawQueryClient {
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacks(
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacks(
             String entry, ListChargebacksRequest request) {
         return listChargebacks(entry, request, null);
     }
@@ -829,7 +832,7 @@ public class RawQueryClient {
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacks(
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacks(
             String entry, ListChargebacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -887,7 +890,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryChargebacksResponse.class),
                         response);
             }
@@ -912,26 +915,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacksOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacksOrg(int orgId) {
         return listChargebacksOrg(orgId, ListChargebacksOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacksOrg(
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacksOrg(
             int orgId, RequestOptions requestOptions) {
         return listChargebacksOrg(orgId, ListChargebacksOrgRequest.builder().build(), requestOptions);
     }
@@ -939,7 +942,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacksOrg(
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request) {
         return listChargebacksOrg(orgId, request, null);
     }
@@ -947,7 +950,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryChargebacksResponse> listChargebacksOrg(
+    public PayabliApiClientHttpResponse<QueryChargebacksResponse> listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1005,7 +1008,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryChargebacksResponse.class),
                         response);
             }
@@ -1030,40 +1033,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomers(String entry) {
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomers(String entry) {
         return listCustomers(entry, ListCustomersRequest.builder().build());
     }
 
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomers(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomers(
+            String entry, RequestOptions requestOptions) {
         return listCustomers(entry, ListCustomersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomers(String entry, ListCustomersRequest request) {
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomers(
+            String entry, ListCustomersRequest request) {
         return listCustomers(entry, request, null);
     }
 
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomers(
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomers(
             String entry, ListCustomersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1121,7 +1126,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryCustomerResponse.class), response);
             }
             try {
@@ -1145,40 +1150,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomersOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomersOrg(int orgId) {
         return listCustomersOrg(orgId, ListCustomersOrgRequest.builder().build());
     }
 
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomersOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomersOrg(
+            int orgId, RequestOptions requestOptions) {
         return listCustomersOrg(orgId, ListCustomersOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomersOrg(int orgId, ListCustomersOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomersOrg(
+            int orgId, ListCustomersOrgRequest request) {
         return listCustomersOrg(orgId, request, null);
     }
 
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryCustomerResponse> listCustomersOrg(
+    public PayabliApiClientHttpResponse<QueryCustomerResponse> listCustomersOrg(
             int orgId, ListCustomersOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1236,7 +1243,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryCustomerResponse.class), response);
             }
             try {
@@ -1260,40 +1267,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevices(String entry) {
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(String entry) {
         return listDevices(entry, ListDevicesRequest.builder().build());
     }
 
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevices(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(String entry, RequestOptions requestOptions) {
         return listDevices(entry, ListDevicesRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevices(String entry, ListDevicesRequest request) {
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(String entry, ListDevicesRequest request) {
         return listDevices(entry, request, null);
     }
 
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevices(
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(
             String entry, ListDevicesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1351,7 +1358,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryDeviceResponse.class), response);
             }
             try {
@@ -1375,40 +1382,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build());
     }
 
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId, RequestOptions requestOptions) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId, ListDevicesOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId, ListDevicesOrgRequest request) {
         return listDevicesOrg(orgId, request, null);
     }
 
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryDeviceResponse> listDevicesOrg(
+    public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1466,7 +1473,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryDeviceResponse.class), response);
             }
             try {
@@ -1490,19 +1497,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReports(String entry) {
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReports(String entry) {
         return listNotificationReports(
                 entry, ListNotificationReportsRequest.builder().build());
     }
@@ -1510,7 +1517,7 @@ public class RawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReports(
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReports(
             String entry, RequestOptions requestOptions) {
         return listNotificationReports(
                 entry, ListNotificationReportsRequest.builder().build(), requestOptions);
@@ -1519,7 +1526,7 @@ public class RawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReports(
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReports(
             String entry, ListNotificationReportsRequest request) {
         return listNotificationReports(entry, request, null);
     }
@@ -1527,7 +1534,7 @@ public class RawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReports(
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReports(
             String entry, ListNotificationReportsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1581,7 +1588,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseNotificationReports.class),
                         response);
             }
@@ -1606,19 +1613,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(int orgId) {
         return listNotificationReportsOrg(
                 orgId, ListNotificationReportsOrgRequest.builder().build());
     }
@@ -1626,7 +1633,7 @@ public class RawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(
             int orgId, RequestOptions requestOptions) {
         return listNotificationReportsOrg(
                 orgId, ListNotificationReportsOrgRequest.builder().build(), requestOptions);
@@ -1635,7 +1642,7 @@ public class RawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(
             int orgId, ListNotificationReportsOrgRequest request) {
         return listNotificationReportsOrg(orgId, request, null);
     }
@@ -1643,7 +1650,7 @@ public class RawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseNotificationReports> listNotificationReportsOrg(
             int orgId, ListNotificationReportsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1697,7 +1704,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseNotificationReports.class),
                         response);
             }
@@ -1722,26 +1729,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotifications(String entry) {
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotifications(String entry) {
         return listNotifications(entry, ListNotificationsRequest.builder().build());
     }
 
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotifications(
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotifications(
             String entry, RequestOptions requestOptions) {
         return listNotifications(entry, ListNotificationsRequest.builder().build(), requestOptions);
     }
@@ -1749,7 +1756,7 @@ public class RawQueryClient {
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotifications(
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotifications(
             String entry, ListNotificationsRequest request) {
         return listNotifications(entry, request, null);
     }
@@ -1757,7 +1764,7 @@ public class RawQueryClient {
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotifications(
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotifications(
             String entry, ListNotificationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1811,7 +1818,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseNotifications.class),
                         response);
             }
@@ -1836,26 +1843,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotificationsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotificationsOrg(int orgId) {
         return listNotificationsOrg(orgId, ListNotificationsOrgRequest.builder().build());
     }
 
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotificationsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotificationsOrg(
             int orgId, RequestOptions requestOptions) {
         return listNotificationsOrg(orgId, ListNotificationsOrgRequest.builder().build(), requestOptions);
     }
@@ -1863,7 +1870,7 @@ public class RawQueryClient {
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotificationsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotificationsOrg(
             int orgId, ListNotificationsOrgRequest request) {
         return listNotificationsOrg(orgId, request, null);
     }
@@ -1871,7 +1878,7 @@ public class RawQueryClient {
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryResponseNotifications> listNotificationsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseNotifications> listNotificationsOrg(
             int orgId, ListNotificationsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1925,7 +1932,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseNotifications.class),
                         response);
             }
@@ -1950,26 +1957,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<ListOrganizationsResponse> listOrganizations(int orgId) {
+    public PayabliApiClientHttpResponse<ListOrganizationsResponse> listOrganizations(int orgId) {
         return listOrganizations(orgId, ListOrganizationsRequest.builder().build());
     }
 
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<ListOrganizationsResponse> listOrganizations(
+    public PayabliApiClientHttpResponse<ListOrganizationsResponse> listOrganizations(
             int orgId, RequestOptions requestOptions) {
         return listOrganizations(orgId, ListOrganizationsRequest.builder().build(), requestOptions);
     }
@@ -1977,7 +1984,7 @@ public class RawQueryClient {
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<ListOrganizationsResponse> listOrganizations(
+    public PayabliApiClientHttpResponse<ListOrganizationsResponse> listOrganizations(
             int orgId, ListOrganizationsRequest request) {
         return listOrganizations(orgId, request, null);
     }
@@ -1985,7 +1992,7 @@ public class RawQueryClient {
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<ListOrganizationsResponse> listOrganizations(
+    public PayabliApiClientHttpResponse<ListOrganizationsResponse> listOrganizations(
             int orgId, ListOrganizationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2043,7 +2050,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListOrganizationsResponse.class),
                         response);
             }
@@ -2068,40 +2075,41 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayout(String entry) {
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayout(String entry) {
         return listPayout(entry, ListPayoutRequest.builder().build());
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayout(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayout(
+            String entry, RequestOptions requestOptions) {
         return listPayout(entry, ListPayoutRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayout(String entry, ListPayoutRequest request) {
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayout(String entry, ListPayoutRequest request) {
         return listPayout(entry, request, null);
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayout(
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayout(
             String entry, ListPayoutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2159,7 +2167,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryPayoutTransaction.class),
                         response);
             }
@@ -2184,40 +2192,41 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayoutOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayoutOrg(int orgId) {
         return listPayoutOrg(orgId, ListPayoutOrgRequest.builder().build());
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayoutOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayoutOrg(
+            int orgId, RequestOptions requestOptions) {
         return listPayoutOrg(orgId, ListPayoutOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayoutOrg(int orgId, ListPayoutOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayoutOrg(int orgId, ListPayoutOrgRequest request) {
         return listPayoutOrg(orgId, request, null);
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryPayoutTransaction> listPayoutOrg(
+    public PayabliApiClientHttpResponse<QueryPayoutTransaction> listPayoutOrg(
             int orgId, ListPayoutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2275,7 +2284,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryPayoutTransaction.class),
                         response);
             }
@@ -2300,40 +2309,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryEntrypointResponse> listPaypoints(int orgId) {
+    public PayabliApiClientHttpResponse<QueryEntrypointResponse> listPaypoints(int orgId) {
         return listPaypoints(orgId, ListPaypointsRequest.builder().build());
     }
 
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryEntrypointResponse> listPaypoints(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryEntrypointResponse> listPaypoints(
+            int orgId, RequestOptions requestOptions) {
         return listPaypoints(orgId, ListPaypointsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryEntrypointResponse> listPaypoints(int orgId, ListPaypointsRequest request) {
+    public PayabliApiClientHttpResponse<QueryEntrypointResponse> listPaypoints(
+            int orgId, ListPaypointsRequest request) {
         return listPaypoints(orgId, request, null);
     }
 
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryEntrypointResponse> listPaypoints(
+    public PayabliApiClientHttpResponse<QueryEntrypointResponse> listPaypoints(
             int orgId, ListPaypointsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2391,7 +2402,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryEntrypointResponse.class),
                         response);
             }
@@ -2416,26 +2427,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlements(String entry) {
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlements(String entry) {
         return listSettlements(entry, ListSettlementsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlements(
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlements(
             String entry, RequestOptions requestOptions) {
         return listSettlements(entry, ListSettlementsRequest.builder().build(), requestOptions);
     }
@@ -2443,7 +2454,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlements(
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlements(
             String entry, ListSettlementsRequest request) {
         return listSettlements(entry, request, null);
     }
@@ -2451,7 +2462,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlements(
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlements(
             String entry, ListSettlementsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2509,7 +2520,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseSettlements.class),
                         response);
             }
@@ -2534,26 +2545,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlementsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlementsOrg(int orgId) {
         return listSettlementsOrg(orgId, ListSettlementsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlementsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlementsOrg(
             int orgId, RequestOptions requestOptions) {
         return listSettlementsOrg(orgId, ListSettlementsOrgRequest.builder().build(), requestOptions);
     }
@@ -2561,7 +2572,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlementsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request) {
         return listSettlementsOrg(orgId, request, null);
     }
@@ -2569,7 +2580,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseSettlements> listSettlementsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseSettlements> listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2627,7 +2638,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseSettlements.class),
                         response);
             }
@@ -2652,26 +2663,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptions(String entry) {
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptions(String entry) {
         return listSubscriptions(entry, ListSubscriptionsRequest.builder().build());
     }
 
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptions(
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptions(
             String entry, RequestOptions requestOptions) {
         return listSubscriptions(entry, ListSubscriptionsRequest.builder().build(), requestOptions);
     }
@@ -2679,7 +2690,7 @@ public class RawQueryClient {
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptions(
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptions(
             String entry, ListSubscriptionsRequest request) {
         return listSubscriptions(entry, request, null);
     }
@@ -2687,7 +2698,7 @@ public class RawQueryClient {
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptions(
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptions(
             String entry, ListSubscriptionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2745,7 +2756,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QuerySubscriptionResponse.class),
                         response);
             }
@@ -2770,26 +2781,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(int orgId) {
         return listSubscriptionsOrg(orgId, ListSubscriptionsOrgRequest.builder().build());
     }
 
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listSubscriptionsOrg(orgId, ListSubscriptionsOrgRequest.builder().build(), requestOptions);
     }
@@ -2797,7 +2808,7 @@ public class RawQueryClient {
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request) {
         return listSubscriptionsOrg(orgId, request, null);
     }
@@ -2805,7 +2816,7 @@ public class RawQueryClient {
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(
+    public PayabliApiClientHttpResponse<QuerySubscriptionResponse> listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2863,7 +2874,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QuerySubscriptionResponse.class),
                         response);
             }
@@ -2888,19 +2899,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(String entry) {
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(String entry) {
         return listPayoutSubscriptions(
                 entry, ListPayoutSubscriptionsRequest.builder().build());
     }
@@ -2908,7 +2919,7 @@ public class RawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(
             String entry, RequestOptions requestOptions) {
         return listPayoutSubscriptions(
                 entry, ListPayoutSubscriptionsRequest.builder().build(), requestOptions);
@@ -2917,7 +2928,7 @@ public class RawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(
             String entry, ListPayoutSubscriptionsRequest request) {
         return listPayoutSubscriptions(entry, request, null);
     }
@@ -2925,7 +2936,7 @@ public class RawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptions(
             String entry, ListPayoutSubscriptionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2983,7 +2994,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryPayoutSubscriptionResponse.class),
                         response);
             }
@@ -3008,19 +3019,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(int orgId) {
         return listPayoutSubscriptionsOrg(
                 orgId, ListPayoutSubscriptionsOrgRequest.builder().build());
     }
@@ -3028,7 +3039,7 @@ public class RawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listPayoutSubscriptionsOrg(
                 orgId, ListPayoutSubscriptionsOrgRequest.builder().build(), requestOptions);
@@ -3037,7 +3048,7 @@ public class RawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(
             int orgId, ListPayoutSubscriptionsOrgRequest request) {
         return listPayoutSubscriptionsOrg(orgId, request, null);
     }
@@ -3045,7 +3056,7 @@ public class RawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public PayabliApiHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(
+    public PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse> listPayoutSubscriptionsOrg(
             int orgId, ListPayoutSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3103,7 +3114,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryPayoutSubscriptionResponse.class),
                         response);
             }
@@ -3128,12 +3139,12 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -3145,7 +3156,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactions(String entry) {
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactions(String entry) {
         return listTransactions(entry, ListTransactionsRequest.builder().build());
     }
 
@@ -3157,7 +3168,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactions(
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactions(
             String entry, RequestOptions requestOptions) {
         return listTransactions(entry, ListTransactionsRequest.builder().build(), requestOptions);
     }
@@ -3170,7 +3181,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactions(
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactions(
             String entry, ListTransactionsRequest request) {
         return listTransactions(entry, request, null);
     }
@@ -3183,7 +3194,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactions(
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactions(
             String entry, ListTransactionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3241,7 +3252,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseTransactions.class),
                         response);
             }
@@ -3266,12 +3277,12 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
@@ -3283,7 +3294,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactionsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactionsOrg(int orgId) {
         return listTransactionsOrg(orgId, ListTransactionsOrgRequest.builder().build());
     }
 
@@ -3295,7 +3306,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactionsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listTransactionsOrg(orgId, ListTransactionsOrgRequest.builder().build(), requestOptions);
     }
@@ -3308,7 +3319,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactionsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactionsOrg(
             int orgId, ListTransactionsOrgRequest request) {
         return listTransactionsOrg(orgId, request, null);
     }
@@ -3321,7 +3332,7 @@ public class RawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public PayabliApiHttpResponse<QueryResponseTransactions> listTransactionsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseTransactions> listTransactionsOrg(
             int orgId, ListTransactionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3379,7 +3390,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseTransactions.class),
                         response);
             }
@@ -3404,19 +3415,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryTransferDetailResponse> listTransferDetails(String entry, int transferId) {
+    public PayabliApiClientHttpResponse<QueryTransferDetailResponse> listTransferDetails(String entry, int transferId) {
         return listTransferDetails(
                 entry, transferId, ListTransfersPaypointRequest.builder().build());
     }
@@ -3424,7 +3435,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryTransferDetailResponse> listTransferDetails(
+    public PayabliApiClientHttpResponse<QueryTransferDetailResponse> listTransferDetails(
             String entry, int transferId, RequestOptions requestOptions) {
         return listTransferDetails(
                 entry, transferId, ListTransfersPaypointRequest.builder().build(), requestOptions);
@@ -3433,7 +3444,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryTransferDetailResponse> listTransferDetails(
+    public PayabliApiClientHttpResponse<QueryTransferDetailResponse> listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request) {
         return listTransferDetails(entry, transferId, request, null);
     }
@@ -3441,7 +3452,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryTransferDetailResponse> listTransferDetails(
+    public PayabliApiClientHttpResponse<QueryTransferDetailResponse> listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3500,7 +3511,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryTransferDetailResponse.class),
                         response);
             }
@@ -3525,40 +3536,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfers(String entry) {
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfers(String entry) {
         return listTransfers(entry, ListTransfersRequest.builder().build());
     }
 
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfers(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfers(
+            String entry, RequestOptions requestOptions) {
         return listTransfers(entry, ListTransfersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfers(String entry, ListTransfersRequest request) {
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfers(
+            String entry, ListTransfersRequest request) {
         return listTransfers(entry, request, null);
     }
 
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfers(
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfers(
             String entry, ListTransfersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3616,7 +3629,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferQueryResponse.class), response);
             }
             try {
@@ -3640,40 +3653,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(long orgId) {
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfersOrg(long orgId) {
         return listTransfersOrg(orgId, ListTransfersRequestOrg.builder().build());
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(long orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfersOrg(
+            long orgId, RequestOptions requestOptions) {
         return listTransfersOrg(orgId, ListTransfersRequestOrg.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(long orgId, ListTransfersRequestOrg request) {
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfersOrg(
+            long orgId, ListTransfersRequestOrg request) {
         return listTransfersOrg(orgId, request, null);
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<TransferQueryResponse> listTransfersOrg(
+    public PayabliApiClientHttpResponse<TransferQueryResponse> listTransfersOrg(
             long orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3731,7 +3746,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferQueryResponse.class), response);
             }
             try {
@@ -3755,26 +3770,26 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(int orgId) {
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(int orgId) {
         return listTransfersOutOrg(orgId, ListTransfersOutOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(
             int orgId, RequestOptions requestOptions) {
         return listTransfersOutOrg(orgId, ListTransfersOutOrgRequest.builder().build(), requestOptions);
     }
@@ -3782,7 +3797,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(
             int orgId, ListTransfersOutOrgRequest request) {
         return listTransfersOutOrg(orgId, request, null);
     }
@@ -3790,7 +3805,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutOrg(
             int orgId, ListTransfersOutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3844,7 +3859,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferOutQueryResponse.class),
                         response);
             }
@@ -3869,19 +3884,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(String entry) {
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(String entry) {
         return listTransfersOutPaypoint(
                 entry, ListTransfersOutPaypointRequest.builder().build());
     }
@@ -3889,7 +3904,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(
             String entry, RequestOptions requestOptions) {
         return listTransfersOutPaypoint(
                 entry, ListTransfersOutPaypointRequest.builder().build(), requestOptions);
@@ -3898,7 +3913,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(
             String entry, ListTransfersOutPaypointRequest request) {
         return listTransfersOutPaypoint(entry, request, null);
     }
@@ -3906,7 +3921,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(
+    public PayabliApiClientHttpResponse<TransferOutQueryResponse> listTransfersOutPaypoint(
             String entry, ListTransfersOutPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3960,7 +3975,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferOutQueryResponse.class),
                         response);
             }
@@ -3985,19 +4000,20 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(String entry, int transferId) {
+    public PayabliApiClientHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
+            String entry, int transferId) {
         return listTransferDetailsOut(
                 entry, transferId, ListTransferDetailsOutRequest.builder().build());
     }
@@ -4005,7 +4021,7 @@ public class RawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
+    public PayabliApiClientHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
             String entry, int transferId, RequestOptions requestOptions) {
         return listTransferDetailsOut(
                 entry, transferId, ListTransferDetailsOutRequest.builder().build(), requestOptions);
@@ -4014,7 +4030,7 @@ public class RawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
+    public PayabliApiClientHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
             String entry, int transferId, ListTransferDetailsOutRequest request) {
         return listTransferDetailsOut(entry, transferId, request, null);
     }
@@ -4022,7 +4038,7 @@ public class RawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
+    public PayabliApiClientHttpResponse<TransferOutDetailQueryResponse> listTransferDetailsOut(
             String entry, int transferId, ListTransferDetailsOutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4077,7 +4093,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferOutDetailQueryResponse.class),
                         response);
             }
@@ -4102,40 +4118,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersOrg(int orgId) {
         return listUsersOrg(orgId, ListUsersOrgRequest.builder().build());
     }
 
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersOrg(int orgId, RequestOptions requestOptions) {
         return listUsersOrg(orgId, ListUsersOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersOrg(int orgId, ListUsersOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersOrg(int orgId, ListUsersOrgRequest request) {
         return listUsersOrg(orgId, request, null);
     }
 
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersOrg(
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersOrg(
             int orgId, ListUsersOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4189,7 +4205,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryUserResponse.class), response);
             }
             try {
@@ -4213,40 +4229,42 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersPaypoint(String entry) {
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersPaypoint(String entry) {
         return listUsersPaypoint(entry, ListUsersPaypointRequest.builder().build());
     }
 
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersPaypoint(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersPaypoint(
+            String entry, RequestOptions requestOptions) {
         return listUsersPaypoint(entry, ListUsersPaypointRequest.builder().build(), requestOptions);
     }
 
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersPaypoint(String entry, ListUsersPaypointRequest request) {
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersPaypoint(
+            String entry, ListUsersPaypointRequest request) {
         return listUsersPaypoint(entry, request, null);
     }
 
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<QueryUserResponse> listUsersPaypoint(
+    public PayabliApiClientHttpResponse<QueryUserResponse> listUsersPaypoint(
             String entry, ListUsersPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4300,7 +4318,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryUserResponse.class), response);
             }
             try {
@@ -4324,40 +4342,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendors(String entry) {
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendors(String entry) {
         return listVendors(entry, ListVendorsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendors(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendors(String entry, RequestOptions requestOptions) {
         return listVendors(entry, ListVendorsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendors(String entry, ListVendorsRequest request) {
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendors(String entry, ListVendorsRequest request) {
         return listVendors(entry, request, null);
     }
 
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendors(
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendors(
             String entry, ListVendorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4415,7 +4433,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseVendors.class), response);
             }
             try {
@@ -4439,40 +4457,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendorsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendorsOrg(int orgId) {
         return listVendorsOrg(orgId, ListVendorsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendorsOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendorsOrg(int orgId, RequestOptions requestOptions) {
         return listVendorsOrg(orgId, ListVendorsOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendorsOrg(int orgId, ListVendorsOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendorsOrg(int orgId, ListVendorsOrgRequest request) {
         return listVendorsOrg(orgId, request, null);
     }
 
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryResponseVendors> listVendorsOrg(
+    public PayabliApiClientHttpResponse<QueryResponseVendors> listVendorsOrg(
             int orgId, ListVendorsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4530,7 +4548,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseVendors.class), response);
             }
             try {
@@ -4554,40 +4572,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcards(String entry) {
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcards(String entry) {
         return listVcards(entry, ListVcardsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcards(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcards(String entry, RequestOptions requestOptions) {
         return listVcards(entry, ListVcardsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcards(String entry, ListVcardsRequest request) {
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcards(String entry, ListVcardsRequest request) {
         return listVcards(entry, request, null);
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcards(
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcards(
             String entry, ListVcardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4645,7 +4663,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardQueryResponse.class), response);
             }
             try {
@@ -4669,19 +4687,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(String entry) {
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(String entry) {
         return listVcardsTransactions(
                 entry, ListVcardsTransactionsRequest.builder().build());
     }
@@ -4689,7 +4707,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(
             String entry, RequestOptions requestOptions) {
         return listVcardsTransactions(
                 entry, ListVcardsTransactionsRequest.builder().build(), requestOptions);
@@ -4698,7 +4716,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(
             String entry, ListVcardsTransactionsRequest request) {
         return listVcardsTransactions(entry, request, null);
     }
@@ -4706,7 +4724,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactions(
             String entry, ListVcardsTransactionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4760,7 +4778,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardTransactionQueryResponse.class),
                         response);
             }
@@ -4785,19 +4803,19 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(int orgId) {
         return listVcardsTransactionsOrg(
                 orgId, ListVcardsTransactionsOrgRequest.builder().build());
     }
@@ -4805,7 +4823,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listVcardsTransactionsOrg(
                 orgId, ListVcardsTransactionsOrgRequest.builder().build(), requestOptions);
@@ -4814,7 +4832,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
             int orgId, ListVcardsTransactionsOrgRequest request) {
         return listVcardsTransactionsOrg(orgId, request, null);
     }
@@ -4822,7 +4840,7 @@ public class RawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public PayabliApiHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
+    public PayabliApiClientHttpResponse<VCardTransactionQueryResponse> listVcardsTransactionsOrg(
             int orgId, ListVcardsTransactionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4876,7 +4894,7 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardTransactionQueryResponse.class),
                         response);
             }
@@ -4901,40 +4919,40 @@ public class RawQueryClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcardsOrg(int orgId) {
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcardsOrg(int orgId) {
         return listVcardsOrg(orgId, ListVcardsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcardsOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcardsOrg(int orgId, RequestOptions requestOptions) {
         return listVcardsOrg(orgId, ListVcardsOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcardsOrg(int orgId, ListVcardsOrgRequest request) {
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcardsOrg(int orgId, ListVcardsOrgRequest request) {
         return listVcardsOrg(orgId, request, null);
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<VCardQueryResponse> listVcardsOrg(
+    public PayabliApiClientHttpResponse<VCardQueryResponse> listVcardsOrg(
             int orgId, ListVcardsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4992,16 +5010,16 @@ public class RawQueryClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardQueryResponse.class), response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

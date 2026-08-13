@@ -62,7 +62,7 @@ public final class ListBoardingLinksRequest {
     /**
      * @return Collection of field names, conditions, and values used to filter the query
      * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-     * <p>List of field names accepted:</p>
+     * <p>Accepted field names:</p>
      * <ul>
      * <li><code>lastUpdated</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>templateName</code> (ct, nct)</li>
@@ -73,7 +73,7 @@ public final class ListBoardingLinksRequest {
      * <li><code>templateId</code> (eq, ne)</li>
      * <li><code>orgParentname</code> (ct, nct)</li>
      * </ul>
-     * <p>List of comparison accepted - enclosed between parentheses:</p>
+     * <p>Accepted comparison operators - enclosed between parentheses:</p>
      * <ul>
      * <li>eq or empty =&gt; equal</li>
      * <li>gt =&gt; greater than</li>
@@ -86,7 +86,7 @@ public final class ListBoardingLinksRequest {
      * <li>in =&gt; inside array</li>
      * <li>nin =&gt; not inside array</li>
      * </ul>
-     * <p>List of parameters accepted:</p>
+     * <p>Accepted parameters:</p>
      * <ul>
      * <li>limitRecord : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
      * <li>fromRecord : initial record in query</li>
@@ -192,7 +192,7 @@ public final class ListBoardingLinksRequest {
         /**
          * <p>Collection of field names, conditions, and values used to filter the query</p>
          * <p>See <a href="/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference">Filters and Conditions Reference</a> for help.</p>
-         * <p>List of field names accepted:</p>
+         * <p>Accepted field names:</p>
          * <ul>
          * <li><code>lastUpdated</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>templateName</code> (ct, nct)</li>
@@ -203,7 +203,7 @@ public final class ListBoardingLinksRequest {
          * <li><code>templateId</code> (eq, ne)</li>
          * <li><code>orgParentname</code> (ct, nct)</li>
          * </ul>
-         * <p>List of comparison accepted - enclosed between parentheses:</p>
+         * <p>Accepted comparison operators - enclosed between parentheses:</p>
          * <ul>
          * <li>eq or empty =&gt; equal</li>
          * <li>gt =&gt; greater than</li>
@@ -216,7 +216,7 @@ public final class ListBoardingLinksRequest {
          * <li>in =&gt; inside array</li>
          * <li>nin =&gt; not inside array</li>
          * </ul>
-         * <p>List of parameters accepted:</p>
+         * <p>Accepted parameters:</p>
          * <ul>
          * <li>limitRecord : max number of records for query (default=&quot;20&quot;, &quot;0&quot; or negative value for all)</li>
          * <li>fromRecord : initial record in query</li>

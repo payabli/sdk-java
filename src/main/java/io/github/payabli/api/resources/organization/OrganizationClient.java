@@ -47,30 +47,32 @@ public class OrganizationClient {
     /**
      * Updates an organization's details by ID.
      */
-    public EditOrganizationResponse editOrganization(int orgId) {
-        return this.rawClient.editOrganization(orgId).body();
+    public EditOrganizationResponse editOrganization(int orgIdPathParam) {
+        return this.rawClient.editOrganization(orgIdPathParam).body();
     }
 
     /**
      * Updates an organization's details by ID.
      */
-    public EditOrganizationResponse editOrganization(int orgId, RequestOptions requestOptions) {
-        return this.rawClient.editOrganization(orgId, requestOptions).body();
+    public EditOrganizationResponse editOrganization(int orgIdPathParam, RequestOptions requestOptions) {
+        return this.rawClient.editOrganization(orgIdPathParam, requestOptions).body();
     }
 
     /**
      * Updates an organization's details by ID.
      */
-    public EditOrganizationResponse editOrganization(int orgId, OrganizationData request) {
-        return this.rawClient.editOrganization(orgId, request).body();
+    public EditOrganizationResponse editOrganization(int orgIdPathParam, OrganizationData request) {
+        return this.rawClient.editOrganization(orgIdPathParam, request).body();
     }
 
     /**
      * Updates an organization's details by ID.
      */
     public EditOrganizationResponse editOrganization(
-            int orgId, OrganizationData request, RequestOptions requestOptions) {
-        return this.rawClient.editOrganization(orgId, request, requestOptions).body();
+            int orgIdPathParam, OrganizationData request, RequestOptions requestOptions) {
+        return this.rawClient
+                .editOrganization(orgIdPathParam, request, requestOptions)
+                .body();
     }
 
     /**

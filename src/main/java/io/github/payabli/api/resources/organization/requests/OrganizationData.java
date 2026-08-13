@@ -43,7 +43,7 @@ public final class OrganizationData {
 
     private final Optional<String> orgEntryName;
 
-    private final Optional<String> organizationDataOrgId;
+    private final Optional<String> orgId;
 
     private final Optional<FileContent> orgLogo;
 
@@ -75,7 +75,7 @@ public final class OrganizationData {
             Optional<String> orgCity,
             Optional<String> orgCountry,
             Optional<String> orgEntryName,
-            Optional<String> organizationDataOrgId,
+            Optional<String> orgId,
             Optional<FileContent> orgLogo,
             Optional<String> orgName,
             Optional<Long> orgParentId,
@@ -95,7 +95,7 @@ public final class OrganizationData {
         this.orgCity = orgCity;
         this.orgCountry = orgCountry;
         this.orgEntryName = orgEntryName;
-        this.organizationDataOrgId = organizationDataOrgId;
+        this.orgId = orgId;
         this.orgLogo = orgLogo;
         this.orgName = orgName;
         this.orgParentId = orgParentId;
@@ -154,8 +154,8 @@ public final class OrganizationData {
     }
 
     @JsonProperty("orgId")
-    public Optional<String> getOrganizationDataOrgId() {
-        return organizationDataOrgId;
+    public Optional<String> getOrgId() {
+        return orgId;
     }
 
     @JsonProperty("orgLogo")
@@ -224,7 +224,7 @@ public final class OrganizationData {
                 && orgCity.equals(other.orgCity)
                 && orgCountry.equals(other.orgCountry)
                 && orgEntryName.equals(other.orgEntryName)
-                && organizationDataOrgId.equals(other.organizationDataOrgId)
+                && orgId.equals(other.orgId)
                 && orgLogo.equals(other.orgLogo)
                 && orgName.equals(other.orgName)
                 && orgParentId.equals(other.orgParentId)
@@ -248,7 +248,7 @@ public final class OrganizationData {
                 this.orgCity,
                 this.orgCountry,
                 this.orgEntryName,
-                this.organizationDataOrgId,
+                this.orgId,
                 this.orgLogo,
                 this.orgName,
                 this.orgParentId,
@@ -289,7 +289,7 @@ public final class OrganizationData {
 
         private Optional<String> orgEntryName = Optional.empty();
 
-        private Optional<String> organizationDataOrgId = Optional.empty();
+        private Optional<String> orgId = Optional.empty();
 
         private Optional<FileContent> orgLogo = Optional.empty();
 
@@ -324,7 +324,7 @@ public final class OrganizationData {
             orgCity(other.getOrgCity());
             orgCountry(other.getOrgCountry());
             orgEntryName(other.getOrgEntryName());
-            organizationDataOrgId(other.getOrganizationDataOrgId());
+            orgId(other.getOrgId());
             orgLogo(other.getOrgLogo());
             orgName(other.getOrgName());
             orgParentId(other.getOrgParentId());
@@ -437,13 +437,13 @@ public final class OrganizationData {
         }
 
         @JsonSetter(value = "orgId", nulls = Nulls.SKIP)
-        public Builder organizationDataOrgId(Optional<String> organizationDataOrgId) {
-            this.organizationDataOrgId = organizationDataOrgId;
+        public Builder orgId(Optional<String> orgId) {
+            this.orgId = orgId;
             return this;
         }
 
-        public Builder organizationDataOrgId(String organizationDataOrgId) {
-            this.organizationDataOrgId = Optional.ofNullable(organizationDataOrgId);
+        public Builder orgId(String orgId) {
+            this.orgId = Optional.ofNullable(orgId);
             return this;
         }
 
@@ -557,7 +557,7 @@ public final class OrganizationData {
                     orgCity,
                     orgCountry,
                     orgEntryName,
-                    organizationDataOrgId,
+                    orgId,
                     orgLogo,
                     orgName,
                     orgParentId,

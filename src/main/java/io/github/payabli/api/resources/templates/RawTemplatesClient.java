@@ -7,9 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -43,14 +43,14 @@ public class RawTemplatesClient {
     /**
      * Deletes a template by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> deleteTemplate(double templateId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseTemplateId> deleteTemplate(double templateId) {
         return deleteTemplate(templateId, null);
     }
 
     /**
      * Deletes a template by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseTemplateId> deleteTemplate(
+    public PayabliApiClientHttpResponse<PayabliApiResponseTemplateId> deleteTemplate(
             double templateId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -88,7 +88,7 @@ public class RawTemplatesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseTemplateId.class),
                         response);
             }
@@ -113,26 +113,27 @@ public class RawTemplatesClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Generates a boarding link from a boarding template.
      */
-    public PayabliApiHttpResponse<BoardingLinkApiResponse> getlinkTemplate(double templateId, boolean ignoreEmpty) {
+    public PayabliApiClientHttpResponse<BoardingLinkApiResponse> getlinkTemplate(
+            double templateId, boolean ignoreEmpty) {
         return getlinkTemplate(templateId, ignoreEmpty, null);
     }
 
     /**
      * Generates a boarding link from a boarding template.
      */
-    public PayabliApiHttpResponse<BoardingLinkApiResponse> getlinkTemplate(
+    public PayabliApiClientHttpResponse<BoardingLinkApiResponse> getlinkTemplate(
             double templateId, boolean ignoreEmpty, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -171,7 +172,7 @@ public class RawTemplatesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, BoardingLinkApiResponse.class),
                         response);
             }
@@ -196,26 +197,27 @@ public class RawTemplatesClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a boarding template's details by ID.
      */
-    public PayabliApiHttpResponse<TemplateQueryRecord> getTemplate(double templateId) {
+    public PayabliApiClientHttpResponse<TemplateQueryRecord> getTemplate(double templateId) {
         return getTemplate(templateId, null);
     }
 
     /**
      * Retrieves a boarding template's details by ID.
      */
-    public PayabliApiHttpResponse<TemplateQueryRecord> getTemplate(double templateId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<TemplateQueryRecord> getTemplate(
+            double templateId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Templates/get")
@@ -252,7 +254,7 @@ public class RawTemplatesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TemplateQueryRecord.class), response);
             }
             try {
@@ -276,40 +278,40 @@ public class RawTemplatesClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public PayabliApiHttpResponse<TemplateQueryResponse> listTemplates(int orgId) {
+    public PayabliApiClientHttpResponse<TemplateQueryResponse> listTemplates(int orgId) {
         return listTemplates(orgId, ListTemplatesRequest.builder().build());
     }
 
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public PayabliApiHttpResponse<TemplateQueryResponse> listTemplates(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<TemplateQueryResponse> listTemplates(int orgId, RequestOptions requestOptions) {
         return listTemplates(orgId, ListTemplatesRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public PayabliApiHttpResponse<TemplateQueryResponse> listTemplates(int orgId, ListTemplatesRequest request) {
+    public PayabliApiClientHttpResponse<TemplateQueryResponse> listTemplates(int orgId, ListTemplatesRequest request) {
         return listTemplates(orgId, request, null);
     }
 
     /**
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
-    public PayabliApiHttpResponse<TemplateQueryResponse> listTemplates(
+    public PayabliApiClientHttpResponse<TemplateQueryResponse> listTemplates(
             int orgId, ListTemplatesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -363,7 +365,7 @@ public class RawTemplatesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TemplateQueryResponse.class), response);
             }
             try {
@@ -387,12 +389,12 @@ public class RawTemplatesClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

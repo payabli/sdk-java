@@ -49,30 +49,33 @@ public class AsyncOrganizationClient {
     /**
      * Updates an organization's details by ID.
      */
-    public CompletableFuture<EditOrganizationResponse> editOrganization(int orgId) {
-        return this.rawClient.editOrganization(orgId).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates an organization's details by ID.
-     */
-    public CompletableFuture<EditOrganizationResponse> editOrganization(int orgId, RequestOptions requestOptions) {
-        return this.rawClient.editOrganization(orgId, requestOptions).thenApply(response -> response.body());
-    }
-
-    /**
-     * Updates an organization's details by ID.
-     */
-    public CompletableFuture<EditOrganizationResponse> editOrganization(int orgId, OrganizationData request) {
-        return this.rawClient.editOrganization(orgId, request).thenApply(response -> response.body());
+    public CompletableFuture<EditOrganizationResponse> editOrganization(int orgIdPathParam) {
+        return this.rawClient.editOrganization(orgIdPathParam).thenApply(response -> response.body());
     }
 
     /**
      * Updates an organization's details by ID.
      */
     public CompletableFuture<EditOrganizationResponse> editOrganization(
-            int orgId, OrganizationData request, RequestOptions requestOptions) {
-        return this.rawClient.editOrganization(orgId, request, requestOptions).thenApply(response -> response.body());
+            int orgIdPathParam, RequestOptions requestOptions) {
+        return this.rawClient.editOrganization(orgIdPathParam, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates an organization's details by ID.
+     */
+    public CompletableFuture<EditOrganizationResponse> editOrganization(int orgIdPathParam, OrganizationData request) {
+        return this.rawClient.editOrganization(orgIdPathParam, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Updates an organization's details by ID.
+     */
+    public CompletableFuture<EditOrganizationResponse> editOrganization(
+            int orgIdPathParam, OrganizationData request, RequestOptions requestOptions) {
+        return this.rawClient
+                .editOrganization(orgIdPathParam, request, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**

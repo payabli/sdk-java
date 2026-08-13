@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -46,14 +46,15 @@ public class RawSubscriptionClient {
     /**
      * Retrieves a single subscription's details.
      */
-    public PayabliApiHttpResponse<SubscriptionQueryRecords> getSubscription(int subId) {
+    public PayabliApiClientHttpResponse<SubscriptionQueryRecords> getSubscription(int subId) {
         return getSubscription(subId, null);
     }
 
     /**
      * Retrieves a single subscription's details.
      */
-    public PayabliApiHttpResponse<SubscriptionQueryRecords> getSubscription(int subId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<SubscriptionQueryRecords> getSubscription(
+            int subId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Subscription")
@@ -90,7 +91,7 @@ public class RawSubscriptionClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SubscriptionQueryRecords.class),
                         response);
             }
@@ -115,26 +116,26 @@ public class RawSubscriptionClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a subscription's details.
      */
-    public PayabliApiHttpResponse<UpdateSubscriptionResponse> updateSubscription(int subId) {
+    public PayabliApiClientHttpResponse<UpdateSubscriptionResponse> updateSubscription(int subId) {
         return updateSubscription(subId, RequestUpdateSchedule.builder().build());
     }
 
     /**
      * Updates a subscription's details.
      */
-    public PayabliApiHttpResponse<UpdateSubscriptionResponse> updateSubscription(
+    public PayabliApiClientHttpResponse<UpdateSubscriptionResponse> updateSubscription(
             int subId, RequestOptions requestOptions) {
         return updateSubscription(subId, RequestUpdateSchedule.builder().build(), requestOptions);
     }
@@ -142,7 +143,7 @@ public class RawSubscriptionClient {
     /**
      * Updates a subscription's details.
      */
-    public PayabliApiHttpResponse<UpdateSubscriptionResponse> updateSubscription(
+    public PayabliApiClientHttpResponse<UpdateSubscriptionResponse> updateSubscription(
             int subId, RequestUpdateSchedule request) {
         return updateSubscription(subId, request, null);
     }
@@ -150,7 +151,7 @@ public class RawSubscriptionClient {
     /**
      * Updates a subscription's details.
      */
-    public PayabliApiHttpResponse<UpdateSubscriptionResponse> updateSubscription(
+    public PayabliApiClientHttpResponse<UpdateSubscriptionResponse> updateSubscription(
             int subId, RequestUpdateSchedule request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -166,7 +167,7 @@ public class RawSubscriptionClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -196,31 +197,31 @@ public class RawSubscriptionClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UpdateSubscriptionResponse.class),
                         response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a subscription, autopay, or recurring payment and prevents future charges.
      */
-    public PayabliApiHttpResponse<RemoveSubscriptionResponse> removeSubscription(int subId) {
+    public PayabliApiClientHttpResponse<RemoveSubscriptionResponse> removeSubscription(int subId) {
         return removeSubscription(subId, null);
     }
 
     /**
      * Deletes a subscription, autopay, or recurring payment and prevents future charges.
      */
-    public PayabliApiHttpResponse<RemoveSubscriptionResponse> removeSubscription(
+    public PayabliApiClientHttpResponse<RemoveSubscriptionResponse> removeSubscription(
             int subId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -258,7 +259,7 @@ public class RawSubscriptionClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RemoveSubscriptionResponse.class),
                         response);
             }
@@ -283,40 +284,40 @@ public class RawSubscriptionClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
      */
-    public PayabliApiHttpResponse<AddSubscriptionResponse> newSubscription() {
+    public PayabliApiClientHttpResponse<AddSubscriptionResponse> newSubscription() {
         return newSubscription(RequestSchedule.builder().build());
     }
 
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
      */
-    public PayabliApiHttpResponse<AddSubscriptionResponse> newSubscription(RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<AddSubscriptionResponse> newSubscription(RequestOptions requestOptions) {
         return newSubscription(RequestSchedule.builder().build(), requestOptions);
     }
 
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
      */
-    public PayabliApiHttpResponse<AddSubscriptionResponse> newSubscription(RequestSchedule request) {
+    public PayabliApiClientHttpResponse<AddSubscriptionResponse> newSubscription(RequestSchedule request) {
         return newSubscription(request, null);
     }
 
     /**
      * Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the <code>paymentMethod.storedMethodId</code> field.
      */
-    public PayabliApiHttpResponse<AddSubscriptionResponse> newSubscription(
+    public PayabliApiClientHttpResponse<AddSubscriptionResponse> newSubscription(
             RequestSchedule request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -372,7 +373,7 @@ public class RawSubscriptionClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddSubscriptionResponse.class),
                         response);
             }
@@ -397,12 +398,12 @@ public class RawSubscriptionClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

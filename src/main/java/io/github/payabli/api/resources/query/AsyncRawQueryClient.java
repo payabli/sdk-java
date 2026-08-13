@@ -7,9 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -108,7 +108,7 @@ public class AsyncRawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(String entry) {
         return listBatchDetails(entry, ListBatchDetailsRequest.builder().build());
     }
 
@@ -116,7 +116,7 @@ public class AsyncRawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(
             String entry, RequestOptions requestOptions) {
         return listBatchDetails(entry, ListBatchDetailsRequest.builder().build(), requestOptions);
     }
@@ -125,7 +125,7 @@ public class AsyncRawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(
             String entry, ListBatchDetailsRequest request) {
         return listBatchDetails(entry, request, null);
     }
@@ -134,7 +134,7 @@ public class AsyncRawQueryClient {
      * Retrieve a list of batches and their details, including settled and
      * unsettled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetails(
             String entry, ListBatchDetailsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -188,14 +188,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryBatchesDetailResponse.class),
                                 response));
@@ -228,20 +228,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -250,14 +251,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(int orgId) {
         return listBatchDetailsOrg(orgId, ListBatchDetailsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
             int orgId, RequestOptions requestOptions) {
         return listBatchDetailsOrg(orgId, ListBatchDetailsOrgRequest.builder().build(), requestOptions);
     }
@@ -265,7 +266,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request) {
         return listBatchDetailsOrg(orgId, request, null);
     }
@@ -273,7 +274,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> listBatchDetailsOrg(
             int orgId, ListBatchDetailsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -327,14 +328,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBatchesDetailResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesDetailResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryBatchesDetailResponse.class),
                                 response));
@@ -367,20 +368,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -389,14 +391,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatches(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatches(String entry) {
         return listBatches(entry, ListBatchesRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatches(
             String entry, RequestOptions requestOptions) {
         return listBatches(entry, ListBatchesRequest.builder().build(), requestOptions);
     }
@@ -404,7 +406,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatches(
             String entry, ListBatchesRequest request) {
         return listBatches(entry, request, null);
     }
@@ -412,7 +414,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatches(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatches(
             String entry, ListBatchesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -466,14 +468,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesResponse.class),
                                 response));
                         return;
@@ -505,20 +507,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -527,14 +530,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatchesOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatchesOrg(int orgId) {
         return listBatchesOrg(orgId, ListBatchesOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatchesOrg(
             int orgId, RequestOptions requestOptions) {
         return listBatchesOrg(orgId, ListBatchesOrgRequest.builder().build(), requestOptions);
     }
@@ -542,7 +545,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatchesOrg(
             int orgId, ListBatchesOrgRequest request) {
         return listBatchesOrg(orgId, request, null);
     }
@@ -550,7 +553,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> listBatchesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> listBatchesOrg(
             int orgId, ListBatchesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -604,14 +607,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBatchesResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesResponse.class),
                                 response));
                         return;
@@ -643,20 +646,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -665,14 +669,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOut(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOut(String entry) {
         return listBatchesOut(entry, ListBatchesOutRequest.builder().build());
     }
 
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOut(
             String entry, RequestOptions requestOptions) {
         return listBatchesOut(entry, ListBatchesOutRequest.builder().build(), requestOptions);
     }
@@ -680,7 +684,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOut(
             String entry, ListBatchesOutRequest request) {
         return listBatchesOut(entry, request, null);
     }
@@ -688,7 +692,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOut(
             String entry, ListBatchesOutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -742,14 +746,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesOutResponse.class),
                                 response));
                         return;
@@ -781,20 +785,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -803,14 +808,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(int orgId) {
         return listBatchesOutOrg(orgId, ListBatchesOutOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(
             int orgId, RequestOptions requestOptions) {
         return listBatchesOutOrg(orgId, ListBatchesOutOrgRequest.builder().build(), requestOptions);
     }
@@ -818,7 +823,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(
             int orgId, ListBatchesOutOrgRequest request) {
         return listBatchesOutOrg(orgId, request, null);
     }
@@ -826,7 +831,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> listBatchesOutOrg(
             int orgId, ListBatchesOutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -880,14 +885,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryBatchesOutResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryBatchesOutResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryBatchesOutResponse.class),
                                 response));
                         return;
@@ -919,20 +924,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -941,14 +947,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacks(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacks(String entry) {
         return listChargebacks(entry, ListChargebacksRequest.builder().build());
     }
 
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacks(
             String entry, RequestOptions requestOptions) {
         return listChargebacks(entry, ListChargebacksRequest.builder().build(), requestOptions);
     }
@@ -956,7 +962,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacks(
             String entry, ListChargebacksRequest request) {
         return listChargebacks(entry, request, null);
     }
@@ -964,7 +970,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacks(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacks(
             String entry, ListChargebacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1018,14 +1024,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryChargebacksResponse.class),
                                 response));
                         return;
@@ -1057,20 +1063,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1079,14 +1086,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(int orgId) {
         return listChargebacksOrg(orgId, ListChargebacksOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(
             int orgId, RequestOptions requestOptions) {
         return listChargebacksOrg(orgId, ListChargebacksOrgRequest.builder().build(), requestOptions);
     }
@@ -1094,7 +1101,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request) {
         return listChargebacksOrg(orgId, request, null);
     }
@@ -1102,7 +1109,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> listChargebacksOrg(
             int orgId, ListChargebacksOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1156,14 +1163,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryChargebacksResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryChargebacksResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryChargebacksResponse.class),
                                 response));
                         return;
@@ -1195,20 +1202,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1217,14 +1225,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomers(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomers(String entry) {
         return listCustomers(entry, ListCustomersRequest.builder().build());
     }
 
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomers(
             String entry, RequestOptions requestOptions) {
         return listCustomers(entry, ListCustomersRequest.builder().build(), requestOptions);
     }
@@ -1232,7 +1240,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomers(
             String entry, ListCustomersRequest request) {
         return listCustomers(entry, request, null);
     }
@@ -1240,7 +1248,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of customers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomers(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomers(
             String entry, ListCustomersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1294,14 +1302,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryCustomerResponse.class),
                                 response));
                         return;
@@ -1333,20 +1341,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1355,14 +1364,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomersOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomersOrg(int orgId) {
         return listCustomersOrg(orgId, ListCustomersOrgRequest.builder().build());
     }
 
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomersOrg(
             int orgId, RequestOptions requestOptions) {
         return listCustomersOrg(orgId, ListCustomersOrgRequest.builder().build(), requestOptions);
     }
@@ -1370,7 +1379,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomersOrg(
             int orgId, ListCustomersOrgRequest request) {
         return listCustomersOrg(orgId, request, null);
     }
@@ -1378,7 +1387,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of customers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> listCustomersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> listCustomersOrg(
             int orgId, ListCustomersOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1432,14 +1441,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryCustomerResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryCustomerResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryCustomerResponse.class),
                                 response));
                         return;
@@ -1471,20 +1480,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1493,14 +1503,14 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(String entry) {
         return listDevices(entry, ListDevicesRequest.builder().build());
     }
 
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(
             String entry, RequestOptions requestOptions) {
         return listDevices(entry, ListDevicesRequest.builder().build(), requestOptions);
     }
@@ -1508,7 +1518,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(
             String entry, ListDevicesRequest request) {
         return listDevices(entry, request, null);
     }
@@ -1516,7 +1526,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevices(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(
             String entry, ListDevicesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1570,14 +1580,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryDeviceResponse.class),
                                 response));
                         return;
@@ -1609,20 +1619,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1631,14 +1642,14 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(int orgId) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build());
     }
 
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(
             int orgId, RequestOptions requestOptions) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build(), requestOptions);
     }
@@ -1646,7 +1657,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request) {
         return listDevicesOrg(orgId, request, null);
     }
@@ -1654,7 +1665,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> listDevicesOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1708,14 +1719,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryDeviceResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryDeviceResponse.class),
                                 response));
                         return;
@@ -1747,20 +1758,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1769,7 +1781,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
             String entry) {
         return listNotificationReports(
                 entry, ListNotificationReportsRequest.builder().build());
@@ -1778,7 +1790,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
             String entry, RequestOptions requestOptions) {
         return listNotificationReports(
                 entry, ListNotificationReportsRequest.builder().build(), requestOptions);
@@ -1787,7 +1799,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
             String entry, ListNotificationReportsRequest request) {
         return listNotificationReports(entry, request, null);
     }
@@ -1795,7 +1807,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReports(
             String entry, ListNotificationReportsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1845,14 +1857,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryResponseNotificationReports.class),
                                 response));
@@ -1885,20 +1898,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -1907,7 +1921,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
             int orgId) {
         return listNotificationReportsOrg(
                 orgId, ListNotificationReportsOrgRequest.builder().build());
@@ -1916,7 +1930,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
             int orgId, RequestOptions requestOptions) {
         return listNotificationReportsOrg(
                 orgId, ListNotificationReportsOrgRequest.builder().build(), requestOptions);
@@ -1925,7 +1939,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
             int orgId, ListNotificationReportsOrgRequest request) {
         return listNotificationReportsOrg(orgId, request, null);
     }
@@ -1933,7 +1947,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> listNotificationReportsOrg(
             int orgId, ListNotificationReportsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1983,14 +1997,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseNotificationReports>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotificationReports>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryResponseNotificationReports.class),
                                 response));
@@ -2023,20 +2038,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2045,14 +2061,14 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotifications(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotifications(String entry) {
         return listNotifications(entry, ListNotificationsRequest.builder().build());
     }
 
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotifications(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotifications(
             String entry, RequestOptions requestOptions) {
         return listNotifications(entry, ListNotificationsRequest.builder().build(), requestOptions);
     }
@@ -2060,7 +2076,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotifications(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotifications(
             String entry, ListNotificationsRequest request) {
         return listNotifications(entry, request, null);
     }
@@ -2068,7 +2084,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of notifications for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotifications(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotifications(
             String entry, ListNotificationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2118,14 +2134,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryResponseNotifications.class),
                                 response));
@@ -2158,20 +2174,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2180,14 +2197,14 @@ public class AsyncRawQueryClient {
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotificationsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotificationsOrg(int orgId) {
         return listNotificationsOrg(orgId, ListNotificationsOrgRequest.builder().build());
     }
 
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotificationsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotificationsOrg(
             int orgId, RequestOptions requestOptions) {
         return listNotificationsOrg(orgId, ListNotificationsOrgRequest.builder().build(), requestOptions);
     }
@@ -2195,7 +2212,7 @@ public class AsyncRawQueryClient {
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotificationsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotificationsOrg(
             int orgId, ListNotificationsOrgRequest request) {
         return listNotificationsOrg(orgId, request, null);
     }
@@ -2203,7 +2220,7 @@ public class AsyncRawQueryClient {
     /**
      * Return a list of notifications for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> listNotificationsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> listNotificationsOrg(
             int orgId, ListNotificationsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2253,14 +2270,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseNotifications>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseNotifications>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryResponseNotifications.class),
                                 response));
@@ -2293,20 +2310,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2315,14 +2333,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListOrganizationsResponse>> listOrganizations(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<ListOrganizationsResponse>> listOrganizations(int orgId) {
         return listOrganizations(orgId, ListOrganizationsRequest.builder().build());
     }
 
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListOrganizationsResponse>> listOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<ListOrganizationsResponse>> listOrganizations(
             int orgId, RequestOptions requestOptions) {
         return listOrganizations(orgId, ListOrganizationsRequest.builder().build(), requestOptions);
     }
@@ -2330,7 +2348,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListOrganizationsResponse>> listOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<ListOrganizationsResponse>> listOrganizations(
             int orgId, ListOrganizationsRequest request) {
         return listOrganizations(orgId, request, null);
     }
@@ -2338,7 +2356,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<ListOrganizationsResponse>> listOrganizations(
+    public CompletableFuture<PayabliApiClientHttpResponse<ListOrganizationsResponse>> listOrganizations(
             int orgId, ListOrganizationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2392,14 +2410,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<ListOrganizationsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<ListOrganizationsResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, ListOrganizationsResponse.class),
                                 response));
@@ -2432,20 +2450,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2454,14 +2473,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayout(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayout(String entry) {
         return listPayout(entry, ListPayoutRequest.builder().build());
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayout(
             String entry, RequestOptions requestOptions) {
         return listPayout(entry, ListPayoutRequest.builder().build(), requestOptions);
     }
@@ -2469,7 +2488,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayout(
             String entry, ListPayoutRequest request) {
         return listPayout(entry, request, null);
     }
@@ -2477,7 +2496,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayout(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayout(
             String entry, ListPayoutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2531,14 +2550,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryPayoutTransaction.class),
                                 response));
                         return;
@@ -2570,20 +2589,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2592,14 +2612,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayoutOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayoutOrg(int orgId) {
         return listPayoutOrg(orgId, ListPayoutOrgRequest.builder().build());
     }
 
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayoutOrg(
             int orgId, RequestOptions requestOptions) {
         return listPayoutOrg(orgId, ListPayoutOrgRequest.builder().build(), requestOptions);
     }
@@ -2607,7 +2627,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayoutOrg(
             int orgId, ListPayoutOrgRequest request) {
         return listPayoutOrg(orgId, request, null);
     }
@@ -2615,7 +2635,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> listPayoutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> listPayoutOrg(
             int orgId, ListPayoutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2669,14 +2689,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryPayoutTransaction>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutTransaction>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryPayoutTransaction.class),
                                 response));
                         return;
@@ -2708,20 +2728,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2730,14 +2751,14 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryEntrypointResponse>> listPaypoints(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryEntrypointResponse>> listPaypoints(int orgId) {
         return listPaypoints(orgId, ListPaypointsRequest.builder().build());
     }
 
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryEntrypointResponse>> listPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryEntrypointResponse>> listPaypoints(
             int orgId, RequestOptions requestOptions) {
         return listPaypoints(orgId, ListPaypointsRequest.builder().build(), requestOptions);
     }
@@ -2745,7 +2766,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryEntrypointResponse>> listPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryEntrypointResponse>> listPaypoints(
             int orgId, ListPaypointsRequest request) {
         return listPaypoints(orgId, request, null);
     }
@@ -2753,7 +2774,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of paypoints in an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryEntrypointResponse>> listPaypoints(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryEntrypointResponse>> listPaypoints(
             int orgId, ListPaypointsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2807,14 +2828,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryEntrypointResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryEntrypointResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryEntrypointResponse.class),
                                 response));
                         return;
@@ -2846,20 +2867,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -2868,14 +2890,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlements(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlements(String entry) {
         return listSettlements(entry, ListSettlementsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlements(
             String entry, RequestOptions requestOptions) {
         return listSettlements(entry, ListSettlementsRequest.builder().build(), requestOptions);
     }
@@ -2883,7 +2905,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlements(
             String entry, ListSettlementsRequest request) {
         return listSettlements(entry, request, null);
     }
@@ -2891,7 +2913,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlements(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlements(
             String entry, ListSettlementsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -2945,14 +2967,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseSettlements.class),
                                 response));
                         return;
@@ -2984,20 +3006,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3006,14 +3029,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlementsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlementsOrg(int orgId) {
         return listSettlementsOrg(orgId, ListSettlementsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlementsOrg(
             int orgId, RequestOptions requestOptions) {
         return listSettlementsOrg(orgId, ListSettlementsOrgRequest.builder().build(), requestOptions);
     }
@@ -3021,7 +3044,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request) {
         return listSettlementsOrg(orgId, request, null);
     }
@@ -3029,7 +3052,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of settled transactions for an organization. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> listSettlementsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> listSettlementsOrg(
             int orgId, ListSettlementsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3083,14 +3106,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseSettlements>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseSettlements>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseSettlements.class),
                                 response));
                         return;
@@ -3122,20 +3145,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3144,14 +3168,14 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptions(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptions(String entry) {
         return listSubscriptions(entry, ListSubscriptionsRequest.builder().build());
     }
 
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptions(
             String entry, RequestOptions requestOptions) {
         return listSubscriptions(entry, ListSubscriptionsRequest.builder().build(), requestOptions);
     }
@@ -3159,7 +3183,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptions(
             String entry, ListSubscriptionsRequest request) {
         return listSubscriptions(entry, request, null);
     }
@@ -3167,7 +3191,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptions(
             String entry, ListSubscriptionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3221,14 +3245,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QuerySubscriptionResponse.class),
                                 response));
@@ -3261,20 +3285,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3283,14 +3308,14 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(int orgId) {
         return listSubscriptionsOrg(orgId, ListSubscriptionsOrgRequest.builder().build());
     }
 
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listSubscriptionsOrg(orgId, ListSubscriptionsOrgRequest.builder().build(), requestOptions);
     }
@@ -3298,7 +3323,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request) {
         return listSubscriptionsOrg(orgId, request, null);
     }
@@ -3306,7 +3331,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> listSubscriptionsOrg(
             int orgId, ListSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3360,14 +3385,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QuerySubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QuerySubscriptionResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QuerySubscriptionResponse.class),
                                 response));
@@ -3400,20 +3425,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3422,7 +3448,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
             String entry) {
         return listPayoutSubscriptions(
                 entry, ListPayoutSubscriptionsRequest.builder().build());
@@ -3431,7 +3457,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
             String entry, RequestOptions requestOptions) {
         return listPayoutSubscriptions(
                 entry, ListPayoutSubscriptionsRequest.builder().build(), requestOptions);
@@ -3440,7 +3466,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
             String entry, ListPayoutSubscriptionsRequest request) {
         return listPayoutSubscriptions(entry, request, null);
     }
@@ -3448,7 +3474,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptions(
             String entry, ListPayoutSubscriptionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3502,14 +3528,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryPayoutSubscriptionResponse.class),
                                 response));
@@ -3542,20 +3569,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3564,7 +3592,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
             int orgId) {
         return listPayoutSubscriptionsOrg(
                 orgId, ListPayoutSubscriptionsOrgRequest.builder().build());
@@ -3573,7 +3601,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listPayoutSubscriptionsOrg(
                 orgId, ListPayoutSubscriptionsOrgRequest.builder().build(), requestOptions);
@@ -3582,7 +3610,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
             int orgId, ListPayoutSubscriptionsOrgRequest request) {
         return listPayoutSubscriptionsOrg(orgId, request, null);
     }
@@ -3590,7 +3618,7 @@ public class AsyncRawQueryClient {
     /**
      * Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> listPayoutSubscriptionsOrg(
             int orgId, ListPayoutSubscriptionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3644,14 +3672,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryPayoutSubscriptionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryPayoutSubscriptionResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryPayoutSubscriptionResponse.class),
                                 response));
@@ -3684,20 +3713,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3711,7 +3741,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactions(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactions(String entry) {
         return listTransactions(entry, ListTransactionsRequest.builder().build());
     }
 
@@ -3723,7 +3753,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactions(
             String entry, RequestOptions requestOptions) {
         return listTransactions(entry, ListTransactionsRequest.builder().build(), requestOptions);
     }
@@ -3736,7 +3766,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactions(
             String entry, ListTransactionsRequest request) {
         return listTransactions(entry, request, null);
     }
@@ -3749,7 +3779,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactions(
             String entry, ListTransactionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3803,14 +3833,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryResponseTransactions.class),
                                 response));
@@ -3843,20 +3873,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -3870,7 +3901,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactionsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactionsOrg(int orgId) {
         return listTransactionsOrg(orgId, ListTransactionsOrgRequest.builder().build());
     }
 
@@ -3882,7 +3913,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listTransactionsOrg(orgId, ListTransactionsOrgRequest.builder().build(), requestOptions);
     }
@@ -3895,7 +3926,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactionsOrg(
             int orgId, ListTransactionsOrgRequest request) {
         return listTransactionsOrg(orgId, request, null);
     }
@@ -3908,7 +3939,7 @@ public class AsyncRawQueryClient {
      *   -H 'requestToken: &lt;API TOKEN&gt;'
      * </code></pre>
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> listTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> listTransactionsOrg(
             int orgId, ListTransactionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -3962,14 +3993,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseTransactions>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseTransactions>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryResponseTransactions.class),
                                 response));
@@ -4002,20 +4033,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4024,7 +4056,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
             String entry, int transferId) {
         return listTransferDetails(
                 entry, transferId, ListTransfersPaypointRequest.builder().build());
@@ -4033,7 +4065,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
             String entry, int transferId, RequestOptions requestOptions) {
         return listTransferDetails(
                 entry, transferId, ListTransfersPaypointRequest.builder().build(), requestOptions);
@@ -4042,7 +4074,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request) {
         return listTransferDetails(entry, transferId, request, null);
     }
@@ -4050,7 +4082,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryTransferDetailResponse>> listTransferDetails(
             String entry, int transferId, ListTransfersPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4105,14 +4137,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryTransferDetailResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryTransferDetailResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, QueryTransferDetailResponse.class),
                                 response));
@@ -4145,20 +4177,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4167,14 +4200,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfers(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfers(String entry) {
         return listTransfers(entry, ListTransfersRequest.builder().build());
     }
 
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfers(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfers(
             String entry, RequestOptions requestOptions) {
         return listTransfers(entry, ListTransfersRequest.builder().build(), requestOptions);
     }
@@ -4182,7 +4215,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfers(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfers(
             String entry, ListTransfersRequest request) {
         return listTransfers(entry, request, null);
     }
@@ -4190,7 +4223,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfers(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfers(
             String entry, ListTransfersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4244,14 +4277,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferQueryResponse.class),
                                 response));
                         return;
@@ -4283,20 +4316,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4305,14 +4339,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfersOrg(long orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfersOrg(long orgId) {
         return listTransfersOrg(orgId, ListTransfersRequestOrg.builder().build());
     }
 
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfersOrg(
             long orgId, RequestOptions requestOptions) {
         return listTransfersOrg(orgId, ListTransfersRequestOrg.builder().build(), requestOptions);
     }
@@ -4320,7 +4354,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfersOrg(
             long orgId, ListTransfersRequestOrg request) {
         return listTransfersOrg(orgId, request, null);
     }
@@ -4328,7 +4362,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of transfers for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> listTransfersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> listTransfersOrg(
             long orgId, ListTransfersRequestOrg request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4382,14 +4416,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TransferQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TransferQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferQueryResponse.class),
                                 response));
                         return;
@@ -4421,20 +4455,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4443,14 +4478,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(int orgId) {
         return listTransfersOutOrg(orgId, ListTransfersOutOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(
             int orgId, RequestOptions requestOptions) {
         return listTransfersOutOrg(orgId, ListTransfersOutOrgRequest.builder().build(), requestOptions);
     }
@@ -4458,7 +4493,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(
             int orgId, ListTransfersOutOrgRequest request) {
         return listTransfersOutOrg(orgId, request, null);
     }
@@ -4466,7 +4501,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutOrg(
             int orgId, ListTransfersOutOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4516,14 +4551,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferOutQueryResponse.class),
                                 response));
                         return;
@@ -4555,20 +4590,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4577,7 +4613,8 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
+            String entry) {
         return listTransfersOutPaypoint(
                 entry, ListTransfersOutPaypointRequest.builder().build());
     }
@@ -4585,7 +4622,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
             String entry, RequestOptions requestOptions) {
         return listTransfersOutPaypoint(
                 entry, ListTransfersOutPaypointRequest.builder().build(), requestOptions);
@@ -4594,7 +4631,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
             String entry, ListTransfersOutPaypointRequest request) {
         return listTransfersOutPaypoint(entry, request, null);
     }
@@ -4602,7 +4639,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> listTransfersOutPaypoint(
             String entry, ListTransfersOutPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4652,14 +4689,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TransferOutQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TransferOutQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TransferOutQueryResponse.class),
                                 response));
                         return;
@@ -4691,20 +4728,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4713,7 +4751,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
             String entry, int transferId) {
         return listTransferDetailsOut(
                 entry, transferId, ListTransferDetailsOutRequest.builder().build());
@@ -4722,7 +4760,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
             String entry, int transferId, RequestOptions requestOptions) {
         return listTransferDetailsOut(
                 entry, transferId, ListTransferDetailsOutRequest.builder().build(), requestOptions);
@@ -4731,7 +4769,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
             String entry, int transferId, ListTransferDetailsOutRequest request) {
         return listTransferDetailsOut(entry, transferId, request, null);
     }
@@ -4739,7 +4777,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve details for a specific outbound transfer. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
+    public CompletableFuture<PayabliApiClientHttpResponse<TransferOutDetailQueryResponse>> listTransferDetailsOut(
             String entry, int transferId, ListTransferDetailsOutRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4790,14 +4828,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<TransferOutDetailQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<TransferOutDetailQueryResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, TransferOutDetailQueryResponse.class),
                                 response));
@@ -4830,20 +4869,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4852,14 +4892,14 @@ public class AsyncRawQueryClient {
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersOrg(int orgId) {
         return listUsersOrg(orgId, ListUsersOrgRequest.builder().build());
     }
 
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersOrg(
             int orgId, RequestOptions requestOptions) {
         return listUsersOrg(orgId, ListUsersOrgRequest.builder().build(), requestOptions);
     }
@@ -4867,7 +4907,7 @@ public class AsyncRawQueryClient {
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersOrg(
             int orgId, ListUsersOrgRequest request) {
         return listUsersOrg(orgId, request, null);
     }
@@ -4875,7 +4915,7 @@ public class AsyncRawQueryClient {
     /**
      * Get list of users for an org. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersOrg(
             int orgId, ListUsersOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -4925,14 +4965,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryUserResponse.class),
                                 response));
                         return;
@@ -4964,20 +5004,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -4986,14 +5027,14 @@ public class AsyncRawQueryClient {
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersPaypoint(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersPaypoint(String entry) {
         return listUsersPaypoint(entry, ListUsersPaypointRequest.builder().build());
     }
 
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersPaypoint(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersPaypoint(
             String entry, RequestOptions requestOptions) {
         return listUsersPaypoint(entry, ListUsersPaypointRequest.builder().build(), requestOptions);
     }
@@ -5001,7 +5042,7 @@ public class AsyncRawQueryClient {
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersPaypoint(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersPaypoint(
             String entry, ListUsersPaypointRequest request) {
         return listUsersPaypoint(entry, request, null);
     }
@@ -5009,7 +5050,7 @@ public class AsyncRawQueryClient {
     /**
      * Get list of users for a paypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> listUsersPaypoint(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> listUsersPaypoint(
             String entry, ListUsersPaypointRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5059,14 +5100,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryUserResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryUserResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryUserResponse.class),
                                 response));
                         return;
@@ -5098,20 +5139,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -5120,14 +5162,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendors(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendors(String entry) {
         return listVendors(entry, ListVendorsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendors(
             String entry, RequestOptions requestOptions) {
         return listVendors(entry, ListVendorsRequest.builder().build(), requestOptions);
     }
@@ -5135,7 +5177,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendors(
             String entry, ListVendorsRequest request) {
         return listVendors(entry, request, null);
     }
@@ -5143,7 +5185,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendors(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendors(
             String entry, ListVendorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5197,14 +5239,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseVendors.class),
                                 response));
                         return;
@@ -5236,20 +5278,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -5258,14 +5301,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendorsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendorsOrg(int orgId) {
         return listVendorsOrg(orgId, ListVendorsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendorsOrg(
             int orgId, RequestOptions requestOptions) {
         return listVendorsOrg(orgId, ListVendorsOrgRequest.builder().build(), requestOptions);
     }
@@ -5273,7 +5316,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendorsOrg(
             int orgId, ListVendorsOrgRequest request) {
         return listVendorsOrg(orgId, request, null);
     }
@@ -5281,7 +5324,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vendors for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> listVendorsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> listVendorsOrg(
             int orgId, ListVendorsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5335,14 +5378,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<QueryResponseVendors>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<QueryResponseVendors>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryResponseVendors.class),
                                 response));
                         return;
@@ -5374,20 +5417,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -5396,14 +5440,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcards(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcards(String entry) {
         return listVcards(entry, ListVcardsRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcards(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcards(
             String entry, RequestOptions requestOptions) {
         return listVcards(entry, ListVcardsRequest.builder().build(), requestOptions);
     }
@@ -5411,7 +5455,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcards(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcards(
             String entry, ListVcardsRequest request) {
         return listVcards(entry, request, null);
     }
@@ -5419,7 +5463,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcards(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcards(
             String entry, ListVcardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5473,14 +5517,14 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardQueryResponse.class),
                                 response));
                         return;
@@ -5512,20 +5556,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -5534,7 +5579,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
             String entry) {
         return listVcardsTransactions(
                 entry, ListVcardsTransactionsRequest.builder().build());
@@ -5543,7 +5588,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
             String entry, RequestOptions requestOptions) {
         return listVcardsTransactions(
                 entry, ListVcardsTransactionsRequest.builder().build(), requestOptions);
@@ -5552,7 +5597,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
             String entry, ListVcardsTransactionsRequest request) {
         return listVcardsTransactions(entry, request, null);
     }
@@ -5560,7 +5605,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactions(
             String entry, ListVcardsTransactionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5610,14 +5655,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, VCardTransactionQueryResponse.class),
                                 response));
@@ -5650,20 +5696,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -5672,7 +5719,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
             int orgId) {
         return listVcardsTransactionsOrg(
                 orgId, ListVcardsTransactionsOrgRequest.builder().build());
@@ -5681,7 +5728,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
             int orgId, RequestOptions requestOptions) {
         return listVcardsTransactionsOrg(
                 orgId, ListVcardsTransactionsOrgRequest.builder().build(), requestOptions);
@@ -5690,7 +5737,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
             int orgId, ListVcardsTransactionsOrgRequest request) {
         return listVcardsTransactionsOrg(orgId, request, null);
     }
@@ -5698,7 +5745,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> listVcardsTransactionsOrg(
             int orgId, ListVcardsTransactionsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5748,14 +5795,15 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VCardTransactionQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VCardTransactionQueryResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, VCardTransactionQueryResponse.class),
                                 response));
@@ -5788,20 +5836,21 @@ public class AsyncRawQueryClient {
                         // unable to map error response, throwing generic error
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;
@@ -5810,14 +5859,14 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcardsOrg(int orgId) {
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcardsOrg(int orgId) {
         return listVcardsOrg(orgId, ListVcardsOrgRequest.builder().build());
     }
 
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcardsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcardsOrg(
             int orgId, RequestOptions requestOptions) {
         return listVcardsOrg(orgId, ListVcardsOrgRequest.builder().build(), requestOptions);
     }
@@ -5825,7 +5874,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcardsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcardsOrg(
             int orgId, ListVcardsOrgRequest request) {
         return listVcardsOrg(orgId, request, null);
     }
@@ -5833,7 +5882,7 @@ public class AsyncRawQueryClient {
     /**
      * Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> listVcardsOrg(
+    public CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> listVcardsOrg(
             int orgId, ListVcardsOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -5887,33 +5936,34 @@ public class AsyncRawQueryClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiHttpResponse<VCardQueryResponse>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<VCardQueryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiHttpResponse<>(
+                        future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, VCardQueryResponse.class),
                                 response));
                         return;
                     }
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-                    future.completeExceptionally(new PayabliApiApiException(
+                    future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));
                     return;
                 } catch (JsonProcessingException e) {
                     future.completeExceptionally(
-                            new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e));
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
                 } catch (IOException e) {
-                    future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new PayabliApiException("Network error executing HTTP request", e));
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
             }
         });
         return future;

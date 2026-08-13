@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public final class AuthCapturePayoutResponseData {
     private final Optional<String> authCode;
 
-    private final String referenceId;
+    private final Optional<String> referenceId;
 
     private final int resultCode;
 
@@ -46,7 +46,7 @@ public final class AuthCapturePayoutResponseData {
 
     private AuthCapturePayoutResponseData(
             Optional<String> authCode,
-            String referenceId,
+            Optional<String> referenceId,
             int resultCode,
             String resultText,
             Optional<String> avsResponseText,
@@ -75,8 +75,14 @@ public final class AuthCapturePayoutResponseData {
         return authCode;
     }
 
-    @JsonProperty("referenceId")
-    public String getReferenceId() {
+    /**
+     * @return The transaction reference ID, used to capture the transaction. Returns <code>null</code> when no transaction is created, such as a declined authorization.
+     */
+    @JsonIgnore
+    public Optional<String> getReferenceId() {
+        if (referenceId == null) {
+            return Optional.empty();
+        }
         return referenceId;
     }
 
@@ -134,6 +140,12 @@ public final class AuthCapturePayoutResponseData {
     @JsonProperty("authCode")
     private Optional<String> _getAuthCode() {
         return authCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("referenceId")
+    private Optional<String> _getReferenceId() {
+        return referenceId;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -196,18 +208,14 @@ public final class AuthCapturePayoutResponseData {
         return ObjectMappers.stringify(this);
     }
 
-    public static ReferenceIdStage builder() {
+    public static ResultCodeStage builder() {
         return new Builder();
-    }
-
-    public interface ReferenceIdStage {
-        ResultCodeStage referenceId(@NotNull String referenceId);
-
-        Builder from(AuthCapturePayoutResponseData other);
     }
 
     public interface ResultCodeStage {
         ResultTextStage resultCode(int resultCode);
+
+        Builder from(AuthCapturePayoutResponseData other);
     }
 
     public interface ResultTextStage {
@@ -241,6 +249,15 @@ public final class AuthCapturePayoutResponseData {
 
         _FinalStage authCode(Nullable<String> authCode);
 
+        /**
+         * <p>The transaction reference ID, used to capture the transaction. Returns <code>null</code> when no transaction is created, such as a declined authorization.</p>
+         */
+        _FinalStage referenceId(Optional<String> referenceId);
+
+        _FinalStage referenceId(String referenceId);
+
+        _FinalStage referenceId(Nullable<String> referenceId);
+
         _FinalStage avsResponseText(Optional<String> avsResponseText);
 
         _FinalStage avsResponseText(String avsResponseText);
@@ -262,9 +279,7 @@ public final class AuthCapturePayoutResponseData {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements ReferenceIdStage, ResultCodeStage, ResultTextStage, CustomerIdStage, VendorIdStage, _FinalStage {
-        private String referenceId;
-
+            implements ResultCodeStage, ResultTextStage, CustomerIdStage, VendorIdStage, _FinalStage {
         private int resultCode;
 
         private String resultText;
@@ -278,6 +293,8 @@ public final class AuthCapturePayoutResponseData {
         private Optional<String> cvvResponseText = Optional.empty();
 
         private Optional<String> avsResponseText = Optional.empty();
+
+        private Optional<String> referenceId = Optional.empty();
 
         private Optional<String> authCode = Optional.empty();
 
@@ -297,13 +314,6 @@ public final class AuthCapturePayoutResponseData {
             customerId(other.getCustomerId());
             vendorId(other.getVendorId());
             methodReferenceId(other.getMethodReferenceId());
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("referenceId")
-        public ResultCodeStage referenceId(@NotNull String referenceId) {
-            this.referenceId = Objects.requireNonNull(referenceId, "referenceId must not be null");
             return this;
         }
 
@@ -415,6 +425,42 @@ public final class AuthCapturePayoutResponseData {
         @JsonSetter(value = "avsResponseText", nulls = Nulls.SKIP)
         public _FinalStage avsResponseText(Optional<String> avsResponseText) {
             this.avsResponseText = avsResponseText;
+            return this;
+        }
+
+        /**
+         * <p>The transaction reference ID, used to capture the transaction. Returns <code>null</code> when no transaction is created, such as a declined authorization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage referenceId(Nullable<String> referenceId) {
+            if (referenceId.isNull()) {
+                this.referenceId = null;
+            } else if (referenceId.isEmpty()) {
+                this.referenceId = Optional.empty();
+            } else {
+                this.referenceId = Optional.of(referenceId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The transaction reference ID, used to capture the transaction. Returns <code>null</code> when no transaction is created, such as a declined authorization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage referenceId(String referenceId) {
+            this.referenceId = Optional.ofNullable(referenceId);
+            return this;
+        }
+
+        /**
+         * <p>The transaction reference ID, used to capture the transaction. Returns <code>null</code> when no transaction is created, such as a declined authorization.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "referenceId", nulls = Nulls.SKIP)
+        public _FinalStage referenceId(Optional<String> referenceId) {
+            this.referenceId = referenceId;
             return this;
         }
 

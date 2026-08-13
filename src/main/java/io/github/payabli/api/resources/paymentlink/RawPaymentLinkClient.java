@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -52,7 +52,7 @@ public class RawPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      * <p>The payment page configuration blocks (<code>logo</code>, <code>page</code>, <code>paymentMethods</code>, <code>review</code>, <code>messageBeforePaying</code>, <code>paymentButton</code>, <code>notes</code>, <code>contactUs</code>, and <code>settings</code>) are optional. When you omit a block, Payabli applies a default rather than hiding it. The block is enabled at a fixed display order, so the generated page stays complete and branded. To hide a section, send the block explicitly with <code>enabled</code> set to <code>false</code>. An explicit value is always honored and is never replaced by a default. For each block's default, see its description in the request body.</p>
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
             int idInvoice, PayLinkDataInvoice request) {
         return addPayLinkFromInvoice(idInvoice, request, null);
     }
@@ -61,7 +61,7 @@ public class RawPaymentLinkClient {
      * Generates a payment link for an invoice from the invoice ID.
      * <p>The payment page configuration blocks (<code>logo</code>, <code>page</code>, <code>paymentMethods</code>, <code>review</code>, <code>messageBeforePaying</code>, <code>paymentButton</code>, <code>notes</code>, <code>contactUs</code>, and <code>settings</code>) are optional. When you omit a block, Payabli applies a default rather than hiding it. The block is enabled at a fixed display order, so the generated page stays complete and branded. To hide a section, send the block explicitly with <code>enabled</code> set to <code>false</code>. An explicit value is always honored and is never replaced by a default. For each block's default, see its description in the request body.</p>
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromInvoice(
             int idInvoice, PayLinkDataInvoice request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -119,7 +119,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -144,19 +144,19 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PaymentPageRequestBodyOut body) {
         return addPayLinkFromBill(billId, PayLinkDataBill.builder().body(body).build());
     }
@@ -164,7 +164,7 @@ public class RawPaymentLinkClient {
     /**
      * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PaymentPageRequestBodyOut body, RequestOptions requestOptions) {
         return addPayLinkFromBill(billId, PayLinkDataBill.builder().body(body).build(), requestOptions);
     }
@@ -172,7 +172,7 @@ public class RawPaymentLinkClient {
     /**
      * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PayLinkDataBill request) {
         return addPayLinkFromBill(billId, request, null);
     }
@@ -180,7 +180,7 @@ public class RawPaymentLinkClient {
     /**
      * Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBill(
             int billId, PayLinkDataBill request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -238,7 +238,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -263,26 +263,26 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a payment link by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> deletePayLinkFromId(String payLinkId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> deletePayLinkFromId(String payLinkId) {
         return deletePayLinkFromId(payLinkId, null);
     }
 
     /**
      * Deletes a payment link by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> deletePayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> deletePayLinkFromId(
             String payLinkId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -320,7 +320,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -345,26 +345,26 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a payment link by ID.
      */
-    public PayabliApiHttpResponse<GetPayLinkFromIdResponse> getPayLinkFromId(String paylinkId) {
+    public PayabliApiClientHttpResponse<GetPayLinkFromIdResponse> getPayLinkFromId(String paylinkId) {
         return getPayLinkFromId(paylinkId, null);
     }
 
     /**
      * Retrieves a payment link by ID.
      */
-    public PayabliApiHttpResponse<GetPayLinkFromIdResponse> getPayLinkFromId(
+    public PayabliApiClientHttpResponse<GetPayLinkFromIdResponse> getPayLinkFromId(
             String paylinkId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -402,7 +402,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetPayLinkFromIdResponse.class),
                         response);
             }
@@ -427,19 +427,19 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Send a payment link to the specified email addresses or phone numbers.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> pushPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> pushPayLinkFromId(
             String payLinkId, PushPayLinkRequest request) {
         return pushPayLinkFromId(payLinkId, request, null);
     }
@@ -447,7 +447,7 @@ public class RawPaymentLinkClient {
     /**
      * Send a payment link to the specified email addresses or phone numbers.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> pushPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> pushPayLinkFromId(
             String payLinkId, PushPayLinkRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -463,7 +463,7 @@ public class RawPaymentLinkClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -493,7 +493,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -518,19 +518,19 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Refresh a payment link's content after an update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(String payLinkId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(String payLinkId) {
         return refreshPayLinkFromId(
                 payLinkId, RefreshPayLinkFromIdRequest.builder().build());
     }
@@ -538,7 +538,7 @@ public class RawPaymentLinkClient {
     /**
      * Refresh a payment link's content after an update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
             String payLinkId, RequestOptions requestOptions) {
         return refreshPayLinkFromId(
                 payLinkId, RefreshPayLinkFromIdRequest.builder().build(), requestOptions);
@@ -547,7 +547,7 @@ public class RawPaymentLinkClient {
     /**
      * Refresh a payment link's content after an update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
             String payLinkId, RefreshPayLinkFromIdRequest request) {
         return refreshPayLinkFromId(payLinkId, request, null);
     }
@@ -555,7 +555,7 @@ public class RawPaymentLinkClient {
     /**
      * Refresh a payment link's content after an update.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> refreshPayLinkFromId(
             String payLinkId, RefreshPayLinkFromIdRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -597,7 +597,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -622,26 +622,26 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Sends a payment link to the specified email addresses.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(String payLinkId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(String payLinkId) {
         return sendPayLinkFromId(payLinkId, SendPayLinkFromIdRequest.builder().build());
     }
 
     /**
      * Sends a payment link to the specified email addresses.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
             String payLinkId, RequestOptions requestOptions) {
         return sendPayLinkFromId(payLinkId, SendPayLinkFromIdRequest.builder().build(), requestOptions);
     }
@@ -649,7 +649,7 @@ public class RawPaymentLinkClient {
     /**
      * Sends a payment link to the specified email addresses.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
             String payLinkId, SendPayLinkFromIdRequest request) {
         return sendPayLinkFromId(payLinkId, request, null);
     }
@@ -657,7 +657,7 @@ public class RawPaymentLinkClient {
     /**
      * Sends a payment link to the specified email addresses.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> sendPayLinkFromId(
             String payLinkId, SendPayLinkFromIdRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -703,7 +703,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -728,26 +728,26 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a payment link's details.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(String payLinkId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(String payLinkId) {
         return updatePayLinkFromId(payLinkId, PayLinkUpdateData.builder().build());
     }
 
     /**
      * Updates a payment link's details.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
             String payLinkId, RequestOptions requestOptions) {
         return updatePayLinkFromId(payLinkId, PayLinkUpdateData.builder().build(), requestOptions);
     }
@@ -755,7 +755,7 @@ public class RawPaymentLinkClient {
     /**
      * Updates a payment link's details.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
             String payLinkId, PayLinkUpdateData request) {
         return updatePayLinkFromId(payLinkId, request, null);
     }
@@ -763,7 +763,7 @@ public class RawPaymentLinkClient {
     /**
      * Updates a payment link's details.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkFromId(
             String payLinkId, PayLinkUpdateData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -779,7 +779,7 @@ public class RawPaymentLinkClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -809,7 +809,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -834,19 +834,19 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBillLotNumber(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBillLotNumber(
             String lotNumber, PayLinkDataOut request) {
         return addPayLinkFromBillLotNumber(lotNumber, request, null);
     }
@@ -854,7 +854,7 @@ public class RawPaymentLinkClient {
     /**
      * Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBillLotNumber(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> addPayLinkFromBillLotNumber(
             String lotNumber, PayLinkDataOut request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -910,24 +910,24 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(String paylinkId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(String paylinkId) {
         return patchOutPaymentLink(
                 paylinkId, PatchOutPaymentLinkRequest.builder().build());
     }
@@ -935,7 +935,7 @@ public class RawPaymentLinkClient {
     /**
      * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
             String paylinkId, RequestOptions requestOptions) {
         return patchOutPaymentLink(
                 paylinkId, PatchOutPaymentLinkRequest.builder().build(), requestOptions);
@@ -944,7 +944,7 @@ public class RawPaymentLinkClient {
     /**
      * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
             String paylinkId, PatchOutPaymentLinkRequest request) {
         return patchOutPaymentLink(paylinkId, request, null);
     }
@@ -952,7 +952,7 @@ public class RawPaymentLinkClient {
     /**
      * Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> patchOutPaymentLink(
             String paylinkId, PatchOutPaymentLinkRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -968,7 +968,7 @@ public class RawPaymentLinkClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -998,7 +998,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -1023,19 +1023,19 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(String paylinkId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(String paylinkId) {
         return updatePayLinkOutFromId(
                 paylinkId, PaymentPageRequestBodyOut.builder().build());
     }
@@ -1043,7 +1043,7 @@ public class RawPaymentLinkClient {
     /**
      * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
             String paylinkId, RequestOptions requestOptions) {
         return updatePayLinkOutFromId(
                 paylinkId, PaymentPageRequestBodyOut.builder().build(), requestOptions);
@@ -1052,7 +1052,7 @@ public class RawPaymentLinkClient {
     /**
      * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
             String paylinkId, PaymentPageRequestBodyOut request) {
         return updatePayLinkOutFromId(paylinkId, request, null);
     }
@@ -1060,7 +1060,7 @@ public class RawPaymentLinkClient {
     /**
      * Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
      */
-    public PayabliApiHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
+    public PayabliApiClientHttpResponse<PayabliApiResponsePaymentLinks> updatePayLinkOutFromId(
             String paylinkId, PaymentPageRequestBodyOut request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1076,7 +1076,7 @@ public class RawPaymentLinkClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -1106,7 +1106,7 @@ public class RawPaymentLinkClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponsePaymentLinks.class),
                         response);
             }
@@ -1131,12 +1131,12 @@ public class RawPaymentLinkClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

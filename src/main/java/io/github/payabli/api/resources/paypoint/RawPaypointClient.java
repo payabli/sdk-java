@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -51,14 +51,15 @@ public class RawPaypointClient {
     /**
      * Gets the basic details for a paypoint.
      */
-    public PayabliApiHttpResponse<GetBasicEntryResponse> getBasicEntry(String entry) {
+    public PayabliApiClientHttpResponse<GetBasicEntryResponse> getBasicEntry(String entry) {
         return getBasicEntry(entry, null);
     }
 
     /**
      * Gets the basic details for a paypoint.
      */
-    public PayabliApiHttpResponse<GetBasicEntryResponse> getBasicEntry(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<GetBasicEntryResponse> getBasicEntry(
+            String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/basic")
@@ -95,7 +96,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBasicEntryResponse.class), response);
             }
             try {
@@ -119,26 +120,26 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves the basic details for a paypoint by ID.
      */
-    public PayabliApiHttpResponse<GetBasicEntryByIdResponse> getBasicEntryById(String idPaypoint) {
+    public PayabliApiClientHttpResponse<GetBasicEntryByIdResponse> getBasicEntryById(String idPaypoint) {
         return getBasicEntryById(idPaypoint, null);
     }
 
     /**
      * Retrieves the basic details for a paypoint by ID.
      */
-    public PayabliApiHttpResponse<GetBasicEntryByIdResponse> getBasicEntryById(
+    public PayabliApiClientHttpResponse<GetBasicEntryByIdResponse> getBasicEntryById(
             String idPaypoint, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -176,7 +177,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBasicEntryByIdResponse.class),
                         response);
             }
@@ -201,26 +202,26 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates a paypoint logo.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(String entry) {
         return saveLogo(entry, FileContent.builder().build());
     }
 
     /**
      * Updates a paypoint logo.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
             String entry, RequestOptions requestOptions) {
         return saveLogo(entry, FileContent.builder().build(), requestOptions);
     }
@@ -228,7 +229,7 @@ public class RawPaypointClient {
     /**
      * Updates a paypoint logo.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
             String entry, FileContent request) {
         return saveLogo(entry, request, null);
     }
@@ -236,7 +237,7 @@ public class RawPaypointClient {
     /**
      * Updates a paypoint logo.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> saveLogo(
             String entry, FileContent request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -252,7 +253,7 @@ public class RawPaypointClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -282,7 +283,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -308,26 +309,26 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Migrates a paypoint to a new parent organization.
      */
-    public PayabliApiHttpResponse<MigratePaypointResponse> migrate(PaypointMoveRequest request) {
+    public PayabliApiClientHttpResponse<MigratePaypointResponse> migrate(PaypointMoveRequest request) {
         return migrate(request, null);
     }
 
     /**
      * Migrates a paypoint to a new parent organization.
      */
-    public PayabliApiHttpResponse<MigratePaypointResponse> migrate(
+    public PayabliApiClientHttpResponse<MigratePaypointResponse> migrate(
             PaypointMoveRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -342,7 +343,7 @@ public class RawPaypointClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -372,7 +373,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MigratePaypointResponse.class),
                         response);
             }
@@ -397,26 +398,26 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
-    public PayabliApiHttpResponse<SettingsQueryRecord> settingsPage(String entry) {
+    public PayabliApiClientHttpResponse<SettingsQueryRecord> settingsPage(String entry) {
         return settingsPage(entry, null);
     }
 
     /**
      * Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
      */
-    public PayabliApiHttpResponse<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<SettingsQueryRecord> settingsPage(String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint/settings")
@@ -453,7 +454,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SettingsQueryRecord.class), response);
             }
             try {
@@ -477,40 +478,42 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Gets the details for a single paypoint.
      */
-    public PayabliApiHttpResponse<GetEntryConfigResponse> getEntryConfig(String entry) {
+    public PayabliApiClientHttpResponse<GetEntryConfigResponse> getEntryConfig(String entry) {
         return getEntryConfig(entry, GetEntryConfigRequest.builder().build());
     }
 
     /**
      * Gets the details for a single paypoint.
      */
-    public PayabliApiHttpResponse<GetEntryConfigResponse> getEntryConfig(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<GetEntryConfigResponse> getEntryConfig(
+            String entry, RequestOptions requestOptions) {
         return getEntryConfig(entry, GetEntryConfigRequest.builder().build(), requestOptions);
     }
 
     /**
      * Gets the details for a single paypoint.
      */
-    public PayabliApiHttpResponse<GetEntryConfigResponse> getEntryConfig(String entry, GetEntryConfigRequest request) {
+    public PayabliApiClientHttpResponse<GetEntryConfigResponse> getEntryConfig(
+            String entry, GetEntryConfigRequest request) {
         return getEntryConfig(entry, request, null);
     }
 
     /**
      * Gets the details for a single paypoint.
      */
-    public PayabliApiHttpResponse<GetEntryConfigResponse> getEntryConfig(
+    public PayabliApiClientHttpResponse<GetEntryConfigResponse> getEntryConfig(
             String entry, GetEntryConfigRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -552,7 +555,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetEntryConfigResponse.class),
                         response);
             }
@@ -577,26 +580,27 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Gets the details for a single payment page for a paypoint.
      */
-    public PayabliApiHttpResponse<PayabliPages> getPage(String entry, String subdomain) {
+    public PayabliApiClientHttpResponse<PayabliPages> getPage(String entry, String subdomain) {
         return getPage(entry, subdomain, null);
     }
 
     /**
      * Gets the details for a single payment page for a paypoint.
      */
-    public PayabliApiHttpResponse<PayabliPages> getPage(String entry, String subdomain, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<PayabliPages> getPage(
+            String entry, String subdomain, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Paypoint")
@@ -634,7 +638,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliPages.class), response);
             }
             try {
@@ -658,26 +662,26 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a payment page in a paypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseGeneric2Part> removePage(String entry, String subdomain) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseGeneric2Part> removePage(String entry, String subdomain) {
         return removePage(entry, subdomain, null);
     }
 
     /**
      * Deletes a payment page in a paypoint.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseGeneric2Part> removePage(
+    public PayabliApiClientHttpResponse<PayabliApiResponseGeneric2Part> removePage(
             String entry, String subdomain, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -716,7 +720,7 @@ public class RawPaypointClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseGeneric2Part.class),
                         response);
             }
@@ -741,12 +745,12 @@ public class RawPaypointClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

@@ -186,6 +186,10 @@ public final class RequestOutAuthorizeVendorData {
         return email;
     }
 
+    /**
+     * @return Vendor's address
+     * <p>For a PO Box address, include only the PO Box in this field, for example <code>PO Box 29652</code>. Put the rest of the address, such as a department number, in <code>address2</code>.</p>
+     */
     @JsonProperty("address1")
     public Optional<String> getAddress1() {
         return address1;
@@ -281,6 +285,10 @@ public final class RequestOutAuthorizeVendorData {
         return additionalData;
     }
 
+    /**
+     * @return Additional line for vendor's address.
+     * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
+     */
     @JsonProperty("address2")
     public Optional<String> getAddress2() {
         return address2;
@@ -581,6 +589,10 @@ public final class RequestOutAuthorizeVendorData {
             return this;
         }
 
+        /**
+         * <p>Vendor's address</p>
+         * <p>For a PO Box address, include only the PO Box in this field, for example <code>PO Box 29652</code>. Put the rest of the address, such as a department number, in <code>address2</code>.</p>
+         */
         @JsonSetter(value = "address1", nulls = Nulls.SKIP)
         public Builder address1(Optional<String> address1) {
             this.address1 = address1;
@@ -790,6 +802,10 @@ public final class RequestOutAuthorizeVendorData {
             return this;
         }
 
+        /**
+         * <p>Additional line for vendor's address.</p>
+         * <p>For a PO Box address, this field holds the part of the address that follows the PO Box, for example <code>Dept# 880662</code>.</p>
+         */
         @JsonSetter(value = "address2", nulls = Nulls.SKIP)
         public Builder address2(Optional<String> address2) {
             this.address2 = address2;

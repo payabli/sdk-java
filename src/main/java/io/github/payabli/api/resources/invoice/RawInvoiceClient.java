@@ -9,9 +9,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -54,14 +54,14 @@ public class RawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(String entry, InvoiceDataRequest body) {
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> addInvoice(String entry, InvoiceDataRequest body) {
         return addInvoice(entry, AddInvoiceRequest.builder().body(body).build());
     }
 
     /**
      * Creates an invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> addInvoice(
             String entry, InvoiceDataRequest body, RequestOptions requestOptions) {
         return addInvoice(entry, AddInvoiceRequest.builder().body(body).build(), requestOptions);
     }
@@ -69,14 +69,15 @@ public class RawInvoiceClient {
     /**
      * Creates an invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(String entry, AddInvoiceRequest request) {
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> addInvoice(
+            String entry, AddInvoiceRequest request) {
         return addInvoice(entry, request, null);
     }
 
     /**
      * Creates an invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> addInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> addInvoice(
             String entry, AddInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -133,7 +134,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceResponseWithoutData.class),
                         response);
             }
@@ -158,19 +159,19 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFileFromInvoice(int idInvoice, String filename) {
         return getAttachedFileFromInvoice(
                 idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build());
     }
@@ -178,7 +179,7 @@ public class RawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFileFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {
         return getAttachedFileFromInvoice(
                 idInvoice, filename, GetAttachedFileFromInvoiceRequest.builder().build(), requestOptions);
@@ -187,7 +188,7 @@ public class RawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFileFromInvoice(
             int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request) {
         return getAttachedFileFromInvoice(idInvoice, filename, request, null);
     }
@@ -195,7 +196,7 @@ public class RawInvoiceClient {
     /**
      * Retrieves a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<FileContent> getAttachedFileFromInvoice(
+    public PayabliApiClientHttpResponse<FileContent> getAttachedFileFromInvoice(
             int idInvoice, String filename, GetAttachedFileFromInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -238,7 +239,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FileContent.class), response);
             }
             try {
@@ -262,19 +263,19 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
             int idInvoice, String filename) {
         return deleteAttachedFromInvoice(idInvoice, filename, null);
     }
@@ -282,7 +283,7 @@ public class RawInvoiceClient {
     /**
      * Deletes a file attached to an invoice.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> deleteAttachedFromInvoice(
             int idInvoice, String filename, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -321,7 +322,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceResponseWithoutData.class),
                         response);
             }
@@ -346,26 +347,26 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a single invoice by ID.
      */
-    public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice) {
+    public PayabliApiClientHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice) {
         return getInvoice(idInvoice, null);
     }
 
     /**
      * Retrieves a single invoice by ID.
      */
-    public PayabliApiHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<GetInvoiceRecord> getInvoice(int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice")
@@ -402,7 +403,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetInvoiceRecord.class), response);
             }
             try {
@@ -426,26 +427,27 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(int idInvoice, InvoiceDataRequest body) {
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> editInvoice(
+            int idInvoice, InvoiceDataRequest body) {
         return editInvoice(idInvoice, EditInvoiceRequest.builder().body(body).build());
     }
 
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> editInvoice(
             int idInvoice, InvoiceDataRequest body, RequestOptions requestOptions) {
         return editInvoice(idInvoice, EditInvoiceRequest.builder().body(body).build(), requestOptions);
     }
@@ -453,14 +455,15 @@ public class RawInvoiceClient {
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(int idInvoice, EditInvoiceRequest request) {
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> editInvoice(
+            int idInvoice, EditInvoiceRequest request) {
         return editInvoice(idInvoice, request, null);
     }
 
     /**
      * Updates details for a single invoice in an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> editInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> editInvoice(
             int idInvoice, EditInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -513,7 +516,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceResponseWithoutData.class),
                         response);
             }
@@ -538,26 +541,26 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Deletes a single invoice from an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(int idInvoice) {
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> deleteInvoice(int idInvoice) {
         return deleteInvoice(idInvoice, null);
     }
 
     /**
      * Deletes a single invoice from an entrypoint.
      */
-    public PayabliApiHttpResponse<InvoiceResponseWithoutData> deleteInvoice(
+    public PayabliApiClientHttpResponse<InvoiceResponseWithoutData> deleteInvoice(
             int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -595,7 +598,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceResponseWithoutData.class),
                         response);
             }
@@ -620,26 +623,27 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves the next available invoice number for a paypoint.
      */
-    public PayabliApiHttpResponse<InvoiceNumberResponse> getInvoiceNumber(String entry) {
+    public PayabliApiClientHttpResponse<InvoiceNumberResponse> getInvoiceNumber(String entry) {
         return getInvoiceNumber(entry, null);
     }
 
     /**
      * Retrieves the next available invoice number for a paypoint.
      */
-    public PayabliApiHttpResponse<InvoiceNumberResponse> getInvoiceNumber(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<InvoiceNumberResponse> getInvoiceNumber(
+            String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Invoice/getNumber")
@@ -676,7 +680,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InvoiceNumberResponse.class), response);
             }
             try {
@@ -700,40 +704,41 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry) {
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoices(String entry) {
         return listInvoices(entry, ListInvoicesRequest.builder().build());
     }
 
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoices(
+            String entry, RequestOptions requestOptions) {
         return listInvoices(entry, ListInvoicesRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(String entry, ListInvoicesRequest request) {
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoices(String entry, ListInvoicesRequest request) {
         return listInvoices(entry, request, null);
     }
 
     /**
      * Returns a list of invoices for an entrypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoices(
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoices(
             String entry, ListInvoicesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -791,7 +796,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryInvoiceResponse.class), response);
             }
             try {
@@ -815,40 +820,42 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId) {
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId) {
         return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build());
     }
 
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoicesOrg(
+            int orgId, RequestOptions requestOptions) {
         return listInvoicesOrg(orgId, ListInvoicesOrgRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(int orgId, ListInvoicesOrgRequest request) {
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoicesOrg(
+            int orgId, ListInvoicesOrgRequest request) {
         return listInvoicesOrg(orgId, request, null);
     }
 
     /**
      * Returns a list of invoices for an org. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
-    public PayabliApiHttpResponse<QueryInvoiceResponse> listInvoicesOrg(
+    public PayabliApiClientHttpResponse<QueryInvoiceResponse> listInvoicesOrg(
             int orgId, ListInvoicesOrgRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -906,7 +913,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, QueryInvoiceResponse.class), response);
             }
             try {
@@ -930,40 +937,40 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public PayabliApiHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice) {
+    public PayabliApiClientHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice) {
         return sendInvoice(idInvoice, SendInvoiceRequest.builder().build());
     }
 
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public PayabliApiHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice, RequestOptions requestOptions) {
         return sendInvoice(idInvoice, SendInvoiceRequest.builder().build(), requestOptions);
     }
 
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public PayabliApiHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice, SendInvoiceRequest request) {
+    public PayabliApiClientHttpResponse<SendInvoiceResponse> sendInvoice(int idInvoice, SendInvoiceRequest request) {
         return sendInvoice(idInvoice, request, null);
     }
 
     /**
      * Sends an invoice from an entrypoint via email.
      */
-    public PayabliApiHttpResponse<SendInvoiceResponse> sendInvoice(
+    public PayabliApiClientHttpResponse<SendInvoiceResponse> sendInvoice(
             int idInvoice, SendInvoiceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1009,7 +1016,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SendInvoiceResponse.class), response);
             }
             try {
@@ -1033,26 +1040,27 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Export a single invoice in PDF format.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice) {
+    public PayabliApiClientHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice) {
         return getInvoicePdf(idInvoice, null);
     }
 
     /**
      * Export a single invoice in PDF format.
      */
-    public PayabliApiHttpResponse<Map<String, Object>> getInvoicePdf(int idInvoice, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<Map<String, Object>> getInvoicePdf(
+            int idInvoice, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Export/invoicePdf")
@@ -1089,7 +1097,7 @@ public class RawInvoiceClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<Map<String, Object>>() {}),
                         response);
@@ -1115,12 +1123,12 @@ public class RawInvoiceClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }

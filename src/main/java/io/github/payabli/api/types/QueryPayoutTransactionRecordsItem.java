@@ -16,6 +16,7 @@ import io.github.payabli.api.core.Nullable;
 import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +124,8 @@ public final class QueryPayoutTransactionRecordsItem {
 
     private final Optional<String> entityId;
 
+    private final List<QueryPayoutTransactionRecordsItemAllowedActionsItem> allowedActions;
+
     private final Map<String, Object> additionalProperties;
 
     private QueryPayoutTransactionRecordsItem(
@@ -175,6 +178,7 @@ public final class QueryPayoutTransactionRecordsItem {
             Optional<String> payoutProgram,
             Optional<String> achTraceNumber,
             Optional<String> entityId,
+            List<QueryPayoutTransactionRecordsItemAllowedActionsItem> allowedActions,
             Map<String, Object> additionalProperties) {
         this.idOut = idOut;
         this.createdAt = createdAt;
@@ -225,6 +229,7 @@ public final class QueryPayoutTransactionRecordsItem {
         this.payoutProgram = payoutProgram;
         this.achTraceNumber = achTraceNumber;
         this.entityId = entityId;
+        this.allowedActions = allowedActions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -572,6 +577,14 @@ public final class QueryPayoutTransactionRecordsItem {
         return entityId;
     }
 
+    /**
+     * @return Operations currently permitted for this payout, derived from its status. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from <code>PaymentStatus</code>.
+     */
+    @JsonProperty("allowedActions")
+    public List<QueryPayoutTransactionRecordsItemAllowedActionsItem> getAllowedActions() {
+        return allowedActions;
+    }
+
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("TransId")
     private Optional<String> _getTransId() {
@@ -686,7 +699,8 @@ public final class QueryPayoutTransactionRecordsItem {
                 && riskActionCode.equals(other.riskActionCode)
                 && payoutProgram.equals(other.payoutProgram)
                 && achTraceNumber.equals(other.achTraceNumber)
-                && entityId.equals(other.entityId);
+                && entityId.equals(other.entityId)
+                && allowedActions.equals(other.allowedActions);
     }
 
     @java.lang.Override
@@ -740,7 +754,8 @@ public final class QueryPayoutTransactionRecordsItem {
                 this.riskActionCode,
                 this.payoutProgram,
                 this.achTraceNumber,
-                this.entityId);
+                this.entityId,
+                this.allowedActions);
     }
 
     @java.lang.Override
@@ -852,6 +867,8 @@ public final class QueryPayoutTransactionRecordsItem {
 
         private Optional<String> entityId = Optional.empty();
 
+        private List<QueryPayoutTransactionRecordsItemAllowedActionsItem> allowedActions = new ArrayList<>();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -907,6 +924,7 @@ public final class QueryPayoutTransactionRecordsItem {
             payoutProgram(other.getPayoutProgram());
             achTraceNumber(other.getAchTraceNumber());
             entityId(other.getEntityId());
+            allowedActions(other.getAllowedActions());
             return this;
         }
 
@@ -1620,6 +1638,30 @@ public final class QueryPayoutTransactionRecordsItem {
             return this;
         }
 
+        /**
+         * <p>Operations currently permitted for this payout, derived from its status. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from <code>PaymentStatus</code>.</p>
+         */
+        @JsonSetter(value = "allowedActions", nulls = Nulls.SKIP)
+        public Builder allowedActions(List<QueryPayoutTransactionRecordsItemAllowedActionsItem> allowedActions) {
+            this.allowedActions.clear();
+            if (allowedActions != null) {
+                this.allowedActions.addAll(allowedActions);
+            }
+            return this;
+        }
+
+        public Builder addAllowedActions(QueryPayoutTransactionRecordsItemAllowedActionsItem allowedActions) {
+            this.allowedActions.add(allowedActions);
+            return this;
+        }
+
+        public Builder addAllAllowedActions(List<QueryPayoutTransactionRecordsItemAllowedActionsItem> allowedActions) {
+            if (allowedActions != null) {
+                this.allowedActions.addAll(allowedActions);
+            }
+            return this;
+        }
+
         public QueryPayoutTransactionRecordsItem build() {
             return new QueryPayoutTransactionRecordsItem(
                     idOut,
@@ -1671,6 +1713,7 @@ public final class QueryPayoutTransactionRecordsItem {
                     payoutProgram,
                     achTraceNumber,
                     entityId,
+                    allowedActions,
                     additionalProperties);
         }
 

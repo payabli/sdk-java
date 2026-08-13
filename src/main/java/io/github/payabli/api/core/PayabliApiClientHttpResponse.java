@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 import okhttp3.Response;
 
-public final class PayabliApiHttpResponse<T> {
+public final class PayabliApiClientHttpResponse<T> {
 
     private final T body;
 
     private final Map<String, List<String>> headers;
 
-    public PayabliApiHttpResponse(T body, Response rawResponse) {
+    public PayabliApiClientHttpResponse(T body, Response rawResponse) {
         this.body = body;
 
         Map<String, List<String>> headers = new HashMap<>();

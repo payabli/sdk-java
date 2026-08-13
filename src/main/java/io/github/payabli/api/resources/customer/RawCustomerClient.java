@@ -8,9 +8,9 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.core.PayabliApiApiException;
-import io.github.payabli.api.core.PayabliApiException;
-import io.github.payabli.api.core.PayabliApiHttpResponse;
+import io.github.payabli.api.core.PayabliApiClientApiException;
+import io.github.payabli.api.core.PayabliApiClientException;
+import io.github.payabli.api.core.PayabliApiClientHttpResponse;
 import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
@@ -46,7 +46,7 @@ public class RawCustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in the Payabli Portal.
      * If you don't include an identifier, the record is rejected.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(String entry, CustomerData body) {
+    public PayabliApiClientHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(String entry, CustomerData body) {
         return addCustomer(entry, AddCustomerRequest.builder().body(body).build());
     }
 
@@ -54,7 +54,7 @@ public class RawCustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in the Payabli Portal.
      * If you don't include an identifier, the record is rejected.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
             String entry, CustomerData body, RequestOptions requestOptions) {
         return addCustomer(entry, AddCustomerRequest.builder().body(body).build(), requestOptions);
     }
@@ -63,7 +63,7 @@ public class RawCustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in the Payabli Portal.
      * If you don't include an identifier, the record is rejected.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
             String entry, AddCustomerRequest request) {
         return addCustomer(entry, request, null);
     }
@@ -72,7 +72,7 @@ public class RawCustomerClient {
      * Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings &gt; Custom Fields in the Payabli Portal.
      * If you don't include an identifier, the record is rejected.
      */
-    public PayabliApiHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponseCustomerQuery> addCustomer(
             String entry, AddCustomerRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -133,7 +133,7 @@ public class RawCustomerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseCustomerQuery.class),
                         response);
             }
@@ -158,26 +158,27 @@ public class RawCustomerClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Retrieves a customer's record and details.
      */
-    public PayabliApiHttpResponse<CustomerQueryRecords> getCustomer(int customerId) {
+    public PayabliApiClientHttpResponse<CustomerQueryRecords> getCustomer(int customerId) {
         return getCustomer(customerId, null);
     }
 
     /**
      * Retrieves a customer's record and details.
      */
-    public PayabliApiHttpResponse<CustomerQueryRecords> getCustomer(int customerId, RequestOptions requestOptions) {
+    public PayabliApiClientHttpResponse<CustomerQueryRecords> getCustomer(
+            int customerId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Customer")
@@ -214,7 +215,7 @@ public class RawCustomerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CustomerQueryRecords.class), response);
             }
             try {
@@ -238,26 +239,26 @@ public class RawCustomerClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Update a customer record. Include only the fields you want to change.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(int customerId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(int customerId) {
         return updateCustomer(customerId, CustomerData.builder().build());
     }
 
     /**
      * Update a customer record. Include only the fields you want to change.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
             int customerId, RequestOptions requestOptions) {
         return updateCustomer(customerId, CustomerData.builder().build(), requestOptions);
     }
@@ -265,7 +266,7 @@ public class RawCustomerClient {
     /**
      * Update a customer record. Include only the fields you want to change.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
             int customerId, CustomerData request) {
         return updateCustomer(customerId, request, null);
     }
@@ -273,7 +274,7 @@ public class RawCustomerClient {
     /**
      * Update a customer record. Include only the fields you want to change.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> updateCustomer(
             int customerId, CustomerData request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -289,7 +290,7 @@ public class RawCustomerClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to serialize request", e);
+            throw new PayabliApiClientException("Failed to serialize request", e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
@@ -319,7 +320,7 @@ public class RawCustomerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -345,26 +346,26 @@ public class RawCustomerClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Delete a customer record.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteCustomer(int customerId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteCustomer(int customerId) {
         return deleteCustomer(customerId, null);
     }
 
     /**
      * Delete a customer record.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteCustomer(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> deleteCustomer(
             int customerId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -402,7 +403,7 @@ public class RawCustomerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -428,26 +429,26 @@ public class RawCustomerClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Sends the consent opt-in email to the customer email address in the customer record.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> requestConsent(int customerId) {
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> requestConsent(int customerId) {
         return requestConsent(customerId, null);
     }
 
     /**
      * Sends the consent opt-in email to the customer email address in the customer record.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> requestConsent(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> requestConsent(
             int customerId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -486,7 +487,7 @@ public class RawCustomerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -512,19 +513,19 @@ public class RawCustomerClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 
     /**
      * Links a customer to a transaction by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
             int customerId, String transId) {
         return linkCustomerTransaction(customerId, transId, null);
     }
@@ -532,7 +533,7 @@ public class RawCustomerClient {
     /**
      * Links a customer to a transaction by ID.
      */
-    public PayabliApiHttpResponse<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
+    public PayabliApiClientHttpResponse<PayabliApiResponse00Responsedatanonobject> linkCustomerTransaction(
             int customerId, String transId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -571,7 +572,7 @@ public class RawCustomerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new PayabliApiHttpResponse<>(
+                return new PayabliApiClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, PayabliApiResponse00Responsedatanonobject.class),
                         response);
@@ -597,12 +598,12 @@ public class RawCustomerClient {
                 // unable to map error response, throwing generic error
             }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
-            throw new PayabliApiApiException(
+            throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);
         } catch (JsonProcessingException e) {
-            throw new PayabliApiException("Failed to deserialize response: " + e.getMessage(), e);
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PayabliApiException("Network error executing HTTP request", e);
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
         }
     }
 }
