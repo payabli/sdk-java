@@ -24,9 +24,9 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionDetailPaymentData.Builder.class)
 public final class TransactionDetailPaymentData {
-    private final String maskedAccount;
+    private final Optional<String> maskedAccount;
 
-    private final String accountType;
+    private final Optional<String> accountType;
 
     private final Optional<String> accountExp;
 
@@ -53,8 +53,8 @@ public final class TransactionDetailPaymentData {
     private final Map<String, Object> additionalProperties;
 
     private TransactionDetailPaymentData(
-            String maskedAccount,
-            String accountType,
+            Optional<String> maskedAccount,
+            Optional<String> accountType,
             Optional<String> accountExp,
             String holderName,
             Optional<String> storedId,
@@ -83,13 +83,19 @@ public final class TransactionDetailPaymentData {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("maskedAccount")
-    public String getMaskedAccount() {
+    @JsonIgnore
+    public Optional<String> getMaskedAccount() {
+        if (maskedAccount == null) {
+            return Optional.empty();
+        }
         return maskedAccount;
     }
 
-    @JsonProperty("accountType")
-    public String getAccountType() {
+    @JsonIgnore
+    public Optional<String> getAccountType() {
+        if (accountType == null) {
+            return Optional.empty();
+        }
         return accountType;
     }
 
@@ -173,6 +179,18 @@ public final class TransactionDetailPaymentData {
     @JsonProperty("paymentDetails")
     public TransactionDetailPaymentDetails getPaymentDetails() {
         return paymentDetails;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("maskedAccount")
+    private Optional<String> _getMaskedAccount() {
+        return maskedAccount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("accountType")
+    private Optional<String> _getAccountType() {
+        return accountType;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -279,22 +297,14 @@ public final class TransactionDetailPaymentData {
         return ObjectMappers.stringify(this);
     }
 
-    public static MaskedAccountStage builder() {
+    public static HolderNameStage builder() {
         return new Builder();
-    }
-
-    public interface MaskedAccountStage {
-        AccountTypeStage maskedAccount(@NotNull String maskedAccount);
-
-        Builder from(TransactionDetailPaymentData other);
-    }
-
-    public interface AccountTypeStage {
-        HolderNameStage accountType(@NotNull String accountType);
     }
 
     public interface HolderNameStage {
         PaymentDetailsStage holderName(@NotNull String holderName);
+
+        Builder from(TransactionDetailPaymentData other);
     }
 
     public interface PaymentDetailsStage {
@@ -307,6 +317,18 @@ public final class TransactionDetailPaymentData {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        _FinalStage maskedAccount(Optional<String> maskedAccount);
+
+        _FinalStage maskedAccount(String maskedAccount);
+
+        _FinalStage maskedAccount(Nullable<String> maskedAccount);
+
+        _FinalStage accountType(Optional<String> accountType);
+
+        _FinalStage accountType(String accountType);
+
+        _FinalStage accountType(Nullable<String> accountType);
 
         _FinalStage accountExp(Optional<String> accountExp);
 
@@ -364,12 +386,7 @@ public final class TransactionDetailPaymentData {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder
-            implements MaskedAccountStage, AccountTypeStage, HolderNameStage, PaymentDetailsStage, _FinalStage {
-        private String maskedAccount;
-
-        private String accountType;
-
+    public static final class Builder implements HolderNameStage, PaymentDetailsStage, _FinalStage {
         private String holderName;
 
         private TransactionDetailPaymentDetails paymentDetails;
@@ -392,6 +409,10 @@ public final class TransactionDetailPaymentData {
 
         private Optional<String> accountExp = Optional.empty();
 
+        private Optional<String> accountType = Optional.empty();
+
+        private Optional<String> maskedAccount = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -412,20 +433,6 @@ public final class TransactionDetailPaymentData {
             signatureData(other.getSignatureData());
             binData(other.getBinData());
             paymentDetails(other.getPaymentDetails());
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("maskedAccount")
-        public AccountTypeStage maskedAccount(@NotNull String maskedAccount) {
-            this.maskedAccount = Objects.requireNonNull(maskedAccount, "maskedAccount must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("accountType")
-        public HolderNameStage accountType(@NotNull String accountType) {
-            this.accountType = Objects.requireNonNull(accountType, "accountType must not be null");
             return this;
         }
 
@@ -665,6 +672,56 @@ public final class TransactionDetailPaymentData {
         @JsonSetter(value = "accountExp", nulls = Nulls.SKIP)
         public _FinalStage accountExp(Optional<String> accountExp) {
             this.accountExp = accountExp;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage accountType(Nullable<String> accountType) {
+            if (accountType.isNull()) {
+                this.accountType = null;
+            } else if (accountType.isEmpty()) {
+                this.accountType = Optional.empty();
+            } else {
+                this.accountType = Optional.of(accountType.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage accountType(String accountType) {
+            this.accountType = Optional.ofNullable(accountType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "accountType", nulls = Nulls.SKIP)
+        public _FinalStage accountType(Optional<String> accountType) {
+            this.accountType = accountType;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage maskedAccount(Nullable<String> maskedAccount) {
+            if (maskedAccount.isNull()) {
+                this.maskedAccount = null;
+            } else if (maskedAccount.isEmpty()) {
+                this.maskedAccount = Optional.empty();
+            } else {
+                this.maskedAccount = Optional.of(maskedAccount.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage maskedAccount(String maskedAccount) {
+            this.maskedAccount = Optional.ofNullable(maskedAccount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "maskedAccount", nulls = Nulls.SKIP)
+        public _FinalStage maskedAccount(Optional<String> maskedAccount) {
+            this.maskedAccount = maskedAccount;
             return this;
         }
 

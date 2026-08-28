@@ -95,13 +95,6 @@ public class AsyncRawMoneyOutClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "doNotCreateBills", request.getDoNotCreateBills().get(), false);
         }
-        if (request.getForceVendorCreation().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "forceVendorCreation",
-                    request.getForceVendorCreation().get(),
-                    false);
-        }
         if (request.getSameDayAch().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sameDayACH", request.getSameDayAch().get(), false);
@@ -1142,7 +1135,7 @@ public class AsyncRawMoneyOutClient {
             SendVCardLinkRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("vcard/send-card-link");
+                .addPathSegments("MoneyOut/vcard/send-card-link");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

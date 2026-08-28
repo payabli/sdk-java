@@ -13,6 +13,7 @@ import io.github.payabli.api.resources.chargebacks.AsyncChargeBacksClient;
 import io.github.payabli.api.resources.checkcapture.AsyncCheckCaptureClient;
 import io.github.payabli.api.resources.cloud.AsyncCloudClient;
 import io.github.payabli.api.resources.customer.AsyncCustomerClient;
+import io.github.payabli.api.resources.device.AsyncDeviceClient;
 import io.github.payabli.api.resources.export.AsyncExportClient;
 import io.github.payabli.api.resources.funding.AsyncFundingClient;
 import io.github.payabli.api.resources.ghostcard.AsyncGhostCardClient;
@@ -77,6 +78,8 @@ public class AsyncPayabliApiClient {
 
     protected final Supplier<AsyncNotificationlogsClient> notificationlogsClient;
 
+    protected final Supplier<AsyncDeviceClient> deviceClient;
+
     protected final Supplier<AsyncCloudClient> cloudClient;
 
     protected final Supplier<AsyncLineItemClient> lineItemClient;
@@ -133,6 +136,7 @@ public class AsyncPayabliApiClient {
         this.queryClient = Suppliers.memoize(() -> new AsyncQueryClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new AsyncOcrClient(clientOptions));
         this.notificationlogsClient = Suppliers.memoize(() -> new AsyncNotificationlogsClient(clientOptions));
+        this.deviceClient = Suppliers.memoize(() -> new AsyncDeviceClient(clientOptions));
         this.cloudClient = Suppliers.memoize(() -> new AsyncCloudClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new AsyncLineItemClient(clientOptions));
         this.boardingClient = Suppliers.memoize(() -> new AsyncBoardingClient(clientOptions));
@@ -216,6 +220,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncNotificationlogsClient notificationlogs() {
         return this.notificationlogsClient.get();
+    }
+
+    public AsyncDeviceClient device() {
+        return this.deviceClient.get();
     }
 
     public AsyncCloudClient cloud() {

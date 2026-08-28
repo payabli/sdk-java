@@ -9,146 +9,27 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RequestOutAuthorizeInvoiceData.Builder.class)
 public final class RequestOutAuthorizeInvoiceData {
-    private final Optional<String> invoiceNumber;
-
-    private final Optional<String> netAmount;
-
-    private final Optional<String> invoiceDate;
-
-    private final Optional<String> dueDate;
-
-    private final Optional<String> comments;
-
-    private final Optional<String> lotNumber;
-
-    private final Optional<Long> billId;
-
-    private final Optional<Double> discount;
-
-    private final Optional<Terms> terms;
-
-    private final Optional<String> accountingField1;
-
-    private final Optional<String> accountingField2;
-
-    private final Optional<String> additionalData;
-
-    private final Optional<List<FileContent>> attachments;
+    private final long billId;
 
     private final Map<String, Object> additionalProperties;
 
-    private RequestOutAuthorizeInvoiceData(
-            Optional<String> invoiceNumber,
-            Optional<String> netAmount,
-            Optional<String> invoiceDate,
-            Optional<String> dueDate,
-            Optional<String> comments,
-            Optional<String> lotNumber,
-            Optional<Long> billId,
-            Optional<Double> discount,
-            Optional<Terms> terms,
-            Optional<String> accountingField1,
-            Optional<String> accountingField2,
-            Optional<String> additionalData,
-            Optional<List<FileContent>> attachments,
-            Map<String, Object> additionalProperties) {
-        this.invoiceNumber = invoiceNumber;
-        this.netAmount = netAmount;
-        this.invoiceDate = invoiceDate;
-        this.dueDate = dueDate;
-        this.comments = comments;
-        this.lotNumber = lotNumber;
+    private RequestOutAuthorizeInvoiceData(long billId, Map<String, Object> additionalProperties) {
         this.billId = billId;
-        this.discount = discount;
-        this.terms = terms;
-        this.accountingField1 = accountingField1;
-        this.accountingField2 = accountingField2;
-        this.additionalData = additionalData;
-        this.attachments = attachments;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("invoiceNumber")
-    public Optional<String> getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    @JsonProperty("netAmount")
-    public Optional<String> getNetAmount() {
-        return netAmount;
-    }
-
-    /**
-     * @return Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-     */
-    @JsonProperty("invoiceDate")
-    public Optional<String> getInvoiceDate() {
-        return invoiceDate;
-    }
-
-    /**
-     * @return Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-     */
-    @JsonProperty("dueDate")
-    public Optional<String> getDueDate() {
-        return dueDate;
-    }
-
-    @JsonProperty("comments")
-    public Optional<String> getComments() {
-        return comments;
-    }
-
-    @JsonProperty("lotNumber")
-    public Optional<String> getLotNumber() {
-        return lotNumber;
-    }
-
     @JsonProperty("billId")
-    public Optional<Long> getBillId() {
+    public long getBillId() {
         return billId;
-    }
-
-    @JsonProperty("discount")
-    public Optional<Double> getDiscount() {
-        return discount;
-    }
-
-    @JsonProperty("terms")
-    public Optional<Terms> getTerms() {
-        return terms;
-    }
-
-    @JsonProperty("accountingField1")
-    public Optional<String> getAccountingField1() {
-        return accountingField1;
-    }
-
-    @JsonProperty("accountingField2")
-    public Optional<String> getAccountingField2() {
-        return accountingField2;
-    }
-
-    @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
-        return additionalData;
-    }
-
-    @JsonProperty("attachments")
-    public Optional<List<FileContent>> getAttachments() {
-        return attachments;
     }
 
     @java.lang.Override
@@ -163,37 +44,12 @@ public final class RequestOutAuthorizeInvoiceData {
     }
 
     private boolean equalTo(RequestOutAuthorizeInvoiceData other) {
-        return invoiceNumber.equals(other.invoiceNumber)
-                && netAmount.equals(other.netAmount)
-                && invoiceDate.equals(other.invoiceDate)
-                && dueDate.equals(other.dueDate)
-                && comments.equals(other.comments)
-                && lotNumber.equals(other.lotNumber)
-                && billId.equals(other.billId)
-                && discount.equals(other.discount)
-                && terms.equals(other.terms)
-                && accountingField1.equals(other.accountingField1)
-                && accountingField2.equals(other.accountingField2)
-                && additionalData.equals(other.additionalData)
-                && attachments.equals(other.attachments);
+        return billId == other.billId;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(
-                this.invoiceNumber,
-                this.netAmount,
-                this.invoiceDate,
-                this.dueDate,
-                this.comments,
-                this.lotNumber,
-                this.billId,
-                this.discount,
-                this.terms,
-                this.accountingField1,
-                this.accountingField2,
-                this.additionalData,
-                this.attachments);
+        return Objects.hash(this.billId);
     }
 
     @java.lang.Override
@@ -201,232 +57,58 @@ public final class RequestOutAuthorizeInvoiceData {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static BillIdStage builder() {
         return new Builder();
     }
 
+    public interface BillIdStage {
+        _FinalStage billId(long billId);
+
+        Builder from(RequestOutAuthorizeInvoiceData other);
+    }
+
+    public interface _FinalStage {
+        RequestOutAuthorizeInvoiceData build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> invoiceNumber = Optional.empty();
-
-        private Optional<String> netAmount = Optional.empty();
-
-        private Optional<String> invoiceDate = Optional.empty();
-
-        private Optional<String> dueDate = Optional.empty();
-
-        private Optional<String> comments = Optional.empty();
-
-        private Optional<String> lotNumber = Optional.empty();
-
-        private Optional<Long> billId = Optional.empty();
-
-        private Optional<Double> discount = Optional.empty();
-
-        private Optional<Terms> terms = Optional.empty();
-
-        private Optional<String> accountingField1 = Optional.empty();
-
-        private Optional<String> accountingField2 = Optional.empty();
-
-        private Optional<String> additionalData = Optional.empty();
-
-        private Optional<List<FileContent>> attachments = Optional.empty();
+    public static final class Builder implements BillIdStage, _FinalStage {
+        private long billId;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(RequestOutAuthorizeInvoiceData other) {
-            invoiceNumber(other.getInvoiceNumber());
-            netAmount(other.getNetAmount());
-            invoiceDate(other.getInvoiceDate());
-            dueDate(other.getDueDate());
-            comments(other.getComments());
-            lotNumber(other.getLotNumber());
             billId(other.getBillId());
-            discount(other.getDiscount());
-            terms(other.getTerms());
-            accountingField1(other.getAccountingField1());
-            accountingField2(other.getAccountingField2());
-            additionalData(other.getAdditionalData());
-            attachments(other.getAttachments());
             return this;
         }
 
-        @JsonSetter(value = "invoiceNumber", nulls = Nulls.SKIP)
-        public Builder invoiceNumber(Optional<String> invoiceNumber) {
-            this.invoiceNumber = invoiceNumber;
-            return this;
-        }
-
-        public Builder invoiceNumber(String invoiceNumber) {
-            this.invoiceNumber = Optional.ofNullable(invoiceNumber);
-            return this;
-        }
-
-        @JsonSetter(value = "netAmount", nulls = Nulls.SKIP)
-        public Builder netAmount(Optional<String> netAmount) {
-            this.netAmount = netAmount;
-            return this;
-        }
-
-        public Builder netAmount(String netAmount) {
-            this.netAmount = Optional.ofNullable(netAmount);
-            return this;
-        }
-
-        /**
-         * <p>Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
-         */
-        @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
-        public Builder invoiceDate(Optional<String> invoiceDate) {
-            this.invoiceDate = invoiceDate;
-            return this;
-        }
-
-        public Builder invoiceDate(String invoiceDate) {
-            this.invoiceDate = Optional.ofNullable(invoiceDate);
-            return this;
-        }
-
-        /**
-         * <p>Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
-         */
-        @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
-        public Builder dueDate(Optional<String> dueDate) {
-            this.dueDate = dueDate;
-            return this;
-        }
-
-        public Builder dueDate(String dueDate) {
-            this.dueDate = Optional.ofNullable(dueDate);
-            return this;
-        }
-
-        @JsonSetter(value = "comments", nulls = Nulls.SKIP)
-        public Builder comments(Optional<String> comments) {
-            this.comments = comments;
-            return this;
-        }
-
-        public Builder comments(String comments) {
-            this.comments = Optional.ofNullable(comments);
-            return this;
-        }
-
-        @JsonSetter(value = "lotNumber", nulls = Nulls.SKIP)
-        public Builder lotNumber(Optional<String> lotNumber) {
-            this.lotNumber = lotNumber;
-            return this;
-        }
-
-        public Builder lotNumber(String lotNumber) {
-            this.lotNumber = Optional.ofNullable(lotNumber);
-            return this;
-        }
-
-        @JsonSetter(value = "billId", nulls = Nulls.SKIP)
-        public Builder billId(Optional<Long> billId) {
+        @java.lang.Override
+        @JsonSetter("billId")
+        public _FinalStage billId(long billId) {
             this.billId = billId;
             return this;
         }
 
-        public Builder billId(Long billId) {
-            this.billId = Optional.ofNullable(billId);
-            return this;
-        }
-
-        @JsonSetter(value = "discount", nulls = Nulls.SKIP)
-        public Builder discount(Optional<Double> discount) {
-            this.discount = discount;
-            return this;
-        }
-
-        public Builder discount(Double discount) {
-            this.discount = Optional.ofNullable(discount);
-            return this;
-        }
-
-        @JsonSetter(value = "terms", nulls = Nulls.SKIP)
-        public Builder terms(Optional<Terms> terms) {
-            this.terms = terms;
-            return this;
-        }
-
-        public Builder terms(Terms terms) {
-            this.terms = Optional.ofNullable(terms);
-            return this;
-        }
-
-        @JsonSetter(value = "accountingField1", nulls = Nulls.SKIP)
-        public Builder accountingField1(Optional<String> accountingField1) {
-            this.accountingField1 = accountingField1;
-            return this;
-        }
-
-        public Builder accountingField1(String accountingField1) {
-            this.accountingField1 = Optional.ofNullable(accountingField1);
-            return this;
-        }
-
-        @JsonSetter(value = "accountingField2", nulls = Nulls.SKIP)
-        public Builder accountingField2(Optional<String> accountingField2) {
-            this.accountingField2 = accountingField2;
-            return this;
-        }
-
-        public Builder accountingField2(String accountingField2) {
-            this.accountingField2 = Optional.ofNullable(accountingField2);
-            return this;
-        }
-
-        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
-            this.additionalData = additionalData;
-            return this;
-        }
-
-        public Builder additionalData(String additionalData) {
-            this.additionalData = Optional.ofNullable(additionalData);
-            return this;
-        }
-
-        @JsonSetter(value = "attachments", nulls = Nulls.SKIP)
-        public Builder attachments(Optional<List<FileContent>> attachments) {
-            this.attachments = attachments;
-            return this;
-        }
-
-        public Builder attachments(List<FileContent> attachments) {
-            this.attachments = Optional.ofNullable(attachments);
-            return this;
-        }
-
+        @java.lang.Override
         public RequestOutAuthorizeInvoiceData build() {
-            return new RequestOutAuthorizeInvoiceData(
-                    invoiceNumber,
-                    netAmount,
-                    invoiceDate,
-                    dueDate,
-                    comments,
-                    lotNumber,
-                    billId,
-                    discount,
-                    terms,
-                    accountingField1,
-                    accountingField2,
-                    additionalData,
-                    attachments,
-                    additionalProperties);
+            return new RequestOutAuthorizeInvoiceData(billId, additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

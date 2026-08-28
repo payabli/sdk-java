@@ -270,7 +270,7 @@ public final class TransactionQueryRecords {
     }
 
     /**
-     * @return Payment method used: card, ach, or wallet.
+     * @return The payment method used for the transaction, for example card, ach, or device.
      */
     @JsonProperty("Method")
     public Optional<String> getMethod() {
@@ -641,7 +641,7 @@ public final class TransactionQueryRecords {
         _FinalStage invoiceData(BillData invoiceData);
 
         /**
-         * <p>Payment method used: card, ach, or wallet.</p>
+         * <p>The payment method used for the transaction, for example card, ach, or device.</p>
          */
         _FinalStage method(Optional<String> method);
 
@@ -1361,7 +1361,7 @@ public final class TransactionQueryRecords {
         }
 
         /**
-         * <p>Payment method used: card, ach, or wallet.</p>
+         * <p>The payment method used for the transaction, for example card, ach, or device.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1371,7 +1371,7 @@ public final class TransactionQueryRecords {
         }
 
         /**
-         * <p>Payment method used: card, ach, or wallet.</p>
+         * <p>The payment method used for the transaction, for example card, ach, or device.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "Method", nulls = Nulls.SKIP)

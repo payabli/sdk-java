@@ -1524,32 +1524,19 @@ client.moneyIn().authorize(
                 .paymentDetails(
                     PaymentDetail
                         .builder()
-                        .totalAmount(100.0)
-                        .serviceFee(0.0)
+                        .totalAmount(1.1)
                         .build()
                 )
                 .paymentMethod(
                     PaymentMethod.of(
                         PayMethodCredit
                             .builder()
-                            .cardexp("02/27")
-                            .cardnumber("4111111111111111")
+                            .cardexp("cardexp")
+                            .cardnumber("cardnumber")
                             .method(PayMethodCreditMethod.CARD)
-                            .cardcvv(Optional.of("999"))
-                            .cardHolder(Optional.of("John Cassian"))
-                            .cardzip(Optional.of("12345"))
-                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
-                .customerData(
-                    PayorDataRequest
-                        .builder()
-                        .customerId(4440L)
-                        .build()
-                )
-                .entryPoint("8cfec329267")
-                .ipaddress("255.255.255.255")
                 .build()
         )
         .build()
@@ -1628,7 +1615,7 @@ transaction](/developers/api-reference/moneyin/authorize-a-transaction) to compl
 <dd>
 
 ```java
-client.moneyIn().capture("10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13", 0.0);
+client.moneyIn().capture("transId", 1.1);
 ```
 </dd>
 </dl>
@@ -1697,14 +1684,13 @@ You can use this endpoint to capture both full and partial amounts of the origin
 
 ```java
 client.moneyIn().captureAuth(
-    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    "transId",
     CaptureRequest
         .builder()
         .paymentDetails(
             CapturePaymentDetails
                 .builder()
-                .totalAmount(105.0)
-                .serviceFee(5.0)
+                .totalAmount(1.1)
                 .build()
         )
         .build()
@@ -2003,32 +1989,19 @@ client.moneyIn().getpaid(
                 .paymentDetails(
                     PaymentDetail
                         .builder()
-                        .totalAmount(100.0)
-                        .serviceFee(0.0)
+                        .totalAmount(1.1)
                         .build()
                 )
                 .paymentMethod(
                     PaymentMethod.of(
                         PayMethodCredit
                             .builder()
-                            .cardexp("02/27")
-                            .cardnumber("4111111111111111")
+                            .cardexp("cardexp")
+                            .cardnumber("cardnumber")
                             .method(PayMethodCreditMethod.CARD)
-                            .cardcvv(Optional.of("999"))
-                            .cardHolder(Optional.of("John Cassian"))
-                            .cardzip(Optional.of("12345"))
-                            .initiator(Optional.of("payor"))
                             .build()
                     )
                 )
-                .customerData(
-                    PayorDataRequest
-                        .builder()
-                        .customerId(4440L)
-                        .build()
-                )
-                .entryPoint("8cfec329267")
-                .ipaddress("255.255.255.255")
                 .build()
         )
         .build()
@@ -2130,7 +2103,7 @@ A reversal either refunds or voids a transaction independent of the transaction'
 <dd>
 
 ```java
-client.moneyIn().reverse("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
+client.moneyIn().reverse("transId", 1.1);
 ```
 </dd>
 </dl>
@@ -2202,7 +2175,7 @@ Refund a transaction that has settled and send money back to the account holder.
 <dd>
 
 ```java
-client.moneyIn().refund("10-3ffa27df-b171-44e0-b251-e95fbfc7a723", 0.0);
+client.moneyIn().refund("transId", 1.1);
 ```
 </dd>
 </dl>
@@ -2275,38 +2248,9 @@ Refunds a settled transaction with split instructions.
 
 ```java
 client.moneyIn().refundWithInstructions(
-    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    "transId",
     RequestRefund
         .builder()
-        .idempotencyKey("8A29FC40-CA47-1067-B31D-00DD010662DB")
-        .amount(100.0)
-        .orderDescription("Materials deposit")
-        .refundDetails(
-            RefundDetail
-                .builder()
-                .splitRefunding(
-                    Optional.of(
-                        Arrays.asList(
-                            SplitFundingRefundContent
-                                .builder()
-                                .accountId("187-342")
-                                .amount(60.0)
-                                .description("Refunding undelivered materials")
-                                .originationEntryPoint("7f1a381696")
-                                .build(),
-                            SplitFundingRefundContent
-                                .builder()
-                                .accountId("187-343")
-                                .amount(40.0)
-                                .description("Refunding deposit for undelivered materials")
-                                .originationEntryPoint("7f1a381696")
-                                .build()
-                        )
-                    )
-                )
-                .build()
-        )
-        .source("api")
         .build()
 );
 ```
@@ -2664,7 +2608,7 @@ Cancel a transaction that hasn't been settled yet. Voiding non-captured authoriz
 <dd>
 
 ```java
-client.moneyIn().void_("10-3ffa27df-b171-44e0-b251-e95fbfc7a723");
+client.moneyIn().void_("transId");
 ```
 </dd>
 </dl>
@@ -14896,6 +14840,70 @@ client.notificationlogs().bulkRetryNotificationLogs(
 </dl>
 </details>
 
+## Device
+<details><summary><code>client.device.challenge(entry) -> DeviceChallengeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a one-time, 6-digit verification code for activating a
+semi-integrated card-present device in a paypoint. After calling this endpoint, an operator enters the returned code
+on the device's terminal, along with a device name, to register the
+device to the paypoint resolved from `{entry}`.
+
+A code expires 5 minutes after it's issued. A paypoint can have several
+codes active at once — for example, when activating a batch of devices —
+and a code binds to whichever device enters it first.
+
+Authenticate with an OAuth2 Bearer token that has the `device_registry` scope.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.device().challenge("8cfec329267");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Cloud
 <details><summary><code>client.cloud.addDevice(entry, request) -> AddDeviceResponse</code></summary>
 <dl>
@@ -15124,7 +15132,7 @@ client.cloud().historyDevice("8cfec329267", "499585-389fj484-3jcj8hj3");
 <dl>
 <dd>
 
-Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+Use [List devices by paypoint](/developers/api-reference/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
 
 Get a list of cloud devices registered to an entrypoint.
 </dd>
@@ -25224,15 +25232,17 @@ client.moneyOut().authorizeOut(
                 .vendorNumber("VEN-123")
                 .build()
         )
+        .orderDescription("Window Painting")
         .invoiceData(
-            Arrays.asList(
-                RequestOutAuthorizeInvoiceData
-                    .builder()
-                    .billId(54323L)
-                    .build()
+            Optional.of(
+                Arrays.asList(
+                    RequestOutAuthorizeInvoiceData
+                        .builder()
+                        .billId(54323L)
+                        .build()
+                )
             )
         )
-        .orderDescription("Window Painting")
         .autoCapture(true)
         .build()
 );
@@ -25259,14 +25269,6 @@ client.moneyOut().authorizeOut(
 <dd>
 
 **doNotCreateBills:** `Optional<Boolean>` — When `true`, Payabli won't automatically create a bill for this payout transaction.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceVendorCreation:** `Optional<Boolean>` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
     
 </dd>
 </dl>
@@ -25350,7 +25352,7 @@ Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or p
 <dl>
 <dd>
 
-**invoiceData:** `List<RequestOutAuthorizeInvoiceData>` — Array of bills associated to the transaction
+**invoiceData:** `Optional<List<RequestOutAuthorizeInvoiceData>>` — Bills to pay with this payout, each referenced by `billId`.
     
 </dd>
 </dl>
@@ -26220,7 +26222,7 @@ Deposits funds into a paypoint's available payout balance. Deposited funds enter
 client.funding().depositFunds(
     DepositFundsRequest
         .builder()
-        .amount(10.0)
+        .amount(1500.0)
         .entrypoint("48acde49")
         .accountId("333")
         .build()

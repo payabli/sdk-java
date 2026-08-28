@@ -41,7 +41,7 @@ public final class V2TransactionDetails {
 
     private final String externalProcessorInformation;
 
-    private final String gatewayTransId;
+    private final Optional<String> gatewayTransId;
 
     private final Optional<String> orderId;
 
@@ -141,7 +141,7 @@ public final class V2TransactionDetails {
             String paymentTransId,
             String connectorName,
             String externalProcessorInformation,
-            String gatewayTransId,
+            Optional<String> gatewayTransId,
             Optional<String> orderId,
             String method,
             String batchNumber,
@@ -286,8 +286,11 @@ public final class V2TransactionDetails {
     /**
      * @return Gateway transaction identifier.
      */
-    @JsonProperty("gatewayTransId")
-    public String getGatewayTransId() {
+    @JsonIgnore
+    public Optional<String> getGatewayTransId() {
+        if (gatewayTransId == null) {
+            return Optional.empty();
+        }
         return gatewayTransId;
     }
 
@@ -557,6 +560,12 @@ public final class V2TransactionDetails {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("gatewayTransId")
+    private Optional<String> _getGatewayTransId() {
+        return gatewayTransId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("orderId")
     private Optional<String> _getOrderId() {
         return orderId;
@@ -757,14 +766,7 @@ public final class V2TransactionDetails {
     }
 
     public interface ExternalProcessorInformationStage {
-        GatewayTransIdStage externalProcessorInformation(@NotNull String externalProcessorInformation);
-    }
-
-    public interface GatewayTransIdStage {
-        /**
-         * <p>Gateway transaction identifier.</p>
-         */
-        MethodStage gatewayTransId(@NotNull String gatewayTransId);
+        MethodStage externalProcessorInformation(@NotNull String externalProcessorInformation);
     }
 
     public interface MethodStage {
@@ -926,6 +928,15 @@ public final class V2TransactionDetails {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        /**
+         * <p>Gateway transaction identifier.</p>
+         */
+        _FinalStage gatewayTransId(Optional<String> gatewayTransId);
+
+        _FinalStage gatewayTransId(String gatewayTransId);
+
+        _FinalStage gatewayTransId(Nullable<String> gatewayTransId);
+
         _FinalStage orderId(Optional<String> orderId);
 
         _FinalStage orderId(String orderId);
@@ -1003,7 +1014,6 @@ public final class V2TransactionDetails {
                     PaymentTransIdStage,
                     ConnectorNameStage,
                     ExternalProcessorInformationStage,
-                    GatewayTransIdStage,
                     MethodStage,
                     BatchNumberStage,
                     BatchAmountStage,
@@ -1050,8 +1060,6 @@ public final class V2TransactionDetails {
         private String connectorName;
 
         private String externalProcessorInformation;
-
-        private String gatewayTransId;
 
         private String method;
 
@@ -1140,6 +1148,8 @@ public final class V2TransactionDetails {
         private Optional<Object> transAdditionalData = Optional.empty();
 
         private Optional<String> orderId = Optional.empty();
+
+        private Optional<String> gatewayTransId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -1255,20 +1265,9 @@ public final class V2TransactionDetails {
 
         @java.lang.Override
         @JsonSetter("externalProcessorInformation")
-        public GatewayTransIdStage externalProcessorInformation(@NotNull String externalProcessorInformation) {
+        public MethodStage externalProcessorInformation(@NotNull String externalProcessorInformation) {
             this.externalProcessorInformation = Objects.requireNonNull(
                     externalProcessorInformation, "externalProcessorInformation must not be null");
-            return this;
-        }
-
-        /**
-         * <p>Gateway transaction identifier.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("gatewayTransId")
-        public MethodStage gatewayTransId(@NotNull String gatewayTransId) {
-            this.gatewayTransId = Objects.requireNonNull(gatewayTransId, "gatewayTransId must not be null");
             return this;
         }
 
@@ -1786,6 +1785,42 @@ public final class V2TransactionDetails {
         @JsonSetter(value = "orderId", nulls = Nulls.SKIP)
         public _FinalStage orderId(Optional<String> orderId) {
             this.orderId = orderId;
+            return this;
+        }
+
+        /**
+         * <p>Gateway transaction identifier.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage gatewayTransId(Nullable<String> gatewayTransId) {
+            if (gatewayTransId.isNull()) {
+                this.gatewayTransId = null;
+            } else if (gatewayTransId.isEmpty()) {
+                this.gatewayTransId = Optional.empty();
+            } else {
+                this.gatewayTransId = Optional.of(gatewayTransId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Gateway transaction identifier.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage gatewayTransId(String gatewayTransId) {
+            this.gatewayTransId = Optional.ofNullable(gatewayTransId);
+            return this;
+        }
+
+        /**
+         * <p>Gateway transaction identifier.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "gatewayTransId", nulls = Nulls.SKIP)
+        public _FinalStage gatewayTransId(Optional<String> gatewayTransId) {
+            this.gatewayTransId = gatewayTransId;
             return this;
         }
 

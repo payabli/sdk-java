@@ -34,7 +34,7 @@ public final class V2TransactionDetailResponseData {
 
     private final Optional<String> authcode;
 
-    private final String transactionid;
+    private final Optional<String> transactionid;
 
     private final Optional<String> avsresponse;
 
@@ -64,7 +64,7 @@ public final class V2TransactionDetailResponseData {
             Optional<String> response,
             String responsetext,
             Optional<String> authcode,
-            String transactionid,
+            Optional<String> transactionid,
             Optional<String> avsresponse,
             Optional<String> avsresponseText,
             Optional<String> cvvresponse,
@@ -129,8 +129,11 @@ public final class V2TransactionDetailResponseData {
     /**
      * @return Unique identifier for the transaction assigned by the payment processor.
      */
-    @JsonProperty("transactionid")
-    public String getTransactionid() {
+    @JsonIgnore
+    public Optional<String> getTransactionid() {
+        if (transactionid == null) {
+            return Optional.empty();
+        }
         return transactionid;
     }
 
@@ -224,6 +227,12 @@ public final class V2TransactionDetailResponseData {
     @JsonProperty("authcode")
     private Optional<String> _getAuthcode() {
         return authcode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transactionid")
+    private Optional<String> _getTransactionid() {
+        return transactionid;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -345,14 +354,7 @@ public final class V2TransactionDetailResponseData {
     }
 
     public interface ResponsetextStage {
-        TransactionidStage responsetext(@NotNull String responsetext);
-    }
-
-    public interface TransactionidStage {
-        /**
-         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
-         */
-        ResponseCodeStage transactionid(@NotNull String transactionid);
+        ResponseCodeStage responsetext(@NotNull String responsetext);
     }
 
     public interface ResponseCodeStage {
@@ -387,6 +389,15 @@ public final class V2TransactionDetailResponseData {
         _FinalStage authcode(String authcode);
 
         _FinalStage authcode(Nullable<String> authcode);
+
+        /**
+         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
+         */
+        _FinalStage transactionid(Optional<String> transactionid);
+
+        _FinalStage transactionid(String transactionid);
+
+        _FinalStage transactionid(Nullable<String> transactionid);
 
         _FinalStage avsresponse(Optional<String> avsresponse);
 
@@ -442,7 +453,6 @@ public final class V2TransactionDetailResponseData {
             implements ResultCodeStage,
                     ResultCodeTextStage,
                     ResponsetextStage,
-                    TransactionidStage,
                     ResponseCodeStage,
                     ResponseCodeTextStage,
                     _FinalStage {
@@ -451,8 +461,6 @@ public final class V2TransactionDetailResponseData {
         private String resultCodeText;
 
         private String responsetext;
-
-        private String transactionid;
 
         private String responseCode;
 
@@ -473,6 +481,8 @@ public final class V2TransactionDetailResponseData {
         private Optional<String> avsresponseText = Optional.empty();
 
         private Optional<String> avsresponse = Optional.empty();
+
+        private Optional<String> transactionid = Optional.empty();
 
         private Optional<String> authcode = Optional.empty();
 
@@ -520,19 +530,8 @@ public final class V2TransactionDetailResponseData {
 
         @java.lang.Override
         @JsonSetter("responsetext")
-        public TransactionidStage responsetext(@NotNull String responsetext) {
+        public ResponseCodeStage responsetext(@NotNull String responsetext) {
             this.responsetext = Objects.requireNonNull(responsetext, "responsetext must not be null");
-            return this;
-        }
-
-        /**
-         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("transactionid")
-        public ResponseCodeStage transactionid(@NotNull String transactionid) {
-            this.transactionid = Objects.requireNonNull(transactionid, "transactionid must not be null");
             return this;
         }
 
@@ -755,6 +754,42 @@ public final class V2TransactionDetailResponseData {
         @JsonSetter(value = "avsresponse", nulls = Nulls.SKIP)
         public _FinalStage avsresponse(Optional<String> avsresponse) {
             this.avsresponse = avsresponse;
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactionid(Nullable<String> transactionid) {
+            if (transactionid.isNull()) {
+                this.transactionid = null;
+            } else if (transactionid.isEmpty()) {
+                this.transactionid = Optional.empty();
+            } else {
+                this.transactionid = Optional.of(transactionid.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactionid(String transactionid) {
+            this.transactionid = Optional.ofNullable(transactionid);
+            return this;
+        }
+
+        /**
+         * <p>Unique identifier for the transaction assigned by the payment processor.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "transactionid", nulls = Nulls.SKIP)
+        public _FinalStage transactionid(Optional<String> transactionid) {
+            this.transactionid = transactionid;
             return this;
         }
 

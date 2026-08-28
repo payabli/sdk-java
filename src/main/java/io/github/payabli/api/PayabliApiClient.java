@@ -13,6 +13,7 @@ import io.github.payabli.api.resources.chargebacks.ChargeBacksClient;
 import io.github.payabli.api.resources.checkcapture.CheckCaptureClient;
 import io.github.payabli.api.resources.cloud.CloudClient;
 import io.github.payabli.api.resources.customer.CustomerClient;
+import io.github.payabli.api.resources.device.DeviceClient;
 import io.github.payabli.api.resources.export.ExportClient;
 import io.github.payabli.api.resources.funding.FundingClient;
 import io.github.payabli.api.resources.ghostcard.GhostCardClient;
@@ -77,6 +78,8 @@ public class PayabliApiClient {
 
     protected final Supplier<NotificationlogsClient> notificationlogsClient;
 
+    protected final Supplier<DeviceClient> deviceClient;
+
     protected final Supplier<CloudClient> cloudClient;
 
     protected final Supplier<LineItemClient> lineItemClient;
@@ -133,6 +136,7 @@ public class PayabliApiClient {
         this.queryClient = Suppliers.memoize(() -> new QueryClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
         this.notificationlogsClient = Suppliers.memoize(() -> new NotificationlogsClient(clientOptions));
+        this.deviceClient = Suppliers.memoize(() -> new DeviceClient(clientOptions));
         this.cloudClient = Suppliers.memoize(() -> new CloudClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
         this.boardingClient = Suppliers.memoize(() -> new BoardingClient(clientOptions));
@@ -216,6 +220,10 @@ public class PayabliApiClient {
 
     public NotificationlogsClient notificationlogs() {
         return this.notificationlogsClient.get();
+    }
+
+    public DeviceClient device() {
+        return this.deviceClient.get();
     }
 
     public CloudClient cloud() {

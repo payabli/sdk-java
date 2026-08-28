@@ -102,7 +102,7 @@ public final class PaymentDetail {
     }
 
     /**
-     * @return Split funding instructions for the transaction. See <a href="/developers/developer-guides/money-in-split-funding">Split a Transaction</a> for more.
+     * @return Split funding instructions for the transaction. See <a href="/guides/pay-in-developer-routing-split-funds">Split a Transaction</a> for more.
      */
     @JsonProperty("splitFunding")
     public Optional<List<SplitFundingContent>> getSplitFunding() {
@@ -222,7 +222,7 @@ public final class PaymentDetail {
         _FinalStage serviceFee(Double serviceFee);
 
         /**
-         * <p>Split funding instructions for the transaction. See <a href="/developers/developer-guides/money-in-split-funding">Split a Transaction</a> for more.</p>
+         * <p>Split funding instructions for the transaction. See <a href="/guides/pay-in-developer-routing-split-funds">Split a Transaction</a> for more.</p>
          */
         _FinalStage splitFunding(Optional<List<SplitFundingContent>> splitFunding);
 
@@ -304,7 +304,7 @@ public final class PaymentDetail {
         }
 
         /**
-         * <p>Split funding instructions for the transaction. See <a href="/developers/developer-guides/money-in-split-funding">Split a Transaction</a> for more.</p>
+         * <p>Split funding instructions for the transaction. See <a href="/guides/pay-in-developer-routing-split-funds">Split a Transaction</a> for more.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -314,7 +314,7 @@ public final class PaymentDetail {
         }
 
         /**
-         * <p>Split funding instructions for the transaction. See <a href="/developers/developer-guides/money-in-split-funding">Split a Transaction</a> for more.</p>
+         * <p>Split funding instructions for the transaction. See <a href="/guides/pay-in-developer-routing-split-funds">Split a Transaction</a> for more.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "splitFunding", nulls = Nulls.SKIP)

@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +60,8 @@ public final class PaypointData {
 
     private final Optional<String> state;
 
+    private final Optional<String> businessSummary;
+
     private final Optional<PaypointSummary> summary;
 
     private final Optional<Integer> timeZone;
@@ -88,6 +93,7 @@ public final class PaypointData {
             Optional<String> phone,
             Optional<Services> serviceData,
             Optional<String> state,
+            Optional<String> businessSummary,
             Optional<PaypointSummary> summary,
             Optional<Integer> timeZone,
             Optional<String> websiteAddress,
@@ -112,6 +118,7 @@ public final class PaypointData {
         this.phone = phone;
         this.serviceData = serviceData;
         this.state = state;
+        this.businessSummary = businessSummary;
         this.summary = summary;
         this.timeZone = timeZone;
         this.websiteAddress = websiteAddress;
@@ -213,6 +220,18 @@ public final class PaypointData {
         return state;
     }
 
+    /**
+     * @return This business description is captured during boarding. It differs from <code>summary</code>, which
+     * reports counts of customers, transactions, and subscriptions attached to the paypoint.
+     */
+    @JsonIgnore
+    public Optional<String> getBusinessSummary() {
+        if (businessSummary == null) {
+            return Optional.empty();
+        }
+        return businessSummary;
+    }
+
     @JsonProperty("summary")
     public Optional<PaypointSummary> getSummary() {
         return summary;
@@ -239,6 +258,12 @@ public final class PaypointData {
     @JsonProperty("StatementEmail")
     public Optional<StatementEmailConfig> getStatementEmail() {
         return statementEmail;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Summary")
+    private Optional<String> _getBusinessSummary() {
+        return businessSummary;
     }
 
     @java.lang.Override
@@ -271,6 +296,7 @@ public final class PaypointData {
                 && phone.equals(other.phone)
                 && serviceData.equals(other.serviceData)
                 && state.equals(other.state)
+                && businessSummary.equals(other.businessSummary)
                 && summary.equals(other.summary)
                 && timeZone.equals(other.timeZone)
                 && websiteAddress.equals(other.websiteAddress)
@@ -299,6 +325,7 @@ public final class PaypointData {
                 this.phone,
                 this.serviceData,
                 this.state,
+                this.businessSummary,
                 this.summary,
                 this.timeZone,
                 this.websiteAddress,
@@ -353,6 +380,8 @@ public final class PaypointData {
 
         private Optional<String> state = Optional.empty();
 
+        private Optional<String> businessSummary = Optional.empty();
+
         private Optional<PaypointSummary> summary = Optional.empty();
 
         private Optional<Integer> timeZone = Optional.empty();
@@ -387,6 +416,7 @@ public final class PaypointData {
             phone(other.getPhone());
             serviceData(other.getServiceData());
             state(other.getState());
+            businessSummary(other.getBusinessSummary());
             summary(other.getSummary());
             timeZone(other.getTimeZone());
             websiteAddress(other.getWebsiteAddress());
@@ -596,6 +626,32 @@ public final class PaypointData {
             return this;
         }
 
+        /**
+         * <p>This business description is captured during boarding. It differs from <code>summary</code>, which
+         * reports counts of customers, transactions, and subscriptions attached to the paypoint.</p>
+         */
+        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
+        public Builder businessSummary(Optional<String> businessSummary) {
+            this.businessSummary = businessSummary;
+            return this;
+        }
+
+        public Builder businessSummary(String businessSummary) {
+            this.businessSummary = Optional.ofNullable(businessSummary);
+            return this;
+        }
+
+        public Builder businessSummary(Nullable<String> businessSummary) {
+            if (businessSummary.isNull()) {
+                this.businessSummary = null;
+            } else if (businessSummary.isEmpty()) {
+                this.businessSummary = Optional.empty();
+            } else {
+                this.businessSummary = Optional.of(businessSummary.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "summary", nulls = Nulls.SKIP)
         public Builder summary(Optional<PaypointSummary> summary) {
             this.summary = summary;
@@ -674,6 +730,7 @@ public final class PaypointData {
                     phone,
                     serviceData,
                     state,
+                    businessSummary,
                     summary,
                     timeZone,
                     websiteAddress,

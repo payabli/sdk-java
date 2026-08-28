@@ -1,5 +1,5 @@
 {
-  "cliVersion": "5.95.1",
+  "cliVersion": "5.98.1",
   "generatorName": "fernapi/fern-java-sdk",
   "generatorVersion": "4.19.0",
   "generatorConfig": {
@@ -10,10 +10,10 @@
     "client-class-name": "PayabliApiClient",
     "respect-optional-request-body": true
   },
-  "originGitCommit": "c0d928adb5a06dd2f0f02ec1e68e0159c230e3b6",
+  "originGitCommit": "aa2ca5e48aaac43d3a95cb68a4326a796855ec16",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.13",
+  "requestedVersion": "1.0.14",
   "ciProvider": "github",
-  "sdkVersion": "1.0.13"
+  "sdkVersion": "1.0.14"
 }

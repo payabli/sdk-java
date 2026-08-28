@@ -607,7 +607,7 @@ public final class TransferDetailRecord {
     }
 
     /**
-     * @return Payment method used: card, ach, or wallet
+     * @return The payment method used for the transaction, for example card, ach, or device.
      */
     @JsonIgnore
     public Optional<String> getMethod() {
@@ -2497,7 +2497,7 @@ public final class TransferDetailRecord {
         }
 
         /**
-         * <p>Payment method used: card, ach, or wallet</p>
+         * <p>The payment method used for the transaction, for example card, ach, or device.</p>
          */
         @JsonSetter(value = "Method", nulls = Nulls.SKIP)
         public Builder method(Optional<String> method) {

@@ -17,7 +17,6 @@ import io.github.payabli.api.types.AuthorizePaymentMethod;
 import io.github.payabli.api.types.RequestOutAuthorizeInvoiceData;
 import io.github.payabli.api.types.RequestOutAuthorizePaymentDetails;
 import io.github.payabli.api.types.RequestOutAuthorizeVendorData;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +32,6 @@ public final class RequestOutAuthorize {
     private final Optional<Boolean> allowDuplicatedBills;
 
     private final Optional<Boolean> doNotCreateBills;
-
-    private final Optional<Boolean> forceVendorCreation;
 
     private final Optional<Boolean> sameDayAch;
 
@@ -52,7 +49,7 @@ public final class RequestOutAuthorize {
 
     private final RequestOutAuthorizeVendorData vendorData;
 
-    private final List<RequestOutAuthorizeInvoiceData> invoiceData;
+    private final Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData;
 
     private final Optional<String> accountId;
 
@@ -68,7 +65,6 @@ public final class RequestOutAuthorize {
             Optional<String> idempotencyKey,
             Optional<Boolean> allowDuplicatedBills,
             Optional<Boolean> doNotCreateBills,
-            Optional<Boolean> forceVendorCreation,
             Optional<Boolean> sameDayAch,
             String entryPoint,
             Optional<String> source,
@@ -77,7 +73,7 @@ public final class RequestOutAuthorize {
             AuthorizePaymentMethod paymentMethod,
             RequestOutAuthorizePaymentDetails paymentDetails,
             RequestOutAuthorizeVendorData vendorData,
-            List<RequestOutAuthorizeInvoiceData> invoiceData,
+            Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData,
             Optional<String> accountId,
             Optional<String> subdomain,
             Optional<Long> subscriptionId,
@@ -86,7 +82,6 @@ public final class RequestOutAuthorize {
         this.idempotencyKey = idempotencyKey;
         this.allowDuplicatedBills = allowDuplicatedBills;
         this.doNotCreateBills = doNotCreateBills;
-        this.forceVendorCreation = forceVendorCreation;
         this.sameDayAch = sameDayAch;
         this.entryPoint = entryPoint;
         this.source = source;
@@ -125,14 +120,6 @@ public final class RequestOutAuthorize {
     @JsonIgnore
     public Optional<Boolean> getDoNotCreateBills() {
         return doNotCreateBills;
-    }
-
-    /**
-     * @return When <code>true</code>, the request creates a new vendor record, regardless of whether the vendor already exists.
-     */
-    @JsonIgnore
-    public Optional<Boolean> getForceVendorCreation() {
-        return forceVendorCreation;
     }
 
     /**
@@ -186,10 +173,10 @@ public final class RequestOutAuthorize {
     }
 
     /**
-     * @return Array of bills associated to the transaction
+     * @return Bills to pay with this payout, each referenced by <code>billId</code>.
      */
     @JsonProperty("invoiceData")
-    public List<RequestOutAuthorizeInvoiceData> getInvoiceData() {
+    public Optional<List<RequestOutAuthorizeInvoiceData>> getInvoiceData() {
         return invoiceData;
     }
 
@@ -228,7 +215,6 @@ public final class RequestOutAuthorize {
         return idempotencyKey.equals(other.idempotencyKey)
                 && allowDuplicatedBills.equals(other.allowDuplicatedBills)
                 && doNotCreateBills.equals(other.doNotCreateBills)
-                && forceVendorCreation.equals(other.forceVendorCreation)
                 && sameDayAch.equals(other.sameDayAch)
                 && entryPoint.equals(other.entryPoint)
                 && source.equals(other.source)
@@ -250,7 +236,6 @@ public final class RequestOutAuthorize {
                 this.idempotencyKey,
                 this.allowDuplicatedBills,
                 this.doNotCreateBills,
-                this.forceVendorCreation,
                 this.sameDayAch,
                 this.entryPoint,
                 this.source,
@@ -328,13 +313,6 @@ public final class RequestOutAuthorize {
         _FinalStage doNotCreateBills(Boolean doNotCreateBills);
 
         /**
-         * <p>When <code>true</code>, the request creates a new vendor record, regardless of whether the vendor already exists.</p>
-         */
-        _FinalStage forceVendorCreation(Optional<Boolean> forceVendorCreation);
-
-        _FinalStage forceVendorCreation(Boolean forceVendorCreation);
-
-        /**
          * <p>When <code>true</code>, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a <code>400</code> response and <code>responseCode</code> <code>3492</code>. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.</p>
          * <p>Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass <code>autoConvertSameDayAch</code> with a value of <code>true</code> when you capture it.</p>
          */
@@ -355,13 +333,11 @@ public final class RequestOutAuthorize {
         _FinalStage orderDescription(String orderDescription);
 
         /**
-         * <p>Array of bills associated to the transaction</p>
+         * <p>Bills to pay with this payout, each referenced by <code>billId</code>.</p>
          */
+        _FinalStage invoiceData(Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData);
+
         _FinalStage invoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData);
-
-        _FinalStage addInvoiceData(RequestOutAuthorizeInvoiceData invoiceData);
-
-        _FinalStage addAllInvoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData);
 
         _FinalStage accountId(Optional<String> accountId);
 
@@ -399,7 +375,7 @@ public final class RequestOutAuthorize {
 
         private Optional<String> accountId = Optional.empty();
 
-        private List<RequestOutAuthorizeInvoiceData> invoiceData = new ArrayList<>();
+        private Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData = Optional.empty();
 
         private Optional<String> orderDescription = Optional.empty();
 
@@ -408,8 +384,6 @@ public final class RequestOutAuthorize {
         private Optional<String> source = Optional.empty();
 
         private Optional<Boolean> sameDayAch = Optional.empty();
-
-        private Optional<Boolean> forceVendorCreation = Optional.empty();
 
         private Optional<Boolean> doNotCreateBills = Optional.empty();
 
@@ -427,7 +401,6 @@ public final class RequestOutAuthorize {
             idempotencyKey(other.getIdempotencyKey());
             allowDuplicatedBills(other.getAllowDuplicatedBills());
             doNotCreateBills(other.getDoNotCreateBills());
-            forceVendorCreation(other.getForceVendorCreation());
             sameDayAch(other.getSameDayAch());
             entryPoint(other.getEntryPoint());
             source(other.getSource());
@@ -533,37 +506,22 @@ public final class RequestOutAuthorize {
         }
 
         /**
-         * <p>Array of bills associated to the transaction</p>
+         * <p>Bills to pay with this payout, each referenced by <code>billId</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllInvoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData) {
-            if (invoiceData != null) {
-                this.invoiceData.addAll(invoiceData);
-            }
+        public _FinalStage invoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData) {
+            this.invoiceData = Optional.ofNullable(invoiceData);
             return this;
         }
 
         /**
-         * <p>Array of bills associated to the transaction</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage addInvoiceData(RequestOutAuthorizeInvoiceData invoiceData) {
-            this.invoiceData.add(invoiceData);
-            return this;
-        }
-
-        /**
-         * <p>Array of bills associated to the transaction</p>
+         * <p>Bills to pay with this payout, each referenced by <code>billId</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
-        public _FinalStage invoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData) {
-            this.invoiceData.clear();
-            if (invoiceData != null) {
-                this.invoiceData.addAll(invoiceData);
-            }
+        public _FinalStage invoiceData(Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData) {
+            this.invoiceData = invoiceData;
             return this;
         }
 
@@ -625,26 +583,6 @@ public final class RequestOutAuthorize {
         @JsonSetter(value = "sameDayACH", nulls = Nulls.SKIP)
         public _FinalStage sameDayAch(Optional<Boolean> sameDayAch) {
             this.sameDayAch = sameDayAch;
-            return this;
-        }
-
-        /**
-         * <p>When <code>true</code>, the request creates a new vendor record, regardless of whether the vendor already exists.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage forceVendorCreation(Boolean forceVendorCreation) {
-            this.forceVendorCreation = Optional.ofNullable(forceVendorCreation);
-            return this;
-        }
-
-        /**
-         * <p>When <code>true</code>, the request creates a new vendor record, regardless of whether the vendor already exists.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "forceVendorCreation", nulls = Nulls.SKIP)
-        public _FinalStage forceVendorCreation(Optional<Boolean> forceVendorCreation) {
-            this.forceVendorCreation = forceVendorCreation;
             return this;
         }
 
@@ -713,7 +651,6 @@ public final class RequestOutAuthorize {
                     idempotencyKey,
                     allowDuplicatedBills,
                     doNotCreateBills,
-                    forceVendorCreation,
                     sameDayAch,
                     entryPoint,
                     source,

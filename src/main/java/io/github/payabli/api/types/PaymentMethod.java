@@ -41,10 +41,12 @@ public final class PaymentMethod {
         } else if (this.type == 3) {
             return visitor.visit((PayMethodCloud) this.value);
         } else if (this.type == 4) {
-            return visitor.visit((Check) this.value);
+            return visitor.visit((PayMethodDevice) this.value);
         } else if (this.type == 5) {
-            return visitor.visit((Cash) this.value);
+            return visitor.visit((Check) this.value);
         } else if (this.type == 6) {
+            return visitor.visit((Cash) this.value);
+        } else if (this.type == 7) {
             return visitor.visit((PayMethodBodyAllFields) this.value);
         }
         throw new IllegalStateException("Failed to visit value. This should never happen.");
@@ -86,16 +88,20 @@ public final class PaymentMethod {
         return new PaymentMethod(value, 3);
     }
 
-    public static PaymentMethod of(Check value) {
+    public static PaymentMethod of(PayMethodDevice value) {
         return new PaymentMethod(value, 4);
     }
 
-    public static PaymentMethod of(Cash value) {
+    public static PaymentMethod of(Check value) {
         return new PaymentMethod(value, 5);
     }
 
-    public static PaymentMethod of(PayMethodBodyAllFields value) {
+    public static PaymentMethod of(Cash value) {
         return new PaymentMethod(value, 6);
+    }
+
+    public static PaymentMethod of(PayMethodBodyAllFields value) {
+        return new PaymentMethod(value, 7);
     }
 
     public interface Visitor<T> {
@@ -106,6 +112,8 @@ public final class PaymentMethod {
         T visit(PayMethodStoredMethod value);
 
         T visit(PayMethodCloud value);
+
+        T visit(PayMethodDevice value);
 
         T visit(Check value);
 
@@ -150,6 +158,14 @@ public final class PaymentMethod {
             if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("method")) {
                 try {
                     return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodCloud.class));
+                } catch (RuntimeException e) {
+                }
+            }
+            if (value instanceof Map<?, ?>
+                    && ((Map<?, ?>) value).containsKey("device")
+                    && ((Map<?, ?>) value).containsKey("method")) {
+                try {
+                    return of(ObjectMappers.JSON_MAPPER.convertValue(value, PayMethodDevice.class));
                 } catch (RuntimeException e) {
                 }
             }

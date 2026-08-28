@@ -9,35 +9,29 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OperationResult.Builder.class)
 public final class OperationResult {
-    private final Optional<String> message;
-
     private final boolean success;
+
+    private final String message;
+
+    private final String link;
 
     private final Map<String, Object> additionalProperties;
 
-    private OperationResult(Optional<String> message, boolean success, Map<String, Object> additionalProperties) {
-        this.message = message;
+    private OperationResult(boolean success, String message, String link, Map<String, Object> additionalProperties) {
         this.success = success;
+        this.message = message;
+        this.link = link;
         this.additionalProperties = additionalProperties;
-    }
-
-    /**
-     * @return Message describing the result. If the virtual card link was sent successfully, this contains the email address to which the link was sent.
-     */
-    @JsonProperty("message")
-    public Optional<String> getMessage() {
-        return message;
     }
 
     /**
@@ -46,6 +40,22 @@ public final class OperationResult {
     @JsonProperty("success")
     public boolean getSuccess() {
         return success;
+    }
+
+    /**
+     * @return A status message describing the result.
+     */
+    @JsonProperty("message")
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * @return The secure link the vendor uses to view their virtual card details. Empty when the operation fails.
+     */
+    @JsonProperty("link")
+    public String getLink() {
+        return link;
     }
 
     @java.lang.Override
@@ -60,12 +70,12 @@ public final class OperationResult {
     }
 
     private boolean equalTo(OperationResult other) {
-        return message.equals(other.message) && success == other.success;
+        return success == other.success && message.equals(other.message) && link.equals(other.link);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.message, this.success);
+        return Objects.hash(this.success, this.message, this.link);
     }
 
     @java.lang.Override
@@ -81,9 +91,23 @@ public final class OperationResult {
         /**
          * <p>Indicates whether the operation was successful.</p>
          */
-        _FinalStage success(boolean success);
+        MessageStage success(boolean success);
 
         Builder from(OperationResult other);
+    }
+
+    public interface MessageStage {
+        /**
+         * <p>A status message describing the result.</p>
+         */
+        LinkStage message(@NotNull String message);
+    }
+
+    public interface LinkStage {
+        /**
+         * <p>The secure link the vendor uses to view their virtual card details. Empty when the operation fails.</p>
+         */
+        _FinalStage link(@NotNull String link);
     }
 
     public interface _FinalStage {
@@ -92,20 +116,15 @@ public final class OperationResult {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-        /**
-         * <p>Message describing the result. If the virtual card link was sent successfully, this contains the email address to which the link was sent.</p>
-         */
-        _FinalStage message(Optional<String> message);
-
-        _FinalStage message(String message);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements SuccessStage, _FinalStage {
+    public static final class Builder implements SuccessStage, MessageStage, LinkStage, _FinalStage {
         private boolean success;
 
-        private Optional<String> message = Optional.empty();
+        private String message;
+
+        private String link;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -114,8 +133,9 @@ public final class OperationResult {
 
         @java.lang.Override
         public Builder from(OperationResult other) {
-            message(other.getMessage());
             success(other.getSuccess());
+            message(other.getMessage());
+            link(other.getLink());
             return this;
         }
 
@@ -125,34 +145,36 @@ public final class OperationResult {
          */
         @java.lang.Override
         @JsonSetter("success")
-        public _FinalStage success(boolean success) {
+        public MessageStage success(boolean success) {
             this.success = success;
             return this;
         }
 
         /**
-         * <p>Message describing the result. If the virtual card link was sent successfully, this contains the email address to which the link was sent.</p>
+         * <p>A status message describing the result.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage message(String message) {
-            this.message = Optional.ofNullable(message);
+        @JsonSetter("message")
+        public LinkStage message(@NotNull String message) {
+            this.message = Objects.requireNonNull(message, "message must not be null");
             return this;
         }
 
         /**
-         * <p>Message describing the result. If the virtual card link was sent successfully, this contains the email address to which the link was sent.</p>
+         * <p>The secure link the vendor uses to view their virtual card details. Empty when the operation fails.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter(value = "message", nulls = Nulls.SKIP)
-        public _FinalStage message(Optional<String> message) {
-            this.message = message;
+        @JsonSetter("link")
+        public _FinalStage link(@NotNull String link) {
+            this.link = Objects.requireNonNull(link, "link must not be null");
             return this;
         }
 
         @java.lang.Override
         public OperationResult build() {
-            return new OperationResult(message, success, additionalProperties);
+            return new OperationResult(success, message, link, additionalProperties);
         }
 
         @java.lang.Override

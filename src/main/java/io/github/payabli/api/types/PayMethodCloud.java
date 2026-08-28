@@ -25,18 +25,12 @@ public final class PayMethodCloud {
 
     private final PayMethodCloudMethod method;
 
-    private final Optional<Boolean> saveIfSuccess;
-
     private final Map<String, Object> additionalProperties;
 
     private PayMethodCloud(
-            Optional<String> device,
-            PayMethodCloudMethod method,
-            Optional<Boolean> saveIfSuccess,
-            Map<String, Object> additionalProperties) {
+            Optional<String> device, PayMethodCloudMethod method, Map<String, Object> additionalProperties) {
         this.device = device;
         this.method = method;
-        this.saveIfSuccess = saveIfSuccess;
         this.additionalProperties = additionalProperties;
     }
 
@@ -53,11 +47,6 @@ public final class PayMethodCloud {
         return method;
     }
 
-    @JsonProperty("saveIfSuccess")
-    public Optional<Boolean> getSaveIfSuccess() {
-        return saveIfSuccess;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -70,12 +59,12 @@ public final class PayMethodCloud {
     }
 
     private boolean equalTo(PayMethodCloud other) {
-        return device.equals(other.device) && method.equals(other.method) && saveIfSuccess.equals(other.saveIfSuccess);
+        return device.equals(other.device) && method.equals(other.method);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.device, this.method, this.saveIfSuccess);
+        return Objects.hash(this.device, this.method);
     }
 
     @java.lang.Override
@@ -106,17 +95,11 @@ public final class PayMethodCloud {
         _FinalStage device(Optional<String> device);
 
         _FinalStage device(String device);
-
-        _FinalStage saveIfSuccess(Optional<Boolean> saveIfSuccess);
-
-        _FinalStage saveIfSuccess(Boolean saveIfSuccess);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements MethodStage, _FinalStage {
         private PayMethodCloudMethod method;
-
-        private Optional<Boolean> saveIfSuccess = Optional.empty();
 
         private Optional<String> device = Optional.empty();
 
@@ -129,7 +112,6 @@ public final class PayMethodCloud {
         public Builder from(PayMethodCloud other) {
             device(other.getDevice());
             method(other.getMethod());
-            saveIfSuccess(other.getSaveIfSuccess());
             return this;
         }
 
@@ -141,19 +123,6 @@ public final class PayMethodCloud {
         @JsonSetter("method")
         public _FinalStage method(@NotNull PayMethodCloudMethod method) {
             this.method = Objects.requireNonNull(method, "method must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage saveIfSuccess(Boolean saveIfSuccess) {
-            this.saveIfSuccess = Optional.ofNullable(saveIfSuccess);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "saveIfSuccess", nulls = Nulls.SKIP)
-        public _FinalStage saveIfSuccess(Optional<Boolean> saveIfSuccess) {
-            this.saveIfSuccess = saveIfSuccess;
             return this;
         }
 
@@ -172,7 +141,7 @@ public final class PayMethodCloud {
 
         @java.lang.Override
         public PayMethodCloud build() {
-            return new PayMethodCloud(device, method, saveIfSuccess, additionalProperties);
+            return new PayMethodCloud(device, method, additionalProperties);
         }
 
         @java.lang.Override

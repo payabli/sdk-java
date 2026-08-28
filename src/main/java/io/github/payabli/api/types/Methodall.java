@@ -15,6 +15,8 @@ public final class Methodall {
 
     public static final Methodall CASH = new Methodall(Value.CASH, "cash");
 
+    public static final Methodall DEVICE = new Methodall(Value.DEVICE, "device");
+
     public static final Methodall CLOUD = new Methodall(Value.CLOUD, "cloud");
 
     private final Value value;
@@ -56,6 +58,8 @@ public final class Methodall {
                 return visitor.visitCard();
             case CASH:
                 return visitor.visitCash();
+            case DEVICE:
+                return visitor.visitDevice();
             case CLOUD:
                 return visitor.visitCloud();
             case UNKNOWN:
@@ -75,6 +79,8 @@ public final class Methodall {
                 return CARD;
             case "cash":
                 return CASH;
+            case "device":
+                return DEVICE;
             case "cloud":
                 return CLOUD;
             default:
@@ -89,6 +95,8 @@ public final class Methodall {
 
         CLOUD,
 
+        DEVICE,
+
         CHECK,
 
         CASH,
@@ -102,6 +110,8 @@ public final class Methodall {
         T visitAch();
 
         T visitCloud();
+
+        T visitDevice();
 
         T visitCheck();
 

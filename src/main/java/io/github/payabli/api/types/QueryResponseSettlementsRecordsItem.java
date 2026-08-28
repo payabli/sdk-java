@@ -388,7 +388,7 @@ public final class QueryResponseSettlementsRecordsItem {
     }
 
     /**
-     * @return Payment method used: card or ach.
+     * @return The payment method used for the transaction, for example card, ach, or device.
      */
     @JsonProperty("TransMethod")
     public Optional<String> getTransMethod() {
@@ -1046,7 +1046,7 @@ public final class QueryResponseSettlementsRecordsItem {
         }
 
         /**
-         * <p>Payment method used: card or ach.</p>
+         * <p>The payment method used for the transaction, for example card, ach, or device.</p>
          */
         @JsonSetter(value = "TransMethod", nulls = Nulls.SKIP)
         public Builder transMethod(Optional<String> transMethod) {

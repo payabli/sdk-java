@@ -314,7 +314,7 @@ public class RawCloudClient {
     }
 
     /**
-     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * Use <a href="/developers/api-reference/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(String entry) {
@@ -322,7 +322,7 @@ public class RawCloudClient {
     }
 
     /**
-     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * Use <a href="/developers/api-reference/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(String entry, RequestOptions requestOptions) {
@@ -330,7 +330,7 @@ public class RawCloudClient {
     }
 
     /**
-     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * Use <a href="/developers/api-reference/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(String entry, ListDeviceRequest request) {
@@ -338,7 +338,7 @@ public class RawCloudClient {
     }
 
     /**
-     * Use <a href="/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
+     * Use <a href="/developers/api-reference/get-list-of-devices-for-a-paypoint">List devices by paypoint</a> instead, which supports filters, sorting, and pagination.
      * <p>Get a list of cloud devices registered to an entrypoint.</p>
      */
     public PayabliApiClientHttpResponse<CloudQueryApiResponse> listDevice(
