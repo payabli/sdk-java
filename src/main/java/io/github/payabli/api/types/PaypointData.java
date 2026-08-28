@@ -5,15 +5,12 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.github.payabli.api.core.Nullable;
-import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.List;
@@ -224,11 +221,8 @@ public final class PaypointData {
      * @return This business description is captured during boarding. It differs from <code>summary</code>, which
      * reports counts of customers, transactions, and subscriptions attached to the paypoint.
      */
-    @JsonIgnore
+    @JsonProperty("Summary")
     public Optional<String> getBusinessSummary() {
-        if (businessSummary == null) {
-            return Optional.empty();
-        }
         return businessSummary;
     }
 
@@ -258,12 +252,6 @@ public final class PaypointData {
     @JsonProperty("StatementEmail")
     public Optional<StatementEmailConfig> getStatementEmail() {
         return statementEmail;
-    }
-
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
-    @JsonProperty("Summary")
-    private Optional<String> _getBusinessSummary() {
-        return businessSummary;
     }
 
     @java.lang.Override
@@ -638,17 +626,6 @@ public final class PaypointData {
 
         public Builder businessSummary(String businessSummary) {
             this.businessSummary = Optional.ofNullable(businessSummary);
-            return this;
-        }
-
-        public Builder businessSummary(Nullable<String> businessSummary) {
-            if (businessSummary.isNull()) {
-                this.businessSummary = null;
-            } else if (businessSummary.isEmpty()) {
-                this.businessSummary = Optional.empty();
-            } else {
-                this.businessSummary = Optional.of(businessSummary.get());
-            }
             return this;
         }
 
