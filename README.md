@@ -327,7 +327,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'io.github.payabli:sdk-java:1.0.15'
+  implementation 'io.github.payabli:sdk-java:1.0.16'
 }
 ```
 
@@ -339,7 +339,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>io.github.payabli</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>1.0.15</version>
+  <version>1.0.16</version>
 </dependency>
 ```
 

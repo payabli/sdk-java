@@ -8844,10 +8844,13 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `chargebackDate` (gt, ge, lt, le, eq, ne)
 - `transId`  (ne, eq, ct, nct)
 - `method`   (in, nin, eq, ne)
+- `amount`  (gt, ge, lt, le, eq, ne): the chargeback or return's own amount (the top-level `netAmount` in the response), unlike `netAmount`, which matches the original transaction's net
+- `totalAmount`  (gt, ge, lt, le, eq, ne): the original transaction's gross amount, including service and pending fees (`transaction.totalAmount` in the response)
 - `netAmount`  (gt, ge, lt, le, eq, ne)
 - `reasonCode`   (in, nin, eq, ne)
 - `reason`  (ct, nct, eq, ne)
 - `replyDate` (gt, ge, lt, le, eq, ne)
+- `replyBy` (gt, ge, lt, le, eq, ne): alias of `replyDate`, matching the `replyBy` field in the response
 - `caseNumber`  (ct, nct, eq, ne)
 - `status`   (in, nin, eq, ne)
 - `accountType`   (in, nin, eq, ne)
@@ -8902,7 +8905,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 <dl>
 <dd>
 
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`. For this endpoint, you can also sort by `amount` and `totalAmount`.
     
 </dd>
 </dl>
@@ -9017,10 +9020,13 @@ Collection of field names, conditions, and values used to filter the query.
 - `chargebackDate` (gt, ge, lt, le, eq, ne)
 - `transId`  (ne, eq, ct, nct)
 - `method`   (in, nin, eq, ne)
+- `amount`  (gt, ge, lt, le, eq, ne): the chargeback or return's own amount (the top-level `netAmount` in the response), unlike `netAmount`, which matches the original transaction's net
+- `totalAmount`  (gt, ge, lt, le, eq, ne): the original transaction's gross amount, including service and pending fees (`transaction.totalAmount` in the response)
 - `netAmount`  (gt, ge, lt, le, eq, ne)
 - `reasonCode`   (in, nin, eq, ne)
 - `reason`  (ct, nct, eq, ne)
 - `replyDate` (gt, ge, lt, le, eq, ne)
+- `replyBy` (gt, ge, lt, le, eq, ne): alias of `replyDate`, matching the `replyBy` field in the response
 - `caseNumber`  (ct, nct, eq, ne)
 - `status`   (in, nin, eq, ne)
 - `accountType`   (in, nin, eq, ne)
@@ -9076,7 +9082,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 <dl>
 <dd>
 
-**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+**sortBy:** `Optional<String>` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`. For this endpoint, you can also sort by `amount` and `totalAmount`.
     
 </dd>
 </dl>
@@ -10607,6 +10613,7 @@ Accepted field names:
   - `vendorName` (ct, nct, eq, ne)
   - `paymentMethod` (ct, nct, eq, ne, in, nin)
   - `paymentId` (ct, nct, eq, ne)
+  - `orderId` (ne, eq)
   - `parentOrgId` (ne, eq, nin, in)
   - `batchNumber` (ct, nct, eq, ne)
   - `totalAmount` (gt, ge, lt, le, eq, ne)
@@ -10787,6 +10794,7 @@ Accepted field names:
   - `parentOrgId` (ne, eq, nin, in)
   - `paymentMethod` (ct, nct, eq, ne, in, nin)
   - `paymentId` (ct, nct, eq, ne)
+  - `orderId` (ne, eq)
   - `batchNumber` (ct, nct, eq, ne)
   - `totalAmount` (gt, ge, lt, le, eq, ne)
   - `paypointLegal` (ne, eq, ct, nct)
@@ -14423,7 +14431,7 @@ Accepted comparison operators - enclosed between parentheses:
 <dl>
 <dd>
 
-Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+Use this endpoint to upload a document file for OCR processing as `multipart/form-data`, with the file in a field named `file`. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more. To send the file as a Base64-encoded string in a JSON body instead, use `ocrDocumentJson`.
 </dd>
 </dl>
 </dd>
@@ -14440,7 +14448,8 @@ Use this endpoint to upload an image file for OCR processing. The accepted file 
 ```java
 client.ocr().ocrDocumentForm(
     "typeResult",
-    FileContentImageOnly
+    null,
+    OcrDocumentFormRequest
         .builder()
         .build()
 );
@@ -14459,14 +14468,6 @@ client.ocr().ocrDocumentForm(
 <dd>
 
 **typeResult:** `String` — The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `FileContentImageOnly` 
     
 </dd>
 </dl>
@@ -14507,7 +14508,7 @@ Use this endpoint to submit a Base64-encoded image file for OCR processing. The 
 ```java
 client.ocr().ocrDocumentJson(
     "typeResult",
-    FileContentImageOnly
+    OcrDocumentJsonRequest
         .builder()
         .build()
 );
@@ -14533,7 +14534,31 @@ client.ocr().ocrDocumentJson(
 <dl>
 <dd>
 
-**request:** `FileContentImageOnly` 
+**ftype:** `Optional<FileContentFtype>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `Optional<String>` — The name of the file to be uploaded
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**furl:** `Optional<String>` — Optional URL link to the file
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fContent:** `Optional<String>` — Base64-encoded file content
     
 </dd>
 </dl>
@@ -25212,38 +25237,43 @@ For check payouts, Payabli validates the remit (mailing) address at authorizatio
 client.moneyOut().authorizeOut(
     RequestOutAuthorize
         .builder()
-        .entryPoint("8cfec329267")
-        .paymentMethod(
-            AuthorizePaymentMethod
+        .body(
+            AuthorizePayoutBody
                 .builder()
-                .method("managed")
-                .build()
-        )
-        .paymentDetails(
-            RequestOutAuthorizePaymentDetails
-                .builder()
-                .totalAmount(47.0)
-                .unbundled(false)
-                .build()
-        )
-        .vendorData(
-            RequestOutAuthorizeVendorData
-                .builder()
-                .vendorNumber("VEN-123")
-                .build()
-        )
-        .orderDescription("Window Painting")
-        .invoiceData(
-            Optional.of(
-                Arrays.asList(
-                    RequestOutAuthorizeInvoiceData
+                .entryPoint("8cfec329267")
+                .paymentMethod(
+                    AuthorizePaymentMethod
                         .builder()
-                        .billId(54323L)
+                        .method("managed")
                         .build()
                 )
-            )
+                .paymentDetails(
+                    RequestOutAuthorizePaymentDetails
+                        .builder()
+                        .totalAmount(47.0)
+                        .unbundled(false)
+                        .build()
+                )
+                .vendorData(
+                    RequestOutAuthorizeVendorData
+                        .builder()
+                        .vendorNumber("VEN-123")
+                        .build()
+                )
+                .orderDescription("Window Painting")
+                .invoiceData(
+                    Optional.of(
+                        Arrays.asList(
+                            RequestOutAuthorizeInvoiceData
+                                .builder()
+                                .billId(54323L)
+                                .build()
+                        )
+                    )
+                )
+                .autoCapture(true)
+                .build()
         )
-        .autoCapture(true)
         .build()
 );
 ```
@@ -25296,95 +25326,7 @@ Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or p
 <dl>
 <dd>
 
-**entryPoint:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**source:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orderId:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orderDescription:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentMethod:** `AuthorizePaymentMethod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentDetails:** `RequestOutAuthorizePaymentDetails` — Object containing payment details.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**vendorData:** `RequestOutAuthorizeVendorData` — Object containing vendor data.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoiceData:** `Optional<List<RequestOutAuthorizeInvoiceData>>` — Bills to pay with this payout, each referenced by `billId`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accountId:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `Optional<String>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subscriptionId:** `Optional<Long>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**autoCapture:** `Optional<Boolean>` 
+**request:** `AuthorizePayoutBody` 
     
 </dd>
 </dl>
@@ -25711,6 +25653,161 @@ This parameter has no effect on payouts that weren't authorized for same-day ACH
 <dd>
 
 **idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.moneyOut.payout(request) -> AuthCapturePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling `POST /MoneyOut/authorize` followed by `GET /MoneyOut/capture/{referenceId}`, in a single call.
+
+Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.
+
+Payabli ignores the `autoCapture` field in the request body, since this endpoint always captures inline.
+
+If the capture fails, the payout stays authorized. Retry the capture with `GET /MoneyOut/capture/{referenceId}` using the `referenceId` from the error response rather than resubmitting, which would create a second payout. See the [Manage payouts guide](/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call) for details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.moneyOut().payout(
+    PayoutRequest
+        .builder()
+        .body(
+            AuthorizePayoutBody
+                .builder()
+                .entryPoint("8cfec329267")
+                .paymentMethod(
+                    AuthorizePaymentMethod
+                        .builder()
+                        .method("managed")
+                        .build()
+                )
+                .paymentDetails(
+                    RequestOutAuthorizePaymentDetails
+                        .builder()
+                        .totalAmount(47.0)
+                        .build()
+                )
+                .vendorData(
+                    RequestOutAuthorizeVendorData
+                        .builder()
+                        .vendorNumber("VEN-123")
+                        .build()
+                )
+                .orderDescription("Window Painting")
+                .invoiceData(
+                    Optional.of(
+                        Arrays.asList(
+                            RequestOutAuthorizeInvoiceData
+                                .builder()
+                                .billId(54323L)
+                                .build()
+                        )
+                    )
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sameDayAch:** `Optional<Boolean>` 
+
+When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
+
+Because this endpoint captures immediately, pass `autoConvertSameDayAch` with a value of `true` to fall back to standard ACH if the capture runs after the same-day ACH cutoff.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**doNotCreateBills:** `Optional<Boolean>` — When `true`, Payabli won't automatically create a bill for this payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**allowDuplicatedBills:** `Optional<Boolean>` — When `true`, the payout bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout for a bill, like a split payment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**updateVendorPaymentMethod:** `Optional<Boolean>` — When `true`, Payabli updates the vendor's stored default payment method to the method used in this payout.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autoConvertSameDayAch:** `Optional<Boolean>` 
+
+Controls what happens to a payout authorized with `sameDayACH` set to `true` when the capture runs after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+
+This parameter has no effect on payouts that weren't authorized for same-day ACH.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `Optional<String>` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `AuthorizePayoutBody` 
     
 </dd>
 </dl>

@@ -69,7 +69,7 @@ public final class RequestOutAuthorizePaymentDetails {
     }
 
     /**
-     * @return Total amount to be charged. If a service fee is included, then this amount should include the service fee.
+     * @return Total amount to be charged. If a service fee is included, then this amount should include the service fee. If you're using managed payables (<code>paymentMethod.method</code> of <code>managed</code>), you can partially pay a single bill by setting this below the bill's outstanding balance. See <a href="/guides/pay-out-developer-bills-manage#partially-pay-a-bill">Partially pay a bill</a>.
      */
     @JsonProperty("totalAmount")
     public Optional<Double> getTotalAmount() {
@@ -183,7 +183,7 @@ public final class RequestOutAuthorizePaymentDetails {
         }
 
         /**
-         * <p>Total amount to be charged. If a service fee is included, then this amount should include the service fee.</p>
+         * <p>Total amount to be charged. If a service fee is included, then this amount should include the service fee. If you're using managed payables (<code>paymentMethod.method</code> of <code>managed</code>), you can partially pay a single bill by setting this below the bill's outstanding balance. See <a href="/guides/pay-out-developer-bills-manage#partially-pay-a-bill">Partially pay a bill</a>.</p>
          */
         @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
         public Builder totalAmount(Optional<Double> totalAmount) {

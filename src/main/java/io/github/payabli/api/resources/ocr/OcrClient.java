@@ -5,8 +5,12 @@ package io.github.payabli.api.resources.ocr;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
-import io.github.payabli.api.types.FileContentImageOnly;
+import io.github.payabli.api.resources.ocr.requests.OcrDocumentFormRequest;
+import io.github.payabli.api.resources.ocr.requests.OcrDocumentJsonRequest;
 import io.github.payabli.api.types.PayabliApiResponseOcr;
+import java.io.File;
+import java.io.InputStream;
+import okhttp3.MediaType;
 
 public class OcrClient {
     protected final ClientOptions clientOptions;
@@ -26,33 +30,48 @@ public class OcrClient {
     }
 
     /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+     * Use this endpoint to upload a document file for OCR processing as <code>multipart/form-data</code>, with the file in a field named <code>file</code>. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more. To send the file as a Base64-encoded string in a JSON body instead, use <code>ocrDocumentJson</code>.
      */
-    public PayabliApiResponseOcr ocrDocumentForm(String typeResult) {
-        return this.rawClient.ocrDocumentForm(typeResult).body();
+    public PayabliApiResponseOcr ocrDocumentForm(String typeResult, File file, OcrDocumentFormRequest request) {
+        return this.rawClient.ocrDocumentForm(typeResult, file, request).body();
     }
 
     /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-     */
-    public PayabliApiResponseOcr ocrDocumentForm(String typeResult, RequestOptions requestOptions) {
-        return this.rawClient.ocrDocumentForm(typeResult, requestOptions).body();
-    }
-
-    /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-     */
-    public PayabliApiResponseOcr ocrDocumentForm(String typeResult, FileContentImageOnly request) {
-        return this.rawClient.ocrDocumentForm(typeResult, request).body();
-    }
-
-    /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+     * Use this endpoint to upload a document file for OCR processing as <code>multipart/form-data</code>, with the file in a field named <code>file</code>. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more. To send the file as a Base64-encoded string in a JSON body instead, use <code>ocrDocumentJson</code>.
      */
     public PayabliApiResponseOcr ocrDocumentForm(
-            String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
+            String typeResult, File file, OcrDocumentFormRequest request, RequestOptions requestOptions) {
         return this.rawClient
-                .ocrDocumentForm(typeResult, request, requestOptions)
+                .ocrDocumentForm(typeResult, file, request, requestOptions)
+                .body();
+    }
+
+    public PayabliApiResponseOcr ocrDocumentForm(String typeResult, InputStream stream, String filename) {
+        return this.rawClient.ocrDocumentForm(typeResult, stream, filename).body();
+    }
+
+    public PayabliApiResponseOcr ocrDocumentForm(
+            String typeResult, InputStream stream, String filename, MediaType mediaType) {
+        return this.rawClient
+                .ocrDocumentForm(typeResult, stream, filename, mediaType)
+                .body();
+    }
+
+    public PayabliApiResponseOcr ocrDocumentForm(
+            String typeResult, InputStream stream, String filename, RequestOptions requestOptions) {
+        return this.rawClient
+                .ocrDocumentForm(typeResult, stream, filename, requestOptions)
+                .body();
+    }
+
+    public PayabliApiResponseOcr ocrDocumentForm(
+            String typeResult,
+            InputStream stream,
+            String filename,
+            MediaType mediaType,
+            RequestOptions requestOptions) {
+        return this.rawClient
+                .ocrDocumentForm(typeResult, stream, filename, mediaType, requestOptions)
                 .body();
     }
 
@@ -73,7 +92,7 @@ public class OcrClient {
     /**
      * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
-    public PayabliApiResponseOcr ocrDocumentJson(String typeResult, FileContentImageOnly request) {
+    public PayabliApiResponseOcr ocrDocumentJson(String typeResult, OcrDocumentJsonRequest request) {
         return this.rawClient.ocrDocumentJson(typeResult, request).body();
     }
 
@@ -81,7 +100,7 @@ public class OcrClient {
      * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
     public PayabliApiResponseOcr ocrDocumentJson(
-            String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
+            String typeResult, OcrDocumentJsonRequest request, RequestOptions requestOptions) {
         return this.rawClient
                 .ocrDocumentJson(typeResult, request, requestOptions)
                 .body();

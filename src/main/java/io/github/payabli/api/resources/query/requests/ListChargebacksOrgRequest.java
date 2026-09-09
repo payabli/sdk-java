@@ -86,10 +86,13 @@ public final class ListChargebacksOrgRequest {
      * <li><code>chargebackDate</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>transId</code>  (ne, eq, ct, nct)</li>
      * <li><code>method</code>   (in, nin, eq, ne)</li>
+     * <li><code>amount</code>  (gt, ge, lt, le, eq, ne): the chargeback or return's own amount (the top-level <code>netAmount</code> in the response), unlike <code>netAmount</code>, which matches the original transaction's net</li>
+     * <li><code>totalAmount</code>  (gt, ge, lt, le, eq, ne): the original transaction's gross amount, including service and pending fees (<code>transaction.totalAmount</code> in the response)</li>
      * <li><code>netAmount</code>  (gt, ge, lt, le, eq, ne)</li>
      * <li><code>reasonCode</code>   (in, nin, eq, ne)</li>
      * <li><code>reason</code>  (ct, nct, eq, ne)</li>
      * <li><code>replyDate</code> (gt, ge, lt, le, eq, ne)</li>
+     * <li><code>replyBy</code> (gt, ge, lt, le, eq, ne): alias of <code>replyDate</code>, matching the <code>replyBy</code> field in the response</li>
      * <li><code>caseNumber</code>  (ct, nct, eq, ne)</li>
      * <li><code>status</code>   (in, nin, eq, ne)</li>
      * <li><code>accountType</code>   (in, nin, eq, ne)</li>
@@ -146,7 +149,7 @@ public final class ListChargebacksOrgRequest {
     }
 
     /**
-     * @return The field name to use for sorting results. Use <code>desc(field_name)</code> to sort descending by <code>field_name</code>, and use <code>asc(field_name)</code> to sort ascending by <code>field_name</code>.
+     * @return The field name to use for sorting results. Use <code>desc(field_name)</code> to sort descending by <code>field_name</code>, and use <code>asc(field_name)</code> to sort ascending by <code>field_name</code>. For this endpoint, you can also sort by <code>amount</code> and <code>totalAmount</code>.
      */
     @JsonProperty("sortBy")
     public Optional<String> getSortBy() {
@@ -268,10 +271,13 @@ public final class ListChargebacksOrgRequest {
          * <li><code>chargebackDate</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>transId</code>  (ne, eq, ct, nct)</li>
          * <li><code>method</code>   (in, nin, eq, ne)</li>
+         * <li><code>amount</code>  (gt, ge, lt, le, eq, ne): the chargeback or return's own amount (the top-level <code>netAmount</code> in the response), unlike <code>netAmount</code>, which matches the original transaction's net</li>
+         * <li><code>totalAmount</code>  (gt, ge, lt, le, eq, ne): the original transaction's gross amount, including service and pending fees (<code>transaction.totalAmount</code> in the response)</li>
          * <li><code>netAmount</code>  (gt, ge, lt, le, eq, ne)</li>
          * <li><code>reasonCode</code>   (in, nin, eq, ne)</li>
          * <li><code>reason</code>  (ct, nct, eq, ne)</li>
          * <li><code>replyDate</code> (gt, ge, lt, le, eq, ne)</li>
+         * <li><code>replyBy</code> (gt, ge, lt, le, eq, ne): alias of <code>replyDate</code>, matching the <code>replyBy</code> field in the response</li>
          * <li><code>caseNumber</code>  (ct, nct, eq, ne)</li>
          * <li><code>status</code>   (in, nin, eq, ne)</li>
          * <li><code>accountType</code>   (in, nin, eq, ne)</li>
@@ -334,7 +340,7 @@ public final class ListChargebacksOrgRequest {
         }
 
         /**
-         * <p>The field name to use for sorting results. Use <code>desc(field_name)</code> to sort descending by <code>field_name</code>, and use <code>asc(field_name)</code> to sort ascending by <code>field_name</code>.</p>
+         * <p>The field name to use for sorting results. Use <code>desc(field_name)</code> to sort descending by <code>field_name</code>, and use <code>asc(field_name)</code> to sort ascending by <code>field_name</code>. For this endpoint, you can also sort by <code>amount</code> and <code>totalAmount</code>.</p>
          */
         @JsonSetter(value = "sortBy", nulls = Nulls.SKIP)
         public Builder sortBy(Optional<String> sortBy) {

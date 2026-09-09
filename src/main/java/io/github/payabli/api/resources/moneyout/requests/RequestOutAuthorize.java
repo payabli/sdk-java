@@ -13,12 +13,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
-import io.github.payabli.api.types.AuthorizePaymentMethod;
-import io.github.payabli.api.types.RequestOutAuthorizeInvoiceData;
-import io.github.payabli.api.types.RequestOutAuthorizePaymentDetails;
-import io.github.payabli.api.types.RequestOutAuthorizeVendorData;
+import io.github.payabli.api.types.AuthorizePayoutBody;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,29 +31,7 @@ public final class RequestOutAuthorize {
 
     private final Optional<Boolean> sameDayAch;
 
-    private final String entryPoint;
-
-    private final Optional<String> source;
-
-    private final Optional<String> orderId;
-
-    private final Optional<String> orderDescription;
-
-    private final AuthorizePaymentMethod paymentMethod;
-
-    private final RequestOutAuthorizePaymentDetails paymentDetails;
-
-    private final RequestOutAuthorizeVendorData vendorData;
-
-    private final Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData;
-
-    private final Optional<String> accountId;
-
-    private final Optional<String> subdomain;
-
-    private final Optional<Long> subscriptionId;
-
-    private final Optional<Boolean> autoCapture;
+    private final AuthorizePayoutBody body;
 
     private final Map<String, Object> additionalProperties;
 
@@ -66,35 +40,13 @@ public final class RequestOutAuthorize {
             Optional<Boolean> allowDuplicatedBills,
             Optional<Boolean> doNotCreateBills,
             Optional<Boolean> sameDayAch,
-            String entryPoint,
-            Optional<String> source,
-            Optional<String> orderId,
-            Optional<String> orderDescription,
-            AuthorizePaymentMethod paymentMethod,
-            RequestOutAuthorizePaymentDetails paymentDetails,
-            RequestOutAuthorizeVendorData vendorData,
-            Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData,
-            Optional<String> accountId,
-            Optional<String> subdomain,
-            Optional<Long> subscriptionId,
-            Optional<Boolean> autoCapture,
+            AuthorizePayoutBody body,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.allowDuplicatedBills = allowDuplicatedBills;
         this.doNotCreateBills = doNotCreateBills;
         this.sameDayAch = sameDayAch;
-        this.entryPoint = entryPoint;
-        this.source = source;
-        this.orderId = orderId;
-        this.orderDescription = orderDescription;
-        this.paymentMethod = paymentMethod;
-        this.paymentDetails = paymentDetails;
-        this.vendorData = vendorData;
-        this.invoiceData = invoiceData;
-        this.accountId = accountId;
-        this.subdomain = subdomain;
-        this.subscriptionId = subscriptionId;
-        this.autoCapture = autoCapture;
+        this.body = body;
         this.additionalProperties = additionalProperties;
     }
 
@@ -109,7 +61,7 @@ public final class RequestOutAuthorize {
     /**
      * @return When <code>true</code>, the authorization bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout authorization for a bill, like a split payment.
      */
-    @JsonIgnore
+    @JsonProperty("allowDuplicatedBills")
     public Optional<Boolean> getAllowDuplicatedBills() {
         return allowDuplicatedBills;
     }
@@ -117,7 +69,7 @@ public final class RequestOutAuthorize {
     /**
      * @return When <code>true</code>, Payabli won't automatically create a bill for this payout transaction.
      */
-    @JsonIgnore
+    @JsonProperty("doNotCreateBills")
     public Optional<Boolean> getDoNotCreateBills() {
         return doNotCreateBills;
     }
@@ -126,78 +78,14 @@ public final class RequestOutAuthorize {
      * @return When <code>true</code>, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a <code>400</code> response and <code>responseCode</code> <code>3492</code>. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
      * <p>Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass <code>autoConvertSameDayAch</code> with a value of <code>true</code> when you capture it.</p>
      */
-    @JsonIgnore
+    @JsonProperty("sameDayACH")
     public Optional<Boolean> getSameDayAch() {
         return sameDayAch;
     }
 
-    @JsonProperty("entryPoint")
-    public String getEntryPoint() {
-        return entryPoint;
-    }
-
-    @JsonProperty("source")
-    public Optional<String> getSource() {
-        return source;
-    }
-
-    @JsonProperty("orderId")
-    public Optional<String> getOrderId() {
-        return orderId;
-    }
-
-    @JsonProperty("orderDescription")
-    public Optional<String> getOrderDescription() {
-        return orderDescription;
-    }
-
-    @JsonProperty("paymentMethod")
-    public AuthorizePaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    /**
-     * @return Object containing payment details.
-     */
-    @JsonProperty("paymentDetails")
-    public RequestOutAuthorizePaymentDetails getPaymentDetails() {
-        return paymentDetails;
-    }
-
-    /**
-     * @return Object containing vendor data.
-     */
-    @JsonProperty("vendorData")
-    public RequestOutAuthorizeVendorData getVendorData() {
-        return vendorData;
-    }
-
-    /**
-     * @return Bills to pay with this payout, each referenced by <code>billId</code>.
-     */
-    @JsonProperty("invoiceData")
-    public Optional<List<RequestOutAuthorizeInvoiceData>> getInvoiceData() {
-        return invoiceData;
-    }
-
-    @JsonProperty("accountId")
-    public Optional<String> getAccountId() {
-        return accountId;
-    }
-
-    @JsonProperty("subdomain")
-    public Optional<String> getSubdomain() {
-        return subdomain;
-    }
-
-    @JsonProperty("subscriptionId")
-    public Optional<Long> getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    @JsonProperty("autoCapture")
-    public Optional<Boolean> getAutoCapture() {
-        return autoCapture;
+    @JsonProperty("body")
+    public AuthorizePayoutBody getBody() {
+        return body;
     }
 
     @java.lang.Override
@@ -216,39 +104,13 @@ public final class RequestOutAuthorize {
                 && allowDuplicatedBills.equals(other.allowDuplicatedBills)
                 && doNotCreateBills.equals(other.doNotCreateBills)
                 && sameDayAch.equals(other.sameDayAch)
-                && entryPoint.equals(other.entryPoint)
-                && source.equals(other.source)
-                && orderId.equals(other.orderId)
-                && orderDescription.equals(other.orderDescription)
-                && paymentMethod.equals(other.paymentMethod)
-                && paymentDetails.equals(other.paymentDetails)
-                && vendorData.equals(other.vendorData)
-                && invoiceData.equals(other.invoiceData)
-                && accountId.equals(other.accountId)
-                && subdomain.equals(other.subdomain)
-                && subscriptionId.equals(other.subscriptionId)
-                && autoCapture.equals(other.autoCapture);
+                && body.equals(other.body);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.idempotencyKey,
-                this.allowDuplicatedBills,
-                this.doNotCreateBills,
-                this.sameDayAch,
-                this.entryPoint,
-                this.source,
-                this.orderId,
-                this.orderDescription,
-                this.paymentMethod,
-                this.paymentDetails,
-                this.vendorData,
-                this.invoiceData,
-                this.accountId,
-                this.subdomain,
-                this.subscriptionId,
-                this.autoCapture);
+                this.idempotencyKey, this.allowDuplicatedBills, this.doNotCreateBills, this.sameDayAch, this.body);
     }
 
     @java.lang.Override
@@ -256,32 +118,14 @@ public final class RequestOutAuthorize {
         return ObjectMappers.stringify(this);
     }
 
-    public static EntryPointStage builder() {
+    public static BodyStage builder() {
         return new Builder();
     }
 
-    public interface EntryPointStage {
-        PaymentMethodStage entryPoint(@NotNull String entryPoint);
+    public interface BodyStage {
+        _FinalStage body(@NotNull AuthorizePayoutBody body);
 
         Builder from(RequestOutAuthorize other);
-    }
-
-    public interface PaymentMethodStage {
-        PaymentDetailsStage paymentMethod(@NotNull AuthorizePaymentMethod paymentMethod);
-    }
-
-    public interface PaymentDetailsStage {
-        /**
-         * <p>Object containing payment details.</p>
-         */
-        VendorDataStage paymentDetails(@NotNull RequestOutAuthorizePaymentDetails paymentDetails);
-    }
-
-    public interface VendorDataStage {
-        /**
-         * <p>Object containing vendor data.</p>
-         */
-        _FinalStage vendorData(@NotNull RequestOutAuthorizeVendorData vendorData);
     }
 
     public interface _FinalStage {
@@ -319,69 +163,11 @@ public final class RequestOutAuthorize {
         _FinalStage sameDayAch(Optional<Boolean> sameDayAch);
 
         _FinalStage sameDayAch(Boolean sameDayAch);
-
-        _FinalStage source(Optional<String> source);
-
-        _FinalStage source(String source);
-
-        _FinalStage orderId(Optional<String> orderId);
-
-        _FinalStage orderId(String orderId);
-
-        _FinalStage orderDescription(Optional<String> orderDescription);
-
-        _FinalStage orderDescription(String orderDescription);
-
-        /**
-         * <p>Bills to pay with this payout, each referenced by <code>billId</code>.</p>
-         */
-        _FinalStage invoiceData(Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData);
-
-        _FinalStage invoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData);
-
-        _FinalStage accountId(Optional<String> accountId);
-
-        _FinalStage accountId(String accountId);
-
-        _FinalStage subdomain(Optional<String> subdomain);
-
-        _FinalStage subdomain(String subdomain);
-
-        _FinalStage subscriptionId(Optional<Long> subscriptionId);
-
-        _FinalStage subscriptionId(Long subscriptionId);
-
-        _FinalStage autoCapture(Optional<Boolean> autoCapture);
-
-        _FinalStage autoCapture(Boolean autoCapture);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder
-            implements EntryPointStage, PaymentMethodStage, PaymentDetailsStage, VendorDataStage, _FinalStage {
-        private String entryPoint;
-
-        private AuthorizePaymentMethod paymentMethod;
-
-        private RequestOutAuthorizePaymentDetails paymentDetails;
-
-        private RequestOutAuthorizeVendorData vendorData;
-
-        private Optional<Boolean> autoCapture = Optional.empty();
-
-        private Optional<Long> subscriptionId = Optional.empty();
-
-        private Optional<String> subdomain = Optional.empty();
-
-        private Optional<String> accountId = Optional.empty();
-
-        private Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData = Optional.empty();
-
-        private Optional<String> orderDescription = Optional.empty();
-
-        private Optional<String> orderId = Optional.empty();
-
-        private Optional<String> source = Optional.empty();
+    public static final class Builder implements BodyStage, _FinalStage {
+        private AuthorizePayoutBody body;
 
         private Optional<Boolean> sameDayAch = Optional.empty();
 
@@ -402,165 +188,14 @@ public final class RequestOutAuthorize {
             allowDuplicatedBills(other.getAllowDuplicatedBills());
             doNotCreateBills(other.getDoNotCreateBills());
             sameDayAch(other.getSameDayAch());
-            entryPoint(other.getEntryPoint());
-            source(other.getSource());
-            orderId(other.getOrderId());
-            orderDescription(other.getOrderDescription());
-            paymentMethod(other.getPaymentMethod());
-            paymentDetails(other.getPaymentDetails());
-            vendorData(other.getVendorData());
-            invoiceData(other.getInvoiceData());
-            accountId(other.getAccountId());
-            subdomain(other.getSubdomain());
-            subscriptionId(other.getSubscriptionId());
-            autoCapture(other.getAutoCapture());
+            body(other.getBody());
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter("entryPoint")
-        public PaymentMethodStage entryPoint(@NotNull String entryPoint) {
-            this.entryPoint = Objects.requireNonNull(entryPoint, "entryPoint must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("paymentMethod")
-        public PaymentDetailsStage paymentMethod(@NotNull AuthorizePaymentMethod paymentMethod) {
-            this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
-            return this;
-        }
-
-        /**
-         * <p>Object containing payment details.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("paymentDetails")
-        public VendorDataStage paymentDetails(@NotNull RequestOutAuthorizePaymentDetails paymentDetails) {
-            this.paymentDetails = Objects.requireNonNull(paymentDetails, "paymentDetails must not be null");
-            return this;
-        }
-
-        /**
-         * <p>Object containing vendor data.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("vendorData")
-        public _FinalStage vendorData(@NotNull RequestOutAuthorizeVendorData vendorData) {
-            this.vendorData = Objects.requireNonNull(vendorData, "vendorData must not be null");
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage autoCapture(Boolean autoCapture) {
-            this.autoCapture = Optional.ofNullable(autoCapture);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "autoCapture", nulls = Nulls.SKIP)
-        public _FinalStage autoCapture(Optional<Boolean> autoCapture) {
-            this.autoCapture = autoCapture;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage subscriptionId(Long subscriptionId) {
-            this.subscriptionId = Optional.ofNullable(subscriptionId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "subscriptionId", nulls = Nulls.SKIP)
-        public _FinalStage subscriptionId(Optional<Long> subscriptionId) {
-            this.subscriptionId = subscriptionId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage subdomain(String subdomain) {
-            this.subdomain = Optional.ofNullable(subdomain);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "subdomain", nulls = Nulls.SKIP)
-        public _FinalStage subdomain(Optional<String> subdomain) {
-            this.subdomain = subdomain;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage accountId(String accountId) {
-            this.accountId = Optional.ofNullable(accountId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
-        public _FinalStage accountId(Optional<String> accountId) {
-            this.accountId = accountId;
-            return this;
-        }
-
-        /**
-         * <p>Bills to pay with this payout, each referenced by <code>billId</code>.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage invoiceData(List<RequestOutAuthorizeInvoiceData> invoiceData) {
-            this.invoiceData = Optional.ofNullable(invoiceData);
-            return this;
-        }
-
-        /**
-         * <p>Bills to pay with this payout, each referenced by <code>billId</code>.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
-        public _FinalStage invoiceData(Optional<List<RequestOutAuthorizeInvoiceData>> invoiceData) {
-            this.invoiceData = invoiceData;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage orderDescription(String orderDescription) {
-            this.orderDescription = Optional.ofNullable(orderDescription);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "orderDescription", nulls = Nulls.SKIP)
-        public _FinalStage orderDescription(Optional<String> orderDescription) {
-            this.orderDescription = orderDescription;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage orderId(String orderId) {
-            this.orderId = Optional.ofNullable(orderId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "orderId", nulls = Nulls.SKIP)
-        public _FinalStage orderId(Optional<String> orderId) {
-            this.orderId = orderId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage source(String source) {
-            this.source = Optional.ofNullable(source);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "source", nulls = Nulls.SKIP)
-        public _FinalStage source(Optional<String> source) {
-            this.source = source;
+        @JsonSetter("body")
+        public _FinalStage body(@NotNull AuthorizePayoutBody body) {
+            this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }
 
@@ -648,23 +283,7 @@ public final class RequestOutAuthorize {
         @java.lang.Override
         public RequestOutAuthorize build() {
             return new RequestOutAuthorize(
-                    idempotencyKey,
-                    allowDuplicatedBills,
-                    doNotCreateBills,
-                    sameDayAch,
-                    entryPoint,
-                    source,
-                    orderId,
-                    orderDescription,
-                    paymentMethod,
-                    paymentDetails,
-                    vendorData,
-                    invoiceData,
-                    accountId,
-                    subdomain,
-                    subscriptionId,
-                    autoCapture,
-                    additionalProperties);
+                    idempotencyKey, allowDuplicatedBills, doNotCreateBills, sameDayAch, body, additionalProperties);
         }
 
         @java.lang.Override

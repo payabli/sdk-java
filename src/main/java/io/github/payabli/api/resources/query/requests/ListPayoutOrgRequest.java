@@ -91,6 +91,7 @@ public final class ListPayoutOrgRequest {
      * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
      * <li><code>paymentMethod</code> (ct, nct, eq, ne, in, nin)</li>
      * <li><code>paymentId</code> (ct, nct, eq, ne)</li>
+     * <li><code>orderId</code> (ne, eq)</li>
      * <li><code>batchNumber</code> (ct, nct, eq, ne)</li>
      * <li><code>totalAmount</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>
@@ -279,6 +280,7 @@ public final class ListPayoutOrgRequest {
          * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
          * <li><code>paymentMethod</code> (ct, nct, eq, ne, in, nin)</li>
          * <li><code>paymentId</code> (ct, nct, eq, ne)</li>
+         * <li><code>orderId</code> (ne, eq)</li>
          * <li><code>batchNumber</code> (ct, nct, eq, ne)</li>
          * <li><code>totalAmount</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>paypointLegal</code> (ne, eq, ct, nct)</li>

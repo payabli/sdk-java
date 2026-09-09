@@ -31,6 +31,10 @@ public final class BillDetailsResponse {
 
     private final Optional<String> netAmount;
 
+    private final Optional<String> paidAmount;
+
+    private final Optional<String> outstandingBalance;
+
     private final Optional<String> discount;
 
     private final Optional<String> dueDate;
@@ -46,6 +50,8 @@ public final class BillDetailsResponse {
             Optional<String> lotNumber,
             Optional<String> invoiceNumber,
             Optional<String> netAmount,
+            Optional<String> paidAmount,
+            Optional<String> outstandingBalance,
             Optional<String> discount,
             Optional<String> dueDate,
             Optional<String> invoiceDate,
@@ -55,6 +61,8 @@ public final class BillDetailsResponse {
         this.lotNumber = lotNumber;
         this.invoiceNumber = invoiceNumber;
         this.netAmount = netAmount;
+        this.paidAmount = paidAmount;
+        this.outstandingBalance = outstandingBalance;
         this.discount = discount;
         this.dueDate = dueDate;
         this.invoiceDate = invoiceDate;
@@ -89,6 +97,22 @@ public final class BillDetailsResponse {
     @JsonProperty("netAmount")
     public Optional<String> getNetAmount() {
         return netAmount;
+    }
+
+    /**
+     * @return The amount paid toward the bill so far.
+     */
+    @JsonProperty("paidAmount")
+    public Optional<String> getPaidAmount() {
+        return paidAmount;
+    }
+
+    /**
+     * @return The amount still owed on the bill, calculated as <code>netAmount</code> minus <code>paidAmount</code>.
+     */
+    @JsonProperty("outstandingBalance")
+    public Optional<String> getOutstandingBalance() {
+        return outstandingBalance;
     }
 
     /**
@@ -157,6 +181,8 @@ public final class BillDetailsResponse {
                 && lotNumber.equals(other.lotNumber)
                 && invoiceNumber.equals(other.invoiceNumber)
                 && netAmount.equals(other.netAmount)
+                && paidAmount.equals(other.paidAmount)
+                && outstandingBalance.equals(other.outstandingBalance)
                 && discount.equals(other.discount)
                 && dueDate.equals(other.dueDate)
                 && invoiceDate.equals(other.invoiceDate)
@@ -170,6 +196,8 @@ public final class BillDetailsResponse {
                 this.lotNumber,
                 this.invoiceNumber,
                 this.netAmount,
+                this.paidAmount,
+                this.outstandingBalance,
                 this.discount,
                 this.dueDate,
                 this.invoiceDate,
@@ -195,6 +223,10 @@ public final class BillDetailsResponse {
 
         private Optional<String> netAmount = Optional.empty();
 
+        private Optional<String> paidAmount = Optional.empty();
+
+        private Optional<String> outstandingBalance = Optional.empty();
+
         private Optional<String> discount = Optional.empty();
 
         private Optional<String> dueDate = Optional.empty();
@@ -213,6 +245,8 @@ public final class BillDetailsResponse {
             lotNumber(other.getLotNumber());
             invoiceNumber(other.getInvoiceNumber());
             netAmount(other.getNetAmount());
+            paidAmount(other.getPaidAmount());
+            outstandingBalance(other.getOutstandingBalance());
             discount(other.getDiscount());
             dueDate(other.getDueDate());
             invoiceDate(other.getInvoiceDate());
@@ -270,6 +304,34 @@ public final class BillDetailsResponse {
 
         public Builder netAmount(String netAmount) {
             this.netAmount = Optional.ofNullable(netAmount);
+            return this;
+        }
+
+        /**
+         * <p>The amount paid toward the bill so far.</p>
+         */
+        @JsonSetter(value = "paidAmount", nulls = Nulls.SKIP)
+        public Builder paidAmount(Optional<String> paidAmount) {
+            this.paidAmount = paidAmount;
+            return this;
+        }
+
+        public Builder paidAmount(String paidAmount) {
+            this.paidAmount = Optional.ofNullable(paidAmount);
+            return this;
+        }
+
+        /**
+         * <p>The amount still owed on the bill, calculated as <code>netAmount</code> minus <code>paidAmount</code>.</p>
+         */
+        @JsonSetter(value = "outstandingBalance", nulls = Nulls.SKIP)
+        public Builder outstandingBalance(Optional<String> outstandingBalance) {
+            this.outstandingBalance = outstandingBalance;
+            return this;
+        }
+
+        public Builder outstandingBalance(String outstandingBalance) {
+            this.outstandingBalance = Optional.ofNullable(outstandingBalance);
             return this;
         }
 
@@ -357,6 +419,8 @@ public final class BillDetailsResponse {
                     lotNumber,
                     invoiceNumber,
                     netAmount,
+                    paidAmount,
+                    outstandingBalance,
                     discount,
                     dueDate,
                     invoiceDate,

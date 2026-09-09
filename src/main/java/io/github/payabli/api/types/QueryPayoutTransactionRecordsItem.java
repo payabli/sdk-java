@@ -44,6 +44,8 @@ public final class QueryPayoutTransactionRecordsItem {
 
     private final Optional<String> paymentId;
 
+    private final Optional<String> orderId;
+
     private final Optional<String> transId;
 
     private final Optional<Integer> transStatus;
@@ -138,6 +140,7 @@ public final class QueryPayoutTransactionRecordsItem {
             Optional<Long> paypointId,
             Optional<Integer> status,
             Optional<String> paymentId,
+            Optional<String> orderId,
             Optional<String> transId,
             Optional<Integer> transStatus,
             Optional<String> transStatusDetail,
@@ -189,6 +192,7 @@ public final class QueryPayoutTransactionRecordsItem {
         this.paypointId = paypointId;
         this.status = status;
         this.paymentId = paymentId;
+        this.orderId = orderId;
         this.transId = transId;
         this.transStatus = transStatus;
         this.transStatusDetail = transStatusDetail;
@@ -294,6 +298,11 @@ public final class QueryPayoutTransactionRecordsItem {
     @JsonProperty("PaymentId")
     public Optional<String> getPaymentId() {
         return paymentId;
+    }
+
+    @JsonProperty("orderId")
+    public Optional<String> getOrderId() {
+        return orderId;
     }
 
     /**
@@ -660,6 +669,7 @@ public final class QueryPayoutTransactionRecordsItem {
                 && paypointId.equals(other.paypointId)
                 && status.equals(other.status)
                 && paymentId.equals(other.paymentId)
+                && orderId.equals(other.orderId)
                 && transId.equals(other.transId)
                 && transStatus.equals(other.transStatus)
                 && transStatusDetail.equals(other.transStatusDetail)
@@ -715,6 +725,7 @@ public final class QueryPayoutTransactionRecordsItem {
                 this.paypointId,
                 this.status,
                 this.paymentId,
+                this.orderId,
                 this.transId,
                 this.transStatus,
                 this.transStatusDetail,
@@ -786,6 +797,8 @@ public final class QueryPayoutTransactionRecordsItem {
         private Optional<Integer> status = Optional.empty();
 
         private Optional<String> paymentId = Optional.empty();
+
+        private Optional<String> orderId = Optional.empty();
 
         private Optional<String> transId = Optional.empty();
 
@@ -884,6 +897,7 @@ public final class QueryPayoutTransactionRecordsItem {
             paypointId(other.getPaypointId());
             status(other.getStatus());
             paymentId(other.getPaymentId());
+            orderId(other.getOrderId());
             transId(other.getTransId());
             transStatus(other.getTransStatus());
             transStatusDetail(other.getTransStatusDetail());
@@ -1042,6 +1056,17 @@ public final class QueryPayoutTransactionRecordsItem {
 
         public Builder paymentId(String paymentId) {
             this.paymentId = Optional.ofNullable(paymentId);
+            return this;
+        }
+
+        @JsonSetter(value = "orderId", nulls = Nulls.SKIP)
+        public Builder orderId(Optional<String> orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
+        public Builder orderId(String orderId) {
+            this.orderId = Optional.ofNullable(orderId);
             return this;
         }
 
@@ -1673,6 +1698,7 @@ public final class QueryPayoutTransactionRecordsItem {
                     paypointId,
                     status,
                     paymentId,
+                    orderId,
                     transId,
                     transStatus,
                     transStatusDetail,

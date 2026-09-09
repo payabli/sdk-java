@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +54,14 @@ public final class QuerySummary {
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("pageIdentifier")
+    /**
+     * @return Pagination token for retrieving the next page of results. Returns <code>null</code> when there's no additional page.
+     */
+    @JsonIgnore
     public Optional<String> getPageIdentifier() {
+        if (pageIdentifier == null) {
+            return Optional.empty();
+        }
         return pageIdentifier;
     }
 
@@ -85,6 +94,12 @@ public final class QuerySummary {
     @JsonProperty("totalRecords")
     public Optional<Integer> getTotalRecords() {
         return totalRecords;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageidentifier")
+    private Optional<String> _getPageIdentifier() {
+        return pageIdentifier;
     }
 
     @java.lang.Override
@@ -156,7 +171,10 @@ public final class QuerySummary {
             return this;
         }
 
-        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        /**
+         * <p>Pagination token for retrieving the next page of results. Returns <code>null</code> when there's no additional page.</p>
+         */
+        @JsonSetter(value = "pageidentifier", nulls = Nulls.SKIP)
         public Builder pageIdentifier(Optional<String> pageIdentifier) {
             this.pageIdentifier = pageIdentifier;
             return this;
@@ -164,6 +182,17 @@ public final class QuerySummary {
 
         public Builder pageIdentifier(String pageIdentifier) {
             this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+            return this;
+        }
+
+        public Builder pageIdentifier(Nullable<String> pageIdentifier) {
+            if (pageIdentifier.isNull()) {
+                this.pageIdentifier = null;
+            } else if (pageIdentifier.isEmpty()) {
+                this.pageIdentifier = Optional.empty();
+            } else {
+                this.pageIdentifier = Optional.of(pageIdentifier.get());
+            }
             return this;
         }
 

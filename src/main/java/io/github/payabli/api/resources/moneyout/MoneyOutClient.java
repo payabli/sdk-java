@@ -7,12 +7,14 @@ import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.PayoutRequest;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.RenewVCardRequest;
 import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.types.AllowedCheckPaymentStatus;
 import io.github.payabli.api.types.AuthCapturePayoutResponse;
+import io.github.payabli.api.types.AuthorizePayoutBody;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.CaptureAllOutResponse;
 import io.github.payabli.api.types.OperationResult;
@@ -38,6 +40,28 @@ public class MoneyOutClient {
      */
     public RawMoneyOutClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * Authorizes a transaction for payout.
+     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
+     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
+     * <p>For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a <code>422</code> response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.</p>
+     */
+    public AuthCapturePayoutResponse authorizeOut(AuthorizePayoutBody body) {
+        return this.rawClient.authorizeOut(body).body();
+    }
+
+    /**
+     * Authorizes a transaction for payout.
+     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
+     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
+     * <p>For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a <code>422</code> response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.</p>
+     */
+    public AuthCapturePayoutResponse authorizeOut(AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return this.rawClient.authorizeOut(body, requestOptions).body();
     }
 
     /**
@@ -163,6 +187,46 @@ public class MoneyOutClient {
     public AuthCapturePayoutResponse captureOut(
             String referenceId, CaptureOutRequest request, RequestOptions requestOptions) {
         return this.rawClient.captureOut(referenceId, request, requestOptions).body();
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public AuthCapturePayoutResponse payout(AuthorizePayoutBody body) {
+        return this.rawClient.payout(body).body();
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public AuthCapturePayoutResponse payout(AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return this.rawClient.payout(body, requestOptions).body();
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public AuthCapturePayoutResponse payout(PayoutRequest request) {
+        return this.rawClient.payout(request).body();
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public AuthCapturePayoutResponse payout(PayoutRequest request, RequestOptions requestOptions) {
+        return this.rawClient.payout(request, requestOptions).body();
     }
 
     /**

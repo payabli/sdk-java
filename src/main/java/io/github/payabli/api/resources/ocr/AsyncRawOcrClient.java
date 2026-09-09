@@ -6,6 +6,7 @@ package io.github.payabli.api.resources.ocr;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.EndpointMetadata;
+import io.github.payabli.api.core.FileStream;
 import io.github.payabli.api.core.MediaTypes;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.core.PayabliApiClientApiException;
@@ -17,10 +18,14 @@ import io.github.payabli.api.errors.BadRequestError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
 import io.github.payabli.api.errors.UnauthorizedError;
-import io.github.payabli.api.types.FileContentImageOnly;
+import io.github.payabli.api.resources.ocr.requests.OcrDocumentFormRequest;
+import io.github.payabli.api.resources.ocr.requests.OcrDocumentJsonRequest;
 import io.github.payabli.api.types.PayabliApiResponseOcr;
 import io.github.payabli.api.types.PayabliErrorBody;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -28,6 +33,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -43,33 +50,18 @@ public class AsyncRawOcrClient {
     }
 
     /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+     * Use this endpoint to upload a document file for OCR processing as <code>multipart/form-data</code>, with the file in a field named <code>file</code>. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more. To send the file as a Base64-encoded string in a JSON body instead, use <code>ocrDocumentJson</code>.
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(String typeResult) {
-        return ocrDocumentForm(typeResult, FileContentImageOnly.builder().build());
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
+            String typeResult, File file, OcrDocumentFormRequest request) {
+        return ocrDocumentForm(typeResult, file, request, null);
     }
 
     /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+     * Use this endpoint to upload a document file for OCR processing as <code>multipart/form-data</code>, with the file in a field named <code>file</code>. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more. To send the file as a Base64-encoded string in a JSON body instead, use <code>ocrDocumentJson</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
-            String typeResult, RequestOptions requestOptions) {
-        return ocrDocumentForm(typeResult, FileContentImageOnly.builder().build(), requestOptions);
-    }
-
-    /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-     */
-    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
-            String typeResult, FileContentImageOnly request) {
-        return ocrDocumentForm(typeResult, request, null);
-    }
-
-    /**
-     * Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-     */
-    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
-            String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
+            String typeResult, File file, OcrDocumentFormRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/ocrDocumentForm")
@@ -79,24 +71,363 @@ public class AsyncRawOcrClient {
                 httpUrl.addQueryParameter(_key, _value);
             });
         }
-        RequestBody body;
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new PayabliApiClientException("Failed to serialize request", e);
+            String fileMimeType = Files.probeContentType(file.toPath());
+            MediaType fileMimeTypeMediaType = fileMimeType != null ? MediaType.parse(fileMimeType) : null;
+            multipartBodyBuilder.addFormDataPart(
+                    "file", file.getName(), RequestBody.create(file, fileMimeTypeMediaType));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
         _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
                 EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
                 EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
-        Request okhttpRequest = new Request.Builder()
+        Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("POST", body)
+                .method("POST", multipartBodyBuilder.build())
                 .headers(Headers.of(_headers))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiClientHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseOcr.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiClientApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
+            String typeResult, InputStream stream, String filename) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Import/ocrDocumentForm")
+                .addPathSegment(typeResult);
+        FileStream fs = new FileStream(stream, filename, null);
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
+        RequestBody body = multipartBodyBuilder.build();
+        Request.Builder _requestBuilder = new Request.Builder();
+        _requestBuilder.url(httpUrl.build());
+        _requestBuilder.method("POST", body);
+        _requestBuilder.headers(Headers.of(this.clientOptions.headers((RequestOptions) null)));
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiClientHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseOcr.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiClientApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
+            String typeResult, InputStream stream, String filename, MediaType mediaType) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Import/ocrDocumentForm")
+                .addPathSegment(typeResult);
+        FileStream fs = new FileStream(stream, filename, mediaType);
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
+        RequestBody body = multipartBodyBuilder.build();
+        Request.Builder _requestBuilder = new Request.Builder();
+        _requestBuilder.url(httpUrl.build());
+        _requestBuilder.method("POST", body);
+        _requestBuilder.headers(Headers.of(this.clientOptions.headers((RequestOptions) null)));
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiClientHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseOcr.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiClientApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
+            String typeResult, InputStream stream, String filename, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Import/ocrDocumentForm")
+                .addPathSegment(typeResult);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        FileStream fs = new FileStream(stream, filename, null);
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
+        RequestBody body = multipartBodyBuilder.build();
+        Request.Builder _requestBuilder = new Request.Builder();
+        _requestBuilder.url(httpUrl.build());
+        _requestBuilder.method("POST", body);
+        _requestBuilder.headers(Headers.of(this.clientOptions.headers(requestOptions)));
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiClientHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliApiResponseOcr.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiClientApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentForm(
+            String typeResult,
+            InputStream stream,
+            String filename,
+            MediaType mediaType,
+            RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("Import/ocrDocumentForm")
+                .addPathSegment(typeResult);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        FileStream fs = new FileStream(stream, filename, mediaType);
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        multipartBodyBuilder.addFormDataPart("file", filename, fs.toRequestBody());
+        RequestBody body = multipartBodyBuilder.build();
+        Request.Builder _requestBuilder = new Request.Builder();
+        _requestBuilder.url(httpUrl.build());
+        _requestBuilder.method("POST", body);
+        _requestBuilder.headers(Headers.of(this.clientOptions.headers(requestOptions)));
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -173,7 +504,7 @@ public class AsyncRawOcrClient {
      * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(String typeResult) {
-        return ocrDocumentJson(typeResult, FileContentImageOnly.builder().build());
+        return ocrDocumentJson(typeResult, OcrDocumentJsonRequest.builder().build());
     }
 
     /**
@@ -181,14 +512,14 @@ public class AsyncRawOcrClient {
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(
             String typeResult, RequestOptions requestOptions) {
-        return ocrDocumentJson(typeResult, FileContentImageOnly.builder().build(), requestOptions);
+        return ocrDocumentJson(typeResult, OcrDocumentJsonRequest.builder().build(), requestOptions);
     }
 
     /**
      * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(
-            String typeResult, FileContentImageOnly request) {
+            String typeResult, OcrDocumentJsonRequest request) {
         return ocrDocumentJson(typeResult, request, null);
     }
 
@@ -196,7 +527,7 @@ public class AsyncRawOcrClient {
      * Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter <code>typeResult</code>. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseOcr>> ocrDocumentJson(
-            String typeResult, FileContentImageOnly request, RequestOptions requestOptions) {
+            String typeResult, OcrDocumentJsonRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("Import/ocrDocumentJson")

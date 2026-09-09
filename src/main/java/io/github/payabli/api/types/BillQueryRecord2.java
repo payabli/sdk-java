@@ -95,6 +95,10 @@ public final class BillQueryRecord2 {
 
     private final Optional<Double> totalAmount;
 
+    private final Optional<Double> paidAmount;
+
+    private final Optional<Double> outstandingBalance;
+
     private final Optional<TransactionOutQueryRecord> transaction;
 
     private final Optional<VendorOutData> vendor;
@@ -137,6 +141,8 @@ public final class BillQueryRecord2 {
             Optional<Integer> status,
             Optional<Terms> terms,
             Optional<Double> totalAmount,
+            Optional<Double> paidAmount,
+            Optional<Double> outstandingBalance,
             Optional<TransactionOutQueryRecord> transaction,
             Optional<VendorOutData> vendor,
             Map<String, Object> additionalProperties) {
@@ -175,6 +181,8 @@ public final class BillQueryRecord2 {
         this.status = status;
         this.terms = terms;
         this.totalAmount = totalAmount;
+        this.paidAmount = paidAmount;
+        this.outstandingBalance = outstandingBalance;
         this.transaction = transaction;
         this.vendor = vendor;
         this.additionalProperties = additionalProperties;
@@ -545,6 +553,28 @@ public final class BillQueryRecord2 {
     }
 
     /**
+     * @return The amount paid toward the bill so far.
+     */
+    @JsonIgnore
+    public Optional<Double> getPaidAmount() {
+        if (paidAmount == null) {
+            return Optional.empty();
+        }
+        return paidAmount;
+    }
+
+    /**
+     * @return The amount still owed on the bill, calculated as <code>NetAmount</code> minus <code>PaidAmount</code>.
+     */
+    @JsonIgnore
+    public Optional<Double> getOutstandingBalance() {
+        if (outstandingBalance == null) {
+            return Optional.empty();
+        }
+        return outstandingBalance;
+    }
+
+    /**
      * @return MoneyOut transaction associated to the bill.
      */
     @JsonIgnore
@@ -774,6 +804,18 @@ public final class BillQueryRecord2 {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaidAmount")
+    private Optional<Double> _getPaidAmount() {
+        return paidAmount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("OutstandingBalance")
+    private Optional<Double> _getOutstandingBalance() {
+        return outstandingBalance;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("Transaction")
     private Optional<TransactionOutQueryRecord> _getTransaction() {
         return transaction;
@@ -832,6 +874,8 @@ public final class BillQueryRecord2 {
                 && status.equals(other.status)
                 && terms.equals(other.terms)
                 && totalAmount.equals(other.totalAmount)
+                && paidAmount.equals(other.paidAmount)
+                && outstandingBalance.equals(other.outstandingBalance)
                 && transaction.equals(other.transaction)
                 && vendor.equals(other.vendor);
     }
@@ -874,6 +918,8 @@ public final class BillQueryRecord2 {
                 this.status,
                 this.terms,
                 this.totalAmount,
+                this.paidAmount,
+                this.outstandingBalance,
                 this.transaction,
                 this.vendor);
     }
@@ -959,6 +1005,10 @@ public final class BillQueryRecord2 {
 
         private Optional<Double> totalAmount = Optional.empty();
 
+        private Optional<Double> paidAmount = Optional.empty();
+
+        private Optional<Double> outstandingBalance = Optional.empty();
+
         private Optional<TransactionOutQueryRecord> transaction = Optional.empty();
 
         private Optional<VendorOutData> vendor = Optional.empty();
@@ -1004,6 +1054,8 @@ public final class BillQueryRecord2 {
             status(other.getStatus());
             terms(other.getTerms());
             totalAmount(other.getTotalAmount());
+            paidAmount(other.getPaidAmount());
+            outstandingBalance(other.getOutstandingBalance());
             transaction(other.getTransaction());
             vendor(other.getVendor());
             return this;
@@ -1864,6 +1916,56 @@ public final class BillQueryRecord2 {
         }
 
         /**
+         * <p>The amount paid toward the bill so far.</p>
+         */
+        @JsonSetter(value = "PaidAmount", nulls = Nulls.SKIP)
+        public Builder paidAmount(Optional<Double> paidAmount) {
+            this.paidAmount = paidAmount;
+            return this;
+        }
+
+        public Builder paidAmount(Double paidAmount) {
+            this.paidAmount = Optional.ofNullable(paidAmount);
+            return this;
+        }
+
+        public Builder paidAmount(Nullable<Double> paidAmount) {
+            if (paidAmount.isNull()) {
+                this.paidAmount = null;
+            } else if (paidAmount.isEmpty()) {
+                this.paidAmount = Optional.empty();
+            } else {
+                this.paidAmount = Optional.of(paidAmount.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The amount still owed on the bill, calculated as <code>NetAmount</code> minus <code>PaidAmount</code>.</p>
+         */
+        @JsonSetter(value = "OutstandingBalance", nulls = Nulls.SKIP)
+        public Builder outstandingBalance(Optional<Double> outstandingBalance) {
+            this.outstandingBalance = outstandingBalance;
+            return this;
+        }
+
+        public Builder outstandingBalance(Double outstandingBalance) {
+            this.outstandingBalance = Optional.ofNullable(outstandingBalance);
+            return this;
+        }
+
+        public Builder outstandingBalance(Nullable<Double> outstandingBalance) {
+            if (outstandingBalance.isNull()) {
+                this.outstandingBalance = null;
+            } else if (outstandingBalance.isEmpty()) {
+                this.outstandingBalance = Optional.empty();
+            } else {
+                this.outstandingBalance = Optional.of(outstandingBalance.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>MoneyOut transaction associated to the bill.</p>
          */
         @JsonSetter(value = "Transaction", nulls = Nulls.SKIP)
@@ -1947,6 +2049,8 @@ public final class BillQueryRecord2 {
                     status,
                     terms,
                     totalAmount,
+                    paidAmount,
+                    outstandingBalance,
                     transaction,
                     vendor,
                     additionalProperties);

@@ -15,6 +15,7 @@ import io.github.payabli.api.core.QueryStringMapper;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.core.RetryInterceptor;
 import io.github.payabli.api.errors.BadRequestError;
+import io.github.payabli.api.errors.ConflictError;
 import io.github.payabli.api.errors.ForbiddenError;
 import io.github.payabli.api.errors.InternalServerError;
 import io.github.payabli.api.errors.ServiceUnavailableError;
@@ -22,12 +23,14 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.errors.UnprocessableEntityError;
 import io.github.payabli.api.resources.moneyout.requests.CaptureAllOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.CaptureOutRequest;
+import io.github.payabli.api.resources.moneyout.requests.PayoutRequest;
 import io.github.payabli.api.resources.moneyout.requests.ReissueOutRequest;
 import io.github.payabli.api.resources.moneyout.requests.RenewVCardRequest;
 import io.github.payabli.api.resources.moneyout.requests.RequestOutAuthorize;
 import io.github.payabli.api.resources.moneyout.requests.SendVCardLinkRequest;
 import io.github.payabli.api.types.AllowedCheckPaymentStatus;
 import io.github.payabli.api.types.AuthCapturePayoutResponse;
+import io.github.payabli.api.types.AuthorizePayoutBody;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.CaptureAllOutResponse;
 import io.github.payabli.api.types.OperationResult;
@@ -54,6 +57,29 @@ public class RawMoneyOutClient {
 
     public RawMoneyOutClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Authorizes a transaction for payout.
+     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
+     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
+     * <p>For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a <code>422</code> response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.</p>
+     */
+    public PayabliApiClientHttpResponse<AuthCapturePayoutResponse> authorizeOut(AuthorizePayoutBody body) {
+        return authorizeOut(RequestOutAuthorize.builder().body(body).build());
+    }
+
+    /**
+     * Authorizes a transaction for payout.
+     * <p>If you don't pass <code>autoCapture</code> with a value of <code>true</code>, authorized transactions aren't flagged for settlement until captured. Use the <code>referenceId</code> returned in the response to capture the transaction.</p>
+     * <p>When <code>autoCapture</code> is <code>true</code>, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the <a href="/developers/webhooks/payout-transaction-approved-captured"><code>payout_transaction_approvedcaptured</code></a> webhook event.</p>
+     * <p>If a velocity fraud alert is triggered, the endpoint returns a <code>202</code> response with <code>responseCode</code> <code>9051</code>, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a <code>422</code> response with <code>responseCode</code> <code>9005</code>, a terminal rejection.</p>
+     * <p>For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a <code>422</code> response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.</p>
+     */
+    public PayabliApiClientHttpResponse<AuthCapturePayoutResponse> authorizeOut(
+            AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return authorizeOut(RequestOutAuthorize.builder().body(body).build(), requestOptions);
     }
 
     /**
@@ -102,7 +128,7 @@ public class RawMoneyOutClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -634,6 +660,165 @@ public class RawMoneyOutClient {
                         throw new UnauthorizedError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
                                 response);
+                    case 409:
+                        throw new ConflictError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 422:
+                        throw new UnprocessableEntityError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new PayabliApiClientApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (JsonProcessingException e) {
+            throw new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new PayabliApiClientException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public PayabliApiClientHttpResponse<AuthCapturePayoutResponse> payout(AuthorizePayoutBody body) {
+        return payout(PayoutRequest.builder().body(body).build());
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public PayabliApiClientHttpResponse<AuthCapturePayoutResponse> payout(
+            AuthorizePayoutBody body, RequestOptions requestOptions) {
+        return payout(PayoutRequest.builder().body(body).build(), requestOptions);
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public PayabliApiClientHttpResponse<AuthCapturePayoutResponse> payout(PayoutRequest request) {
+        return payout(request, null);
+    }
+
+    /**
+     * Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling <code>POST /MoneyOut/authorize</code> followed by <code>GET /MoneyOut/capture/{referenceId}</code>, in a single call.
+     * <p>Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.</p>
+     * <p>Payabli ignores the <code>autoCapture</code> field in the request body, since this endpoint always captures inline.</p>
+     * <p>If the capture fails, the payout stays authorized. Retry the capture with <code>GET /MoneyOut/capture/{referenceId}</code> using the <code>referenceId</code> from the error response rather than resubmitting, which would create a second payout. See the <a href="/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call">Manage payouts guide</a> for details.</p>
+     */
+    public PayabliApiClientHttpResponse<AuthCapturePayoutResponse> payout(
+            PayoutRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyOut/payout");
+        if (request.getSameDayAch().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "sameDayACH", request.getSameDayAch().get(), false);
+        }
+        if (request.getDoNotCreateBills().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "doNotCreateBills", request.getDoNotCreateBills().get(), false);
+        }
+        if (request.getAllowDuplicatedBills().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "allowDuplicatedBills",
+                    request.getAllowDuplicatedBills().get(),
+                    false);
+        }
+        if (request.getUpdateVendorPaymentMethod().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "updateVendorPaymentMethod",
+                    request.getUpdateVendorPaymentMethod().get(),
+                    false);
+        }
+        if (request.getAutoConvertSameDayAch().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "autoConvertSameDayAch",
+                    request.getAutoConvertSameDayAch().get(),
+                    false);
+        }
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(_headers))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        if (request.getIdempotencyKey().isPresent()) {
+            _requestBuilder.addHeader(
+                    "idempotencyKey", request.getIdempotencyKey().get());
+        }
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiClientHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthCapturePayoutResponse.class),
+                        response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                response);
+                    case 409:
+                        throw new ConflictError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 422:
                         throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
