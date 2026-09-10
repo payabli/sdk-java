@@ -50,7 +50,7 @@ public final class Owners {
 
     private final Optional<String> ozip;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Map<String, Object> additionalProperties;
 
@@ -70,7 +70,7 @@ public final class Owners {
             Optional<String> odriverstate,
             Optional<String> ostate,
             Optional<String> ozip,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Map<String, Object> additionalProperties) {
         this.ownername = ownername;
         this.ownertitle = ownertitle;
@@ -212,7 +212,7 @@ public final class Owners {
     }
 
     @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -308,7 +308,7 @@ public final class Owners {
 
         private Optional<String> ozip = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -546,12 +546,12 @@ public final class Owners {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }
