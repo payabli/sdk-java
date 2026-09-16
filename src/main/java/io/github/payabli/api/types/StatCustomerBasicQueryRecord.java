@@ -17,37 +17,26 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = StatBasicQueryRecord.Builder.class)
-public final class StatBasicQueryRecord {
+@JsonDeserialize(builder = StatCustomerBasicQueryRecord.Builder.class)
+public final class StatCustomerBasicQueryRecord {
     private final String statX;
 
     private final int inTransactions;
 
     private final double inTransactionsVolume;
 
-    private final int inWalletTransactions;
-
-    private final double inWalletVolume;
-
     private final Map<String, Object> additionalProperties;
 
-    private StatBasicQueryRecord(
-            String statX,
-            int inTransactions,
-            double inTransactionsVolume,
-            int inWalletTransactions,
-            double inWalletVolume,
-            Map<String, Object> additionalProperties) {
+    private StatCustomerBasicQueryRecord(
+            String statX, int inTransactions, double inTransactionsVolume, Map<String, Object> additionalProperties) {
         this.statX = statX;
         this.inTransactions = inTransactions;
         this.inTransactionsVolume = inTransactionsVolume;
-        this.inWalletTransactions = inWalletTransactions;
-        this.inWalletVolume = inWalletVolume;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return Statistical grouping identifier
+     * @return The time bucket for this row, formatted according to the query's <code>freq</code> (for example, <code>2026-9</code> for a monthly bucket). The response returns one object per bucket across the requested range.
      */
     @JsonProperty("statX")
     public String getStatX() {
@@ -55,7 +44,7 @@ public final class StatBasicQueryRecord {
     }
 
     /**
-     * @return Number of incoming transactions
+     * @return Count of the customer's approved transactions.
      */
     @JsonProperty("inTransactions")
     public int getInTransactions() {
@@ -63,33 +52,17 @@ public final class StatBasicQueryRecord {
     }
 
     /**
-     * @return Volume of incoming transactions
+     * @return Total gross value of the customer's approved transactions. Unlike <code>/Statistic/basic</code>, this volume is the gross amount, before fees.
      */
     @JsonProperty("inTransactionsVolume")
     public double getInTransactionsVolume() {
         return inTransactionsVolume;
     }
 
-    /**
-     * @return Number of incoming wallet transactions
-     */
-    @JsonProperty("inWalletTransactions")
-    public int getInWalletTransactions() {
-        return inWalletTransactions;
-    }
-
-    /**
-     * @return Volume of incoming wallet transactions
-     */
-    @JsonProperty("inWalletVolume")
-    public double getInWalletVolume() {
-        return inWalletVolume;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof StatBasicQueryRecord && equalTo((StatBasicQueryRecord) other);
+        return other instanceof StatCustomerBasicQueryRecord && equalTo((StatCustomerBasicQueryRecord) other);
     }
 
     @JsonAnyGetter
@@ -97,22 +70,15 @@ public final class StatBasicQueryRecord {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(StatBasicQueryRecord other) {
+    private boolean equalTo(StatCustomerBasicQueryRecord other) {
         return statX.equals(other.statX)
                 && inTransactions == other.inTransactions
-                && inTransactionsVolume == other.inTransactionsVolume
-                && inWalletTransactions == other.inWalletTransactions
-                && inWalletVolume == other.inWalletVolume;
+                && inTransactionsVolume == other.inTransactionsVolume;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(
-                this.statX,
-                this.inTransactions,
-                this.inTransactionsVolume,
-                this.inWalletTransactions,
-                this.inWalletVolume);
+        return Objects.hash(this.statX, this.inTransactions, this.inTransactionsVolume);
     }
 
     @java.lang.Override
@@ -126,43 +92,29 @@ public final class StatBasicQueryRecord {
 
     public interface StatXStage {
         /**
-         * <p>Statistical grouping identifier</p>
+         * <p>The time bucket for this row, formatted according to the query's <code>freq</code> (for example, <code>2026-9</code> for a monthly bucket). The response returns one object per bucket across the requested range.</p>
          */
         InTransactionsStage statX(@NotNull String statX);
 
-        Builder from(StatBasicQueryRecord other);
+        Builder from(StatCustomerBasicQueryRecord other);
     }
 
     public interface InTransactionsStage {
         /**
-         * <p>Number of incoming transactions</p>
+         * <p>Count of the customer's approved transactions.</p>
          */
         InTransactionsVolumeStage inTransactions(int inTransactions);
     }
 
     public interface InTransactionsVolumeStage {
         /**
-         * <p>Volume of incoming transactions</p>
+         * <p>Total gross value of the customer's approved transactions. Unlike <code>/Statistic/basic</code>, this volume is the gross amount, before fees.</p>
          */
-        InWalletTransactionsStage inTransactionsVolume(double inTransactionsVolume);
-    }
-
-    public interface InWalletTransactionsStage {
-        /**
-         * <p>Number of incoming wallet transactions</p>
-         */
-        InWalletVolumeStage inWalletTransactions(int inWalletTransactions);
-    }
-
-    public interface InWalletVolumeStage {
-        /**
-         * <p>Volume of incoming wallet transactions</p>
-         */
-        _FinalStage inWalletVolume(double inWalletVolume);
+        _FinalStage inTransactionsVolume(double inTransactionsVolume);
     }
 
     public interface _FinalStage {
-        StatBasicQueryRecord build();
+        StatCustomerBasicQueryRecord build();
 
         _FinalStage additionalProperty(String key, Object value);
 
@@ -171,21 +123,12 @@ public final class StatBasicQueryRecord {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements StatXStage,
-                    InTransactionsStage,
-                    InTransactionsVolumeStage,
-                    InWalletTransactionsStage,
-                    InWalletVolumeStage,
-                    _FinalStage {
+            implements StatXStage, InTransactionsStage, InTransactionsVolumeStage, _FinalStage {
         private String statX;
 
         private int inTransactions;
 
         private double inTransactionsVolume;
-
-        private int inWalletTransactions;
-
-        private double inWalletVolume;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -193,17 +136,15 @@ public final class StatBasicQueryRecord {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(StatBasicQueryRecord other) {
+        public Builder from(StatCustomerBasicQueryRecord other) {
             statX(other.getStatX());
             inTransactions(other.getInTransactions());
             inTransactionsVolume(other.getInTransactionsVolume());
-            inWalletTransactions(other.getInWalletTransactions());
-            inWalletVolume(other.getInWalletVolume());
             return this;
         }
 
         /**
-         * <p>Statistical grouping identifier</p>
+         * <p>The time bucket for this row, formatted according to the query's <code>freq</code> (for example, <code>2026-9</code> for a monthly bucket). The response returns one object per bucket across the requested range.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -214,7 +155,7 @@ public final class StatBasicQueryRecord {
         }
 
         /**
-         * <p>Number of incoming transactions</p>
+         * <p>Count of the customer's approved transactions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -225,47 +166,19 @@ public final class StatBasicQueryRecord {
         }
 
         /**
-         * <p>Volume of incoming transactions</p>
+         * <p>Total gross value of the customer's approved transactions. Unlike <code>/Statistic/basic</code>, this volume is the gross amount, before fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("inTransactionsVolume")
-        public InWalletTransactionsStage inTransactionsVolume(double inTransactionsVolume) {
+        public _FinalStage inTransactionsVolume(double inTransactionsVolume) {
             this.inTransactionsVolume = inTransactionsVolume;
             return this;
         }
 
-        /**
-         * <p>Number of incoming wallet transactions</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
-        @JsonSetter("inWalletTransactions")
-        public InWalletVolumeStage inWalletTransactions(int inWalletTransactions) {
-            this.inWalletTransactions = inWalletTransactions;
-            return this;
-        }
-
-        /**
-         * <p>Volume of incoming wallet transactions</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("inWalletVolume")
-        public _FinalStage inWalletVolume(double inWalletVolume) {
-            this.inWalletVolume = inWalletVolume;
-            return this;
-        }
-
-        @java.lang.Override
-        public StatBasicQueryRecord build() {
-            return new StatBasicQueryRecord(
-                    statX,
-                    inTransactions,
-                    inTransactionsVolume,
-                    inWalletTransactions,
-                    inWalletVolume,
-                    additionalProperties);
+        public StatCustomerBasicQueryRecord build() {
+            return new StatCustomerBasicQueryRecord(statX, inTransactions, inTransactionsVolume, additionalProperties);
         }
 
         @java.lang.Override

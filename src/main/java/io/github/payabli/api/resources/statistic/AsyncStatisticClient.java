@@ -6,11 +6,8 @@ package io.github.payabli.api.resources.statistic;
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.statistic.requests.BasicStatsRequest;
-import io.github.payabli.api.resources.statistic.requests.CustomerBasicStatsRequest;
-import io.github.payabli.api.resources.statistic.requests.SubStatsRequest;
-import io.github.payabli.api.resources.statistic.requests.VendorBasicStatsRequest;
 import io.github.payabli.api.types.StatBasicExtendedQueryRecord;
-import io.github.payabli.api.types.StatBasicQueryRecord;
+import io.github.payabli.api.types.StatCustomerBasicQueryRecord;
 import io.github.payabli.api.types.StatisticsVendorQueryRecord;
 import io.github.payabli.api.types.SubscriptionStatsQueryRecord;
 import java.util.List;
@@ -34,7 +31,7 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+     * Retrieves the basic statistics for an organization or a paypoint over a date range, grouped by a frequency. The response returns one row per time bucket. Counts and volumes cover approved transactions only and leave out declines. Volumes are net of fees.
      */
     public CompletableFuture<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId) {
@@ -42,7 +39,7 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+     * Retrieves the basic statistics for an organization or a paypoint over a date range, grouped by a frequency. The response returns one row per time bucket. Counts and volumes cover approved transactions only and leave out declines. Volumes are net of fees.
      */
     public CompletableFuture<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId, RequestOptions requestOptions) {
@@ -52,7 +49,7 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+     * Retrieves the basic statistics for an organization or a paypoint over a date range, grouped by a frequency. The response returns one row per time bucket. Counts and volumes cover approved transactions only and leave out declines. Volumes are net of fees.
      */
     public CompletableFuture<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode, String freq, int level, long entryId, BasicStatsRequest request) {
@@ -60,7 +57,7 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+     * Retrieves the basic statistics for an organization or a paypoint over a date range, grouped by a frequency. The response returns one row per time bucket. Counts and volumes cover approved transactions only and leave out declines. Volumes are net of fees.
      */
     public CompletableFuture<List<StatBasicExtendedQueryRecord>> basicStats(
             String mode,
@@ -75,17 +72,17 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+     * Retrieves the basic statistics for a customer over a date range, grouped by a frequency. This is a Pay In view: it counts the customer's approved transactions and returns one row per time bucket. Volume here is the gross amount, before fees.
      */
-    public CompletableFuture<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+    public CompletableFuture<List<StatCustomerBasicQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId) {
         return this.rawClient.customerBasicStats(mode, freq, customerId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+     * Retrieves the basic statistics for a customer over a date range, grouped by a frequency. This is a Pay In view: it counts the customer's approved transactions and returns one row per time bucket. Volume here is the gross amount, before fees.
      */
-    public CompletableFuture<List<SubscriptionStatsQueryRecord>> customerBasicStats(
+    public CompletableFuture<List<StatCustomerBasicQueryRecord>> customerBasicStats(
             String mode, String freq, int customerId, RequestOptions requestOptions) {
         return this.rawClient
                 .customerBasicStats(mode, freq, customerId, requestOptions)
@@ -93,64 +90,22 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+     * Retrieves subscription statistics for a paypoint or organization, bucketed by how soon active subscriptions are due to renew. This is a forward-looking forecast of upcoming renewals, not charges already taken. Request a single window with <code>interval</code>, or <code>all</code> to return every window in one call.
      */
-    public CompletableFuture<List<SubscriptionStatsQueryRecord>> customerBasicStats(
-            String mode, String freq, int customerId, CustomerBasicStatsRequest request) {
-        return this.rawClient
-                .customerBasicStats(mode, freq, customerId, request)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
-     */
-    public CompletableFuture<List<SubscriptionStatsQueryRecord>> customerBasicStats(
-            String mode,
-            String freq,
-            int customerId,
-            CustomerBasicStatsRequest request,
-            RequestOptions requestOptions) {
-        return this.rawClient
-                .customerBasicStats(mode, freq, customerId, request, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieves the subscription statistics for a given interval for a paypoint or organization.
-     */
-    public CompletableFuture<List<StatBasicQueryRecord>> subStats(String interval, int level, long entryId) {
+    public CompletableFuture<List<SubscriptionStatsQueryRecord>> subStats(String interval, int level, long entryId) {
         return this.rawClient.subStats(interval, level, entryId).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves the subscription statistics for a given interval for a paypoint or organization.
+     * Retrieves subscription statistics for a paypoint or organization, bucketed by how soon active subscriptions are due to renew. This is a forward-looking forecast of upcoming renewals, not charges already taken. Request a single window with <code>interval</code>, or <code>all</code> to return every window in one call.
      */
-    public CompletableFuture<List<StatBasicQueryRecord>> subStats(
+    public CompletableFuture<List<SubscriptionStatsQueryRecord>> subStats(
             String interval, int level, long entryId, RequestOptions requestOptions) {
         return this.rawClient.subStats(interval, level, entryId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
-     * Retrieves the subscription statistics for a given interval for a paypoint or organization.
-     */
-    public CompletableFuture<List<StatBasicQueryRecord>> subStats(
-            String interval, int level, long entryId, SubStatsRequest request) {
-        return this.rawClient.subStats(interval, level, entryId, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieves the subscription statistics for a given interval for a paypoint or organization.
-     */
-    public CompletableFuture<List<StatBasicQueryRecord>> subStats(
-            String interval, int level, long entryId, SubStatsRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .subStats(interval, level, entryId, request, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+     * Retrieve the basic statistics about a vendor over a date range, grouped by frequency. The response returns one row per time bucket, breaking the vendor's bills down by bill state (active, sent to approval, approved, in transit, paid, and so on). Volumes are net of fees.
      */
     public CompletableFuture<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor) {
@@ -158,30 +113,12 @@ public class AsyncStatisticClient {
     }
 
     /**
-     * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+     * Retrieve the basic statistics about a vendor over a date range, grouped by frequency. The response returns one row per time bucket, breaking the vendor's bills down by bill state (active, sent to approval, approved, in transit, paid, and so on). Volumes are net of fees.
      */
     public CompletableFuture<List<StatisticsVendorQueryRecord>> vendorBasicStats(
             String mode, String freq, int idVendor, RequestOptions requestOptions) {
         return this.rawClient
                 .vendorBasicStats(mode, freq, idVendor, requestOptions)
-                .thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
-     */
-    public CompletableFuture<List<StatisticsVendorQueryRecord>> vendorBasicStats(
-            String mode, String freq, int idVendor, VendorBasicStatsRequest request) {
-        return this.rawClient.vendorBasicStats(mode, freq, idVendor, request).thenApply(response -> response.body());
-    }
-
-    /**
-     * Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
-     */
-    public CompletableFuture<List<StatisticsVendorQueryRecord>> vendorBasicStats(
-            String mode, String freq, int idVendor, VendorBasicStatsRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .vendorBasicStats(mode, freq, idVendor, request, requestOptions)
                 .thenApply(response -> response.body());
     }
 }

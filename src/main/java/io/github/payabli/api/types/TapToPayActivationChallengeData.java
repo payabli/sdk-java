@@ -18,24 +18,28 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = DeviceChallengeData.Builder.class)
-public final class DeviceChallengeData {
+@JsonDeserialize(builder = TapToPayActivationChallengeData.Builder.class)
+public final class TapToPayActivationChallengeData {
     private final String code;
 
     private final OffsetDateTime expiresAt;
 
+    private final boolean alreadyIssued;
+
     private final Map<String, Object> additionalProperties;
 
-    private DeviceChallengeData(String code, OffsetDateTime expiresAt, Map<String, Object> additionalProperties) {
+    private TapToPayActivationChallengeData(
+            String code, OffsetDateTime expiresAt, boolean alreadyIssued, Map<String, Object> additionalProperties) {
         this.code = code;
         this.expiresAt = expiresAt;
+        this.alreadyIssued = alreadyIssued;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The 6-digit verification code the operator enters on the device's
-     * terminal to activate it. It can start with leading zeros, so keep it as
-     * a string.
+     * @return The 6-digit activation code the partner delivers to the device
+     * user to activate the device. It can start with leading zeros, so
+     * keep it as a string.
      */
     @JsonProperty("code")
     public String getCode() {
@@ -43,18 +47,27 @@ public final class DeviceChallengeData {
     }
 
     /**
-     * @return UTC time when the code expires, in ISO 8601 round-trip format. A code is
-     * valid for 5 minutes after it's issued.
+     * @return UTC time when the code expires, in ISO 8601 round-trip format. A
+     * code is valid for 30 minutes after it's issued.
      */
     @JsonProperty("expiresAt")
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
     }
 
+    /**
+     * @return <code>true</code> when an unexpired code already exists for the device and
+     * this call returns it unchanged instead of generating a new one.
+     */
+    @JsonProperty("alreadyIssued")
+    public boolean getAlreadyIssued() {
+        return alreadyIssued;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof DeviceChallengeData && equalTo((DeviceChallengeData) other);
+        return other instanceof TapToPayActivationChallengeData && equalTo((TapToPayActivationChallengeData) other);
     }
 
     @JsonAnyGetter
@@ -62,13 +75,13 @@ public final class DeviceChallengeData {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(DeviceChallengeData other) {
-        return code.equals(other.code) && expiresAt.equals(other.expiresAt);
+    private boolean equalTo(TapToPayActivationChallengeData other) {
+        return code.equals(other.code) && expiresAt.equals(other.expiresAt) && alreadyIssued == other.alreadyIssued;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.code, this.expiresAt);
+        return Objects.hash(this.code, this.expiresAt, this.alreadyIssued);
     }
 
     @java.lang.Override
@@ -82,25 +95,33 @@ public final class DeviceChallengeData {
 
     public interface CodeStage {
         /**
-         * <p>The 6-digit verification code the operator enters on the device's
-         * terminal to activate it. It can start with leading zeros, so keep it as
-         * a string.</p>
+         * <p>The 6-digit activation code the partner delivers to the device
+         * user to activate the device. It can start with leading zeros, so
+         * keep it as a string.</p>
          */
         ExpiresAtStage code(@NotNull String code);
 
-        Builder from(DeviceChallengeData other);
+        Builder from(TapToPayActivationChallengeData other);
     }
 
     public interface ExpiresAtStage {
         /**
-         * <p>UTC time when the code expires, in ISO 8601 round-trip format. A code is
-         * valid for 5 minutes after it's issued.</p>
+         * <p>UTC time when the code expires, in ISO 8601 round-trip format. A
+         * code is valid for 30 minutes after it's issued.</p>
          */
-        _FinalStage expiresAt(@NotNull OffsetDateTime expiresAt);
+        AlreadyIssuedStage expiresAt(@NotNull OffsetDateTime expiresAt);
+    }
+
+    public interface AlreadyIssuedStage {
+        /**
+         * <p><code>true</code> when an unexpired code already exists for the device and
+         * this call returns it unchanged instead of generating a new one.</p>
+         */
+        _FinalStage alreadyIssued(boolean alreadyIssued);
     }
 
     public interface _FinalStage {
-        DeviceChallengeData build();
+        TapToPayActivationChallengeData build();
 
         _FinalStage additionalProperty(String key, Object value);
 
@@ -108,10 +129,12 @@ public final class DeviceChallengeData {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements CodeStage, ExpiresAtStage, _FinalStage {
+    public static final class Builder implements CodeStage, ExpiresAtStage, AlreadyIssuedStage, _FinalStage {
         private String code;
 
         private OffsetDateTime expiresAt;
+
+        private boolean alreadyIssued;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -119,16 +142,17 @@ public final class DeviceChallengeData {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(DeviceChallengeData other) {
+        public Builder from(TapToPayActivationChallengeData other) {
             code(other.getCode());
             expiresAt(other.getExpiresAt());
+            alreadyIssued(other.getAlreadyIssued());
             return this;
         }
 
         /**
-         * <p>The 6-digit verification code the operator enters on the device's
-         * terminal to activate it. It can start with leading zeros, so keep it as
-         * a string.</p>
+         * <p>The 6-digit activation code the partner delivers to the device
+         * user to activate the device. It can start with leading zeros, so
+         * keep it as a string.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -139,20 +163,32 @@ public final class DeviceChallengeData {
         }
 
         /**
-         * <p>UTC time when the code expires, in ISO 8601 round-trip format. A code is
-         * valid for 5 minutes after it's issued.</p>
+         * <p>UTC time when the code expires, in ISO 8601 round-trip format. A
+         * code is valid for 30 minutes after it's issued.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("expiresAt")
-        public _FinalStage expiresAt(@NotNull OffsetDateTime expiresAt) {
+        public AlreadyIssuedStage expiresAt(@NotNull OffsetDateTime expiresAt) {
             this.expiresAt = Objects.requireNonNull(expiresAt, "expiresAt must not be null");
             return this;
         }
 
+        /**
+         * <p><code>true</code> when an unexpired code already exists for the device and
+         * this call returns it unchanged instead of generating a new one.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        public DeviceChallengeData build() {
-            return new DeviceChallengeData(code, expiresAt, additionalProperties);
+        @JsonSetter("alreadyIssued")
+        public _FinalStage alreadyIssued(boolean alreadyIssued) {
+            this.alreadyIssued = alreadyIssued;
+            return this;
+        }
+
+        @java.lang.Override
+        public TapToPayActivationChallengeData build() {
+            return new TapToPayActivationChallengeData(code, expiresAt, alreadyIssued, additionalProperties);
         }
 
         @java.lang.Override

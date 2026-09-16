@@ -3480,10 +3480,10 @@ client.subscription().newSubscription(
         .scheduleDetails(
             ScheduleDetail
                 .builder()
-                .endDate("2025-03-20")
+                .endDate("2027-12-31")
                 .frequency(Frequency.WEEKLY)
                 .planId(1)
-                .startDate("2024-09-20")
+                .startDate("2027-01-01")
                 .build()
         )
         .build()
@@ -14879,15 +14879,17 @@ client.notificationlogs().bulkRetryNotificationLogs(
 <dd>
 
 Generates a one-time, 6-digit verification code for activating a
-semi-integrated card-present device in a paypoint. After calling this endpoint, an operator enters the returned code
-on the device's terminal, along with a device name, to register the
-device to the paypoint resolved from `{entry}`.
+semi-integrated card-present device in a paypoint. This endpoint is
+for AXIUM devices only. After calling this endpoint, an operator
+enters the returned code on the device's terminal, along with a
+device name, to register the device to the paypoint resolved from
+`{entry}`.
 
 A code expires 5 minutes after it's issued. A paypoint can have several
 codes active at once — for example, when activating a batch of devices —
 and a code binds to whichever device enters it first.
 
-Authenticate with an OAuth2 Bearer token that has the `device_registry` scope.
+Authenticate with an OAuth2 bearer token that has the `device_registry` scope.
 </dd>
 </dl>
 </dd>
@@ -14918,6 +14920,87 @@ client.device().challenge("8cfec329267");
 <dd>
 
 **entry:** `String` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## TapToPay
+<details><summary><code>client.taptopay.activationChallenge(request) -> TapToPayActivationChallengeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Issues a short-lived activation code for a Tap to Pay device in the
+`Pending` state. This endpoint is for Tap to Pay devices only.
+Deliver the code to the device to complete activation.
+
+A code is valid for 30 minutes after it's issued. Calling this
+endpoint again for the same device before the code expires returns
+the same code, with `alreadyIssued` set to `true`, instead of
+generating a new one. A new code is only generated when no valid
+code exists.
+
+Authenticate with an OAuth2 bearer token that has the `pos_create`
+permission. See [Accept Tap to Pay payments](/guides/pay-in-developer-tap-to-pay)
+for the full integration guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.taptopay().activationChallenge(
+    TapToPayActivationChallengeRequest
+        .builder()
+        .entry("8cfec329267")
+        .deviceId("499585-389fj484-3jcj8hj3")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceId:** `String` — The device identifier (`poiId`) returned when the device was registered.
     
 </dd>
 </dl>
@@ -22754,7 +22837,7 @@ client.management().verifyAccountDetails(
 <dl>
 <dd>
 
-Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+Retrieves the basic statistics for an organization or a paypoint over a date range, grouped by a frequency. The response returns one row per time bucket. Counts and volumes cover approved transactions only and leave out declines. Volumes are net of fees.
 </dd>
 </dl>
 </dd>
@@ -22869,14 +22952,6 @@ Valid formats:
 <dl>
 <dd>
 
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **startDate:** `Optional<String>` 
 
 Used with `custom` mode. The start date for the range.
@@ -22896,7 +22971,7 @@ Valid formats:
 </dl>
 </details>
 
-<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&amp;lt;SubscriptionStatsQueryRecord&amp;gt;</code></summary>
+<details><summary><code>client.statistic.customerBasicStats(mode, freq, customerId) -> List&amp;lt;StatCustomerBasicQueryRecord&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -22908,7 +22983,7 @@ Valid formats:
 <dl>
 <dd>
 
-Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+Retrieves the basic statistics for a customer over a date range, grouped by a frequency. This is a Pay In view: it counts the customer's approved transactions and returns one row per time bucket. Volume here is the gross amount, before fees.
 </dd>
 </dl>
 </dd>
@@ -22923,14 +22998,7 @@ Retrieves the basic statistics for a customer for a specific time period, groupe
 <dd>
 
 ```java
-client.statistic().customerBasicStats(
-    "ytd",
-    "m",
-    4440,
-    CustomerBasicStatsRequest
-        .builder()
-        .build()
-);
+client.statistic().customerBasicStats("m12", "m", 4440);
 ```
 </dd>
 </dl>
@@ -22988,14 +23056,6 @@ For example, `w` groups the results by week.
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters.
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -23004,7 +23064,7 @@ For example, `w` groups the results by week.
 </dl>
 </details>
 
-<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&amp;lt;StatBasicQueryRecord&amp;gt;</code></summary>
+<details><summary><code>client.statistic.subStats(interval, level, entryId) -> List&amp;lt;SubscriptionStatsQueryRecord&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -23016,7 +23076,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-Retrieves the subscription statistics for a given interval for a paypoint or organization.
+Retrieves subscription statistics for a paypoint or organization, bucketed by how soon active subscriptions are due to renew. This is a forward-looking forecast of upcoming renewals, not charges already taken. Request a single window with `interval`, or `all` to return every window in one call.
 </dd>
 </dl>
 </dd>
@@ -23031,14 +23091,7 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 <dd>
 
 ```java
-client.statistic().subStats(
-    "30",
-    2,
-    1000000L,
-    SubStatsRequest
-        .builder()
-        .build()
-);
+client.statistic().subStats("all", 2, 1000000L);
 ```
 </dd>
 </dl>
@@ -23085,14 +23138,6 @@ The entry level for the request:
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -23113,7 +23158,7 @@ The entry level for the request:
 <dl>
 <dd>
 
-Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+Retrieve the basic statistics about a vendor over a date range, grouped by frequency. The response returns one row per time bucket, breaking the vendor's bills down by bill state (active, sent to approval, approved, in transit, paid, and so on). Volumes are net of fees.
 </dd>
 </dl>
 </dd>
@@ -23128,14 +23173,7 @@ Retrieve the basic statistics about a vendor for a given time period, grouped by
 <dd>
 
 ```java
-client.statistic().vendorBasicStats(
-    "ytd",
-    "m",
-    1,
-    VendorBasicStatsRequest
-        .builder()
-        .build()
-);
+client.statistic().vendorBasicStats("ytd", "m", 1);
 ```
 </dd>
 </dl>
@@ -23190,14 +23228,6 @@ For example, `w` groups the results by week.
 <dd>
 
 **idVendor:** `Integer` — Vendor ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `Optional<Map<String, Optional<String>>>` — List of parameters
     
 </dd>
 </dl>
@@ -24373,9 +24403,9 @@ client.vendor().addVendor(
         .locationCode("MIA123")
         .mcc("7777")
         .name1("Herman's Coatings and Masonry")
-        .name2("<string>")
-        .payeeName1("<string>")
-        .payeeName2("<string>")
+        .name2("HCM Services")
+        .payeeName1("Herman Martinez")
+        .payeeName2("Herman Coatings")
         .paymentMethod("managed")
         .phone("5555555555")
         .remitAddress1("123 Walnut Street")
@@ -25366,7 +25396,7 @@ Cancels an array of payout transactions.
 
 ```java
 client.moneyOut().cancelAllOut(
-    Arrays.asList("2-29", "2-28", "2-27")
+    Arrays.asList("129-230", "129-219")
 );
 ```
 </dd>
@@ -25533,7 +25563,7 @@ client.moneyOut().captureAllOut(
     CaptureAllOutRequest
         .builder()
         .body(
-            Arrays.asList("2-29", "2-28", "2-27")
+            Arrays.asList("129-230", "129-219")
         )
         .build()
 );
@@ -26734,8 +26764,8 @@ client.payoutSubscription().createPayoutSubscription(
                 Arrays.asList(
                     BillPayOutDataRequest
                         .builder()
-                        .dueDate("2025-08-15")
-                        .invoiceDate("2025-08-01")
+                        .dueDate("2027-08-15")
+                        .invoiceDate("2027-08-01")
                         .invoiceNumber("INV-2345")
                         .netAmount("500")
                         .build()
@@ -26745,8 +26775,8 @@ client.payoutSubscription().createPayoutSubscription(
         .scheduleDetails(
             PayoutScheduleDetail
                 .builder()
-                .startDate("09/01/2027")
-                .endDate("09/01/2026")
+                .startDate("01/01/2027")
+                .endDate("12/31/2027")
                 .frequency(Frequency.MONTHLY)
                 .build()
         )

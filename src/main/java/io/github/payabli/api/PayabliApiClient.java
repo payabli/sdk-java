@@ -35,6 +35,7 @@ import io.github.payabli.api.resources.paypoint.PaypointClient;
 import io.github.payabli.api.resources.query.QueryClient;
 import io.github.payabli.api.resources.statistic.StatisticClient;
 import io.github.payabli.api.resources.subscription.SubscriptionClient;
+import io.github.payabli.api.resources.taptopay.TaptopayClient;
 import io.github.payabli.api.resources.templates.TemplatesClient;
 import io.github.payabli.api.resources.token.TokenClient;
 import io.github.payabli.api.resources.tokenstorage.TokenStorageClient;
@@ -79,6 +80,8 @@ public class PayabliApiClient {
     protected final Supplier<NotificationlogsClient> notificationlogsClient;
 
     protected final Supplier<DeviceClient> deviceClient;
+
+    protected final Supplier<TaptopayClient> taptopayClient;
 
     protected final Supplier<CloudClient> cloudClient;
 
@@ -137,6 +140,7 @@ public class PayabliApiClient {
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
         this.notificationlogsClient = Suppliers.memoize(() -> new NotificationlogsClient(clientOptions));
         this.deviceClient = Suppliers.memoize(() -> new DeviceClient(clientOptions));
+        this.taptopayClient = Suppliers.memoize(() -> new TaptopayClient(clientOptions));
         this.cloudClient = Suppliers.memoize(() -> new CloudClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
         this.boardingClient = Suppliers.memoize(() -> new BoardingClient(clientOptions));
@@ -224,6 +228,10 @@ public class PayabliApiClient {
 
     public DeviceClient device() {
         return this.deviceClient.get();
+    }
+
+    public TaptopayClient taptopay() {
+        return this.taptopayClient.get();
     }
 
     public CloudClient cloud() {

@@ -95,7 +95,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Statistical grouping identifier
+     * @return The time bucket for this row, formatted according to the query's <code>freq</code> (for example, <code>2025-11</code> for a monthly bucket). Each bill falls in the bucket of its most recent update. The counts below break the vendor's bills down by bill state.
      */
     @JsonProperty("statX")
     public String getStatX() {
@@ -103,7 +103,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of active transactions
+     * @return Number of the vendor's bills in the active state (created, not yet submitted for approval).
      */
     @JsonProperty("active")
     public int getActive() {
@@ -111,7 +111,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of active transactions
+     * @return Total value of the vendor's active bills, net of fees.
      */
     @JsonProperty("activeVolume")
     public double getActiveVolume() {
@@ -119,7 +119,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of transactions sent to approval
+     * @return Number of the vendor's bills submitted into an approval workflow.
      */
     @JsonProperty("sentToApproval")
     public int getSentToApproval() {
@@ -127,7 +127,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of transactions sent to approval
+     * @return Total value of the vendor's bills sent to approval, net of fees.
      */
     @JsonProperty("sentToApprovalVolume")
     public double getSentToApprovalVolume() {
@@ -135,7 +135,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of transactions to approval
+     * @return Number of the vendor's bills awaiting an approver's decision.
      */
     @JsonProperty("toApproval")
     public int getToApproval() {
@@ -143,7 +143,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of transactions to approval
+     * @return Total value of the vendor's bills awaiting approval, net of fees.
      */
     @JsonProperty("toApprovalVolume")
     public double getToApprovalVolume() {
@@ -151,7 +151,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of approved transactions
+     * @return Number of the vendor's bills approved for payment.
      */
     @JsonProperty("approved")
     public int getApproved() {
@@ -159,7 +159,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of approved transactions
+     * @return Total value of the vendor's approved bills, net of fees.
      */
     @JsonProperty("approvedVolume")
     public double getApprovedVolume() {
@@ -167,7 +167,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of disapproved transactions
+     * @return Number of the vendor's bills rejected during approval.
      */
     @JsonProperty("disapproved")
     public int getDisapproved() {
@@ -175,7 +175,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of disapproved transactions
+     * @return Total value of the vendor's disapproved bills, net of fees.
      */
     @JsonProperty("disapprovedVolume")
     public double getDisapprovedVolume() {
@@ -183,7 +183,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of cancelled transactions
+     * @return Number of the vendor's cancelled bills.
      */
     @JsonProperty("cancelled")
     public int getCancelled() {
@@ -191,7 +191,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of cancelled transactions
+     * @return Total value of the vendor's cancelled bills, net of fees.
      */
     @JsonProperty("cancelledVolume")
     public double getCancelledVolume() {
@@ -199,7 +199,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of transactions in transit
+     * @return Number of the vendor's bills whose payment is in transit.
      */
     @JsonProperty("inTransit")
     public int getInTransit() {
@@ -207,7 +207,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of transactions in transit
+     * @return Total value of the vendor's in-transit bills, net of fees.
      */
     @JsonProperty("inTransitVolume")
     public double getInTransitVolume() {
@@ -215,7 +215,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Number of paid transactions
+     * @return Number of the vendor's bills marked paid. Paid means the payout has settled, not merely that Payabli issued it.
      */
     @JsonProperty("paid")
     public int getPaid() {
@@ -223,7 +223,7 @@ public final class StatisticsVendorQueryRecord {
     }
 
     /**
-     * @return Volume of paid transactions
+     * @return Total value of the vendor's paid bills, net of fees.
      */
     @JsonProperty("paidVolume")
     public double getPaidVolume() {
@@ -294,7 +294,7 @@ public final class StatisticsVendorQueryRecord {
 
     public interface StatXStage {
         /**
-         * <p>Statistical grouping identifier</p>
+         * <p>The time bucket for this row, formatted according to the query's <code>freq</code> (for example, <code>2025-11</code> for a monthly bucket). Each bill falls in the bucket of its most recent update. The counts below break the vendor's bills down by bill state.</p>
          */
         ActiveStage statX(@NotNull String statX);
 
@@ -303,112 +303,112 @@ public final class StatisticsVendorQueryRecord {
 
     public interface ActiveStage {
         /**
-         * <p>Number of active transactions</p>
+         * <p>Number of the vendor's bills in the active state (created, not yet submitted for approval).</p>
          */
         ActiveVolumeStage active(int active);
     }
 
     public interface ActiveVolumeStage {
         /**
-         * <p>Volume of active transactions</p>
+         * <p>Total value of the vendor's active bills, net of fees.</p>
          */
         SentToApprovalStage activeVolume(double activeVolume);
     }
 
     public interface SentToApprovalStage {
         /**
-         * <p>Number of transactions sent to approval</p>
+         * <p>Number of the vendor's bills submitted into an approval workflow.</p>
          */
         SentToApprovalVolumeStage sentToApproval(int sentToApproval);
     }
 
     public interface SentToApprovalVolumeStage {
         /**
-         * <p>Volume of transactions sent to approval</p>
+         * <p>Total value of the vendor's bills sent to approval, net of fees.</p>
          */
         ToApprovalStage sentToApprovalVolume(double sentToApprovalVolume);
     }
 
     public interface ToApprovalStage {
         /**
-         * <p>Number of transactions to approval</p>
+         * <p>Number of the vendor's bills awaiting an approver's decision.</p>
          */
         ToApprovalVolumeStage toApproval(int toApproval);
     }
 
     public interface ToApprovalVolumeStage {
         /**
-         * <p>Volume of transactions to approval</p>
+         * <p>Total value of the vendor's bills awaiting approval, net of fees.</p>
          */
         ApprovedStage toApprovalVolume(double toApprovalVolume);
     }
 
     public interface ApprovedStage {
         /**
-         * <p>Number of approved transactions</p>
+         * <p>Number of the vendor's bills approved for payment.</p>
          */
         ApprovedVolumeStage approved(int approved);
     }
 
     public interface ApprovedVolumeStage {
         /**
-         * <p>Volume of approved transactions</p>
+         * <p>Total value of the vendor's approved bills, net of fees.</p>
          */
         DisapprovedStage approvedVolume(double approvedVolume);
     }
 
     public interface DisapprovedStage {
         /**
-         * <p>Number of disapproved transactions</p>
+         * <p>Number of the vendor's bills rejected during approval.</p>
          */
         DisapprovedVolumeStage disapproved(int disapproved);
     }
 
     public interface DisapprovedVolumeStage {
         /**
-         * <p>Volume of disapproved transactions</p>
+         * <p>Total value of the vendor's disapproved bills, net of fees.</p>
          */
         CancelledStage disapprovedVolume(double disapprovedVolume);
     }
 
     public interface CancelledStage {
         /**
-         * <p>Number of cancelled transactions</p>
+         * <p>Number of the vendor's cancelled bills.</p>
          */
         CancelledVolumeStage cancelled(int cancelled);
     }
 
     public interface CancelledVolumeStage {
         /**
-         * <p>Volume of cancelled transactions</p>
+         * <p>Total value of the vendor's cancelled bills, net of fees.</p>
          */
         InTransitStage cancelledVolume(double cancelledVolume);
     }
 
     public interface InTransitStage {
         /**
-         * <p>Number of transactions in transit</p>
+         * <p>Number of the vendor's bills whose payment is in transit.</p>
          */
         InTransitVolumeStage inTransit(int inTransit);
     }
 
     public interface InTransitVolumeStage {
         /**
-         * <p>Volume of transactions in transit</p>
+         * <p>Total value of the vendor's in-transit bills, net of fees.</p>
          */
         PaidStage inTransitVolume(double inTransitVolume);
     }
 
     public interface PaidStage {
         /**
-         * <p>Number of paid transactions</p>
+         * <p>Number of the vendor's bills marked paid. Paid means the payout has settled, not merely that Payabli issued it.</p>
          */
         PaidVolumeStage paid(int paid);
     }
 
     public interface PaidVolumeStage {
         /**
-         * <p>Volume of paid transactions</p>
+         * <p>Total value of the vendor's paid bills, net of fees.</p>
          */
         _FinalStage paidVolume(double paidVolume);
     }
@@ -503,7 +503,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Statistical grouping identifier</p>
+         * <p>The time bucket for this row, formatted according to the query's <code>freq</code> (for example, <code>2025-11</code> for a monthly bucket). Each bill falls in the bucket of its most recent update. The counts below break the vendor's bills down by bill state.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -514,7 +514,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of active transactions</p>
+         * <p>Number of the vendor's bills in the active state (created, not yet submitted for approval).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -525,7 +525,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of active transactions</p>
+         * <p>Total value of the vendor's active bills, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -536,7 +536,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of transactions sent to approval</p>
+         * <p>Number of the vendor's bills submitted into an approval workflow.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -547,7 +547,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of transactions sent to approval</p>
+         * <p>Total value of the vendor's bills sent to approval, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -558,7 +558,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of transactions to approval</p>
+         * <p>Number of the vendor's bills awaiting an approver's decision.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -569,7 +569,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of transactions to approval</p>
+         * <p>Total value of the vendor's bills awaiting approval, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -580,7 +580,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of approved transactions</p>
+         * <p>Number of the vendor's bills approved for payment.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -591,7 +591,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of approved transactions</p>
+         * <p>Total value of the vendor's approved bills, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -602,7 +602,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of disapproved transactions</p>
+         * <p>Number of the vendor's bills rejected during approval.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -613,7 +613,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of disapproved transactions</p>
+         * <p>Total value of the vendor's disapproved bills, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -624,7 +624,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of cancelled transactions</p>
+         * <p>Number of the vendor's cancelled bills.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -635,7 +635,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of cancelled transactions</p>
+         * <p>Total value of the vendor's cancelled bills, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -646,7 +646,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of transactions in transit</p>
+         * <p>Number of the vendor's bills whose payment is in transit.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -657,7 +657,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of transactions in transit</p>
+         * <p>Total value of the vendor's in-transit bills, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -668,7 +668,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Number of paid transactions</p>
+         * <p>Number of the vendor's bills marked paid. Paid means the payout has settled, not merely that Payabli issued it.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -679,7 +679,7 @@ public final class StatisticsVendorQueryRecord {
         }
 
         /**
-         * <p>Volume of paid transactions</p>
+         * <p>Total value of the vendor's paid bills, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

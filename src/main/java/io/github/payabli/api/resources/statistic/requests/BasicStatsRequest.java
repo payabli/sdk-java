@@ -22,19 +22,13 @@ import java.util.Optional;
 public final class BasicStatsRequest {
     private final Optional<String> endDate;
 
-    private final Optional<Map<String, Optional<String>>> parameters;
-
     private final Optional<String> startDate;
 
     private final Map<String, Object> additionalProperties;
 
     private BasicStatsRequest(
-            Optional<String> endDate,
-            Optional<Map<String, Optional<String>>> parameters,
-            Optional<String> startDate,
-            Map<String, Object> additionalProperties) {
+            Optional<String> endDate, Optional<String> startDate, Map<String, Object> additionalProperties) {
         this.endDate = endDate;
-        this.parameters = parameters;
         this.startDate = startDate;
         this.additionalProperties = additionalProperties;
     }
@@ -52,14 +46,6 @@ public final class BasicStatsRequest {
     @JsonProperty("endDate")
     public Optional<String> getEndDate() {
         return endDate;
-    }
-
-    /**
-     * @return List of parameters.
-     */
-    @JsonProperty("parameters")
-    public Optional<Map<String, Optional<String>>> getParameters() {
-        return parameters;
     }
 
     /**
@@ -89,14 +75,12 @@ public final class BasicStatsRequest {
     }
 
     private boolean equalTo(BasicStatsRequest other) {
-        return endDate.equals(other.endDate)
-                && parameters.equals(other.parameters)
-                && startDate.equals(other.startDate);
+        return endDate.equals(other.endDate) && startDate.equals(other.startDate);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.endDate, this.parameters, this.startDate);
+        return Objects.hash(this.endDate, this.startDate);
     }
 
     @java.lang.Override
@@ -112,8 +96,6 @@ public final class BasicStatsRequest {
     public static final class Builder {
         private Optional<String> endDate = Optional.empty();
 
-        private Optional<Map<String, Optional<String>>> parameters = Optional.empty();
-
         private Optional<String> startDate = Optional.empty();
 
         @JsonAnySetter
@@ -123,7 +105,6 @@ public final class BasicStatsRequest {
 
         public Builder from(BasicStatsRequest other) {
             endDate(other.getEndDate());
-            parameters(other.getParameters());
             startDate(other.getStartDate());
             return this;
         }
@@ -150,20 +131,6 @@ public final class BasicStatsRequest {
         }
 
         /**
-         * <p>List of parameters.</p>
-         */
-        @JsonSetter(value = "parameters", nulls = Nulls.SKIP)
-        public Builder parameters(Optional<Map<String, Optional<String>>> parameters) {
-            this.parameters = parameters;
-            return this;
-        }
-
-        public Builder parameters(Map<String, Optional<String>> parameters) {
-            this.parameters = Optional.ofNullable(parameters);
-            return this;
-        }
-
-        /**
          * <p>Used with <code>custom</code> mode. The start date for the range.
          * Valid formats:</p>
          * <ul>
@@ -185,7 +152,7 @@ public final class BasicStatsRequest {
         }
 
         public BasicStatsRequest build() {
-            return new BasicStatsRequest(endDate, parameters, startDate, additionalProperties);
+            return new BasicStatsRequest(endDate, startDate, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

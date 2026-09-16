@@ -36,7 +36,7 @@ public final class SubscriptionStatsQueryRecord {
     }
 
     /**
-     * @return Time interval identifier
+     * @return The renewal window this row represents: <code>30</code> (due within 30 days), <code>60</code> (31 to 60 days), <code>90</code> (61 to 90 days), or <code>+90</code> (more than 90 days out). Note the response label <code>+90</code> differs from its request path value <code>plus</code>. Requesting <code>all</code> returns one row per window.
      */
     @JsonProperty("interval")
     public String getInterval() {
@@ -44,7 +44,7 @@ public final class SubscriptionStatsQueryRecord {
     }
 
     /**
-     * @return Number of subscriptions
+     * @return Number of active subscriptions scheduled to renew within this window. This is a forecast of upcoming renewals, not charges already taken, so it doesn't reconcile with <code>inSubscriptionsPaid</code> on <code>/Statistic/basic</code>.
      */
     @JsonProperty("count")
     public int getCount() {
@@ -52,7 +52,7 @@ public final class SubscriptionStatsQueryRecord {
     }
 
     /**
-     * @return Subscription volume
+     * @return Total value of the upcoming renewals in this window, net of fees.
      */
     @JsonProperty("volume")
     public double getVolume() {
@@ -90,7 +90,7 @@ public final class SubscriptionStatsQueryRecord {
 
     public interface IntervalStage {
         /**
-         * <p>Time interval identifier</p>
+         * <p>The renewal window this row represents: <code>30</code> (due within 30 days), <code>60</code> (31 to 60 days), <code>90</code> (61 to 90 days), or <code>+90</code> (more than 90 days out). Note the response label <code>+90</code> differs from its request path value <code>plus</code>. Requesting <code>all</code> returns one row per window.</p>
          */
         CountStage interval(@NotNull String interval);
 
@@ -99,14 +99,14 @@ public final class SubscriptionStatsQueryRecord {
 
     public interface CountStage {
         /**
-         * <p>Number of subscriptions</p>
+         * <p>Number of active subscriptions scheduled to renew within this window. This is a forecast of upcoming renewals, not charges already taken, so it doesn't reconcile with <code>inSubscriptionsPaid</code> on <code>/Statistic/basic</code>.</p>
          */
         VolumeStage count(int count);
     }
 
     public interface VolumeStage {
         /**
-         * <p>Subscription volume</p>
+         * <p>Total value of the upcoming renewals in this window, net of fees.</p>
          */
         _FinalStage volume(double volume);
     }
@@ -141,7 +141,7 @@ public final class SubscriptionStatsQueryRecord {
         }
 
         /**
-         * <p>Time interval identifier</p>
+         * <p>The renewal window this row represents: <code>30</code> (due within 30 days), <code>60</code> (31 to 60 days), <code>90</code> (61 to 90 days), or <code>+90</code> (more than 90 days out). Note the response label <code>+90</code> differs from its request path value <code>plus</code>. Requesting <code>all</code> returns one row per window.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -152,7 +152,7 @@ public final class SubscriptionStatsQueryRecord {
         }
 
         /**
-         * <p>Number of subscriptions</p>
+         * <p>Number of active subscriptions scheduled to renew within this window. This is a forecast of upcoming renewals, not charges already taken, so it doesn't reconcile with <code>inSubscriptionsPaid</code> on <code>/Statistic/basic</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -163,7 +163,7 @@ public final class SubscriptionStatsQueryRecord {
         }
 
         /**
-         * <p>Subscription volume</p>
+         * <p>Total value of the upcoming renewals in this window, net of fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

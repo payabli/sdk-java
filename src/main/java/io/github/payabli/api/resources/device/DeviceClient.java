@@ -26,13 +26,15 @@ public class DeviceClient {
 
     /**
      * Generates a one-time, 6-digit verification code for activating a
-     * semi-integrated card-present device in a paypoint. After calling this endpoint, an operator enters the returned code
-     * on the device's terminal, along with a device name, to register the
-     * device to the paypoint resolved from <code>{entry}</code>.
+     * semi-integrated card-present device in a paypoint. This endpoint is
+     * for AXIUM devices only. After calling this endpoint, an operator
+     * enters the returned code on the device's terminal, along with a
+     * device name, to register the device to the paypoint resolved from
+     * <code>{entry}</code>.
      * <p>A code expires 5 minutes after it's issued. A paypoint can have several
      * codes active at once — for example, when activating a batch of devices —
      * and a code binds to whichever device enters it first.</p>
-     * <p>Authenticate with an OAuth2 Bearer token that has the <code>device_registry</code> scope.</p>
+     * <p>Authenticate with an OAuth2 bearer token that has the <code>device_registry</code> scope.</p>
      */
     public DeviceChallengeResponse challenge(String entry) {
         return this.rawClient.challenge(entry).body();
@@ -40,13 +42,15 @@ public class DeviceClient {
 
     /**
      * Generates a one-time, 6-digit verification code for activating a
-     * semi-integrated card-present device in a paypoint. After calling this endpoint, an operator enters the returned code
-     * on the device's terminal, along with a device name, to register the
-     * device to the paypoint resolved from <code>{entry}</code>.
+     * semi-integrated card-present device in a paypoint. This endpoint is
+     * for AXIUM devices only. After calling this endpoint, an operator
+     * enters the returned code on the device's terminal, along with a
+     * device name, to register the device to the paypoint resolved from
+     * <code>{entry}</code>.
      * <p>A code expires 5 minutes after it's issued. A paypoint can have several
      * codes active at once — for example, when activating a batch of devices —
      * and a code binds to whichever device enters it first.</p>
-     * <p>Authenticate with an OAuth2 Bearer token that has the <code>device_registry</code> scope.</p>
+     * <p>Authenticate with an OAuth2 bearer token that has the <code>device_registry</code> scope.</p>
      */
     public DeviceChallengeResponse challenge(String entry, RequestOptions requestOptions) {
         return this.rawClient.challenge(entry, requestOptions).body();
