@@ -35,7 +35,7 @@ public final class BillQueryRecord2 {
 
     private final Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals;
 
-    private final Optional<String> billDate;
+    private final Optional<OffsetDateTime> billDate;
 
     private final Optional<List<GeneralEvents>> billEvents;
 
@@ -51,7 +51,7 @@ public final class BillQueryRecord2 {
 
     private final Optional<String> documentsRef;
 
-    private final Optional<String> dueDate;
+    private final Optional<OffsetDateTime> dueDate;
 
     private final Optional<String> endDate;
 
@@ -111,7 +111,7 @@ public final class BillQueryRecord2 {
             Optional<Map<String, Optional<String>>> additionalData,
             Optional<String> batchNumber,
             Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals,
-            Optional<String> billDate,
+            Optional<OffsetDateTime> billDate,
             Optional<List<GeneralEvents>> billEvents,
             Optional<List<BillItem>> billItems,
             Optional<String> billNumber,
@@ -119,7 +119,7 @@ public final class BillQueryRecord2 {
             Optional<OffsetDateTime> createdAt,
             Optional<Double> discount,
             Optional<String> documentsRef,
-            Optional<String> dueDate,
+            Optional<OffsetDateTime> dueDate,
             Optional<String> endDate,
             Optional<String> entityId,
             Optional<String> externalPaypointId,
@@ -235,10 +235,10 @@ public final class BillQueryRecord2 {
     }
 
     /**
-     * @return Bill creation date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+     * @return Bill creation date, returned as a timestamp.
      */
     @JsonIgnore
-    public Optional<String> getBillDate() {
+    public Optional<OffsetDateTime> getBillDate() {
         if (billDate == null) {
             return Optional.empty();
         }
@@ -323,10 +323,10 @@ public final class BillQueryRecord2 {
     }
 
     /**
-     * @return Bill due date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+     * @return Bill due date, returned as a timestamp.
      */
     @JsonIgnore
-    public Optional<String> getDueDate() {
+    public Optional<OffsetDateTime> getDueDate() {
         if (dueDate == null) {
             return Optional.empty();
         }
@@ -625,7 +625,7 @@ public final class BillQueryRecord2 {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("BillDate")
-    private Optional<String> _getBillDate() {
+    private Optional<OffsetDateTime> _getBillDate() {
         return billDate;
     }
 
@@ -673,7 +673,7 @@ public final class BillQueryRecord2 {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("DueDate")
-    private Optional<String> _getDueDate() {
+    private Optional<OffsetDateTime> _getDueDate() {
         return dueDate;
     }
 
@@ -945,7 +945,7 @@ public final class BillQueryRecord2 {
 
         private Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals = Optional.empty();
 
-        private Optional<String> billDate = Optional.empty();
+        private Optional<OffsetDateTime> billDate = Optional.empty();
 
         private Optional<List<GeneralEvents>> billEvents = Optional.empty();
 
@@ -961,7 +961,7 @@ public final class BillQueryRecord2 {
 
         private Optional<String> documentsRef = Optional.empty();
 
-        private Optional<String> dueDate = Optional.empty();
+        private Optional<OffsetDateTime> dueDate = Optional.empty();
 
         private Optional<String> endDate = Optional.empty();
 
@@ -1178,20 +1178,20 @@ public final class BillQueryRecord2 {
         }
 
         /**
-         * <p>Bill creation date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * <p>Bill creation date, returned as a timestamp.</p>
          */
         @JsonSetter(value = "BillDate", nulls = Nulls.SKIP)
-        public Builder billDate(Optional<String> billDate) {
+        public Builder billDate(Optional<OffsetDateTime> billDate) {
             this.billDate = billDate;
             return this;
         }
 
-        public Builder billDate(String billDate) {
+        public Builder billDate(OffsetDateTime billDate) {
             this.billDate = Optional.ofNullable(billDate);
             return this;
         }
 
-        public Builder billDate(Nullable<String> billDate) {
+        public Builder billDate(Nullable<OffsetDateTime> billDate) {
             if (billDate.isNull()) {
                 this.billDate = null;
             } else if (billDate.isEmpty()) {
@@ -1378,20 +1378,20 @@ public final class BillQueryRecord2 {
         }
 
         /**
-         * <p>Bill due date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * <p>Bill due date, returned as a timestamp.</p>
          */
         @JsonSetter(value = "DueDate", nulls = Nulls.SKIP)
-        public Builder dueDate(Optional<String> dueDate) {
+        public Builder dueDate(Optional<OffsetDateTime> dueDate) {
             this.dueDate = dueDate;
             return this;
         }
 
-        public Builder dueDate(String dueDate) {
+        public Builder dueDate(OffsetDateTime dueDate) {
             this.dueDate = Optional.ofNullable(dueDate);
             return this;
         }
 
-        public Builder dueDate(Nullable<String> dueDate) {
+        public Builder dueDate(Nullable<OffsetDateTime> dueDate) {
             if (dueDate.isNull()) {
                 this.dueDate = null;
             } else if (dueDate.isEmpty()) {

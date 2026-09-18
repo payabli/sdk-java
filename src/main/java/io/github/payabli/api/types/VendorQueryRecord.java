@@ -21,13 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorQueryRecord.Builder.class)
 public final class VendorQueryRecord {
-    private final Optional<String> vendorNumber;
+    private final String vendorNumber;
 
-    private final Optional<String> name1;
+    private final String name1;
 
     private final Optional<String> name2;
 
@@ -61,29 +62,29 @@ public final class VendorQueryRecord {
 
     private final Optional<String> paymentMethod;
 
-    private final Optional<Integer> vendorStatus;
+    private final int vendorStatus;
 
-    private final Optional<Integer> vendorId;
+    private final int vendorId;
 
     private final Optional<String> enrollmentStatus;
 
     private final Optional<VendorSummary> summary;
 
-    private final Optional<String> paypointLegalname;
+    private final String paypointLegalname;
 
     private final Optional<Long> paypointId;
 
-    private final Optional<String> paypointDbaname;
+    private final String paypointDbaname;
 
-    private final Optional<String> paypointEntryname;
+    private final String paypointEntryname;
 
-    private final Optional<String> parentOrgName;
+    private final String parentOrgName;
 
-    private final Optional<Long> parentOrgId;
+    private final long parentOrgId;
 
-    private final Optional<OffsetDateTime> createdDate;
+    private final OffsetDateTime createdDate;
 
-    private final Optional<OffsetDateTime> lastUpdated;
+    private final OffsetDateTime lastUpdated;
 
     private final Optional<String> remitAddress1;
 
@@ -107,7 +108,7 @@ public final class VendorQueryRecord {
 
     private final Optional<String> customerVendorAccount;
 
-    private final Optional<Long> internalReferenceId;
+    private final long internalReferenceId;
 
     private final Optional<String> paymentPortalUrl;
 
@@ -117,7 +118,7 @@ public final class VendorQueryRecord {
 
     private final Optional<String> checkAccepted;
 
-    private final Optional<String> enrichmentStatus;
+    private final String enrichmentStatus;
 
     private final Optional<String> enrichedBy;
 
@@ -134,8 +135,8 @@ public final class VendorQueryRecord {
     private final Map<String, Object> additionalProperties;
 
     private VendorQueryRecord(
-            Optional<String> vendorNumber,
-            Optional<String> name1,
+            String vendorNumber,
+            String name1,
             Optional<String> name2,
             Optional<String> ein,
             Optional<String> phone,
@@ -152,18 +153,18 @@ public final class VendorQueryRecord {
             Optional<List<ContactsResponse>> contacts,
             Optional<BillingDataResponse> billingData,
             Optional<String> paymentMethod,
-            Optional<Integer> vendorStatus,
-            Optional<Integer> vendorId,
+            int vendorStatus,
+            int vendorId,
             Optional<String> enrollmentStatus,
             Optional<VendorSummary> summary,
-            Optional<String> paypointLegalname,
+            String paypointLegalname,
             Optional<Long> paypointId,
-            Optional<String> paypointDbaname,
-            Optional<String> paypointEntryname,
-            Optional<String> parentOrgName,
-            Optional<Long> parentOrgId,
-            Optional<OffsetDateTime> createdDate,
-            Optional<OffsetDateTime> lastUpdated,
+            String paypointDbaname,
+            String paypointEntryname,
+            String parentOrgName,
+            long parentOrgId,
+            OffsetDateTime createdDate,
+            OffsetDateTime lastUpdated,
             Optional<String> remitAddress1,
             Optional<String> remitAddress2,
             Optional<String> remitCity,
@@ -175,12 +176,12 @@ public final class VendorQueryRecord {
             Optional<String> customField1,
             Optional<String> customField2,
             Optional<String> customerVendorAccount,
-            Optional<Long> internalReferenceId,
+            long internalReferenceId,
             Optional<String> paymentPortalUrl,
             Optional<String> cardAccepted,
             Optional<String> achAccepted,
             Optional<String> checkAccepted,
-            Optional<String> enrichmentStatus,
+            String enrichmentStatus,
             Optional<String> enrichedBy,
             Optional<OffsetDateTime> enrichedAt,
             Optional<String> enrichmentId,
@@ -245,12 +246,12 @@ public final class VendorQueryRecord {
     }
 
     @JsonProperty("VendorNumber")
-    public Optional<String> getVendorNumber() {
+    public String getVendorNumber() {
         return vendorNumber;
     }
 
     @JsonProperty("Name1")
-    public Optional<String> getName1() {
+    public String getName1() {
         return name1;
     }
 
@@ -270,13 +271,19 @@ public final class VendorQueryRecord {
         return ein;
     }
 
-    @JsonProperty("Phone")
+    @JsonIgnore
     public Optional<String> getPhone() {
+        if (phone == null) {
+            return Optional.empty();
+        }
         return phone;
     }
 
-    @JsonProperty("Email")
+    @JsonIgnore
     public Optional<String> getEmail() {
+        if (email == null) {
+            return Optional.empty();
+        }
         return email;
     }
 
@@ -288,86 +295,137 @@ public final class VendorQueryRecord {
         return remitEmail;
     }
 
-    @JsonProperty("Address1")
+    /**
+     * @return The address.
+     */
+    @JsonIgnore
     public Optional<String> getAddress1() {
+        if (address1 == null) {
+            return Optional.empty();
+        }
         return address1;
     }
 
-    @JsonProperty("Address2")
+    /**
+     * @return Additional line for the address.
+     */
+    @JsonIgnore
     public Optional<String> getAddress2() {
+        if (address2 == null) {
+            return Optional.empty();
+        }
         return address2;
     }
 
-    @JsonProperty("City")
+    /**
+     * @return The city.
+     */
+    @JsonIgnore
     public Optional<String> getCity() {
+        if (city == null) {
+            return Optional.empty();
+        }
         return city;
     }
 
-    @JsonProperty("State")
+    /**
+     * @return The state or province.
+     */
+    @JsonIgnore
     public Optional<String> getState() {
+        if (state == null) {
+            return Optional.empty();
+        }
         return state;
     }
 
-    @JsonProperty("Zip")
+    @JsonIgnore
     public Optional<String> getZip() {
+        if (zip == null) {
+            return Optional.empty();
+        }
         return zip;
     }
 
-    @JsonProperty("Country")
+    @JsonIgnore
     public Optional<String> getCountry() {
+        if (country == null) {
+            return Optional.empty();
+        }
         return country;
     }
 
-    @JsonProperty("Mcc")
+    @JsonIgnore
     public Optional<String> getMcc() {
+        if (mcc == null) {
+            return Optional.empty();
+        }
         return mcc;
     }
 
-    @JsonProperty("LocationCode")
+    @JsonIgnore
     public Optional<String> getLocationCode() {
+        if (locationCode == null) {
+            return Optional.empty();
+        }
         return locationCode;
     }
 
     /**
      * @return Array of objects describing the vendor's contacts.
      */
-    @JsonProperty("Contacts")
+    @JsonIgnore
     public Optional<List<ContactsResponse>> getContacts() {
+        if (contacts == null) {
+            return Optional.empty();
+        }
         return contacts;
     }
 
-    @JsonProperty("BillingData")
+    @JsonIgnore
     public Optional<BillingDataResponse> getBillingData() {
+        if (billingData == null) {
+            return Optional.empty();
+        }
         return billingData;
     }
 
-    @JsonProperty("PaymentMethod")
+    @JsonIgnore
     public Optional<String> getPaymentMethod() {
+        if (paymentMethod == null) {
+            return Optional.empty();
+        }
         return paymentMethod;
     }
 
     @JsonProperty("VendorStatus")
-    public Optional<Integer> getVendorStatus() {
+    public int getVendorStatus() {
         return vendorStatus;
     }
 
     @JsonProperty("VendorId")
-    public Optional<Integer> getVendorId() {
+    public int getVendorId() {
         return vendorId;
     }
 
-    @JsonProperty("EnrollmentStatus")
+    @JsonIgnore
     public Optional<String> getEnrollmentStatus() {
+        if (enrollmentStatus == null) {
+            return Optional.empty();
+        }
         return enrollmentStatus;
     }
 
-    @JsonProperty("Summary")
+    @JsonIgnore
     public Optional<VendorSummary> getSummary() {
+        if (summary == null) {
+            return Optional.empty();
+        }
         return summary;
     }
 
     @JsonProperty("PaypointLegalname")
-    public Optional<String> getPaypointLegalname() {
+    public String getPaypointLegalname() {
         return paypointLegalname;
     }
 
@@ -383,124 +441,169 @@ public final class VendorQueryRecord {
     }
 
     @JsonProperty("PaypointDbaname")
-    public Optional<String> getPaypointDbaname() {
+    public String getPaypointDbaname() {
         return paypointDbaname;
     }
 
     @JsonProperty("PaypointEntryname")
-    public Optional<String> getPaypointEntryname() {
+    public String getPaypointEntryname() {
         return paypointEntryname;
     }
 
     @JsonProperty("ParentOrgName")
-    public Optional<String> getParentOrgName() {
+    public String getParentOrgName() {
         return parentOrgName;
     }
 
     @JsonProperty("ParentOrgId")
-    public Optional<Long> getParentOrgId() {
+    public long getParentOrgId() {
         return parentOrgId;
     }
 
     @JsonProperty("CreatedDate")
-    public Optional<OffsetDateTime> getCreatedDate() {
+    public OffsetDateTime getCreatedDate() {
         return createdDate;
     }
 
     @JsonProperty("LastUpdated")
-    public Optional<OffsetDateTime> getLastUpdated() {
+    public OffsetDateTime getLastUpdated() {
         return lastUpdated;
     }
 
-    @JsonProperty("remitAddress1")
+    @JsonIgnore
     public Optional<String> getRemitAddress1() {
+        if (remitAddress1 == null) {
+            return Optional.empty();
+        }
         return remitAddress1;
     }
 
-    @JsonProperty("remitAddress2")
+    @JsonIgnore
     public Optional<String> getRemitAddress2() {
+        if (remitAddress2 == null) {
+            return Optional.empty();
+        }
         return remitAddress2;
     }
 
-    @JsonProperty("remitCity")
+    @JsonIgnore
     public Optional<String> getRemitCity() {
+        if (remitCity == null) {
+            return Optional.empty();
+        }
         return remitCity;
     }
 
-    @JsonProperty("remitState")
+    @JsonIgnore
     public Optional<String> getRemitState() {
+        if (remitState == null) {
+            return Optional.empty();
+        }
         return remitState;
     }
 
-    @JsonProperty("remitZip")
+    @JsonIgnore
     public Optional<String> getRemitZip() {
+        if (remitZip == null) {
+            return Optional.empty();
+        }
         return remitZip;
     }
 
-    @JsonProperty("remitCountry")
+    @JsonIgnore
     public Optional<String> getRemitCountry() {
+        if (remitCountry == null) {
+            return Optional.empty();
+        }
         return remitCountry;
     }
 
-    @JsonProperty("payeeName1")
+    @JsonIgnore
     public Optional<String> getPayeeName1() {
+        if (payeeName1 == null) {
+            return Optional.empty();
+        }
         return payeeName1;
     }
 
-    @JsonProperty("payeeName2")
+    @JsonIgnore
     public Optional<String> getPayeeName2() {
+        if (payeeName2 == null) {
+            return Optional.empty();
+        }
         return payeeName2;
     }
 
-    @JsonProperty("customField1")
+    @JsonIgnore
     public Optional<String> getCustomField1() {
+        if (customField1 == null) {
+            return Optional.empty();
+        }
         return customField1;
     }
 
-    @JsonProperty("customField2")
+    @JsonIgnore
     public Optional<String> getCustomField2() {
+        if (customField2 == null) {
+            return Optional.empty();
+        }
         return customField2;
     }
 
-    @JsonProperty("customerVendorAccount")
+    @JsonIgnore
     public Optional<String> getCustomerVendorAccount() {
+        if (customerVendorAccount == null) {
+            return Optional.empty();
+        }
         return customerVendorAccount;
     }
 
     @JsonProperty("InternalReferenceId")
-    public Optional<Long> getInternalReferenceId() {
+    public long getInternalReferenceId() {
         return internalReferenceId;
     }
 
     /**
      * @return URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.
      */
-    @JsonProperty("PaymentPortalUrl")
+    @JsonIgnore
     public Optional<String> getPaymentPortalUrl() {
+        if (paymentPortalUrl == null) {
+            return Optional.empty();
+        }
         return paymentPortalUrl;
     }
 
     /**
      * @return Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.
      */
-    @JsonProperty("CardAccepted")
+    @JsonIgnore
     public Optional<String> getCardAccepted() {
+        if (cardAccepted == null) {
+            return Optional.empty();
+        }
         return cardAccepted;
     }
 
     /**
      * @return Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.
      */
-    @JsonProperty("AchAccepted")
+    @JsonIgnore
     public Optional<String> getAchAccepted() {
+        if (achAccepted == null) {
+            return Optional.empty();
+        }
         return achAccepted;
     }
 
     /**
      * @return Whether the vendor accepts check payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.
      */
-    @JsonProperty("CheckAccepted")
+    @JsonIgnore
     public Optional<String> getCheckAccepted() {
+        if (checkAccepted == null) {
+            return Optional.empty();
+        }
         return checkAccepted;
     }
 
@@ -508,46 +611,64 @@ public final class VendorQueryRecord {
      * @return Current enrichment state of the vendor. Values are <code>not_enriched</code>, <code>partially_enriched</code>, <code>fully_enriched</code>, or <code>fallback_applied</code>.
      */
     @JsonProperty("EnrichmentStatus")
-    public Optional<String> getEnrichmentStatus() {
+    public String getEnrichmentStatus() {
         return enrichmentStatus;
     }
 
     /**
      * @return Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.
      */
-    @JsonProperty("EnrichedBy")
+    @JsonIgnore
     public Optional<String> getEnrichedBy() {
+        if (enrichedBy == null) {
+            return Optional.empty();
+        }
         return enrichedBy;
     }
 
     /**
      * @return When the vendor was last enriched (UTC).
      */
-    @JsonProperty("EnrichedAt")
+    @JsonIgnore
     public Optional<OffsetDateTime> getEnrichedAt() {
+        if (enrichedAt == null) {
+            return Optional.empty();
+        }
         return enrichedAt;
     }
 
     /**
      * @return Identifier for the enrichment request that last updated this vendor.
      */
-    @JsonProperty("EnrichmentId")
+    @JsonIgnore
     public Optional<String> getEnrichmentId() {
+        if (enrichmentId == null) {
+            return Optional.empty();
+        }
         return enrichmentId;
     }
 
-    @JsonProperty("additionalData")
+    @JsonIgnore
     public Optional<Map<String, String>> getAdditionalData() {
+        if (additionalData == null) {
+            return Optional.empty();
+        }
         return additionalData;
     }
 
-    @JsonProperty("externalPaypointID")
+    @JsonIgnore
     public Optional<String> getExternalPaypointId() {
+        if (externalPaypointId == null) {
+            return Optional.empty();
+        }
         return externalPaypointId;
     }
 
-    @JsonProperty("StoredMethods")
+    @JsonIgnore
     public Optional<List<VendorResponseStoredMethod>> getStoredMethods() {
+        if (storedMethods == null) {
+            return Optional.empty();
+        }
         return storedMethods;
     }
 
@@ -564,15 +685,231 @@ public final class VendorQueryRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Phone")
+    private Optional<String> _getPhone() {
+        return phone;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Email")
+    private Optional<String> _getEmail() {
+        return email;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("RemitEmail")
     private Optional<String> _getRemitEmail() {
         return remitEmail;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Address1")
+    private Optional<String> _getAddress1() {
+        return address1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Address2")
+    private Optional<String> _getAddress2() {
+        return address2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("City")
+    private Optional<String> _getCity() {
+        return city;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("State")
+    private Optional<String> _getState() {
+        return state;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Zip")
+    private Optional<String> _getZip() {
+        return zip;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Country")
+    private Optional<String> _getCountry() {
+        return country;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Mcc")
+    private Optional<String> _getMcc() {
+        return mcc;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("LocationCode")
+    private Optional<String> _getLocationCode() {
+        return locationCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Contacts")
+    private Optional<List<ContactsResponse>> _getContacts() {
+        return contacts;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("BillingData")
+    private Optional<BillingDataResponse> _getBillingData() {
+        return billingData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaymentMethod")
+    private Optional<String> _getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EnrollmentStatus")
+    private Optional<String> _getEnrollmentStatus() {
+        return enrollmentStatus;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Summary")
+    private Optional<VendorSummary> _getSummary() {
+        return summary;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("PaypointId")
     private Optional<Long> _getPaypointId() {
         return paypointId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("remitAddress1")
+    private Optional<String> _getRemitAddress1() {
+        return remitAddress1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("remitAddress2")
+    private Optional<String> _getRemitAddress2() {
+        return remitAddress2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("remitCity")
+    private Optional<String> _getRemitCity() {
+        return remitCity;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("remitState")
+    private Optional<String> _getRemitState() {
+        return remitState;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("remitZip")
+    private Optional<String> _getRemitZip() {
+        return remitZip;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("remitCountry")
+    private Optional<String> _getRemitCountry() {
+        return remitCountry;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("payeeName1")
+    private Optional<String> _getPayeeName1() {
+        return payeeName1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("payeeName2")
+    private Optional<String> _getPayeeName2() {
+        return payeeName2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customField1")
+    private Optional<String> _getCustomField1() {
+        return customField1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customField2")
+    private Optional<String> _getCustomField2() {
+        return customField2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerVendorAccount")
+    private Optional<String> _getCustomerVendorAccount() {
+        return customerVendorAccount;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("PaymentPortalUrl")
+    private Optional<String> _getPaymentPortalUrl() {
+        return paymentPortalUrl;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("CardAccepted")
+    private Optional<String> _getCardAccepted() {
+        return cardAccepted;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AchAccepted")
+    private Optional<String> _getAchAccepted() {
+        return achAccepted;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("CheckAccepted")
+    private Optional<String> _getCheckAccepted() {
+        return checkAccepted;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EnrichedBy")
+    private Optional<String> _getEnrichedBy() {
+        return enrichedBy;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EnrichedAt")
+    private Optional<OffsetDateTime> _getEnrichedAt() {
+        return enrichedAt;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EnrichmentId")
+    private Optional<String> _getEnrichmentId() {
+        return enrichmentId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("additionalData")
+    private Optional<Map<String, String>> _getAdditionalData() {
+        return additionalData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("externalPaypointID")
+    private Optional<String> _getExternalPaypointId() {
+        return externalPaypointId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StoredMethods")
+    private Optional<List<VendorResponseStoredMethod>> _getStoredMethods() {
+        return storedMethods;
     }
 
     @java.lang.Override
@@ -605,8 +942,8 @@ public final class VendorQueryRecord {
                 && contacts.equals(other.contacts)
                 && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
-                && vendorStatus.equals(other.vendorStatus)
-                && vendorId.equals(other.vendorId)
+                && vendorStatus == other.vendorStatus
+                && vendorId == other.vendorId
                 && enrollmentStatus.equals(other.enrollmentStatus)
                 && summary.equals(other.summary)
                 && paypointLegalname.equals(other.paypointLegalname)
@@ -614,7 +951,7 @@ public final class VendorQueryRecord {
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointEntryname.equals(other.paypointEntryname)
                 && parentOrgName.equals(other.parentOrgName)
-                && parentOrgId.equals(other.parentOrgId)
+                && parentOrgId == other.parentOrgId
                 && createdDate.equals(other.createdDate)
                 && lastUpdated.equals(other.lastUpdated)
                 && remitAddress1.equals(other.remitAddress1)
@@ -628,7 +965,7 @@ public final class VendorQueryRecord {
                 && customField1.equals(other.customField1)
                 && customField2.equals(other.customField2)
                 && customerVendorAccount.equals(other.customerVendorAccount)
-                && internalReferenceId.equals(other.internalReferenceId)
+                && internalReferenceId == other.internalReferenceId
                 && paymentPortalUrl.equals(other.paymentPortalUrl)
                 && cardAccepted.equals(other.cardAccepted)
                 && achAccepted.equals(other.achAccepted)
@@ -705,123 +1042,482 @@ public final class VendorQueryRecord {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static VendorNumberStage builder() {
         return new Builder();
     }
 
+    public interface VendorNumberStage {
+        Name1Stage vendorNumber(@NotNull String vendorNumber);
+
+        Builder from(VendorQueryRecord other);
+    }
+
+    public interface Name1Stage {
+        VendorStatusStage name1(@NotNull String name1);
+    }
+
+    public interface VendorStatusStage {
+        VendorIdStage vendorStatus(int vendorStatus);
+    }
+
+    public interface VendorIdStage {
+        PaypointLegalnameStage vendorId(int vendorId);
+    }
+
+    public interface PaypointLegalnameStage {
+        PaypointDbanameStage paypointLegalname(@NotNull String paypointLegalname);
+    }
+
+    public interface PaypointDbanameStage {
+        PaypointEntrynameStage paypointDbaname(@NotNull String paypointDbaname);
+    }
+
+    public interface PaypointEntrynameStage {
+        ParentOrgNameStage paypointEntryname(@NotNull String paypointEntryname);
+    }
+
+    public interface ParentOrgNameStage {
+        ParentOrgIdStage parentOrgName(@NotNull String parentOrgName);
+    }
+
+    public interface ParentOrgIdStage {
+        CreatedDateStage parentOrgId(long parentOrgId);
+    }
+
+    public interface CreatedDateStage {
+        LastUpdatedStage createdDate(@NotNull OffsetDateTime createdDate);
+    }
+
+    public interface LastUpdatedStage {
+        InternalReferenceIdStage lastUpdated(@NotNull OffsetDateTime lastUpdated);
+    }
+
+    public interface InternalReferenceIdStage {
+        EnrichmentStatusStage internalReferenceId(long internalReferenceId);
+    }
+
+    public interface EnrichmentStatusStage {
+        /**
+         * <p>Current enrichment state of the vendor. Values are <code>not_enriched</code>, <code>partially_enriched</code>, <code>fully_enriched</code>, or <code>fallback_applied</code>.</p>
+         */
+        _FinalStage enrichmentStatus(@NotNull String enrichmentStatus);
+    }
+
+    public interface _FinalStage {
+        VendorQueryRecord build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        _FinalStage name2(Optional<String> name2);
+
+        _FinalStage name2(String name2);
+
+        _FinalStage name2(Nullable<String> name2);
+
+        _FinalStage ein(Optional<String> ein);
+
+        _FinalStage ein(String ein);
+
+        _FinalStage ein(Nullable<String> ein);
+
+        _FinalStage phone(Optional<String> phone);
+
+        _FinalStage phone(String phone);
+
+        _FinalStage phone(Nullable<String> phone);
+
+        _FinalStage email(Optional<String> email);
+
+        _FinalStage email(String email);
+
+        _FinalStage email(Nullable<String> email);
+
+        _FinalStage remitEmail(Optional<String> remitEmail);
+
+        _FinalStage remitEmail(String remitEmail);
+
+        _FinalStage remitEmail(Nullable<String> remitEmail);
+
+        /**
+         * <p>The address.</p>
+         */
+        _FinalStage address1(Optional<String> address1);
+
+        _FinalStage address1(String address1);
+
+        _FinalStage address1(Nullable<String> address1);
+
+        /**
+         * <p>Additional line for the address.</p>
+         */
+        _FinalStage address2(Optional<String> address2);
+
+        _FinalStage address2(String address2);
+
+        _FinalStage address2(Nullable<String> address2);
+
+        /**
+         * <p>The city.</p>
+         */
+        _FinalStage city(Optional<String> city);
+
+        _FinalStage city(String city);
+
+        _FinalStage city(Nullable<String> city);
+
+        /**
+         * <p>The state or province.</p>
+         */
+        _FinalStage state(Optional<String> state);
+
+        _FinalStage state(String state);
+
+        _FinalStage state(Nullable<String> state);
+
+        _FinalStage zip(Optional<String> zip);
+
+        _FinalStage zip(String zip);
+
+        _FinalStage zip(Nullable<String> zip);
+
+        _FinalStage country(Optional<String> country);
+
+        _FinalStage country(String country);
+
+        _FinalStage country(Nullable<String> country);
+
+        _FinalStage mcc(Optional<String> mcc);
+
+        _FinalStage mcc(String mcc);
+
+        _FinalStage mcc(Nullable<String> mcc);
+
+        _FinalStage locationCode(Optional<String> locationCode);
+
+        _FinalStage locationCode(String locationCode);
+
+        _FinalStage locationCode(Nullable<String> locationCode);
+
+        /**
+         * <p>Array of objects describing the vendor's contacts.</p>
+         */
+        _FinalStage contacts(Optional<List<ContactsResponse>> contacts);
+
+        _FinalStage contacts(List<ContactsResponse> contacts);
+
+        _FinalStage contacts(Nullable<List<ContactsResponse>> contacts);
+
+        _FinalStage billingData(Optional<BillingDataResponse> billingData);
+
+        _FinalStage billingData(BillingDataResponse billingData);
+
+        _FinalStage billingData(Nullable<BillingDataResponse> billingData);
+
+        _FinalStage paymentMethod(Optional<String> paymentMethod);
+
+        _FinalStage paymentMethod(String paymentMethod);
+
+        _FinalStage paymentMethod(Nullable<String> paymentMethod);
+
+        _FinalStage enrollmentStatus(Optional<String> enrollmentStatus);
+
+        _FinalStage enrollmentStatus(String enrollmentStatus);
+
+        _FinalStage enrollmentStatus(Nullable<String> enrollmentStatus);
+
+        _FinalStage summary(Optional<VendorSummary> summary);
+
+        _FinalStage summary(VendorSummary summary);
+
+        _FinalStage summary(Nullable<VendorSummary> summary);
+
+        /**
+         * <p>The paypoint's ID. This is different from the entryname.</p>
+         */
+        _FinalStage paypointId(Optional<Long> paypointId);
+
+        _FinalStage paypointId(Long paypointId);
+
+        _FinalStage paypointId(Nullable<Long> paypointId);
+
+        _FinalStage remitAddress1(Optional<String> remitAddress1);
+
+        _FinalStage remitAddress1(String remitAddress1);
+
+        _FinalStage remitAddress1(Nullable<String> remitAddress1);
+
+        _FinalStage remitAddress2(Optional<String> remitAddress2);
+
+        _FinalStage remitAddress2(String remitAddress2);
+
+        _FinalStage remitAddress2(Nullable<String> remitAddress2);
+
+        _FinalStage remitCity(Optional<String> remitCity);
+
+        _FinalStage remitCity(String remitCity);
+
+        _FinalStage remitCity(Nullable<String> remitCity);
+
+        _FinalStage remitState(Optional<String> remitState);
+
+        _FinalStage remitState(String remitState);
+
+        _FinalStage remitState(Nullable<String> remitState);
+
+        _FinalStage remitZip(Optional<String> remitZip);
+
+        _FinalStage remitZip(String remitZip);
+
+        _FinalStage remitZip(Nullable<String> remitZip);
+
+        _FinalStage remitCountry(Optional<String> remitCountry);
+
+        _FinalStage remitCountry(String remitCountry);
+
+        _FinalStage remitCountry(Nullable<String> remitCountry);
+
+        _FinalStage payeeName1(Optional<String> payeeName1);
+
+        _FinalStage payeeName1(String payeeName1);
+
+        _FinalStage payeeName1(Nullable<String> payeeName1);
+
+        _FinalStage payeeName2(Optional<String> payeeName2);
+
+        _FinalStage payeeName2(String payeeName2);
+
+        _FinalStage payeeName2(Nullable<String> payeeName2);
+
+        _FinalStage customField1(Optional<String> customField1);
+
+        _FinalStage customField1(String customField1);
+
+        _FinalStage customField1(Nullable<String> customField1);
+
+        _FinalStage customField2(Optional<String> customField2);
+
+        _FinalStage customField2(String customField2);
+
+        _FinalStage customField2(Nullable<String> customField2);
+
+        _FinalStage customerVendorAccount(Optional<String> customerVendorAccount);
+
+        _FinalStage customerVendorAccount(String customerVendorAccount);
+
+        _FinalStage customerVendorAccount(Nullable<String> customerVendorAccount);
+
+        /**
+         * <p>URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.</p>
+         */
+        _FinalStage paymentPortalUrl(Optional<String> paymentPortalUrl);
+
+        _FinalStage paymentPortalUrl(String paymentPortalUrl);
+
+        _FinalStage paymentPortalUrl(Nullable<String> paymentPortalUrl);
+
+        /**
+         * <p>Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        _FinalStage cardAccepted(Optional<String> cardAccepted);
+
+        _FinalStage cardAccepted(String cardAccepted);
+
+        _FinalStage cardAccepted(Nullable<String> cardAccepted);
+
+        /**
+         * <p>Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        _FinalStage achAccepted(Optional<String> achAccepted);
+
+        _FinalStage achAccepted(String achAccepted);
+
+        _FinalStage achAccepted(Nullable<String> achAccepted);
+
+        /**
+         * <p>Whether the vendor accepts check payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        _FinalStage checkAccepted(Optional<String> checkAccepted);
+
+        _FinalStage checkAccepted(String checkAccepted);
+
+        _FinalStage checkAccepted(Nullable<String> checkAccepted);
+
+        /**
+         * <p>Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.</p>
+         */
+        _FinalStage enrichedBy(Optional<String> enrichedBy);
+
+        _FinalStage enrichedBy(String enrichedBy);
+
+        _FinalStage enrichedBy(Nullable<String> enrichedBy);
+
+        /**
+         * <p>When the vendor was last enriched (UTC).</p>
+         */
+        _FinalStage enrichedAt(Optional<OffsetDateTime> enrichedAt);
+
+        _FinalStage enrichedAt(OffsetDateTime enrichedAt);
+
+        _FinalStage enrichedAt(Nullable<OffsetDateTime> enrichedAt);
+
+        /**
+         * <p>Identifier for the enrichment request that last updated this vendor.</p>
+         */
+        _FinalStage enrichmentId(Optional<String> enrichmentId);
+
+        _FinalStage enrichmentId(String enrichmentId);
+
+        _FinalStage enrichmentId(Nullable<String> enrichmentId);
+
+        _FinalStage additionalData(Optional<Map<String, String>> additionalData);
+
+        _FinalStage additionalData(Map<String, String> additionalData);
+
+        _FinalStage additionalData(Nullable<Map<String, String>> additionalData);
+
+        _FinalStage externalPaypointId(Optional<String> externalPaypointId);
+
+        _FinalStage externalPaypointId(String externalPaypointId);
+
+        _FinalStage externalPaypointId(Nullable<String> externalPaypointId);
+
+        _FinalStage storedMethods(Optional<List<VendorResponseStoredMethod>> storedMethods);
+
+        _FinalStage storedMethods(List<VendorResponseStoredMethod> storedMethods);
+
+        _FinalStage storedMethods(Nullable<List<VendorResponseStoredMethod>> storedMethods);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> vendorNumber = Optional.empty();
+    public static final class Builder
+            implements VendorNumberStage,
+                    Name1Stage,
+                    VendorStatusStage,
+                    VendorIdStage,
+                    PaypointLegalnameStage,
+                    PaypointDbanameStage,
+                    PaypointEntrynameStage,
+                    ParentOrgNameStage,
+                    ParentOrgIdStage,
+                    CreatedDateStage,
+                    LastUpdatedStage,
+                    InternalReferenceIdStage,
+                    EnrichmentStatusStage,
+                    _FinalStage {
+        private String vendorNumber;
 
-        private Optional<String> name1 = Optional.empty();
+        private String name1;
 
-        private Optional<String> name2 = Optional.empty();
+        private int vendorStatus;
 
-        private Optional<String> ein = Optional.empty();
+        private int vendorId;
 
-        private Optional<String> phone = Optional.empty();
+        private String paypointLegalname;
 
-        private Optional<String> email = Optional.empty();
+        private String paypointDbaname;
 
-        private Optional<String> remitEmail = Optional.empty();
+        private String paypointEntryname;
 
-        private Optional<String> address1 = Optional.empty();
+        private String parentOrgName;
 
-        private Optional<String> address2 = Optional.empty();
+        private long parentOrgId;
 
-        private Optional<String> city = Optional.empty();
+        private OffsetDateTime createdDate;
 
-        private Optional<String> state = Optional.empty();
+        private OffsetDateTime lastUpdated;
 
-        private Optional<String> zip = Optional.empty();
+        private long internalReferenceId;
 
-        private Optional<String> country = Optional.empty();
+        private String enrichmentStatus;
 
-        private Optional<String> mcc = Optional.empty();
-
-        private Optional<String> locationCode = Optional.empty();
-
-        private Optional<List<ContactsResponse>> contacts = Optional.empty();
-
-        private Optional<BillingDataResponse> billingData = Optional.empty();
-
-        private Optional<String> paymentMethod = Optional.empty();
-
-        private Optional<Integer> vendorStatus = Optional.empty();
-
-        private Optional<Integer> vendorId = Optional.empty();
-
-        private Optional<String> enrollmentStatus = Optional.empty();
-
-        private Optional<VendorSummary> summary = Optional.empty();
-
-        private Optional<String> paypointLegalname = Optional.empty();
-
-        private Optional<Long> paypointId = Optional.empty();
-
-        private Optional<String> paypointDbaname = Optional.empty();
-
-        private Optional<String> paypointEntryname = Optional.empty();
-
-        private Optional<String> parentOrgName = Optional.empty();
-
-        private Optional<Long> parentOrgId = Optional.empty();
-
-        private Optional<OffsetDateTime> createdDate = Optional.empty();
-
-        private Optional<OffsetDateTime> lastUpdated = Optional.empty();
-
-        private Optional<String> remitAddress1 = Optional.empty();
-
-        private Optional<String> remitAddress2 = Optional.empty();
-
-        private Optional<String> remitCity = Optional.empty();
-
-        private Optional<String> remitState = Optional.empty();
-
-        private Optional<String> remitZip = Optional.empty();
-
-        private Optional<String> remitCountry = Optional.empty();
-
-        private Optional<String> payeeName1 = Optional.empty();
-
-        private Optional<String> payeeName2 = Optional.empty();
-
-        private Optional<String> customField1 = Optional.empty();
-
-        private Optional<String> customField2 = Optional.empty();
-
-        private Optional<String> customerVendorAccount = Optional.empty();
-
-        private Optional<Long> internalReferenceId = Optional.empty();
-
-        private Optional<String> paymentPortalUrl = Optional.empty();
-
-        private Optional<String> cardAccepted = Optional.empty();
-
-        private Optional<String> achAccepted = Optional.empty();
-
-        private Optional<String> checkAccepted = Optional.empty();
-
-        private Optional<String> enrichmentStatus = Optional.empty();
-
-        private Optional<String> enrichedBy = Optional.empty();
-
-        private Optional<OffsetDateTime> enrichedAt = Optional.empty();
-
-        private Optional<String> enrichmentId = Optional.empty();
-
-        private Optional<Map<String, String>> additionalData = Optional.empty();
+        private Optional<List<VendorResponseStoredMethod>> storedMethods = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
 
-        private Optional<List<VendorResponseStoredMethod>> storedMethods = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
+
+        private Optional<String> enrichmentId = Optional.empty();
+
+        private Optional<OffsetDateTime> enrichedAt = Optional.empty();
+
+        private Optional<String> enrichedBy = Optional.empty();
+
+        private Optional<String> checkAccepted = Optional.empty();
+
+        private Optional<String> achAccepted = Optional.empty();
+
+        private Optional<String> cardAccepted = Optional.empty();
+
+        private Optional<String> paymentPortalUrl = Optional.empty();
+
+        private Optional<String> customerVendorAccount = Optional.empty();
+
+        private Optional<String> customField2 = Optional.empty();
+
+        private Optional<String> customField1 = Optional.empty();
+
+        private Optional<String> payeeName2 = Optional.empty();
+
+        private Optional<String> payeeName1 = Optional.empty();
+
+        private Optional<String> remitCountry = Optional.empty();
+
+        private Optional<String> remitZip = Optional.empty();
+
+        private Optional<String> remitState = Optional.empty();
+
+        private Optional<String> remitCity = Optional.empty();
+
+        private Optional<String> remitAddress2 = Optional.empty();
+
+        private Optional<String> remitAddress1 = Optional.empty();
+
+        private Optional<Long> paypointId = Optional.empty();
+
+        private Optional<VendorSummary> summary = Optional.empty();
+
+        private Optional<String> enrollmentStatus = Optional.empty();
+
+        private Optional<String> paymentMethod = Optional.empty();
+
+        private Optional<BillingDataResponse> billingData = Optional.empty();
+
+        private Optional<List<ContactsResponse>> contacts = Optional.empty();
+
+        private Optional<String> locationCode = Optional.empty();
+
+        private Optional<String> mcc = Optional.empty();
+
+        private Optional<String> country = Optional.empty();
+
+        private Optional<String> zip = Optional.empty();
+
+        private Optional<String> state = Optional.empty();
+
+        private Optional<String> city = Optional.empty();
+
+        private Optional<String> address2 = Optional.empty();
+
+        private Optional<String> address1 = Optional.empty();
+
+        private Optional<String> remitEmail = Optional.empty();
+
+        private Optional<String> email = Optional.empty();
+
+        private Optional<String> phone = Optional.empty();
+
+        private Optional<String> ein = Optional.empty();
+
+        private Optional<String> name2 = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(VendorQueryRecord other) {
             vendorNumber(other.getVendorNumber());
             name1(other.getName1());
@@ -879,310 +1575,709 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "VendorNumber", nulls = Nulls.SKIP)
-        public Builder vendorNumber(Optional<String> vendorNumber) {
-            this.vendorNumber = vendorNumber;
+        @java.lang.Override
+        @JsonSetter("VendorNumber")
+        public Name1Stage vendorNumber(@NotNull String vendorNumber) {
+            this.vendorNumber = Objects.requireNonNull(vendorNumber, "vendorNumber must not be null");
             return this;
         }
 
-        public Builder vendorNumber(String vendorNumber) {
-            this.vendorNumber = Optional.ofNullable(vendorNumber);
+        @java.lang.Override
+        @JsonSetter("Name1")
+        public VendorStatusStage name1(@NotNull String name1) {
+            this.name1 = Objects.requireNonNull(name1, "name1 must not be null");
             return this;
         }
 
-        @JsonSetter(value = "Name1", nulls = Nulls.SKIP)
-        public Builder name1(Optional<String> name1) {
-            this.name1 = name1;
-            return this;
-        }
-
-        public Builder name1(String name1) {
-            this.name1 = Optional.ofNullable(name1);
-            return this;
-        }
-
-        @JsonSetter(value = "Name2", nulls = Nulls.SKIP)
-        public Builder name2(Optional<String> name2) {
-            this.name2 = name2;
-            return this;
-        }
-
-        public Builder name2(String name2) {
-            this.name2 = Optional.ofNullable(name2);
-            return this;
-        }
-
-        public Builder name2(Nullable<String> name2) {
-            if (name2.isNull()) {
-                this.name2 = null;
-            } else if (name2.isEmpty()) {
-                this.name2 = Optional.empty();
-            } else {
-                this.name2 = Optional.of(name2.get());
-            }
-            return this;
-        }
-
-        @JsonSetter(value = "EIN", nulls = Nulls.SKIP)
-        public Builder ein(Optional<String> ein) {
-            this.ein = ein;
-            return this;
-        }
-
-        public Builder ein(String ein) {
-            this.ein = Optional.ofNullable(ein);
-            return this;
-        }
-
-        public Builder ein(Nullable<String> ein) {
-            if (ein.isNull()) {
-                this.ein = null;
-            } else if (ein.isEmpty()) {
-                this.ein = Optional.empty();
-            } else {
-                this.ein = Optional.of(ein.get());
-            }
-            return this;
-        }
-
-        @JsonSetter(value = "Phone", nulls = Nulls.SKIP)
-        public Builder phone(Optional<String> phone) {
-            this.phone = phone;
-            return this;
-        }
-
-        public Builder phone(String phone) {
-            this.phone = Optional.ofNullable(phone);
-            return this;
-        }
-
-        @JsonSetter(value = "Email", nulls = Nulls.SKIP)
-        public Builder email(Optional<String> email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = Optional.ofNullable(email);
-            return this;
-        }
-
-        @JsonSetter(value = "RemitEmail", nulls = Nulls.SKIP)
-        public Builder remitEmail(Optional<String> remitEmail) {
-            this.remitEmail = remitEmail;
-            return this;
-        }
-
-        public Builder remitEmail(String remitEmail) {
-            this.remitEmail = Optional.ofNullable(remitEmail);
-            return this;
-        }
-
-        public Builder remitEmail(Nullable<String> remitEmail) {
-            if (remitEmail.isNull()) {
-                this.remitEmail = null;
-            } else if (remitEmail.isEmpty()) {
-                this.remitEmail = Optional.empty();
-            } else {
-                this.remitEmail = Optional.of(remitEmail.get());
-            }
-            return this;
-        }
-
-        @JsonSetter(value = "Address1", nulls = Nulls.SKIP)
-        public Builder address1(Optional<String> address1) {
-            this.address1 = address1;
-            return this;
-        }
-
-        public Builder address1(String address1) {
-            this.address1 = Optional.ofNullable(address1);
-            return this;
-        }
-
-        @JsonSetter(value = "Address2", nulls = Nulls.SKIP)
-        public Builder address2(Optional<String> address2) {
-            this.address2 = address2;
-            return this;
-        }
-
-        public Builder address2(String address2) {
-            this.address2 = Optional.ofNullable(address2);
-            return this;
-        }
-
-        @JsonSetter(value = "City", nulls = Nulls.SKIP)
-        public Builder city(Optional<String> city) {
-            this.city = city;
-            return this;
-        }
-
-        public Builder city(String city) {
-            this.city = Optional.ofNullable(city);
-            return this;
-        }
-
-        @JsonSetter(value = "State", nulls = Nulls.SKIP)
-        public Builder state(Optional<String> state) {
-            this.state = state;
-            return this;
-        }
-
-        public Builder state(String state) {
-            this.state = Optional.ofNullable(state);
-            return this;
-        }
-
-        @JsonSetter(value = "Zip", nulls = Nulls.SKIP)
-        public Builder zip(Optional<String> zip) {
-            this.zip = zip;
-            return this;
-        }
-
-        public Builder zip(String zip) {
-            this.zip = Optional.ofNullable(zip);
-            return this;
-        }
-
-        @JsonSetter(value = "Country", nulls = Nulls.SKIP)
-        public Builder country(Optional<String> country) {
-            this.country = country;
-            return this;
-        }
-
-        public Builder country(String country) {
-            this.country = Optional.ofNullable(country);
-            return this;
-        }
-
-        @JsonSetter(value = "Mcc", nulls = Nulls.SKIP)
-        public Builder mcc(Optional<String> mcc) {
-            this.mcc = mcc;
-            return this;
-        }
-
-        public Builder mcc(String mcc) {
-            this.mcc = Optional.ofNullable(mcc);
-            return this;
-        }
-
-        @JsonSetter(value = "LocationCode", nulls = Nulls.SKIP)
-        public Builder locationCode(Optional<String> locationCode) {
-            this.locationCode = locationCode;
-            return this;
-        }
-
-        public Builder locationCode(String locationCode) {
-            this.locationCode = Optional.ofNullable(locationCode);
-            return this;
-        }
-
-        /**
-         * <p>Array of objects describing the vendor's contacts.</p>
-         */
-        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
-        public Builder contacts(Optional<List<ContactsResponse>> contacts) {
-            this.contacts = contacts;
-            return this;
-        }
-
-        public Builder contacts(List<ContactsResponse> contacts) {
-            this.contacts = Optional.ofNullable(contacts);
-            return this;
-        }
-
-        @JsonSetter(value = "BillingData", nulls = Nulls.SKIP)
-        public Builder billingData(Optional<BillingDataResponse> billingData) {
-            this.billingData = billingData;
-            return this;
-        }
-
-        public Builder billingData(BillingDataResponse billingData) {
-            this.billingData = Optional.ofNullable(billingData);
-            return this;
-        }
-
-        @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
-        public Builder paymentMethod(Optional<String> paymentMethod) {
-            this.paymentMethod = paymentMethod;
-            return this;
-        }
-
-        public Builder paymentMethod(String paymentMethod) {
-            this.paymentMethod = Optional.ofNullable(paymentMethod);
-            return this;
-        }
-
-        @JsonSetter(value = "VendorStatus", nulls = Nulls.SKIP)
-        public Builder vendorStatus(Optional<Integer> vendorStatus) {
+        @java.lang.Override
+        @JsonSetter("VendorStatus")
+        public VendorIdStage vendorStatus(int vendorStatus) {
             this.vendorStatus = vendorStatus;
             return this;
         }
 
-        public Builder vendorStatus(Integer vendorStatus) {
-            this.vendorStatus = Optional.ofNullable(vendorStatus);
-            return this;
-        }
-
-        @JsonSetter(value = "VendorId", nulls = Nulls.SKIP)
-        public Builder vendorId(Optional<Integer> vendorId) {
+        @java.lang.Override
+        @JsonSetter("VendorId")
+        public PaypointLegalnameStage vendorId(int vendorId) {
             this.vendorId = vendorId;
             return this;
         }
 
-        public Builder vendorId(Integer vendorId) {
-            this.vendorId = Optional.ofNullable(vendorId);
+        @java.lang.Override
+        @JsonSetter("PaypointLegalname")
+        public PaypointDbanameStage paypointLegalname(@NotNull String paypointLegalname) {
+            this.paypointLegalname = Objects.requireNonNull(paypointLegalname, "paypointLegalname must not be null");
             return this;
         }
 
-        @JsonSetter(value = "EnrollmentStatus", nulls = Nulls.SKIP)
-        public Builder enrollmentStatus(Optional<String> enrollmentStatus) {
-            this.enrollmentStatus = enrollmentStatus;
+        @java.lang.Override
+        @JsonSetter("PaypointDbaname")
+        public PaypointEntrynameStage paypointDbaname(@NotNull String paypointDbaname) {
+            this.paypointDbaname = Objects.requireNonNull(paypointDbaname, "paypointDbaname must not be null");
             return this;
         }
 
-        public Builder enrollmentStatus(String enrollmentStatus) {
-            this.enrollmentStatus = Optional.ofNullable(enrollmentStatus);
+        @java.lang.Override
+        @JsonSetter("PaypointEntryname")
+        public ParentOrgNameStage paypointEntryname(@NotNull String paypointEntryname) {
+            this.paypointEntryname = Objects.requireNonNull(paypointEntryname, "paypointEntryname must not be null");
             return this;
         }
 
-        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
-        public Builder summary(Optional<VendorSummary> summary) {
-            this.summary = summary;
+        @java.lang.Override
+        @JsonSetter("ParentOrgName")
+        public ParentOrgIdStage parentOrgName(@NotNull String parentOrgName) {
+            this.parentOrgName = Objects.requireNonNull(parentOrgName, "parentOrgName must not be null");
             return this;
         }
 
-        public Builder summary(VendorSummary summary) {
-            this.summary = Optional.ofNullable(summary);
+        @java.lang.Override
+        @JsonSetter("ParentOrgId")
+        public CreatedDateStage parentOrgId(long parentOrgId) {
+            this.parentOrgId = parentOrgId;
             return this;
         }
 
-        @JsonSetter(value = "PaypointLegalname", nulls = Nulls.SKIP)
-        public Builder paypointLegalname(Optional<String> paypointLegalname) {
-            this.paypointLegalname = paypointLegalname;
+        @java.lang.Override
+        @JsonSetter("CreatedDate")
+        public LastUpdatedStage createdDate(@NotNull OffsetDateTime createdDate) {
+            this.createdDate = Objects.requireNonNull(createdDate, "createdDate must not be null");
             return this;
         }
 
-        public Builder paypointLegalname(String paypointLegalname) {
-            this.paypointLegalname = Optional.ofNullable(paypointLegalname);
+        @java.lang.Override
+        @JsonSetter("LastUpdated")
+        public InternalReferenceIdStage lastUpdated(@NotNull OffsetDateTime lastUpdated) {
+            this.lastUpdated = Objects.requireNonNull(lastUpdated, "lastUpdated must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("InternalReferenceId")
+        public EnrichmentStatusStage internalReferenceId(long internalReferenceId) {
+            this.internalReferenceId = internalReferenceId;
+            return this;
+        }
+
+        /**
+         * <p>Current enrichment state of the vendor. Values are <code>not_enriched</code>, <code>partially_enriched</code>, <code>fully_enriched</code>, or <code>fallback_applied</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("EnrichmentStatus")
+        public _FinalStage enrichmentStatus(@NotNull String enrichmentStatus) {
+            this.enrichmentStatus = Objects.requireNonNull(enrichmentStatus, "enrichmentStatus must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage storedMethods(Nullable<List<VendorResponseStoredMethod>> storedMethods) {
+            if (storedMethods.isNull()) {
+                this.storedMethods = null;
+            } else if (storedMethods.isEmpty()) {
+                this.storedMethods = Optional.empty();
+            } else {
+                this.storedMethods = Optional.of(storedMethods.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage storedMethods(List<VendorResponseStoredMethod> storedMethods) {
+            this.storedMethods = Optional.ofNullable(storedMethods);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "StoredMethods", nulls = Nulls.SKIP)
+        public _FinalStage storedMethods(Optional<List<VendorResponseStoredMethod>> storedMethods) {
+            this.storedMethods = storedMethods;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage externalPaypointId(Nullable<String> externalPaypointId) {
+            if (externalPaypointId.isNull()) {
+                this.externalPaypointId = null;
+            } else if (externalPaypointId.isEmpty()) {
+                this.externalPaypointId = Optional.empty();
+            } else {
+                this.externalPaypointId = Optional.of(externalPaypointId.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage externalPaypointId(String externalPaypointId) {
+            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
+        public _FinalStage externalPaypointId(Optional<String> externalPaypointId) {
+            this.externalPaypointId = externalPaypointId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage additionalData(Nullable<Map<String, String>> additionalData) {
+            if (additionalData.isNull()) {
+                this.additionalData = null;
+            } else if (additionalData.isEmpty()) {
+                this.additionalData = Optional.empty();
+            } else {
+                this.additionalData = Optional.of(additionalData.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage additionalData(Map<String, String> additionalData) {
+            this.additionalData = Optional.ofNullable(additionalData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
+        public _FinalStage additionalData(Optional<Map<String, String>> additionalData) {
+            this.additionalData = additionalData;
+            return this;
+        }
+
+        /**
+         * <p>Identifier for the enrichment request that last updated this vendor.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enrichmentId(Nullable<String> enrichmentId) {
+            if (enrichmentId.isNull()) {
+                this.enrichmentId = null;
+            } else if (enrichmentId.isEmpty()) {
+                this.enrichmentId = Optional.empty();
+            } else {
+                this.enrichmentId = Optional.of(enrichmentId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Identifier for the enrichment request that last updated this vendor.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enrichmentId(String enrichmentId) {
+            this.enrichmentId = Optional.ofNullable(enrichmentId);
+            return this;
+        }
+
+        /**
+         * <p>Identifier for the enrichment request that last updated this vendor.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "EnrichmentId", nulls = Nulls.SKIP)
+        public _FinalStage enrichmentId(Optional<String> enrichmentId) {
+            this.enrichmentId = enrichmentId;
+            return this;
+        }
+
+        /**
+         * <p>When the vendor was last enriched (UTC).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enrichedAt(Nullable<OffsetDateTime> enrichedAt) {
+            if (enrichedAt.isNull()) {
+                this.enrichedAt = null;
+            } else if (enrichedAt.isEmpty()) {
+                this.enrichedAt = Optional.empty();
+            } else {
+                this.enrichedAt = Optional.of(enrichedAt.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>When the vendor was last enriched (UTC).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enrichedAt(OffsetDateTime enrichedAt) {
+            this.enrichedAt = Optional.ofNullable(enrichedAt);
+            return this;
+        }
+
+        /**
+         * <p>When the vendor was last enriched (UTC).</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "EnrichedAt", nulls = Nulls.SKIP)
+        public _FinalStage enrichedAt(Optional<OffsetDateTime> enrichedAt) {
+            this.enrichedAt = enrichedAt;
+            return this;
+        }
+
+        /**
+         * <p>Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enrichedBy(Nullable<String> enrichedBy) {
+            if (enrichedBy.isNull()) {
+                this.enrichedBy = null;
+            } else if (enrichedBy.isEmpty()) {
+                this.enrichedBy = Optional.empty();
+            } else {
+                this.enrichedBy = Optional.of(enrichedBy.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enrichedBy(String enrichedBy) {
+            this.enrichedBy = Optional.ofNullable(enrichedBy);
+            return this;
+        }
+
+        /**
+         * <p>Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "EnrichedBy", nulls = Nulls.SKIP)
+        public _FinalStage enrichedBy(Optional<String> enrichedBy) {
+            this.enrichedBy = enrichedBy;
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts check payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage checkAccepted(Nullable<String> checkAccepted) {
+            if (checkAccepted.isNull()) {
+                this.checkAccepted = null;
+            } else if (checkAccepted.isEmpty()) {
+                this.checkAccepted = Optional.empty();
+            } else {
+                this.checkAccepted = Optional.of(checkAccepted.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts check payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage checkAccepted(String checkAccepted) {
+            this.checkAccepted = Optional.ofNullable(checkAccepted);
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts check payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "CheckAccepted", nulls = Nulls.SKIP)
+        public _FinalStage checkAccepted(Optional<String> checkAccepted) {
+            this.checkAccepted = checkAccepted;
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage achAccepted(Nullable<String> achAccepted) {
+            if (achAccepted.isNull()) {
+                this.achAccepted = null;
+            } else if (achAccepted.isEmpty()) {
+                this.achAccepted = Optional.empty();
+            } else {
+                this.achAccepted = Optional.of(achAccepted.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage achAccepted(String achAccepted) {
+            this.achAccepted = Optional.ofNullable(achAccepted);
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "AchAccepted", nulls = Nulls.SKIP)
+        public _FinalStage achAccepted(Optional<String> achAccepted) {
+            this.achAccepted = achAccepted;
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage cardAccepted(Nullable<String> cardAccepted) {
+            if (cardAccepted.isNull()) {
+                this.cardAccepted = null;
+            } else if (cardAccepted.isEmpty()) {
+                this.cardAccepted = Optional.empty();
+            } else {
+                this.cardAccepted = Optional.of(cardAccepted.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage cardAccepted(String cardAccepted) {
+            this.cardAccepted = Optional.ofNullable(cardAccepted);
+            return this;
+        }
+
+        /**
+         * <p>Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "CardAccepted", nulls = Nulls.SKIP)
+        public _FinalStage cardAccepted(Optional<String> cardAccepted) {
+            this.cardAccepted = cardAccepted;
+            return this;
+        }
+
+        /**
+         * <p>URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentPortalUrl(Nullable<String> paymentPortalUrl) {
+            if (paymentPortalUrl.isNull()) {
+                this.paymentPortalUrl = null;
+            } else if (paymentPortalUrl.isEmpty()) {
+                this.paymentPortalUrl = Optional.empty();
+            } else {
+                this.paymentPortalUrl = Optional.of(paymentPortalUrl.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentPortalUrl(String paymentPortalUrl) {
+            this.paymentPortalUrl = Optional.ofNullable(paymentPortalUrl);
+            return this;
+        }
+
+        /**
+         * <p>URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "PaymentPortalUrl", nulls = Nulls.SKIP)
+        public _FinalStage paymentPortalUrl(Optional<String> paymentPortalUrl) {
+            this.paymentPortalUrl = paymentPortalUrl;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customerVendorAccount(Nullable<String> customerVendorAccount) {
+            if (customerVendorAccount.isNull()) {
+                this.customerVendorAccount = null;
+            } else if (customerVendorAccount.isEmpty()) {
+                this.customerVendorAccount = Optional.empty();
+            } else {
+                this.customerVendorAccount = Optional.of(customerVendorAccount.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customerVendorAccount(String customerVendorAccount) {
+            this.customerVendorAccount = Optional.ofNullable(customerVendorAccount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customerVendorAccount", nulls = Nulls.SKIP)
+        public _FinalStage customerVendorAccount(Optional<String> customerVendorAccount) {
+            this.customerVendorAccount = customerVendorAccount;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customField2(Nullable<String> customField2) {
+            if (customField2.isNull()) {
+                this.customField2 = null;
+            } else if (customField2.isEmpty()) {
+                this.customField2 = Optional.empty();
+            } else {
+                this.customField2 = Optional.of(customField2.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customField2(String customField2) {
+            this.customField2 = Optional.ofNullable(customField2);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customField2", nulls = Nulls.SKIP)
+        public _FinalStage customField2(Optional<String> customField2) {
+            this.customField2 = customField2;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customField1(Nullable<String> customField1) {
+            if (customField1.isNull()) {
+                this.customField1 = null;
+            } else if (customField1.isEmpty()) {
+                this.customField1 = Optional.empty();
+            } else {
+                this.customField1 = Optional.of(customField1.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customField1(String customField1) {
+            this.customField1 = Optional.ofNullable(customField1);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customField1", nulls = Nulls.SKIP)
+        public _FinalStage customField1(Optional<String> customField1) {
+            this.customField1 = customField1;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payeeName2(Nullable<String> payeeName2) {
+            if (payeeName2.isNull()) {
+                this.payeeName2 = null;
+            } else if (payeeName2.isEmpty()) {
+                this.payeeName2 = Optional.empty();
+            } else {
+                this.payeeName2 = Optional.of(payeeName2.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payeeName2(String payeeName2) {
+            this.payeeName2 = Optional.ofNullable(payeeName2);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "payeeName2", nulls = Nulls.SKIP)
+        public _FinalStage payeeName2(Optional<String> payeeName2) {
+            this.payeeName2 = payeeName2;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payeeName1(Nullable<String> payeeName1) {
+            if (payeeName1.isNull()) {
+                this.payeeName1 = null;
+            } else if (payeeName1.isEmpty()) {
+                this.payeeName1 = Optional.empty();
+            } else {
+                this.payeeName1 = Optional.of(payeeName1.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payeeName1(String payeeName1) {
+            this.payeeName1 = Optional.ofNullable(payeeName1);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "payeeName1", nulls = Nulls.SKIP)
+        public _FinalStage payeeName1(Optional<String> payeeName1) {
+            this.payeeName1 = payeeName1;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitCountry(Nullable<String> remitCountry) {
+            if (remitCountry.isNull()) {
+                this.remitCountry = null;
+            } else if (remitCountry.isEmpty()) {
+                this.remitCountry = Optional.empty();
+            } else {
+                this.remitCountry = Optional.of(remitCountry.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitCountry(String remitCountry) {
+            this.remitCountry = Optional.ofNullable(remitCountry);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "remitCountry", nulls = Nulls.SKIP)
+        public _FinalStage remitCountry(Optional<String> remitCountry) {
+            this.remitCountry = remitCountry;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitZip(Nullable<String> remitZip) {
+            if (remitZip.isNull()) {
+                this.remitZip = null;
+            } else if (remitZip.isEmpty()) {
+                this.remitZip = Optional.empty();
+            } else {
+                this.remitZip = Optional.of(remitZip.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitZip(String remitZip) {
+            this.remitZip = Optional.ofNullable(remitZip);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "remitZip", nulls = Nulls.SKIP)
+        public _FinalStage remitZip(Optional<String> remitZip) {
+            this.remitZip = remitZip;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitState(Nullable<String> remitState) {
+            if (remitState.isNull()) {
+                this.remitState = null;
+            } else if (remitState.isEmpty()) {
+                this.remitState = Optional.empty();
+            } else {
+                this.remitState = Optional.of(remitState.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitState(String remitState) {
+            this.remitState = Optional.ofNullable(remitState);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "remitState", nulls = Nulls.SKIP)
+        public _FinalStage remitState(Optional<String> remitState) {
+            this.remitState = remitState;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitCity(Nullable<String> remitCity) {
+            if (remitCity.isNull()) {
+                this.remitCity = null;
+            } else if (remitCity.isEmpty()) {
+                this.remitCity = Optional.empty();
+            } else {
+                this.remitCity = Optional.of(remitCity.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitCity(String remitCity) {
+            this.remitCity = Optional.ofNullable(remitCity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "remitCity", nulls = Nulls.SKIP)
+        public _FinalStage remitCity(Optional<String> remitCity) {
+            this.remitCity = remitCity;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitAddress2(Nullable<String> remitAddress2) {
+            if (remitAddress2.isNull()) {
+                this.remitAddress2 = null;
+            } else if (remitAddress2.isEmpty()) {
+                this.remitAddress2 = Optional.empty();
+            } else {
+                this.remitAddress2 = Optional.of(remitAddress2.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitAddress2(String remitAddress2) {
+            this.remitAddress2 = Optional.ofNullable(remitAddress2);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "remitAddress2", nulls = Nulls.SKIP)
+        public _FinalStage remitAddress2(Optional<String> remitAddress2) {
+            this.remitAddress2 = remitAddress2;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitAddress1(Nullable<String> remitAddress1) {
+            if (remitAddress1.isNull()) {
+                this.remitAddress1 = null;
+            } else if (remitAddress1.isEmpty()) {
+                this.remitAddress1 = Optional.empty();
+            } else {
+                this.remitAddress1 = Optional.of(remitAddress1.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitAddress1(String remitAddress1) {
+            this.remitAddress1 = Optional.ofNullable(remitAddress1);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "remitAddress1", nulls = Nulls.SKIP)
+        public _FinalStage remitAddress1(Optional<String> remitAddress1) {
+            this.remitAddress1 = remitAddress1;
             return this;
         }
 
         /**
          * <p>The paypoint's ID. This is different from the entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
-        public Builder paypointId(Optional<Long> paypointId) {
-            this.paypointId = paypointId;
-            return this;
-        }
-
-        public Builder paypointId(Long paypointId) {
-            this.paypointId = Optional.ofNullable(paypointId);
-            return this;
-        }
-
-        public Builder paypointId(Nullable<Long> paypointId) {
+        @java.lang.Override
+        public _FinalStage paypointId(Nullable<Long> paypointId) {
             if (paypointId.isNull()) {
                 this.paypointId = null;
             } else if (paypointId.isEmpty()) {
@@ -1193,349 +2288,532 @@ public final class VendorQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "PaypointDbaname", nulls = Nulls.SKIP)
-        public Builder paypointDbaname(Optional<String> paypointDbaname) {
-            this.paypointDbaname = paypointDbaname;
-            return this;
-        }
-
-        public Builder paypointDbaname(String paypointDbaname) {
-            this.paypointDbaname = Optional.ofNullable(paypointDbaname);
-            return this;
-        }
-
-        @JsonSetter(value = "PaypointEntryname", nulls = Nulls.SKIP)
-        public Builder paypointEntryname(Optional<String> paypointEntryname) {
-            this.paypointEntryname = paypointEntryname;
-            return this;
-        }
-
-        public Builder paypointEntryname(String paypointEntryname) {
-            this.paypointEntryname = Optional.ofNullable(paypointEntryname);
-            return this;
-        }
-
-        @JsonSetter(value = "ParentOrgName", nulls = Nulls.SKIP)
-        public Builder parentOrgName(Optional<String> parentOrgName) {
-            this.parentOrgName = parentOrgName;
-            return this;
-        }
-
-        public Builder parentOrgName(String parentOrgName) {
-            this.parentOrgName = Optional.ofNullable(parentOrgName);
-            return this;
-        }
-
-        @JsonSetter(value = "ParentOrgId", nulls = Nulls.SKIP)
-        public Builder parentOrgId(Optional<Long> parentOrgId) {
-            this.parentOrgId = parentOrgId;
-            return this;
-        }
-
-        public Builder parentOrgId(Long parentOrgId) {
-            this.parentOrgId = Optional.ofNullable(parentOrgId);
-            return this;
-        }
-
-        @JsonSetter(value = "CreatedDate", nulls = Nulls.SKIP)
-        public Builder createdDate(Optional<OffsetDateTime> createdDate) {
-            this.createdDate = createdDate;
-            return this;
-        }
-
-        public Builder createdDate(OffsetDateTime createdDate) {
-            this.createdDate = Optional.ofNullable(createdDate);
-            return this;
-        }
-
-        @JsonSetter(value = "LastUpdated", nulls = Nulls.SKIP)
-        public Builder lastUpdated(Optional<OffsetDateTime> lastUpdated) {
-            this.lastUpdated = lastUpdated;
-            return this;
-        }
-
-        public Builder lastUpdated(OffsetDateTime lastUpdated) {
-            this.lastUpdated = Optional.ofNullable(lastUpdated);
-            return this;
-        }
-
-        @JsonSetter(value = "remitAddress1", nulls = Nulls.SKIP)
-        public Builder remitAddress1(Optional<String> remitAddress1) {
-            this.remitAddress1 = remitAddress1;
-            return this;
-        }
-
-        public Builder remitAddress1(String remitAddress1) {
-            this.remitAddress1 = Optional.ofNullable(remitAddress1);
-            return this;
-        }
-
-        @JsonSetter(value = "remitAddress2", nulls = Nulls.SKIP)
-        public Builder remitAddress2(Optional<String> remitAddress2) {
-            this.remitAddress2 = remitAddress2;
-            return this;
-        }
-
-        public Builder remitAddress2(String remitAddress2) {
-            this.remitAddress2 = Optional.ofNullable(remitAddress2);
-            return this;
-        }
-
-        @JsonSetter(value = "remitCity", nulls = Nulls.SKIP)
-        public Builder remitCity(Optional<String> remitCity) {
-            this.remitCity = remitCity;
-            return this;
-        }
-
-        public Builder remitCity(String remitCity) {
-            this.remitCity = Optional.ofNullable(remitCity);
-            return this;
-        }
-
-        @JsonSetter(value = "remitState", nulls = Nulls.SKIP)
-        public Builder remitState(Optional<String> remitState) {
-            this.remitState = remitState;
-            return this;
-        }
-
-        public Builder remitState(String remitState) {
-            this.remitState = Optional.ofNullable(remitState);
-            return this;
-        }
-
-        @JsonSetter(value = "remitZip", nulls = Nulls.SKIP)
-        public Builder remitZip(Optional<String> remitZip) {
-            this.remitZip = remitZip;
-            return this;
-        }
-
-        public Builder remitZip(String remitZip) {
-            this.remitZip = Optional.ofNullable(remitZip);
-            return this;
-        }
-
-        @JsonSetter(value = "remitCountry", nulls = Nulls.SKIP)
-        public Builder remitCountry(Optional<String> remitCountry) {
-            this.remitCountry = remitCountry;
-            return this;
-        }
-
-        public Builder remitCountry(String remitCountry) {
-            this.remitCountry = Optional.ofNullable(remitCountry);
-            return this;
-        }
-
-        @JsonSetter(value = "payeeName1", nulls = Nulls.SKIP)
-        public Builder payeeName1(Optional<String> payeeName1) {
-            this.payeeName1 = payeeName1;
-            return this;
-        }
-
-        public Builder payeeName1(String payeeName1) {
-            this.payeeName1 = Optional.ofNullable(payeeName1);
-            return this;
-        }
-
-        @JsonSetter(value = "payeeName2", nulls = Nulls.SKIP)
-        public Builder payeeName2(Optional<String> payeeName2) {
-            this.payeeName2 = payeeName2;
-            return this;
-        }
-
-        public Builder payeeName2(String payeeName2) {
-            this.payeeName2 = Optional.ofNullable(payeeName2);
-            return this;
-        }
-
-        @JsonSetter(value = "customField1", nulls = Nulls.SKIP)
-        public Builder customField1(Optional<String> customField1) {
-            this.customField1 = customField1;
-            return this;
-        }
-
-        public Builder customField1(String customField1) {
-            this.customField1 = Optional.ofNullable(customField1);
-            return this;
-        }
-
-        @JsonSetter(value = "customField2", nulls = Nulls.SKIP)
-        public Builder customField2(Optional<String> customField2) {
-            this.customField2 = customField2;
-            return this;
-        }
-
-        public Builder customField2(String customField2) {
-            this.customField2 = Optional.ofNullable(customField2);
-            return this;
-        }
-
-        @JsonSetter(value = "customerVendorAccount", nulls = Nulls.SKIP)
-        public Builder customerVendorAccount(Optional<String> customerVendorAccount) {
-            this.customerVendorAccount = customerVendorAccount;
-            return this;
-        }
-
-        public Builder customerVendorAccount(String customerVendorAccount) {
-            this.customerVendorAccount = Optional.ofNullable(customerVendorAccount);
-            return this;
-        }
-
-        @JsonSetter(value = "InternalReferenceId", nulls = Nulls.SKIP)
-        public Builder internalReferenceId(Optional<Long> internalReferenceId) {
-            this.internalReferenceId = internalReferenceId;
-            return this;
-        }
-
-        public Builder internalReferenceId(Long internalReferenceId) {
-            this.internalReferenceId = Optional.ofNullable(internalReferenceId);
+        /**
+         * <p>The paypoint's ID. This is different from the entryname.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paypointId(Long paypointId) {
+            this.paypointId = Optional.ofNullable(paypointId);
             return this;
         }
 
         /**
-         * <p>URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.</p>
+         * <p>The paypoint's ID. This is different from the entryname.</p>
          */
-        @JsonSetter(value = "PaymentPortalUrl", nulls = Nulls.SKIP)
-        public Builder paymentPortalUrl(Optional<String> paymentPortalUrl) {
-            this.paymentPortalUrl = paymentPortalUrl;
+        @java.lang.Override
+        @JsonSetter(value = "PaypointId", nulls = Nulls.SKIP)
+        public _FinalStage paypointId(Optional<Long> paypointId) {
+            this.paypointId = paypointId;
             return this;
         }
 
-        public Builder paymentPortalUrl(String paymentPortalUrl) {
-            this.paymentPortalUrl = Optional.ofNullable(paymentPortalUrl);
+        @java.lang.Override
+        public _FinalStage summary(Nullable<VendorSummary> summary) {
+            if (summary.isNull()) {
+                this.summary = null;
+            } else if (summary.isEmpty()) {
+                this.summary = Optional.empty();
+            } else {
+                this.summary = Optional.of(summary.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage summary(VendorSummary summary) {
+            this.summary = Optional.ofNullable(summary);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Summary", nulls = Nulls.SKIP)
+        public _FinalStage summary(Optional<VendorSummary> summary) {
+            this.summary = summary;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage enrollmentStatus(Nullable<String> enrollmentStatus) {
+            if (enrollmentStatus.isNull()) {
+                this.enrollmentStatus = null;
+            } else if (enrollmentStatus.isEmpty()) {
+                this.enrollmentStatus = Optional.empty();
+            } else {
+                this.enrollmentStatus = Optional.of(enrollmentStatus.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage enrollmentStatus(String enrollmentStatus) {
+            this.enrollmentStatus = Optional.ofNullable(enrollmentStatus);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "EnrollmentStatus", nulls = Nulls.SKIP)
+        public _FinalStage enrollmentStatus(Optional<String> enrollmentStatus) {
+            this.enrollmentStatus = enrollmentStatus;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paymentMethod(Nullable<String> paymentMethod) {
+            if (paymentMethod.isNull()) {
+                this.paymentMethod = null;
+            } else if (paymentMethod.isEmpty()) {
+                this.paymentMethod = Optional.empty();
+            } else {
+                this.paymentMethod = Optional.of(paymentMethod.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paymentMethod(String paymentMethod) {
+            this.paymentMethod = Optional.ofNullable(paymentMethod);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "PaymentMethod", nulls = Nulls.SKIP)
+        public _FinalStage paymentMethod(Optional<String> paymentMethod) {
+            this.paymentMethod = paymentMethod;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingData(Nullable<BillingDataResponse> billingData) {
+            if (billingData.isNull()) {
+                this.billingData = null;
+            } else if (billingData.isEmpty()) {
+                this.billingData = Optional.empty();
+            } else {
+                this.billingData = Optional.of(billingData.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage billingData(BillingDataResponse billingData) {
+            this.billingData = Optional.ofNullable(billingData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "BillingData", nulls = Nulls.SKIP)
+        public _FinalStage billingData(Optional<BillingDataResponse> billingData) {
+            this.billingData = billingData;
             return this;
         }
 
         /**
-         * <p>Whether the vendor accepts card payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * <p>Array of objects describing the vendor's contacts.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "CardAccepted", nulls = Nulls.SKIP)
-        public Builder cardAccepted(Optional<String> cardAccepted) {
-            this.cardAccepted = cardAccepted;
-            return this;
-        }
-
-        public Builder cardAccepted(String cardAccepted) {
-            this.cardAccepted = Optional.ofNullable(cardAccepted);
+        @java.lang.Override
+        public _FinalStage contacts(Nullable<List<ContactsResponse>> contacts) {
+            if (contacts.isNull()) {
+                this.contacts = null;
+            } else if (contacts.isEmpty()) {
+                this.contacts = Optional.empty();
+            } else {
+                this.contacts = Optional.of(contacts.get());
+            }
             return this;
         }
 
         /**
-         * <p>Whether the vendor accepts ACH payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * <p>Array of objects describing the vendor's contacts.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "AchAccepted", nulls = Nulls.SKIP)
-        public Builder achAccepted(Optional<String> achAccepted) {
-            this.achAccepted = achAccepted;
-            return this;
-        }
-
-        public Builder achAccepted(String achAccepted) {
-            this.achAccepted = Optional.ofNullable(achAccepted);
+        @java.lang.Override
+        public _FinalStage contacts(List<ContactsResponse> contacts) {
+            this.contacts = Optional.ofNullable(contacts);
             return this;
         }
 
         /**
-         * <p>Whether the vendor accepts check payments. Values are <code>yes</code>, <code>no</code>, or <code>unable to determine</code>. Populated by the vendor enrichment pipeline.</p>
+         * <p>Array of objects describing the vendor's contacts.</p>
          */
-        @JsonSetter(value = "CheckAccepted", nulls = Nulls.SKIP)
-        public Builder checkAccepted(Optional<String> checkAccepted) {
-            this.checkAccepted = checkAccepted;
+        @java.lang.Override
+        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
+        public _FinalStage contacts(Optional<List<ContactsResponse>> contacts) {
+            this.contacts = contacts;
             return this;
         }
 
-        public Builder checkAccepted(String checkAccepted) {
-            this.checkAccepted = Optional.ofNullable(checkAccepted);
+        @java.lang.Override
+        public _FinalStage locationCode(Nullable<String> locationCode) {
+            if (locationCode.isNull()) {
+                this.locationCode = null;
+            } else if (locationCode.isEmpty()) {
+                this.locationCode = Optional.empty();
+            } else {
+                this.locationCode = Optional.of(locationCode.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage locationCode(String locationCode) {
+            this.locationCode = Optional.ofNullable(locationCode);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "LocationCode", nulls = Nulls.SKIP)
+        public _FinalStage locationCode(Optional<String> locationCode) {
+            this.locationCode = locationCode;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage mcc(Nullable<String> mcc) {
+            if (mcc.isNull()) {
+                this.mcc = null;
+            } else if (mcc.isEmpty()) {
+                this.mcc = Optional.empty();
+            } else {
+                this.mcc = Optional.of(mcc.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage mcc(String mcc) {
+            this.mcc = Optional.ofNullable(mcc);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Mcc", nulls = Nulls.SKIP)
+        public _FinalStage mcc(Optional<String> mcc) {
+            this.mcc = mcc;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage country(Nullable<String> country) {
+            if (country.isNull()) {
+                this.country = null;
+            } else if (country.isEmpty()) {
+                this.country = Optional.empty();
+            } else {
+                this.country = Optional.of(country.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage country(String country) {
+            this.country = Optional.ofNullable(country);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Country", nulls = Nulls.SKIP)
+        public _FinalStage country(Optional<String> country) {
+            this.country = country;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage zip(Nullable<String> zip) {
+            if (zip.isNull()) {
+                this.zip = null;
+            } else if (zip.isEmpty()) {
+                this.zip = Optional.empty();
+            } else {
+                this.zip = Optional.of(zip.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage zip(String zip) {
+            this.zip = Optional.ofNullable(zip);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Zip", nulls = Nulls.SKIP)
+        public _FinalStage zip(Optional<String> zip) {
+            this.zip = zip;
             return this;
         }
 
         /**
-         * <p>Current enrichment state of the vendor. Values are <code>not_enriched</code>, <code>partially_enriched</code>, <code>fully_enriched</code>, or <code>fallback_applied</code>.</p>
+         * <p>The state or province.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "EnrichmentStatus", nulls = Nulls.SKIP)
-        public Builder enrichmentStatus(Optional<String> enrichmentStatus) {
-            this.enrichmentStatus = enrichmentStatus;
-            return this;
-        }
-
-        public Builder enrichmentStatus(String enrichmentStatus) {
-            this.enrichmentStatus = Optional.ofNullable(enrichmentStatus);
+        @java.lang.Override
+        public _FinalStage state(Nullable<String> state) {
+            if (state.isNull()) {
+                this.state = null;
+            } else if (state.isEmpty()) {
+                this.state = Optional.empty();
+            } else {
+                this.state = Optional.of(state.get());
+            }
             return this;
         }
 
         /**
-         * <p>Which enrichment method resolved the vendor's payment acceptance info. Values are <code>invoice_scan</code>, <code>web_search</code>, <code>vendor_network</code>, or <code>manual</code>.</p>
+         * <p>The state or province.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "EnrichedBy", nulls = Nulls.SKIP)
-        public Builder enrichedBy(Optional<String> enrichedBy) {
-            this.enrichedBy = enrichedBy;
-            return this;
-        }
-
-        public Builder enrichedBy(String enrichedBy) {
-            this.enrichedBy = Optional.ofNullable(enrichedBy);
+        @java.lang.Override
+        public _FinalStage state(String state) {
+            this.state = Optional.ofNullable(state);
             return this;
         }
 
         /**
-         * <p>When the vendor was last enriched (UTC).</p>
+         * <p>The state or province.</p>
          */
-        @JsonSetter(value = "EnrichedAt", nulls = Nulls.SKIP)
-        public Builder enrichedAt(Optional<OffsetDateTime> enrichedAt) {
-            this.enrichedAt = enrichedAt;
-            return this;
-        }
-
-        public Builder enrichedAt(OffsetDateTime enrichedAt) {
-            this.enrichedAt = Optional.ofNullable(enrichedAt);
+        @java.lang.Override
+        @JsonSetter(value = "State", nulls = Nulls.SKIP)
+        public _FinalStage state(Optional<String> state) {
+            this.state = state;
             return this;
         }
 
         /**
-         * <p>Identifier for the enrichment request that last updated this vendor.</p>
+         * <p>The city.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "EnrichmentId", nulls = Nulls.SKIP)
-        public Builder enrichmentId(Optional<String> enrichmentId) {
-            this.enrichmentId = enrichmentId;
+        @java.lang.Override
+        public _FinalStage city(Nullable<String> city) {
+            if (city.isNull()) {
+                this.city = null;
+            } else if (city.isEmpty()) {
+                this.city = Optional.empty();
+            } else {
+                this.city = Optional.of(city.get());
+            }
             return this;
         }
 
-        public Builder enrichmentId(String enrichmentId) {
-            this.enrichmentId = Optional.ofNullable(enrichmentId);
+        /**
+         * <p>The city.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage city(String city) {
+            this.city = Optional.ofNullable(city);
             return this;
         }
 
-        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, String>> additionalData) {
-            this.additionalData = additionalData;
+        /**
+         * <p>The city.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "City", nulls = Nulls.SKIP)
+        public _FinalStage city(Optional<String> city) {
+            this.city = city;
             return this;
         }
 
-        public Builder additionalData(Map<String, String> additionalData) {
-            this.additionalData = Optional.ofNullable(additionalData);
+        /**
+         * <p>Additional line for the address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage address2(Nullable<String> address2) {
+            if (address2.isNull()) {
+                this.address2 = null;
+            } else if (address2.isEmpty()) {
+                this.address2 = Optional.empty();
+            } else {
+                this.address2 = Optional.of(address2.get());
+            }
             return this;
         }
 
-        @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
-        public Builder externalPaypointId(Optional<String> externalPaypointId) {
-            this.externalPaypointId = externalPaypointId;
+        /**
+         * <p>Additional line for the address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage address2(String address2) {
+            this.address2 = Optional.ofNullable(address2);
             return this;
         }
 
-        public Builder externalPaypointId(String externalPaypointId) {
-            this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+        /**
+         * <p>Additional line for the address.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "Address2", nulls = Nulls.SKIP)
+        public _FinalStage address2(Optional<String> address2) {
+            this.address2 = address2;
             return this;
         }
 
-        @JsonSetter(value = "StoredMethods", nulls = Nulls.SKIP)
-        public Builder storedMethods(Optional<List<VendorResponseStoredMethod>> storedMethods) {
-            this.storedMethods = storedMethods;
+        /**
+         * <p>The address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage address1(Nullable<String> address1) {
+            if (address1.isNull()) {
+                this.address1 = null;
+            } else if (address1.isEmpty()) {
+                this.address1 = Optional.empty();
+            } else {
+                this.address1 = Optional.of(address1.get());
+            }
             return this;
         }
 
-        public Builder storedMethods(List<VendorResponseStoredMethod> storedMethods) {
-            this.storedMethods = Optional.ofNullable(storedMethods);
+        /**
+         * <p>The address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage address1(String address1) {
+            this.address1 = Optional.ofNullable(address1);
             return this;
         }
 
+        /**
+         * <p>The address.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "Address1", nulls = Nulls.SKIP)
+        public _FinalStage address1(Optional<String> address1) {
+            this.address1 = address1;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitEmail(Nullable<String> remitEmail) {
+            if (remitEmail.isNull()) {
+                this.remitEmail = null;
+            } else if (remitEmail.isEmpty()) {
+                this.remitEmail = Optional.empty();
+            } else {
+                this.remitEmail = Optional.of(remitEmail.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage remitEmail(String remitEmail) {
+            this.remitEmail = Optional.ofNullable(remitEmail);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "RemitEmail", nulls = Nulls.SKIP)
+        public _FinalStage remitEmail(Optional<String> remitEmail) {
+            this.remitEmail = remitEmail;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage email(Nullable<String> email) {
+            if (email.isNull()) {
+                this.email = null;
+            } else if (email.isEmpty()) {
+                this.email = Optional.empty();
+            } else {
+                this.email = Optional.of(email.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Email", nulls = Nulls.SKIP)
+        public _FinalStage email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage phone(Nullable<String> phone) {
+            if (phone.isNull()) {
+                this.phone = null;
+            } else if (phone.isEmpty()) {
+                this.phone = Optional.empty();
+            } else {
+                this.phone = Optional.of(phone.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage phone(String phone) {
+            this.phone = Optional.ofNullable(phone);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Phone", nulls = Nulls.SKIP)
+        public _FinalStage phone(Optional<String> phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage ein(Nullable<String> ein) {
+            if (ein.isNull()) {
+                this.ein = null;
+            } else if (ein.isEmpty()) {
+                this.ein = Optional.empty();
+            } else {
+                this.ein = Optional.of(ein.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage ein(String ein) {
+            this.ein = Optional.ofNullable(ein);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "EIN", nulls = Nulls.SKIP)
+        public _FinalStage ein(Optional<String> ein) {
+            this.ein = ein;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage name2(Nullable<String> name2) {
+            if (name2.isNull()) {
+                this.name2 = null;
+            } else if (name2.isEmpty()) {
+                this.name2 = Optional.empty();
+            } else {
+                this.name2 = Optional.of(name2.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage name2(String name2) {
+            this.name2 = Optional.ofNullable(name2);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Name2", nulls = Nulls.SKIP)
+        public _FinalStage name2(Optional<String> name2) {
+            this.name2 = name2;
+            return this;
+        }
+
+        @java.lang.Override
         public VendorQueryRecord build() {
             return new VendorQueryRecord(
                     vendorNumber,
@@ -1594,11 +2872,13 @@ public final class VendorQueryRecord {
                     additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

@@ -24,7 +24,7 @@ import java.util.Optional;
 public final class UserQueryRecord {
     private final Optional<List<UsrAccess>> access;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<OffsetDateTime> createdAt;
 
@@ -60,7 +60,7 @@ public final class UserQueryRecord {
 
     private UserQueryRecord(
             Optional<List<UsrAccess>> access,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<OffsetDateTime> createdAt,
             Optional<String> email,
             Optional<String> language,
@@ -103,7 +103,7 @@ public final class UserQueryRecord {
     }
 
     @JsonProperty("AdditionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -272,7 +272,7 @@ public final class UserQueryRecord {
     public static final class Builder {
         private Optional<List<UsrAccess>> access = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<OffsetDateTime> createdAt = Optional.empty();
 
@@ -342,12 +342,12 @@ public final class UserQueryRecord {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

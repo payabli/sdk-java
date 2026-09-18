@@ -25,7 +25,7 @@ public final class BillOutData {
 
     private final Optional<String> accountingField2;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<List<FileContent>> attachments;
 
@@ -66,7 +66,7 @@ public final class BillOutData {
     private BillOutData(
             Optional<String> accountingField1,
             Optional<String> accountingField2,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<List<FileContent>> attachments,
             Optional<String> billDate,
             Optional<List<BillItem>> billItems,
@@ -119,7 +119,7 @@ public final class BillOutData {
     }
 
     @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
+    public Optional<Map<String, String>> getAdditionalData() {
         return additionalData;
     }
 
@@ -331,7 +331,7 @@ public final class BillOutData {
 
         private Optional<String> accountingField2 = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<List<FileContent>> attachments = Optional.empty();
 
@@ -419,12 +419,12 @@ public final class BillOutData {
         }
 
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
             return this;
         }

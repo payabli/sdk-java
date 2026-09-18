@@ -39,9 +39,9 @@ public final class BillResponseData {
 
     private final Optional<Double> outstandingBalance;
 
-    private final Optional<String> billDate;
+    private final Optional<OffsetDateTime> billDate;
 
-    private final Optional<String> dueDate;
+    private final Optional<OffsetDateTime> dueDate;
 
     private final Optional<String> comments;
 
@@ -63,7 +63,7 @@ public final class BillResponseData {
 
     private final Optional<String> source;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<VendorDataResponse> vendor;
 
@@ -113,8 +113,8 @@ public final class BillResponseData {
             Optional<Double> totalAmount,
             Optional<Double> paidAmount,
             Optional<Double> outstandingBalance,
-            Optional<String> billDate,
-            Optional<String> dueDate,
+            Optional<OffsetDateTime> billDate,
+            Optional<OffsetDateTime> dueDate,
             Optional<String> comments,
             Optional<String> batchNumber,
             Optional<List<BillItem>> billItems,
@@ -125,7 +125,7 @@ public final class BillResponseData {
             Optional<String> accountingField2,
             Optional<Terms> terms,
             Optional<String> source,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<VendorDataResponse> vendor,
             Optional<Integer> status,
             Optional<OffsetDateTime> createdAt,
@@ -242,10 +242,10 @@ public final class BillResponseData {
     }
 
     /**
-     * @return Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
+     * @return Date of bill, returned as a timestamp.
      */
     @JsonIgnore
-    public Optional<String> getBillDate() {
+    public Optional<OffsetDateTime> getBillDate() {
         if (billDate == null) {
             return Optional.empty();
         }
@@ -253,10 +253,10 @@ public final class BillResponseData {
     }
 
     /**
-     * @return Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
+     * @return Due date of bill, returned as a timestamp.
      */
     @JsonIgnore
-    public Optional<String> getDueDate() {
+    public Optional<OffsetDateTime> getDueDate() {
         if (dueDate == null) {
             return Optional.empty();
         }
@@ -334,8 +334,11 @@ public final class BillResponseData {
         return source;
     }
 
-    @JsonProperty("AdditionalData")
-    public Optional<String> getAdditionalData() {
+    @JsonIgnore
+    public Optional<Map<String, String>> getAdditionalData() {
+        if (additionalData == null) {
+            return Optional.empty();
+        }
         return additionalData;
     }
 
@@ -454,14 +457,20 @@ public final class BillResponseData {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("BillDate")
-    private Optional<String> _getBillDate() {
+    private Optional<OffsetDateTime> _getBillDate() {
         return billDate;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("DueDate")
-    private Optional<String> _getDueDate() {
+    private Optional<OffsetDateTime> _getDueDate() {
         return dueDate;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AdditionalData")
+    private Optional<Map<String, String>> _getAdditionalData() {
+        return additionalData;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -592,9 +601,9 @@ public final class BillResponseData {
 
         private Optional<Double> outstandingBalance = Optional.empty();
 
-        private Optional<String> billDate = Optional.empty();
+        private Optional<OffsetDateTime> billDate = Optional.empty();
 
-        private Optional<String> dueDate = Optional.empty();
+        private Optional<OffsetDateTime> dueDate = Optional.empty();
 
         private Optional<String> comments = Optional.empty();
 
@@ -616,7 +625,7 @@ public final class BillResponseData {
 
         private Optional<String> source = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<VendorDataResponse> vendor = Optional.empty();
 
@@ -800,20 +809,20 @@ public final class BillResponseData {
         }
 
         /**
-         * <p>Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY</p>
+         * <p>Date of bill, returned as a timestamp.</p>
          */
         @JsonSetter(value = "BillDate", nulls = Nulls.SKIP)
-        public Builder billDate(Optional<String> billDate) {
+        public Builder billDate(Optional<OffsetDateTime> billDate) {
             this.billDate = billDate;
             return this;
         }
 
-        public Builder billDate(String billDate) {
+        public Builder billDate(OffsetDateTime billDate) {
             this.billDate = Optional.ofNullable(billDate);
             return this;
         }
 
-        public Builder billDate(Nullable<String> billDate) {
+        public Builder billDate(Nullable<OffsetDateTime> billDate) {
             if (billDate.isNull()) {
                 this.billDate = null;
             } else if (billDate.isEmpty()) {
@@ -825,20 +834,20 @@ public final class BillResponseData {
         }
 
         /**
-         * <p>Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY</p>
+         * <p>Due date of bill, returned as a timestamp.</p>
          */
         @JsonSetter(value = "DueDate", nulls = Nulls.SKIP)
-        public Builder dueDate(Optional<String> dueDate) {
+        public Builder dueDate(Optional<OffsetDateTime> dueDate) {
             this.dueDate = dueDate;
             return this;
         }
 
-        public Builder dueDate(String dueDate) {
+        public Builder dueDate(OffsetDateTime dueDate) {
             this.dueDate = Optional.ofNullable(dueDate);
             return this;
         }
 
-        public Builder dueDate(Nullable<String> dueDate) {
+        public Builder dueDate(Nullable<OffsetDateTime> dueDate) {
             if (dueDate.isNull()) {
                 this.dueDate = null;
             } else if (dueDate.isEmpty()) {
@@ -981,13 +990,24 @@ public final class BillResponseData {
         }
 
         @JsonSetter(value = "AdditionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
+            return this;
+        }
+
+        public Builder additionalData(Nullable<Map<String, String>> additionalData) {
+            if (additionalData.isNull()) {
+                this.additionalData = null;
+            } else if (additionalData.isEmpty()) {
+                this.additionalData = Optional.empty();
+            } else {
+                this.additionalData = Optional.of(additionalData.get());
+            }
             return this;
         }
 

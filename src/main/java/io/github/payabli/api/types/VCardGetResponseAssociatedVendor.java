@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +106,7 @@ public final class VCardGetResponseAssociatedVendor {
 
     private final Optional<Integer> internalReferenceId;
 
-    private final Optional<String> additionalData;
+    private final Optional<Map<String, String>> additionalData;
 
     private final Optional<String> externalPaypointId;
 
@@ -153,7 +156,7 @@ public final class VCardGetResponseAssociatedVendor {
             Optional<String> customField2,
             Optional<String> customerVendorAccount,
             Optional<Integer> internalReferenceId,
-            Optional<String> additionalData,
+            Optional<Map<String, String>> additionalData,
             Optional<String> externalPaypointId,
             Optional<String> storedMethods,
             Map<String, Object> additionalProperties) {
@@ -508,11 +511,11 @@ public final class VCardGetResponseAssociatedVendor {
         return internalReferenceId;
     }
 
-    /**
-     * @return Field for additional data, if any.
-     */
-    @JsonProperty("additionalData")
-    public Optional<String> getAdditionalData() {
+    @JsonIgnore
+    public Optional<Map<String, String>> getAdditionalData() {
+        if (additionalData == null) {
+            return Optional.empty();
+        }
         return additionalData;
     }
 
@@ -527,6 +530,12 @@ public final class VCardGetResponseAssociatedVendor {
     @JsonProperty("StoredMethods")
     public Optional<String> getStoredMethods() {
         return storedMethods;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("additionalData")
+    private Optional<Map<String, String>> _getAdditionalData() {
+        return additionalData;
     }
 
     @java.lang.Override
@@ -729,7 +738,7 @@ public final class VCardGetResponseAssociatedVendor {
 
         private Optional<Integer> internalReferenceId = Optional.empty();
 
-        private Optional<String> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
 
@@ -1338,17 +1347,25 @@ public final class VCardGetResponseAssociatedVendor {
             return this;
         }
 
-        /**
-         * <p>Field for additional data, if any.</p>
-         */
         @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<String> additionalData) {
+        public Builder additionalData(Optional<Map<String, String>> additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public Builder additionalData(String additionalData) {
+        public Builder additionalData(Map<String, String> additionalData) {
             this.additionalData = Optional.ofNullable(additionalData);
+            return this;
+        }
+
+        public Builder additionalData(Nullable<Map<String, String>> additionalData) {
+            if (additionalData.isNull()) {
+                this.additionalData = null;
+            } else if (additionalData.isEmpty()) {
+                this.additionalData = Optional.empty();
+            } else {
+                this.additionalData = Optional.of(additionalData.get());
+            }
             return this;
         }
 
