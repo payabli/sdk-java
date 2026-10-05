@@ -22,6 +22,7 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
 import io.github.payabli.api.types.NotificationLog;
 import io.github.payabli.api.types.NotificationLogDetail;
+import io.github.payabli.api.types.NotificationRetryResponse;
 import io.github.payabli.api.types.PayabliErrorBody;
 import java.io.IOException;
 import java.util.HashMap;
@@ -238,7 +239,7 @@ public class RawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public PayabliApiClientHttpResponse<NotificationLogDetail> retryNotificationLog(String uuid) {
+    public PayabliApiClientHttpResponse<NotificationRetryResponse> retryNotificationLog(String uuid) {
         return retryNotificationLog(uuid, null);
     }
 
@@ -246,7 +247,7 @@ public class RawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public PayabliApiClientHttpResponse<NotificationLogDetail> retryNotificationLog(
+    public PayabliApiClientHttpResponse<NotificationRetryResponse> retryNotificationLog(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -286,7 +287,8 @@ public class RawNotificationlogsClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiClientHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationRetryResponse.class),
+                        response);
             }
             try {
                 switch (response.code()) {
@@ -323,7 +325,7 @@ public class RawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public PayabliApiClientHttpResponse<Void> bulkRetryNotificationLogs(List<String> request) {
+    public PayabliApiClientHttpResponse<String> bulkRetryNotificationLogs(List<String> request) {
         return bulkRetryNotificationLogs(request, null);
     }
 
@@ -332,7 +334,7 @@ public class RawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public PayabliApiClientHttpResponse<Void> bulkRetryNotificationLogs(
+    public PayabliApiClientHttpResponse<String> bulkRetryNotificationLogs(
             List<String> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -374,10 +376,10 @@ public class RawNotificationlogsClient {
         }
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return new PayabliApiClientHttpResponse<>(null, response);
-            }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new PayabliApiClientHttpResponse<>(responseBodyString, response);
+            }
             Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
             throw new PayabliApiClientApiException(
                     "Error with status code " + response.code(), response.code(), errorBody, response);

@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -21,54 +24,32 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetMethodResponseResponseDataCustomersItem.Builder.class)
-public final class GetMethodResponseResponseDataCustomersItem implements IPayorDataRequest {
-    private final Optional<Map<String, Map<String, Object>>> additionalData;
+public final class GetMethodResponseResponseDataCustomersItem {
+    private final Optional<Map<String, String>> additionalFields;
 
-    private final Optional<String> billingAddress1;
+    private final Optional<String> address;
 
-    private final Optional<String> billingAddress2;
+    private final Optional<String> address1;
 
-    private final Optional<String> billingCity;
+    private final Optional<Float> balance;
 
-    private final Optional<String> billingCountry;
-
-    private final Optional<String> billingEmail;
-
-    private final Optional<String> billingPhone;
-
-    private final Optional<String> billingState;
-
-    private final Optional<String> billingZip;
+    private final Optional<String> city;
 
     private final Optional<String> company;
+
+    private final Optional<String> country;
+
+    private final Optional<OffsetDateTime> created;
+
+    private final Optional<Map<String, Object>> customerConsent;
+
+    private final Optional<List<Object>> customerEvents;
 
     private final Optional<Long> customerId;
 
     private final Optional<String> customerNumber;
 
-    private final Optional<String> firstName;
-
-    private final Optional<List<String>> identifierFields;
-
-    private final Optional<String> lastName;
-
-    private final Optional<String> shippingAddress1;
-
-    private final Optional<String> shippingAddress2;
-
-    private final Optional<String> shippingCity;
-
-    private final Optional<String> shippingCountry;
-
-    private final Optional<String> shippingState;
-
-    private final Optional<String> shippingZip;
-
-    private final Optional<Float> balance;
-
-    private final Optional<OffsetDateTime> created;
-
-    private final Optional<Map<String, Object>> customerConsent;
+    private final Optional<String> customerPortal;
 
     private final Optional<Integer> customerStatus;
 
@@ -76,7 +57,15 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
     private final Optional<String> customerUsername;
 
+    private final Optional<String> email;
+
     private final Optional<String> externalPaypointId;
+
+    private final Optional<String> firstname;
+
+    private final Optional<List<String>> identifierFields;
+
+    private final Optional<String> lastname;
 
     private final Optional<OffsetDateTime> lastUpdated;
 
@@ -96,11 +85,27 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
     private final Optional<String> paypointLegalname;
 
+    private final Optional<String> phone;
+
+    private final Optional<String> shippingAddress;
+
+    private final Optional<String> shippingAddress1;
+
+    private final Optional<String> shippingCity;
+
+    private final Optional<String> shippingCountry;
+
+    private final Optional<String> shippingState;
+
+    private final Optional<String> shippingZip;
+
     private final Optional<Map<String, Object>> snData;
 
     private final Optional<String> snIdentifier;
 
     private final Optional<String> snProvider;
+
+    private final Optional<String> state;
 
     private final Optional<List<MethodQueryRecords>> storedMethods;
 
@@ -108,37 +113,32 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
     private final Optional<Integer> timeZone;
 
+    private final Optional<String> zip;
+
     private final Map<String, Object> additionalProperties;
 
     private GetMethodResponseResponseDataCustomersItem(
-            Optional<Map<String, Map<String, Object>>> additionalData,
-            Optional<String> billingAddress1,
-            Optional<String> billingAddress2,
-            Optional<String> billingCity,
-            Optional<String> billingCountry,
-            Optional<String> billingEmail,
-            Optional<String> billingPhone,
-            Optional<String> billingState,
-            Optional<String> billingZip,
-            Optional<String> company,
-            Optional<Long> customerId,
-            Optional<String> customerNumber,
-            Optional<String> firstName,
-            Optional<List<String>> identifierFields,
-            Optional<String> lastName,
-            Optional<String> shippingAddress1,
-            Optional<String> shippingAddress2,
-            Optional<String> shippingCity,
-            Optional<String> shippingCountry,
-            Optional<String> shippingState,
-            Optional<String> shippingZip,
+            Optional<Map<String, String>> additionalFields,
+            Optional<String> address,
+            Optional<String> address1,
             Optional<Float> balance,
+            Optional<String> city,
+            Optional<String> company,
+            Optional<String> country,
             Optional<OffsetDateTime> created,
             Optional<Map<String, Object>> customerConsent,
+            Optional<List<Object>> customerEvents,
+            Optional<Long> customerId,
+            Optional<String> customerNumber,
+            Optional<String> customerPortal,
             Optional<Integer> customerStatus,
             Optional<CustomerSummaryRecord> customerSummary,
             Optional<String> customerUsername,
+            Optional<String> email,
             Optional<String> externalPaypointId,
+            Optional<String> firstname,
+            Optional<List<String>> identifierFields,
+            Optional<String> lastname,
             Optional<OffsetDateTime> lastUpdated,
             Optional<Boolean> mfa,
             Optional<Integer> mfaMode,
@@ -148,41 +148,43 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
             Optional<String> paypointDbaname,
             Optional<String> paypointEntryname,
             Optional<String> paypointLegalname,
+            Optional<String> phone,
+            Optional<String> shippingAddress,
+            Optional<String> shippingAddress1,
+            Optional<String> shippingCity,
+            Optional<String> shippingCountry,
+            Optional<String> shippingState,
+            Optional<String> shippingZip,
             Optional<Map<String, Object>> snData,
             Optional<String> snIdentifier,
             Optional<String> snProvider,
+            Optional<String> state,
             Optional<List<MethodQueryRecords>> storedMethods,
             Optional<List<SubscriptionQueryRecords>> subscriptions,
             Optional<Integer> timeZone,
+            Optional<String> zip,
             Map<String, Object> additionalProperties) {
-        this.additionalData = additionalData;
-        this.billingAddress1 = billingAddress1;
-        this.billingAddress2 = billingAddress2;
-        this.billingCity = billingCity;
-        this.billingCountry = billingCountry;
-        this.billingEmail = billingEmail;
-        this.billingPhone = billingPhone;
-        this.billingState = billingState;
-        this.billingZip = billingZip;
-        this.company = company;
-        this.customerId = customerId;
-        this.customerNumber = customerNumber;
-        this.firstName = firstName;
-        this.identifierFields = identifierFields;
-        this.lastName = lastName;
-        this.shippingAddress1 = shippingAddress1;
-        this.shippingAddress2 = shippingAddress2;
-        this.shippingCity = shippingCity;
-        this.shippingCountry = shippingCountry;
-        this.shippingState = shippingState;
-        this.shippingZip = shippingZip;
+        this.additionalFields = additionalFields;
+        this.address = address;
+        this.address1 = address1;
         this.balance = balance;
+        this.city = city;
+        this.company = company;
+        this.country = country;
         this.created = created;
         this.customerConsent = customerConsent;
+        this.customerEvents = customerEvents;
+        this.customerId = customerId;
+        this.customerNumber = customerNumber;
+        this.customerPortal = customerPortal;
         this.customerStatus = customerStatus;
         this.customerSummary = customerSummary;
         this.customerUsername = customerUsername;
+        this.email = email;
         this.externalPaypointId = externalPaypointId;
+        this.firstname = firstname;
+        this.identifierFields = identifierFields;
+        this.lastname = lastname;
         this.lastUpdated = lastUpdated;
         this.mfa = mfa;
         this.mfaMode = mfaMode;
@@ -192,151 +194,46 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
         this.paypointDbaname = paypointDbaname;
         this.paypointEntryname = paypointEntryname;
         this.paypointLegalname = paypointLegalname;
+        this.phone = phone;
+        this.shippingAddress = shippingAddress;
+        this.shippingAddress1 = shippingAddress1;
+        this.shippingCity = shippingCity;
+        this.shippingCountry = shippingCountry;
+        this.shippingState = shippingState;
+        this.shippingZip = shippingZip;
         this.snData = snData;
         this.snIdentifier = snIdentifier;
         this.snProvider = snProvider;
+        this.state = state;
         this.storedMethods = storedMethods;
         this.subscriptions = subscriptions;
         this.timeZone = timeZone;
+        this.zip = zip;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("additionalData")
-    @java.lang.Override
-    public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
-        return additionalData;
-    }
-
-    @JsonProperty("billingAddress1")
-    @java.lang.Override
-    public Optional<String> getBillingAddress1() {
-        return billingAddress1;
-    }
-
-    @JsonProperty("billingAddress2")
-    @java.lang.Override
-    public Optional<String> getBillingAddress2() {
-        return billingAddress2;
-    }
-
-    @JsonProperty("billingCity")
-    @java.lang.Override
-    public Optional<String> getBillingCity() {
-        return billingCity;
-    }
-
-    @JsonProperty("billingCountry")
-    @java.lang.Override
-    public Optional<String> getBillingCountry() {
-        return billingCountry;
-    }
-
-    @JsonProperty("billingEmail")
-    @java.lang.Override
-    public Optional<String> getBillingEmail() {
-        return billingEmail;
-    }
-
-    @JsonProperty("billingPhone")
-    @java.lang.Override
-    public Optional<String> getBillingPhone() {
-        return billingPhone;
-    }
-
-    @JsonProperty("billingState")
-    @java.lang.Override
-    public Optional<String> getBillingState() {
-        return billingState;
+    /**
+     * @return List of additional custom fields in format key:value.
+     */
+    @JsonProperty("additionalFields")
+    public Optional<Map<String, String>> getAdditionalFields() {
+        return additionalFields;
     }
 
     /**
-     * @return Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: &quot;37615-1234&quot; or &quot;37615&quot;.
+     * @return Customer address.
      */
-    @JsonProperty("billingZip")
-    @java.lang.Override
-    public Optional<String> getBillingZip() {
-        return billingZip;
+    @JsonProperty("address")
+    public Optional<String> getAddress() {
+        return address;
     }
 
     /**
-     * @return Customer's company name.
+     * @return Additional line for customer address.
      */
-    @JsonProperty("company")
-    @java.lang.Override
-    public Optional<String> getCompany() {
-        return company;
-    }
-
-    @JsonProperty("customerId")
-    @java.lang.Override
-    public Optional<Long> getCustomerId() {
-        return customerId;
-    }
-
-    @JsonProperty("customerNumber")
-    @java.lang.Override
-    public Optional<String> getCustomerNumber() {
-        return customerNumber;
-    }
-
-    /**
-     * @return Customer/Payor first name.
-     */
-    @JsonProperty("firstName")
-    @java.lang.Override
-    public Optional<String> getFirstName() {
-        return firstName;
-    }
-
-    @JsonProperty("identifierFields")
-    @java.lang.Override
-    public Optional<List<String>> getIdentifierFields() {
-        return identifierFields;
-    }
-
-    /**
-     * @return Customer/Payor last name.
-     */
-    @JsonProperty("lastName")
-    @java.lang.Override
-    public Optional<String> getLastName() {
-        return lastName;
-    }
-
-    @JsonProperty("shippingAddress1")
-    @java.lang.Override
-    public Optional<String> getShippingAddress1() {
-        return shippingAddress1;
-    }
-
-    @JsonProperty("shippingAddress2")
-    @java.lang.Override
-    public Optional<String> getShippingAddress2() {
-        return shippingAddress2;
-    }
-
-    @JsonProperty("shippingCity")
-    @java.lang.Override
-    public Optional<String> getShippingCity() {
-        return shippingCity;
-    }
-
-    @JsonProperty("shippingCountry")
-    @java.lang.Override
-    public Optional<String> getShippingCountry() {
-        return shippingCountry;
-    }
-
-    @JsonProperty("shippingState")
-    @java.lang.Override
-    public Optional<String> getShippingState() {
-        return shippingState;
-    }
-
-    @JsonProperty("shippingZip")
-    @java.lang.Override
-    public Optional<String> getShippingZip() {
-        return shippingZip;
+    @JsonProperty("address1")
+    public Optional<String> getAddress1() {
+        return address1;
     }
 
     /**
@@ -345,6 +242,30 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
     @JsonProperty("balance")
     public Optional<Float> getBalance() {
         return balance;
+    }
+
+    /**
+     * @return Customer city.
+     */
+    @JsonProperty("city")
+    public Optional<String> getCity() {
+        return city;
+    }
+
+    /**
+     * @return Company name.
+     */
+    @JsonProperty("company")
+    public Optional<String> getCompany() {
+        return company;
+    }
+
+    /**
+     * @return Customer country.
+     */
+    @JsonProperty("country")
+    public Optional<String> getCountry() {
+        return country;
     }
 
     /**
@@ -361,6 +282,32 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
     @JsonProperty("customerConsent")
     public Optional<Map<String, Object>> getCustomerConsent() {
         return customerConsent;
+    }
+
+    /**
+     * @return Events recorded for the customer.
+     */
+    @JsonProperty("customerEvents")
+    public Optional<List<Object>> getCustomerEvents() {
+        return customerEvents;
+    }
+
+    @JsonProperty("customerId")
+    public Optional<Long> getCustomerId() {
+        return customerId;
+    }
+
+    @JsonProperty("customerNumber")
+    public Optional<String> getCustomerNumber() {
+        return customerNumber;
+    }
+
+    @JsonIgnore
+    public Optional<String> getCustomerPortal() {
+        if (customerPortal == null) {
+            return Optional.empty();
+        }
+        return customerPortal;
     }
 
     /**
@@ -384,9 +331,38 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
         return customerUsername;
     }
 
+    /**
+     * @return Customer email address.
+     */
+    @JsonProperty("email")
+    public Optional<String> getEmail() {
+        return email;
+    }
+
     @JsonProperty("externalPaypointID")
     public Optional<String> getExternalPaypointId() {
         return externalPaypointId;
+    }
+
+    /**
+     * @return Customer first name.
+     */
+    @JsonProperty("firstname")
+    public Optional<String> getFirstname() {
+        return firstname;
+    }
+
+    @JsonProperty("identifierFields")
+    public Optional<List<String>> getIdentifierFields() {
+        return identifierFields;
+    }
+
+    /**
+     * @return Customer last name.
+     */
+    @JsonProperty("lastname")
+    public Optional<String> getLastname() {
+        return lastname;
     }
 
     /**
@@ -450,6 +426,44 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
     }
 
     /**
+     * @return Customer phone number.
+     */
+    @JsonProperty("phone")
+    public Optional<String> getPhone() {
+        return phone;
+    }
+
+    @JsonProperty("shippingAddress")
+    public Optional<String> getShippingAddress() {
+        return shippingAddress;
+    }
+
+    @JsonProperty("shippingAddress1")
+    public Optional<String> getShippingAddress1() {
+        return shippingAddress1;
+    }
+
+    @JsonProperty("shippingCity")
+    public Optional<String> getShippingCity() {
+        return shippingCity;
+    }
+
+    @JsonProperty("shippingCountry")
+    public Optional<String> getShippingCountry() {
+        return shippingCountry;
+    }
+
+    @JsonProperty("shippingState")
+    public Optional<String> getShippingState() {
+        return shippingState;
+    }
+
+    @JsonProperty("shippingZip")
+    public Optional<String> getShippingZip() {
+        return shippingZip;
+    }
+
+    /**
      * @return Social network data
      */
     @JsonProperty("snData")
@@ -471,6 +485,14 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
     @JsonProperty("snProvider")
     public Optional<String> getSnProvider() {
         return snProvider;
+    }
+
+    /**
+     * @return Customer state.
+     */
+    @JsonProperty("state")
+    public Optional<String> getState() {
+        return state;
     }
 
     /**
@@ -497,6 +519,20 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
         return timeZone;
     }
 
+    /**
+     * @return Customer postal code.
+     */
+    @JsonProperty("zip")
+    public Optional<String> getZip() {
+        return zip;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerPortal")
+    private Optional<String> _getCustomerPortal() {
+        return customerPortal;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -510,34 +546,27 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
     }
 
     private boolean equalTo(GetMethodResponseResponseDataCustomersItem other) {
-        return additionalData.equals(other.additionalData)
-                && billingAddress1.equals(other.billingAddress1)
-                && billingAddress2.equals(other.billingAddress2)
-                && billingCity.equals(other.billingCity)
-                && billingCountry.equals(other.billingCountry)
-                && billingEmail.equals(other.billingEmail)
-                && billingPhone.equals(other.billingPhone)
-                && billingState.equals(other.billingState)
-                && billingZip.equals(other.billingZip)
-                && company.equals(other.company)
-                && customerId.equals(other.customerId)
-                && customerNumber.equals(other.customerNumber)
-                && firstName.equals(other.firstName)
-                && identifierFields.equals(other.identifierFields)
-                && lastName.equals(other.lastName)
-                && shippingAddress1.equals(other.shippingAddress1)
-                && shippingAddress2.equals(other.shippingAddress2)
-                && shippingCity.equals(other.shippingCity)
-                && shippingCountry.equals(other.shippingCountry)
-                && shippingState.equals(other.shippingState)
-                && shippingZip.equals(other.shippingZip)
+        return additionalFields.equals(other.additionalFields)
+                && address.equals(other.address)
+                && address1.equals(other.address1)
                 && balance.equals(other.balance)
+                && city.equals(other.city)
+                && company.equals(other.company)
+                && country.equals(other.country)
                 && created.equals(other.created)
                 && customerConsent.equals(other.customerConsent)
+                && customerEvents.equals(other.customerEvents)
+                && customerId.equals(other.customerId)
+                && customerNumber.equals(other.customerNumber)
+                && customerPortal.equals(other.customerPortal)
                 && customerStatus.equals(other.customerStatus)
                 && customerSummary.equals(other.customerSummary)
                 && customerUsername.equals(other.customerUsername)
+                && email.equals(other.email)
                 && externalPaypointId.equals(other.externalPaypointId)
+                && firstname.equals(other.firstname)
+                && identifierFields.equals(other.identifierFields)
+                && lastname.equals(other.lastname)
                 && lastUpdated.equals(other.lastUpdated)
                 && mfa.equals(other.mfa)
                 && mfaMode.equals(other.mfaMode)
@@ -547,45 +576,47 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointEntryname.equals(other.paypointEntryname)
                 && paypointLegalname.equals(other.paypointLegalname)
+                && phone.equals(other.phone)
+                && shippingAddress.equals(other.shippingAddress)
+                && shippingAddress1.equals(other.shippingAddress1)
+                && shippingCity.equals(other.shippingCity)
+                && shippingCountry.equals(other.shippingCountry)
+                && shippingState.equals(other.shippingState)
+                && shippingZip.equals(other.shippingZip)
                 && snData.equals(other.snData)
                 && snIdentifier.equals(other.snIdentifier)
                 && snProvider.equals(other.snProvider)
+                && state.equals(other.state)
                 && storedMethods.equals(other.storedMethods)
                 && subscriptions.equals(other.subscriptions)
-                && timeZone.equals(other.timeZone);
+                && timeZone.equals(other.timeZone)
+                && zip.equals(other.zip);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.additionalData,
-                this.billingAddress1,
-                this.billingAddress2,
-                this.billingCity,
-                this.billingCountry,
-                this.billingEmail,
-                this.billingPhone,
-                this.billingState,
-                this.billingZip,
-                this.company,
-                this.customerId,
-                this.customerNumber,
-                this.firstName,
-                this.identifierFields,
-                this.lastName,
-                this.shippingAddress1,
-                this.shippingAddress2,
-                this.shippingCity,
-                this.shippingCountry,
-                this.shippingState,
-                this.shippingZip,
+                this.additionalFields,
+                this.address,
+                this.address1,
                 this.balance,
+                this.city,
+                this.company,
+                this.country,
                 this.created,
                 this.customerConsent,
+                this.customerEvents,
+                this.customerId,
+                this.customerNumber,
+                this.customerPortal,
                 this.customerStatus,
                 this.customerSummary,
                 this.customerUsername,
+                this.email,
                 this.externalPaypointId,
+                this.firstname,
+                this.identifierFields,
+                this.lastname,
                 this.lastUpdated,
                 this.mfa,
                 this.mfaMode,
@@ -595,12 +626,21 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
                 this.paypointDbaname,
                 this.paypointEntryname,
                 this.paypointLegalname,
+                this.phone,
+                this.shippingAddress,
+                this.shippingAddress1,
+                this.shippingCity,
+                this.shippingCountry,
+                this.shippingState,
+                this.shippingZip,
                 this.snData,
                 this.snIdentifier,
                 this.snProvider,
+                this.state,
                 this.storedMethods,
                 this.subscriptions,
-                this.timeZone);
+                this.timeZone,
+                this.zip);
     }
 
     @java.lang.Override
@@ -614,53 +654,31 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Map<String, Map<String, Object>>> additionalData = Optional.empty();
+        private Optional<Map<String, String>> additionalFields = Optional.empty();
 
-        private Optional<String> billingAddress1 = Optional.empty();
+        private Optional<String> address = Optional.empty();
 
-        private Optional<String> billingAddress2 = Optional.empty();
+        private Optional<String> address1 = Optional.empty();
 
-        private Optional<String> billingCity = Optional.empty();
+        private Optional<Float> balance = Optional.empty();
 
-        private Optional<String> billingCountry = Optional.empty();
-
-        private Optional<String> billingEmail = Optional.empty();
-
-        private Optional<String> billingPhone = Optional.empty();
-
-        private Optional<String> billingState = Optional.empty();
-
-        private Optional<String> billingZip = Optional.empty();
+        private Optional<String> city = Optional.empty();
 
         private Optional<String> company = Optional.empty();
+
+        private Optional<String> country = Optional.empty();
+
+        private Optional<OffsetDateTime> created = Optional.empty();
+
+        private Optional<Map<String, Object>> customerConsent = Optional.empty();
+
+        private Optional<List<Object>> customerEvents = Optional.empty();
 
         private Optional<Long> customerId = Optional.empty();
 
         private Optional<String> customerNumber = Optional.empty();
 
-        private Optional<String> firstName = Optional.empty();
-
-        private Optional<List<String>> identifierFields = Optional.empty();
-
-        private Optional<String> lastName = Optional.empty();
-
-        private Optional<String> shippingAddress1 = Optional.empty();
-
-        private Optional<String> shippingAddress2 = Optional.empty();
-
-        private Optional<String> shippingCity = Optional.empty();
-
-        private Optional<String> shippingCountry = Optional.empty();
-
-        private Optional<String> shippingState = Optional.empty();
-
-        private Optional<String> shippingZip = Optional.empty();
-
-        private Optional<Float> balance = Optional.empty();
-
-        private Optional<OffsetDateTime> created = Optional.empty();
-
-        private Optional<Map<String, Object>> customerConsent = Optional.empty();
+        private Optional<String> customerPortal = Optional.empty();
 
         private Optional<Integer> customerStatus = Optional.empty();
 
@@ -668,7 +686,15 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         private Optional<String> customerUsername = Optional.empty();
 
+        private Optional<String> email = Optional.empty();
+
         private Optional<String> externalPaypointId = Optional.empty();
+
+        private Optional<String> firstname = Optional.empty();
+
+        private Optional<List<String>> identifierFields = Optional.empty();
+
+        private Optional<String> lastname = Optional.empty();
 
         private Optional<OffsetDateTime> lastUpdated = Optional.empty();
 
@@ -688,11 +714,27 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         private Optional<String> paypointLegalname = Optional.empty();
 
+        private Optional<String> phone = Optional.empty();
+
+        private Optional<String> shippingAddress = Optional.empty();
+
+        private Optional<String> shippingAddress1 = Optional.empty();
+
+        private Optional<String> shippingCity = Optional.empty();
+
+        private Optional<String> shippingCountry = Optional.empty();
+
+        private Optional<String> shippingState = Optional.empty();
+
+        private Optional<String> shippingZip = Optional.empty();
+
         private Optional<Map<String, Object>> snData = Optional.empty();
 
         private Optional<String> snIdentifier = Optional.empty();
 
         private Optional<String> snProvider = Optional.empty();
+
+        private Optional<String> state = Optional.empty();
 
         private Optional<List<MethodQueryRecords>> storedMethods = Optional.empty();
 
@@ -700,40 +742,35 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         private Optional<Integer> timeZone = Optional.empty();
 
+        private Optional<String> zip = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         public Builder from(GetMethodResponseResponseDataCustomersItem other) {
-            additionalData(other.getAdditionalData());
-            billingAddress1(other.getBillingAddress1());
-            billingAddress2(other.getBillingAddress2());
-            billingCity(other.getBillingCity());
-            billingCountry(other.getBillingCountry());
-            billingEmail(other.getBillingEmail());
-            billingPhone(other.getBillingPhone());
-            billingState(other.getBillingState());
-            billingZip(other.getBillingZip());
-            company(other.getCompany());
-            customerId(other.getCustomerId());
-            customerNumber(other.getCustomerNumber());
-            firstName(other.getFirstName());
-            identifierFields(other.getIdentifierFields());
-            lastName(other.getLastName());
-            shippingAddress1(other.getShippingAddress1());
-            shippingAddress2(other.getShippingAddress2());
-            shippingCity(other.getShippingCity());
-            shippingCountry(other.getShippingCountry());
-            shippingState(other.getShippingState());
-            shippingZip(other.getShippingZip());
+            additionalFields(other.getAdditionalFields());
+            address(other.getAddress());
+            address1(other.getAddress1());
             balance(other.getBalance());
+            city(other.getCity());
+            company(other.getCompany());
+            country(other.getCountry());
             created(other.getCreated());
             customerConsent(other.getCustomerConsent());
+            customerEvents(other.getCustomerEvents());
+            customerId(other.getCustomerId());
+            customerNumber(other.getCustomerNumber());
+            customerPortal(other.getCustomerPortal());
             customerStatus(other.getCustomerStatus());
             customerSummary(other.getCustomerSummary());
             customerUsername(other.getCustomerUsername());
+            email(other.getEmail());
             externalPaypointId(other.getExternalPaypointId());
+            firstname(other.getFirstname());
+            identifierFields(other.getIdentifierFields());
+            lastname(other.getLastname());
             lastUpdated(other.getLastUpdated());
             mfa(other.getMfa());
             mfaMode(other.getMfaMode());
@@ -743,255 +780,63 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
             paypointDbaname(other.getPaypointDbaname());
             paypointEntryname(other.getPaypointEntryname());
             paypointLegalname(other.getPaypointLegalname());
+            phone(other.getPhone());
+            shippingAddress(other.getShippingAddress());
+            shippingAddress1(other.getShippingAddress1());
+            shippingCity(other.getShippingCity());
+            shippingCountry(other.getShippingCountry());
+            shippingState(other.getShippingState());
+            shippingZip(other.getShippingZip());
             snData(other.getSnData());
             snIdentifier(other.getSnIdentifier());
             snProvider(other.getSnProvider());
+            state(other.getState());
             storedMethods(other.getStoredMethods());
             subscriptions(other.getSubscriptions());
             timeZone(other.getTimeZone());
-            return this;
-        }
-
-        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, Map<String, Object>>> additionalData) {
-            this.additionalData = additionalData;
-            return this;
-        }
-
-        public Builder additionalData(Map<String, Map<String, Object>> additionalData) {
-            this.additionalData = Optional.ofNullable(additionalData);
-            return this;
-        }
-
-        @JsonSetter(value = "billingAddress1", nulls = Nulls.SKIP)
-        public Builder billingAddress1(Optional<String> billingAddress1) {
-            this.billingAddress1 = billingAddress1;
-            return this;
-        }
-
-        public Builder billingAddress1(String billingAddress1) {
-            this.billingAddress1 = Optional.ofNullable(billingAddress1);
-            return this;
-        }
-
-        @JsonSetter(value = "billingAddress2", nulls = Nulls.SKIP)
-        public Builder billingAddress2(Optional<String> billingAddress2) {
-            this.billingAddress2 = billingAddress2;
-            return this;
-        }
-
-        public Builder billingAddress2(String billingAddress2) {
-            this.billingAddress2 = Optional.ofNullable(billingAddress2);
-            return this;
-        }
-
-        @JsonSetter(value = "billingCity", nulls = Nulls.SKIP)
-        public Builder billingCity(Optional<String> billingCity) {
-            this.billingCity = billingCity;
-            return this;
-        }
-
-        public Builder billingCity(String billingCity) {
-            this.billingCity = Optional.ofNullable(billingCity);
-            return this;
-        }
-
-        @JsonSetter(value = "billingCountry", nulls = Nulls.SKIP)
-        public Builder billingCountry(Optional<String> billingCountry) {
-            this.billingCountry = billingCountry;
-            return this;
-        }
-
-        public Builder billingCountry(String billingCountry) {
-            this.billingCountry = Optional.ofNullable(billingCountry);
-            return this;
-        }
-
-        @JsonSetter(value = "billingEmail", nulls = Nulls.SKIP)
-        public Builder billingEmail(Optional<String> billingEmail) {
-            this.billingEmail = billingEmail;
-            return this;
-        }
-
-        public Builder billingEmail(String billingEmail) {
-            this.billingEmail = Optional.ofNullable(billingEmail);
-            return this;
-        }
-
-        @JsonSetter(value = "billingPhone", nulls = Nulls.SKIP)
-        public Builder billingPhone(Optional<String> billingPhone) {
-            this.billingPhone = billingPhone;
-            return this;
-        }
-
-        public Builder billingPhone(String billingPhone) {
-            this.billingPhone = Optional.ofNullable(billingPhone);
-            return this;
-        }
-
-        @JsonSetter(value = "billingState", nulls = Nulls.SKIP)
-        public Builder billingState(Optional<String> billingState) {
-            this.billingState = billingState;
-            return this;
-        }
-
-        public Builder billingState(String billingState) {
-            this.billingState = Optional.ofNullable(billingState);
+            zip(other.getZip());
             return this;
         }
 
         /**
-         * <p>Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: &quot;37615-1234&quot; or &quot;37615&quot;.</p>
+         * <p>List of additional custom fields in format key:value.</p>
          */
-        @JsonSetter(value = "billingZip", nulls = Nulls.SKIP)
-        public Builder billingZip(Optional<String> billingZip) {
-            this.billingZip = billingZip;
+        @JsonSetter(value = "additionalFields", nulls = Nulls.SKIP)
+        public Builder additionalFields(Optional<Map<String, String>> additionalFields) {
+            this.additionalFields = additionalFields;
             return this;
         }
 
-        public Builder billingZip(String billingZip) {
-            this.billingZip = Optional.ofNullable(billingZip);
+        public Builder additionalFields(Map<String, String> additionalFields) {
+            this.additionalFields = Optional.ofNullable(additionalFields);
             return this;
         }
 
         /**
-         * <p>Customer's company name.</p>
+         * <p>Customer address.</p>
          */
-        @JsonSetter(value = "company", nulls = Nulls.SKIP)
-        public Builder company(Optional<String> company) {
-            this.company = company;
+        @JsonSetter(value = "address", nulls = Nulls.SKIP)
+        public Builder address(Optional<String> address) {
+            this.address = address;
             return this;
         }
 
-        public Builder company(String company) {
-            this.company = Optional.ofNullable(company);
-            return this;
-        }
-
-        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
-        public Builder customerId(Optional<Long> customerId) {
-            this.customerId = customerId;
-            return this;
-        }
-
-        public Builder customerId(Long customerId) {
-            this.customerId = Optional.ofNullable(customerId);
-            return this;
-        }
-
-        @JsonSetter(value = "customerNumber", nulls = Nulls.SKIP)
-        public Builder customerNumber(Optional<String> customerNumber) {
-            this.customerNumber = customerNumber;
-            return this;
-        }
-
-        public Builder customerNumber(String customerNumber) {
-            this.customerNumber = Optional.ofNullable(customerNumber);
+        public Builder address(String address) {
+            this.address = Optional.ofNullable(address);
             return this;
         }
 
         /**
-         * <p>Customer/Payor first name.</p>
+         * <p>Additional line for customer address.</p>
          */
-        @JsonSetter(value = "firstName", nulls = Nulls.SKIP)
-        public Builder firstName(Optional<String> firstName) {
-            this.firstName = firstName;
+        @JsonSetter(value = "address1", nulls = Nulls.SKIP)
+        public Builder address1(Optional<String> address1) {
+            this.address1 = address1;
             return this;
         }
 
-        public Builder firstName(String firstName) {
-            this.firstName = Optional.ofNullable(firstName);
-            return this;
-        }
-
-        @JsonSetter(value = "identifierFields", nulls = Nulls.SKIP)
-        public Builder identifierFields(Optional<List<String>> identifierFields) {
-            this.identifierFields = identifierFields;
-            return this;
-        }
-
-        public Builder identifierFields(List<String> identifierFields) {
-            this.identifierFields = Optional.ofNullable(identifierFields);
-            return this;
-        }
-
-        /**
-         * <p>Customer/Payor last name.</p>
-         */
-        @JsonSetter(value = "lastName", nulls = Nulls.SKIP)
-        public Builder lastName(Optional<String> lastName) {
-            this.lastName = lastName;
-            return this;
-        }
-
-        public Builder lastName(String lastName) {
-            this.lastName = Optional.ofNullable(lastName);
-            return this;
-        }
-
-        @JsonSetter(value = "shippingAddress1", nulls = Nulls.SKIP)
-        public Builder shippingAddress1(Optional<String> shippingAddress1) {
-            this.shippingAddress1 = shippingAddress1;
-            return this;
-        }
-
-        public Builder shippingAddress1(String shippingAddress1) {
-            this.shippingAddress1 = Optional.ofNullable(shippingAddress1);
-            return this;
-        }
-
-        @JsonSetter(value = "shippingAddress2", nulls = Nulls.SKIP)
-        public Builder shippingAddress2(Optional<String> shippingAddress2) {
-            this.shippingAddress2 = shippingAddress2;
-            return this;
-        }
-
-        public Builder shippingAddress2(String shippingAddress2) {
-            this.shippingAddress2 = Optional.ofNullable(shippingAddress2);
-            return this;
-        }
-
-        @JsonSetter(value = "shippingCity", nulls = Nulls.SKIP)
-        public Builder shippingCity(Optional<String> shippingCity) {
-            this.shippingCity = shippingCity;
-            return this;
-        }
-
-        public Builder shippingCity(String shippingCity) {
-            this.shippingCity = Optional.ofNullable(shippingCity);
-            return this;
-        }
-
-        @JsonSetter(value = "shippingCountry", nulls = Nulls.SKIP)
-        public Builder shippingCountry(Optional<String> shippingCountry) {
-            this.shippingCountry = shippingCountry;
-            return this;
-        }
-
-        public Builder shippingCountry(String shippingCountry) {
-            this.shippingCountry = Optional.ofNullable(shippingCountry);
-            return this;
-        }
-
-        @JsonSetter(value = "shippingState", nulls = Nulls.SKIP)
-        public Builder shippingState(Optional<String> shippingState) {
-            this.shippingState = shippingState;
-            return this;
-        }
-
-        public Builder shippingState(String shippingState) {
-            this.shippingState = Optional.ofNullable(shippingState);
-            return this;
-        }
-
-        @JsonSetter(value = "shippingZip", nulls = Nulls.SKIP)
-        public Builder shippingZip(Optional<String> shippingZip) {
-            this.shippingZip = shippingZip;
-            return this;
-        }
-
-        public Builder shippingZip(String shippingZip) {
-            this.shippingZip = Optional.ofNullable(shippingZip);
+        public Builder address1(String address1) {
+            this.address1 = Optional.ofNullable(address1);
             return this;
         }
 
@@ -1006,6 +851,48 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         public Builder balance(Float balance) {
             this.balance = Optional.ofNullable(balance);
+            return this;
+        }
+
+        /**
+         * <p>Customer city.</p>
+         */
+        @JsonSetter(value = "city", nulls = Nulls.SKIP)
+        public Builder city(Optional<String> city) {
+            this.city = city;
+            return this;
+        }
+
+        public Builder city(String city) {
+            this.city = Optional.ofNullable(city);
+            return this;
+        }
+
+        /**
+         * <p>Company name.</p>
+         */
+        @JsonSetter(value = "company", nulls = Nulls.SKIP)
+        public Builder company(Optional<String> company) {
+            this.company = company;
+            return this;
+        }
+
+        public Builder company(String company) {
+            this.company = Optional.ofNullable(company);
+            return this;
+        }
+
+        /**
+         * <p>Customer country.</p>
+         */
+        @JsonSetter(value = "country", nulls = Nulls.SKIP)
+        public Builder country(Optional<String> country) {
+            this.country = country;
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.country = Optional.ofNullable(country);
             return this;
         }
 
@@ -1034,6 +921,64 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         public Builder customerConsent(Map<String, Object> customerConsent) {
             this.customerConsent = Optional.ofNullable(customerConsent);
+            return this;
+        }
+
+        /**
+         * <p>Events recorded for the customer.</p>
+         */
+        @JsonSetter(value = "customerEvents", nulls = Nulls.SKIP)
+        public Builder customerEvents(Optional<List<Object>> customerEvents) {
+            this.customerEvents = customerEvents;
+            return this;
+        }
+
+        public Builder customerEvents(List<Object> customerEvents) {
+            this.customerEvents = Optional.ofNullable(customerEvents);
+            return this;
+        }
+
+        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
+        public Builder customerId(Optional<Long> customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        public Builder customerId(Long customerId) {
+            this.customerId = Optional.ofNullable(customerId);
+            return this;
+        }
+
+        @JsonSetter(value = "customerNumber", nulls = Nulls.SKIP)
+        public Builder customerNumber(Optional<String> customerNumber) {
+            this.customerNumber = customerNumber;
+            return this;
+        }
+
+        public Builder customerNumber(String customerNumber) {
+            this.customerNumber = Optional.ofNullable(customerNumber);
+            return this;
+        }
+
+        @JsonSetter(value = "customerPortal", nulls = Nulls.SKIP)
+        public Builder customerPortal(Optional<String> customerPortal) {
+            this.customerPortal = customerPortal;
+            return this;
+        }
+
+        public Builder customerPortal(String customerPortal) {
+            this.customerPortal = Optional.ofNullable(customerPortal);
+            return this;
+        }
+
+        public Builder customerPortal(Nullable<String> customerPortal) {
+            if (customerPortal.isNull()) {
+                this.customerPortal = null;
+            } else if (customerPortal.isEmpty()) {
+                this.customerPortal = Optional.empty();
+            } else {
+                this.customerPortal = Optional.of(customerPortal.get());
+            }
             return this;
         }
 
@@ -1076,6 +1021,20 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
             return this;
         }
 
+        /**
+         * <p>Customer email address.</p>
+         */
+        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        public Builder email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
         @JsonSetter(value = "externalPaypointID", nulls = Nulls.SKIP)
         public Builder externalPaypointId(Optional<String> externalPaypointId) {
             this.externalPaypointId = externalPaypointId;
@@ -1084,6 +1043,45 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         public Builder externalPaypointId(String externalPaypointId) {
             this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        /**
+         * <p>Customer first name.</p>
+         */
+        @JsonSetter(value = "firstname", nulls = Nulls.SKIP)
+        public Builder firstname(Optional<String> firstname) {
+            this.firstname = firstname;
+            return this;
+        }
+
+        public Builder firstname(String firstname) {
+            this.firstname = Optional.ofNullable(firstname);
+            return this;
+        }
+
+        @JsonSetter(value = "identifierFields", nulls = Nulls.SKIP)
+        public Builder identifierFields(Optional<List<String>> identifierFields) {
+            this.identifierFields = identifierFields;
+            return this;
+        }
+
+        public Builder identifierFields(List<String> identifierFields) {
+            this.identifierFields = Optional.ofNullable(identifierFields);
+            return this;
+        }
+
+        /**
+         * <p>Customer last name.</p>
+         */
+        @JsonSetter(value = "lastname", nulls = Nulls.SKIP)
+        public Builder lastname(Optional<String> lastname) {
+            this.lastname = lastname;
+            return this;
+        }
+
+        public Builder lastname(String lastname) {
+            this.lastname = Optional.ofNullable(lastname);
             return this;
         }
 
@@ -1202,6 +1200,86 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
         }
 
         /**
+         * <p>Customer phone number.</p>
+         */
+        @JsonSetter(value = "phone", nulls = Nulls.SKIP)
+        public Builder phone(Optional<String> phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = Optional.ofNullable(phone);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingAddress", nulls = Nulls.SKIP)
+        public Builder shippingAddress(Optional<String> shippingAddress) {
+            this.shippingAddress = shippingAddress;
+            return this;
+        }
+
+        public Builder shippingAddress(String shippingAddress) {
+            this.shippingAddress = Optional.ofNullable(shippingAddress);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingAddress1", nulls = Nulls.SKIP)
+        public Builder shippingAddress1(Optional<String> shippingAddress1) {
+            this.shippingAddress1 = shippingAddress1;
+            return this;
+        }
+
+        public Builder shippingAddress1(String shippingAddress1) {
+            this.shippingAddress1 = Optional.ofNullable(shippingAddress1);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingCity", nulls = Nulls.SKIP)
+        public Builder shippingCity(Optional<String> shippingCity) {
+            this.shippingCity = shippingCity;
+            return this;
+        }
+
+        public Builder shippingCity(String shippingCity) {
+            this.shippingCity = Optional.ofNullable(shippingCity);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingCountry", nulls = Nulls.SKIP)
+        public Builder shippingCountry(Optional<String> shippingCountry) {
+            this.shippingCountry = shippingCountry;
+            return this;
+        }
+
+        public Builder shippingCountry(String shippingCountry) {
+            this.shippingCountry = Optional.ofNullable(shippingCountry);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingState", nulls = Nulls.SKIP)
+        public Builder shippingState(Optional<String> shippingState) {
+            this.shippingState = shippingState;
+            return this;
+        }
+
+        public Builder shippingState(String shippingState) {
+            this.shippingState = Optional.ofNullable(shippingState);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingZip", nulls = Nulls.SKIP)
+        public Builder shippingZip(Optional<String> shippingZip) {
+            this.shippingZip = shippingZip;
+            return this;
+        }
+
+        public Builder shippingZip(String shippingZip) {
+            this.shippingZip = Optional.ofNullable(shippingZip);
+            return this;
+        }
+
+        /**
          * <p>Social network data</p>
          */
         @JsonSetter(value = "snData", nulls = Nulls.SKIP)
@@ -1240,6 +1318,20 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
 
         public Builder snProvider(String snProvider) {
             this.snProvider = Optional.ofNullable(snProvider);
+            return this;
+        }
+
+        /**
+         * <p>Customer state.</p>
+         */
+        @JsonSetter(value = "state", nulls = Nulls.SKIP)
+        public Builder state(Optional<String> state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder state(String state) {
+            this.state = Optional.ofNullable(state);
             return this;
         }
 
@@ -1285,36 +1377,43 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
             return this;
         }
 
+        /**
+         * <p>Customer postal code.</p>
+         */
+        @JsonSetter(value = "zip", nulls = Nulls.SKIP)
+        public Builder zip(Optional<String> zip) {
+            this.zip = zip;
+            return this;
+        }
+
+        public Builder zip(String zip) {
+            this.zip = Optional.ofNullable(zip);
+            return this;
+        }
+
         public GetMethodResponseResponseDataCustomersItem build() {
             return new GetMethodResponseResponseDataCustomersItem(
-                    additionalData,
-                    billingAddress1,
-                    billingAddress2,
-                    billingCity,
-                    billingCountry,
-                    billingEmail,
-                    billingPhone,
-                    billingState,
-                    billingZip,
-                    company,
-                    customerId,
-                    customerNumber,
-                    firstName,
-                    identifierFields,
-                    lastName,
-                    shippingAddress1,
-                    shippingAddress2,
-                    shippingCity,
-                    shippingCountry,
-                    shippingState,
-                    shippingZip,
+                    additionalFields,
+                    address,
+                    address1,
                     balance,
+                    city,
+                    company,
+                    country,
                     created,
                     customerConsent,
+                    customerEvents,
+                    customerId,
+                    customerNumber,
+                    customerPortal,
                     customerStatus,
                     customerSummary,
                     customerUsername,
+                    email,
                     externalPaypointId,
+                    firstname,
+                    identifierFields,
+                    lastname,
                     lastUpdated,
                     mfa,
                     mfaMode,
@@ -1324,12 +1423,21 @@ public final class GetMethodResponseResponseDataCustomersItem implements IPayorD
                     paypointDbaname,
                     paypointEntryname,
                     paypointLegalname,
+                    phone,
+                    shippingAddress,
+                    shippingAddress1,
+                    shippingCity,
+                    shippingCountry,
+                    shippingState,
+                    shippingZip,
                     snData,
                     snIdentifier,
                     snProvider,
+                    state,
                     storedMethods,
                     subscriptions,
                     timeZone,
+                    zip,
                     additionalProperties);
         }
 

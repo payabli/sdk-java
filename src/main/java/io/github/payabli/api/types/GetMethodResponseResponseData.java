@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -58,6 +61,8 @@ public final class GetMethodResponseResponseData {
 
     private final Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors;
 
+    private final Optional<String> walletType;
+
     private final Map<String, Object> additionalProperties;
 
     private GetMethodResponseResponseData(
@@ -79,6 +84,7 @@ public final class GetMethodResponseResponseData {
             Optional<String> methodType,
             Optional<String> postalCode,
             Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors,
+            Optional<String> walletType,
             Map<String, Object> additionalProperties) {
         this.aba = aba;
         this.achHolderType = achHolderType;
@@ -98,6 +104,7 @@ public final class GetMethodResponseResponseData {
         this.methodType = methodType;
         this.postalCode = postalCode;
         this.vendors = vendors;
+        this.walletType = walletType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -224,6 +231,23 @@ public final class GetMethodResponseResponseData {
         return vendors;
     }
 
+    /**
+     * @return Digital wallet type if applicable.
+     */
+    @JsonIgnore
+    public Optional<String> getWalletType() {
+        if (walletType == null) {
+            return Optional.empty();
+        }
+        return walletType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("walletType")
+    private Optional<String> _getWalletType() {
+        return walletType;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -253,7 +277,8 @@ public final class GetMethodResponseResponseData {
                 && method.equals(other.method)
                 && methodType.equals(other.methodType)
                 && postalCode.equals(other.postalCode)
-                && vendors.equals(other.vendors);
+                && vendors.equals(other.vendors)
+                && walletType.equals(other.walletType);
     }
 
     @java.lang.Override
@@ -276,7 +301,8 @@ public final class GetMethodResponseResponseData {
                 this.method,
                 this.methodType,
                 this.postalCode,
-                this.vendors);
+                this.vendors,
+                this.walletType);
     }
 
     @java.lang.Override
@@ -326,6 +352,8 @@ public final class GetMethodResponseResponseData {
 
         private Optional<List<GetMethodResponseResponseDataVendorsItem>> vendors = Optional.empty();
 
+        private Optional<String> walletType = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -350,6 +378,7 @@ public final class GetMethodResponseResponseData {
             methodType(other.getMethodType());
             postalCode(other.getPostalCode());
             vendors(other.getVendors());
+            walletType(other.getWalletType());
             return this;
         }
 
@@ -584,6 +613,31 @@ public final class GetMethodResponseResponseData {
             return this;
         }
 
+        /**
+         * <p>Digital wallet type if applicable.</p>
+         */
+        @JsonSetter(value = "walletType", nulls = Nulls.SKIP)
+        public Builder walletType(Optional<String> walletType) {
+            this.walletType = walletType;
+            return this;
+        }
+
+        public Builder walletType(String walletType) {
+            this.walletType = Optional.ofNullable(walletType);
+            return this;
+        }
+
+        public Builder walletType(Nullable<String> walletType) {
+            if (walletType.isNull()) {
+                this.walletType = null;
+            } else if (walletType.isEmpty()) {
+                this.walletType = Optional.empty();
+            } else {
+                this.walletType = Optional.of(walletType.get());
+            }
+            return this;
+        }
+
         public GetMethodResponseResponseData build() {
             return new GetMethodResponseResponseData(
                     aba,
@@ -604,6 +658,7 @@ public final class GetMethodResponseResponseData {
                     methodType,
                     postalCode,
                     vendors,
+                    walletType,
                     additionalProperties);
         }
 

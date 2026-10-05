@@ -1501,14 +1501,14 @@ public class AsyncRawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(String entry) {
         return listDevices(entry, ListDevicesRequest.builder().build());
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(
             String entry, RequestOptions requestOptions) {
@@ -1516,7 +1516,7 @@ public class AsyncRawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(
             String entry, ListDevicesRequest request) {
@@ -1524,7 +1524,7 @@ public class AsyncRawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevices(
             String entry, ListDevicesRequest request, RequestOptions requestOptions) {
@@ -1640,14 +1640,14 @@ public class AsyncRawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(int orgId) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build());
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(
             int orgId, RequestOptions requestOptions) {
@@ -1655,7 +1655,7 @@ public class AsyncRawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request) {
@@ -1663,7 +1663,7 @@ public class AsyncRawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<QueryDeviceResponse>> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {

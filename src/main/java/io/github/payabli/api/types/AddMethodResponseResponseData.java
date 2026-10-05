@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,14 @@ public final class AddMethodResponseResponseData {
 
     private final Optional<Long> customerId;
 
+    private final Optional<String> authCode;
+
+    private final Optional<String> avsResponseText;
+
+    private final Optional<String> cvvResponseText;
+
+    private final Optional<Integer> vendorId;
+
     private final Optional<String> methodReferenceId;
 
     private final Map<String, Object> additionalProperties;
@@ -37,12 +48,20 @@ public final class AddMethodResponseResponseData {
             Optional<Integer> resultCode,
             Optional<String> resultText,
             Optional<Long> customerId,
+            Optional<String> authCode,
+            Optional<String> avsResponseText,
+            Optional<String> cvvResponseText,
+            Optional<Integer> vendorId,
             Optional<String> methodReferenceId,
             Map<String, Object> additionalProperties) {
         this.referenceId = referenceId;
         this.resultCode = resultCode;
         this.resultText = resultText;
         this.customerId = customerId;
+        this.authCode = authCode;
+        this.avsResponseText = avsResponseText;
+        this.cvvResponseText = cvvResponseText;
+        this.vendorId = vendorId;
         this.methodReferenceId = methodReferenceId;
         this.additionalProperties = additionalProperties;
     }
@@ -74,9 +93,83 @@ public final class AddMethodResponseResponseData {
         return customerId;
     }
 
+    /**
+     * @return Only returned when the request is declined.
+     */
+    @JsonIgnore
+    public Optional<String> getAuthCode() {
+        if (authCode == null) {
+            return Optional.empty();
+        }
+        return authCode;
+    }
+
+    /**
+     * @return Only returned when the request is declined.
+     */
+    @JsonIgnore
+    public Optional<String> getAvsResponseText() {
+        if (avsResponseText == null) {
+            return Optional.empty();
+        }
+        return avsResponseText;
+    }
+
+    /**
+     * @return Only returned when the request is declined.
+     */
+    @JsonIgnore
+    public Optional<String> getCvvResponseText() {
+        if (cvvResponseText == null) {
+            return Optional.empty();
+        }
+        return cvvResponseText;
+    }
+
+    /**
+     * @return Only returned when the request is declined.
+     */
+    @JsonIgnore
+    public Optional<Integer> getVendorId() {
+        if (vendorId == null) {
+            return Optional.empty();
+        }
+        return vendorId;
+    }
+
+    /**
+     * @return Stored method identifier in Payabli platform. Returns the same value as
+     * <code>referenceId</code>. This field isn't returned when you convert a temporary
+     * token to a permanent token, so use <code>referenceId</code> to get the stored
+     * method ID.
+     */
     @JsonProperty("methodReferenceId")
     public Optional<String> getMethodReferenceId() {
         return methodReferenceId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("authCode")
+    private Optional<String> _getAuthCode() {
+        return authCode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("avsResponseText")
+    private Optional<String> _getAvsResponseText() {
+        return avsResponseText;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("cvvResponseText")
+    private Optional<String> _getCvvResponseText() {
+        return cvvResponseText;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("vendorId")
+    private Optional<Integer> _getVendorId() {
+        return vendorId;
     }
 
     @java.lang.Override
@@ -95,13 +188,25 @@ public final class AddMethodResponseResponseData {
                 && resultCode.equals(other.resultCode)
                 && resultText.equals(other.resultText)
                 && customerId.equals(other.customerId)
+                && authCode.equals(other.authCode)
+                && avsResponseText.equals(other.avsResponseText)
+                && cvvResponseText.equals(other.cvvResponseText)
+                && vendorId.equals(other.vendorId)
                 && methodReferenceId.equals(other.methodReferenceId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.referenceId, this.resultCode, this.resultText, this.customerId, this.methodReferenceId);
+                this.referenceId,
+                this.resultCode,
+                this.resultText,
+                this.customerId,
+                this.authCode,
+                this.avsResponseText,
+                this.cvvResponseText,
+                this.vendorId,
+                this.methodReferenceId);
     }
 
     @java.lang.Override
@@ -123,6 +228,14 @@ public final class AddMethodResponseResponseData {
 
         private Optional<Long> customerId = Optional.empty();
 
+        private Optional<String> authCode = Optional.empty();
+
+        private Optional<String> avsResponseText = Optional.empty();
+
+        private Optional<String> cvvResponseText = Optional.empty();
+
+        private Optional<Integer> vendorId = Optional.empty();
+
         private Optional<String> methodReferenceId = Optional.empty();
 
         @JsonAnySetter
@@ -135,6 +248,10 @@ public final class AddMethodResponseResponseData {
             resultCode(other.getResultCode());
             resultText(other.getResultText());
             customerId(other.getCustomerId());
+            authCode(other.getAuthCode());
+            avsResponseText(other.getAvsResponseText());
+            cvvResponseText(other.getCvvResponseText());
+            vendorId(other.getVendorId());
             methodReferenceId(other.getMethodReferenceId());
             return this;
         }
@@ -190,6 +307,112 @@ public final class AddMethodResponseResponseData {
             return this;
         }
 
+        /**
+         * <p>Only returned when the request is declined.</p>
+         */
+        @JsonSetter(value = "authCode", nulls = Nulls.SKIP)
+        public Builder authCode(Optional<String> authCode) {
+            this.authCode = authCode;
+            return this;
+        }
+
+        public Builder authCode(String authCode) {
+            this.authCode = Optional.ofNullable(authCode);
+            return this;
+        }
+
+        public Builder authCode(Nullable<String> authCode) {
+            if (authCode.isNull()) {
+                this.authCode = null;
+            } else if (authCode.isEmpty()) {
+                this.authCode = Optional.empty();
+            } else {
+                this.authCode = Optional.of(authCode.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Only returned when the request is declined.</p>
+         */
+        @JsonSetter(value = "avsResponseText", nulls = Nulls.SKIP)
+        public Builder avsResponseText(Optional<String> avsResponseText) {
+            this.avsResponseText = avsResponseText;
+            return this;
+        }
+
+        public Builder avsResponseText(String avsResponseText) {
+            this.avsResponseText = Optional.ofNullable(avsResponseText);
+            return this;
+        }
+
+        public Builder avsResponseText(Nullable<String> avsResponseText) {
+            if (avsResponseText.isNull()) {
+                this.avsResponseText = null;
+            } else if (avsResponseText.isEmpty()) {
+                this.avsResponseText = Optional.empty();
+            } else {
+                this.avsResponseText = Optional.of(avsResponseText.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Only returned when the request is declined.</p>
+         */
+        @JsonSetter(value = "cvvResponseText", nulls = Nulls.SKIP)
+        public Builder cvvResponseText(Optional<String> cvvResponseText) {
+            this.cvvResponseText = cvvResponseText;
+            return this;
+        }
+
+        public Builder cvvResponseText(String cvvResponseText) {
+            this.cvvResponseText = Optional.ofNullable(cvvResponseText);
+            return this;
+        }
+
+        public Builder cvvResponseText(Nullable<String> cvvResponseText) {
+            if (cvvResponseText.isNull()) {
+                this.cvvResponseText = null;
+            } else if (cvvResponseText.isEmpty()) {
+                this.cvvResponseText = Optional.empty();
+            } else {
+                this.cvvResponseText = Optional.of(cvvResponseText.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Only returned when the request is declined.</p>
+         */
+        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
+        public Builder vendorId(Optional<Integer> vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        public Builder vendorId(Integer vendorId) {
+            this.vendorId = Optional.ofNullable(vendorId);
+            return this;
+        }
+
+        public Builder vendorId(Nullable<Integer> vendorId) {
+            if (vendorId.isNull()) {
+                this.vendorId = null;
+            } else if (vendorId.isEmpty()) {
+                this.vendorId = Optional.empty();
+            } else {
+                this.vendorId = Optional.of(vendorId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Stored method identifier in Payabli platform. Returns the same value as
+         * <code>referenceId</code>. This field isn't returned when you convert a temporary
+         * token to a permanent token, so use <code>referenceId</code> to get the stored
+         * method ID.</p>
+         */
         @JsonSetter(value = "methodReferenceId", nulls = Nulls.SKIP)
         public Builder methodReferenceId(Optional<String> methodReferenceId) {
             this.methodReferenceId = methodReferenceId;
@@ -203,7 +426,16 @@ public final class AddMethodResponseResponseData {
 
         public AddMethodResponseResponseData build() {
             return new AddMethodResponseResponseData(
-                    referenceId, resultCode, resultText, customerId, methodReferenceId, additionalProperties);
+                    referenceId,
+                    resultCode,
+                    resultText,
+                    customerId,
+                    authCode,
+                    avsResponseText,
+                    cvvResponseText,
+                    vendorId,
+                    methodReferenceId,
+                    additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

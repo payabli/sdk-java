@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -25,6 +28,10 @@ public final class OcrResultData {
     private final Optional<String> billNumber;
 
     private final Optional<Double> netAmount;
+
+    private final Optional<Double> discount;
+
+    private final Optional<Double> totalAmount;
 
     private final Optional<OffsetDateTime> billDate;
 
@@ -61,6 +68,8 @@ public final class OcrResultData {
     private OcrResultData(
             Optional<String> billNumber,
             Optional<Double> netAmount,
+            Optional<Double> discount,
+            Optional<Double> totalAmount,
             Optional<OffsetDateTime> billDate,
             Optional<OffsetDateTime> dueDate,
             Optional<String> comments,
@@ -79,6 +88,8 @@ public final class OcrResultData {
             Map<String, Object> additionalProperties) {
         this.billNumber = billNumber;
         this.netAmount = netAmount;
+        this.discount = discount;
+        this.totalAmount = totalAmount;
         this.billDate = billDate;
         this.dueDate = dueDate;
         this.comments = comments;
@@ -102,9 +113,34 @@ public final class OcrResultData {
         return billNumber;
     }
 
+    /**
+     * @return Subtotal of the document's line items, before tax.
+     * <p>This isn't the amount due. When you create a bill from this result,
+     * set the bill's <code>netAmount</code> from <code>totalAmount</code>.</p>
+     */
     @JsonProperty("netAmount")
     public Optional<Double> getNetAmount() {
         return netAmount;
+    }
+
+    /**
+     * @return Discount on the document. This is often <code>null</code> even when the
+     * document shows a discount. <code>totalAmount</code> already reflects any discount.
+     */
+    @JsonIgnore
+    public Optional<Double> getDiscount() {
+        if (discount == null) {
+            return Optional.empty();
+        }
+        return discount;
+    }
+
+    /**
+     * @return Total amount due on the document, after any discount and including tax.
+     */
+    @JsonProperty("totalAmount")
+    public Optional<Double> getTotalAmount() {
+        return totalAmount;
     }
 
     @JsonProperty("billDate")
@@ -182,6 +218,12 @@ public final class OcrResultData {
         return attachments;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("discount")
+    private Optional<Double> _getDiscount() {
+        return discount;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -196,6 +238,8 @@ public final class OcrResultData {
     private boolean equalTo(OcrResultData other) {
         return billNumber.equals(other.billNumber)
                 && netAmount.equals(other.netAmount)
+                && discount.equals(other.discount)
+                && totalAmount.equals(other.totalAmount)
                 && billDate.equals(other.billDate)
                 && dueDate.equals(other.dueDate)
                 && comments.equals(other.comments)
@@ -218,6 +262,8 @@ public final class OcrResultData {
         return Objects.hash(
                 this.billNumber,
                 this.netAmount,
+                this.discount,
+                this.totalAmount,
                 this.billDate,
                 this.dueDate,
                 this.comments,
@@ -249,6 +295,10 @@ public final class OcrResultData {
         private Optional<String> billNumber = Optional.empty();
 
         private Optional<Double> netAmount = Optional.empty();
+
+        private Optional<Double> discount = Optional.empty();
+
+        private Optional<Double> totalAmount = Optional.empty();
 
         private Optional<OffsetDateTime> billDate = Optional.empty();
 
@@ -288,6 +338,8 @@ public final class OcrResultData {
         public Builder from(OcrResultData other) {
             billNumber(other.getBillNumber());
             netAmount(other.getNetAmount());
+            discount(other.getDiscount());
+            totalAmount(other.getTotalAmount());
             billDate(other.getBillDate());
             dueDate(other.getDueDate());
             comments(other.getComments());
@@ -317,6 +369,11 @@ public final class OcrResultData {
             return this;
         }
 
+        /**
+         * <p>Subtotal of the document's line items, before tax.</p>
+         * <p>This isn't the amount due. When you create a bill from this result,
+         * set the bill's <code>netAmount</code> from <code>totalAmount</code>.</p>
+         */
         @JsonSetter(value = "netAmount", nulls = Nulls.SKIP)
         public Builder netAmount(Optional<Double> netAmount) {
             this.netAmount = netAmount;
@@ -325,6 +382,46 @@ public final class OcrResultData {
 
         public Builder netAmount(Double netAmount) {
             this.netAmount = Optional.ofNullable(netAmount);
+            return this;
+        }
+
+        /**
+         * <p>Discount on the document. This is often <code>null</code> even when the
+         * document shows a discount. <code>totalAmount</code> already reflects any discount.</p>
+         */
+        @JsonSetter(value = "discount", nulls = Nulls.SKIP)
+        public Builder discount(Optional<Double> discount) {
+            this.discount = discount;
+            return this;
+        }
+
+        public Builder discount(Double discount) {
+            this.discount = Optional.ofNullable(discount);
+            return this;
+        }
+
+        public Builder discount(Nullable<Double> discount) {
+            if (discount.isNull()) {
+                this.discount = null;
+            } else if (discount.isEmpty()) {
+                this.discount = Optional.empty();
+            } else {
+                this.discount = Optional.of(discount.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Total amount due on the document, after any discount and including tax.</p>
+         */
+        @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
+        public Builder totalAmount(Optional<Double> totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Builder totalAmount(Double totalAmount) {
+            this.totalAmount = Optional.ofNullable(totalAmount);
             return this;
         }
 
@@ -497,6 +594,8 @@ public final class OcrResultData {
             return new OcrResultData(
                     billNumber,
                     netAmount,
+                    discount,
+                    totalAmount,
                     billDate,
                     dueDate,
                     comments,

@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayorDataRequest.Builder.class)
-public final class PayorDataRequest implements IPayorDataRequest {
+public final class PayorDataRequest {
     private final Optional<Map<String, Map<String, Object>>> additionalData;
 
     private final Optional<String> billingAddress1;
@@ -113,49 +113,41 @@ public final class PayorDataRequest implements IPayorDataRequest {
     }
 
     @JsonProperty("additionalData")
-    @java.lang.Override
     public Optional<Map<String, Map<String, Object>>> getAdditionalData() {
         return additionalData;
     }
 
     @JsonProperty("billingAddress1")
-    @java.lang.Override
     public Optional<String> getBillingAddress1() {
         return billingAddress1;
     }
 
     @JsonProperty("billingAddress2")
-    @java.lang.Override
     public Optional<String> getBillingAddress2() {
         return billingAddress2;
     }
 
     @JsonProperty("billingCity")
-    @java.lang.Override
     public Optional<String> getBillingCity() {
         return billingCity;
     }
 
     @JsonProperty("billingCountry")
-    @java.lang.Override
     public Optional<String> getBillingCountry() {
         return billingCountry;
     }
 
     @JsonProperty("billingEmail")
-    @java.lang.Override
     public Optional<String> getBillingEmail() {
         return billingEmail;
     }
 
     @JsonProperty("billingPhone")
-    @java.lang.Override
     public Optional<String> getBillingPhone() {
         return billingPhone;
     }
 
     @JsonProperty("billingState")
-    @java.lang.Override
     public Optional<String> getBillingState() {
         return billingState;
     }
@@ -164,7 +156,6 @@ public final class PayorDataRequest implements IPayorDataRequest {
      * @return Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: &quot;37615-1234&quot; or &quot;37615&quot;.
      */
     @JsonProperty("billingZip")
-    @java.lang.Override
     public Optional<String> getBillingZip() {
         return billingZip;
     }
@@ -173,19 +164,16 @@ public final class PayorDataRequest implements IPayorDataRequest {
      * @return Customer's company name.
      */
     @JsonProperty("company")
-    @java.lang.Override
     public Optional<String> getCompany() {
         return company;
     }
 
     @JsonProperty("customerId")
-    @java.lang.Override
     public Optional<Long> getCustomerId() {
         return customerId;
     }
 
     @JsonProperty("customerNumber")
-    @java.lang.Override
     public Optional<String> getCustomerNumber() {
         return customerNumber;
     }
@@ -194,13 +182,11 @@ public final class PayorDataRequest implements IPayorDataRequest {
      * @return Customer/Payor first name.
      */
     @JsonProperty("firstName")
-    @java.lang.Override
     public Optional<String> getFirstName() {
         return firstName;
     }
 
     @JsonProperty("identifierFields")
-    @java.lang.Override
     public Optional<List<String>> getIdentifierFields() {
         return identifierFields;
     }
@@ -209,43 +195,36 @@ public final class PayorDataRequest implements IPayorDataRequest {
      * @return Customer/Payor last name.
      */
     @JsonProperty("lastName")
-    @java.lang.Override
     public Optional<String> getLastName() {
         return lastName;
     }
 
     @JsonProperty("shippingAddress1")
-    @java.lang.Override
     public Optional<String> getShippingAddress1() {
         return shippingAddress1;
     }
 
     @JsonProperty("shippingAddress2")
-    @java.lang.Override
     public Optional<String> getShippingAddress2() {
         return shippingAddress2;
     }
 
     @JsonProperty("shippingCity")
-    @java.lang.Override
     public Optional<String> getShippingCity() {
         return shippingCity;
     }
 
     @JsonProperty("shippingCountry")
-    @java.lang.Override
     public Optional<String> getShippingCountry() {
         return shippingCountry;
     }
 
     @JsonProperty("shippingState")
-    @java.lang.Override
     public Optional<String> getShippingState() {
         return shippingState;
     }
 
     @JsonProperty("shippingZip")
-    @java.lang.Override
     public Optional<String> getShippingZip() {
         return shippingZip;
     }

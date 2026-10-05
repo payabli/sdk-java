@@ -8,6 +8,7 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
 import io.github.payabli.api.types.NotificationLog;
 import io.github.payabli.api.types.NotificationLogDetail;
+import io.github.payabli.api.types.NotificationRetryResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -73,7 +74,7 @@ public class AsyncNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<NotificationLogDetail> retryNotificationLog(String uuid) {
+    public CompletableFuture<NotificationRetryResponse> retryNotificationLog(String uuid) {
         return this.rawClient.retryNotificationLog(uuid).thenApply(response -> response.body());
     }
 
@@ -81,7 +82,8 @@ public class AsyncNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<NotificationLogDetail> retryNotificationLog(String uuid, RequestOptions requestOptions) {
+    public CompletableFuture<NotificationRetryResponse> retryNotificationLog(
+            String uuid, RequestOptions requestOptions) {
         return this.rawClient.retryNotificationLog(uuid, requestOptions).thenApply(response -> response.body());
     }
 
@@ -90,7 +92,7 @@ public class AsyncNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<Void> bulkRetryNotificationLogs(List<String> request) {
+    public CompletableFuture<String> bulkRetryNotificationLogs(List<String> request) {
         return this.rawClient.bulkRetryNotificationLogs(request).thenApply(response -> response.body());
     }
 
@@ -99,7 +101,7 @@ public class AsyncNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<Void> bulkRetryNotificationLogs(List<String> request, RequestOptions requestOptions) {
+    public CompletableFuture<String> bulkRetryNotificationLogs(List<String> request, RequestOptions requestOptions) {
         return this.rawClient.bulkRetryNotificationLogs(request, requestOptions).thenApply(response -> response.body());
     }
 }

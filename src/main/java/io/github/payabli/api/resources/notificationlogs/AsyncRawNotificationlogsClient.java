@@ -22,6 +22,7 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.notificationlogs.requests.SearchNotificationLogsRequest;
 import io.github.payabli.api.types.NotificationLog;
 import io.github.payabli.api.types.NotificationLogDetail;
+import io.github.payabli.api.types.NotificationRetryResponse;
 import io.github.payabli.api.types.PayabliErrorBody;
 import java.io.IOException;
 import java.util.HashMap;
@@ -285,7 +286,8 @@ public class AsyncRawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> retryNotificationLog(String uuid) {
+    public CompletableFuture<PayabliApiClientHttpResponse<NotificationRetryResponse>> retryNotificationLog(
+            String uuid) {
         return retryNotificationLog(uuid, null);
     }
 
@@ -293,7 +295,7 @@ public class AsyncRawNotificationlogsClient {
      * Retry sending a specific notification.
      * <p><strong>Permissions:</strong> notifications_create</p>
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> retryNotificationLog(
+    public CompletableFuture<PayabliApiClientHttpResponse<NotificationRetryResponse>> retryNotificationLog(
             String uuid, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -328,7 +330,7 @@ public class AsyncRawNotificationlogsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiClientHttpResponse<NotificationLogDetail>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<NotificationRetryResponse>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -336,7 +338,8 @@ public class AsyncRawNotificationlogsClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiClientHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NotificationLogDetail.class),
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, NotificationRetryResponse.class),
                                 response));
                         return;
                     }
@@ -392,7 +395,7 @@ public class AsyncRawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<Void>> bulkRetryNotificationLogs(List<String> request) {
+    public CompletableFuture<PayabliApiClientHttpResponse<String>> bulkRetryNotificationLogs(List<String> request) {
         return bulkRetryNotificationLogs(request, null);
     }
 
@@ -401,7 +404,7 @@ public class AsyncRawNotificationlogsClient {
      * This is an async process, so use the search endpoint again to check the notification status.
      * <p>This endpoint requires the <code>notifications_create</code> permission.</p>
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<Void>> bulkRetryNotificationLogs(
+    public CompletableFuture<PayabliApiClientHttpResponse<String>> bulkRetryNotificationLogs(
             List<String> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -441,16 +444,16 @@ public class AsyncRawNotificationlogsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiClientHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<String>> future = new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new PayabliApiClientHttpResponse<>(null, response));
+                        future.complete(new PayabliApiClientHttpResponse<>(responseBodyString, response));
                         return;
                     }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
                     future.completeExceptionally(new PayabliApiClientApiException(
                             "Error with status code " + response.code(), response.code(), errorBody, response));

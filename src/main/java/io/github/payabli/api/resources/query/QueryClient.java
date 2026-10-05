@@ -384,56 +384,56 @@ public class QueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevices(String entry) {
         return this.rawClient.listDevices(entry).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevices(String entry, RequestOptions requestOptions) {
         return this.rawClient.listDevices(entry, requestOptions).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevices(String entry, ListDevicesRequest request) {
         return this.rawClient.listDevices(entry, request).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevices(String entry, ListDevicesRequest request, RequestOptions requestOptions) {
         return this.rawClient.listDevices(entry, request, requestOptions).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevicesOrg(int orgId) {
         return this.rawClient.listDevicesOrg(orgId).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevicesOrg(int orgId, RequestOptions requestOptions) {
         return this.rawClient.listDevicesOrg(orgId, requestOptions).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevicesOrg(int orgId, ListDevicesOrgRequest request) {
         return this.rawClient.listDevicesOrg(orgId, request).body();
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public QueryDeviceResponse listDevicesOrg(int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {
         return this.rawClient.listDevicesOrg(orgId, request, requestOptions).body();

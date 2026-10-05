@@ -61,7 +61,16 @@ public final class RequestOutAuthorizePaymentDetails {
     }
 
     /**
-     * @return Service fee to be deducted from the total amount. This amount must be a number, percentages aren't accepted. If you are using a percentage-based fee schedule, you must calculate the value manually.
+     * @return Service fee to deduct from the total amount. This amount must be a number, percentages aren't accepted. If you're using a percentage-based fee schedule, you must calculate the value manually.
+     * <p>Payabli honors this field only when the paypoint's ACH payout pricing allows fee overrides. Otherwise, Payabli ignores this field and charges the fee configured in the paypoint's pricing. Contact Payabli to check or change this setting.</p>
+     * <p>When fee overrides are allowed:</p>
+     * <ul>
+     * <li><code>0</code> overrides the configured fee, and no fee is charged.</li>
+     * <li>A positive value replaces the configured fee. Payabli caps the fee at <code>totalAmount</code>.</li>
+     * <li>A negative value results in no fee.</li>
+     * <li>If you omit this field, Payabli charges the configured fee.</li>
+     * </ul>
+     * <p>The fee is deducted from the payout, so the vendor receives <code>totalAmount</code> minus the fee.</p>
      */
     @JsonProperty("serviceFee")
     public Optional<Double> getServiceFee() {
@@ -169,7 +178,16 @@ public final class RequestOutAuthorizePaymentDetails {
         }
 
         /**
-         * <p>Service fee to be deducted from the total amount. This amount must be a number, percentages aren't accepted. If you are using a percentage-based fee schedule, you must calculate the value manually.</p>
+         * <p>Service fee to deduct from the total amount. This amount must be a number, percentages aren't accepted. If you're using a percentage-based fee schedule, you must calculate the value manually.</p>
+         * <p>Payabli honors this field only when the paypoint's ACH payout pricing allows fee overrides. Otherwise, Payabli ignores this field and charges the fee configured in the paypoint's pricing. Contact Payabli to check or change this setting.</p>
+         * <p>When fee overrides are allowed:</p>
+         * <ul>
+         * <li><code>0</code> overrides the configured fee, and no fee is charged.</li>
+         * <li>A positive value replaces the configured fee. Payabli caps the fee at <code>totalAmount</code>.</li>
+         * <li>A negative value results in no fee.</li>
+         * <li>If you omit this field, Payabli charges the configured fee.</li>
+         * </ul>
+         * <p>The fee is deducted from the payout, so the vendor receives <code>totalAmount</code> minus the fee.</p>
          */
         @JsonSetter(value = "serviceFee", nulls = Nulls.SKIP)
         public Builder serviceFee(Optional<Double> serviceFee) {

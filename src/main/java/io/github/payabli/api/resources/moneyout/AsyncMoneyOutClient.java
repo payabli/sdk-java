@@ -359,6 +359,7 @@ public class AsyncMoneyOutClient {
      * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
      * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
      * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
+     * <p>The reissue request doesn't accept a service fee. Payabli always charges the fee configured in the paypoint's ACH payout pricing, even when the pricing allows fee overrides. The new transaction keeps the original payout's total amount. The vendor receives that amount minus the configured fee.</p>
      */
     public CompletableFuture<ReissuePayoutResponse> reissueOut(ReissueOutRequest request) {
         return this.rawClient.reissueOut(request).thenApply(response -> response.body());
@@ -368,6 +369,7 @@ public class AsyncMoneyOutClient {
      * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
      * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
      * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
+     * <p>The reissue request doesn't accept a service fee. Payabli always charges the fee configured in the paypoint's ACH payout pricing, even when the pricing allows fee overrides. The new transaction keeps the original payout's total amount. The vendor receives that amount minus the configured fee.</p>
      */
     public CompletableFuture<ReissuePayoutResponse> reissueOut(
             ReissueOutRequest request, RequestOptions requestOptions) {

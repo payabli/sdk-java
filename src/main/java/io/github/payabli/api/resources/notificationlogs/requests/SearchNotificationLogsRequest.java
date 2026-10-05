@@ -79,7 +79,7 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return The start date for the search.
+     * @return The start date for the search. Can't be more than 30 days before <code>endDate</code>.
      */
     @JsonProperty("startDate")
     public OffsetDateTime getStartDate() {
@@ -87,7 +87,7 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return The end date for the search.
+     * @return The end date for the search. Can't be more than 30 days after <code>startDate</code>.
      */
     @JsonProperty("endDate")
     public OffsetDateTime getEndDate() {
@@ -95,7 +95,7 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return The type of notification event to filter by.
+     * @return The event to filter by, such as <code>approvedpayment</code>. Case-insensitive.
      */
     @JsonProperty("notificationEvent")
     public Optional<String> getNotificationEvent() {
@@ -103,7 +103,7 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return Indicates whether the notification was successful.
+     * @return Filter by delivery outcome. Set to <code>false</code> to return only failed notifications.
      */
     @JsonProperty("succeeded")
     public Optional<Boolean> getSucceeded() {
@@ -111,7 +111,7 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return The ID of the organization to filter by.
+     * @return The ID of the organization to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.
      */
     @JsonProperty("orgId")
     public Optional<Long> getOrgId() {
@@ -119,7 +119,7 @@ public final class SearchNotificationLogsRequest {
     }
 
     /**
-     * @return The ID of the paypoint to filter by.
+     * @return The ID of the paypoint to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.
      */
     @JsonProperty("paypointId")
     public Optional<Long> getPaypointId() {
@@ -172,7 +172,7 @@ public final class SearchNotificationLogsRequest {
 
     public interface StartDateStage {
         /**
-         * <p>The start date for the search.</p>
+         * <p>The start date for the search. Can't be more than 30 days before <code>endDate</code>.</p>
          */
         EndDateStage startDate(@NotNull OffsetDateTime startDate);
 
@@ -181,7 +181,7 @@ public final class SearchNotificationLogsRequest {
 
     public interface EndDateStage {
         /**
-         * <p>The end date for the search.</p>
+         * <p>The end date for the search. Can't be more than 30 days after <code>startDate</code>.</p>
          */
         _FinalStage endDate(@NotNull OffsetDateTime endDate);
     }
@@ -208,28 +208,28 @@ public final class SearchNotificationLogsRequest {
         _FinalStage page(Integer page);
 
         /**
-         * <p>The type of notification event to filter by.</p>
+         * <p>The event to filter by, such as <code>approvedpayment</code>. Case-insensitive.</p>
          */
         _FinalStage notificationEvent(Optional<String> notificationEvent);
 
         _FinalStage notificationEvent(String notificationEvent);
 
         /**
-         * <p>Indicates whether the notification was successful.</p>
+         * <p>Filter by delivery outcome. Set to <code>false</code> to return only failed notifications.</p>
          */
         _FinalStage succeeded(Optional<Boolean> succeeded);
 
         _FinalStage succeeded(Boolean succeeded);
 
         /**
-         * <p>The ID of the organization to filter by.</p>
+         * <p>The ID of the organization to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.</p>
          */
         _FinalStage orgId(Optional<Long> orgId);
 
         _FinalStage orgId(Long orgId);
 
         /**
-         * <p>The ID of the paypoint to filter by.</p>
+         * <p>The ID of the paypoint to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.</p>
          */
         _FinalStage paypointId(Optional<Long> paypointId);
 
@@ -273,7 +273,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The start date for the search.</p>
+         * <p>The start date for the search. Can't be more than 30 days before <code>endDate</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -284,7 +284,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The end date for the search.</p>
+         * <p>The end date for the search. Can't be more than 30 days after <code>startDate</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -295,7 +295,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The ID of the paypoint to filter by.</p>
+         * <p>The ID of the paypoint to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -305,7 +305,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The ID of the paypoint to filter by.</p>
+         * <p>The ID of the paypoint to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
@@ -315,7 +315,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The ID of the organization to filter by.</p>
+         * <p>The ID of the organization to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -325,7 +325,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The ID of the organization to filter by.</p>
+         * <p>The ID of the organization to filter by. Either <code>orgId</code> or <code>paypointId</code> is required.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "orgId", nulls = Nulls.SKIP)
@@ -335,7 +335,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>Indicates whether the notification was successful.</p>
+         * <p>Filter by delivery outcome. Set to <code>false</code> to return only failed notifications.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -345,7 +345,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>Indicates whether the notification was successful.</p>
+         * <p>Filter by delivery outcome. Set to <code>false</code> to return only failed notifications.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "succeeded", nulls = Nulls.SKIP)
@@ -355,7 +355,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The type of notification event to filter by.</p>
+         * <p>The event to filter by, such as <code>approvedpayment</code>. Case-insensitive.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -365,7 +365,7 @@ public final class SearchNotificationLogsRequest {
         }
 
         /**
-         * <p>The type of notification event to filter by.</p>
+         * <p>The event to filter by, such as <code>approvedpayment</code>. Case-insensitive.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "notificationEvent", nulls = Nulls.SKIP)

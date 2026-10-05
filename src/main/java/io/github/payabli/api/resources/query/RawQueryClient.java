@@ -1277,28 +1277,28 @@ public class RawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(String entry) {
         return listDevices(entry, ListDevicesRequest.builder().build());
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(String entry, RequestOptions requestOptions) {
         return listDevices(entry, ListDevicesRequest.builder().build(), requestOptions);
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(String entry, ListDevicesRequest request) {
         return listDevices(entry, request, null);
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevices(
             String entry, ListDevicesRequest request, RequestOptions requestOptions) {
@@ -1392,28 +1392,28 @@ public class RawQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build());
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId, RequestOptions requestOptions) {
         return listDevicesOrg(orgId, ListDevicesOrgRequest.builder().build(), requestOptions);
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(int orgId, ListDevicesOrgRequest request) {
         return listDevicesOrg(orgId, request, null);
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public PayabliApiClientHttpResponse<QueryDeviceResponse> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {

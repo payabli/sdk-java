@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +28,8 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
 
     private final String responseText;
 
+    private final Optional<String> pageIdentifier;
+
     private final Optional<AddMethodResponseResponseData> responseData;
 
     private final Map<String, Object> additionalProperties;
@@ -32,10 +37,12 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
     private AddMethodResponse(
             Optional<Boolean> isSuccess,
             String responseText,
+            Optional<String> pageIdentifier,
             Optional<AddMethodResponseResponseData> responseData,
             Map<String, Object> additionalProperties) {
         this.isSuccess = isSuccess;
         this.responseText = responseText;
+        this.pageIdentifier = pageIdentifier;
         this.responseData = responseData;
         this.additionalProperties = additionalProperties;
     }
@@ -52,9 +59,26 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
         return responseText;
     }
 
+    /**
+     * @return Returned only when the request succeeds. Not returned when the request is declined, or when you convert a temporary token to a permanent token.
+     */
+    @JsonIgnore
+    public Optional<String> getPageIdentifier() {
+        if (pageIdentifier == null) {
+            return Optional.empty();
+        }
+        return pageIdentifier;
+    }
+
     @JsonProperty("responseData")
     public Optional<AddMethodResponseResponseData> getResponseData() {
         return responseData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("pageIdentifier")
+    private Optional<String> _getPageIdentifier() {
+        return pageIdentifier;
     }
 
     @java.lang.Override
@@ -71,12 +95,13 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
     private boolean equalTo(AddMethodResponse other) {
         return isSuccess.equals(other.isSuccess)
                 && responseText.equals(other.responseText)
+                && pageIdentifier.equals(other.pageIdentifier)
                 && responseData.equals(other.responseData);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.isSuccess, this.responseText, this.responseData);
+        return Objects.hash(this.isSuccess, this.responseText, this.pageIdentifier, this.responseData);
     }
 
     @java.lang.Override
@@ -105,6 +130,15 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
 
         _FinalStage isSuccess(Boolean isSuccess);
 
+        /**
+         * <p>Returned only when the request succeeds. Not returned when the request is declined, or when you convert a temporary token to a permanent token.</p>
+         */
+        _FinalStage pageIdentifier(Optional<String> pageIdentifier);
+
+        _FinalStage pageIdentifier(String pageIdentifier);
+
+        _FinalStage pageIdentifier(Nullable<String> pageIdentifier);
+
         _FinalStage responseData(Optional<AddMethodResponseResponseData> responseData);
 
         _FinalStage responseData(AddMethodResponseResponseData responseData);
@@ -115,6 +149,8 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
         private String responseText;
 
         private Optional<AddMethodResponseResponseData> responseData = Optional.empty();
+
+        private Optional<String> pageIdentifier = Optional.empty();
 
         private Optional<Boolean> isSuccess = Optional.empty();
 
@@ -127,6 +163,7 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
         public Builder from(AddMethodResponse other) {
             isSuccess(other.getIsSuccess());
             responseText(other.getResponseText());
+            pageIdentifier(other.getPageIdentifier());
             responseData(other.getResponseData());
             return this;
         }
@@ -151,6 +188,42 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
             return this;
         }
 
+        /**
+         * <p>Returned only when the request succeeds. Not returned when the request is declined, or when you convert a temporary token to a permanent token.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage pageIdentifier(Nullable<String> pageIdentifier) {
+            if (pageIdentifier.isNull()) {
+                this.pageIdentifier = null;
+            } else if (pageIdentifier.isEmpty()) {
+                this.pageIdentifier = Optional.empty();
+            } else {
+                this.pageIdentifier = Optional.of(pageIdentifier.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Returned only when the request succeeds. Not returned when the request is declined, or when you convert a temporary token to a permanent token.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage pageIdentifier(String pageIdentifier) {
+            this.pageIdentifier = Optional.ofNullable(pageIdentifier);
+            return this;
+        }
+
+        /**
+         * <p>Returned only when the request succeeds. Not returned when the request is declined, or when you convert a temporary token to a permanent token.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "pageIdentifier", nulls = Nulls.SKIP)
+        public _FinalStage pageIdentifier(Optional<String> pageIdentifier) {
+            this.pageIdentifier = pageIdentifier;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage isSuccess(Boolean isSuccess) {
             this.isSuccess = Optional.ofNullable(isSuccess);
@@ -166,7 +239,7 @@ public final class AddMethodResponse implements IPayabliApiResponseGeneric2Part 
 
         @java.lang.Override
         public AddMethodResponse build() {
-            return new AddMethodResponse(isSuccess, responseText, responseData, additionalProperties);
+            return new AddMethodResponse(isSuccess, responseText, pageIdentifier, responseData, additionalProperties);
         }
 
         @java.lang.Override

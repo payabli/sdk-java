@@ -6,7 +6,13 @@ package io.github.payabli.api.types;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 
-public interface INotificationLog {
+public interface INotificationLogBase {
+    String getOrganizationName();
+
+    String getPaypointName();
+
+    String getRequestId();
+
     String getId();
 
     Optional<Long> getOrgId();
@@ -17,7 +23,9 @@ public interface INotificationLog {
 
     Optional<String> getTarget();
 
-    Optional<String> getResponseStatus();
+    int getResponseStatusCode();
+
+    String getResponseStatus();
 
     boolean getSuccess();
 

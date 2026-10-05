@@ -24,7 +24,13 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationLog.Builder.class)
-public final class NotificationLog implements INotificationLog {
+public final class NotificationLog implements INotificationLogBase {
+    private final String organizationName;
+
+    private final String paypointName;
+
+    private final String requestId;
+
     private final String id;
 
     private final Optional<Long> orgId;
@@ -35,7 +41,9 @@ public final class NotificationLog implements INotificationLog {
 
     private final Optional<String> target;
 
-    private final Optional<String> responseStatus;
+    private final int responseStatusCode;
+
+    private final String responseStatus;
 
     private final boolean success;
 
@@ -49,27 +57,47 @@ public final class NotificationLog implements INotificationLog {
 
     private final boolean isInProgress;
 
+    private final String organizationLogo;
+
+    private final String organizationFavIcon;
+
+    private final String paypointLogo;
+
+    private final int notificationType;
+
     private final Map<String, Object> additionalProperties;
 
     private NotificationLog(
+            String organizationName,
+            String paypointName,
+            String requestId,
             String id,
             Optional<Long> orgId,
             Optional<Long> paypointId,
             Optional<String> notificationEvent,
             Optional<String> target,
-            Optional<String> responseStatus,
+            int responseStatusCode,
+            String responseStatus,
             boolean success,
             Optional<String> jobData,
             OffsetDateTime createdDate,
             Optional<OffsetDateTime> successDate,
             Optional<OffsetDateTime> lastFailedDate,
             boolean isInProgress,
+            String organizationLogo,
+            String organizationFavIcon,
+            String paypointLogo,
+            int notificationType,
             Map<String, Object> additionalProperties) {
+        this.organizationName = organizationName;
+        this.paypointName = paypointName;
+        this.requestId = requestId;
         this.id = id;
         this.orgId = orgId;
         this.paypointId = paypointId;
         this.notificationEvent = notificationEvent;
         this.target = target;
+        this.responseStatusCode = responseStatusCode;
         this.responseStatus = responseStatus;
         this.success = success;
         this.jobData = jobData;
@@ -77,7 +105,38 @@ public final class NotificationLog implements INotificationLog {
         this.successDate = successDate;
         this.lastFailedDate = lastFailedDate;
         this.isInProgress = isInProgress;
+        this.organizationLogo = organizationLogo;
+        this.organizationFavIcon = organizationFavIcon;
+        this.paypointLogo = paypointLogo;
+        this.notificationType = notificationType;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The name of the organization the notification belongs to.
+     */
+    @JsonProperty("organizationName")
+    @java.lang.Override
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    /**
+     * @return The name of the paypoint the notification is related to. Empty for organization-level notifications.
+     */
+    @JsonProperty("paypointName")
+    @java.lang.Override
+    public String getPaypointName() {
+        return paypointName;
+    }
+
+    /**
+     * @return The identifier for the delivery request.
+     */
+    @JsonProperty("requestId")
+    @java.lang.Override
+    public String getRequestId() {
+        return requestId;
     }
 
     /**
@@ -90,7 +149,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The ID of the organization that the notification belongs to.
+     * @return The ID of the organization the notification belongs to.
      */
     @JsonIgnore
     @java.lang.Override
@@ -102,7 +161,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The ID of the paypoint that the notification is related to.
+     * @return The ID of the paypoint the notification is related to. Null for organization-level notifications.
      */
     @JsonIgnore
     @java.lang.Override
@@ -114,7 +173,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The event that triggered the notification.
+     * @return The event that triggered the notification, such as <code>approvedpayment</code>.
      */
     @JsonIgnore
     @java.lang.Override
@@ -126,7 +185,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The target URL for the notification.
+     * @return The target the notification was delivered to, such as a webhook URL, email address, or phone number.
      */
     @JsonIgnore
     @java.lang.Override
@@ -138,19 +197,25 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The HTTP response status of the notification.
+     * @return The HTTP status code the target returned, such as <code>200</code>. Returns <code>0</code> when the target sent no response.
      */
-    @JsonIgnore
+    @JsonProperty("responseStatusCode")
     @java.lang.Override
-    public Optional<String> getResponseStatus() {
-        if (responseStatus == null) {
-            return Optional.empty();
-        }
+    public int getResponseStatusCode() {
+        return responseStatusCode;
+    }
+
+    /**
+     * @return The delivery status message, such as <code>OK</code> when the notification succeeded, <code>Dropped</code> when it failed, or <code>No response received from server.</code> when the target sent no response.
+     */
+    @JsonProperty("responseStatus")
+    @java.lang.Override
+    public String getResponseStatus() {
         return responseStatus;
     }
 
     /**
-     * @return Indicates whether the notification was successful.
+     * @return Indicates whether the notification was delivered successfully.
      */
     @JsonProperty("success")
     @java.lang.Override
@@ -159,7 +224,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return Contains the body of the notification.
+     * @return The body of the notification.
      */
     @JsonIgnore
     @java.lang.Override
@@ -180,7 +245,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The date and time when the notification was successfully delivered.
+     * @return The date and time when the notification was delivered successfully. Null if it hasn't succeeded.
      */
     @JsonIgnore
     @java.lang.Override
@@ -192,7 +257,7 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return The date and time when the notification last failed.
+     * @return The date and time when the notification last failed. Null if it hasn't failed.
      */
     @JsonIgnore
     @java.lang.Override
@@ -204,12 +269,44 @@ public final class NotificationLog implements INotificationLog {
     }
 
     /**
-     * @return Indicates whether the notification is currently in progress.
+     * @return Indicates whether the notification is currently being sent.
      */
     @JsonProperty("isInProgress")
     @java.lang.Override
     public boolean getIsInProgress() {
         return isInProgress;
+    }
+
+    /**
+     * @return The URL of the organization's logo.
+     */
+    @JsonProperty("organizationLogo")
+    public String getOrganizationLogo() {
+        return organizationLogo;
+    }
+
+    /**
+     * @return The URL of the organization's browser tab icon.
+     */
+    @JsonProperty("organizationFavIcon")
+    public String getOrganizationFavIcon() {
+        return organizationFavIcon;
+    }
+
+    /**
+     * @return The URL of the paypoint's logo.
+     */
+    @JsonProperty("paypointLogo")
+    public String getPaypointLogo() {
+        return paypointLogo;
+    }
+
+    /**
+     * @return The notification's delivery method — <code>1</code> (Email), <code>2</code> (SMS), or <code>3</code> (Webhook).
+     */
+    @JsonProperty("notificationType")
+    public int getNotificationType() {
+        return notificationType;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -234,12 +331,6 @@ public final class NotificationLog implements INotificationLog {
     @JsonProperty("target")
     private Optional<String> _getTarget() {
         return target;
-    }
-
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
-    @JsonProperty("responseStatus")
-    private Optional<String> _getResponseStatus() {
-        return responseStatus;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -272,35 +363,51 @@ public final class NotificationLog implements INotificationLog {
     }
 
     private boolean equalTo(NotificationLog other) {
-        return id.equals(other.id)
+        return organizationName.equals(other.organizationName)
+                && paypointName.equals(other.paypointName)
+                && requestId.equals(other.requestId)
+                && id.equals(other.id)
                 && orgId.equals(other.orgId)
                 && paypointId.equals(other.paypointId)
                 && notificationEvent.equals(other.notificationEvent)
                 && target.equals(other.target)
+                && responseStatusCode == other.responseStatusCode
                 && responseStatus.equals(other.responseStatus)
                 && success == other.success
                 && jobData.equals(other.jobData)
                 && createdDate.equals(other.createdDate)
                 && successDate.equals(other.successDate)
                 && lastFailedDate.equals(other.lastFailedDate)
-                && isInProgress == other.isInProgress;
+                && isInProgress == other.isInProgress
+                && organizationLogo.equals(other.organizationLogo)
+                && organizationFavIcon.equals(other.organizationFavIcon)
+                && paypointLogo.equals(other.paypointLogo)
+                && notificationType == other.notificationType;
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.organizationName,
+                this.paypointName,
+                this.requestId,
                 this.id,
                 this.orgId,
                 this.paypointId,
                 this.notificationEvent,
                 this.target,
+                this.responseStatusCode,
                 this.responseStatus,
                 this.success,
                 this.jobData,
                 this.createdDate,
                 this.successDate,
                 this.lastFailedDate,
-                this.isInProgress);
+                this.isInProgress,
+                this.organizationLogo,
+                this.organizationFavIcon,
+                this.paypointLogo,
+                this.notificationType);
     }
 
     @java.lang.Override
@@ -308,22 +415,57 @@ public final class NotificationLog implements INotificationLog {
         return ObjectMappers.stringify(this);
     }
 
-    public static IdStage builder() {
+    public static OrganizationNameStage builder() {
         return new Builder();
+    }
+
+    public interface OrganizationNameStage {
+        /**
+         * <p>The name of the organization the notification belongs to.</p>
+         */
+        PaypointNameStage organizationName(@NotNull String organizationName);
+
+        Builder from(NotificationLog other);
+    }
+
+    public interface PaypointNameStage {
+        /**
+         * <p>The name of the paypoint the notification is related to. Empty for organization-level notifications.</p>
+         */
+        RequestIdStage paypointName(@NotNull String paypointName);
+    }
+
+    public interface RequestIdStage {
+        /**
+         * <p>The identifier for the delivery request.</p>
+         */
+        IdStage requestId(@NotNull String requestId);
     }
 
     public interface IdStage {
         /**
          * <p>The unique identifier for the notification.</p>
          */
-        SuccessStage id(@NotNull String id);
+        ResponseStatusCodeStage id(@NotNull String id);
+    }
 
-        Builder from(NotificationLog other);
+    public interface ResponseStatusCodeStage {
+        /**
+         * <p>The HTTP status code the target returned, such as <code>200</code>. Returns <code>0</code> when the target sent no response.</p>
+         */
+        ResponseStatusStage responseStatusCode(int responseStatusCode);
+    }
+
+    public interface ResponseStatusStage {
+        /**
+         * <p>The delivery status message, such as <code>OK</code> when the notification succeeded, <code>Dropped</code> when it failed, or <code>No response received from server.</code> when the target sent no response.</p>
+         */
+        SuccessStage responseStatus(@NotNull String responseStatus);
     }
 
     public interface SuccessStage {
         /**
-         * <p>Indicates whether the notification was successful.</p>
+         * <p>Indicates whether the notification was delivered successfully.</p>
          */
         CreatedDateStage success(boolean success);
     }
@@ -337,9 +479,37 @@ public final class NotificationLog implements INotificationLog {
 
     public interface IsInProgressStage {
         /**
-         * <p>Indicates whether the notification is currently in progress.</p>
+         * <p>Indicates whether the notification is currently being sent.</p>
          */
-        _FinalStage isInProgress(boolean isInProgress);
+        OrganizationLogoStage isInProgress(boolean isInProgress);
+    }
+
+    public interface OrganizationLogoStage {
+        /**
+         * <p>The URL of the organization's logo.</p>
+         */
+        OrganizationFavIconStage organizationLogo(@NotNull String organizationLogo);
+    }
+
+    public interface OrganizationFavIconStage {
+        /**
+         * <p>The URL of the organization's browser tab icon.</p>
+         */
+        PaypointLogoStage organizationFavIcon(@NotNull String organizationFavIcon);
+    }
+
+    public interface PaypointLogoStage {
+        /**
+         * <p>The URL of the paypoint's logo.</p>
+         */
+        NotificationTypeStage paypointLogo(@NotNull String paypointLogo);
+    }
+
+    public interface NotificationTypeStage {
+        /**
+         * <p>The notification's delivery method — <code>1</code> (Email), <code>2</code> (SMS), or <code>3</code> (Webhook).</p>
+         */
+        _FinalStage notificationType(int notificationType);
     }
 
     public interface _FinalStage {
@@ -350,7 +520,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>The ID of the organization that the notification belongs to.</p>
+         * <p>The ID of the organization the notification belongs to.</p>
          */
         _FinalStage orgId(Optional<Long> orgId);
 
@@ -359,7 +529,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage orgId(Nullable<Long> orgId);
 
         /**
-         * <p>The ID of the paypoint that the notification is related to.</p>
+         * <p>The ID of the paypoint the notification is related to. Null for organization-level notifications.</p>
          */
         _FinalStage paypointId(Optional<Long> paypointId);
 
@@ -368,7 +538,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage paypointId(Nullable<Long> paypointId);
 
         /**
-         * <p>The event that triggered the notification.</p>
+         * <p>The event that triggered the notification, such as <code>approvedpayment</code>.</p>
          */
         _FinalStage notificationEvent(Optional<String> notificationEvent);
 
@@ -377,7 +547,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage notificationEvent(Nullable<String> notificationEvent);
 
         /**
-         * <p>The target URL for the notification.</p>
+         * <p>The target the notification was delivered to, such as a webhook URL, email address, or phone number.</p>
          */
         _FinalStage target(Optional<String> target);
 
@@ -386,16 +556,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage target(Nullable<String> target);
 
         /**
-         * <p>The HTTP response status of the notification.</p>
-         */
-        _FinalStage responseStatus(Optional<String> responseStatus);
-
-        _FinalStage responseStatus(String responseStatus);
-
-        _FinalStage responseStatus(Nullable<String> responseStatus);
-
-        /**
-         * <p>Contains the body of the notification.</p>
+         * <p>The body of the notification.</p>
          */
         _FinalStage jobData(Optional<String> jobData);
 
@@ -404,7 +565,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage jobData(Nullable<String> jobData);
 
         /**
-         * <p>The date and time when the notification was successfully delivered.</p>
+         * <p>The date and time when the notification was delivered successfully. Null if it hasn't succeeded.</p>
          */
         _FinalStage successDate(Optional<OffsetDateTime> successDate);
 
@@ -413,7 +574,7 @@ public final class NotificationLog implements INotificationLog {
         _FinalStage successDate(Nullable<OffsetDateTime> successDate);
 
         /**
-         * <p>The date and time when the notification last failed.</p>
+         * <p>The date and time when the notification last failed. Null if it hasn't failed.</p>
          */
         _FinalStage lastFailedDate(Optional<OffsetDateTime> lastFailedDate);
 
@@ -424,8 +585,31 @@ public final class NotificationLog implements INotificationLog {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements IdStage, SuccessStage, CreatedDateStage, IsInProgressStage, _FinalStage {
+            implements OrganizationNameStage,
+                    PaypointNameStage,
+                    RequestIdStage,
+                    IdStage,
+                    ResponseStatusCodeStage,
+                    ResponseStatusStage,
+                    SuccessStage,
+                    CreatedDateStage,
+                    IsInProgressStage,
+                    OrganizationLogoStage,
+                    OrganizationFavIconStage,
+                    PaypointLogoStage,
+                    NotificationTypeStage,
+                    _FinalStage {
+        private String organizationName;
+
+        private String paypointName;
+
+        private String requestId;
+
         private String id;
+
+        private int responseStatusCode;
+
+        private String responseStatus;
 
         private boolean success;
 
@@ -433,13 +617,19 @@ public final class NotificationLog implements INotificationLog {
 
         private boolean isInProgress;
 
+        private String organizationLogo;
+
+        private String organizationFavIcon;
+
+        private String paypointLogo;
+
+        private int notificationType;
+
         private Optional<OffsetDateTime> lastFailedDate = Optional.empty();
 
         private Optional<OffsetDateTime> successDate = Optional.empty();
 
         private Optional<String> jobData = Optional.empty();
-
-        private Optional<String> responseStatus = Optional.empty();
 
         private Optional<String> target = Optional.empty();
 
@@ -456,11 +646,15 @@ public final class NotificationLog implements INotificationLog {
 
         @java.lang.Override
         public Builder from(NotificationLog other) {
+            organizationName(other.getOrganizationName());
+            paypointName(other.getPaypointName());
+            requestId(other.getRequestId());
             id(other.getId());
             orgId(other.getOrgId());
             paypointId(other.getPaypointId());
             notificationEvent(other.getNotificationEvent());
             target(other.getTarget());
+            responseStatusCode(other.getResponseStatusCode());
             responseStatus(other.getResponseStatus());
             success(other.getSuccess());
             jobData(other.getJobData());
@@ -468,6 +662,43 @@ public final class NotificationLog implements INotificationLog {
             successDate(other.getSuccessDate());
             lastFailedDate(other.getLastFailedDate());
             isInProgress(other.getIsInProgress());
+            organizationLogo(other.getOrganizationLogo());
+            organizationFavIcon(other.getOrganizationFavIcon());
+            paypointLogo(other.getPaypointLogo());
+            notificationType(other.getNotificationType());
+            return this;
+        }
+
+        /**
+         * <p>The name of the organization the notification belongs to.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("organizationName")
+        public PaypointNameStage organizationName(@NotNull String organizationName) {
+            this.organizationName = Objects.requireNonNull(organizationName, "organizationName must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The name of the paypoint the notification is related to. Empty for organization-level notifications.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("paypointName")
+        public RequestIdStage paypointName(@NotNull String paypointName) {
+            this.paypointName = Objects.requireNonNull(paypointName, "paypointName must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The identifier for the delivery request.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("requestId")
+        public IdStage requestId(@NotNull String requestId) {
+            this.requestId = Objects.requireNonNull(requestId, "requestId must not be null");
             return this;
         }
 
@@ -477,13 +708,35 @@ public final class NotificationLog implements INotificationLog {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public SuccessStage id(@NotNull String id) {
+        public ResponseStatusCodeStage id(@NotNull String id) {
             this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         /**
-         * <p>Indicates whether the notification was successful.</p>
+         * <p>The HTTP status code the target returned, such as <code>200</code>. Returns <code>0</code> when the target sent no response.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("responseStatusCode")
+        public ResponseStatusStage responseStatusCode(int responseStatusCode) {
+            this.responseStatusCode = responseStatusCode;
+            return this;
+        }
+
+        /**
+         * <p>The delivery status message, such as <code>OK</code> when the notification succeeded, <code>Dropped</code> when it failed, or <code>No response received from server.</code> when the target sent no response.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("responseStatus")
+        public SuccessStage responseStatus(@NotNull String responseStatus) {
+            this.responseStatus = Objects.requireNonNull(responseStatus, "responseStatus must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Indicates whether the notification was delivered successfully.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -505,18 +758,63 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>Indicates whether the notification is currently in progress.</p>
+         * <p>Indicates whether the notification is currently being sent.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("isInProgress")
-        public _FinalStage isInProgress(boolean isInProgress) {
+        public OrganizationLogoStage isInProgress(boolean isInProgress) {
             this.isInProgress = isInProgress;
             return this;
         }
 
         /**
-         * <p>The date and time when the notification last failed.</p>
+         * <p>The URL of the organization's logo.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("organizationLogo")
+        public OrganizationFavIconStage organizationLogo(@NotNull String organizationLogo) {
+            this.organizationLogo = Objects.requireNonNull(organizationLogo, "organizationLogo must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The URL of the organization's browser tab icon.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("organizationFavIcon")
+        public PaypointLogoStage organizationFavIcon(@NotNull String organizationFavIcon) {
+            this.organizationFavIcon =
+                    Objects.requireNonNull(organizationFavIcon, "organizationFavIcon must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The URL of the paypoint's logo.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("paypointLogo")
+        public NotificationTypeStage paypointLogo(@NotNull String paypointLogo) {
+            this.paypointLogo = Objects.requireNonNull(paypointLogo, "paypointLogo must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The notification's delivery method — <code>1</code> (Email), <code>2</code> (SMS), or <code>3</code> (Webhook).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("notificationType")
+        public _FinalStage notificationType(int notificationType) {
+            this.notificationType = notificationType;
+            return this;
+        }
+
+        /**
+         * <p>The date and time when the notification last failed. Null if it hasn't failed.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -532,7 +830,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The date and time when the notification last failed.</p>
+         * <p>The date and time when the notification last failed. Null if it hasn't failed.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -542,7 +840,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The date and time when the notification last failed.</p>
+         * <p>The date and time when the notification last failed. Null if it hasn't failed.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "lastFailedDate", nulls = Nulls.SKIP)
@@ -552,7 +850,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The date and time when the notification was successfully delivered.</p>
+         * <p>The date and time when the notification was delivered successfully. Null if it hasn't succeeded.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -568,7 +866,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The date and time when the notification was successfully delivered.</p>
+         * <p>The date and time when the notification was delivered successfully. Null if it hasn't succeeded.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -578,7 +876,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The date and time when the notification was successfully delivered.</p>
+         * <p>The date and time when the notification was delivered successfully. Null if it hasn't succeeded.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "successDate", nulls = Nulls.SKIP)
@@ -588,7 +886,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>Contains the body of the notification.</p>
+         * <p>The body of the notification.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -604,7 +902,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>Contains the body of the notification.</p>
+         * <p>The body of the notification.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -614,7 +912,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>Contains the body of the notification.</p>
+         * <p>The body of the notification.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "jobData", nulls = Nulls.SKIP)
@@ -624,43 +922,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The HTTP response status of the notification.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage responseStatus(Nullable<String> responseStatus) {
-            if (responseStatus.isNull()) {
-                this.responseStatus = null;
-            } else if (responseStatus.isEmpty()) {
-                this.responseStatus = Optional.empty();
-            } else {
-                this.responseStatus = Optional.of(responseStatus.get());
-            }
-            return this;
-        }
-
-        /**
-         * <p>The HTTP response status of the notification.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage responseStatus(String responseStatus) {
-            this.responseStatus = Optional.ofNullable(responseStatus);
-            return this;
-        }
-
-        /**
-         * <p>The HTTP response status of the notification.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "responseStatus", nulls = Nulls.SKIP)
-        public _FinalStage responseStatus(Optional<String> responseStatus) {
-            this.responseStatus = responseStatus;
-            return this;
-        }
-
-        /**
-         * <p>The target URL for the notification.</p>
+         * <p>The target the notification was delivered to, such as a webhook URL, email address, or phone number.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -676,7 +938,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The target URL for the notification.</p>
+         * <p>The target the notification was delivered to, such as a webhook URL, email address, or phone number.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -686,7 +948,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The target URL for the notification.</p>
+         * <p>The target the notification was delivered to, such as a webhook URL, email address, or phone number.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "target", nulls = Nulls.SKIP)
@@ -696,7 +958,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The event that triggered the notification.</p>
+         * <p>The event that triggered the notification, such as <code>approvedpayment</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -712,7 +974,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The event that triggered the notification.</p>
+         * <p>The event that triggered the notification, such as <code>approvedpayment</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -722,7 +984,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The event that triggered the notification.</p>
+         * <p>The event that triggered the notification, such as <code>approvedpayment</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "notificationEvent", nulls = Nulls.SKIP)
@@ -732,7 +994,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The ID of the paypoint that the notification is related to.</p>
+         * <p>The ID of the paypoint the notification is related to. Null for organization-level notifications.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -748,7 +1010,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The ID of the paypoint that the notification is related to.</p>
+         * <p>The ID of the paypoint the notification is related to. Null for organization-level notifications.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -758,7 +1020,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The ID of the paypoint that the notification is related to.</p>
+         * <p>The ID of the paypoint the notification is related to. Null for organization-level notifications.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "paypointId", nulls = Nulls.SKIP)
@@ -768,7 +1030,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The ID of the organization that the notification belongs to.</p>
+         * <p>The ID of the organization the notification belongs to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -784,7 +1046,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The ID of the organization that the notification belongs to.</p>
+         * <p>The ID of the organization the notification belongs to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -794,7 +1056,7 @@ public final class NotificationLog implements INotificationLog {
         }
 
         /**
-         * <p>The ID of the organization that the notification belongs to.</p>
+         * <p>The ID of the organization the notification belongs to.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "orgId", nulls = Nulls.SKIP)
@@ -806,11 +1068,15 @@ public final class NotificationLog implements INotificationLog {
         @java.lang.Override
         public NotificationLog build() {
             return new NotificationLog(
+                    organizationName,
+                    paypointName,
+                    requestId,
                     id,
                     orgId,
                     paypointId,
                     notificationEvent,
                     target,
+                    responseStatusCode,
                     responseStatus,
                     success,
                     jobData,
@@ -818,6 +1084,10 @@ public final class NotificationLog implements INotificationLog {
                     successDate,
                     lastFailedDate,
                     isInProgress,
+                    organizationLogo,
+                    organizationFavIcon,
+                    paypointLogo,
+                    notificationType,
                     additionalProperties);
         }
 

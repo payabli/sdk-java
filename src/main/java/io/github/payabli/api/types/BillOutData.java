@@ -144,7 +144,7 @@ public final class BillOutData {
     }
 
     /**
-     * @return Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+     * @return Date of bill. Send the date in YYYY-MM-DD format. The API also accepts ISO 8601 date-time values but keeps only the date.
      */
     @JsonProperty("billDate")
     public Optional<String> getBillDate() {
@@ -178,7 +178,7 @@ public final class BillOutData {
     }
 
     /**
-     * @return Due date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+     * @return Due date of bill. Send the date in YYYY-MM-DD format. The API also accepts ISO 8601 date-time values but keeps only the date.
      */
     @JsonProperty("dueDate")
     public Optional<String> getDueDate() {
@@ -456,7 +456,7 @@ public final class BillOutData {
         }
 
         /**
-         * <p>Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * <p>Date of bill. Send the date in YYYY-MM-DD format. The API also accepts ISO 8601 date-time values but keeps only the date.</p>
          */
         @JsonSetter(value = "billDate", nulls = Nulls.SKIP)
         public Builder billDate(Optional<String> billDate) {
@@ -520,7 +520,7 @@ public final class BillOutData {
         }
 
         /**
-         * <p>Due date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.</p>
+         * <p>Due date of bill. Send the date in YYYY-MM-DD format. The API also accepts ISO 8601 date-time values but keeps only the date.</p>
          */
         @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
         public Builder dueDate(Optional<String> dueDate) {

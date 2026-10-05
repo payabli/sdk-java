@@ -389,28 +389,28 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevices(String entry) {
         return this.rawClient.listDevices(entry).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevices(String entry, RequestOptions requestOptions) {
         return this.rawClient.listDevices(entry, requestOptions).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevices(String entry, ListDevicesRequest request) {
         return this.rawClient.listDevices(entry, request).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevices(
             String entry, ListDevicesRequest request, RequestOptions requestOptions) {
@@ -418,28 +418,28 @@ public class AsyncQueryClient {
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevicesOrg(int orgId) {
         return this.rawClient.listDevicesOrg(orgId).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevicesOrg(int orgId, RequestOptions requestOptions) {
         return this.rawClient.listDevicesOrg(orgId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevicesOrg(int orgId, ListDevicesOrgRequest request) {
         return this.rawClient.listDevicesOrg(orgId, request).thenApply(response -> response.body());
     }
 
     /**
-     * Returns a list of cloud devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
+     * Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the <code>exportFormat</code> query parameter to return the results as a file instead of a JSON response.
      */
     public CompletableFuture<QueryDeviceResponse> listDevicesOrg(
             int orgId, ListDevicesOrgRequest request, RequestOptions requestOptions) {
