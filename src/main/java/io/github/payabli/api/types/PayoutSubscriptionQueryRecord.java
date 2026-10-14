@@ -31,11 +31,19 @@ public final class PayoutSubscriptionQueryRecord {
 
     private final Optional<List<GeneralEvents>> events;
 
-    private final Optional<VendorQueryRecord> vendor;
+    private final Optional<PayoutSubscriptionVendor> vendor;
 
-    private final Optional<List<BillPayOutData>> billData;
+    private final Optional<List<PayoutSubscriptionBill>> billData;
 
     private final Optional<String> externalPaypointId;
+
+    private final Optional<Boolean> sameDayAch;
+
+    private final Optional<Boolean> doNotCreateBills;
+
+    private final Optional<Boolean> allowDuplicatedBills;
+
+    private final Optional<Boolean> autoConvertSameDayAch;
 
     private final Optional<String> method;
 
@@ -47,7 +55,7 @@ public final class PayoutSubscriptionQueryRecord {
 
     private final Optional<Double> feeAmount;
 
-    private final Optional<QueryPaymentData> paymentData;
+    private final Optional<PayoutSubscriptionPaymentData> paymentData;
 
     private final Optional<OffsetDateTime> startDate;
 
@@ -83,21 +91,27 @@ public final class PayoutSubscriptionQueryRecord {
 
     private final Optional<String> source;
 
+    private final Optional<String> subscriptionType;
+
     private final Map<String, Object> additionalProperties;
 
     private PayoutSubscriptionQueryRecord(
             Optional<Long> idOutSubscription,
             Optional<Integer> status,
             Optional<List<GeneralEvents>> events,
-            Optional<VendorQueryRecord> vendor,
-            Optional<List<BillPayOutData>> billData,
+            Optional<PayoutSubscriptionVendor> vendor,
+            Optional<List<PayoutSubscriptionBill>> billData,
             Optional<String> externalPaypointId,
+            Optional<Boolean> sameDayAch,
+            Optional<Boolean> doNotCreateBills,
+            Optional<Boolean> allowDuplicatedBills,
+            Optional<Boolean> autoConvertSameDayAch,
             Optional<String> method,
             Optional<Long> paypointId,
             Optional<Double> totalAmount,
             Optional<Double> netAmount,
             Optional<Double> feeAmount,
-            Optional<QueryPaymentData> paymentData,
+            Optional<PayoutSubscriptionPaymentData> paymentData,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
             Optional<OffsetDateTime> nextDate,
@@ -115,6 +129,7 @@ public final class PayoutSubscriptionQueryRecord {
             Optional<String> parentOrgName,
             Optional<Long> parentOrgId,
             Optional<String> source,
+            Optional<String> subscriptionType,
             Map<String, Object> additionalProperties) {
         this.idOutSubscription = idOutSubscription;
         this.status = status;
@@ -122,6 +137,10 @@ public final class PayoutSubscriptionQueryRecord {
         this.vendor = vendor;
         this.billData = billData;
         this.externalPaypointId = externalPaypointId;
+        this.sameDayAch = sameDayAch;
+        this.doNotCreateBills = doNotCreateBills;
+        this.allowDuplicatedBills = allowDuplicatedBills;
+        this.autoConvertSameDayAch = autoConvertSameDayAch;
         this.method = method;
         this.paypointId = paypointId;
         this.totalAmount = totalAmount;
@@ -145,6 +164,7 @@ public final class PayoutSubscriptionQueryRecord {
         this.parentOrgName = parentOrgName;
         this.parentOrgId = parentOrgId;
         this.source = source;
+        this.subscriptionType = subscriptionType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -171,13 +191,16 @@ public final class PayoutSubscriptionQueryRecord {
     /**
      * @return Events associated with the payout subscription.
      */
-    @JsonProperty("events")
+    @JsonIgnore
     public Optional<List<GeneralEvents>> getEvents() {
+        if (events == null) {
+            return Optional.empty();
+        }
         return events;
     }
 
     @JsonProperty("vendor")
-    public Optional<VendorQueryRecord> getVendor() {
+    public Optional<PayoutSubscriptionVendor> getVendor() {
         return vendor;
     }
 
@@ -185,13 +208,45 @@ public final class PayoutSubscriptionQueryRecord {
      * @return Bills associated with the payout subscription.
      */
     @JsonProperty("billData")
-    public Optional<List<BillPayOutData>> getBillData() {
+    public Optional<List<PayoutSubscriptionBill>> getBillData() {
         return billData;
     }
 
     @JsonProperty("externalPaypointID")
     public Optional<String> getExternalPaypointId() {
         return externalPaypointId;
+    }
+
+    /**
+     * @return When <code>true</code>, the payout subscription's payouts are processed as same-day ACH instead of standard ACH. Same-day ACH must be enabled for the paypoint. Only ACH payouts honor this setting.
+     */
+    @JsonProperty("sameDayAch")
+    public Optional<Boolean> getSameDayAch() {
+        return sameDayAch;
+    }
+
+    /**
+     * @return When <code>true</code>, Payabli doesn't automatically create a bill for the payout subscription's payouts.
+     */
+    @JsonProperty("doNotCreateBills")
+    public Optional<Boolean> getDoNotCreateBills() {
+        return doNotCreateBills;
+    }
+
+    /**
+     * @return When <code>true</code>, the payout subscription bypasses the requirement for unique bills, identified by vendor invoice number.
+     */
+    @JsonProperty("allowDuplicatedBills")
+    public Optional<Boolean> getAllowDuplicatedBills() {
+        return allowDuplicatedBills;
+    }
+
+    /**
+     * @return When <code>true</code>, a same-day ACH payout captured after the same-day ACH cutoff is converted to a standard ACH payment. When <code>false</code>, the capture is declined. Has no effect when <code>sameDayAch</code> is <code>false</code>.
+     */
+    @JsonProperty("autoConvertSameDayAch")
+    public Optional<Boolean> getAutoConvertSameDayAch() {
+        return autoConvertSameDayAch;
     }
 
     /**
@@ -232,7 +287,7 @@ public final class PayoutSubscriptionQueryRecord {
     }
 
     @JsonProperty("paymentData")
-    public Optional<QueryPaymentData> getPaymentData() {
+    public Optional<PayoutSubscriptionPaymentData> getPaymentData() {
         return paymentData;
     }
 
@@ -372,6 +427,23 @@ public final class PayoutSubscriptionQueryRecord {
         return source;
     }
 
+    /**
+     * @return Subscription type. Always <code>null</code> for payout subscriptions.
+     */
+    @JsonIgnore
+    public Optional<String> getSubscriptionType() {
+        if (subscriptionType == null) {
+            return Optional.empty();
+        }
+        return subscriptionType;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("events")
+    private Optional<List<GeneralEvents>> _getEvents() {
+        return events;
+    }
+
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("startDate")
     private Optional<OffsetDateTime> _getStartDate() {
@@ -396,6 +468,12 @@ public final class PayoutSubscriptionQueryRecord {
         return lastRun;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("subscriptionType")
+    private Optional<String> _getSubscriptionType() {
+        return subscriptionType;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -414,6 +492,10 @@ public final class PayoutSubscriptionQueryRecord {
                 && vendor.equals(other.vendor)
                 && billData.equals(other.billData)
                 && externalPaypointId.equals(other.externalPaypointId)
+                && sameDayAch.equals(other.sameDayAch)
+                && doNotCreateBills.equals(other.doNotCreateBills)
+                && allowDuplicatedBills.equals(other.allowDuplicatedBills)
+                && autoConvertSameDayAch.equals(other.autoConvertSameDayAch)
                 && method.equals(other.method)
                 && paypointId.equals(other.paypointId)
                 && totalAmount.equals(other.totalAmount)
@@ -436,7 +518,8 @@ public final class PayoutSubscriptionQueryRecord {
                 && paypointEntryname.equals(other.paypointEntryname)
                 && parentOrgName.equals(other.parentOrgName)
                 && parentOrgId.equals(other.parentOrgId)
-                && source.equals(other.source);
+                && source.equals(other.source)
+                && subscriptionType.equals(other.subscriptionType);
     }
 
     @java.lang.Override
@@ -448,6 +531,10 @@ public final class PayoutSubscriptionQueryRecord {
                 this.vendor,
                 this.billData,
                 this.externalPaypointId,
+                this.sameDayAch,
+                this.doNotCreateBills,
+                this.allowDuplicatedBills,
+                this.autoConvertSameDayAch,
                 this.method,
                 this.paypointId,
                 this.totalAmount,
@@ -470,7 +557,8 @@ public final class PayoutSubscriptionQueryRecord {
                 this.paypointEntryname,
                 this.parentOrgName,
                 this.parentOrgId,
-                this.source);
+                this.source,
+                this.subscriptionType);
     }
 
     @java.lang.Override
@@ -490,11 +578,19 @@ public final class PayoutSubscriptionQueryRecord {
 
         private Optional<List<GeneralEvents>> events = Optional.empty();
 
-        private Optional<VendorQueryRecord> vendor = Optional.empty();
+        private Optional<PayoutSubscriptionVendor> vendor = Optional.empty();
 
-        private Optional<List<BillPayOutData>> billData = Optional.empty();
+        private Optional<List<PayoutSubscriptionBill>> billData = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
+
+        private Optional<Boolean> sameDayAch = Optional.empty();
+
+        private Optional<Boolean> doNotCreateBills = Optional.empty();
+
+        private Optional<Boolean> allowDuplicatedBills = Optional.empty();
+
+        private Optional<Boolean> autoConvertSameDayAch = Optional.empty();
 
         private Optional<String> method = Optional.empty();
 
@@ -506,7 +602,7 @@ public final class PayoutSubscriptionQueryRecord {
 
         private Optional<Double> feeAmount = Optional.empty();
 
-        private Optional<QueryPaymentData> paymentData = Optional.empty();
+        private Optional<PayoutSubscriptionPaymentData> paymentData = Optional.empty();
 
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
@@ -542,6 +638,8 @@ public final class PayoutSubscriptionQueryRecord {
 
         private Optional<String> source = Optional.empty();
 
+        private Optional<String> subscriptionType = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -554,6 +652,10 @@ public final class PayoutSubscriptionQueryRecord {
             vendor(other.getVendor());
             billData(other.getBillData());
             externalPaypointId(other.getExternalPaypointId());
+            sameDayAch(other.getSameDayAch());
+            doNotCreateBills(other.getDoNotCreateBills());
+            allowDuplicatedBills(other.getAllowDuplicatedBills());
+            autoConvertSameDayAch(other.getAutoConvertSameDayAch());
             method(other.getMethod());
             paypointId(other.getPaypointId());
             totalAmount(other.getTotalAmount());
@@ -577,6 +679,7 @@ public final class PayoutSubscriptionQueryRecord {
             parentOrgName(other.getParentOrgName());
             parentOrgId(other.getParentOrgId());
             source(other.getSource());
+            subscriptionType(other.getSubscriptionType());
             return this;
         }
 
@@ -626,13 +729,24 @@ public final class PayoutSubscriptionQueryRecord {
             return this;
         }
 
+        public Builder events(Nullable<List<GeneralEvents>> events) {
+            if (events.isNull()) {
+                this.events = null;
+            } else if (events.isEmpty()) {
+                this.events = Optional.empty();
+            } else {
+                this.events = Optional.of(events.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "vendor", nulls = Nulls.SKIP)
-        public Builder vendor(Optional<VendorQueryRecord> vendor) {
+        public Builder vendor(Optional<PayoutSubscriptionVendor> vendor) {
             this.vendor = vendor;
             return this;
         }
 
-        public Builder vendor(VendorQueryRecord vendor) {
+        public Builder vendor(PayoutSubscriptionVendor vendor) {
             this.vendor = Optional.ofNullable(vendor);
             return this;
         }
@@ -641,12 +755,12 @@ public final class PayoutSubscriptionQueryRecord {
          * <p>Bills associated with the payout subscription.</p>
          */
         @JsonSetter(value = "billData", nulls = Nulls.SKIP)
-        public Builder billData(Optional<List<BillPayOutData>> billData) {
+        public Builder billData(Optional<List<PayoutSubscriptionBill>> billData) {
             this.billData = billData;
             return this;
         }
 
-        public Builder billData(List<BillPayOutData> billData) {
+        public Builder billData(List<PayoutSubscriptionBill> billData) {
             this.billData = Optional.ofNullable(billData);
             return this;
         }
@@ -659,6 +773,62 @@ public final class PayoutSubscriptionQueryRecord {
 
         public Builder externalPaypointId(String externalPaypointId) {
             this.externalPaypointId = Optional.ofNullable(externalPaypointId);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, the payout subscription's payouts are processed as same-day ACH instead of standard ACH. Same-day ACH must be enabled for the paypoint. Only ACH payouts honor this setting.</p>
+         */
+        @JsonSetter(value = "sameDayAch", nulls = Nulls.SKIP)
+        public Builder sameDayAch(Optional<Boolean> sameDayAch) {
+            this.sameDayAch = sameDayAch;
+            return this;
+        }
+
+        public Builder sameDayAch(Boolean sameDayAch) {
+            this.sameDayAch = Optional.ofNullable(sameDayAch);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, Payabli doesn't automatically create a bill for the payout subscription's payouts.</p>
+         */
+        @JsonSetter(value = "doNotCreateBills", nulls = Nulls.SKIP)
+        public Builder doNotCreateBills(Optional<Boolean> doNotCreateBills) {
+            this.doNotCreateBills = doNotCreateBills;
+            return this;
+        }
+
+        public Builder doNotCreateBills(Boolean doNotCreateBills) {
+            this.doNotCreateBills = Optional.ofNullable(doNotCreateBills);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, the payout subscription bypasses the requirement for unique bills, identified by vendor invoice number.</p>
+         */
+        @JsonSetter(value = "allowDuplicatedBills", nulls = Nulls.SKIP)
+        public Builder allowDuplicatedBills(Optional<Boolean> allowDuplicatedBills) {
+            this.allowDuplicatedBills = allowDuplicatedBills;
+            return this;
+        }
+
+        public Builder allowDuplicatedBills(Boolean allowDuplicatedBills) {
+            this.allowDuplicatedBills = Optional.ofNullable(allowDuplicatedBills);
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, a same-day ACH payout captured after the same-day ACH cutoff is converted to a standard ACH payment. When <code>false</code>, the capture is declined. Has no effect when <code>sameDayAch</code> is <code>false</code>.</p>
+         */
+        @JsonSetter(value = "autoConvertSameDayAch", nulls = Nulls.SKIP)
+        public Builder autoConvertSameDayAch(Optional<Boolean> autoConvertSameDayAch) {
+            this.autoConvertSameDayAch = autoConvertSameDayAch;
+            return this;
+        }
+
+        public Builder autoConvertSameDayAch(Boolean autoConvertSameDayAch) {
+            this.autoConvertSameDayAch = Optional.ofNullable(autoConvertSameDayAch);
             return this;
         }
 
@@ -730,12 +900,12 @@ public final class PayoutSubscriptionQueryRecord {
         }
 
         @JsonSetter(value = "paymentData", nulls = Nulls.SKIP)
-        public Builder paymentData(Optional<QueryPaymentData> paymentData) {
+        public Builder paymentData(Optional<PayoutSubscriptionPaymentData> paymentData) {
             this.paymentData = paymentData;
             return this;
         }
 
-        public Builder paymentData(QueryPaymentData paymentData) {
+        public Builder paymentData(PayoutSubscriptionPaymentData paymentData) {
             this.paymentData = Optional.ofNullable(paymentData);
             return this;
         }
@@ -1010,6 +1180,31 @@ public final class PayoutSubscriptionQueryRecord {
             return this;
         }
 
+        /**
+         * <p>Subscription type. Always <code>null</code> for payout subscriptions.</p>
+         */
+        @JsonSetter(value = "subscriptionType", nulls = Nulls.SKIP)
+        public Builder subscriptionType(Optional<String> subscriptionType) {
+            this.subscriptionType = subscriptionType;
+            return this;
+        }
+
+        public Builder subscriptionType(String subscriptionType) {
+            this.subscriptionType = Optional.ofNullable(subscriptionType);
+            return this;
+        }
+
+        public Builder subscriptionType(Nullable<String> subscriptionType) {
+            if (subscriptionType.isNull()) {
+                this.subscriptionType = null;
+            } else if (subscriptionType.isEmpty()) {
+                this.subscriptionType = Optional.empty();
+            } else {
+                this.subscriptionType = Optional.of(subscriptionType.get());
+            }
+            return this;
+        }
+
         public PayoutSubscriptionQueryRecord build() {
             return new PayoutSubscriptionQueryRecord(
                     idOutSubscription,
@@ -1018,6 +1213,10 @@ public final class PayoutSubscriptionQueryRecord {
                     vendor,
                     billData,
                     externalPaypointId,
+                    sameDayAch,
+                    doNotCreateBills,
+                    allowDuplicatedBills,
+                    autoConvertSameDayAch,
                     method,
                     paypointId,
                     totalAmount,
@@ -1041,6 +1240,7 @@ public final class PayoutSubscriptionQueryRecord {
                     parentOrgName,
                     parentOrgId,
                     source,
+                    subscriptionType,
                     additionalProperties);
         }
 

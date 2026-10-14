@@ -94,8 +94,11 @@ public final class BillPayOutData {
     /**
      * @return Bill ID in Payabli.
      */
-    @JsonProperty("billId")
+    @JsonIgnore
     public Optional<Long> getBillId() {
+        if (billId == null) {
+            return Optional.empty();
+        }
         return billId;
     }
 
@@ -110,21 +113,30 @@ public final class BillPayOutData {
         return lotNumber;
     }
 
-    @JsonProperty("AccountingField1")
+    @JsonIgnore
     public Optional<String> getAccountingField1() {
+        if (accountingField1 == null) {
+            return Optional.empty();
+        }
         return accountingField1;
     }
 
-    @JsonProperty("AccountingField2")
+    @JsonIgnore
     public Optional<String> getAccountingField2() {
+        if (accountingField2 == null) {
+            return Optional.empty();
+        }
         return accountingField2;
     }
 
     /**
      * @return Description of payment terms.
      */
-    @JsonProperty("Terms")
+    @JsonIgnore
     public Optional<Terms> getTerms() {
+        if (terms == null) {
+            return Optional.empty();
+        }
         return terms;
     }
 
@@ -139,8 +151,11 @@ public final class BillPayOutData {
     /**
      * @return Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see <a href="/developers/developer-guides/pay-out-manage-payouts">the documentation</a>.
      */
-    @JsonProperty("attachments")
+    @JsonIgnore
     public Optional<List<FileContent>> getAttachments() {
+        if (attachments == null) {
+            return Optional.empty();
+        }
         return attachments;
     }
 
@@ -185,8 +200,11 @@ public final class BillPayOutData {
     /**
      * @return Any comments about bill. <strong>For managed payouts, this field has a limit of 100 characters</strong>.
      */
-    @JsonProperty("comments")
+    @JsonIgnore
     public Optional<String> getComments() {
+        if (comments == null) {
+            return Optional.empty();
+        }
         return comments;
     }
 
@@ -204,8 +222,11 @@ public final class BillPayOutData {
     /**
      * @return Bill discount amount.
      */
-    @JsonProperty("discount")
+    @JsonIgnore
     public Optional<String> getDiscount() {
+        if (discount == null) {
+            return Optional.empty();
+        }
         return discount;
     }
 
@@ -221,15 +242,45 @@ public final class BillPayOutData {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("billId")
+    private Optional<Long> _getBillId() {
+        return billId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("LotNumber")
     private Optional<String> _getLotNumber() {
         return lotNumber;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AccountingField1")
+    private Optional<String> _getAccountingField1() {
+        return accountingField1;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("AccountingField2")
+    private Optional<String> _getAccountingField2() {
+        return accountingField2;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("Terms")
+    private Optional<Terms> _getTerms() {
+        return terms;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("AdditionalData")
     private Optional<Map<String, String>> _getAdditionalData() {
         return additionalData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("attachments")
+    private Optional<List<FileContent>> _getAttachments() {
+        return attachments;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -245,9 +296,21 @@ public final class BillPayOutData {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("comments")
+    private Optional<String> _getComments() {
+        return comments;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("identifier")
     private Optional<String> _getIdentifier() {
         return identifier;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("discount")
+    private Optional<String> _getDiscount() {
+        return discount;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -384,6 +447,17 @@ public final class BillPayOutData {
             return this;
         }
 
+        public Builder billId(Nullable<Long> billId) {
+            if (billId.isNull()) {
+                this.billId = null;
+            } else if (billId.isEmpty()) {
+                this.billId = Optional.empty();
+            } else {
+                this.billId = Optional.of(billId.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Lot number associated with the bill.</p>
          */
@@ -420,6 +494,17 @@ public final class BillPayOutData {
             return this;
         }
 
+        public Builder accountingField1(Nullable<String> accountingField1) {
+            if (accountingField1.isNull()) {
+                this.accountingField1 = null;
+            } else if (accountingField1.isEmpty()) {
+                this.accountingField1 = Optional.empty();
+            } else {
+                this.accountingField1 = Optional.of(accountingField1.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "AccountingField2", nulls = Nulls.SKIP)
         public Builder accountingField2(Optional<String> accountingField2) {
             this.accountingField2 = accountingField2;
@@ -428,6 +513,17 @@ public final class BillPayOutData {
 
         public Builder accountingField2(String accountingField2) {
             this.accountingField2 = Optional.ofNullable(accountingField2);
+            return this;
+        }
+
+        public Builder accountingField2(Nullable<String> accountingField2) {
+            if (accountingField2.isNull()) {
+                this.accountingField2 = null;
+            } else if (accountingField2.isEmpty()) {
+                this.accountingField2 = Optional.empty();
+            } else {
+                this.accountingField2 = Optional.of(accountingField2.get());
+            }
             return this;
         }
 
@@ -442,6 +538,17 @@ public final class BillPayOutData {
 
         public Builder terms(Terms terms) {
             this.terms = Optional.ofNullable(terms);
+            return this;
+        }
+
+        public Builder terms(Nullable<Terms> terms) {
+            if (terms.isNull()) {
+                this.terms = null;
+            } else if (terms.isEmpty()) {
+                this.terms = Optional.empty();
+            } else {
+                this.terms = Optional.of(terms.get());
+            }
             return this;
         }
 
@@ -478,6 +585,17 @@ public final class BillPayOutData {
 
         public Builder attachments(List<FileContent> attachments) {
             this.attachments = Optional.ofNullable(attachments);
+            return this;
+        }
+
+        public Builder attachments(Nullable<List<FileContent>> attachments) {
+            if (attachments.isNull()) {
+                this.attachments = null;
+            } else if (attachments.isEmpty()) {
+                this.attachments = Optional.empty();
+            } else {
+                this.attachments = Optional.of(attachments.get());
+            }
             return this;
         }
 
@@ -573,6 +691,17 @@ public final class BillPayOutData {
             return this;
         }
 
+        public Builder comments(Nullable<String> comments) {
+            if (comments.isNull()) {
+                this.comments = null;
+            } else if (comments.isEmpty()) {
+                this.comments = Optional.empty();
+            } else {
+                this.comments = Optional.of(comments.get());
+            }
+            return this;
+        }
+
         /**
          * <p>Custom identifier for the bill.</p>
          */
@@ -609,6 +738,17 @@ public final class BillPayOutData {
 
         public Builder discount(String discount) {
             this.discount = Optional.ofNullable(discount);
+            return this;
+        }
+
+        public Builder discount(Nullable<String> discount) {
+            if (discount.isNull()) {
+                this.discount = null;
+            } else if (discount.isEmpty()) {
+                this.discount = Optional.empty();
+            } else {
+                this.discount = Optional.of(discount.get());
+            }
             return this;
         }
 

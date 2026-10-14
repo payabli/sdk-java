@@ -130,7 +130,9 @@ public final class VendorQueryRecord {
 
     private final Optional<String> externalPaypointId;
 
-    private final Optional<List<VendorResponseStoredMethod>> storedMethods;
+    private final Optional<List<VendorStoredMethod>> storedMethods;
+
+    private final Optional<VendorPortalAccess> vendorPortal;
 
     private final Map<String, Object> additionalProperties;
 
@@ -187,7 +189,8 @@ public final class VendorQueryRecord {
             Optional<String> enrichmentId,
             Optional<Map<String, String>> additionalData,
             Optional<String> externalPaypointId,
-            Optional<List<VendorResponseStoredMethod>> storedMethods,
+            Optional<List<VendorStoredMethod>> storedMethods,
+            Optional<VendorPortalAccess> vendorPortal,
             Map<String, Object> additionalProperties) {
         this.vendorNumber = vendorNumber;
         this.name1 = name1;
@@ -242,6 +245,7 @@ public final class VendorQueryRecord {
         this.additionalData = additionalData;
         this.externalPaypointId = externalPaypointId;
         this.storedMethods = storedMethods;
+        this.vendorPortal = vendorPortal;
         this.additionalProperties = additionalProperties;
     }
 
@@ -665,11 +669,19 @@ public final class VendorQueryRecord {
     }
 
     @JsonIgnore
-    public Optional<List<VendorResponseStoredMethod>> getStoredMethods() {
+    public Optional<List<VendorStoredMethod>> getStoredMethods() {
         if (storedMethods == null) {
             return Optional.empty();
         }
         return storedMethods;
+    }
+
+    @JsonIgnore
+    public Optional<VendorPortalAccess> getVendorPortal() {
+        if (vendorPortal == null) {
+            return Optional.empty();
+        }
+        return vendorPortal;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -908,8 +920,14 @@ public final class VendorQueryRecord {
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("StoredMethods")
-    private Optional<List<VendorResponseStoredMethod>> _getStoredMethods() {
+    private Optional<List<VendorStoredMethod>> _getStoredMethods() {
         return storedMethods;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("VendorPortal")
+    private Optional<VendorPortalAccess> _getVendorPortal() {
+        return vendorPortal;
     }
 
     @java.lang.Override
@@ -976,7 +994,8 @@ public final class VendorQueryRecord {
                 && enrichmentId.equals(other.enrichmentId)
                 && additionalData.equals(other.additionalData)
                 && externalPaypointId.equals(other.externalPaypointId)
-                && storedMethods.equals(other.storedMethods);
+                && storedMethods.equals(other.storedMethods)
+                && vendorPortal.equals(other.vendorPortal);
     }
 
     @java.lang.Override
@@ -1034,7 +1053,8 @@ public final class VendorQueryRecord {
                 this.enrichmentId,
                 this.additionalData,
                 this.externalPaypointId,
-                this.storedMethods);
+                this.storedMethods,
+                this.vendorPortal);
     }
 
     @java.lang.Override
@@ -1383,11 +1403,17 @@ public final class VendorQueryRecord {
 
         _FinalStage externalPaypointId(Nullable<String> externalPaypointId);
 
-        _FinalStage storedMethods(Optional<List<VendorResponseStoredMethod>> storedMethods);
+        _FinalStage storedMethods(Optional<List<VendorStoredMethod>> storedMethods);
 
-        _FinalStage storedMethods(List<VendorResponseStoredMethod> storedMethods);
+        _FinalStage storedMethods(List<VendorStoredMethod> storedMethods);
 
-        _FinalStage storedMethods(Nullable<List<VendorResponseStoredMethod>> storedMethods);
+        _FinalStage storedMethods(Nullable<List<VendorStoredMethod>> storedMethods);
+
+        _FinalStage vendorPortal(Optional<VendorPortalAccess> vendorPortal);
+
+        _FinalStage vendorPortal(VendorPortalAccess vendorPortal);
+
+        _FinalStage vendorPortal(Nullable<VendorPortalAccess> vendorPortal);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -1432,7 +1458,9 @@ public final class VendorQueryRecord {
 
         private String enrichmentStatus;
 
-        private Optional<List<VendorResponseStoredMethod>> storedMethods = Optional.empty();
+        private Optional<VendorPortalAccess> vendorPortal = Optional.empty();
+
+        private Optional<List<VendorStoredMethod>> storedMethods = Optional.empty();
 
         private Optional<String> externalPaypointId = Optional.empty();
 
@@ -1572,6 +1600,7 @@ public final class VendorQueryRecord {
             additionalData(other.getAdditionalData());
             externalPaypointId(other.getExternalPaypointId());
             storedMethods(other.getStoredMethods());
+            vendorPortal(other.getVendorPortal());
             return this;
         }
 
@@ -1671,7 +1700,32 @@ public final class VendorQueryRecord {
         }
 
         @java.lang.Override
-        public _FinalStage storedMethods(Nullable<List<VendorResponseStoredMethod>> storedMethods) {
+        public _FinalStage vendorPortal(Nullable<VendorPortalAccess> vendorPortal) {
+            if (vendorPortal.isNull()) {
+                this.vendorPortal = null;
+            } else if (vendorPortal.isEmpty()) {
+                this.vendorPortal = Optional.empty();
+            } else {
+                this.vendorPortal = Optional.of(vendorPortal.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage vendorPortal(VendorPortalAccess vendorPortal) {
+            this.vendorPortal = Optional.ofNullable(vendorPortal);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "VendorPortal", nulls = Nulls.SKIP)
+        public _FinalStage vendorPortal(Optional<VendorPortalAccess> vendorPortal) {
+            this.vendorPortal = vendorPortal;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage storedMethods(Nullable<List<VendorStoredMethod>> storedMethods) {
             if (storedMethods.isNull()) {
                 this.storedMethods = null;
             } else if (storedMethods.isEmpty()) {
@@ -1683,14 +1737,14 @@ public final class VendorQueryRecord {
         }
 
         @java.lang.Override
-        public _FinalStage storedMethods(List<VendorResponseStoredMethod> storedMethods) {
+        public _FinalStage storedMethods(List<VendorStoredMethod> storedMethods) {
             this.storedMethods = Optional.ofNullable(storedMethods);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "StoredMethods", nulls = Nulls.SKIP)
-        public _FinalStage storedMethods(Optional<List<VendorResponseStoredMethod>> storedMethods) {
+        public _FinalStage storedMethods(Optional<List<VendorStoredMethod>> storedMethods) {
             this.storedMethods = storedMethods;
             return this;
         }
@@ -2869,6 +2923,7 @@ public final class VendorQueryRecord {
                     additionalData,
                     externalPaypointId,
                     storedMethods,
+                    vendorPortal,
                     additionalProperties);
         }
 

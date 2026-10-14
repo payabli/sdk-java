@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +54,8 @@ public final class BillingDataResponse {
 
     private final boolean default_;
 
+    private final Optional<String> country;
+
     private final Map<String, Object> additionalProperties;
 
     private BillingDataResponse(
@@ -68,6 +73,7 @@ public final class BillingDataResponse {
             int status,
             List<Object> services,
             boolean default_,
+            Optional<String> country,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.accountId = accountId;
@@ -83,6 +89,7 @@ public final class BillingDataResponse {
         this.status = status;
         this.services = services;
         this.default_ = default_;
+        this.country = country;
         this.additionalProperties = additionalProperties;
     }
 
@@ -97,8 +104,11 @@ public final class BillingDataResponse {
     /**
      * @return An identifier for the bank account. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>-2</code>. This value is also used as the identifier for the bank account's associated payment connector.
      */
-    @JsonProperty("accountId")
+    @JsonIgnore
     public Optional<String> getAccountId() {
+        if (accountId == null) {
+            return Optional.empty();
+        }
         return accountId;
     }
 
@@ -170,6 +180,29 @@ public final class BillingDataResponse {
         return default_;
     }
 
+    /**
+     * @return Country code of the bank account, in ISO 3166-1 alpha-2 format (for example, <code>US</code> or <code>CA</code>).
+     */
+    @JsonIgnore
+    public Optional<String> getCountry() {
+        if (country == null) {
+            return Optional.empty();
+        }
+        return country;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("accountId")
+    private Optional<String> _getAccountId() {
+        return accountId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("country")
+    private Optional<String> _getCountry() {
+        return country;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -195,7 +228,8 @@ public final class BillingDataResponse {
                 && verified == other.verified
                 && status == other.status
                 && services.equals(other.services)
-                && default_ == other.default_;
+                && default_ == other.default_
+                && country.equals(other.country);
     }
 
     @java.lang.Override
@@ -214,7 +248,8 @@ public final class BillingDataResponse {
                 this.verified,
                 this.status,
                 this.services,
-                this.default_);
+                this.default_,
+                this.country);
     }
 
     @java.lang.Override
@@ -301,11 +336,22 @@ public final class BillingDataResponse {
 
         _FinalStage accountId(String accountId);
 
+        _FinalStage accountId(Nullable<String> accountId);
+
         _FinalStage services(List<Object> services);
 
         _FinalStage addServices(Object services);
 
         _FinalStage addAllServices(List<Object> services);
+
+        /**
+         * <p>Country code of the bank account, in ISO 3166-1 alpha-2 format (for example, <code>US</code> or <code>CA</code>).</p>
+         */
+        _FinalStage country(Optional<String> country);
+
+        _FinalStage country(String country);
+
+        _FinalStage country(Nullable<String> country);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -347,6 +393,8 @@ public final class BillingDataResponse {
 
         private boolean default_;
 
+        private Optional<String> country = Optional.empty();
+
         private List<Object> services = new ArrayList<>();
 
         private Optional<String> accountId = Optional.empty();
@@ -372,6 +420,7 @@ public final class BillingDataResponse {
             status(other.getStatus());
             services(other.getServices());
             default_(other.getDefault());
+            country(other.getCountry());
             return this;
         }
 
@@ -474,6 +523,42 @@ public final class BillingDataResponse {
             return this;
         }
 
+        /**
+         * <p>Country code of the bank account, in ISO 3166-1 alpha-2 format (for example, <code>US</code> or <code>CA</code>).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage country(Nullable<String> country) {
+            if (country.isNull()) {
+                this.country = null;
+            } else if (country.isEmpty()) {
+                this.country = Optional.empty();
+            } else {
+                this.country = Optional.of(country.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Country code of the bank account, in ISO 3166-1 alpha-2 format (for example, <code>US</code> or <code>CA</code>).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage country(String country) {
+            this.country = Optional.ofNullable(country);
+            return this;
+        }
+
+        /**
+         * <p>Country code of the bank account, in ISO 3166-1 alpha-2 format (for example, <code>US</code> or <code>CA</code>).</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "country", nulls = Nulls.SKIP)
+        public _FinalStage country(Optional<String> country) {
+            this.country = country;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage addAllServices(List<Object> services) {
             if (services != null) {
@@ -494,6 +579,22 @@ public final class BillingDataResponse {
             this.services.clear();
             if (services != null) {
                 this.services.addAll(services);
+            }
+            return this;
+        }
+
+        /**
+         * <p>An identifier for the bank account. If not provided during creation or update, the system generates one in the format <code>acct-{first_digit}xxxxx{last_4_digits}</code> based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as <code>-2</code>. This value is also used as the identifier for the bank account's associated payment connector.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountId(Nullable<String> accountId) {
+            if (accountId.isNull()) {
+                this.accountId = null;
+            } else if (accountId.isEmpty()) {
+                this.accountId = Optional.empty();
+            } else {
+                this.accountId = Optional.of(accountId.get());
             }
             return this;
         }
@@ -535,6 +636,7 @@ public final class BillingDataResponse {
                     status,
                     services,
                     default_,
+                    country,
                     additionalProperties);
         }
 

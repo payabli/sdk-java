@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorResponseStoredMethod.Builder.class)
-public final class VendorResponseStoredMethod {
+public final class VendorResponseStoredMethod implements IVendorResponseStoredMethod {
     private final Optional<String> idPmethod;
 
     private final Optional<String> method;
@@ -100,6 +100,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getIdPmethod() {
         if (idPmethod == null) {
             return Optional.empty();
@@ -108,6 +109,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getMethod() {
         if (method == null) {
             return Optional.empty();
@@ -116,6 +118,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getDescriptor() {
         if (descriptor == null) {
             return Optional.empty();
@@ -124,6 +127,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getMaskedAccount() {
         if (maskedAccount == null) {
             return Optional.empty();
@@ -132,6 +136,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getExpDate() {
         if (expDate == null) {
             return Optional.empty();
@@ -140,6 +145,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getHolderName() {
         if (holderName == null) {
             return Optional.empty();
@@ -148,6 +154,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getAchSecCode() {
         if (achSecCode == null) {
             return Optional.empty();
@@ -156,6 +163,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getAchHolderType() {
         if (achHolderType == null) {
             return Optional.empty();
@@ -164,6 +172,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<Boolean> getIsValidatedAch() {
         if (isValidatedAch == null) {
             return Optional.empty();
@@ -172,6 +181,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getBin() {
         if (bin == null) {
             return Optional.empty();
@@ -180,6 +190,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<BinData> getBinData() {
         if (binData == null) {
             return Optional.empty();
@@ -188,6 +199,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getAba() {
         if (aba == null) {
             return Optional.empty();
@@ -196,6 +208,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getPostalCode() {
         if (postalCode == null) {
             return Optional.empty();
@@ -204,6 +217,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getMethodType() {
         if (methodType == null) {
             return Optional.empty();
@@ -215,6 +229,7 @@ public final class VendorResponseStoredMethod {
      * @return Digital wallet type if applicable.
      */
     @JsonIgnore
+    @java.lang.Override
     public Optional<String> getWalletType() {
         if (walletType == null) {
             return Optional.empty();
@@ -223,6 +238,7 @@ public final class VendorResponseStoredMethod {
     }
 
     @JsonIgnore
+    @java.lang.Override
     public Optional<OffsetDateTime> getLastUpdated() {
         if (lastUpdated == null) {
             return Optional.empty();
@@ -234,6 +250,7 @@ public final class VendorResponseStoredMethod {
      * @return Date and time the card was last updated.
      */
     @JsonIgnore
+    @java.lang.Override
     public Optional<OffsetDateTime> getCardUpdatedOn() {
         if (cardUpdatedOn == null) {
             return Optional.empty();
