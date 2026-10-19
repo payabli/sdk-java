@@ -134,6 +134,7 @@ public final class ListTransactionsOrgRequest {
      * <li><code>customerShippingState</code> (ct, nct, eq, ne)</li>
      * <li><code>customerShippingCountry</code> (ct, nct, eq, ne)</li>
      * <li><code>deviceId</code> (ct, nct, in, nin, eq, ne)</li>
+     * <li><code>DeviceEntryMode</code> (eq, ne, in, nin). Filters by how the device read the card: <code>Chip</code>, <code>Contactless</code>, <code>Swipe</code>, <code>Manual</code>, <code>Fallback</code>, or <code>None</code>. Case-insensitive. Separate multiple values with <code>|</code>, for example <code>DeviceEntryMode(in)=Chip|Contactless</code>. <code>ne</code> and <code>nin</code> also return transactions with no entry mode, such as non-device transactions. An unrecognized value is ignored, so the filter isn't applied.</li>
      * <li><code>AchSecCode</code> ( ct, nct, in, nin, eq, ne)</li>
      * <li>`AchHolderType`` (ct, nct, in, nin, eq, and ne)</li>
      * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name related to customer data</li>
@@ -329,6 +330,7 @@ public final class ListTransactionsOrgRequest {
          * <li><code>customerShippingState</code> (ct, nct, eq, ne)</li>
          * <li><code>customerShippingCountry</code> (ct, nct, eq, ne)</li>
          * <li><code>deviceId</code> (ct, nct, in, nin, eq, ne)</li>
+         * <li><code>DeviceEntryMode</code> (eq, ne, in, nin). Filters by how the device read the card: <code>Chip</code>, <code>Contactless</code>, <code>Swipe</code>, <code>Manual</code>, <code>Fallback</code>, or <code>None</code>. Case-insensitive. Separate multiple values with <code>|</code>, for example <code>DeviceEntryMode(in)=Chip|Contactless</code>. <code>ne</code> and <code>nin</code> also return transactions with no entry mode, such as non-device transactions. An unrecognized value is ignored, so the filter isn't applied.</li>
          * <li><code>AchSecCode</code> ( ct, nct, in, nin, eq, ne)</li>
          * <li>`AchHolderType`` (ct, nct, in, nin, eq, and ne)</li>
          * <li><code>additional-xxx</code> (ne, eq, ct, nct) where xxx is the additional field name related to customer data</li>

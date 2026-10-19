@@ -50,6 +50,8 @@ public final class AssociatedVendor {
 
     private final Optional<String> locationCode;
 
+    private final Optional<Boolean> issue1099;
+
     private final Optional<List<Contacts>> contacts;
 
     private final Optional<BillingDataResponse> billingData;
@@ -121,6 +123,7 @@ public final class AssociatedVendor {
             Optional<String> country,
             Optional<String> mcc,
             Optional<String> locationCode,
+            Optional<Boolean> issue1099,
             Optional<List<Contacts>> contacts,
             Optional<BillingDataResponse> billingData,
             Optional<String> paymentMethod,
@@ -163,6 +166,7 @@ public final class AssociatedVendor {
         this.country = country;
         this.mcc = mcc;
         this.locationCode = locationCode;
+        this.issue1099 = issue1099;
         this.contacts = contacts;
         this.billingData = billingData;
         this.paymentMethod = paymentMethod;
@@ -291,6 +295,11 @@ public final class AssociatedVendor {
     @JsonProperty("LocationCode")
     public Optional<String> getLocationCode() {
         return locationCode;
+    }
+
+    @JsonProperty("Issue1099")
+    public Optional<Boolean> getIssue1099() {
+        return issue1099;
     }
 
     /**
@@ -466,6 +475,7 @@ public final class AssociatedVendor {
                 && country.equals(other.country)
                 && mcc.equals(other.mcc)
                 && locationCode.equals(other.locationCode)
+                && issue1099.equals(other.issue1099)
                 && contacts.equals(other.contacts)
                 && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
@@ -512,6 +522,7 @@ public final class AssociatedVendor {
                 this.country,
                 this.mcc,
                 this.locationCode,
+                this.issue1099,
                 this.contacts,
                 this.billingData,
                 this.paymentMethod,
@@ -579,6 +590,8 @@ public final class AssociatedVendor {
         private Optional<String> mcc = Optional.empty();
 
         private Optional<String> locationCode = Optional.empty();
+
+        private Optional<Boolean> issue1099 = Optional.empty();
 
         private Optional<List<Contacts>> contacts = Optional.empty();
 
@@ -654,6 +667,7 @@ public final class AssociatedVendor {
             country(other.getCountry());
             mcc(other.getMcc());
             locationCode(other.getLocationCode());
+            issue1099(other.getIssue1099());
             contacts(other.getContacts());
             billingData(other.getBillingData());
             paymentMethod(other.getPaymentMethod());
@@ -865,6 +879,17 @@ public final class AssociatedVendor {
 
         public Builder locationCode(String locationCode) {
             this.locationCode = Optional.ofNullable(locationCode);
+            return this;
+        }
+
+        @JsonSetter(value = "Issue1099", nulls = Nulls.SKIP)
+        public Builder issue1099(Optional<Boolean> issue1099) {
+            this.issue1099 = issue1099;
+            return this;
+        }
+
+        public Builder issue1099(Boolean issue1099) {
+            this.issue1099 = Optional.ofNullable(issue1099);
             return this;
         }
 
@@ -1193,6 +1218,7 @@ public final class AssociatedVendor {
                     country,
                     mcc,
                     locationCode,
+                    issue1099,
                     contacts,
                     billingData,
                     paymentMethod,

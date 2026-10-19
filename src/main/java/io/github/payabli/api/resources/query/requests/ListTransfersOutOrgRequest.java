@@ -85,6 +85,7 @@ public final class ListTransfersOutOrgRequest {
      * <li><code>batchId</code> (ne, eq, in, nin)</li>
      * <li><code>detailType</code> (eq, ne, in, nin, ct, nct)</li>
      * <li><code>detailMethod</code> (eq, ne, in, nin, ct, nct)</li>
+     * <li><code>paymentId</code> (ne, eq, in, nin): The payout's payment ID. Returns every transfer linked to that payout: the payout transfer, any refund and stale check refund transfers, and the billing fee transfer.</li>
      * </ul>
      */
     @JsonProperty("parameters")
@@ -209,6 +210,7 @@ public final class ListTransfersOutOrgRequest {
          * <li><code>batchId</code> (ne, eq, in, nin)</li>
          * <li><code>detailType</code> (eq, ne, in, nin, ct, nct)</li>
          * <li><code>detailMethod</code> (eq, ne, in, nin, ct, nct)</li>
+         * <li><code>paymentId</code> (ne, eq, in, nin): The payout's payment ID. Returns every transfer linked to that payout: the payout transfer, any refund and stale check refund transfers, and the billing fee transfer.</li>
          * </ul>
          */
         @JsonSetter(value = "parameters", nulls = Nulls.SKIP)

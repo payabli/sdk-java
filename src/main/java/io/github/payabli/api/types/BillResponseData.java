@@ -79,6 +79,8 @@ public final class BillResponseData {
 
     private final Optional<TransactionOutQueryRecord> transaction;
 
+    private final Optional<List<BillTransactionReference>> transactions;
+
     private final Optional<List<GeneralEvents>> billEvents;
 
     private final Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals;
@@ -133,6 +135,7 @@ public final class BillResponseData {
             Optional<OffsetDateTime> lastUpdated,
             Optional<Frequency> frequency,
             Optional<TransactionOutQueryRecord> transaction,
+            Optional<List<BillTransactionReference>> transactions,
             Optional<List<GeneralEvents>> billEvents,
             Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals,
             Optional<String> paypointLegalname,
@@ -173,6 +176,7 @@ public final class BillResponseData {
         this.lastUpdated = lastUpdated;
         this.frequency = frequency;
         this.transaction = transaction;
+        this.transactions = transactions;
         this.billEvents = billEvents;
         this.billApprovals = billApprovals;
         this.paypointLegalname = paypointLegalname;
@@ -389,6 +393,20 @@ public final class BillResponseData {
         return transaction;
     }
 
+    /**
+     * @return All payout transactions that paid the bill, with one entry for each payout. When a bill is paid by several <a href="/guides/pay-out-developer-bills-manage#partially-pay-a-bill">partial payouts</a>, each one has an entry and <code>Transaction</code> holds the most recent. A bill paid by a single payout has one entry, and its <code>idOut</code> and <code>paymentId</code> match those on <code>Transaction</code>.
+     * <p>Canceled payouts aren't included.</p>
+     * <p>The value is <code>null</code> when the bill has no payouts. When every payout on the bill has been canceled, the value is an empty array. If partial payments aren't enabled, a bill whose only payout was canceled returns <code>null</code> instead.</p>
+     * <p>Each entry has identifiers only. For a transaction's details, see <a href="/developers/api-reference/moneyout/get-details-for-a-processed-payout-transaction">Get payout details</a>.</p>
+     */
+    @JsonIgnore
+    public Optional<List<BillTransactionReference>> getTransactions() {
+        if (transactions == null) {
+            return Optional.empty();
+        }
+        return transactions;
+    }
+
     @JsonProperty("billEvents")
     public Optional<List<GeneralEvents>> getBillEvents() {
         return billEvents;
@@ -479,6 +497,12 @@ public final class BillResponseData {
         return endDate;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transactions")
+    private Optional<List<BillTransactionReference>> _getTransactions() {
+        return transactions;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -518,6 +542,7 @@ public final class BillResponseData {
                 && lastUpdated.equals(other.lastUpdated)
                 && frequency.equals(other.frequency)
                 && transaction.equals(other.transaction)
+                && transactions.equals(other.transactions)
                 && billEvents.equals(other.billEvents)
                 && billApprovals.equals(other.billApprovals)
                 && paypointLegalname.equals(other.paypointLegalname)
@@ -562,6 +587,7 @@ public final class BillResponseData {
                 this.lastUpdated,
                 this.frequency,
                 this.transaction,
+                this.transactions,
                 this.billEvents,
                 this.billApprovals,
                 this.paypointLegalname,
@@ -641,6 +667,8 @@ public final class BillResponseData {
 
         private Optional<TransactionOutQueryRecord> transaction = Optional.empty();
 
+        private Optional<List<BillTransactionReference>> transactions = Optional.empty();
+
         private Optional<List<GeneralEvents>> billEvents = Optional.empty();
 
         private Optional<List<BillQueryRecord2BillApprovalsItem>> billApprovals = Optional.empty();
@@ -698,6 +726,7 @@ public final class BillResponseData {
             lastUpdated(other.getLastUpdated());
             frequency(other.getFrequency());
             transaction(other.getTransaction());
+            transactions(other.getTransactions());
             billEvents(other.getBillEvents());
             billApprovals(other.getBillApprovals());
             paypointLegalname(other.getPaypointLegalname());
@@ -1108,6 +1137,34 @@ public final class BillResponseData {
             return this;
         }
 
+        /**
+         * <p>All payout transactions that paid the bill, with one entry for each payout. When a bill is paid by several <a href="/guides/pay-out-developer-bills-manage#partially-pay-a-bill">partial payouts</a>, each one has an entry and <code>Transaction</code> holds the most recent. A bill paid by a single payout has one entry, and its <code>idOut</code> and <code>paymentId</code> match those on <code>Transaction</code>.</p>
+         * <p>Canceled payouts aren't included.</p>
+         * <p>The value is <code>null</code> when the bill has no payouts. When every payout on the bill has been canceled, the value is an empty array. If partial payments aren't enabled, a bill whose only payout was canceled returns <code>null</code> instead.</p>
+         * <p>Each entry has identifiers only. For a transaction's details, see <a href="/developers/api-reference/moneyout/get-details-for-a-processed-payout-transaction">Get payout details</a>.</p>
+         */
+        @JsonSetter(value = "transactions", nulls = Nulls.SKIP)
+        public Builder transactions(Optional<List<BillTransactionReference>> transactions) {
+            this.transactions = transactions;
+            return this;
+        }
+
+        public Builder transactions(List<BillTransactionReference> transactions) {
+            this.transactions = Optional.ofNullable(transactions);
+            return this;
+        }
+
+        public Builder transactions(Nullable<List<BillTransactionReference>> transactions) {
+            if (transactions.isNull()) {
+                this.transactions = null;
+            } else if (transactions.isEmpty()) {
+                this.transactions = Optional.empty();
+            } else {
+                this.transactions = Optional.of(transactions.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "billEvents", nulls = Nulls.SKIP)
         public Builder billEvents(Optional<List<GeneralEvents>> billEvents) {
             this.billEvents = billEvents;
@@ -1275,6 +1332,7 @@ public final class BillResponseData {
                     lastUpdated,
                     frequency,
                     transaction,
+                    transactions,
                     billEvents,
                     billApprovals,
                     paypointLegalname,

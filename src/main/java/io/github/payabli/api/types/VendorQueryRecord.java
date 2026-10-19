@@ -56,6 +56,8 @@ public final class VendorQueryRecord {
 
     private final Optional<String> locationCode;
 
+    private final boolean issue1099;
+
     private final Optional<List<ContactsResponse>> contacts;
 
     private final Optional<BillingDataResponse> billingData;
@@ -152,6 +154,7 @@ public final class VendorQueryRecord {
             Optional<String> country,
             Optional<String> mcc,
             Optional<String> locationCode,
+            boolean issue1099,
             Optional<List<ContactsResponse>> contacts,
             Optional<BillingDataResponse> billingData,
             Optional<String> paymentMethod,
@@ -207,6 +210,7 @@ public final class VendorQueryRecord {
         this.country = country;
         this.mcc = mcc;
         this.locationCode = locationCode;
+        this.issue1099 = issue1099;
         this.contacts = contacts;
         this.billingData = billingData;
         this.paymentMethod = paymentMethod;
@@ -373,6 +377,11 @@ public final class VendorQueryRecord {
             return Optional.empty();
         }
         return locationCode;
+    }
+
+    @JsonProperty("Issue1099")
+    public boolean getIssue1099() {
+        return issue1099;
     }
 
     /**
@@ -957,6 +966,7 @@ public final class VendorQueryRecord {
                 && country.equals(other.country)
                 && mcc.equals(other.mcc)
                 && locationCode.equals(other.locationCode)
+                && issue1099 == other.issue1099
                 && contacts.equals(other.contacts)
                 && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
@@ -1016,6 +1026,7 @@ public final class VendorQueryRecord {
                 this.country,
                 this.mcc,
                 this.locationCode,
+                this.issue1099,
                 this.contacts,
                 this.billingData,
                 this.paymentMethod,
@@ -1073,7 +1084,11 @@ public final class VendorQueryRecord {
     }
 
     public interface Name1Stage {
-        VendorStatusStage name1(@NotNull String name1);
+        Issue1099Stage name1(@NotNull String name1);
+    }
+
+    public interface Issue1099Stage {
+        VendorStatusStage issue1099(boolean issue1099);
     }
 
     public interface VendorStatusStage {
@@ -1420,6 +1435,7 @@ public final class VendorQueryRecord {
     public static final class Builder
             implements VendorNumberStage,
                     Name1Stage,
+                    Issue1099Stage,
                     VendorStatusStage,
                     VendorIdStage,
                     PaypointLegalnameStage,
@@ -1435,6 +1451,8 @@ public final class VendorQueryRecord {
         private String vendorNumber;
 
         private String name1;
+
+        private boolean issue1099;
 
         private int vendorStatus;
 
@@ -1562,6 +1580,7 @@ public final class VendorQueryRecord {
             country(other.getCountry());
             mcc(other.getMcc());
             locationCode(other.getLocationCode());
+            issue1099(other.getIssue1099());
             contacts(other.getContacts());
             billingData(other.getBillingData());
             paymentMethod(other.getPaymentMethod());
@@ -1613,8 +1632,15 @@ public final class VendorQueryRecord {
 
         @java.lang.Override
         @JsonSetter("Name1")
-        public VendorStatusStage name1(@NotNull String name1) {
+        public Issue1099Stage name1(@NotNull String name1) {
             this.name1 = Objects.requireNonNull(name1, "name1 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("Issue1099")
+        public VendorStatusStage issue1099(boolean issue1099) {
+            this.issue1099 = issue1099;
             return this;
         }
 
@@ -2885,6 +2911,7 @@ public final class VendorQueryRecord {
                     country,
                     mcc,
                     locationCode,
+                    issue1099,
                     contacts,
                     billingData,
                     paymentMethod,

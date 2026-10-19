@@ -17,6 +17,7 @@ import io.github.payabli.api.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.types.AuthorizePayoutBody;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.CaptureAllOutResponse;
+import io.github.payabli.api.types.NextCheckNumberResponse;
 import io.github.payabli.api.types.OperationResult;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
@@ -356,8 +357,29 @@ public class AsyncMoneyOutClient {
     }
 
     /**
+     * Returns a suggested check number for the next check payout from a paypoint's funding account. Payabli suggests the highest check number on the account's check payouts plus one, or <code>1</code> if the account has no check history. Canceled check payouts don't count toward the highest number.
+     * <p>Use the suggested value with the <code>checkNumber</code> field when you reissue a check, or when you create a new check payout.</p>
+     * <p>Errors return HTTP <code>400</code>: <code>3005</code> when the paypoint ID is invalid or inactive, and <code>3758</code> when the account ID isn't valid for the paypoint.</p>
+     */
+    public CompletableFuture<NextCheckNumberResponse> getNextCheckNumber(long paypointId, String accountId) {
+        return this.rawClient.getNextCheckNumber(paypointId, accountId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Returns a suggested check number for the next check payout from a paypoint's funding account. Payabli suggests the highest check number on the account's check payouts plus one, or <code>1</code> if the account has no check history. Canceled check payouts don't count toward the highest number.
+     * <p>Use the suggested value with the <code>checkNumber</code> field when you reissue a check, or when you create a new check payout.</p>
+     * <p>Errors return HTTP <code>400</code>: <code>3005</code> when the paypoint ID is invalid or inactive, and <code>3758</code> when the account ID isn't valid for the paypoint.</p>
+     */
+    public CompletableFuture<NextCheckNumberResponse> getNextCheckNumber(
+            long paypointId, String accountId, RequestOptions requestOptions) {
+        return this.rawClient
+                .getNextCheckNumber(paypointId, accountId, requestOptions)
+                .thenApply(response -> response.body());
+    }
+
+    /**
      * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
-     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. An ACH payout with a <strong>Returned</strong> status can also be reissued. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
      * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
      * <p>The reissue request doesn't accept a service fee. Payabli always charges the fee configured in the paypoint's ACH payout pricing, even when the pricing allows fee overrides. The new transaction keeps the original payout's total amount. The vendor receives that amount minus the configured fee.</p>
      */
@@ -367,7 +389,7 @@ public class AsyncMoneyOutClient {
 
     /**
      * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
-     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. An ACH payout with a <strong>Returned</strong> status can also be reissued. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
      * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
      * <p>The reissue request doesn't accept a service fee. Payabli always charges the fee configured in the paypoint's ACH payout pricing, even when the pricing allows fee overrides. The new transaction keeps the original payout's total amount. The vendor receives that amount minus the configured fee.</p>
      */

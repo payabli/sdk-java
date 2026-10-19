@@ -41,6 +41,12 @@ public final class TransactionQueryRecordsCustomer {
 
     private final Optional<String> deviceId;
 
+    private final Optional<QueryDeviceData> deviceData;
+
+    private final Optional<String> deviceEntryMode;
+
+    private final Optional<EmvAuthData> emvAuthData;
+
     private final Optional<Long> entrypageId;
 
     private final Optional<String> externalProcessorInformation;
@@ -116,6 +122,9 @@ public final class TransactionQueryRecordsCustomer {
             Optional<String> connectorName,
             Optional<QueryTransactionPayorDataCustomer> customer,
             Optional<String> deviceId,
+            Optional<QueryDeviceData> deviceData,
+            Optional<String> deviceEntryMode,
+            Optional<EmvAuthData> emvAuthData,
             Optional<Long> entrypageId,
             Optional<String> externalProcessorInformation,
             Optional<Double> feeAmount,
@@ -157,6 +166,9 @@ public final class TransactionQueryRecordsCustomer {
         this.connectorName = connectorName;
         this.customer = customer;
         this.deviceId = deviceId;
+        this.deviceData = deviceData;
+        this.deviceEntryMode = deviceEntryMode;
+        this.emvAuthData = emvAuthData;
         this.entrypageId = entrypageId;
         this.externalProcessorInformation = externalProcessorInformation;
         this.feeAmount = feeAmount;
@@ -239,6 +251,30 @@ public final class TransactionQueryRecordsCustomer {
     @JsonProperty("DeviceId")
     public Optional<String> getDeviceId() {
         return deviceId;
+    }
+
+    @JsonIgnore
+    public Optional<QueryDeviceData> getDeviceData() {
+        if (deviceData == null) {
+            return Optional.empty();
+        }
+        return deviceData;
+    }
+
+    @JsonIgnore
+    public Optional<String> getDeviceEntryMode() {
+        if (deviceEntryMode == null) {
+            return Optional.empty();
+        }
+        return deviceEntryMode;
+    }
+
+    @JsonIgnore
+    public Optional<EmvAuthData> getEmvAuthData() {
+        if (emvAuthData == null) {
+            return Optional.empty();
+        }
+        return emvAuthData;
     }
 
     @JsonProperty("EntrypageId")
@@ -450,6 +486,24 @@ public final class TransactionQueryRecordsCustomer {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("DeviceData")
+    private Optional<QueryDeviceData> _getDeviceData() {
+        return deviceData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("DeviceEntryMode")
+    private Optional<String> _getDeviceEntryMode() {
+        return deviceEntryMode;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("EmvAuthData")
+    private Optional<EmvAuthData> _getEmvAuthData() {
+        return emvAuthData;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("TransactionTime")
     private Optional<OffsetDateTime> _getTransactionTime() {
         return transactionTime;
@@ -475,6 +529,9 @@ public final class TransactionQueryRecordsCustomer {
                 && connectorName.equals(other.connectorName)
                 && customer.equals(other.customer)
                 && deviceId.equals(other.deviceId)
+                && deviceData.equals(other.deviceData)
+                && deviceEntryMode.equals(other.deviceEntryMode)
+                && emvAuthData.equals(other.emvAuthData)
                 && entrypageId.equals(other.entrypageId)
                 && externalProcessorInformation.equals(other.externalProcessorInformation)
                 && feeAmount.equals(other.feeAmount)
@@ -520,6 +577,9 @@ public final class TransactionQueryRecordsCustomer {
                 this.connectorName,
                 this.customer,
                 this.deviceId,
+                this.deviceData,
+                this.deviceEntryMode,
+                this.emvAuthData,
                 this.entrypageId,
                 this.externalProcessorInformation,
                 this.feeAmount,
@@ -616,6 +676,24 @@ public final class TransactionQueryRecordsCustomer {
         _FinalStage deviceId(Optional<String> deviceId);
 
         _FinalStage deviceId(String deviceId);
+
+        _FinalStage deviceData(Optional<QueryDeviceData> deviceData);
+
+        _FinalStage deviceData(QueryDeviceData deviceData);
+
+        _FinalStage deviceData(Nullable<QueryDeviceData> deviceData);
+
+        _FinalStage deviceEntryMode(Optional<String> deviceEntryMode);
+
+        _FinalStage deviceEntryMode(String deviceEntryMode);
+
+        _FinalStage deviceEntryMode(Nullable<String> deviceEntryMode);
+
+        _FinalStage emvAuthData(Optional<EmvAuthData> emvAuthData);
+
+        _FinalStage emvAuthData(EmvAuthData emvAuthData);
+
+        _FinalStage emvAuthData(Nullable<EmvAuthData> emvAuthData);
 
         _FinalStage entrypageId(Optional<Long> entrypageId);
 
@@ -855,6 +933,12 @@ public final class TransactionQueryRecordsCustomer {
 
         private Optional<Long> entrypageId = Optional.empty();
 
+        private Optional<EmvAuthData> emvAuthData = Optional.empty();
+
+        private Optional<String> deviceEntryMode = Optional.empty();
+
+        private Optional<QueryDeviceData> deviceData = Optional.empty();
+
         private Optional<String> deviceId = Optional.empty();
 
         private Optional<QueryTransactionPayorDataCustomer> customer = Optional.empty();
@@ -886,6 +970,9 @@ public final class TransactionQueryRecordsCustomer {
             connectorName(other.getConnectorName());
             customer(other.getCustomer());
             deviceId(other.getDeviceId());
+            deviceData(other.getDeviceData());
+            deviceEntryMode(other.getDeviceEntryMode());
+            emvAuthData(other.getEmvAuthData());
             entrypageId(other.getEntrypageId());
             externalProcessorInformation(other.getExternalProcessorInformation());
             feeAmount(other.getFeeAmount());
@@ -1453,6 +1540,81 @@ public final class TransactionQueryRecordsCustomer {
         }
 
         @java.lang.Override
+        public _FinalStage emvAuthData(Nullable<EmvAuthData> emvAuthData) {
+            if (emvAuthData.isNull()) {
+                this.emvAuthData = null;
+            } else if (emvAuthData.isEmpty()) {
+                this.emvAuthData = Optional.empty();
+            } else {
+                this.emvAuthData = Optional.of(emvAuthData.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage emvAuthData(EmvAuthData emvAuthData) {
+            this.emvAuthData = Optional.ofNullable(emvAuthData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "EmvAuthData", nulls = Nulls.SKIP)
+        public _FinalStage emvAuthData(Optional<EmvAuthData> emvAuthData) {
+            this.emvAuthData = emvAuthData;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage deviceEntryMode(Nullable<String> deviceEntryMode) {
+            if (deviceEntryMode.isNull()) {
+                this.deviceEntryMode = null;
+            } else if (deviceEntryMode.isEmpty()) {
+                this.deviceEntryMode = Optional.empty();
+            } else {
+                this.deviceEntryMode = Optional.of(deviceEntryMode.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage deviceEntryMode(String deviceEntryMode) {
+            this.deviceEntryMode = Optional.ofNullable(deviceEntryMode);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "DeviceEntryMode", nulls = Nulls.SKIP)
+        public _FinalStage deviceEntryMode(Optional<String> deviceEntryMode) {
+            this.deviceEntryMode = deviceEntryMode;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage deviceData(Nullable<QueryDeviceData> deviceData) {
+            if (deviceData.isNull()) {
+                this.deviceData = null;
+            } else if (deviceData.isEmpty()) {
+                this.deviceData = Optional.empty();
+            } else {
+                this.deviceData = Optional.of(deviceData.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage deviceData(QueryDeviceData deviceData) {
+            this.deviceData = Optional.ofNullable(deviceData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "DeviceData", nulls = Nulls.SKIP)
+        public _FinalStage deviceData(Optional<QueryDeviceData> deviceData) {
+            this.deviceData = deviceData;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage deviceId(String deviceId) {
             this.deviceId = Optional.ofNullable(deviceId);
             return this;
@@ -1588,6 +1750,9 @@ public final class TransactionQueryRecordsCustomer {
                     connectorName,
                     customer,
                     deviceId,
+                    deviceData,
+                    deviceEntryMode,
+                    emvAuthData,
                     entrypageId,
                     externalProcessorInformation,
                     feeAmount,

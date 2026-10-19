@@ -46,6 +46,8 @@ public final class VendorOutData {
 
     private final Optional<String> locationCode;
 
+    private final Optional<Boolean> issue1099;
+
     private final Optional<String> mcc;
 
     private final String name1;
@@ -97,6 +99,7 @@ public final class VendorOutData {
             Optional<String> email,
             Optional<Long> internalReferenceId,
             Optional<String> locationCode,
+            Optional<Boolean> issue1099,
             Optional<String> mcc,
             String name1,
             Optional<String> name2,
@@ -128,6 +131,7 @@ public final class VendorOutData {
         this.email = email;
         this.internalReferenceId = internalReferenceId;
         this.locationCode = locationCode;
+        this.issue1099 = issue1099;
         this.mcc = mcc;
         this.name1 = name1;
         this.name2 = name2;
@@ -239,6 +243,11 @@ public final class VendorOutData {
     @JsonProperty("LocationCode")
     public Optional<String> getLocationCode() {
         return locationCode;
+    }
+
+    @JsonProperty("Issue1099")
+    public Optional<Boolean> getIssue1099() {
+        return issue1099;
     }
 
     @JsonProperty("Mcc")
@@ -373,6 +382,7 @@ public final class VendorOutData {
                 && email.equals(other.email)
                 && internalReferenceId.equals(other.internalReferenceId)
                 && locationCode.equals(other.locationCode)
+                && issue1099.equals(other.issue1099)
                 && mcc.equals(other.mcc)
                 && name1.equals(other.name1)
                 && name2.equals(other.name2)
@@ -408,6 +418,7 @@ public final class VendorOutData {
                 this.email,
                 this.internalReferenceId,
                 this.locationCode,
+                this.issue1099,
                 this.mcc,
                 this.name1,
                 this.name2,
@@ -554,6 +565,10 @@ public final class VendorOutData {
 
         _FinalStage locationCode(String locationCode);
 
+        _FinalStage issue1099(Optional<Boolean> issue1099);
+
+        _FinalStage issue1099(Boolean issue1099);
+
         _FinalStage mcc(Optional<String> mcc);
 
         _FinalStage mcc(String mcc);
@@ -662,6 +677,8 @@ public final class VendorOutData {
 
         private Optional<String> mcc = Optional.empty();
 
+        private Optional<Boolean> issue1099 = Optional.empty();
+
         private Optional<String> locationCode = Optional.empty();
 
         private Optional<Long> internalReferenceId = Optional.empty();
@@ -699,6 +716,7 @@ public final class VendorOutData {
             email(other.getEmail());
             internalReferenceId(other.getInternalReferenceId());
             locationCode(other.getLocationCode());
+            issue1099(other.getIssue1099());
             mcc(other.getMcc());
             name1(other.getName1());
             name2(other.getName2());
@@ -994,6 +1012,19 @@ public final class VendorOutData {
         }
 
         @java.lang.Override
+        public _FinalStage issue1099(Boolean issue1099) {
+            this.issue1099 = Optional.ofNullable(issue1099);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "Issue1099", nulls = Nulls.SKIP)
+        public _FinalStage issue1099(Optional<Boolean> issue1099) {
+            this.issue1099 = issue1099;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage locationCode(String locationCode) {
             this.locationCode = Optional.ofNullable(locationCode);
             return this;
@@ -1178,6 +1209,7 @@ public final class VendorOutData {
                     email,
                     internalReferenceId,
                     locationCode,
+                    issue1099,
                     mcc,
                     name1,
                     name2,

@@ -587,7 +587,7 @@ public final class QueryPayoutTransactionRecordsItem {
     }
 
     /**
-     * @return Operations currently permitted for this payout, derived from its status. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from <code>PaymentStatus</code>.
+     * @return Operations currently permitted for this payout, derived from its status and other payout details such as payment method. For example, a returned ACH payout can include <code>cancel</code> and <code>reissue</code>. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from <code>PaymentStatus</code>.
      */
     @JsonProperty("allowedActions")
     public List<QueryPayoutTransactionRecordsItemAllowedActionsItem> getAllowedActions() {
@@ -1664,7 +1664,7 @@ public final class QueryPayoutTransactionRecordsItem {
         }
 
         /**
-         * <p>Operations currently permitted for this payout, derived from its status. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from <code>PaymentStatus</code>.</p>
+         * <p>Operations currently permitted for this payout, derived from its status and other payout details such as payment method. For example, a returned ACH payout can include <code>cancel</code> and <code>reissue</code>. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from <code>PaymentStatus</code>.</p>
          */
         @JsonSetter(value = "allowedActions", nulls = Nulls.SKIP)
         public Builder allowedActions(List<QueryPayoutTransactionRecordsItemAllowedActionsItem> allowedActions) {

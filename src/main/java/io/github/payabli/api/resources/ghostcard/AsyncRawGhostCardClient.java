@@ -20,6 +20,7 @@ import io.github.payabli.api.errors.UnauthorizedError;
 import io.github.payabli.api.resources.ghostcard.requests.CreateGhostCardRequestBody;
 import io.github.payabli.api.resources.ghostcard.requests.UpdateCardRequestBody;
 import io.github.payabli.api.types.CreateGhostCardResponse;
+import io.github.payabli.api.types.DeleteGhostCardResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 import io.github.payabli.api.types.PayabliErrorBody;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class AsyncRawGhostCardClient {
     /**
      * Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
      * <p>Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.</p>
-     * <p>Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.</p>
+     * <p>Only one active ghost card can exist per vendor per paypoint. If the vendor already has one, the request fails with error <code>7067</code>. To issue a new card to the same vendor, cancel the existing card first. Canceled and expired cards don't count toward this limit. See <a href="/developers/api-reference/cards/cancel-ghost-card">Cancel ghost card</a>.</p>
      */
     public CompletableFuture<PayabliApiClientHttpResponse<CreateGhostCardResponse>> createGhostCard(
             String entry, CreateGhostCardRequestBody request) {
@@ -57,7 +58,7 @@ public class AsyncRawGhostCardClient {
     /**
      * Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
      * <p>Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.</p>
-     * <p>Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.</p>
+     * <p>Only one active ghost card can exist per vendor per paypoint. If the vendor already has one, the request fails with error <code>7067</code>. To issue a new card to the same vendor, cancel the existing card first. Canceled and expired cards don't count toward this limit. See <a href="/developers/api-reference/cards/cancel-ghost-card">Cancel ghost card</a>.</p>
      */
     public CompletableFuture<PayabliApiClientHttpResponse<CreateGhostCardResponse>> createGhostCard(
             String entry, CreateGhostCardRequestBody request, RequestOptions requestOptions) {
@@ -110,6 +111,113 @@ public class AsyncRawGhostCardClient {
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CreateGhostCardResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiClientApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Cancels a ghost card. This is always a soft delete: Payabli keeps the card record, including its transaction history.
+     * <p>Canceling a ghost card frees the vendor's slot, so you can issue a new ghost card to the same vendor. A card canceled with this endpoint can't be used, reactivated, or canceled again.</p>
+     * <p>Requires the <code>vcard_delete</code> permission.</p>
+     */
+    public CompletableFuture<PayabliApiClientHttpResponse<DeleteGhostCardResponse>> deleteGhostCard(String cardToken) {
+        return deleteGhostCard(cardToken, null);
+    }
+
+    /**
+     * Cancels a ghost card. This is always a soft delete: Payabli keeps the card record, including its transaction history.
+     * <p>Canceling a ghost card frees the vendor's slot, so you can issue a new ghost card to the same vendor. A card canceled with this endpoint can't be used, reactivated, or canceled again.</p>
+     * <p>Requires the <code>vcard_delete</code> permission.</p>
+     */
+    public CompletableFuture<PayabliApiClientHttpResponse<DeleteGhostCardResponse>> deleteGhostCard(
+            String cardToken, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyOutCard/GhostCard")
+                .addPathSegment(cardToken);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("DELETE", null)
+                .headers(Headers.of(_headers))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        CompletableFuture<PayabliApiClientHttpResponse<DeleteGhostCardResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiClientHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, DeleteGhostCardResponse.class),
                                 response));
                         return;
                     }

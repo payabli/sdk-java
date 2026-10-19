@@ -58,6 +58,8 @@ public final class GetMethodResponseResponseDataVendorsItem {
 
     private final Optional<String> locationCode;
 
+    private final Optional<Boolean> issue1099;
+
     private final Optional<String> mcc;
 
     private final Optional<String> name1;
@@ -133,6 +135,7 @@ public final class GetMethodResponseResponseDataVendorsItem {
             Optional<Long> internalReferenceId,
             Optional<OffsetDateTime> lastUpdated,
             Optional<String> locationCode,
+            Optional<Boolean> issue1099,
             Optional<String> mcc,
             Optional<String> name1,
             Optional<String> name2,
@@ -179,6 +182,7 @@ public final class GetMethodResponseResponseDataVendorsItem {
         this.internalReferenceId = internalReferenceId;
         this.lastUpdated = lastUpdated;
         this.locationCode = locationCode;
+        this.issue1099 = issue1099;
         this.mcc = mcc;
         this.name1 = name1;
         this.name2 = name2;
@@ -351,6 +355,11 @@ public final class GetMethodResponseResponseDataVendorsItem {
     @JsonProperty("locationCode")
     public Optional<String> getLocationCode() {
         return locationCode;
+    }
+
+    @JsonProperty("issue1099")
+    public Optional<Boolean> getIssue1099() {
+        return issue1099;
     }
 
     /**
@@ -600,6 +609,7 @@ public final class GetMethodResponseResponseDataVendorsItem {
                 && internalReferenceId.equals(other.internalReferenceId)
                 && lastUpdated.equals(other.lastUpdated)
                 && locationCode.equals(other.locationCode)
+                && issue1099.equals(other.issue1099)
                 && mcc.equals(other.mcc)
                 && name1.equals(other.name1)
                 && name2.equals(other.name2)
@@ -650,6 +660,7 @@ public final class GetMethodResponseResponseDataVendorsItem {
                 this.internalReferenceId,
                 this.lastUpdated,
                 this.locationCode,
+                this.issue1099,
                 this.mcc,
                 this.name1,
                 this.name2,
@@ -725,6 +736,8 @@ public final class GetMethodResponseResponseDataVendorsItem {
         private Optional<OffsetDateTime> lastUpdated = Optional.empty();
 
         private Optional<String> locationCode = Optional.empty();
+
+        private Optional<Boolean> issue1099 = Optional.empty();
 
         private Optional<String> mcc = Optional.empty();
 
@@ -804,6 +817,7 @@ public final class GetMethodResponseResponseDataVendorsItem {
             internalReferenceId(other.getInternalReferenceId());
             lastUpdated(other.getLastUpdated());
             locationCode(other.getLocationCode());
+            issue1099(other.getIssue1099());
             mcc(other.getMcc());
             name1(other.getName1());
             name2(other.getName2());
@@ -1083,6 +1097,17 @@ public final class GetMethodResponseResponseDataVendorsItem {
 
         public Builder locationCode(String locationCode) {
             this.locationCode = Optional.ofNullable(locationCode);
+            return this;
+        }
+
+        @JsonSetter(value = "issue1099", nulls = Nulls.SKIP)
+        public Builder issue1099(Optional<Boolean> issue1099) {
+            this.issue1099 = issue1099;
+            return this;
+        }
+
+        public Builder issue1099(Boolean issue1099) {
+            this.issue1099 = Optional.ofNullable(issue1099);
             return this;
         }
 
@@ -1484,6 +1509,7 @@ public final class GetMethodResponseResponseDataVendorsItem {
                     internalReferenceId,
                     lastUpdated,
                     locationCode,
+                    issue1099,
                     mcc,
                     name1,
                     name2,

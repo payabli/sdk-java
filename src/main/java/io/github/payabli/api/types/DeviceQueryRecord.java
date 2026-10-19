@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DeviceQueryRecord.Builder.class)
@@ -37,9 +38,15 @@ public final class DeviceQueryRecord {
 
     private final Optional<String> model;
 
+    private final Optional<String> appVersion;
+
+    private final Optional<String> osVersion;
+
     private final Optional<Integer> deviceType;
 
     private final Optional<Integer> deviceStatus;
+
+    private final DeviceQueryRecordOperationalStatus operationalStatus;
 
     private final Optional<Integer> deviceOs;
 
@@ -89,8 +96,11 @@ public final class DeviceQueryRecord {
             Optional<String> friendlyName,
             Optional<String> make,
             Optional<String> model,
+            Optional<String> appVersion,
+            Optional<String> osVersion,
             Optional<Integer> deviceType,
             Optional<Integer> deviceStatus,
+            DeviceQueryRecordOperationalStatus operationalStatus,
             Optional<Integer> deviceOs,
             Optional<String> macAddress,
             Optional<String> lastHealthCheck,
@@ -118,8 +128,11 @@ public final class DeviceQueryRecord {
         this.friendlyName = friendlyName;
         this.make = make;
         this.model = model;
+        this.appVersion = appVersion;
+        this.osVersion = osVersion;
         this.deviceType = deviceType;
         this.deviceStatus = deviceStatus;
+        this.operationalStatus = operationalStatus;
         this.deviceOs = deviceOs;
         this.macAddress = macAddress;
         this.lastHealthCheck = lastHealthCheck;
@@ -220,6 +233,28 @@ public final class DeviceQueryRecord {
     }
 
     /**
+     * @return Version of the Payabli app running on the device.
+     */
+    @JsonIgnore
+    public Optional<String> getAppVersion() {
+        if (appVersion == null) {
+            return Optional.empty();
+        }
+        return appVersion;
+    }
+
+    /**
+     * @return Version of Android running on the device.
+     */
+    @JsonIgnore
+    public Optional<String> getOsVersion() {
+        if (osVersion == null) {
+            return Optional.empty();
+        }
+        return osVersion;
+    }
+
+    /**
      * @return Type of device.
      */
     @JsonIgnore
@@ -231,7 +266,10 @@ public final class DeviceQueryRecord {
     }
 
     /**
-     * @return Current status of the device.
+     * @return Lifecycle status of the device, as an integer. A value of <code>1</code> means the
+     * device is active. This field doesn't show whether the device is running
+     * a command. To check whether the device can accept a transaction now,
+     * use <code>operationalStatus</code>.
      */
     @JsonIgnore
     public Optional<Integer> getDeviceStatus() {
@@ -239,6 +277,26 @@ public final class DeviceQueryRecord {
             return Optional.empty();
         }
         return deviceStatus;
+    }
+
+    /**
+     * @return Shows whether the device can accept a transaction now. The value
+     * reflects the device's state when you send the query.
+     * <ul>
+     * <li><code>online</code>: The device is active and isn't running a command. It can
+     * accept a transaction.</li>
+     * <li><code>busy</code>: The device is running a command that's pending, dispatched,
+     * or processing, and the command hasn't expired. A new transaction sent
+     * to the device fails with error <code>E7069</code> (Device busy). Wait for the
+     * command to finish or expire, then query the device again.</li>
+     * <li><code>offline</code>: The device isn't active, so it can't accept transactions.
+     * Its lifecycle status (<code>deviceStatus</code>) isn't active.</li>
+     * </ul>
+     * <p>Check this field before you send a transaction to a device.</p>
+     */
+    @JsonProperty("operationalStatus")
+    public DeviceQueryRecordOperationalStatus getOperationalStatus() {
+        return operationalStatus;
     }
 
     /**
@@ -487,6 +545,18 @@ public final class DeviceQueryRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("appVersion")
+    private Optional<String> _getAppVersion() {
+        return appVersion;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("osVersion")
+    private Optional<String> _getOsVersion() {
+        return osVersion;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("deviceType")
     private Optional<Integer> _getDeviceType() {
         return deviceType;
@@ -619,8 +689,11 @@ public final class DeviceQueryRecord {
                 && friendlyName.equals(other.friendlyName)
                 && make.equals(other.make)
                 && model.equals(other.model)
+                && appVersion.equals(other.appVersion)
+                && osVersion.equals(other.osVersion)
                 && deviceType.equals(other.deviceType)
                 && deviceStatus.equals(other.deviceStatus)
+                && operationalStatus.equals(other.operationalStatus)
                 && deviceOs.equals(other.deviceOs)
                 && macAddress.equals(other.macAddress)
                 && lastHealthCheck.equals(other.lastHealthCheck)
@@ -652,8 +725,11 @@ public final class DeviceQueryRecord {
                 this.friendlyName,
                 this.make,
                 this.model,
+                this.appVersion,
+                this.osVersion,
                 this.deviceType,
                 this.deviceStatus,
+                this.operationalStatus,
                 this.deviceOs,
                 this.macAddress,
                 this.lastHealthCheck,
@@ -680,8 +756,29 @@ public final class DeviceQueryRecord {
         return ObjectMappers.stringify(this);
     }
 
-    public static TransactionCountStage builder() {
+    public static OperationalStatusStage builder() {
         return new Builder();
+    }
+
+    public interface OperationalStatusStage {
+        /**
+         * <p>Shows whether the device can accept a transaction now. The value
+         * reflects the device's state when you send the query.</p>
+         * <ul>
+         * <li><code>online</code>: The device is active and isn't running a command. It can
+         * accept a transaction.</li>
+         * <li><code>busy</code>: The device is running a command that's pending, dispatched,
+         * or processing, and the command hasn't expired. A new transaction sent
+         * to the device fails with error <code>E7069</code> (Device busy). Wait for the
+         * command to finish or expire, then query the device again.</li>
+         * <li><code>offline</code>: The device isn't active, so it can't accept transactions.
+         * Its lifecycle status (<code>deviceStatus</code>) isn't active.</li>
+         * </ul>
+         * <p>Check this field before you send a transaction to a device.</p>
+         */
+        TransactionCountStage operationalStatus(@NotNull DeviceQueryRecordOperationalStatus operationalStatus);
+
+        Builder from(DeviceQueryRecord other);
     }
 
     public interface TransactionCountStage {
@@ -689,8 +786,6 @@ public final class DeviceQueryRecord {
          * <p>Total number of transactions processed by this device.</p>
          */
         VolumeProcessedStage transactionCount(int transactionCount);
-
-        Builder from(DeviceQueryRecord other);
     }
 
     public interface VolumeProcessedStage {
@@ -771,6 +866,24 @@ public final class DeviceQueryRecord {
         _FinalStage model(Nullable<String> model);
 
         /**
+         * <p>Version of the Payabli app running on the device.</p>
+         */
+        _FinalStage appVersion(Optional<String> appVersion);
+
+        _FinalStage appVersion(String appVersion);
+
+        _FinalStage appVersion(Nullable<String> appVersion);
+
+        /**
+         * <p>Version of Android running on the device.</p>
+         */
+        _FinalStage osVersion(Optional<String> osVersion);
+
+        _FinalStage osVersion(String osVersion);
+
+        _FinalStage osVersion(Nullable<String> osVersion);
+
+        /**
          * <p>Type of device.</p>
          */
         _FinalStage deviceType(Optional<Integer> deviceType);
@@ -780,7 +893,10 @@ public final class DeviceQueryRecord {
         _FinalStage deviceType(Nullable<Integer> deviceType);
 
         /**
-         * <p>Current status of the device.</p>
+         * <p>Lifecycle status of the device, as an integer. A value of <code>1</code> means the
+         * device is active. This field doesn't show whether the device is running
+         * a command. To check whether the device can accept a transaction now,
+         * use <code>operationalStatus</code>.</p>
          */
         _FinalStage deviceStatus(Optional<Integer> deviceStatus);
 
@@ -943,7 +1059,10 @@ public final class DeviceQueryRecord {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TransactionCountStage, VolumeProcessedStage, _FinalStage {
+    public static final class Builder
+            implements OperationalStatusStage, TransactionCountStage, VolumeProcessedStage, _FinalStage {
+        private DeviceQueryRecordOperationalStatus operationalStatus;
+
         private int transactionCount;
 
         private double volumeProcessed;
@@ -986,6 +1105,10 @@ public final class DeviceQueryRecord {
 
         private Optional<Integer> deviceType = Optional.empty();
 
+        private Optional<String> osVersion = Optional.empty();
+
+        private Optional<String> appVersion = Optional.empty();
+
         private Optional<String> model = Optional.empty();
 
         private Optional<String> make = Optional.empty();
@@ -1014,8 +1137,11 @@ public final class DeviceQueryRecord {
             friendlyName(other.getFriendlyName());
             make(other.getMake());
             model(other.getModel());
+            appVersion(other.getAppVersion());
+            osVersion(other.getOsVersion());
             deviceType(other.getDeviceType());
             deviceStatus(other.getDeviceStatus());
+            operationalStatus(other.getOperationalStatus());
             deviceOs(other.getDeviceOs());
             macAddress(other.getMacAddress());
             lastHealthCheck(other.getLastHealthCheck());
@@ -1035,6 +1161,29 @@ public final class DeviceQueryRecord {
             parentOrgLogo(other.getParentOrgLogo());
             transactionCount(other.getTransactionCount());
             volumeProcessed(other.getVolumeProcessed());
+            return this;
+        }
+
+        /**
+         * <p>Shows whether the device can accept a transaction now. The value
+         * reflects the device's state when you send the query.</p>
+         * <ul>
+         * <li><code>online</code>: The device is active and isn't running a command. It can
+         * accept a transaction.</li>
+         * <li><code>busy</code>: The device is running a command that's pending, dispatched,
+         * or processing, and the command hasn't expired. A new transaction sent
+         * to the device fails with error <code>E7069</code> (Device busy). Wait for the
+         * command to finish or expire, then query the device again.</li>
+         * <li><code>offline</code>: The device isn't active, so it can't accept transactions.
+         * Its lifecycle status (<code>deviceStatus</code>) isn't active.</li>
+         * </ul>
+         * <p>Check this field before you send a transaction to a device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("operationalStatus")
+        public TransactionCountStage operationalStatus(@NotNull DeviceQueryRecordOperationalStatus operationalStatus) {
+            this.operationalStatus = Objects.requireNonNull(operationalStatus, "operationalStatus must not be null");
             return this;
         }
 
@@ -1673,7 +1822,10 @@ public final class DeviceQueryRecord {
         }
 
         /**
-         * <p>Current status of the device.</p>
+         * <p>Lifecycle status of the device, as an integer. A value of <code>1</code> means the
+         * device is active. This field doesn't show whether the device is running
+         * a command. To check whether the device can accept a transaction now,
+         * use <code>operationalStatus</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1689,7 +1841,10 @@ public final class DeviceQueryRecord {
         }
 
         /**
-         * <p>Current status of the device.</p>
+         * <p>Lifecycle status of the device, as an integer. A value of <code>1</code> means the
+         * device is active. This field doesn't show whether the device is running
+         * a command. To check whether the device can accept a transaction now,
+         * use <code>operationalStatus</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1699,7 +1854,10 @@ public final class DeviceQueryRecord {
         }
 
         /**
-         * <p>Current status of the device.</p>
+         * <p>Lifecycle status of the device, as an integer. A value of <code>1</code> means the
+         * device is active. This field doesn't show whether the device is running
+         * a command. To check whether the device can accept a transaction now,
+         * use <code>operationalStatus</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "deviceStatus", nulls = Nulls.SKIP)
@@ -1741,6 +1899,78 @@ public final class DeviceQueryRecord {
         @JsonSetter(value = "deviceType", nulls = Nulls.SKIP)
         public _FinalStage deviceType(Optional<Integer> deviceType) {
             this.deviceType = deviceType;
+            return this;
+        }
+
+        /**
+         * <p>Version of Android running on the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage osVersion(Nullable<String> osVersion) {
+            if (osVersion.isNull()) {
+                this.osVersion = null;
+            } else if (osVersion.isEmpty()) {
+                this.osVersion = Optional.empty();
+            } else {
+                this.osVersion = Optional.of(osVersion.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Version of Android running on the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage osVersion(String osVersion) {
+            this.osVersion = Optional.ofNullable(osVersion);
+            return this;
+        }
+
+        /**
+         * <p>Version of Android running on the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "osVersion", nulls = Nulls.SKIP)
+        public _FinalStage osVersion(Optional<String> osVersion) {
+            this.osVersion = osVersion;
+            return this;
+        }
+
+        /**
+         * <p>Version of the Payabli app running on the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage appVersion(Nullable<String> appVersion) {
+            if (appVersion.isNull()) {
+                this.appVersion = null;
+            } else if (appVersion.isEmpty()) {
+                this.appVersion = Optional.empty();
+            } else {
+                this.appVersion = Optional.of(appVersion.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Version of the Payabli app running on the device.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage appVersion(String appVersion) {
+            this.appVersion = Optional.ofNullable(appVersion);
+            return this;
+        }
+
+        /**
+         * <p>Version of the Payabli app running on the device.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "appVersion", nulls = Nulls.SKIP)
+        public _FinalStage appVersion(Optional<String> appVersion) {
+            this.appVersion = appVersion;
             return this;
         }
 
@@ -2006,8 +2236,11 @@ public final class DeviceQueryRecord {
                     friendlyName,
                     make,
                     model,
+                    appVersion,
+                    osVersion,
                     deviceType,
                     deviceStatus,
+                    operationalStatus,
                     deviceOs,
                     macAddress,
                     lastHealthCheck,

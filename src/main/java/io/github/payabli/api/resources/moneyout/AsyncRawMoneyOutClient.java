@@ -33,6 +33,7 @@ import io.github.payabli.api.types.AuthCapturePayoutResponse;
 import io.github.payabli.api.types.AuthorizePayoutBody;
 import io.github.payabli.api.types.BillDetailResponse;
 import io.github.payabli.api.types.CaptureAllOutResponse;
+import io.github.payabli.api.types.NextCheckNumberResponse;
 import io.github.payabli.api.types.OperationResult;
 import io.github.payabli.api.types.PayabliApiResponse0000;
 import io.github.payabli.api.types.PayabliApiResponse00Responsedatanonobject;
@@ -1679,8 +1680,122 @@ public class AsyncRawMoneyOutClient {
     }
 
     /**
+     * Returns a suggested check number for the next check payout from a paypoint's funding account. Payabli suggests the highest check number on the account's check payouts plus one, or <code>1</code> if the account has no check history. Canceled check payouts don't count toward the highest number.
+     * <p>Use the suggested value with the <code>checkNumber</code> field when you reissue a check, or when you create a new check payout.</p>
+     * <p>Errors return HTTP <code>400</code>: <code>3005</code> when the paypoint ID is invalid or inactive, and <code>3758</code> when the account ID isn't valid for the paypoint.</p>
+     */
+    public CompletableFuture<PayabliApiClientHttpResponse<NextCheckNumberResponse>> getNextCheckNumber(
+            long paypointId, String accountId) {
+        return getNextCheckNumber(paypointId, accountId, null);
+    }
+
+    /**
+     * Returns a suggested check number for the next check payout from a paypoint's funding account. Payabli suggests the highest check number on the account's check payouts plus one, or <code>1</code> if the account has no check history. Canceled check payouts don't count toward the highest number.
+     * <p>Use the suggested value with the <code>checkNumber</code> field when you reissue a check, or when you create a new check payout.</p>
+     * <p>Errors return HTTP <code>400</code>: <code>3005</code> when the paypoint ID is invalid or inactive, and <code>3758</code> when the account ID isn't valid for the paypoint.</p>
+     */
+    public CompletableFuture<PayabliApiClientHttpResponse<NextCheckNumberResponse>> getNextCheckNumber(
+            long paypointId, String accountId, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("MoneyOut/nextCheckNumber")
+                .addPathSegment(Long.toString(paypointId))
+                .addPathSegment(accountId);
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Map<String, String> _headers = new HashMap<>(clientOptions.headers(requestOptions));
+        _headers.putAll(clientOptions.getAuthHeaders(EndpointMetadata.of(
+                EndpointMetadata.requirement(EndpointMetadata.scheme("BearerAuth")),
+                EndpointMetadata.requirement(EndpointMetadata.scheme("APIKeyAuth")))));
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(_headers))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        CompletableFuture<PayabliApiClientHttpResponse<NextCheckNumberResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new PayabliApiClientHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NextCheckNumberResponse.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 401:
+                                future.completeExceptionally(new UnauthorizedError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                            case 403:
+                                future.completeExceptionally(new ForbiddenError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PayabliErrorBody.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new PayabliApiClientApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(
+                            new PayabliApiClientException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new PayabliApiClientException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
      * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
-     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. An ACH payout with a <strong>Returned</strong> status can also be reissued. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
      * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
      * <p>The reissue request doesn't accept a service fee. Payabli always charges the fee configured in the paypoint's ACH payout pricing, even when the pricing allows fee overrides. The new transaction keeps the original payout's total amount. The vendor receives that amount minus the configured fee.</p>
      */
@@ -1691,7 +1806,7 @@ public class AsyncRawMoneyOutClient {
 
     /**
      * Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
-     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
+     * <p>The original transaction must be in <strong>Processing</strong> or <strong>Processed</strong> status. An ACH payout with a <strong>Returned</strong> status can also be reissued. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.</p>
      * <p>The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.</p>
      * <p>The reissue request doesn't accept a service fee. Payabli always charges the fee configured in the paypoint's ACH payout pricing, even when the pricing allows fee overrides. The new transaction keeps the original payout's total amount. The vendor receives that amount minus the configured fee.</p>
      */

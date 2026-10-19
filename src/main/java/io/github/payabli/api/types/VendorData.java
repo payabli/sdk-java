@@ -83,6 +83,8 @@ public final class VendorData {
 
     private final Optional<Integer> vendorStatus;
 
+    private final Optional<Boolean> issue1099;
+
     private final Optional<String> zip;
 
     private final Optional<String> defaultMethodId;
@@ -123,6 +125,7 @@ public final class VendorData {
             Optional<String> remitZip,
             Optional<String> state,
             Optional<Integer> vendorStatus,
+            Optional<Boolean> issue1099,
             Optional<String> zip,
             Optional<String> defaultMethodId,
             Optional<FileContent> attachment,
@@ -158,6 +161,7 @@ public final class VendorData {
         this.remitZip = remitZip;
         this.state = state;
         this.vendorStatus = vendorStatus;
+        this.issue1099 = issue1099;
         this.zip = zip;
         this.defaultMethodId = defaultMethodId;
         this.attachment = attachment;
@@ -358,6 +362,17 @@ public final class VendorData {
     }
 
     /**
+     * @return When <code>true</code>, a 1099 tax form is issued to this vendor. When you
+     * create a vendor and omit this field, it defaults to <code>false</code>. When
+     * you update a vendor and omit this field, the vendor keeps its
+     * current value.
+     */
+    @JsonProperty("issue1099")
+    public Optional<Boolean> getIssue1099() {
+        return issue1099;
+    }
+
+    /**
      * @return Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).
      */
     @JsonProperty("zip")
@@ -429,6 +444,7 @@ public final class VendorData {
                 && remitZip.equals(other.remitZip)
                 && state.equals(other.state)
                 && vendorStatus.equals(other.vendorStatus)
+                && issue1099.equals(other.issue1099)
                 && zip.equals(other.zip)
                 && defaultMethodId.equals(other.defaultMethodId)
                 && attachment.equals(other.attachment);
@@ -468,6 +484,7 @@ public final class VendorData {
                 this.remitZip,
                 this.state,
                 this.vendorStatus,
+                this.issue1099,
                 this.zip,
                 this.defaultMethodId,
                 this.attachment);
@@ -546,6 +563,8 @@ public final class VendorData {
 
         private Optional<Integer> vendorStatus = Optional.empty();
 
+        private Optional<Boolean> issue1099 = Optional.empty();
+
         private Optional<String> zip = Optional.empty();
 
         private Optional<String> defaultMethodId = Optional.empty();
@@ -589,6 +608,7 @@ public final class VendorData {
             remitZip(other.getRemitZip());
             state(other.getState());
             vendorStatus(other.getVendorStatus());
+            issue1099(other.getIssue1099());
             zip(other.getZip());
             defaultMethodId(other.getDefaultMethodId());
             attachment(other.getAttachment());
@@ -975,6 +995,23 @@ public final class VendorData {
         }
 
         /**
+         * <p>When <code>true</code>, a 1099 tax form is issued to this vendor. When you
+         * create a vendor and omit this field, it defaults to <code>false</code>. When
+         * you update a vendor and omit this field, the vendor keeps its
+         * current value.</p>
+         */
+        @JsonSetter(value = "issue1099", nulls = Nulls.SKIP)
+        public Builder issue1099(Optional<Boolean> issue1099) {
+            this.issue1099 = issue1099;
+            return this;
+        }
+
+        public Builder issue1099(Boolean issue1099) {
+            this.issue1099 = Optional.ofNullable(issue1099);
+            return this;
+        }
+
+        /**
          * <p>Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (<code>12345</code>) or ZIP+4 format (<code>12345-6789</code>).</p>
          */
         @JsonSetter(value = "zip", nulls = Nulls.SKIP)
@@ -1054,6 +1091,7 @@ public final class VendorData {
                     remitZip,
                     state,
                     vendorStatus,
+                    issue1099,
                     zip,
                     defaultMethodId,
                     attachment,

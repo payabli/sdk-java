@@ -5,13 +5,17 @@ package io.github.payabli.api.resources.subscription.requests;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
+import io.github.payabli.api.types.BillData;
 import io.github.payabli.api.types.PaymentDetail;
 import io.github.payabli.api.types.ScheduleDetail;
 import java.util.HashMap;
@@ -22,6 +26,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RequestUpdateSchedule.Builder.class)
 public final class RequestUpdateSchedule {
+    private final Optional<BillData> invoiceData;
+
     private final Optional<PaymentDetail> paymentDetails;
 
     private final Optional<ScheduleDetail> scheduleDetails;
@@ -31,14 +37,27 @@ public final class RequestUpdateSchedule {
     private final Map<String, Object> additionalProperties;
 
     private RequestUpdateSchedule(
+            Optional<BillData> invoiceData,
             Optional<PaymentDetail> paymentDetails,
             Optional<ScheduleDetail> scheduleDetails,
             Optional<Boolean> setPause,
             Map<String, Object> additionalProperties) {
+        this.invoiceData = invoiceData;
         this.paymentDetails = paymentDetails;
         this.scheduleDetails = scheduleDetails;
         this.setPause = setPause;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Object describing an invoice linked to the subscription. Replaces the subscription's existing invoice data entirely. Send <code>null</code> to remove it, or leave it out to keep the current invoice data. See <a href="/guides/pay-in-developer-subscriptions-manage#update-a-subscription">Update a subscription</a> for details.
+     */
+    @JsonIgnore
+    public Optional<BillData> getInvoiceData() {
+        if (invoiceData == null) {
+            return Optional.empty();
+        }
+        return invoiceData;
     }
 
     /**
@@ -62,6 +81,12 @@ public final class RequestUpdateSchedule {
         return setPause;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("invoiceData")
+    private Optional<BillData> _getInvoiceData() {
+        return invoiceData;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -74,14 +99,15 @@ public final class RequestUpdateSchedule {
     }
 
     private boolean equalTo(RequestUpdateSchedule other) {
-        return paymentDetails.equals(other.paymentDetails)
+        return invoiceData.equals(other.invoiceData)
+                && paymentDetails.equals(other.paymentDetails)
                 && scheduleDetails.equals(other.scheduleDetails)
                 && setPause.equals(other.setPause);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.paymentDetails, this.scheduleDetails, this.setPause);
+        return Objects.hash(this.invoiceData, this.paymentDetails, this.scheduleDetails, this.setPause);
     }
 
     @java.lang.Override
@@ -95,6 +121,8 @@ public final class RequestUpdateSchedule {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<BillData> invoiceData = Optional.empty();
+
         private Optional<PaymentDetail> paymentDetails = Optional.empty();
 
         private Optional<ScheduleDetail> scheduleDetails = Optional.empty();
@@ -107,9 +135,35 @@ public final class RequestUpdateSchedule {
         private Builder() {}
 
         public Builder from(RequestUpdateSchedule other) {
+            invoiceData(other.getInvoiceData());
             paymentDetails(other.getPaymentDetails());
             scheduleDetails(other.getScheduleDetails());
             setPause(other.getSetPause());
+            return this;
+        }
+
+        /**
+         * <p>Object describing an invoice linked to the subscription. Replaces the subscription's existing invoice data entirely. Send <code>null</code> to remove it, or leave it out to keep the current invoice data. See <a href="/guides/pay-in-developer-subscriptions-manage#update-a-subscription">Update a subscription</a> for details.</p>
+         */
+        @JsonSetter(value = "invoiceData", nulls = Nulls.SKIP)
+        public Builder invoiceData(Optional<BillData> invoiceData) {
+            this.invoiceData = invoiceData;
+            return this;
+        }
+
+        public Builder invoiceData(BillData invoiceData) {
+            this.invoiceData = Optional.ofNullable(invoiceData);
+            return this;
+        }
+
+        public Builder invoiceData(Nullable<BillData> invoiceData) {
+            if (invoiceData.isNull()) {
+                this.invoiceData = null;
+            } else if (invoiceData.isEmpty()) {
+                this.invoiceData = Optional.empty();
+            } else {
+                this.invoiceData = Optional.of(invoiceData.get());
+            }
             return this;
         }
 
@@ -153,7 +207,8 @@ public final class RequestUpdateSchedule {
         }
 
         public RequestUpdateSchedule build() {
-            return new RequestUpdateSchedule(paymentDetails, scheduleDetails, setPause, additionalProperties);
+            return new RequestUpdateSchedule(
+                    invoiceData, paymentDetails, scheduleDetails, setPause, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

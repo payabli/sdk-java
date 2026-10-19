@@ -101,6 +101,8 @@ public final class BillQueryRecord2 {
 
     private final Optional<TransactionOutQueryRecord> transaction;
 
+    private final Optional<List<BillTransactionReference>> transactions;
+
     private final Optional<VendorOutData> vendor;
 
     private final Map<String, Object> additionalProperties;
@@ -144,6 +146,7 @@ public final class BillQueryRecord2 {
             Optional<Double> paidAmount,
             Optional<Double> outstandingBalance,
             Optional<TransactionOutQueryRecord> transaction,
+            Optional<List<BillTransactionReference>> transactions,
             Optional<VendorOutData> vendor,
             Map<String, Object> additionalProperties) {
         this.accountingField1 = accountingField1;
@@ -184,6 +187,7 @@ public final class BillQueryRecord2 {
         this.paidAmount = paidAmount;
         this.outstandingBalance = outstandingBalance;
         this.transaction = transaction;
+        this.transactions = transactions;
         this.vendor = vendor;
         this.additionalProperties = additionalProperties;
     }
@@ -585,6 +589,18 @@ public final class BillQueryRecord2 {
         return transaction;
     }
 
+    /**
+     * @return All payout transactions that paid the bill, with one entry for each payout. When a bill is paid by several <a href="/guides/pay-out-developer-bills-manage#partially-pay-a-bill">partial payouts</a>, each one has an entry and <code>Transaction</code> holds the most recent. Canceled payouts aren't included.
+     * <p>The value is <code>null</code> when the bill has no payouts, and an empty array when every payout on the bill has been canceled. For details, see <code>transactions</code> in <a href="/developers/api-reference/bill/get-bill">Get bill</a>.</p>
+     */
+    @JsonIgnore
+    public Optional<List<BillTransactionReference>> getTransactions() {
+        if (transactions == null) {
+            return Optional.empty();
+        }
+        return transactions;
+    }
+
     @JsonIgnore
     public Optional<VendorOutData> getVendor() {
         if (vendor == null) {
@@ -822,6 +838,12 @@ public final class BillQueryRecord2 {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transactions")
+    private Optional<List<BillTransactionReference>> _getTransactions() {
+        return transactions;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("Vendor")
     private Optional<VendorOutData> _getVendor() {
         return vendor;
@@ -877,6 +899,7 @@ public final class BillQueryRecord2 {
                 && paidAmount.equals(other.paidAmount)
                 && outstandingBalance.equals(other.outstandingBalance)
                 && transaction.equals(other.transaction)
+                && transactions.equals(other.transactions)
                 && vendor.equals(other.vendor);
     }
 
@@ -921,6 +944,7 @@ public final class BillQueryRecord2 {
                 this.paidAmount,
                 this.outstandingBalance,
                 this.transaction,
+                this.transactions,
                 this.vendor);
     }
 
@@ -1011,6 +1035,8 @@ public final class BillQueryRecord2 {
 
         private Optional<TransactionOutQueryRecord> transaction = Optional.empty();
 
+        private Optional<List<BillTransactionReference>> transactions = Optional.empty();
+
         private Optional<VendorOutData> vendor = Optional.empty();
 
         @JsonAnySetter
@@ -1057,6 +1083,7 @@ public final class BillQueryRecord2 {
             paidAmount(other.getPaidAmount());
             outstandingBalance(other.getOutstandingBalance());
             transaction(other.getTransaction());
+            transactions(other.getTransactions());
             vendor(other.getVendor());
             return this;
         }
@@ -1990,6 +2017,32 @@ public final class BillQueryRecord2 {
             return this;
         }
 
+        /**
+         * <p>All payout transactions that paid the bill, with one entry for each payout. When a bill is paid by several <a href="/guides/pay-out-developer-bills-manage#partially-pay-a-bill">partial payouts</a>, each one has an entry and <code>Transaction</code> holds the most recent. Canceled payouts aren't included.</p>
+         * <p>The value is <code>null</code> when the bill has no payouts, and an empty array when every payout on the bill has been canceled. For details, see <code>transactions</code> in <a href="/developers/api-reference/bill/get-bill">Get bill</a>.</p>
+         */
+        @JsonSetter(value = "transactions", nulls = Nulls.SKIP)
+        public Builder transactions(Optional<List<BillTransactionReference>> transactions) {
+            this.transactions = transactions;
+            return this;
+        }
+
+        public Builder transactions(List<BillTransactionReference> transactions) {
+            this.transactions = Optional.ofNullable(transactions);
+            return this;
+        }
+
+        public Builder transactions(Nullable<List<BillTransactionReference>> transactions) {
+            if (transactions.isNull()) {
+                this.transactions = null;
+            } else if (transactions.isEmpty()) {
+                this.transactions = Optional.empty();
+            } else {
+                this.transactions = Optional.of(transactions.get());
+            }
+            return this;
+        }
+
         @JsonSetter(value = "Vendor", nulls = Nulls.SKIP)
         public Builder vendor(Optional<VendorOutData> vendor) {
             this.vendor = vendor;
@@ -2052,6 +2105,7 @@ public final class BillQueryRecord2 {
                     paidAmount,
                     outstandingBalance,
                     transaction,
+                    transactions,
                     vendor,
                     additionalProperties);
         }

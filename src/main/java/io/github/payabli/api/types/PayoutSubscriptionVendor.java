@@ -56,6 +56,8 @@ public final class PayoutSubscriptionVendor {
 
     private final Optional<String> locationCode;
 
+    private final boolean issue1099;
+
     private final Optional<List<PayoutSubscriptionVendorContact>> contacts;
 
     private final Optional<BillingDataResponse> billingData;
@@ -152,6 +154,7 @@ public final class PayoutSubscriptionVendor {
             Optional<String> country,
             Optional<String> mcc,
             Optional<String> locationCode,
+            boolean issue1099,
             Optional<List<PayoutSubscriptionVendorContact>> contacts,
             Optional<BillingDataResponse> billingData,
             Optional<String> paymentMethod,
@@ -207,6 +210,7 @@ public final class PayoutSubscriptionVendor {
         this.country = country;
         this.mcc = mcc;
         this.locationCode = locationCode;
+        this.issue1099 = issue1099;
         this.contacts = contacts;
         this.billingData = billingData;
         this.paymentMethod = paymentMethod;
@@ -373,6 +377,11 @@ public final class PayoutSubscriptionVendor {
             return Optional.empty();
         }
         return locationCode;
+    }
+
+    @JsonProperty("issue1099")
+    public boolean getIssue1099() {
+        return issue1099;
     }
 
     /**
@@ -966,6 +975,7 @@ public final class PayoutSubscriptionVendor {
                 && country.equals(other.country)
                 && mcc.equals(other.mcc)
                 && locationCode.equals(other.locationCode)
+                && issue1099 == other.issue1099
                 && contacts.equals(other.contacts)
                 && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
@@ -1025,6 +1035,7 @@ public final class PayoutSubscriptionVendor {
                 this.country,
                 this.mcc,
                 this.locationCode,
+                this.issue1099,
                 this.contacts,
                 this.billingData,
                 this.paymentMethod,
@@ -1082,7 +1093,11 @@ public final class PayoutSubscriptionVendor {
     }
 
     public interface Name1Stage {
-        VendorStatusStage name1(@NotNull String name1);
+        Issue1099Stage name1(@NotNull String name1);
+    }
+
+    public interface Issue1099Stage {
+        VendorStatusStage issue1099(boolean issue1099);
     }
 
     public interface VendorStatusStage {
@@ -1438,6 +1453,7 @@ public final class PayoutSubscriptionVendor {
     public static final class Builder
             implements VendorNumberStage,
                     Name1Stage,
+                    Issue1099Stage,
                     VendorStatusStage,
                     VendorIdStage,
                     PaypointLegalnameStage,
@@ -1453,6 +1469,8 @@ public final class PayoutSubscriptionVendor {
         private String vendorNumber;
 
         private String name1;
+
+        private boolean issue1099;
 
         private int vendorStatus;
 
@@ -1580,6 +1598,7 @@ public final class PayoutSubscriptionVendor {
             country(other.getCountry());
             mcc(other.getMcc());
             locationCode(other.getLocationCode());
+            issue1099(other.getIssue1099());
             contacts(other.getContacts());
             billingData(other.getBillingData());
             paymentMethod(other.getPaymentMethod());
@@ -1631,8 +1650,15 @@ public final class PayoutSubscriptionVendor {
 
         @java.lang.Override
         @JsonSetter("name1")
-        public VendorStatusStage name1(@NotNull String name1) {
+        public Issue1099Stage name1(@NotNull String name1) {
             this.name1 = Objects.requireNonNull(name1, "name1 must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("issue1099")
+        public VendorStatusStage issue1099(boolean issue1099) {
+            this.issue1099 = issue1099;
             return this;
         }
 
@@ -2936,6 +2962,7 @@ public final class PayoutSubscriptionVendor {
                     country,
                     mcc,
                     locationCode,
+                    issue1099,
                     contacts,
                     billingData,
                     paymentMethod,

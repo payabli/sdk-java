@@ -8,6 +8,7 @@ import io.github.payabli.api.core.RequestOptions;
 import io.github.payabli.api.resources.ghostcard.requests.CreateGhostCardRequestBody;
 import io.github.payabli.api.resources.ghostcard.requests.UpdateCardRequestBody;
 import io.github.payabli.api.types.CreateGhostCardResponse;
+import io.github.payabli.api.types.DeleteGhostCardResponse;
 import io.github.payabli.api.types.PayabliApiResponse;
 
 public class GhostCardClient {
@@ -30,7 +31,7 @@ public class GhostCardClient {
     /**
      * Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
      * <p>Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.</p>
-     * <p>Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.</p>
+     * <p>Only one active ghost card can exist per vendor per paypoint. If the vendor already has one, the request fails with error <code>7067</code>. To issue a new card to the same vendor, cancel the existing card first. Canceled and expired cards don't count toward this limit. See <a href="/developers/api-reference/cards/cancel-ghost-card">Cancel ghost card</a>.</p>
      */
     public CreateGhostCardResponse createGhostCard(String entry, CreateGhostCardRequestBody request) {
         return this.rawClient.createGhostCard(entry, request).body();
@@ -39,11 +40,29 @@ public class GhostCardClient {
     /**
      * Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
      * <p>Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.</p>
-     * <p>Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.</p>
+     * <p>Only one active ghost card can exist per vendor per paypoint. If the vendor already has one, the request fails with error <code>7067</code>. To issue a new card to the same vendor, cancel the existing card first. Canceled and expired cards don't count toward this limit. See <a href="/developers/api-reference/cards/cancel-ghost-card">Cancel ghost card</a>.</p>
      */
     public CreateGhostCardResponse createGhostCard(
             String entry, CreateGhostCardRequestBody request, RequestOptions requestOptions) {
         return this.rawClient.createGhostCard(entry, request, requestOptions).body();
+    }
+
+    /**
+     * Cancels a ghost card. This is always a soft delete: Payabli keeps the card record, including its transaction history.
+     * <p>Canceling a ghost card frees the vendor's slot, so you can issue a new ghost card to the same vendor. A card canceled with this endpoint can't be used, reactivated, or canceled again.</p>
+     * <p>Requires the <code>vcard_delete</code> permission.</p>
+     */
+    public DeleteGhostCardResponse deleteGhostCard(String cardToken) {
+        return this.rawClient.deleteGhostCard(cardToken).body();
+    }
+
+    /**
+     * Cancels a ghost card. This is always a soft delete: Payabli keeps the card record, including its transaction history.
+     * <p>Canceling a ghost card frees the vendor's slot, so you can issue a new ghost card to the same vendor. A card canceled with this endpoint can't be used, reactivated, or canceled again.</p>
+     * <p>Requires the <code>vcard_delete</code> permission.</p>
+     */
+    public DeleteGhostCardResponse deleteGhostCard(String cardToken, RequestOptions requestOptions) {
+        return this.rawClient.deleteGhostCard(cardToken, requestOptions).body();
     }
 
     /**

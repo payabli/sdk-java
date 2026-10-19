@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.payabli.api.core.ObjectMappers;
 import io.github.payabli.api.types.ReissuePaymentMethod;
@@ -28,16 +29,20 @@ public final class ReissueOutRequest {
 
     private final ReissuePaymentMethod paymentMethod;
 
+    private final Optional<String> checkNumber;
+
     private final Map<String, Object> additionalProperties;
 
     private ReissueOutRequest(
             Optional<String> idempotencyKey,
             String transId,
             ReissuePaymentMethod paymentMethod,
+            Optional<String> checkNumber,
             Map<String, Object> additionalProperties) {
         this.idempotencyKey = idempotencyKey;
         this.transId = transId;
         this.paymentMethod = paymentMethod;
+        this.checkNumber = checkNumber;
         this.additionalProperties = additionalProperties;
     }
 
@@ -62,6 +67,11 @@ public final class ReissueOutRequest {
         return paymentMethod;
     }
 
+    @JsonProperty("checkNumber")
+    public Optional<String> getCheckNumber() {
+        return checkNumber;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -76,12 +86,13 @@ public final class ReissueOutRequest {
     private boolean equalTo(ReissueOutRequest other) {
         return idempotencyKey.equals(other.idempotencyKey)
                 && transId.equals(other.transId)
-                && paymentMethod.equals(other.paymentMethod);
+                && paymentMethod.equals(other.paymentMethod)
+                && checkNumber.equals(other.checkNumber);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.idempotencyKey, this.transId, this.paymentMethod);
+        return Objects.hash(this.idempotencyKey, this.transId, this.paymentMethod, this.checkNumber);
     }
 
     @java.lang.Override
@@ -119,6 +130,10 @@ public final class ReissueOutRequest {
         _FinalStage idempotencyKey(Optional<String> idempotencyKey);
 
         _FinalStage idempotencyKey(String idempotencyKey);
+
+        _FinalStage checkNumber(Optional<String> checkNumber);
+
+        _FinalStage checkNumber(String checkNumber);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -126,6 +141,8 @@ public final class ReissueOutRequest {
         private String transId;
 
         private ReissuePaymentMethod paymentMethod;
+
+        private Optional<String> checkNumber = Optional.empty();
 
         private Optional<String> idempotencyKey = Optional.empty();
 
@@ -139,6 +156,7 @@ public final class ReissueOutRequest {
             idempotencyKey(other.getIdempotencyKey());
             transId(other.getTransId());
             paymentMethod(other.getPaymentMethod());
+            checkNumber(other.getCheckNumber());
             return this;
         }
 
@@ -157,6 +175,19 @@ public final class ReissueOutRequest {
         @JsonSetter("paymentMethod")
         public _FinalStage paymentMethod(@NotNull ReissuePaymentMethod paymentMethod) {
             this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage checkNumber(String checkNumber) {
+            this.checkNumber = Optional.ofNullable(checkNumber);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "checkNumber", nulls = Nulls.SKIP)
+        public _FinalStage checkNumber(Optional<String> checkNumber) {
+            this.checkNumber = checkNumber;
             return this;
         }
 
@@ -181,7 +212,7 @@ public final class ReissueOutRequest {
 
         @java.lang.Override
         public ReissueOutRequest build() {
-            return new ReissueOutRequest(idempotencyKey, transId, paymentMethod, additionalProperties);
+            return new ReissueOutRequest(idempotencyKey, transId, paymentMethod, checkNumber, additionalProperties);
         }
 
         @java.lang.Override

@@ -55,6 +55,8 @@ public final class VendorDataResponse {
 
     private final String locationCode;
 
+    private final boolean issue1099;
+
     private final List<ContactsResponse> contacts;
 
     private final VendorResponseBillingData billingData;
@@ -131,6 +133,7 @@ public final class VendorDataResponse {
             String country,
             String mcc,
             String locationCode,
+            boolean issue1099,
             List<ContactsResponse> contacts,
             VendorResponseBillingData billingData,
             VendorDataResponsePaymentMethod paymentMethod,
@@ -176,6 +179,7 @@ public final class VendorDataResponse {
         this.country = country;
         this.mcc = mcc;
         this.locationCode = locationCode;
+        this.issue1099 = issue1099;
         this.contacts = contacts;
         this.billingData = billingData;
         this.paymentMethod = paymentMethod;
@@ -314,6 +318,11 @@ public final class VendorDataResponse {
     @JsonProperty("LocationCode")
     public String getLocationCode() {
         return locationCode;
+    }
+
+    @JsonProperty("Issue1099")
+    public boolean getIssue1099() {
+        return issue1099;
     }
 
     /**
@@ -539,6 +548,7 @@ public final class VendorDataResponse {
                 && country.equals(other.country)
                 && mcc.equals(other.mcc)
                 && locationCode.equals(other.locationCode)
+                && issue1099 == other.issue1099
                 && contacts.equals(other.contacts)
                 && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
@@ -588,6 +598,7 @@ public final class VendorDataResponse {
                 this.country,
                 this.mcc,
                 this.locationCode,
+                this.issue1099,
                 this.contacts,
                 this.billingData,
                 this.paymentMethod,
@@ -713,7 +724,11 @@ public final class VendorDataResponse {
     }
 
     public interface LocationCodeStage {
-        BillingDataStage locationCode(@NotNull String locationCode);
+        Issue1099Stage locationCode(@NotNull String locationCode);
+    }
+
+    public interface Issue1099Stage {
+        BillingDataStage issue1099(boolean issue1099);
     }
 
     public interface BillingDataStage {
@@ -920,6 +935,7 @@ public final class VendorDataResponse {
                     CountryStage,
                     MccStage,
                     LocationCodeStage,
+                    Issue1099Stage,
                     BillingDataStage,
                     PaymentMethodStage,
                     VendorStatusStage,
@@ -972,6 +988,8 @@ public final class VendorDataResponse {
         private String mcc;
 
         private String locationCode;
+
+        private boolean issue1099;
 
         private VendorResponseBillingData billingData;
 
@@ -1055,6 +1073,7 @@ public final class VendorDataResponse {
             country(other.getCountry());
             mcc(other.getMcc());
             locationCode(other.getLocationCode());
+            issue1099(other.getIssue1099());
             contacts(other.getContacts());
             billingData(other.getBillingData());
             paymentMethod(other.getPaymentMethod());
@@ -1220,8 +1239,15 @@ public final class VendorDataResponse {
 
         @java.lang.Override
         @JsonSetter("LocationCode")
-        public BillingDataStage locationCode(@NotNull String locationCode) {
+        public Issue1099Stage locationCode(@NotNull String locationCode) {
             this.locationCode = Objects.requireNonNull(locationCode, "locationCode must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("Issue1099")
+        public BillingDataStage issue1099(boolean issue1099) {
+            this.issue1099 = issue1099;
             return this;
         }
 
@@ -1617,6 +1643,7 @@ public final class VendorDataResponse {
                     country,
                     mcc,
                     locationCode,
+                    issue1099,
                     contacts,
                     billingData,
                     paymentMethod,
