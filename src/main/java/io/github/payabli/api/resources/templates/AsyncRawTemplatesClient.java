@@ -45,6 +45,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Archive a template](/developers/api-reference/boarding-templates/archive-a-template) instead.
+     * &lt;/Warning&gt;</p>
      * Deletes a template by ID.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(
@@ -53,6 +56,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Archive a template](/developers/api-reference/boarding-templates/archive-a-template) instead.
+     * &lt;/Warning&gt;</p>
      * Deletes a template by ID.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<PayabliApiResponseTemplateId>> deleteTemplate(
@@ -151,6 +157,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+     * &lt;/Warning&gt;</p>
      * Generates a boarding link from a boarding template.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
@@ -159,6 +168,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+     * &lt;/Warning&gt;</p>
      * Generates a boarding link from a boarding template.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<BoardingLinkApiResponse>> getlinkTemplate(
@@ -256,6 +268,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Get a template](/developers/api-reference/boarding-templates/get-a-template) instead.
+     * &lt;/Warning&gt;</p>
      * Retrieves a boarding template's details by ID.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryRecord>> getTemplate(double templateId) {
@@ -263,6 +278,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Get a template](/developers/api-reference/boarding-templates/get-a-template) instead.
+     * &lt;/Warning&gt;</p>
      * Retrieves a boarding template's details by ID.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryRecord>> getTemplate(
@@ -359,6 +377,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List templates](/developers/api-reference/boarding-templates/list-templates) instead.
+     * &lt;/Warning&gt;</p>
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(int orgId) {
@@ -366,6 +387,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List templates](/developers/api-reference/boarding-templates/list-templates) instead.
+     * &lt;/Warning&gt;</p>
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(
@@ -374,6 +398,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List templates](/developers/api-reference/boarding-templates/list-templates) instead.
+     * &lt;/Warning&gt;</p>
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(
@@ -382,6 +409,9 @@ public class AsyncRawTemplatesClient {
     }
 
     /**
+     * <p>&lt;Warning&gt;
+     *   Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List templates](/developers/api-reference/boarding-templates/list-templates) instead.
+     * &lt;/Warning&gt;</p>
      * Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<TemplateQueryResponse>> listTemplates(

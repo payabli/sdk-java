@@ -10,10 +10,10 @@
     "client-class-name": "PayabliApiClient",
     "respect-optional-request-body": true
   },
-  "originGitCommit": "c21edcac756a2d90c721a038883ca28cfbf73024",
+  "originGitCommit": "b86804f7b7e691004b32c4c2703fa51f494c4eec",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.22",
+  "requestedVersion": "1.0.23",
   "ciProvider": "github",
-  "sdkVersion": "1.0.22"
+  "sdkVersion": "1.0.23"
 }

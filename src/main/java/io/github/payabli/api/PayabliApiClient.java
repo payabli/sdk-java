@@ -5,9 +5,12 @@ package io.github.payabli.api;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.Suppliers;
+import io.github.payabli.api.resources.applications.ApplicationsClient;
 import io.github.payabli.api.resources.bill.BillClient;
 import io.github.payabli.api.resources.billing.BillingClient;
 import io.github.payabli.api.resources.boarding.BoardingClient;
+import io.github.payabli.api.resources.boardingtemplates.BoardingTemplatesClient;
+import io.github.payabli.api.resources.businesses.BusinessesClient;
 import io.github.payabli.api.resources.casemanagement.CaseManagementClient;
 import io.github.payabli.api.resources.chargebacks.ChargeBacksClient;
 import io.github.payabli.api.resources.checkcapture.CheckCaptureClient;
@@ -30,8 +33,11 @@ import io.github.payabli.api.resources.ocr.OcrClient;
 import io.github.payabli.api.resources.organization.OrganizationClient;
 import io.github.payabli.api.resources.paymentlink.PaymentLinkClient;
 import io.github.payabli.api.resources.paymentmethoddomain.PaymentMethodDomainClient;
+import io.github.payabli.api.resources.paymentmethods.PaymentMethodsClient;
 import io.github.payabli.api.resources.payoutsubscription.PayoutSubscriptionClient;
 import io.github.payabli.api.resources.paypoint.PaypointClient;
+import io.github.payabli.api.resources.paypoints.PaypointsClient;
+import io.github.payabli.api.resources.people.PeopleClient;
 import io.github.payabli.api.resources.query.QueryClient;
 import io.github.payabli.api.resources.statistic.StatisticClient;
 import io.github.payabli.api.resources.subscription.SubscriptionClient;
@@ -86,6 +92,18 @@ public class PayabliApiClient {
     protected final Supplier<CloudClient> cloudClient;
 
     protected final Supplier<LineItemClient> lineItemClient;
+
+    protected final Supplier<BusinessesClient> businessesClient;
+
+    protected final Supplier<PeopleClient> peopleClient;
+
+    protected final Supplier<PaypointsClient> paypointsClient;
+
+    protected final Supplier<PaymentMethodsClient> paymentMethodsClient;
+
+    protected final Supplier<BoardingTemplatesClient> boardingTemplatesClient;
+
+    protected final Supplier<ApplicationsClient> applicationsClient;
 
     protected final Supplier<BoardingClient> boardingClient;
 
@@ -143,6 +161,12 @@ public class PayabliApiClient {
         this.taptopayClient = Suppliers.memoize(() -> new TaptopayClient(clientOptions));
         this.cloudClient = Suppliers.memoize(() -> new CloudClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
+        this.businessesClient = Suppliers.memoize(() -> new BusinessesClient(clientOptions));
+        this.peopleClient = Suppliers.memoize(() -> new PeopleClient(clientOptions));
+        this.paypointsClient = Suppliers.memoize(() -> new PaypointsClient(clientOptions));
+        this.paymentMethodsClient = Suppliers.memoize(() -> new PaymentMethodsClient(clientOptions));
+        this.boardingTemplatesClient = Suppliers.memoize(() -> new BoardingTemplatesClient(clientOptions));
+        this.applicationsClient = Suppliers.memoize(() -> new ApplicationsClient(clientOptions));
         this.boardingClient = Suppliers.memoize(() -> new BoardingClient(clientOptions));
         this.templatesClient = Suppliers.memoize(() -> new TemplatesClient(clientOptions));
         this.exportClient = Suppliers.memoize(() -> new ExportClient(clientOptions));
@@ -240,6 +264,30 @@ public class PayabliApiClient {
 
     public LineItemClient lineItem() {
         return this.lineItemClient.get();
+    }
+
+    public BusinessesClient businesses() {
+        return this.businessesClient.get();
+    }
+
+    public PeopleClient people() {
+        return this.peopleClient.get();
+    }
+
+    public PaypointsClient paypoints() {
+        return this.paypointsClient.get();
+    }
+
+    public PaymentMethodsClient paymentMethods() {
+        return this.paymentMethodsClient.get();
+    }
+
+    public BoardingTemplatesClient boardingTemplates() {
+        return this.boardingTemplatesClient.get();
+    }
+
+    public ApplicationsClient applications() {
+        return this.applicationsClient.get();
     }
 
     public BoardingClient boarding() {

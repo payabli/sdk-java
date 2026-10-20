@@ -6,14 +6,48 @@ package io.github.payabli.api;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.payabli.api.core.ObjectMappers;
+import io.github.payabli.api.resources.paypoints.types.CreatePaypointPaypointsRequest;
 import io.github.payabli.api.types.AddApplicationRequest;
 import io.github.payabli.api.types.ApplicationDataManaged;
 import io.github.payabli.api.types.ConvertToken;
+import io.github.payabli.api.types.CreatePaypointAllFields;
+import io.github.payabli.api.types.CreatePaypointWithBusinessReference;
+import io.github.payabli.api.types.CreatePaypointWithInlineBusiness;
 import io.github.payabli.api.types.RequestTokenStoragePaymentMethod;
 import io.github.payabli.api.types.TokenizeCard;
 import org.junit.jupiter.api.Test;
 
 public final class UndiscriminatedUnionTest {
+    @Test
+    public void testCreatePaypointPaypointsRequest_CreatePaypointWithBusinessReference() throws Exception {
+        String json = "{\"businessReference\":\"test\",\"doingBusinessAs\":\"test\"}";
+        CreatePaypointPaypointsRequest union =
+                ObjectMappers.JSON_MAPPER.readValue(json, CreatePaypointPaypointsRequest.class);
+        assertTrue(
+                union.get() instanceof CreatePaypointWithBusinessReference,
+                "Expected CreatePaypointWithBusinessReference but got different variant");
+    }
+
+    @Test
+    public void testCreatePaypointPaypointsRequest_CreatePaypointWithInlineBusiness() throws Exception {
+        String json = "{\"business\":{},\"doingBusinessAs\":\"test\"}";
+        CreatePaypointPaypointsRequest union =
+                ObjectMappers.JSON_MAPPER.readValue(json, CreatePaypointPaypointsRequest.class);
+        assertTrue(
+                union.get() instanceof CreatePaypointWithInlineBusiness,
+                "Expected CreatePaypointWithInlineBusiness but got different variant");
+    }
+
+    @Test
+    public void testCreatePaypointPaypointsRequest_CreatePaypointAllFields() throws Exception {
+        String json = "{\"doingBusinessAs\":\"test\"}";
+        CreatePaypointPaypointsRequest union =
+                ObjectMappers.JSON_MAPPER.readValue(json, CreatePaypointPaypointsRequest.class);
+        assertTrue(
+                union.get() instanceof CreatePaypointAllFields,
+                "Expected CreatePaypointAllFields but got different variant");
+    }
+
     @Test
     public void testRequestTokenStoragePaymentMethod_TokenizeCard() throws Exception {
         String json = "{\"method\":\"test\",\"cardexp\":\"test\",\"cardHolder\":\"test\",\"cardnumber\":\"test\"}";

@@ -5,9 +5,12 @@ package io.github.payabli.api;
 
 import io.github.payabli.api.core.ClientOptions;
 import io.github.payabli.api.core.Suppliers;
+import io.github.payabli.api.resources.applications.AsyncApplicationsClient;
 import io.github.payabli.api.resources.bill.AsyncBillClient;
 import io.github.payabli.api.resources.billing.AsyncBillingClient;
 import io.github.payabli.api.resources.boarding.AsyncBoardingClient;
+import io.github.payabli.api.resources.boardingtemplates.AsyncBoardingTemplatesClient;
+import io.github.payabli.api.resources.businesses.AsyncBusinessesClient;
 import io.github.payabli.api.resources.casemanagement.AsyncCaseManagementClient;
 import io.github.payabli.api.resources.chargebacks.AsyncChargeBacksClient;
 import io.github.payabli.api.resources.checkcapture.AsyncCheckCaptureClient;
@@ -30,8 +33,11 @@ import io.github.payabli.api.resources.ocr.AsyncOcrClient;
 import io.github.payabli.api.resources.organization.AsyncOrganizationClient;
 import io.github.payabli.api.resources.paymentlink.AsyncPaymentLinkClient;
 import io.github.payabli.api.resources.paymentmethoddomain.AsyncPaymentMethodDomainClient;
+import io.github.payabli.api.resources.paymentmethods.AsyncPaymentMethodsClient;
 import io.github.payabli.api.resources.payoutsubscription.AsyncPayoutSubscriptionClient;
 import io.github.payabli.api.resources.paypoint.AsyncPaypointClient;
+import io.github.payabli.api.resources.paypoints.AsyncPaypointsClient;
+import io.github.payabli.api.resources.people.AsyncPeopleClient;
 import io.github.payabli.api.resources.query.AsyncQueryClient;
 import io.github.payabli.api.resources.statistic.AsyncStatisticClient;
 import io.github.payabli.api.resources.subscription.AsyncSubscriptionClient;
@@ -86,6 +92,18 @@ public class AsyncPayabliApiClient {
     protected final Supplier<AsyncCloudClient> cloudClient;
 
     protected final Supplier<AsyncLineItemClient> lineItemClient;
+
+    protected final Supplier<AsyncBusinessesClient> businessesClient;
+
+    protected final Supplier<AsyncPeopleClient> peopleClient;
+
+    protected final Supplier<AsyncPaypointsClient> paypointsClient;
+
+    protected final Supplier<AsyncPaymentMethodsClient> paymentMethodsClient;
+
+    protected final Supplier<AsyncBoardingTemplatesClient> boardingTemplatesClient;
+
+    protected final Supplier<AsyncApplicationsClient> applicationsClient;
 
     protected final Supplier<AsyncBoardingClient> boardingClient;
 
@@ -143,6 +161,12 @@ public class AsyncPayabliApiClient {
         this.taptopayClient = Suppliers.memoize(() -> new AsyncTaptopayClient(clientOptions));
         this.cloudClient = Suppliers.memoize(() -> new AsyncCloudClient(clientOptions));
         this.lineItemClient = Suppliers.memoize(() -> new AsyncLineItemClient(clientOptions));
+        this.businessesClient = Suppliers.memoize(() -> new AsyncBusinessesClient(clientOptions));
+        this.peopleClient = Suppliers.memoize(() -> new AsyncPeopleClient(clientOptions));
+        this.paypointsClient = Suppliers.memoize(() -> new AsyncPaypointsClient(clientOptions));
+        this.paymentMethodsClient = Suppliers.memoize(() -> new AsyncPaymentMethodsClient(clientOptions));
+        this.boardingTemplatesClient = Suppliers.memoize(() -> new AsyncBoardingTemplatesClient(clientOptions));
+        this.applicationsClient = Suppliers.memoize(() -> new AsyncApplicationsClient(clientOptions));
         this.boardingClient = Suppliers.memoize(() -> new AsyncBoardingClient(clientOptions));
         this.templatesClient = Suppliers.memoize(() -> new AsyncTemplatesClient(clientOptions));
         this.exportClient = Suppliers.memoize(() -> new AsyncExportClient(clientOptions));
@@ -240,6 +264,30 @@ public class AsyncPayabliApiClient {
 
     public AsyncLineItemClient lineItem() {
         return this.lineItemClient.get();
+    }
+
+    public AsyncBusinessesClient businesses() {
+        return this.businessesClient.get();
+    }
+
+    public AsyncPeopleClient people() {
+        return this.peopleClient.get();
+    }
+
+    public AsyncPaypointsClient paypoints() {
+        return this.paypointsClient.get();
+    }
+
+    public AsyncPaymentMethodsClient paymentMethods() {
+        return this.paymentMethodsClient.get();
+    }
+
+    public AsyncBoardingTemplatesClient boardingTemplates() {
+        return this.boardingTemplatesClient.get();
+    }
+
+    public AsyncApplicationsClient applications() {
+        return this.applicationsClient.get();
     }
 
     public AsyncBoardingClient boarding() {

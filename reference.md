@@ -15722,6 +15722,4718 @@ Example: name(ct)=john return all records with name containing john
 </dl>
 </details>
 
+## Businesses
+<details><summary><code>client.businesses.listBusinesses() -> ListBusinessesEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists businesses with optional filtering and pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().listBusinesses(
+    ListBusinessesBusinessesRequest
+        .builder()
+        .limit(1)
+        .page(1)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**status:** `Optional<String>` — Filter by business status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `Optional<String>` — Filter by legal name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantCatCode:** `Optional<String>` — Filter by merchant category code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**legalStructure:** `Optional<String>` — Filter by legal structure.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Number of results per page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `Optional<Integer>` — Page number to return.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — Field to sort by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortOrder:** `Optional<String>` — Sort direction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.createBusiness(request) -> BusinessCreatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a business, the legal entity behind a paypoint. New businesses
+start in `Draft`. Set `parentReference` to the organization 
+the business belongs to, or omit it to use the organization your
+credential belongs to.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().createBusiness(
+    CreateBusinessRequest
+        .builder()
+        .legalName("Rose Gardens LLC")
+        .externalId("rg-001")
+        .legalStructure(CreateBusinessRequestLegalStructure.LLC)
+        .website("https://example.com")
+        .merchantCatCode("5814")
+        .phone(
+            Optional.of(
+                Arrays.asList("3055551212")
+            )
+        )
+        .emails(
+            Optional.of(
+                Arrays.asList("ops@example.com")
+            )
+        )
+        .paymentMethods(
+            Optional.of(
+                Arrays.asList(
+                    BusinessPaymentMethod
+                        .builder()
+                        .type("bank_account")
+                        .name("Operating account")
+                        .financialInstitution("Bank of Example")
+                        .ownerType("business")
+                        .accountType("checking")
+                        .accountNumber("123456789")
+                        .routingNumber("021000021")
+                        .usage(
+                            Optional.of(
+                                Arrays.asList("deposits", "billing")
+                            )
+                        )
+                        .isDefault(true)
+                        .build(),
+                    BusinessPaymentMethod
+                        .builder()
+                        .type("bank_account")
+                        .name("Payout account")
+                        .financialInstitution("Bank of Example")
+                        .ownerType("business")
+                        .accountType("checking")
+                        .accountNumber("987654321")
+                        .routingNumber("021000021")
+                        .usage(
+                            Optional.of(
+                                Arrays.asList("payOutFunding")
+                            )
+                        )
+                        .isDefault(false)
+                        .build()
+                )
+            )
+        )
+        .taxReference("477498993")
+        .parentReference("8cfec329267")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateBusinessRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.getBusiness(businessReference) -> BusinessDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a business by reference. Sensitive fields such as `taxReference` are masked.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().getBusiness("019fed1a-3d6e-75d3-a81e-cba3874b0a55");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.deactivateBusiness(businessReference, request) -> BusinessDeactivatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deactivates a business. This is a soft delete: the business moves to
+`Deactivated` and the record is kept.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().deactivateBusiness(
+    "019fed33-615d-77b6-afaa-46e7ac9bf36e",
+    DeactivateBusinessRequest
+        .builder()
+        .reason("Duplicate record")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `Optional<String>` — Optional reason for deactivation (max 500 characters).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.updateBusiness(businessReference, request) -> BusinessUpdatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a business. Send only the fields you want to change.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().updateBusiness(
+    "019fed1a-3d6e-75d3-a81e-cba3874b0a55",
+    UpdateBusinessRequest
+        .builder()
+        .website("https://example.org")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**externalId:** `Optional<String>` — Your own identifier for the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**legalName:** `Optional<String>` — The registered legal name of the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `Optional<String>` — A free-text description of the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**legalStructure:** `Optional<UpdateBusinessRequestLegalStructure>` — The business's legal structure. Accepts the same values as create, and normalizes to a canonical value on read.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**stockSymbol:** `Optional<String>` — The stock ticker symbol, if the business is publicly traded.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**incorporationState:** `Optional<String>` — The state where the business is incorporated.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**taxIdCountry:** `Optional<String>` — The country that issued the business's tax identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**establishedDate:** `Optional<OffsetDateTime>` — The date the business was established.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**numberOfEmployees:** `Optional<Integer>` — The number of employees.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**annualRevenue:** `Optional<Double>` — The business's annual revenue.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `Optional<String>` — The business's website URL.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantCatCode:** `Optional<String>` — The merchant category code (MCC) that classifies the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timezone:** `Optional<String>` — The business's time zone.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone:** `Optional<List<String>>` — Phone numbers for the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**emails:** `Optional<List<String>>` — Email addresses for the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**operatingSeasons:** `Optional<List<UpdateBusinessRequestOperatingSeasonsItem>>` — The seasons the business operates in. Values are case-insensitive on input and returned capitalized.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addressDetails:** `Optional<List<BusinessAddress>>` 
+
+A non-empty `addressDetails` is rejected on update. Manage a business's
+addresses through the `/v2/businesses/{businessReference}/addresses`
+endpoints instead. An omitted field or an empty array is accepted as
+"no address change requested."
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethods:** `Optional<List<BusinessPaymentMethod>>` — The bank accounts and cards attached to the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customData:** `Optional<Map<String, Object>>` 
+
+Key-value data to merge into the business's stored `customData`.
+Payabli stores the applicant's answers to a boarding template's
+custom questions under the `templateAnswers` key.
+
+When you update a business, Payabli merges `customData` into the
+stored value, following JSON Merge Patch (RFC 7396). Keys you
+don't send are kept at every depth, and nested objects merge key
+by key. Strings, numbers, Boolean values, and arrays replace the
+stored value, and arrays aren't merged. Send a key as `null` to
+delete it, such as `{"crmId": null}`. A `customData` that isn't
+an object, such as an array, replaces the stored value whole.
+Leave out `customData` to keep it as is.
+
+The `customData` you send can be up to 65,536 bytes serialized.
+The limit applies to the request, not to the merged result.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isForeignOwned:** `Optional<Boolean>` — Whether the business is foreign-owned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isTaxExempt:** `Optional<Boolean>` — Whether the business is tax-exempt.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**taxExemptClassification:** `Optional<String>` — The business's tax-exempt classification, such as `501(c)(3)`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**processingMetrics:** `Optional<ProcessingMetrics>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payoutMetrics:** `Optional<PayoutMetrics>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**license:** `Optional<String>` — The business's license number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**licenseState:** `Optional<String>` — The state that issued the business's license.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.getBusinessUnmasked(businessReference) -> BusinessDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a business by reference with sensitive fields unmasked.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().getBusinessUnmasked("019fed1a-3d6e-75d3-a81e-cba3874b0a55");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.listBusinessAddresses(businessReference) -> BusinessAddressListEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the addresses on a business. Each address is identified by its `businessAddressReference`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().listBusinessAddresses("019fed1a-3d6e-75d3-a81e-cba3874b0a55");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.createBusinessAddress(businessReference, request) -> BusinessAddressEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds an address to a business. Returns the new address and its `businessAddressReference`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().createBusinessAddress(
+    "019fed1a-3d6e-75d3-a81e-cba3874b0a55",
+    CreateBusinessAddressRequest
+        .builder()
+        .type(AddressType.MAILING)
+        .addressLine1("202 Warehouse Ln")
+        .cityLocality("Austin")
+        .stateProvince("TX")
+        .postalCode("73302")
+        .country("US")
+        .location(BusinessAddressLocation.WAREHOUSE)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `AddressType` — The address role.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**location:** `Optional<BusinessAddressLocation>` — The physical use of the address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addressLine1:** `String` — The first line of the street address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addressLine2:** `Optional<String>` — The second line of the street address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cityLocality:** `String` — The city or locality.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**stateProvince:** `String` — The state or province.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**postalCode:** `String` — The postal or ZIP code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `String` — The two-character ISO country code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**floor:** `Optional<String>` — The floor, if applicable.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**suiteApartNumber:** `Optional<String>` — The suite or apartment number, if applicable.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.getBusinessAddress(businessReference, businessAddressReference) -> BusinessAddressEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single business address by its `businessAddressReference`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().getBusinessAddress("019fed1a-3d6e-75d3-a81e-cba3874b0a55", "019fed1a-84a6-7043-a6c0-e8aa2d4bec36");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**businessAddressReference:** `String` — The business address reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.deleteBusinessAddress(businessReference, businessAddressReference) -> BusinessAddressDeletedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes an address from a business.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().deleteBusinessAddress("019fed1a-3d6e-75d3-a81e-cba3874b0a55", "019fed1a-67d6-768a-b4cc-29d4299e21d9");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**businessAddressReference:** `String` — The business address reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.updateBusinessAddress(businessReference, businessAddressReference, request) -> BusinessAddressEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a business address. Send only the fields you want to change; omitted fields are kept.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().updateBusinessAddress(
+    "019fed1a-3d6e-75d3-a81e-cba3874b0a55",
+    "019fed1a-67d6-768a-b4cc-29d4299e21d9",
+    UpdateBusinessAddressRequest
+        .builder()
+        .type(AddressType.BILLING)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**businessAddressReference:** `String` — The business address reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `Optional<AddressType>` — The address role.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**location:** `Optional<BusinessAddressLocation>` — The physical use of the address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addressLine1:** `Optional<String>` — The first line of the street address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addressLine2:** `Optional<String>` — The second line of the street address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cityLocality:** `Optional<String>` — The city or locality.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**stateProvince:** `Optional<String>` — The state or province.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**postalCode:** `Optional<String>` — The postal or ZIP code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `Optional<String>` — The two-character ISO country code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**floor:** `Optional<String>` — The floor, if applicable.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**suiteApartNumber:** `Optional<String>` — The suite or apartment number, if applicable.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.listBusinessPeople(businessReference) -> BusinessPersonListEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the people linked to a business, each with the relationship's role, ownership, and relationship-scoped contact details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().listBusinessPeople("019fed1a-3d6e-75d3-a81e-cba3874b0a55");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.linkBusinessPerson(businessReference, request) -> BusinessPersonEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Links an existing person to a business, setting the relationship's role, ownership, primary-controller flag, contact fields, and addresses.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().linkBusinessPerson(
+    "019fed1a-3d6e-75d3-a81e-cba3874b0a55",
+    LinkBusinessPersonRequest
+        .builder()
+        .personReference("01a0014d-ce1a-7110-9bac-c4c59647a88d")
+        .personType(PersonType.OWNER)
+        .ownershipPercentage(100.0)
+        .isPrimaryController(true)
+        .isSigner(true)
+        .title("CEO")
+        .primaryEmail("contact@example.com")
+        .secondaryEmail("contact.alt@example.net")
+        .primaryPhoneNumber("3055551212")
+        .secondaryPhoneNumber("3055559876")
+        .billingAddress(
+            PersonAddressRequest
+                .builder()
+                .addressLine1("123 Main Street")
+                .cityLocality("Miami")
+                .stateProvince("FL")
+                .postalCode("33101")
+                .country("US")
+                .type(PersonAddressType.BILLING)
+                .build()
+        )
+        .mailingAddress(
+            PersonAddressRequest
+                .builder()
+                .addressLine1("456 Oak Avenue")
+                .cityLocality("Miami")
+                .stateProvince("FL")
+                .postalCode("33102")
+                .country("US")
+                .type(PersonAddressType.MAILING)
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The reference of the person to link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**personType:** `Optional<PersonType>` — The person's role on the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ownershipPercentage:** `Optional<Double>` — The person's ownership percentage (0 to 100). Required when `personType` is `Owner`, and must be omitted for every other role. If the combined ownership would exceed 100%, the link is rejected with a `400`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPrimaryController:** `Optional<Boolean>` — Whether the person is the business's primary controller.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isSigner:** `Optional<Boolean>` 
+
+Whether the person signs the business's boarding applications. Only an
+owner can be the signer. Setting `isSigner` to `true` on a person with
+another `personType` returns `400` with the message
+`Only an owner can be the signer.` A business has one signer. Setting
+`isSigner` to `true` on one person removes it from every other person
+linked to the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `Optional<String>` 
+
+The person's job title at this business, such as `CEO` or
+`Managing Member`, from 1 to 100 characters. A person linked to more than
+one business can have a different title at each one. A blank value is
+treated as not sent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryEmail:** `Optional<String>` — The relationship's primary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryEmail:** `Optional<String>` — The relationship's secondary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryPhoneNumber:** `Optional<String>` — The relationship's primary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryPhoneNumber:** `Optional<String>` — The relationship's secondary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingAddress:** `Optional<PersonAddressRequest>` — The billing address for the relationship.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mailingAddress:** `Optional<PersonAddressRequest>` — The mailing address for the relationship.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.getBusinessPerson(businessReference, personReference) -> BusinessPersonEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single business-person link by the person's reference.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().getBusinessPerson("019fed1a-3d6e-75d3-a81e-cba3874b0a55", "01a0014d-ce1a-7110-9bac-c4c59647a88d");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The person reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.unlinkBusinessPerson(businessReference, personReference)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes the link between a person and a business. The person record itself isn't deleted.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().unlinkBusinessPerson("019fed1a-3d6e-75d3-a81e-cba3874b0a55", "01a0014d-ce1a-7110-9bac-c4c59647a88d");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The person reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.businesses.updateBusinessPerson(businessReference, personReference, request) -> BusinessPersonEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a business-person link. Send only the fields you want to change; omitted fields are kept.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.businesses().updateBusinessPerson(
+    "019fed1a-3d6e-75d3-a81e-cba3874b0a55",
+    "01a0014d-ce1a-7110-9bac-c4c59647a88d",
+    UpdateBusinessPersonRequest
+        .builder()
+        .isPrimaryController(true)
+        .primaryEmail("updated.contact@example.com")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The business reference (`businessUuid`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The person reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**personType:** `Optional<PersonType>` — The person's role on the business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ownershipPercentage:** `Optional<Double>` — The person's ownership percentage (0 to 100).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPrimaryController:** `Optional<Boolean>` — Whether the person is the business's primary controller.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isSigner:** `Optional<Boolean>` 
+
+Whether the person signs the business's boarding applications. Only an
+owner can be the signer. Setting `isSigner` to `true` on a person with
+another `personType` returns `400` with the message
+`Only an owner can be the signer.` Changing the signer's `personType`
+away from `Owner` returns the same error. Setting it to `true` removes
+it from every other person linked to the business. Setting it to
+`false` leaves the business with no signer until you set another one.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `Optional<String>` 
+
+The person's job title at this business, from 1 to 100 characters. Updating it changes the title
+for this business only. Omitting it, or sending `null` or a blank value,
+keeps the stored title. You can replace a title, but you can't clear it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryEmail:** `Optional<String>` — The relationship's primary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryEmail:** `Optional<String>` — The relationship's secondary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryPhoneNumber:** `Optional<String>` — The relationship's primary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryPhoneNumber:** `Optional<String>` — The relationship's secondary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingAddress:** `Optional<PersonAddressRequest>` — The billing address for the relationship.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mailingAddress:** `Optional<PersonAddressRequest>` — The mailing address for the relationship.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## People
+<details><summary><code>client.people.listPeople() -> ListPeopleEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists people with optional filtering and pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().listPeople(
+    ListPeoplePeopleRequest
+        .builder()
+        .limit(1)
+        .page(1)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `Optional<String>` — Filter by name (partial match).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `Optional<String>` — Filter by email (partial match).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**verificationStatus:** `Optional<String>` — Comma-separated verification status filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Number of results per page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `Optional<Integer>` — Page number to return.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — Field to sort by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortOrder:** `Optional<String>` — Sort direction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.people.createPerson(request) -> PersonDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a person, an individual associated with a business such as an
+owner, director, or signer. Include a `businessRelationship` object to
+link the person to a business on create; the business reference, role
+(`personType`), and `ownershipPercentage` go inside that object.
+
+A person's job `title` and whether they're the signer (`isSigner`) also
+belong to the business link, so send them inside `businessRelationship`.
+A top-level `title` returns a `400` with the message
+`title moved into the businessRelationship object; send them there instead of at the top level.`
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().createPerson(
+    CreatePersonRequest
+        .builder()
+        .firstName("Marcus")
+        .lastName("Delgado")
+        .middleName("James")
+        .primaryEmail("marcus.delgado@example.com")
+        .secondaryEmail("m.delgado@example.net")
+        .primaryPhoneNumber("3055551212")
+        .secondaryPhoneNumber("3055559876")
+        .dateOfBirth("1985-03-14")
+        .ssn("412-55-9021")
+        .nationality("US")
+        .driversLicenseNumber("D1234567")
+        .driversLicenseState("FL")
+        .externalId("person-001")
+        .customData(
+            new HashMap<String, Object>() {{
+                put("department", "finance");
+            }}
+        )
+        .addresses(
+            Optional.of(
+                Arrays.asList(
+                    PersonAddressRequest
+                        .builder()
+                        .addressLine1("123 Main Street")
+                        .addressLine2("Suite 400")
+                        .cityLocality("Miami")
+                        .stateProvince("FL")
+                        .postalCode("33101")
+                        .country("US")
+                        .type(PersonAddressType.LEGAL)
+                        .build()
+                )
+            )
+        )
+        .identificationDocuments(
+            Optional.of(
+                Arrays.asList(
+                    IdentificationDocumentRequest
+                        .builder()
+                        .type("passport")
+                        .number("X1234567")
+                        .issuingCountry("US")
+                        .expirationDate("2030-06-30")
+                        .build()
+                )
+            )
+        )
+        .businessRelationship(
+            BusinessRelationshipRequest
+                .builder()
+                .businessReference("019fed1a-3d6e-75d3-a81e-cba3874b0a55")
+                .personType(PersonType.OWNER)
+                .ownershipPercentage(100.0)
+                .isPrimaryController(true)
+                .isSigner(true)
+                .title("CEO")
+                .primaryEmail("contact@example.com")
+                .secondaryEmail("contact.alt@example.net")
+                .primaryPhoneNumber("3055551212")
+                .secondaryPhoneNumber("3055559876")
+                .billingAddress(
+                    PersonAddressRequest
+                        .builder()
+                        .addressLine1("123 Main Street")
+                        .cityLocality("Miami")
+                        .stateProvince("FL")
+                        .postalCode("33101")
+                        .country("US")
+                        .type(PersonAddressType.BILLING)
+                        .build()
+                )
+                .mailingAddress(
+                    PersonAddressRequest
+                        .builder()
+                        .addressLine1("456 Oak Avenue")
+                        .cityLocality("Miami")
+                        .stateProvince("FL")
+                        .postalCode("33102")
+                        .country("US")
+                        .type(PersonAddressType.MAILING)
+                        .build()
+                )
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**firstName:** `String` — The person's first name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**middleName:** `Optional<String>` — The person's middle name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lastName:** `String` — The person's last name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryEmail:** `Optional<String>` — The person's primary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryEmail:** `Optional<String>` — The person's secondary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryPhoneNumber:** `Optional<String>` — The person's primary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryPhoneNumber:** `Optional<String>` — The person's secondary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dateOfBirth:** `Optional<String>` — The person's date of birth (`YYYY-MM-DD`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ssn:** `Optional<String>` — The person's US Social Security Number, in `XXX-XX-XXXX` or `XXXXXXXXX` format. Applies when `nationality` is `US`, and needed to validate a US owner. Create doesn't enforce it. For any other nationality, send `nationalIdNumber` and `nationalIdIssuer` instead.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nationality:** `Optional<String>` — The person's nationality, as a two-letter ISO 3166-1 alpha-2 country code. Needed to validate an owner, but create doesn't enforce it. Nationality selects which identity number applies. `US` uses `ssn`, and any other value uses `nationalIdNumber` and `nationalIdIssuer`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nationalIdNumber:** `Optional<String>` — The person's national identification number, for an individual whose `nationality` is not `US`. Send it with `nationalIdIssuer` when `nationality` is non-US. Create doesn't enforce it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nationalIdIssuer:** `Optional<String>` — The authority that issued the national ID, for example the two-letter country code. Send it with `nationalIdNumber` when `nationality` is non-US. Create doesn't enforce it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**driversLicenseNumber:** `Optional<String>` — The person's driver's license number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**driversLicenseState:** `Optional<String>` — The two-letter state code for the driver's license.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**externalId:** `Optional<String>` — Your own identifier for the person.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customData:** `Optional<Map<String, Object>>` 
+
+Arbitrary key-value data you attach to the person. Payabli
+stores an owner's answers to a boarding template's custom
+questions under the `templateAnswers` key.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addresses:** `Optional<List<PersonAddressRequest>>` — Postal addresses associated with the person.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**identificationDocuments:** `Optional<List<IdentificationDocumentRequest>>` — Government-issued identification documents for the person.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**businessRelationship:** `Optional<BusinessRelationshipRequest>` 
+
+Links the person to a business as you create them. The link's role,
+ownership, primary-controller flag, contact fields, and addresses go here.
+These relationship contact fields are separate from the person's own
+top-level contact fields above.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.people.getPerson(personReference) -> PersonDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a person by reference. Sensitive fields such as `ssn` are masked.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().getPerson("01a0014d-ce1a-7110-9bac-c4c59647a88d");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The person reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.people.updatePerson(personReference, request) -> PersonUpdatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a person. Send only the fields you want to change.
+
+A person's job title belongs to their business link, not the person. Sending `title` in any form, including `null`, returns a `400` with the message `title moved to the business relationship; update it with PATCH /api/v2/businesses/{businessReference}/people/{personReference}.`
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().updatePerson(
+    "01a0014d-ce1a-7110-9bac-c4c59647a88d",
+    UpdatePersonRequest
+        .builder()
+        .primaryPhoneNumber("3055550199")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The person reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**firstName:** `Optional<String>` — The person's first name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**middleName:** `Optional<String>` — The person's middle name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lastName:** `Optional<String>` — The person's last name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryEmail:** `Optional<String>` — The person's primary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryEmail:** `Optional<String>` — The person's secondary email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**primaryPhoneNumber:** `Optional<String>` — The person's primary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secondaryPhoneNumber:** `Optional<String>` — The person's secondary phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nationality:** `Optional<String>` — The person's nationality, as a two-letter ISO 3166-1 alpha-2 country code. Nationality selects which identity number applies — `US` uses `ssn`, and any other value uses `nationalIdNumber` and `nationalIdIssuer`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nationalIdIssuer:** `Optional<String>` — The authority that issued the national ID, used when `nationality` is not `US`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**driversLicenseNumber:** `Optional<String>` — The person's driver's license number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**driversLicenseState:** `Optional<String>` — The two-letter state code for the driver's license.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**externalId:** `Optional<String>` — Your own identifier for the person.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customData:** `Optional<Map<String, Object>>` 
+
+Key-value data to merge into the person's stored `customData`.
+Payabli stores an owner's answers to a boarding template's
+custom questions under the `templateAnswers` key.
+
+When you update a person, Payabli merges `customData` into the
+stored value, following JSON Merge Patch (RFC 7396). Keys you
+don't send are kept at every depth, and nested objects merge key
+by key. Strings, numbers, Boolean values, and arrays replace the
+stored value, and arrays aren't merged. Send a key as `null` to
+delete it, such as `{"crmId": null}`. A `customData` that isn't
+an object, such as an array, replaces the stored value whole.
+Leave out `customData` to keep it as is.
+
+The `customData` you send can be up to 65,536 bytes serialized.
+The limit applies to the request, not to the merged result.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**addresses:** `Optional<List<PersonAddressRequest>>` — Postal addresses associated with the person.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**identificationDocuments:** `Optional<List<IdentificationDocumentRequest>>` — Government-issued identification documents for the person.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.people.getPersonUnmasked(personReference) -> PersonDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a person by reference with sensitive fields unmasked.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().getPersonUnmasked("01a0014d-ce1a-7110-9bac-c4c59647a88d");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**personReference:** `String` — The person reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.people.searchPeople(request) -> PeopleSearchEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Searches for people by identity attributes during boarding. The search
+covers every business in your organization, so use it to find a person
+before you create them again. To read the people already on a
+paypoint's business, use a standard `GET` instead.
+Provide at least one of `firstName` or `lastName`. Each result has a
+`matchScore` showing how closely it matches, and an external identity
+vendor can enrich the results. Each result's `dateOfBirth` is masked.
+To get the full value, use the unmasked search.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().searchPeople(
+    SearchPeopleRequest
+        .builder()
+        .entry("8cfec329267")
+        .orgId(123L)
+        .body(
+            PeopleSearchRequest.of(new 
+            HashMap<String, Object>() {{put("firstName", "Marcus");
+                put("lastName", "Delgado");
+            }})
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The entry name of your organization, from `OrgEntryName` on the organization. With a paypoint's entry name instead, the search covers only that paypoint's business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Long` — The ID of your organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PeopleSearchRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.people.searchPeopleUnmasked(request) -> PeopleSearchEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Searches for people by identity attributes during boarding, and returns
+each result's `dateOfBirth` unmasked. The query parameters, request
+body, and other response fields match the standard people search.
+Provide at least one of `firstName` or `lastName`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.people().searchPeopleUnmasked(
+    SearchPeopleUnmaskedRequest
+        .builder()
+        .entry("8cfec329267")
+        .orgId(123L)
+        .body(
+            PeopleSearchRequest.of(new 
+            HashMap<String, Object>() {{put("firstName", "Marcus");
+                put("lastName", "Delgado");
+            }})
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `String` — The entry name of your organization, from `OrgEntryName` on the organization. With a paypoint's entry name instead, the search covers only that paypoint's business.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `Long` — The ID of your organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PeopleSearchRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Paypoints
+<details><summary><code>client.paypoints.listPaypoints() -> ListPaypointsEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists paypoints with optional filtering and pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoints().listPaypoints(
+    ListPaypointsPaypointsRequest
+        .builder()
+        .limit(1)
+        .page(1)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `Optional<String>` — Filter by the business the paypoint belongs to.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<String>` — Filter by paypoint status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `Optional<String>` — Free-text search across paypoints.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Number of results per page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `Optional<Integer>` — Page number to return.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoints.createPaypoint(request) -> PaypointCreatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a paypoint. New paypoints start in `pending`. Provide exactly
+one of `businessReference` (an existing business) or `business` (to
+create the business inline).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoints().createPaypoint(
+    CreatePaypointPaypointsRequest.of(
+        CreatePaypointWithBusinessReference
+            .builder()
+            .doingBusinessAs("Rose Gardens")
+            .businessReference("019fed1a-3d6e-75d3-a81e-cba3874b0a55")
+            .paypointType(Optional.of("merchant"))
+            .description(Optional.of("Boutique flower shop"))
+            .website(Optional.of("https://example.com"))
+            .customerServicePhone(Optional.of("3055551212"))
+            .customerServiceEmail(Optional.of("support@example.com"))
+            .timezone(Optional.of("America/New_York"))
+            .build()
+    )
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreatePaypointPaypointsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoints.getPaypoint(paypointReference) -> PaypointDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a paypoint by reference.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoints().getPaypoint("019ff064-c690-7679-a73e-688418aadc7c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointReference:** `String` — The paypoint reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paypoints.updatePaypoint(paypointReference, request) -> PaypointUpdatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a paypoint. Send only the fields you want to change.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paypoints().updatePaypoint(
+    "019ff064-c690-7679-a73e-688418aadc7c",
+    UpdatePaypointRequest
+        .builder()
+        .description("Updated description")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointReference:** `String` — The paypoint reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paypointType:** `Optional<String>` — The paypoint type, for example `merchant`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**doingBusinessAs:** `Optional<String>` — The name the paypoint does business as (DBA).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `Optional<String>` — A free-text description of the paypoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `Optional<String>` — The paypoint's website URL.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customerServicePhone:** `Optional<String>` — The customer service phone number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customerServiceEmail:** `Optional<String>` — The customer service email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timezone:** `Optional<String>` — The paypoint's time zone.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**externalId:** `Optional<String>` — Your own identifier for the paypoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customData:** `Optional<Map<String, Object>>` — Arbitrary key-value data you attach to the paypoint.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Payment methods
+<details><summary><code>client.paymentMethods.listPaymentMethods() -> ListPaymentMethodsEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists payment methods with optional filtering and pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentMethods().listPaymentMethods(
+    ListPaymentMethodsPaymentMethodsRequest
+        .builder()
+        .limit(1)
+        .page(1)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountOwner:** `Optional<String>` — Filter by the entity that owns the payment method.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ownerType:** `Optional<PaymentMethodOwnerType>` — Filter by owner type.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<String>` — Filter by payment method status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `Optional<String>` — Filter by payment method type.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Number of results per page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `Optional<Integer>` — Page number to return.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `Optional<String>` — Field to sort by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortOrder:** `Optional<String>` — Sort direction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentMethods.createPaymentMethods(request) -> PaymentMethodsCreatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates one or more payment methods for an entity in a single call.
+Set each payment method's `accountOwner` to the entity it belongs to.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentMethods().createPaymentMethods(
+    CreatePaymentMethodsRequest
+        .builder()
+        .data(
+            Arrays.asList(
+                CreatePaymentMethodRequest
+                    .builder()
+                    .type(CreatePaymentMethodRequestType.BANK_ACCOUNT)
+                    .accountOwner("019fed1a-3d6e-75d3-a81e-cba3874b0a55")
+                    .ownerType(PaymentMethodOwnerType.BUSINESS)
+                    .accountType("checking")
+                    .accountNumber("123456789")
+                    .routingNumber("021000021")
+                    .nickname("Operating account")
+                    .financialInstitution("Bank of Example")
+                    .usage(
+                        Arrays.asList(PaymentMethodUsage.DEPOSITS, PaymentMethodUsage.BILLING)
+                    )
+                    .build()
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**data:** `List<CreatePaymentMethodRequest>` — The payment methods to create.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentMethods.getPaymentMethod(paymentMethodReference) -> PaymentMethodDetailEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a payment method by reference. Sensitive fields such as the account and routing numbers are masked.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentMethods().getPaymentMethod("019ff142-454b-7721-96a3-c8628b9d568f");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodReference:** `String` — The payment method reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentMethods.deactivatePaymentMethod(paymentMethodReference) -> PaymentMethodDeactivatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deactivates a payment method. This is a soft delete: the payment
+method moves to `INACTIVE` and the record is kept.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentMethods().deactivatePaymentMethod("019ff142-454b-7721-96a3-c8628b9d568f");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodReference:** `String` — The payment method reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentMethods.updatePaymentMethod(paymentMethodReference, request) -> PaymentMethodUpdatedEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a payment method. Send only the fields you
+want to change. Only payment methods in `PENDING` status can be updated.
+Once a payment method is active, change it through the bank account
+change process instead.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.paymentMethods().updatePaymentMethod(
+    "019ff142-454b-7721-96a3-c8628b9d568f",
+    UpdatePaymentMethodRequest
+        .builder()
+        .nickname("Primary operating account")
+        .usage(
+            Optional.of(
+                Arrays.asList(PaymentMethodUsage.DEPOSITS, PaymentMethodUsage.BILLING)
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodReference:** `String` — The payment method reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nickname:** `Optional<String>` — An optional label for the payment method.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**financialInstitution:** `Optional<String>` — The bank or financial institution that holds the account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `Optional<String>` — The account type, for example `checking` or `savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `Optional<String>` — The bank account number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `Optional<String>` — The bank routing number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usage:** `Optional<List<PaymentMethodUsage>>` — What the payment method is used for. Provide at least one value.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Boarding templates
+<details><summary><code>client.boardingTemplates.listTemplates() -> ListTemplatesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the boarding templates an organization owns, plus templates
+inherited from ancestor organizations. Scope the listing with the
+required `orgId` query parameter. You can filter by `status`, `name`,
+`slug`, `orgName`, and `inherited`, and page through results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boardingTemplates().listTemplates(
+    ListTemplatesBoardingTemplatesRequest
+        .builder()
+        .orgId(123)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `Integer` — The numeric identifier of the organization to list templates for.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<TemplateStatus>` — Filter by template status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `Optional<String>` — Filter by exact template name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**slug:** `Optional<String>` — Filter by exact template slug.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgName:** `Optional<String>` — Filter by exact owning organization name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**inherited:** `Optional<Boolean>` — Filter by whether the template is inherited from an ancestor organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `Optional<Integer>` — The number of records to skip before collecting the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `Optional<Integer>` — The maximum number of records to return. Use `0` or a negative value to return all records.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boardingTemplates.getTemplate(uuid) -> Template</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a boarding template by UUID, including its current content version.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boardingTemplates().getTemplate("019ff129-d393-7761-9a31-e5afe85b4081");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The template's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boardingTemplates.archiveTemplate(uuid)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Archives a boarding template by UUID. Archiving is a soft delete: the
+template stays readable with `status: archived`, so archiving an
+already-archived template returns `409`, not another success. Unknown
+templates return `404`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boardingTemplates().archiveTemplate("019ff129-d393-7761-9a31-e5afe85b4081");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The template's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.boardingTemplates.getTemplateVersion(uuid, versionUuid) -> TemplateVersion</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a specific immutable content version of a template.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.boardingTemplates().getTemplateVersion("019ff129-d393-7761-9a31-e5afe85b4081", "019ff129-d396-74c4-86da-ae3d082d7ef9");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `String` — The template's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionUuid:** `String` — The version's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Applications
+<details><summary><code>client.applications.listApplications() -> ListApplicationsEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists boarding applications with pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().listApplications(
+    ListApplicationsApplicationsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**page:** `Optional<Integer>` — The page number to return, starting at 1.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — The number of applications per page.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.createApplication(request) -> ApplicationEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a boarding application for a business. The business must
+already have a paypoint. New applications start in `draft`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().createApplication(
+    CreateApplicationRequest
+        .builder()
+        .businessReference("019fed1a-3d6e-75d3-a81e-cba3874b0a55")
+        .externalId("APP-2025-0417")
+        .tags(
+            Optional.of(
+                Arrays.asList("priority")
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**businessReference:** `String` — The reference of the business to board. The business must have a paypoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paypointReference:** `Optional<String>` — The reference of the paypoint to board. Defaults to the business's paypoint when omitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**externalId:** `Optional<String>` — An optional identifier from your own system.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entityType:** `Optional<String>` — The type of entity being boarded.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestTemplate:** `Optional<String>` — The reference of the boarding template to apply. Send one on every application. Payabli assigns the underwriting policy from the template, so a submitted application without one fails in review.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `Optional<List<String>>` — Optional labels for the application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**representatives:** `Optional<List<RepresentativeInput>>` — The sales or service representatives assigned to the application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**configurations:** `Optional<Map<String, Object>>` — Opaque application-level configuration. Null when not supplied.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `Optional<RequestedServices>` — The services to request on the application.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.getApplication(requestsReference) -> ApplicationEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a boarding application by reference.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().getApplication("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.updateApplication(requestsReference, request) -> ApplicationEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Applies a partial update to a boarding application. Send only the fields you want to change.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().updateApplication(
+    "3f3caa7b-bdfe-4bf1-814b-30d54859247c",
+    UpdateApplicationRequest
+        .builder()
+        .externalId("APP-2025-0417-REV2")
+        .tags(
+            Optional.of(
+                Arrays.asList("priority", "expedited")
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**externalId:** `Optional<String>` — An optional identifier from your own system.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entityType:** `Optional<String>` — The type of entity being boarded.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestTemplate:** `Optional<String>` — The reference of the boarding template to apply.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `Optional<List<String>>` — Optional labels for the application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**representatives:** `Optional<List<RepresentativeInput>>` — The sales or service representatives assigned to the application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**configurations:** `Optional<Map<String, Object>>` — Opaque application-level configuration.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `Optional<RequestedServices>` — The services to request on the application. Replaces the whole `services` object, so send every service you want to keep. Leave it out to keep the current services.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.validateApplication(requestsReference) -> ValidationResultEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Checks whether the records linked to an application (the business, its people, and its payment methods) include everything the application's requested services need. The response lists any missing or invalid fields by section. Validation doesn't change the application, and it doesn't return a validation token. The request has no body.
+
+One owner on the application must be the signer, flagged with `isSigner` on their business link. If no one is flagged, the `people` section returns a `missingFields` entry with `field` set to `people.isSigner`, `label` set to `Signer`, and `reason` set to `required — choose the person who signs the application`. The signer rule isn't reported when the application has no people.
+
+The `people` section also checks ownership. At least one person must be the primary controller, flagged with `isPrimaryController`. If no one is, the entry has `field` set to `people.isPrimaryController`, `label` set to `Primary Controller`, and `reason` set to `required — at least one principal must be designated`. Unless the business's `legalStructure` is `government` or `non-profit`, at least one owner must have an `ownershipPercentage` of 25 or more. If no one does, the entry has `field` set to `people.ownershipPercentage`, `label` set to `Qualifying Owner`, and `reason` set to `at least one principal must have an ownership stake of 25% or more`.
+
+Validation also reports required documents that have nothing uploaded. See [List application document requirements](/developers/api-reference/applications/list-application-document-requirements). The bank statement requirement appears in the `business` section, with `field` set to `documents.bankStatement`. A person document appears in the `people` section, with `field` set to `people.{personReference}.` followed by the requirement's `fieldPath`, such as `people.01a0014d-ce1a-7110-9bac-c4c59647a88d.person.documents.w9`. Submit doesn't enforce document requirements.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().validateApplication("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.submitApplication(requestsReference, request) -> TransitionResultEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Submits a draft application for review. Your integration (the applicant) calls this after the business, its people, payment methods, and services are in place. Verification then runs automatically.
+
+The application must have a signer: an owner flagged with `isSigner` on their business link, or one you name in `signer.personReference`. Payabli records the signer's identity from their person record and business link, so update those before you submit. The `signer` object carries the signature details.
+
+If the application has no signer, the request fails with `422` and the error `SIGNER_REQUIRED`. If `signer.personReference` names a person who isn't an owner, the request fails with `422` and the error `SIGNER_NOT_OWNER`. If the application isn't a draft, the request fails with `409` and the error `BIZ_004`, before any signer check. If `signer.reportedSignerIp` isn't a single valid IPv4 or IPv6 address, the request fails with `400` and the error `VALIDATION_ERROR`, and the application isn't submitted.
+
+Submit doesn't check every rule that [validate](/developers/api-reference/applications/validate-an-application) reports, such as the primary controller and ownership rules. Validate the application and resolve its missing fields before you submit.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().submitApplication(
+    "3f3caa7b-bdfe-4bf1-814b-30d54859247c",
+    SubmitApplicationRequest
+        .builder()
+        .signer(
+            SubmitSigner
+                .builder()
+                .personReference("01a0014d-ce1a-7110-9bac-c4c59647a88d")
+                .signature("Marcus J Delgado")
+                .signatureType(SignatureType.TYPE)
+                .acceptance(true)
+                .pciAttestation(true)
+                .reportedSignerIp("203.0.113.7")
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**signer:** `SubmitSigner` — The signature details for the application's signer, and optionally which person signs.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.provideDocuments(requestsReference) -> TransitionResultEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Marks the documents that Payabli requested during review as provided, when the application is in `pendingdocuments`. It returns the application to review. The request has no body.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().provideDocuments("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.provideResponse(requestsReference) -> TransitionResultEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Marks the information that Payabli requested during review as provided, when the application is in `pendingresponse`. It returns the application to review. The request has no body.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().provideResponse("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.withdrawApplication(requestsReference, request) -> TransitionResultEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Withdraws a boarding application. The response returns the application's
+new status and the actions now allowed on it.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().withdrawApplication(
+    "3f3caa7b-bdfe-4bf1-814b-30d54859247c",
+    WithdrawApplicationRequest
+        .builder()
+        .reason("Duplicate application")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `Optional<String>` — An optional reason for the withdrawal, recorded in the status history.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.getApplicationHistory(requestsReference) -> StatusHistoryEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the status transition history of a boarding application, oldest first. History records changes only. An approved application that fails enablement the same way on every attempt doesn't add entries, so use [enablement](/developers/api-reference/applications/get-application-enablement-progress) to follow that progress.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().getApplicationHistory("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.getApplicationEnablement(requestsReference) -> EnablementEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the progress of setting up an approved application's services with their processors. An application's status stays `approved` or `autoapproved` while this runs, and it moves to `activated` after every requested service is set up. Use this endpoint to see why an approved merchant isn't live yet.
+
+Enablement doesn't send webhooks, so poll this endpoint to follow it. Until enablement starts, `state` and the other progress fields are `null`, and `services` is empty. That includes applications that are in `draft`, withdrawn, or in `error`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().getApplicationEnablement("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.listApplicationDocumentRequirements(requestsReference) -> DocumentRequirementListEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the documents an application asks for, from its template and from Payabli business rules. For example, a business with an annual revenue of $1,000,000 or more needs bank statements. Each requirement gives the `fieldPath` and `subject` to send when you upload, the formats it accepts, how many documents it takes, and how many are uploaded so far.
+
+A person requirement appears once for each owner of the business, with that owner's `personReference`. The list is empty when the application asks for no documents.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().listApplicationDocumentRequirements("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.listApplicationDocuments(requestsReference) -> ApplicationDocumentListEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the documents uploaded to an application. The list is empty when none are uploaded.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().listApplicationDocuments("3f3caa7b-bdfe-4bf1-814b-30d54859247c");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.uploadApplicationDocument(requestsReference, request) -> ApplicationDocumentEnvelope</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Uploads one document to an application as multipart form data. [List the application's document requirements](/developers/api-reference/applications/list-application-document-requirements) first. Send the requirement's `fieldPath`, one of its `subjectTypes` as `subject`, and, for a person requirement, its `personReference`.
+
+The file can be up to 10 MB, in a format the requirement accepts. Payabli checks the file's content, not only its name. Each requirement takes up to `maxUploads` documents.
+
+Uploading doesn't change the application's status. When underwriting requests documents, upload them, then call [provide documents](/developers/api-reference/applications/provide-application-documents) to return the application to review.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().uploadApplicationDocument(
+    "3f3caa7b-bdfe-4bf1-814b-30d54859247c",
+    null,
+    UploadApplicationDocumentRequest
+        .builder()
+        .fieldPath("documents.bankStatement")
+        .subject(DocumentSubjectType.BUSINESS)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.applications.deleteApplicationDocument(requestsReference, documentReference)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes a document you uploaded from an application. Deleting doesn't change the application's status. A deleted document no longer counts toward its requirement, so you can upload a replacement. Deleting a document that's already deleted returns `404`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.applications().deleteApplicationDocument("3f3caa7b-bdfe-4bf1-814b-30d54859247c", "019ff1d7-6e14-7c8b-a2f5-91d3b7e04c62");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestsReference:** `String` — The application reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**documentReference:** `String` — The document reference, from the upload response or [List application documents](/developers/api-reference/applications/list-application-documents).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Boarding
 <details><summary><code>client.boarding.addApplication(request) -> PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
@@ -15734,6 +20446,11 @@ Example: name(ct)=john return all records with name containing john
 
 <dl>
 <dd>
+
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Create an application](/developers/api-reference/applications/create-an-application) instead. One legacy call becomes several intelligent boarding calls, one for each record. See [Map legacy calls to new endpoints](/guides/pay-ops-developer-boarding-legacy-migrate#map-legacy-calls-to-new-endpoints).
+</Warning>
+
 
 Creates a boarding application in an organization. This endpoint requires an application API token.
 </dd>
@@ -15953,6 +20670,11 @@ client.boarding().addApplication(
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Update the record that holds the data instead, such as [the business](/developers/api-reference/businesses/update-a-business) or [a person](/developers/api-reference/people/update-a-person). Use [Update an application](/developers/api-reference/applications/update-an-application) only for the application's own fields.
+</Warning>
+
+
 Updates a boarding application by ID. This endpoint requires an application API token.
 </dd>
 </dl>
@@ -16020,6 +20742,11 @@ client.boarding().updateApplication(
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Withdraw an application](/developers/api-reference/applications/withdraw-an-application) instead.
+</Warning>
+
+
 Deletes a boarding application by ID.
 </dd>
 </dl>
@@ -16074,6 +20801,11 @@ client.boarding().deleteApplication(352);
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Get an application](/developers/api-reference/applications/get-an-application) instead.
+</Warning>
+
+
 Retrieves the details for a boarding application by ID.
 </dd>
 </dl>
@@ -16127,6 +20859,11 @@ client.boarding().getApplication(352);
 
 <dl>
 <dd>
+
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
 
 Gets a boarding application by authentication information. This endpoint requires an `application` API token.
 </dd>
@@ -16205,6 +20942,11 @@ client.boarding().getApplicationByAuth(
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
+
 Retrieves details for a boarding link, by ID.
 </dd>
 </dl>
@@ -16259,6 +21001,11 @@ client.boarding().getByIdLinkApplication(91);
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
+
 Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
 </dd>
 </dl>
@@ -16312,6 +21059,11 @@ client.boarding().getByTemplateIdLinkApplication(80.0);
 
 <dl>
 <dd>
+
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
 
 Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
 </dd>
@@ -16389,6 +21141,11 @@ client.boarding().getExternalApplication(
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
+
 Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
 </dd>
 </dl>
@@ -16442,6 +21199,11 @@ client.boarding().getLinkApplication("myorgaccountname-00091");
 
 <dl>
 <dd>
+
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List applications](/developers/api-reference/applications/list-applications) instead.
+</Warning>
+
 
 Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 </dd>
@@ -16581,6 +21343,11 @@ Accepted comparison operators - enclosed between parentheses:
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
+
 Return a list of boarding links for an organization. Use filters to limit results.
 </dd>
 </dl>
@@ -16707,6 +21474,11 @@ Example: templateName(ct)=hoa return all records with template title containing 
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Create an application](/developers/api-reference/applications/create-an-application) for a paypoint that's already boarded instead. See [Request more services with the API](/guides/pay-ops-developer-boarding-add-services).
+</Warning>
+
+
 Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
 </dd>
 </dl>
@@ -16806,6 +21578,11 @@ client.boarding().addServiceToPaypointFromApp(
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List applications](/developers/api-reference/applications/list-applications) instead. It doesn't filter by paypoint.
+</Warning>
+
+
 Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
 </dd>
 </dl>
@@ -16861,6 +21638,11 @@ client.boarding().getApplicationsByPaypointId(3040L);
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Archive a template](/developers/api-reference/boarding-templates/archive-a-template) instead.
+</Warning>
+
+
 Deletes a template by ID.
 </dd>
 </dl>
@@ -16914,6 +21696,11 @@ client.templates().deleteTemplate(80.0);
 
 <dl>
 <dd>
+
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Intelligent boarding has no matching endpoint. Each application has its own hosted form link instead. See [Send merchants a boarding link](/guides/pay-ops-developer-boarding-legacy-migrate#send-merchants-a-boarding-link).
+</Warning>
+
 
 Generates a boarding link from a boarding template.
 </dd>
@@ -16977,6 +21764,11 @@ client.templates().getlinkTemplate(80.0, true);
 <dl>
 <dd>
 
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [Get a template](/developers/api-reference/boarding-templates/get-a-template) instead.
+</Warning>
+
+
 Retrieves a boarding template's details by ID.
 </dd>
 </dl>
@@ -17030,6 +21822,11 @@ client.templates().getTemplate(80.0);
 
 <dl>
 <dd>
+
+<Warning>
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List templates](/developers/api-reference/boarding-templates/list-templates) instead.
+</Warning>
+
 
 Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
 </dd>
@@ -17169,7 +21966,7 @@ Example: title(ct)=hoa return all records with title containing "hoa"
 <dd>
 
 <Warning>
-  This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+  Legacy boarding is deprecated and will be sunset in Q2 2027. Use [List applications](/developers/api-reference/applications/list-applications) instead. It doesn't export files.
 </Warning>
 
 Export a list of boarding applications for an organization. Use filters to limit results.
@@ -27501,12 +32298,12 @@ client.caseManagement().validateBankAccountChange(
                 .builder()
                 .moneyIn(
                     Optional.of(
-                        Arrays.asList(MoneyInService.ACH)
+                        Arrays.asList(CaseManagementMoneyInService.ACH)
                     )
                 )
                 .moneyOut(
                     Optional.of(
-                        Arrays.asList(MoneyOutService.ACH)
+                        Arrays.asList(CaseManagementMoneyOutService.ACH)
                     )
                 )
                 .build()
@@ -27636,12 +32433,12 @@ client.caseManagement().createBankAccountChange(
                 .builder()
                 .moneyIn(
                     Optional.of(
-                        Arrays.asList(MoneyInService.ACH)
+                        Arrays.asList(CaseManagementMoneyInService.ACH)
                     )
                 )
                 .moneyOut(
                     Optional.of(
-                        Arrays.asList(MoneyOutService.ACH)
+                        Arrays.asList(CaseManagementMoneyOutService.ACH)
                     )
                 )
                 .build()

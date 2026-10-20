@@ -21,15 +21,15 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountServices.Builder.class)
 public final class BankAccountServices {
-    private final Optional<List<MoneyInService>> moneyIn;
+    private final Optional<List<CaseManagementMoneyInService>> moneyIn;
 
-    private final Optional<List<MoneyOutService>> moneyOut;
+    private final Optional<List<CaseManagementMoneyOutService>> moneyOut;
 
     private final Map<String, Object> additionalProperties;
 
     private BankAccountServices(
-            Optional<List<MoneyInService>> moneyIn,
-            Optional<List<MoneyOutService>> moneyOut,
+            Optional<List<CaseManagementMoneyInService>> moneyIn,
+            Optional<List<CaseManagementMoneyOutService>> moneyOut,
             Map<String, Object> additionalProperties) {
         this.moneyIn = moneyIn;
         this.moneyOut = moneyOut;
@@ -40,7 +40,7 @@ public final class BankAccountServices {
      * @return Pay In services the account is used for.
      */
     @JsonProperty("moneyIn")
-    public Optional<List<MoneyInService>> getMoneyIn() {
+    public Optional<List<CaseManagementMoneyInService>> getMoneyIn() {
         return moneyIn;
     }
 
@@ -48,7 +48,7 @@ public final class BankAccountServices {
      * @return Pay Out services the account is used for.
      */
     @JsonProperty("moneyOut")
-    public Optional<List<MoneyOutService>> getMoneyOut() {
+    public Optional<List<CaseManagementMoneyOutService>> getMoneyOut() {
         return moneyOut;
     }
 
@@ -83,9 +83,9 @@ public final class BankAccountServices {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<List<MoneyInService>> moneyIn = Optional.empty();
+        private Optional<List<CaseManagementMoneyInService>> moneyIn = Optional.empty();
 
-        private Optional<List<MoneyOutService>> moneyOut = Optional.empty();
+        private Optional<List<CaseManagementMoneyOutService>> moneyOut = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -102,12 +102,12 @@ public final class BankAccountServices {
          * <p>Pay In services the account is used for.</p>
          */
         @JsonSetter(value = "moneyIn", nulls = Nulls.SKIP)
-        public Builder moneyIn(Optional<List<MoneyInService>> moneyIn) {
+        public Builder moneyIn(Optional<List<CaseManagementMoneyInService>> moneyIn) {
             this.moneyIn = moneyIn;
             return this;
         }
 
-        public Builder moneyIn(List<MoneyInService> moneyIn) {
+        public Builder moneyIn(List<CaseManagementMoneyInService> moneyIn) {
             this.moneyIn = Optional.ofNullable(moneyIn);
             return this;
         }
@@ -116,12 +116,12 @@ public final class BankAccountServices {
          * <p>Pay Out services the account is used for.</p>
          */
         @JsonSetter(value = "moneyOut", nulls = Nulls.SKIP)
-        public Builder moneyOut(Optional<List<MoneyOutService>> moneyOut) {
+        public Builder moneyOut(Optional<List<CaseManagementMoneyOutService>> moneyOut) {
             this.moneyOut = moneyOut;
             return this;
         }
 
-        public Builder moneyOut(List<MoneyOutService> moneyOut) {
+        public Builder moneyOut(List<CaseManagementMoneyOutService> moneyOut) {
             this.moneyOut = Optional.ofNullable(moneyOut);
             return this;
         }

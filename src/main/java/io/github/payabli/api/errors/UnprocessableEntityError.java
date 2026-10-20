@@ -4,21 +4,20 @@
 package io.github.payabli.api.errors;
 
 import io.github.payabli.api.core.PayabliApiClientApiException;
-import io.github.payabli.api.types.PayabliErrorBody;
 import okhttp3.Response;
 
 public final class UnprocessableEntityError extends PayabliApiClientApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final PayabliErrorBody body;
+    private final Object body;
 
-    public UnprocessableEntityError(PayabliErrorBody body) {
+    public UnprocessableEntityError(Object body) {
         super("UnprocessableEntityError", 422, body);
         this.body = body;
     }
 
-    public UnprocessableEntityError(PayabliErrorBody body, Response rawResponse) {
+    public UnprocessableEntityError(Object body, Response rawResponse) {
         super("UnprocessableEntityError", 422, body, rawResponse);
         this.body = body;
     }
@@ -27,7 +26,7 @@ public final class UnprocessableEntityError extends PayabliApiClientApiException
      * @return the body
      */
     @java.lang.Override
-    public PayabliErrorBody body() {
+    public Object body() {
         return this.body;
     }
 }
