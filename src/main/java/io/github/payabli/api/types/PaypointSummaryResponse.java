@@ -46,6 +46,8 @@ public final class PaypointSummaryResponse {
 
     private final Optional<String> customerServiceEmail;
 
+    private final Optional<String> externalId;
+
     private final String entryName;
 
     private final String createdAt;
@@ -68,6 +70,7 @@ public final class PaypointSummaryResponse {
             Optional<String> timezone,
             Optional<String> customerServicePhone,
             Optional<String> customerServiceEmail,
+            Optional<String> externalId,
             String entryName,
             String createdAt,
             String updatedAt,
@@ -84,6 +87,7 @@ public final class PaypointSummaryResponse {
         this.timezone = timezone;
         this.customerServicePhone = customerServicePhone;
         this.customerServiceEmail = customerServiceEmail;
+        this.externalId = externalId;
         this.entryName = entryName;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -204,6 +208,14 @@ public final class PaypointSummaryResponse {
     }
 
     /**
+     * @return Your own identifier for the paypoint. Omitted when you haven't set one.
+     */
+    @JsonProperty("externalId")
+    public Optional<String> getExternalId() {
+        return externalId;
+    }
+
+    /**
      * @return The paypoint's entrypoint name, used as the <code>entry</code> value on endpoints that target the paypoint.
      */
     @JsonProperty("entryName")
@@ -306,6 +318,7 @@ public final class PaypointSummaryResponse {
                 && timezone.equals(other.timezone)
                 && customerServicePhone.equals(other.customerServicePhone)
                 && customerServiceEmail.equals(other.customerServiceEmail)
+                && externalId.equals(other.externalId)
                 && entryName.equals(other.entryName)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
@@ -326,6 +339,7 @@ public final class PaypointSummaryResponse {
                 this.timezone,
                 this.customerServicePhone,
                 this.customerServiceEmail,
+                this.externalId,
                 this.entryName,
                 this.createdAt,
                 this.updatedAt,
@@ -470,6 +484,13 @@ public final class PaypointSummaryResponse {
         _FinalStage customerServiceEmail(String customerServiceEmail);
 
         _FinalStage customerServiceEmail(Nullable<String> customerServiceEmail);
+
+        /**
+         * <p>Your own identifier for the paypoint. Omitted when you haven't set one.</p>
+         */
+        _FinalStage externalId(Optional<String> externalId);
+
+        _FinalStage externalId(String externalId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -495,6 +516,8 @@ public final class PaypointSummaryResponse {
         private String updatedAt;
 
         private PaypointLinks links;
+
+        private Optional<String> externalId = Optional.empty();
 
         private Optional<String> customerServiceEmail = Optional.empty();
 
@@ -530,6 +553,7 @@ public final class PaypointSummaryResponse {
             timezone(other.getTimezone());
             customerServicePhone(other.getCustomerServicePhone());
             customerServiceEmail(other.getCustomerServiceEmail());
+            externalId(other.getExternalId());
             entryName(other.getEntryName());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
@@ -612,6 +636,26 @@ public final class PaypointSummaryResponse {
         @JsonSetter("_links")
         public _FinalStage links(@NotNull PaypointLinks links) {
             this.links = Objects.requireNonNull(links, "links must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Your own identifier for the paypoint. Omitted when you haven't set one.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalId(String externalId) {
+            this.externalId = Optional.ofNullable(externalId);
+            return this;
+        }
+
+        /**
+         * <p>Your own identifier for the paypoint. Omitted when you haven't set one.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "externalId", nulls = Nulls.SKIP)
+        public _FinalStage externalId(Optional<String> externalId) {
+            this.externalId = externalId;
             return this;
         }
 
@@ -917,6 +961,7 @@ public final class PaypointSummaryResponse {
                     timezone,
                     customerServicePhone,
                     customerServiceEmail,
+                    externalId,
                     entryName,
                     createdAt,
                     updatedAt,

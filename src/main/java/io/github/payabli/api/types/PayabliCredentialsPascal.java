@@ -25,9 +25,9 @@ public final class PayabliCredentialsPascal {
 
     private final Optional<Integer> mode;
 
-    private final Optional<Double> minTicket;
+    private final Optional<Double> minticket;
 
-    private final Optional<Double> maxTicket;
+    private final Optional<Double> maxticket;
 
     private final Optional<Double> cfeeFix;
 
@@ -56,8 +56,8 @@ public final class PayabliCredentialsPascal {
     private PayabliCredentialsPascal(
             Optional<String> service,
             Optional<Integer> mode,
-            Optional<Double> minTicket,
-            Optional<Double> maxTicket,
+            Optional<Double> minticket,
+            Optional<Double> maxticket,
             Optional<Double> cfeeFix,
             Optional<Double> cfeeFloat,
             Optional<Double> cfeeMin,
@@ -72,8 +72,8 @@ public final class PayabliCredentialsPascal {
             Map<String, Object> additionalProperties) {
         this.service = service;
         this.mode = mode;
-        this.minTicket = minTicket;
-        this.maxTicket = maxTicket;
+        this.minticket = minticket;
+        this.maxticket = maxticket;
         this.cfeeFix = cfeeFix;
         this.cfeeFloat = cfeeFloat;
         this.cfeeMin = cfeeMin;
@@ -104,14 +104,14 @@ public final class PayabliCredentialsPascal {
         return mode;
     }
 
-    @JsonProperty("MinTicket")
-    public Optional<Double> getMinTicket() {
-        return minTicket;
+    @JsonProperty("Minticket")
+    public Optional<Double> getMinticket() {
+        return minticket;
     }
 
-    @JsonProperty("MaxTicket")
-    public Optional<Double> getMaxTicket() {
-        return maxTicket;
+    @JsonProperty("Maxticket")
+    public Optional<Double> getMaxticket() {
+        return maxticket;
     }
 
     @JsonProperty("CfeeFix")
@@ -189,8 +189,8 @@ public final class PayabliCredentialsPascal {
     private boolean equalTo(PayabliCredentialsPascal other) {
         return service.equals(other.service)
                 && mode.equals(other.mode)
-                && minTicket.equals(other.minTicket)
-                && maxTicket.equals(other.maxTicket)
+                && minticket.equals(other.minticket)
+                && maxticket.equals(other.maxticket)
                 && cfeeFix.equals(other.cfeeFix)
                 && cfeeFloat.equals(other.cfeeFloat)
                 && cfeeMin.equals(other.cfeeMin)
@@ -209,8 +209,8 @@ public final class PayabliCredentialsPascal {
         return Objects.hash(
                 this.service,
                 this.mode,
-                this.minTicket,
-                this.maxTicket,
+                this.minticket,
+                this.maxticket,
                 this.cfeeFix,
                 this.cfeeFloat,
                 this.cfeeMin,
@@ -239,9 +239,9 @@ public final class PayabliCredentialsPascal {
 
         private Optional<Integer> mode = Optional.empty();
 
-        private Optional<Double> minTicket = Optional.empty();
+        private Optional<Double> minticket = Optional.empty();
 
-        private Optional<Double> maxTicket = Optional.empty();
+        private Optional<Double> maxticket = Optional.empty();
 
         private Optional<Double> cfeeFix = Optional.empty();
 
@@ -273,8 +273,8 @@ public final class PayabliCredentialsPascal {
         public Builder from(PayabliCredentialsPascal other) {
             service(other.getService());
             mode(other.getMode());
-            minTicket(other.getMinTicket());
-            maxTicket(other.getMaxTicket());
+            minticket(other.getMinticket());
+            maxticket(other.getMaxticket());
             cfeeFix(other.getCfeeFix());
             cfeeFloat(other.getCfeeFloat());
             cfeeMin(other.getCfeeMin());
@@ -317,25 +317,25 @@ public final class PayabliCredentialsPascal {
             return this;
         }
 
-        @JsonSetter(value = "MinTicket", nulls = Nulls.SKIP)
-        public Builder minTicket(Optional<Double> minTicket) {
-            this.minTicket = minTicket;
+        @JsonSetter(value = "Minticket", nulls = Nulls.SKIP)
+        public Builder minticket(Optional<Double> minticket) {
+            this.minticket = minticket;
             return this;
         }
 
-        public Builder minTicket(Double minTicket) {
-            this.minTicket = Optional.ofNullable(minTicket);
+        public Builder minticket(Double minticket) {
+            this.minticket = Optional.ofNullable(minticket);
             return this;
         }
 
-        @JsonSetter(value = "MaxTicket", nulls = Nulls.SKIP)
-        public Builder maxTicket(Optional<Double> maxTicket) {
-            this.maxTicket = maxTicket;
+        @JsonSetter(value = "Maxticket", nulls = Nulls.SKIP)
+        public Builder maxticket(Optional<Double> maxticket) {
+            this.maxticket = maxticket;
             return this;
         }
 
-        public Builder maxTicket(Double maxTicket) {
-            this.maxTicket = Optional.ofNullable(maxTicket);
+        public Builder maxticket(Double maxticket) {
+            this.maxticket = Optional.ofNullable(maxticket);
             return this;
         }
 
@@ -470,8 +470,8 @@ public final class PayabliCredentialsPascal {
             return new PayabliCredentialsPascal(
                     service,
                     mode,
-                    minTicket,
-                    maxTicket,
+                    minticket,
+                    maxticket,
                     cfeeFix,
                     cfeeFloat,
                     cfeeMin,

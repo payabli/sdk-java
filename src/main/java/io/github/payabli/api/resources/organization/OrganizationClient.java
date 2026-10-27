@@ -10,6 +10,7 @@ import io.github.payabli.api.resources.organization.requests.OrganizationData;
 import io.github.payabli.api.types.AddOrganizationResponse;
 import io.github.payabli.api.types.DeleteOrganizationResponse;
 import io.github.payabli.api.types.EditOrganizationResponse;
+import io.github.payabli.api.types.GetBasicOrganizationResponse;
 import io.github.payabli.api.types.OrganizationQueryRecord;
 import io.github.payabli.api.types.SettingsQueryRecord;
 
@@ -92,28 +93,28 @@ public class OrganizationClient {
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public OrganizationQueryRecord getBasicOrganization(String entry) {
+    public GetBasicOrganizationResponse getBasicOrganization(String entry) {
         return this.rawClient.getBasicOrganization(entry).body();
     }
 
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public OrganizationQueryRecord getBasicOrganization(String entry, RequestOptions requestOptions) {
+    public GetBasicOrganizationResponse getBasicOrganization(String entry, RequestOptions requestOptions) {
         return this.rawClient.getBasicOrganization(entry, requestOptions).body();
     }
 
     /**
      * Gets an organization's basic details by org ID.
      */
-    public OrganizationQueryRecord getBasicOrganizationById(int orgId) {
+    public GetBasicOrganizationResponse getBasicOrganizationById(int orgId) {
         return this.rawClient.getBasicOrganizationById(orgId).body();
     }
 
     /**
      * Gets an organization's basic details by org ID.
      */
-    public OrganizationQueryRecord getBasicOrganizationById(int orgId, RequestOptions requestOptions) {
+    public GetBasicOrganizationResponse getBasicOrganizationById(int orgId, RequestOptions requestOptions) {
         return this.rawClient.getBasicOrganizationById(orgId, requestOptions).body();
     }
 

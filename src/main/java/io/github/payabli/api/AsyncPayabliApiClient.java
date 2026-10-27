@@ -31,6 +31,7 @@ import io.github.payabli.api.resources.notification.AsyncNotificationClient;
 import io.github.payabli.api.resources.notificationlogs.AsyncNotificationlogsClient;
 import io.github.payabli.api.resources.ocr.AsyncOcrClient;
 import io.github.payabli.api.resources.organization.AsyncOrganizationClient;
+import io.github.payabli.api.resources.organizations.AsyncOrganizationsClient;
 import io.github.payabli.api.resources.paymentlink.AsyncPaymentLinkClient;
 import io.github.payabli.api.resources.paymentmethoddomain.AsyncPaymentMethodDomainClient;
 import io.github.payabli.api.resources.paymentmethods.AsyncPaymentMethodsClient;
@@ -99,6 +100,8 @@ public class AsyncPayabliApiClient {
 
     protected final Supplier<AsyncPaypointsClient> paypointsClient;
 
+    protected final Supplier<AsyncOrganizationsClient> organizationsClient;
+
     protected final Supplier<AsyncPaymentMethodsClient> paymentMethodsClient;
 
     protected final Supplier<AsyncBoardingTemplatesClient> boardingTemplatesClient;
@@ -164,6 +167,7 @@ public class AsyncPayabliApiClient {
         this.businessesClient = Suppliers.memoize(() -> new AsyncBusinessesClient(clientOptions));
         this.peopleClient = Suppliers.memoize(() -> new AsyncPeopleClient(clientOptions));
         this.paypointsClient = Suppliers.memoize(() -> new AsyncPaypointsClient(clientOptions));
+        this.organizationsClient = Suppliers.memoize(() -> new AsyncOrganizationsClient(clientOptions));
         this.paymentMethodsClient = Suppliers.memoize(() -> new AsyncPaymentMethodsClient(clientOptions));
         this.boardingTemplatesClient = Suppliers.memoize(() -> new AsyncBoardingTemplatesClient(clientOptions));
         this.applicationsClient = Suppliers.memoize(() -> new AsyncApplicationsClient(clientOptions));
@@ -276,6 +280,10 @@ public class AsyncPayabliApiClient {
 
     public AsyncPaypointsClient paypoints() {
         return this.paypointsClient.get();
+    }
+
+    public AsyncOrganizationsClient organizations() {
+        return this.organizationsClient.get();
     }
 
     public AsyncPaymentMethodsClient paymentMethods() {

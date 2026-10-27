@@ -6,10 +6,14 @@ package io.github.payabli.api;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.payabli.api.core.ObjectMappers;
+import io.github.payabli.api.resources.organizations.types.CreateOrganizationOrganizationsRequest;
 import io.github.payabli.api.resources.paypoints.types.CreatePaypointPaypointsRequest;
 import io.github.payabli.api.types.AddApplicationRequest;
 import io.github.payabli.api.types.ApplicationDataManaged;
 import io.github.payabli.api.types.ConvertToken;
+import io.github.payabli.api.types.CreateOrganizationAllFields;
+import io.github.payabli.api.types.CreateOrganizationWithBusinessReference;
+import io.github.payabli.api.types.CreateOrganizationWithInlineBusiness;
 import io.github.payabli.api.types.CreatePaypointAllFields;
 import io.github.payabli.api.types.CreatePaypointWithBusinessReference;
 import io.github.payabli.api.types.CreatePaypointWithInlineBusiness;
@@ -46,6 +50,36 @@ public final class UndiscriminatedUnionTest {
         assertTrue(
                 union.get() instanceof CreatePaypointAllFields,
                 "Expected CreatePaypointAllFields but got different variant");
+    }
+
+    @Test
+    public void testCreateOrganizationOrganizationsRequest_CreateOrganizationWithInlineBusiness() throws Exception {
+        String json = "{\"business\":{},\"doingBusinessAs\":\"test\"}";
+        CreateOrganizationOrganizationsRequest union =
+                ObjectMappers.JSON_MAPPER.readValue(json, CreateOrganizationOrganizationsRequest.class);
+        assertTrue(
+                union.get() instanceof CreateOrganizationWithInlineBusiness,
+                "Expected CreateOrganizationWithInlineBusiness but got different variant");
+    }
+
+    @Test
+    public void testCreateOrganizationOrganizationsRequest_CreateOrganizationWithBusinessReference() throws Exception {
+        String json = "{\"businessReference\":\"test\",\"doingBusinessAs\":\"test\"}";
+        CreateOrganizationOrganizationsRequest union =
+                ObjectMappers.JSON_MAPPER.readValue(json, CreateOrganizationOrganizationsRequest.class);
+        assertTrue(
+                union.get() instanceof CreateOrganizationWithBusinessReference,
+                "Expected CreateOrganizationWithBusinessReference but got different variant");
+    }
+
+    @Test
+    public void testCreateOrganizationOrganizationsRequest_CreateOrganizationAllFields() throws Exception {
+        String json = "{\"doingBusinessAs\":\"test\"}";
+        CreateOrganizationOrganizationsRequest union =
+                ObjectMappers.JSON_MAPPER.readValue(json, CreateOrganizationOrganizationsRequest.class);
+        assertTrue(
+                union.get() instanceof CreateOrganizationAllFields,
+                "Expected CreateOrganizationAllFields but got different variant");
     }
 
     @Test

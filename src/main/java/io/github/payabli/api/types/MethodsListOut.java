@@ -24,18 +24,26 @@ public final class MethodsListOut {
 
     private final Optional<Boolean> check;
 
+    private final Optional<Boolean> rtp;
+
     private final Optional<Boolean> vcard;
+
+    private final Optional<Boolean> wire;
 
     private final Map<String, Object> additionalProperties;
 
     private MethodsListOut(
             Optional<Boolean> ach,
             Optional<Boolean> check,
+            Optional<Boolean> rtp,
             Optional<Boolean> vcard,
+            Optional<Boolean> wire,
             Map<String, Object> additionalProperties) {
         this.ach = ach;
         this.check = check;
+        this.rtp = rtp;
         this.vcard = vcard;
+        this.wire = wire;
         this.additionalProperties = additionalProperties;
     }
 
@@ -56,11 +64,27 @@ public final class MethodsListOut {
     }
 
     /**
+     * @return When <code>true</code>, Real-Time Payments (RTP) is offered as a payout method.
+     */
+    @JsonProperty("rtp")
+    public Optional<Boolean> getRtp() {
+        return rtp;
+    }
+
+    /**
      * @return When <code>true</code>, virtual card (vCard) is offered as a payout method.
      */
     @JsonProperty("vcard")
     public Optional<Boolean> getVcard() {
         return vcard;
+    }
+
+    /**
+     * @return When <code>true</code>, wire transfer is offered as a payout method.
+     */
+    @JsonProperty("wire")
+    public Optional<Boolean> getWire() {
+        return wire;
     }
 
     @java.lang.Override
@@ -75,12 +99,16 @@ public final class MethodsListOut {
     }
 
     private boolean equalTo(MethodsListOut other) {
-        return ach.equals(other.ach) && check.equals(other.check) && vcard.equals(other.vcard);
+        return ach.equals(other.ach)
+                && check.equals(other.check)
+                && rtp.equals(other.rtp)
+                && vcard.equals(other.vcard)
+                && wire.equals(other.wire);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.ach, this.check, this.vcard);
+        return Objects.hash(this.ach, this.check, this.rtp, this.vcard, this.wire);
     }
 
     @java.lang.Override
@@ -98,7 +126,11 @@ public final class MethodsListOut {
 
         private Optional<Boolean> check = Optional.empty();
 
+        private Optional<Boolean> rtp = Optional.empty();
+
         private Optional<Boolean> vcard = Optional.empty();
+
+        private Optional<Boolean> wire = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -108,7 +140,9 @@ public final class MethodsListOut {
         public Builder from(MethodsListOut other) {
             ach(other.getAch());
             check(other.getCheck());
+            rtp(other.getRtp());
             vcard(other.getVcard());
+            wire(other.getWire());
             return this;
         }
 
@@ -141,6 +175,20 @@ public final class MethodsListOut {
         }
 
         /**
+         * <p>When <code>true</code>, Real-Time Payments (RTP) is offered as a payout method.</p>
+         */
+        @JsonSetter(value = "rtp", nulls = Nulls.SKIP)
+        public Builder rtp(Optional<Boolean> rtp) {
+            this.rtp = rtp;
+            return this;
+        }
+
+        public Builder rtp(Boolean rtp) {
+            this.rtp = Optional.ofNullable(rtp);
+            return this;
+        }
+
+        /**
          * <p>When <code>true</code>, virtual card (vCard) is offered as a payout method.</p>
          */
         @JsonSetter(value = "vcard", nulls = Nulls.SKIP)
@@ -154,8 +202,22 @@ public final class MethodsListOut {
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, wire transfer is offered as a payout method.</p>
+         */
+        @JsonSetter(value = "wire", nulls = Nulls.SKIP)
+        public Builder wire(Optional<Boolean> wire) {
+            this.wire = wire;
+            return this;
+        }
+
+        public Builder wire(Boolean wire) {
+            this.wire = Optional.ofNullable(wire);
+            return this;
+        }
+
         public MethodsListOut build() {
-            return new MethodsListOut(ach, check, vcard, additionalProperties);
+            return new MethodsListOut(ach, check, rtp, vcard, wire, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

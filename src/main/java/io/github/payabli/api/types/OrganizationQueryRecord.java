@@ -22,11 +22,9 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OrganizationQueryRecord.Builder.class)
 public final class OrganizationQueryRecord {
-    private final Optional<List<OrganizationQueryRecordServicesItem>> services;
+    private final Optional<InstrumentResponse> billingInfo;
 
-    private final Optional<Instrument> billingInfo;
-
-    private final Optional<List<Contacts>> contacts;
+    private final Optional<List<ContactsResponse>> contacts;
 
     private final Optional<OffsetDateTime> createdAt;
 
@@ -46,9 +44,11 @@ public final class OrganizationQueryRecord {
 
     private final Optional<String> orgEntryName;
 
+    private final Optional<String> orgFavicon;
+
     private final Optional<String> orgId;
 
-    private final Optional<FileContent> orgLogo;
+    private final Optional<String> orgLogo;
 
     private final Optional<String> orgName;
 
@@ -72,6 +72,8 @@ public final class OrganizationQueryRecord {
 
     private final Optional<Boolean> resumable;
 
+    private final Optional<List<OrganizationQueryRecordServicesItem>> services;
+
     private final Optional<SummaryOrg> summary;
 
     private final Optional<List<UserQueryRecord>> users;
@@ -79,9 +81,8 @@ public final class OrganizationQueryRecord {
     private final Map<String, Object> additionalProperties;
 
     private OrganizationQueryRecord(
-            Optional<List<OrganizationQueryRecordServicesItem>> services,
-            Optional<Instrument> billingInfo,
-            Optional<List<Contacts>> contacts,
+            Optional<InstrumentResponse> billingInfo,
+            Optional<List<ContactsResponse>> contacts,
             Optional<OffsetDateTime> createdAt,
             Optional<Boolean> hasBilling,
             Optional<Boolean> hasResidual,
@@ -91,8 +92,9 @@ public final class OrganizationQueryRecord {
             Optional<String> orgCity,
             Optional<String> orgCountry,
             Optional<String> orgEntryName,
+            Optional<String> orgFavicon,
             Optional<String> orgId,
-            Optional<FileContent> orgLogo,
+            Optional<String> orgLogo,
             Optional<String> orgName,
             Optional<Long> orgParentId,
             Optional<String> orgParentName,
@@ -104,10 +106,10 @@ public final class OrganizationQueryRecord {
             Optional<Boolean> recipientEmailNotification,
             Optional<String> replyToEmail,
             Optional<Boolean> resumable,
+            Optional<List<OrganizationQueryRecordServicesItem>> services,
             Optional<SummaryOrg> summary,
             Optional<List<UserQueryRecord>> users,
             Map<String, Object> additionalProperties) {
-        this.services = services;
         this.billingInfo = billingInfo;
         this.contacts = contacts;
         this.createdAt = createdAt;
@@ -119,6 +121,7 @@ public final class OrganizationQueryRecord {
         this.orgCity = orgCity;
         this.orgCountry = orgCountry;
         this.orgEntryName = orgEntryName;
+        this.orgFavicon = orgFavicon;
         this.orgId = orgId;
         this.orgLogo = orgLogo;
         this.orgName = orgName;
@@ -132,23 +135,22 @@ public final class OrganizationQueryRecord {
         this.recipientEmailNotification = recipientEmailNotification;
         this.replyToEmail = replyToEmail;
         this.resumable = resumable;
+        this.services = services;
         this.summary = summary;
         this.users = users;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("services")
-    public Optional<List<OrganizationQueryRecordServicesItem>> getServices() {
-        return services;
-    }
-
-    @JsonProperty("billingInfo")
-    public Optional<Instrument> getBillingInfo() {
+    @JsonProperty("BillingInfo")
+    public Optional<InstrumentResponse> getBillingInfo() {
         return billingInfo;
     }
 
-    @JsonProperty("contacts")
-    public Optional<List<Contacts>> getContacts() {
+    /**
+     * @return List of contacts.
+     */
+    @JsonProperty("Contacts")
+    public Optional<List<ContactsResponse>> getContacts() {
         return contacts;
     }
 
@@ -157,12 +159,12 @@ public final class OrganizationQueryRecord {
         return createdAt;
     }
 
-    @JsonProperty("hasBilling")
+    @JsonProperty("HasBilling")
     public Optional<Boolean> getHasBilling() {
         return hasBilling;
     }
 
-    @JsonProperty("hasResidual")
+    @JsonProperty("HasResidual")
     public Optional<Boolean> getHasResidual() {
         return hasResidual;
     }
@@ -177,72 +179,83 @@ public final class OrganizationQueryRecord {
         return isRoot;
     }
 
-    @JsonProperty("orgAddress")
+    @JsonProperty("OrgAddress")
     public Optional<String> getOrgAddress() {
         return orgAddress;
     }
 
-    @JsonProperty("orgCity")
+    @JsonProperty("OrgCity")
     public Optional<String> getOrgCity() {
         return orgCity;
     }
 
-    @JsonProperty("orgCountry")
+    @JsonProperty("OrgCountry")
     public Optional<String> getOrgCountry() {
         return orgCountry;
     }
 
-    @JsonProperty("orgEntryName")
+    @JsonProperty("OrgEntryName")
     public Optional<String> getOrgEntryName() {
         return orgEntryName;
     }
 
-    @JsonProperty("orgId")
+    /**
+     * @return URL of the organization's favicon.
+     */
+    @JsonProperty("OrgFavicon")
+    public Optional<String> getOrgFavicon() {
+        return orgFavicon;
+    }
+
+    @JsonProperty("OrgId")
     public Optional<String> getOrgId() {
         return orgId;
     }
 
-    @JsonProperty("orgLogo")
-    public Optional<FileContent> getOrgLogo() {
+    /**
+     * @return URL of the organization's logo.
+     */
+    @JsonProperty("OrgLogo")
+    public Optional<String> getOrgLogo() {
         return orgLogo;
     }
 
-    @JsonProperty("orgName")
+    @JsonProperty("OrgName")
     public Optional<String> getOrgName() {
         return orgName;
     }
 
-    @JsonProperty("orgParentId")
+    @JsonProperty("OrgParentId")
     public Optional<Long> getOrgParentId() {
         return orgParentId;
     }
 
-    @JsonProperty("orgParentName")
+    @JsonProperty("OrgParentName")
     public Optional<String> getOrgParentName() {
         return orgParentName;
     }
 
-    @JsonProperty("orgState")
+    @JsonProperty("OrgState")
     public Optional<String> getOrgState() {
         return orgState;
     }
 
-    @JsonProperty("orgTimezone")
+    @JsonProperty("OrgTimezone")
     public Optional<Integer> getOrgTimezone() {
         return orgTimezone;
     }
 
-    @JsonProperty("orgType")
+    @JsonProperty("OrgType")
     public Optional<Integer> getOrgType() {
         return orgType;
     }
 
-    @JsonProperty("orgWebsite")
+    @JsonProperty("OrgWebsite")
     public Optional<String> getOrgWebsite() {
         return orgWebsite;
     }
 
-    @JsonProperty("orgZip")
+    @JsonProperty("OrgZip")
     public Optional<String> getOrgZip() {
         return orgZip;
     }
@@ -252,7 +265,7 @@ public final class OrganizationQueryRecord {
         return recipientEmailNotification;
     }
 
-    @JsonProperty("replyToEmail")
+    @JsonProperty("ReplyToEmail")
     public Optional<String> getReplyToEmail() {
         return replyToEmail;
     }
@@ -260,6 +273,11 @@ public final class OrganizationQueryRecord {
     @JsonProperty("resumable")
     public Optional<Boolean> getResumable() {
         return resumable;
+    }
+
+    @JsonProperty("Services")
+    public Optional<List<OrganizationQueryRecordServicesItem>> getServices() {
+        return services;
     }
 
     @JsonProperty("summary")
@@ -284,8 +302,7 @@ public final class OrganizationQueryRecord {
     }
 
     private boolean equalTo(OrganizationQueryRecord other) {
-        return services.equals(other.services)
-                && billingInfo.equals(other.billingInfo)
+        return billingInfo.equals(other.billingInfo)
                 && contacts.equals(other.contacts)
                 && createdAt.equals(other.createdAt)
                 && hasBilling.equals(other.hasBilling)
@@ -296,6 +313,7 @@ public final class OrganizationQueryRecord {
                 && orgCity.equals(other.orgCity)
                 && orgCountry.equals(other.orgCountry)
                 && orgEntryName.equals(other.orgEntryName)
+                && orgFavicon.equals(other.orgFavicon)
                 && orgId.equals(other.orgId)
                 && orgLogo.equals(other.orgLogo)
                 && orgName.equals(other.orgName)
@@ -309,6 +327,7 @@ public final class OrganizationQueryRecord {
                 && recipientEmailNotification.equals(other.recipientEmailNotification)
                 && replyToEmail.equals(other.replyToEmail)
                 && resumable.equals(other.resumable)
+                && services.equals(other.services)
                 && summary.equals(other.summary)
                 && users.equals(other.users);
     }
@@ -316,7 +335,6 @@ public final class OrganizationQueryRecord {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.services,
                 this.billingInfo,
                 this.contacts,
                 this.createdAt,
@@ -328,6 +346,7 @@ public final class OrganizationQueryRecord {
                 this.orgCity,
                 this.orgCountry,
                 this.orgEntryName,
+                this.orgFavicon,
                 this.orgId,
                 this.orgLogo,
                 this.orgName,
@@ -341,6 +360,7 @@ public final class OrganizationQueryRecord {
                 this.recipientEmailNotification,
                 this.replyToEmail,
                 this.resumable,
+                this.services,
                 this.summary,
                 this.users);
     }
@@ -356,11 +376,9 @@ public final class OrganizationQueryRecord {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<List<OrganizationQueryRecordServicesItem>> services = Optional.empty();
+        private Optional<InstrumentResponse> billingInfo = Optional.empty();
 
-        private Optional<Instrument> billingInfo = Optional.empty();
-
-        private Optional<List<Contacts>> contacts = Optional.empty();
+        private Optional<List<ContactsResponse>> contacts = Optional.empty();
 
         private Optional<OffsetDateTime> createdAt = Optional.empty();
 
@@ -380,9 +398,11 @@ public final class OrganizationQueryRecord {
 
         private Optional<String> orgEntryName = Optional.empty();
 
+        private Optional<String> orgFavicon = Optional.empty();
+
         private Optional<String> orgId = Optional.empty();
 
-        private Optional<FileContent> orgLogo = Optional.empty();
+        private Optional<String> orgLogo = Optional.empty();
 
         private Optional<String> orgName = Optional.empty();
 
@@ -406,6 +426,8 @@ public final class OrganizationQueryRecord {
 
         private Optional<Boolean> resumable = Optional.empty();
 
+        private Optional<List<OrganizationQueryRecordServicesItem>> services = Optional.empty();
+
         private Optional<SummaryOrg> summary = Optional.empty();
 
         private Optional<List<UserQueryRecord>> users = Optional.empty();
@@ -416,7 +438,6 @@ public final class OrganizationQueryRecord {
         private Builder() {}
 
         public Builder from(OrganizationQueryRecord other) {
-            services(other.getServices());
             billingInfo(other.getBillingInfo());
             contacts(other.getContacts());
             createdAt(other.getCreatedAt());
@@ -428,6 +449,7 @@ public final class OrganizationQueryRecord {
             orgCity(other.getOrgCity());
             orgCountry(other.getOrgCountry());
             orgEntryName(other.getOrgEntryName());
+            orgFavicon(other.getOrgFavicon());
             orgId(other.getOrgId());
             orgLogo(other.getOrgLogo());
             orgName(other.getOrgName());
@@ -441,40 +463,33 @@ public final class OrganizationQueryRecord {
             recipientEmailNotification(other.getRecipientEmailNotification());
             replyToEmail(other.getReplyToEmail());
             resumable(other.getResumable());
+            services(other.getServices());
             summary(other.getSummary());
             users(other.getUsers());
             return this;
         }
 
-        @JsonSetter(value = "services", nulls = Nulls.SKIP)
-        public Builder services(Optional<List<OrganizationQueryRecordServicesItem>> services) {
-            this.services = services;
-            return this;
-        }
-
-        public Builder services(List<OrganizationQueryRecordServicesItem> services) {
-            this.services = Optional.ofNullable(services);
-            return this;
-        }
-
-        @JsonSetter(value = "billingInfo", nulls = Nulls.SKIP)
-        public Builder billingInfo(Optional<Instrument> billingInfo) {
+        @JsonSetter(value = "BillingInfo", nulls = Nulls.SKIP)
+        public Builder billingInfo(Optional<InstrumentResponse> billingInfo) {
             this.billingInfo = billingInfo;
             return this;
         }
 
-        public Builder billingInfo(Instrument billingInfo) {
+        public Builder billingInfo(InstrumentResponse billingInfo) {
             this.billingInfo = Optional.ofNullable(billingInfo);
             return this;
         }
 
-        @JsonSetter(value = "contacts", nulls = Nulls.SKIP)
-        public Builder contacts(Optional<List<Contacts>> contacts) {
+        /**
+         * <p>List of contacts.</p>
+         */
+        @JsonSetter(value = "Contacts", nulls = Nulls.SKIP)
+        public Builder contacts(Optional<List<ContactsResponse>> contacts) {
             this.contacts = contacts;
             return this;
         }
 
-        public Builder contacts(List<Contacts> contacts) {
+        public Builder contacts(List<ContactsResponse> contacts) {
             this.contacts = Optional.ofNullable(contacts);
             return this;
         }
@@ -490,7 +505,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "hasBilling", nulls = Nulls.SKIP)
+        @JsonSetter(value = "HasBilling", nulls = Nulls.SKIP)
         public Builder hasBilling(Optional<Boolean> hasBilling) {
             this.hasBilling = hasBilling;
             return this;
@@ -501,7 +516,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "hasResidual", nulls = Nulls.SKIP)
+        @JsonSetter(value = "HasResidual", nulls = Nulls.SKIP)
         public Builder hasResidual(Optional<Boolean> hasResidual) {
             this.hasResidual = hasResidual;
             return this;
@@ -534,7 +549,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgAddress", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgAddress", nulls = Nulls.SKIP)
         public Builder orgAddress(Optional<String> orgAddress) {
             this.orgAddress = orgAddress;
             return this;
@@ -545,7 +560,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgCity", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgCity", nulls = Nulls.SKIP)
         public Builder orgCity(Optional<String> orgCity) {
             this.orgCity = orgCity;
             return this;
@@ -556,7 +571,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgCountry", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgCountry", nulls = Nulls.SKIP)
         public Builder orgCountry(Optional<String> orgCountry) {
             this.orgCountry = orgCountry;
             return this;
@@ -567,7 +582,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgEntryName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgEntryName", nulls = Nulls.SKIP)
         public Builder orgEntryName(Optional<String> orgEntryName) {
             this.orgEntryName = orgEntryName;
             return this;
@@ -578,7 +593,21 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgId", nulls = Nulls.SKIP)
+        /**
+         * <p>URL of the organization's favicon.</p>
+         */
+        @JsonSetter(value = "OrgFavicon", nulls = Nulls.SKIP)
+        public Builder orgFavicon(Optional<String> orgFavicon) {
+            this.orgFavicon = orgFavicon;
+            return this;
+        }
+
+        public Builder orgFavicon(String orgFavicon) {
+            this.orgFavicon = Optional.ofNullable(orgFavicon);
+            return this;
+        }
+
+        @JsonSetter(value = "OrgId", nulls = Nulls.SKIP)
         public Builder orgId(Optional<String> orgId) {
             this.orgId = orgId;
             return this;
@@ -589,18 +618,21 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgLogo", nulls = Nulls.SKIP)
-        public Builder orgLogo(Optional<FileContent> orgLogo) {
+        /**
+         * <p>URL of the organization's logo.</p>
+         */
+        @JsonSetter(value = "OrgLogo", nulls = Nulls.SKIP)
+        public Builder orgLogo(Optional<String> orgLogo) {
             this.orgLogo = orgLogo;
             return this;
         }
 
-        public Builder orgLogo(FileContent orgLogo) {
+        public Builder orgLogo(String orgLogo) {
             this.orgLogo = Optional.ofNullable(orgLogo);
             return this;
         }
 
-        @JsonSetter(value = "orgName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgName", nulls = Nulls.SKIP)
         public Builder orgName(Optional<String> orgName) {
             this.orgName = orgName;
             return this;
@@ -611,7 +643,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgParentId", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgParentId", nulls = Nulls.SKIP)
         public Builder orgParentId(Optional<Long> orgParentId) {
             this.orgParentId = orgParentId;
             return this;
@@ -622,7 +654,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgParentName", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgParentName", nulls = Nulls.SKIP)
         public Builder orgParentName(Optional<String> orgParentName) {
             this.orgParentName = orgParentName;
             return this;
@@ -633,7 +665,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgState", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgState", nulls = Nulls.SKIP)
         public Builder orgState(Optional<String> orgState) {
             this.orgState = orgState;
             return this;
@@ -644,7 +676,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgTimezone", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgTimezone", nulls = Nulls.SKIP)
         public Builder orgTimezone(Optional<Integer> orgTimezone) {
             this.orgTimezone = orgTimezone;
             return this;
@@ -655,7 +687,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgType", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgType", nulls = Nulls.SKIP)
         public Builder orgType(Optional<Integer> orgType) {
             this.orgType = orgType;
             return this;
@@ -666,7 +698,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgWebsite", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgWebsite", nulls = Nulls.SKIP)
         public Builder orgWebsite(Optional<String> orgWebsite) {
             this.orgWebsite = orgWebsite;
             return this;
@@ -677,7 +709,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "orgZip", nulls = Nulls.SKIP)
+        @JsonSetter(value = "OrgZip", nulls = Nulls.SKIP)
         public Builder orgZip(Optional<String> orgZip) {
             this.orgZip = orgZip;
             return this;
@@ -699,7 +731,7 @@ public final class OrganizationQueryRecord {
             return this;
         }
 
-        @JsonSetter(value = "replyToEmail", nulls = Nulls.SKIP)
+        @JsonSetter(value = "ReplyToEmail", nulls = Nulls.SKIP)
         public Builder replyToEmail(Optional<String> replyToEmail) {
             this.replyToEmail = replyToEmail;
             return this;
@@ -718,6 +750,17 @@ public final class OrganizationQueryRecord {
 
         public Builder resumable(Boolean resumable) {
             this.resumable = Optional.ofNullable(resumable);
+            return this;
+        }
+
+        @JsonSetter(value = "Services", nulls = Nulls.SKIP)
+        public Builder services(Optional<List<OrganizationQueryRecordServicesItem>> services) {
+            this.services = services;
+            return this;
+        }
+
+        public Builder services(List<OrganizationQueryRecordServicesItem> services) {
+            this.services = Optional.ofNullable(services);
             return this;
         }
 
@@ -745,7 +788,6 @@ public final class OrganizationQueryRecord {
 
         public OrganizationQueryRecord build() {
             return new OrganizationQueryRecord(
-                    services,
                     billingInfo,
                     contacts,
                     createdAt,
@@ -757,6 +799,7 @@ public final class OrganizationQueryRecord {
                     orgCity,
                     orgCountry,
                     orgEntryName,
+                    orgFavicon,
                     orgId,
                     orgLogo,
                     orgName,
@@ -770,6 +813,7 @@ public final class OrganizationQueryRecord {
                     recipientEmailNotification,
                     replyToEmail,
                     resumable,
+                    services,
                     summary,
                     users,
                     additionalProperties);

@@ -22,6 +22,7 @@ import io.github.payabli.api.resources.organization.requests.OrganizationData;
 import io.github.payabli.api.types.AddOrganizationResponse;
 import io.github.payabli.api.types.DeleteOrganizationResponse;
 import io.github.payabli.api.types.EditOrganizationResponse;
+import io.github.payabli.api.types.GetBasicOrganizationResponse;
 import io.github.payabli.api.types.OrganizationQueryRecord;
 import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.SettingsQueryRecord;
@@ -327,14 +328,14 @@ public class RawOrganizationClient {
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganization(String entry) {
+    public PayabliApiClientHttpResponse<GetBasicOrganizationResponse> getBasicOrganization(String entry) {
         return getBasicOrganization(entry, null);
     }
 
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganization(
+    public PayabliApiClientHttpResponse<GetBasicOrganizationResponse> getBasicOrganization(
             String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -373,7 +374,7 @@ public class RawOrganizationClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiClientHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBasicOrganizationResponse.class),
                         response);
             }
             try {
@@ -409,14 +410,14 @@ public class RawOrganizationClient {
     /**
      * Gets an organization's basic details by org ID.
      */
-    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(int orgId) {
+    public PayabliApiClientHttpResponse<GetBasicOrganizationResponse> getBasicOrganizationById(int orgId) {
         return getBasicOrganizationById(orgId, null);
     }
 
     /**
      * Gets an organization's basic details by org ID.
      */
-    public PayabliApiClientHttpResponse<OrganizationQueryRecord> getBasicOrganizationById(
+    public PayabliApiClientHttpResponse<GetBasicOrganizationResponse> getBasicOrganizationById(
             int orgId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -455,7 +456,7 @@ public class RawOrganizationClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new PayabliApiClientHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetBasicOrganizationResponse.class),
                         response);
             }
             try {

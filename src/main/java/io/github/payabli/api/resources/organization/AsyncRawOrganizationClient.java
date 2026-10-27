@@ -22,6 +22,7 @@ import io.github.payabli.api.resources.organization.requests.OrganizationData;
 import io.github.payabli.api.types.AddOrganizationResponse;
 import io.github.payabli.api.types.DeleteOrganizationResponse;
 import io.github.payabli.api.types.EditOrganizationResponse;
+import io.github.payabli.api.types.GetBasicOrganizationResponse;
 import io.github.payabli.api.types.OrganizationQueryRecord;
 import io.github.payabli.api.types.PayabliErrorBody;
 import io.github.payabli.api.types.SettingsQueryRecord;
@@ -397,14 +398,15 @@ public class AsyncRawOrganizationClient {
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<OrganizationQueryRecord>> getBasicOrganization(String entry) {
+    public CompletableFuture<PayabliApiClientHttpResponse<GetBasicOrganizationResponse>> getBasicOrganization(
+            String entry) {
         return getBasicOrganization(entry, null);
     }
 
     /**
      * Gets an organization's basic information by entry name (entrypoint identifier).
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<OrganizationQueryRecord>> getBasicOrganization(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetBasicOrganizationResponse>> getBasicOrganization(
             String entry, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -438,7 +440,8 @@ public class AsyncRawOrganizationClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiClientHttpResponse<OrganizationQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<GetBasicOrganizationResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -446,7 +449,8 @@ public class AsyncRawOrganizationClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiClientHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, GetBasicOrganizationResponse.class),
                                 response));
                         return;
                     }
@@ -500,7 +504,7 @@ public class AsyncRawOrganizationClient {
     /**
      * Gets an organization's basic details by org ID.
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<OrganizationQueryRecord>> getBasicOrganizationById(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetBasicOrganizationResponse>> getBasicOrganizationById(
             int orgId) {
         return getBasicOrganizationById(orgId, null);
     }
@@ -508,7 +512,7 @@ public class AsyncRawOrganizationClient {
     /**
      * Gets an organization's basic details by org ID.
      */
-    public CompletableFuture<PayabliApiClientHttpResponse<OrganizationQueryRecord>> getBasicOrganizationById(
+    public CompletableFuture<PayabliApiClientHttpResponse<GetBasicOrganizationResponse>> getBasicOrganizationById(
             int orgId, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -542,7 +546,8 @@ public class AsyncRawOrganizationClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<PayabliApiClientHttpResponse<OrganizationQueryRecord>> future = new CompletableFuture<>();
+        CompletableFuture<PayabliApiClientHttpResponse<GetBasicOrganizationResponse>> future =
+                new CompletableFuture<>();
         client.newCall(okhttpRequest).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -550,7 +555,8 @@ public class AsyncRawOrganizationClient {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
                         future.complete(new PayabliApiClientHttpResponse<>(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, OrganizationQueryRecord.class),
+                                ObjectMappers.JSON_MAPPER.readValue(
+                                        responseBodyString, GetBasicOrganizationResponse.class),
                                 response));
                         return;
                     }

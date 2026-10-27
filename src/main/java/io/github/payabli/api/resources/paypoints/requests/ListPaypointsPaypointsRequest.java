@@ -56,7 +56,7 @@ public final class ListPaypointsPaypointsRequest {
     }
 
     /**
-     * @return Filter by paypoint status.
+     * @return Filter by paypoint status. One of <code>active</code>, <code>inactive</code>, <code>suspended</code>, or <code>closed</code>. Any other value, including <code>pending</code>, returns <code>400</code>.
      */
     @JsonProperty("status")
     public Optional<String> getStatus() {
@@ -161,7 +161,7 @@ public final class ListPaypointsPaypointsRequest {
         }
 
         /**
-         * <p>Filter by paypoint status.</p>
+         * <p>Filter by paypoint status. One of <code>active</code>, <code>inactive</code>, <code>suspended</code>, or <code>closed</code>. Any other value, including <code>pending</code>, returns <code>400</code>.</p>
          */
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
         public Builder status(Optional<String> status) {

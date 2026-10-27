@@ -86,8 +86,8 @@ public final class ListBillsRequest {
      * <ul>
      * <li><code>frequency</code> (<code>in</code>, <code>nin</code>, <code>ne</code>, <code>eq</code>)</li>
      * <li><code>method</code> (<code>in</code>, <code>nin</code>, <code>eq</code>, <code>ne</code>)</li>
-     * <li><code>event</code> (<code>in</code>, <code>nin</code>, <code>eq</code>, <code>ne</code>)</li>
-     * <li><code>target</code> (<code>ct</code>, <code>nct</code>, <code>eq</code>, <code>ne</code>)</li>
+     * <li><code>vendorNumber</code> (<code>eq</code>)</li>
+     * <li><code>vendorId</code> (<code>eq</code>)</li>
      * <li><code>status</code> (<code>eq</code>, <code>ne</code>)</li>
      * <li><code>approvalUserId</code> (<code>eq</code>, <code>ne</code>)</li>
      * <li><code>parentOrgId</code> (<code>ne</code>, <code>eq</code>, <code>nin</code>, <code>in</code>)</li>
@@ -242,8 +242,8 @@ public final class ListBillsRequest {
          * <ul>
          * <li><code>frequency</code> (<code>in</code>, <code>nin</code>, <code>ne</code>, <code>eq</code>)</li>
          * <li><code>method</code> (<code>in</code>, <code>nin</code>, <code>eq</code>, <code>ne</code>)</li>
-         * <li><code>event</code> (<code>in</code>, <code>nin</code>, <code>eq</code>, <code>ne</code>)</li>
-         * <li><code>target</code> (<code>ct</code>, <code>nct</code>, <code>eq</code>, <code>ne</code>)</li>
+         * <li><code>vendorNumber</code> (<code>eq</code>)</li>
+         * <li><code>vendorId</code> (<code>eq</code>)</li>
          * <li><code>status</code> (<code>eq</code>, <code>ne</code>)</li>
          * <li><code>approvalUserId</code> (<code>eq</code>, <code>ne</code>)</li>
          * <li><code>parentOrgId</code> (<code>ne</code>, <code>eq</code>, <code>nin</code>, <code>in</code>)</li>

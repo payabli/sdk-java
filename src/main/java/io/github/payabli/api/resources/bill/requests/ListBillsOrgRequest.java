@@ -86,8 +86,8 @@ public final class ListBillsOrgRequest {
      * <ul>
      * <li><code>frequency</code> (in, nin, ne, eq)</li>
      * <li><code>method</code> (in, nin, eq, ne)</li>
-     * <li><code>event</code> (in, nin, eq, ne)</li>
-     * <li><code>target</code> (ct, nct, eq, ne)</li>
+     * <li><code>vendorNumber</code> (eq)</li>
+     * <li><code>vendorId</code> (eq)</li>
      * <li><code>status</code> (eq, ne)</li>
      * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
      * <li><code>approvalUserId</code> (eq, ne)</li>
@@ -241,8 +241,8 @@ public final class ListBillsOrgRequest {
          * <ul>
          * <li><code>frequency</code> (in, nin, ne, eq)</li>
          * <li><code>method</code> (in, nin, eq, ne)</li>
-         * <li><code>event</code> (in, nin, eq, ne)</li>
-         * <li><code>target</code> (ct, nct, eq, ne)</li>
+         * <li><code>vendorNumber</code> (eq)</li>
+         * <li><code>vendorId</code> (eq)</li>
          * <li><code>status</code> (eq, ne)</li>
          * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
          * <li><code>approvalUserId</code> (eq, ne)</li>
