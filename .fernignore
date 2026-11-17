@@ -2,6 +2,8 @@
 LICENSE.md
 CONTRIBUTING.md
 
+.github/workflows/ci.yml
+
 # Separate manual versions of workflows
 .github/workflows/compile.yml
 .github/workflows/publish.yml
