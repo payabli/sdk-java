@@ -16,10 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BusinessAddressCreate.Builder.class)
-public final class BusinessAddressCreate implements IBusinessAddress {
+public final class BusinessAddressCreate {
+    private final String country;
+
     private final Optional<AddressType> type;
 
     private final Optional<BusinessAddressLocation> location;
@@ -34,8 +37,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
 
     private final Optional<String> postalCode;
 
-    private final Optional<String> country;
-
     private final Optional<String> floor;
 
     private final Optional<String> suiteApartNumber;
@@ -43,6 +44,7 @@ public final class BusinessAddressCreate implements IBusinessAddress {
     private final Map<String, Object> additionalProperties;
 
     private BusinessAddressCreate(
+            String country,
             Optional<AddressType> type,
             Optional<BusinessAddressLocation> location,
             Optional<String> addressLine1,
@@ -50,10 +52,10 @@ public final class BusinessAddressCreate implements IBusinessAddress {
             Optional<String> cityLocality,
             Optional<String> stateProvince,
             Optional<String> postalCode,
-            Optional<String> country,
             Optional<String> floor,
             Optional<String> suiteApartNumber,
             Map<String, Object> additionalProperties) {
+        this.country = country;
         this.type = type;
         this.location = location;
         this.addressLine1 = addressLine1;
@@ -61,17 +63,23 @@ public final class BusinessAddressCreate implements IBusinessAddress {
         this.cityLocality = cityLocality;
         this.stateProvince = stateProvince;
         this.postalCode = postalCode;
-        this.country = country;
         this.floor = floor;
         this.suiteApartNumber = suiteApartNumber;
         this.additionalProperties = additionalProperties;
     }
 
     /**
+     * @return The two-character ISO country code.
+     */
+    @JsonProperty("country")
+    public String getCountry() {
+        return country;
+    }
+
+    /**
      * @return The address role.
      */
     @JsonProperty("type")
-    @java.lang.Override
     public Optional<AddressType> getType() {
         return type;
     }
@@ -80,7 +88,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The physical use of the address. Defaults to <code>other</code>.
      */
     @JsonProperty("location")
-    @java.lang.Override
     public Optional<BusinessAddressLocation> getLocation() {
         return location;
     }
@@ -89,7 +96,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The first line of the street address.
      */
     @JsonProperty("addressLine1")
-    @java.lang.Override
     public Optional<String> getAddressLine1() {
         return addressLine1;
     }
@@ -98,7 +104,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The second line of the street address.
      */
     @JsonProperty("addressLine2")
-    @java.lang.Override
     public Optional<String> getAddressLine2() {
         return addressLine2;
     }
@@ -107,7 +112,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The city or locality.
      */
     @JsonProperty("cityLocality")
-    @java.lang.Override
     public Optional<String> getCityLocality() {
         return cityLocality;
     }
@@ -116,7 +120,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The state or province.
      */
     @JsonProperty("stateProvince")
-    @java.lang.Override
     public Optional<String> getStateProvince() {
         return stateProvince;
     }
@@ -125,25 +128,14 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The postal or ZIP code.
      */
     @JsonProperty("postalCode")
-    @java.lang.Override
     public Optional<String> getPostalCode() {
         return postalCode;
-    }
-
-    /**
-     * @return The two-character ISO country code.
-     */
-    @JsonProperty("country")
-    @java.lang.Override
-    public Optional<String> getCountry() {
-        return country;
     }
 
     /**
      * @return The floor, if applicable.
      */
     @JsonProperty("floor")
-    @java.lang.Override
     public Optional<String> getFloor() {
         return floor;
     }
@@ -152,7 +144,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
      * @return The suite or apartment number, if applicable.
      */
     @JsonProperty("suiteApartNumber")
-    @java.lang.Override
     public Optional<String> getSuiteApartNumber() {
         return suiteApartNumber;
     }
@@ -169,14 +160,14 @@ public final class BusinessAddressCreate implements IBusinessAddress {
     }
 
     private boolean equalTo(BusinessAddressCreate other) {
-        return type.equals(other.type)
+        return country.equals(other.country)
+                && type.equals(other.type)
                 && location.equals(other.location)
                 && addressLine1.equals(other.addressLine1)
                 && addressLine2.equals(other.addressLine2)
                 && cityLocality.equals(other.cityLocality)
                 && stateProvince.equals(other.stateProvince)
                 && postalCode.equals(other.postalCode)
-                && country.equals(other.country)
                 && floor.equals(other.floor)
                 && suiteApartNumber.equals(other.suiteApartNumber);
     }
@@ -184,6 +175,7 @@ public final class BusinessAddressCreate implements IBusinessAddress {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.country,
                 this.type,
                 this.location,
                 this.addressLine1,
@@ -191,7 +183,6 @@ public final class BusinessAddressCreate implements IBusinessAddress {
                 this.cityLocality,
                 this.stateProvince,
                 this.postalCode,
-                this.country,
                 this.floor,
                 this.suiteApartNumber);
     }
@@ -201,38 +192,120 @@ public final class BusinessAddressCreate implements IBusinessAddress {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static CountryStage builder() {
         return new Builder();
     }
 
+    public interface CountryStage {
+        /**
+         * <p>The two-character ISO country code.</p>
+         */
+        _FinalStage country(@NotNull String country);
+
+        Builder from(BusinessAddressCreate other);
+    }
+
+    public interface _FinalStage {
+        BusinessAddressCreate build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>The address role.</p>
+         */
+        _FinalStage type(Optional<AddressType> type);
+
+        _FinalStage type(AddressType type);
+
+        /**
+         * <p>The physical use of the address. Defaults to <code>other</code>.</p>
+         */
+        _FinalStage location(Optional<BusinessAddressLocation> location);
+
+        _FinalStage location(BusinessAddressLocation location);
+
+        /**
+         * <p>The first line of the street address.</p>
+         */
+        _FinalStage addressLine1(Optional<String> addressLine1);
+
+        _FinalStage addressLine1(String addressLine1);
+
+        /**
+         * <p>The second line of the street address.</p>
+         */
+        _FinalStage addressLine2(Optional<String> addressLine2);
+
+        _FinalStage addressLine2(String addressLine2);
+
+        /**
+         * <p>The city or locality.</p>
+         */
+        _FinalStage cityLocality(Optional<String> cityLocality);
+
+        _FinalStage cityLocality(String cityLocality);
+
+        /**
+         * <p>The state or province.</p>
+         */
+        _FinalStage stateProvince(Optional<String> stateProvince);
+
+        _FinalStage stateProvince(String stateProvince);
+
+        /**
+         * <p>The postal or ZIP code.</p>
+         */
+        _FinalStage postalCode(Optional<String> postalCode);
+
+        _FinalStage postalCode(String postalCode);
+
+        /**
+         * <p>The floor, if applicable.</p>
+         */
+        _FinalStage floor(Optional<String> floor);
+
+        _FinalStage floor(String floor);
+
+        /**
+         * <p>The suite or apartment number, if applicable.</p>
+         */
+        _FinalStage suiteApartNumber(Optional<String> suiteApartNumber);
+
+        _FinalStage suiteApartNumber(String suiteApartNumber);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<AddressType> type = Optional.empty();
+    public static final class Builder implements CountryStage, _FinalStage {
+        private String country;
 
-        private Optional<BusinessAddressLocation> location = Optional.empty();
-
-        private Optional<String> addressLine1 = Optional.empty();
-
-        private Optional<String> addressLine2 = Optional.empty();
-
-        private Optional<String> cityLocality = Optional.empty();
-
-        private Optional<String> stateProvince = Optional.empty();
-
-        private Optional<String> postalCode = Optional.empty();
-
-        private Optional<String> country = Optional.empty();
+        private Optional<String> suiteApartNumber = Optional.empty();
 
         private Optional<String> floor = Optional.empty();
 
-        private Optional<String> suiteApartNumber = Optional.empty();
+        private Optional<String> postalCode = Optional.empty();
+
+        private Optional<String> stateProvince = Optional.empty();
+
+        private Optional<String> cityLocality = Optional.empty();
+
+        private Optional<String> addressLine2 = Optional.empty();
+
+        private Optional<String> addressLine1 = Optional.empty();
+
+        private Optional<BusinessAddressLocation> location = Optional.empty();
+
+        private Optional<AddressType> type = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(BusinessAddressCreate other) {
+            country(other.getCountry());
             type(other.getType());
             location(other.getLocation());
             addressLine1(other.getAddressLine1());
@@ -240,154 +313,206 @@ public final class BusinessAddressCreate implements IBusinessAddress {
             cityLocality(other.getCityLocality());
             stateProvince(other.getStateProvince());
             postalCode(other.getPostalCode());
-            country(other.getCountry());
             floor(other.getFloor());
             suiteApartNumber(other.getSuiteApartNumber());
             return this;
         }
 
         /**
-         * <p>The address role.</p>
-         */
-        @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<AddressType> type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder type(AddressType type) {
-            this.type = Optional.ofNullable(type);
-            return this;
-        }
-
-        /**
-         * <p>The physical use of the address. Defaults to <code>other</code>.</p>
-         */
-        @JsonSetter(value = "location", nulls = Nulls.SKIP)
-        public Builder location(Optional<BusinessAddressLocation> location) {
-            this.location = location;
-            return this;
-        }
-
-        public Builder location(BusinessAddressLocation location) {
-            this.location = Optional.ofNullable(location);
-            return this;
-        }
-
-        /**
-         * <p>The first line of the street address.</p>
-         */
-        @JsonSetter(value = "addressLine1", nulls = Nulls.SKIP)
-        public Builder addressLine1(Optional<String> addressLine1) {
-            this.addressLine1 = addressLine1;
-            return this;
-        }
-
-        public Builder addressLine1(String addressLine1) {
-            this.addressLine1 = Optional.ofNullable(addressLine1);
-            return this;
-        }
-
-        /**
-         * <p>The second line of the street address.</p>
-         */
-        @JsonSetter(value = "addressLine2", nulls = Nulls.SKIP)
-        public Builder addressLine2(Optional<String> addressLine2) {
-            this.addressLine2 = addressLine2;
-            return this;
-        }
-
-        public Builder addressLine2(String addressLine2) {
-            this.addressLine2 = Optional.ofNullable(addressLine2);
-            return this;
-        }
-
-        /**
-         * <p>The city or locality.</p>
-         */
-        @JsonSetter(value = "cityLocality", nulls = Nulls.SKIP)
-        public Builder cityLocality(Optional<String> cityLocality) {
-            this.cityLocality = cityLocality;
-            return this;
-        }
-
-        public Builder cityLocality(String cityLocality) {
-            this.cityLocality = Optional.ofNullable(cityLocality);
-            return this;
-        }
-
-        /**
-         * <p>The state or province.</p>
-         */
-        @JsonSetter(value = "stateProvince", nulls = Nulls.SKIP)
-        public Builder stateProvince(Optional<String> stateProvince) {
-            this.stateProvince = stateProvince;
-            return this;
-        }
-
-        public Builder stateProvince(String stateProvince) {
-            this.stateProvince = Optional.ofNullable(stateProvince);
-            return this;
-        }
-
-        /**
-         * <p>The postal or ZIP code.</p>
-         */
-        @JsonSetter(value = "postalCode", nulls = Nulls.SKIP)
-        public Builder postalCode(Optional<String> postalCode) {
-            this.postalCode = postalCode;
-            return this;
-        }
-
-        public Builder postalCode(String postalCode) {
-            this.postalCode = Optional.ofNullable(postalCode);
-            return this;
-        }
-
-        /**
          * <p>The two-character ISO country code.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "country", nulls = Nulls.SKIP)
-        public Builder country(Optional<String> country) {
-            this.country = country;
-            return this;
-        }
-
-        public Builder country(String country) {
-            this.country = Optional.ofNullable(country);
+        @java.lang.Override
+        @JsonSetter("country")
+        public _FinalStage country(@NotNull String country) {
+            this.country = Objects.requireNonNull(country, "country must not be null");
             return this;
         }
 
         /**
-         * <p>The floor, if applicable.</p>
+         * <p>The suite or apartment number, if applicable.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "floor", nulls = Nulls.SKIP)
-        public Builder floor(Optional<String> floor) {
-            this.floor = floor;
-            return this;
-        }
-
-        public Builder floor(String floor) {
-            this.floor = Optional.ofNullable(floor);
+        @java.lang.Override
+        public _FinalStage suiteApartNumber(String suiteApartNumber) {
+            this.suiteApartNumber = Optional.ofNullable(suiteApartNumber);
             return this;
         }
 
         /**
          * <p>The suite or apartment number, if applicable.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "suiteApartNumber", nulls = Nulls.SKIP)
-        public Builder suiteApartNumber(Optional<String> suiteApartNumber) {
+        public _FinalStage suiteApartNumber(Optional<String> suiteApartNumber) {
             this.suiteApartNumber = suiteApartNumber;
             return this;
         }
 
-        public Builder suiteApartNumber(String suiteApartNumber) {
-            this.suiteApartNumber = Optional.ofNullable(suiteApartNumber);
+        /**
+         * <p>The floor, if applicable.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage floor(String floor) {
+            this.floor = Optional.ofNullable(floor);
             return this;
         }
 
+        /**
+         * <p>The floor, if applicable.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "floor", nulls = Nulls.SKIP)
+        public _FinalStage floor(Optional<String> floor) {
+            this.floor = floor;
+            return this;
+        }
+
+        /**
+         * <p>The postal or ZIP code.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage postalCode(String postalCode) {
+            this.postalCode = Optional.ofNullable(postalCode);
+            return this;
+        }
+
+        /**
+         * <p>The postal or ZIP code.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "postalCode", nulls = Nulls.SKIP)
+        public _FinalStage postalCode(Optional<String> postalCode) {
+            this.postalCode = postalCode;
+            return this;
+        }
+
+        /**
+         * <p>The state or province.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage stateProvince(String stateProvince) {
+            this.stateProvince = Optional.ofNullable(stateProvince);
+            return this;
+        }
+
+        /**
+         * <p>The state or province.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "stateProvince", nulls = Nulls.SKIP)
+        public _FinalStage stateProvince(Optional<String> stateProvince) {
+            this.stateProvince = stateProvince;
+            return this;
+        }
+
+        /**
+         * <p>The city or locality.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage cityLocality(String cityLocality) {
+            this.cityLocality = Optional.ofNullable(cityLocality);
+            return this;
+        }
+
+        /**
+         * <p>The city or locality.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "cityLocality", nulls = Nulls.SKIP)
+        public _FinalStage cityLocality(Optional<String> cityLocality) {
+            this.cityLocality = cityLocality;
+            return this;
+        }
+
+        /**
+         * <p>The second line of the street address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addressLine2(String addressLine2) {
+            this.addressLine2 = Optional.ofNullable(addressLine2);
+            return this;
+        }
+
+        /**
+         * <p>The second line of the street address.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "addressLine2", nulls = Nulls.SKIP)
+        public _FinalStage addressLine2(Optional<String> addressLine2) {
+            this.addressLine2 = addressLine2;
+            return this;
+        }
+
+        /**
+         * <p>The first line of the street address.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addressLine1(String addressLine1) {
+            this.addressLine1 = Optional.ofNullable(addressLine1);
+            return this;
+        }
+
+        /**
+         * <p>The first line of the street address.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "addressLine1", nulls = Nulls.SKIP)
+        public _FinalStage addressLine1(Optional<String> addressLine1) {
+            this.addressLine1 = addressLine1;
+            return this;
+        }
+
+        /**
+         * <p>The physical use of the address. Defaults to <code>other</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage location(BusinessAddressLocation location) {
+            this.location = Optional.ofNullable(location);
+            return this;
+        }
+
+        /**
+         * <p>The physical use of the address. Defaults to <code>other</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "location", nulls = Nulls.SKIP)
+        public _FinalStage location(Optional<BusinessAddressLocation> location) {
+            this.location = location;
+            return this;
+        }
+
+        /**
+         * <p>The address role.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage type(AddressType type) {
+            this.type = Optional.ofNullable(type);
+            return this;
+        }
+
+        /**
+         * <p>The address role.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "type", nulls = Nulls.SKIP)
+        public _FinalStage type(Optional<AddressType> type) {
+            this.type = type;
+            return this;
+        }
+
+        @java.lang.Override
         public BusinessAddressCreate build() {
             return new BusinessAddressCreate(
+                    country,
                     type,
                     location,
                     addressLine1,
@@ -395,17 +520,18 @@ public final class BusinessAddressCreate implements IBusinessAddress {
                     cityLocality,
                     stateProvince,
                     postalCode,
-                    country,
                     floor,
                     suiteApartNumber,
                     additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

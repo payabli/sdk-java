@@ -44,6 +44,10 @@ public final class PeopleSearchResultResponse {
 
     private final Optional<Boolean> isFromVendor;
 
+    private final Optional<PeopleSearchAddressResponse> primaryAddress;
+
+    private final Optional<List<PeopleSearchAddressResponse>> addresses;
+
     private final Optional<List<String>> phones;
 
     private final Optional<List<String>> emails;
@@ -67,6 +71,8 @@ public final class PeopleSearchResultResponse {
             Optional<Double> matchScore,
             Optional<Boolean> isTopMatch,
             Optional<Boolean> isFromVendor,
+            Optional<PeopleSearchAddressResponse> primaryAddress,
+            Optional<List<PeopleSearchAddressResponse>> addresses,
             Optional<List<String>> phones,
             Optional<List<String>> emails,
             Optional<Integer> addressCount,
@@ -83,6 +89,8 @@ public final class PeopleSearchResultResponse {
         this.matchScore = matchScore;
         this.isTopMatch = isTopMatch;
         this.isFromVendor = isFromVendor;
+        this.primaryAddress = primaryAddress;
+        this.addresses = addresses;
         this.phones = phones;
         this.emails = emails;
         this.addressCount = addressCount;
@@ -202,6 +210,25 @@ public final class PeopleSearchResultResponse {
     }
 
     /**
+     * @return The person's primary address. <code>null</code> when the person has no address on file.
+     */
+    @JsonIgnore
+    public Optional<PeopleSearchAddressResponse> getPrimaryAddress() {
+        if (primaryAddress == null) {
+            return Optional.empty();
+        }
+        return primaryAddress;
+    }
+
+    /**
+     * @return The person's addresses on file. Empty when the person has no address.
+     */
+    @JsonProperty("addresses")
+    public Optional<List<PeopleSearchAddressResponse>> getAddresses() {
+        return addresses;
+    }
+
+    /**
      * @return The person's phone numbers.
      */
     @JsonProperty("phones")
@@ -301,6 +328,12 @@ public final class PeopleSearchResultResponse {
         return isFromVendor;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("primaryAddress")
+    private Optional<PeopleSearchAddressResponse> _getPrimaryAddress() {
+        return primaryAddress;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -323,6 +356,8 @@ public final class PeopleSearchResultResponse {
                 && matchScore.equals(other.matchScore)
                 && isTopMatch.equals(other.isTopMatch)
                 && isFromVendor.equals(other.isFromVendor)
+                && primaryAddress.equals(other.primaryAddress)
+                && addresses.equals(other.addresses)
                 && phones.equals(other.phones)
                 && emails.equals(other.emails)
                 && addressCount.equals(other.addressCount)
@@ -343,6 +378,8 @@ public final class PeopleSearchResultResponse {
                 this.matchScore,
                 this.isTopMatch,
                 this.isFromVendor,
+                this.primaryAddress,
+                this.addresses,
                 this.phones,
                 this.emails,
                 this.addressCount,
@@ -381,6 +418,10 @@ public final class PeopleSearchResultResponse {
 
         private Optional<Boolean> isFromVendor = Optional.empty();
 
+        private Optional<PeopleSearchAddressResponse> primaryAddress = Optional.empty();
+
+        private Optional<List<PeopleSearchAddressResponse>> addresses = Optional.empty();
+
         private Optional<List<String>> phones = Optional.empty();
 
         private Optional<List<String>> emails = Optional.empty();
@@ -407,6 +448,8 @@ public final class PeopleSearchResultResponse {
             matchScore(other.getMatchScore());
             isTopMatch(other.getIsTopMatch());
             isFromVendor(other.getIsFromVendor());
+            primaryAddress(other.getPrimaryAddress());
+            addresses(other.getAddresses());
             phones(other.getPhones());
             emails(other.getEmails());
             addressCount(other.getAddressCount());
@@ -666,6 +709,45 @@ public final class PeopleSearchResultResponse {
         }
 
         /**
+         * <p>The person's primary address. <code>null</code> when the person has no address on file.</p>
+         */
+        @JsonSetter(value = "primaryAddress", nulls = Nulls.SKIP)
+        public Builder primaryAddress(Optional<PeopleSearchAddressResponse> primaryAddress) {
+            this.primaryAddress = primaryAddress;
+            return this;
+        }
+
+        public Builder primaryAddress(PeopleSearchAddressResponse primaryAddress) {
+            this.primaryAddress = Optional.ofNullable(primaryAddress);
+            return this;
+        }
+
+        public Builder primaryAddress(Nullable<PeopleSearchAddressResponse> primaryAddress) {
+            if (primaryAddress.isNull()) {
+                this.primaryAddress = null;
+            } else if (primaryAddress.isEmpty()) {
+                this.primaryAddress = Optional.empty();
+            } else {
+                this.primaryAddress = Optional.of(primaryAddress.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The person's addresses on file. Empty when the person has no address.</p>
+         */
+        @JsonSetter(value = "addresses", nulls = Nulls.SKIP)
+        public Builder addresses(Optional<List<PeopleSearchAddressResponse>> addresses) {
+            this.addresses = addresses;
+            return this;
+        }
+
+        public Builder addresses(List<PeopleSearchAddressResponse> addresses) {
+            this.addresses = Optional.ofNullable(addresses);
+            return this;
+        }
+
+        /**
          * <p>The person's phone numbers.</p>
          */
         @JsonSetter(value = "phones", nulls = Nulls.SKIP)
@@ -747,6 +829,8 @@ public final class PeopleSearchResultResponse {
                     matchScore,
                     isTopMatch,
                     isFromVendor,
+                    primaryAddress,
+                    addresses,
                     phones,
                     emails,
                     addressCount,

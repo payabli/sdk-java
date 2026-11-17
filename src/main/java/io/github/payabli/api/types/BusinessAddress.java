@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BusinessAddress.Builder.class)
-public final class BusinessAddress implements IBusinessAddress {
+public final class BusinessAddress {
     private final Optional<AddressType> type;
 
     private final Optional<BusinessAddressLocation> location;
@@ -71,7 +71,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The address role.
      */
     @JsonProperty("type")
-    @java.lang.Override
     public Optional<AddressType> getType() {
         return type;
     }
@@ -80,7 +79,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The physical use of the address. Defaults to <code>other</code>.
      */
     @JsonProperty("location")
-    @java.lang.Override
     public Optional<BusinessAddressLocation> getLocation() {
         return location;
     }
@@ -89,7 +87,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The first line of the street address.
      */
     @JsonProperty("addressLine1")
-    @java.lang.Override
     public Optional<String> getAddressLine1() {
         return addressLine1;
     }
@@ -98,7 +95,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The second line of the street address.
      */
     @JsonProperty("addressLine2")
-    @java.lang.Override
     public Optional<String> getAddressLine2() {
         return addressLine2;
     }
@@ -107,7 +103,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The city or locality.
      */
     @JsonProperty("cityLocality")
-    @java.lang.Override
     public Optional<String> getCityLocality() {
         return cityLocality;
     }
@@ -116,7 +111,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The state or province.
      */
     @JsonProperty("stateProvince")
-    @java.lang.Override
     public Optional<String> getStateProvince() {
         return stateProvince;
     }
@@ -125,7 +119,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The postal or ZIP code.
      */
     @JsonProperty("postalCode")
-    @java.lang.Override
     public Optional<String> getPostalCode() {
         return postalCode;
     }
@@ -134,7 +127,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The two-character ISO country code.
      */
     @JsonProperty("country")
-    @java.lang.Override
     public Optional<String> getCountry() {
         return country;
     }
@@ -143,7 +135,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The floor, if applicable.
      */
     @JsonProperty("floor")
-    @java.lang.Override
     public Optional<String> getFloor() {
         return floor;
     }
@@ -152,7 +143,6 @@ public final class BusinessAddress implements IBusinessAddress {
      * @return The suite or apartment number, if applicable.
      */
     @JsonProperty("suiteApartNumber")
-    @java.lang.Override
     public Optional<String> getSuiteApartNumber() {
         return suiteApartNumber;
     }

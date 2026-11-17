@@ -16,15 +16,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SubmitSigner.Builder.class)
 public final class SubmitSigner {
     private final Optional<String> personReference;
 
-    private final Optional<String> signature;
+    private final String signature;
 
-    private final Optional<SignatureType> signatureType;
+    private final SignatureType signatureType;
 
     private final Optional<String> signedDocumentReference;
 
@@ -40,8 +41,8 @@ public final class SubmitSigner {
 
     private SubmitSigner(
             Optional<String> personReference,
-            Optional<String> signature,
-            Optional<SignatureType> signatureType,
+            String signature,
+            SignatureType signatureType,
             Optional<String> signedDocumentReference,
             Optional<Boolean> acceptance,
             Optional<Boolean> pciAttestation,
@@ -68,23 +69,23 @@ public final class SubmitSigner {
     }
 
     /**
-     * @return The signature. For <code>type</code> and <code>checkbox</code>, send the signer's name. For <code>draw</code>, send the image as a base64 data URL, such as the output of <code>canvas.toDataURL()</code>. Required unless you send <code>signedDocumentReference</code>.
+     * @return The signature. For <code>type</code> and <code>checkbox</code>, send the signer's name. For <code>draw</code>, send the image as a base64 data URL, such as the output of <code>canvas.toDataURL()</code>. Can't be empty or only whitespace.
      */
     @JsonProperty("signature")
-    public Optional<String> getSignature() {
+    public String getSignature() {
         return signature;
     }
 
     /**
-     * @return How the signer signed. Required with <code>signature</code>.
+     * @return How the signer signed.
      */
     @JsonProperty("signatureType")
-    public Optional<SignatureType> getSignatureType() {
+    public SignatureType getSignatureType() {
         return signatureType;
     }
 
     /**
-     * @return The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Send it instead of <code>signature</code> and <code>signatureType</code>.
+     * @return The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Payabli records it with the signature. It doesn't replace <code>signature</code> and <code>signatureType</code>, which every submit needs.
      */
     @JsonProperty("signedDocumentReference")
     public Optional<String> getSignedDocumentReference() {
@@ -167,33 +168,104 @@ public final class SubmitSigner {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static SignatureStage builder() {
         return new Builder();
     }
 
+    public interface SignatureStage {
+        /**
+         * <p>The signature. For <code>type</code> and <code>checkbox</code>, send the signer's name. For <code>draw</code>, send the image as a base64 data URL, such as the output of <code>canvas.toDataURL()</code>. Can't be empty or only whitespace.</p>
+         */
+        SignatureTypeStage signature(@NotNull String signature);
+
+        Builder from(SubmitSigner other);
+    }
+
+    public interface SignatureTypeStage {
+        /**
+         * <p>How the signer signed.</p>
+         */
+        _FinalStage signatureType(@NotNull SignatureType signatureType);
+    }
+
+    public interface _FinalStage {
+        SubmitSigner build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>The reference of an owner linked to this business, to make them the signer before the application is submitted. Works only while the application is a draft. Leave it out when the business already has a signer. If the person isn't linked to this business, the request fails with <code>404</code>. If the person isn't an owner, the request fails with <code>422</code> and the error <code>SIGNER_NOT_OWNER</code>.</p>
+         */
+        _FinalStage personReference(Optional<String> personReference);
+
+        _FinalStage personReference(String personReference);
+
+        /**
+         * <p>The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Payabli records it with the signature. It doesn't replace <code>signature</code> and <code>signatureType</code>, which every submit needs.</p>
+         */
+        _FinalStage signedDocumentReference(Optional<String> signedDocumentReference);
+
+        _FinalStage signedDocumentReference(String signedDocumentReference);
+
+        /**
+         * <p>Whether the signer accepted the terms. If you leave it out, Payabli records <code>false</code>.</p>
+         */
+        _FinalStage acceptance(Optional<Boolean> acceptance);
+
+        _FinalStage acceptance(Boolean acceptance);
+
+        /**
+         * <p>Whether the signer attested to PCI compliance. If you leave it out, Payabli records <code>false</code>.</p>
+         */
+        _FinalStage pciAttestation(Optional<Boolean> pciAttestation);
+
+        _FinalStage pciAttestation(Boolean pciAttestation);
+
+        /**
+         * <p>The IP address of the signer's device, as your system saw it. Payabli
+         * records it as reported by you, in its own field, and still records the
+         * IP address it observes on the request. Send a single IPv4 address in
+         * dotted-decimal form, such as <code>203.0.113.7</code>, or an IPv6 address in any
+         * valid form, up to 45 characters. Payabli rejects ports, CIDR ranges,
+         * IPv6 zone IDs, lists of addresses, and shorthand, integer, hex, or
+         * leading-zero IPv4 forms. An invalid value returns <code>400</code>, and the
+         * application isn't submitted. An empty value is treated as not sent.</p>
+         */
+        _FinalStage reportedSignerIp(Optional<String> reportedSignerIp);
+
+        _FinalStage reportedSignerIp(String reportedSignerIp);
+
+        _FinalStage additionalData(Optional<Map<String, String>> additionalData);
+
+        _FinalStage additionalData(Map<String, String> additionalData);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> personReference = Optional.empty();
+    public static final class Builder implements SignatureStage, SignatureTypeStage, _FinalStage {
+        private String signature;
 
-        private Optional<String> signature = Optional.empty();
+        private SignatureType signatureType;
 
-        private Optional<SignatureType> signatureType = Optional.empty();
-
-        private Optional<String> signedDocumentReference = Optional.empty();
-
-        private Optional<Boolean> acceptance = Optional.empty();
-
-        private Optional<Boolean> pciAttestation = Optional.empty();
+        private Optional<Map<String, String>> additionalData = Optional.empty();
 
         private Optional<String> reportedSignerIp = Optional.empty();
 
-        private Optional<Map<String, String>> additionalData = Optional.empty();
+        private Optional<Boolean> pciAttestation = Optional.empty();
+
+        private Optional<Boolean> acceptance = Optional.empty();
+
+        private Optional<String> signedDocumentReference = Optional.empty();
+
+        private Optional<String> personReference = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(SubmitSigner other) {
             personReference(other.getPersonReference());
             signature(other.getSignature());
@@ -207,86 +279,54 @@ public final class SubmitSigner {
         }
 
         /**
-         * <p>The reference of an owner linked to this business, to make them the signer before the application is submitted. Works only while the application is a draft. Leave it out when the business already has a signer. If the person isn't linked to this business, the request fails with <code>404</code>. If the person isn't an owner, the request fails with <code>422</code> and the error <code>SIGNER_NOT_OWNER</code>.</p>
+         * <p>The signature. For <code>type</code> and <code>checkbox</code>, send the signer's name. For <code>draw</code>, send the image as a base64 data URL, such as the output of <code>canvas.toDataURL()</code>. Can't be empty or only whitespace.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "personReference", nulls = Nulls.SKIP)
-        public Builder personReference(Optional<String> personReference) {
-            this.personReference = personReference;
-            return this;
-        }
-
-        public Builder personReference(String personReference) {
-            this.personReference = Optional.ofNullable(personReference);
+        @java.lang.Override
+        @JsonSetter("signature")
+        public SignatureTypeStage signature(@NotNull String signature) {
+            this.signature = Objects.requireNonNull(signature, "signature must not be null");
             return this;
         }
 
         /**
-         * <p>The signature. For <code>type</code> and <code>checkbox</code>, send the signer's name. For <code>draw</code>, send the image as a base64 data URL, such as the output of <code>canvas.toDataURL()</code>. Required unless you send <code>signedDocumentReference</code>.</p>
+         * <p>How the signer signed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "signature", nulls = Nulls.SKIP)
-        public Builder signature(Optional<String> signature) {
-            this.signature = signature;
+        @java.lang.Override
+        @JsonSetter("signatureType")
+        public _FinalStage signatureType(@NotNull SignatureType signatureType) {
+            this.signatureType = Objects.requireNonNull(signatureType, "signatureType must not be null");
             return this;
         }
 
-        public Builder signature(String signature) {
-            this.signature = Optional.ofNullable(signature);
+        @java.lang.Override
+        public _FinalStage additionalData(Map<String, String> additionalData) {
+            this.additionalData = Optional.ofNullable(additionalData);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
+        public _FinalStage additionalData(Optional<Map<String, String>> additionalData) {
+            this.additionalData = additionalData;
             return this;
         }
 
         /**
-         * <p>How the signer signed. Required with <code>signature</code>.</p>
+         * <p>The IP address of the signer's device, as your system saw it. Payabli
+         * records it as reported by you, in its own field, and still records the
+         * IP address it observes on the request. Send a single IPv4 address in
+         * dotted-decimal form, such as <code>203.0.113.7</code>, or an IPv6 address in any
+         * valid form, up to 45 characters. Payabli rejects ports, CIDR ranges,
+         * IPv6 zone IDs, lists of addresses, and shorthand, integer, hex, or
+         * leading-zero IPv4 forms. An invalid value returns <code>400</code>, and the
+         * application isn't submitted. An empty value is treated as not sent.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "signatureType", nulls = Nulls.SKIP)
-        public Builder signatureType(Optional<SignatureType> signatureType) {
-            this.signatureType = signatureType;
-            return this;
-        }
-
-        public Builder signatureType(SignatureType signatureType) {
-            this.signatureType = Optional.ofNullable(signatureType);
-            return this;
-        }
-
-        /**
-         * <p>The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Send it instead of <code>signature</code> and <code>signatureType</code>.</p>
-         */
-        @JsonSetter(value = "signedDocumentReference", nulls = Nulls.SKIP)
-        public Builder signedDocumentReference(Optional<String> signedDocumentReference) {
-            this.signedDocumentReference = signedDocumentReference;
-            return this;
-        }
-
-        public Builder signedDocumentReference(String signedDocumentReference) {
-            this.signedDocumentReference = Optional.ofNullable(signedDocumentReference);
-            return this;
-        }
-
-        /**
-         * <p>Whether the signer accepted the terms. If you leave it out, Payabli records <code>false</code>.</p>
-         */
-        @JsonSetter(value = "acceptance", nulls = Nulls.SKIP)
-        public Builder acceptance(Optional<Boolean> acceptance) {
-            this.acceptance = acceptance;
-            return this;
-        }
-
-        public Builder acceptance(Boolean acceptance) {
-            this.acceptance = Optional.ofNullable(acceptance);
-            return this;
-        }
-
-        /**
-         * <p>Whether the signer attested to PCI compliance. If you leave it out, Payabli records <code>false</code>.</p>
-         */
-        @JsonSetter(value = "pciAttestation", nulls = Nulls.SKIP)
-        public Builder pciAttestation(Optional<Boolean> pciAttestation) {
-            this.pciAttestation = pciAttestation;
-            return this;
-        }
-
-        public Builder pciAttestation(Boolean pciAttestation) {
-            this.pciAttestation = Optional.ofNullable(pciAttestation);
+        @java.lang.Override
+        public _FinalStage reportedSignerIp(String reportedSignerIp) {
+            this.reportedSignerIp = Optional.ofNullable(reportedSignerIp);
             return this;
         }
 
@@ -300,28 +340,94 @@ public final class SubmitSigner {
          * leading-zero IPv4 forms. An invalid value returns <code>400</code>, and the
          * application isn't submitted. An empty value is treated as not sent.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "reportedSignerIp", nulls = Nulls.SKIP)
-        public Builder reportedSignerIp(Optional<String> reportedSignerIp) {
+        public _FinalStage reportedSignerIp(Optional<String> reportedSignerIp) {
             this.reportedSignerIp = reportedSignerIp;
             return this;
         }
 
-        public Builder reportedSignerIp(String reportedSignerIp) {
-            this.reportedSignerIp = Optional.ofNullable(reportedSignerIp);
+        /**
+         * <p>Whether the signer attested to PCI compliance. If you leave it out, Payabli records <code>false</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage pciAttestation(Boolean pciAttestation) {
+            this.pciAttestation = Optional.ofNullable(pciAttestation);
             return this;
         }
 
-        @JsonSetter(value = "additionalData", nulls = Nulls.SKIP)
-        public Builder additionalData(Optional<Map<String, String>> additionalData) {
-            this.additionalData = additionalData;
+        /**
+         * <p>Whether the signer attested to PCI compliance. If you leave it out, Payabli records <code>false</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "pciAttestation", nulls = Nulls.SKIP)
+        public _FinalStage pciAttestation(Optional<Boolean> pciAttestation) {
+            this.pciAttestation = pciAttestation;
             return this;
         }
 
-        public Builder additionalData(Map<String, String> additionalData) {
-            this.additionalData = Optional.ofNullable(additionalData);
+        /**
+         * <p>Whether the signer accepted the terms. If you leave it out, Payabli records <code>false</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage acceptance(Boolean acceptance) {
+            this.acceptance = Optional.ofNullable(acceptance);
             return this;
         }
 
+        /**
+         * <p>Whether the signer accepted the terms. If you leave it out, Payabli records <code>false</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "acceptance", nulls = Nulls.SKIP)
+        public _FinalStage acceptance(Optional<Boolean> acceptance) {
+            this.acceptance = acceptance;
+            return this;
+        }
+
+        /**
+         * <p>The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Payabli records it with the signature. It doesn't replace <code>signature</code> and <code>signatureType</code>, which every submit needs.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage signedDocumentReference(String signedDocumentReference) {
+            this.signedDocumentReference = Optional.ofNullable(signedDocumentReference);
+            return this;
+        }
+
+        /**
+         * <p>The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Payabli records it with the signature. It doesn't replace <code>signature</code> and <code>signatureType</code>, which every submit needs.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "signedDocumentReference", nulls = Nulls.SKIP)
+        public _FinalStage signedDocumentReference(Optional<String> signedDocumentReference) {
+            this.signedDocumentReference = signedDocumentReference;
+            return this;
+        }
+
+        /**
+         * <p>The reference of an owner linked to this business, to make them the signer before the application is submitted. Works only while the application is a draft. Leave it out when the business already has a signer. If the person isn't linked to this business, the request fails with <code>404</code>. If the person isn't an owner, the request fails with <code>422</code> and the error <code>SIGNER_NOT_OWNER</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage personReference(String personReference) {
+            this.personReference = Optional.ofNullable(personReference);
+            return this;
+        }
+
+        /**
+         * <p>The reference of an owner linked to this business, to make them the signer before the application is submitted. Works only while the application is a draft. Leave it out when the business already has a signer. If the person isn't linked to this business, the request fails with <code>404</code>. If the person isn't an owner, the request fails with <code>422</code> and the error <code>SIGNER_NOT_OWNER</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "personReference", nulls = Nulls.SKIP)
+        public _FinalStage personReference(Optional<String> personReference) {
+            this.personReference = personReference;
+            return this;
+        }
+
+        @java.lang.Override
         public SubmitSigner build() {
             return new SubmitSigner(
                     personReference,
@@ -335,11 +441,13 @@ public final class SubmitSigner {
                     additionalProperties);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

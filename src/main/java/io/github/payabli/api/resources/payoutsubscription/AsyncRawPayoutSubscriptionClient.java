@@ -47,7 +47,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
+     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
             RequestPayoutSchedule request) {
@@ -55,7 +55,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
+     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<AddPayoutSubscriptionResponse>> createPayoutSubscription(
             RequestPayoutSchedule request, RequestOptions requestOptions) {
@@ -270,7 +270,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id) {
@@ -279,7 +279,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id, RequestOptions requestOptions) {
@@ -288,7 +288,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id, UpdatePayoutSubscriptionBody request) {
@@ -296,7 +296,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<UpdatePayoutSubscriptionResponse>> updatePayoutSubscription(
             long id, UpdatePayoutSubscriptionBody request, RequestOptions requestOptions) {
@@ -402,7 +402,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<DeletePayoutSubscriptionResponse>> deletePayoutSubscription(
             long id) {
@@ -410,7 +410,7 @@ public class AsyncRawPayoutSubscriptionClient {
     }
 
     /**
-     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public CompletableFuture<PayabliApiClientHttpResponse<DeletePayoutSubscriptionResponse>> deletePayoutSubscription(
             long id, RequestOptions requestOptions) {

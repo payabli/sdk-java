@@ -1,12 +1,14 @@
 # Payabli Java Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fpayabli%2Fsdk-java)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Payabli%2FJava)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.payabli/sdk-java)](https://central.sonatype.com/artifact/io.github.payabli/sdk-java)
 
 The Payabli Java library provides convenient access to the Payabli APIs from Java.
 
 ## Table of Contents
 
+- [Installation](#installation)
+- [Reference](#reference)
 - [Changelog](#changelog)
 - [Getting Started](#getting-started)
 - [Passing Query Parameters](#passing-query-parameters)
@@ -22,9 +24,34 @@ The Payabli Java library provides convenient access to the Payabli APIs from Jav
   - [Custom Headers](#custom-headers)
   - [Access Raw Response Data](#access-raw-response-data)
 - [Contributing](#contributing)
-- [Documentation](#documentation)
-- [Installation](#installation)
-- [Reference](#reference)
+
+## Installation
+
+### Gradle
+
+Add the dependency in your `build.gradle` file:
+
+```groovy
+dependencies {
+  implementation 'io.github.payabli:sdk-java:1.0.25'
+}
+```
+
+### Maven
+
+Add the dependency in your `pom.xml` file:
+
+```xml
+<dependency>
+  <groupId>io.github.payabli</groupId>
+  <artifactId>sdk-java</artifactId>
+  <version>1.0.25</version>
+</dependency>
+```
+
+## Reference
+
+A full reference for this library is available [here](./reference.md).
 
 ## Changelog
 
@@ -315,35 +342,3 @@ a proof of concept, but know that we will not be able to merge it as-is. We sugg
 an issue first to discuss with us!
 
 On the other hand, contributions to the README are always very welcome!
-## Documentation
-
-API reference documentation is available [here](https://docs.payabli.com).
-
-## Installation
-
-### Gradle
-
-Add the dependency in your `build.gradle` file:
-
-```groovy
-dependencies {
-  implementation 'io.github.payabli:sdk-java:1.0.24'
-}
-```
-
-### Maven
-
-Add the dependency in your `pom.xml` file:
-
-```xml
-<dependency>
-  <groupId>io.github.payabli</groupId>
-  <artifactId>sdk-java</artifactId>
-  <version>1.0.24</version>
-</dependency>
-```
-
-## Reference
-
-A full reference for this library is available [here](https://github.com/payabli/sdk-java/blob/HEAD/./reference.md).
-

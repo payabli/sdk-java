@@ -64,9 +64,9 @@ public final class ListVcardsTransactionsOrgRequest {
      * <p>&lt;Info&gt;
      *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
      * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/900123?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
      * <p>should become:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?transactionAmount(gt)=100&amp;limitRecord=20
+     * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/900123?transactionAmount(gt)=100&amp;limitRecord=20
      * &lt;/Info&gt;</p>
      * <p>Accepted field names:</p>
      * <ul>
@@ -208,9 +208,9 @@ public final class ListVcardsTransactionsOrgRequest {
          * <p>&lt;Info&gt;
          *   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**</p>
          * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/900123?parameters=transactionAmount(gt)=100&amp;limitRecord=20</p>
          * <p>should become:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?transactionAmount(gt)=100&amp;limitRecord=20
+         * <p>--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/900123?transactionAmount(gt)=100&amp;limitRecord=20
          * &lt;/Info&gt;</p>
          * <p>Accepted field names:</p>
          * <ul>

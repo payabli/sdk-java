@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +55,8 @@ public final class Owners {
 
     private final Optional<Map<String, String>> additionalData;
 
+    private final Optional<Boolean> primaryOwner;
+
     private final Map<String, Object> additionalProperties;
 
     private Owners(
@@ -71,6 +76,7 @@ public final class Owners {
             Optional<String> ostate,
             Optional<String> ozip,
             Optional<Map<String, String>> additionalData,
+            Optional<Boolean> primaryOwner,
             Map<String, Object> additionalProperties) {
         this.ownername = ownername;
         this.ownertitle = ownertitle;
@@ -88,6 +94,7 @@ public final class Owners {
         this.ostate = ostate;
         this.ozip = ozip;
         this.additionalData = additionalData;
+        this.primaryOwner = primaryOwner;
         this.additionalProperties = additionalProperties;
     }
 
@@ -216,6 +223,25 @@ public final class Owners {
         return additionalData;
     }
 
+    /**
+     * @return When <code>true</code>, marks this owner as the primary owner, the main principal that Payabli sends to the processor. Set it on exactly one owner. If you flag more than one owner, the request fails with HTTP 400 and the response text <code>Only one owner can be primary</code>.
+     * <p>If the application has one owner and you don't flag it, Payabli flags that owner as the primary owner. If the application has two or more owners, flag one of them. Payabli accepts an application with no primary owner, but the processor can reject it at submission.</p>
+     * <p>Responses return <code>null</code> for owners that aren't the primary owner.</p>
+     */
+    @JsonIgnore
+    public Optional<Boolean> getPrimaryOwner() {
+        if (primaryOwner == null) {
+            return Optional.empty();
+        }
+        return primaryOwner;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("primaryOwner")
+    private Optional<Boolean> _getPrimaryOwner() {
+        return primaryOwner;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -243,7 +269,8 @@ public final class Owners {
                 && odriverstate.equals(other.odriverstate)
                 && ostate.equals(other.ostate)
                 && ozip.equals(other.ozip)
-                && additionalData.equals(other.additionalData);
+                && additionalData.equals(other.additionalData)
+                && primaryOwner.equals(other.primaryOwner);
     }
 
     @java.lang.Override
@@ -264,7 +291,8 @@ public final class Owners {
                 this.odriverstate,
                 this.ostate,
                 this.ozip,
-                this.additionalData);
+                this.additionalData,
+                this.primaryOwner);
     }
 
     @java.lang.Override
@@ -310,6 +338,8 @@ public final class Owners {
 
         private Optional<Map<String, String>> additionalData = Optional.empty();
 
+        private Optional<Boolean> primaryOwner = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -332,6 +362,7 @@ public final class Owners {
             ostate(other.getOstate());
             ozip(other.getOzip());
             additionalData(other.getAdditionalData());
+            primaryOwner(other.getPrimaryOwner());
             return this;
         }
 
@@ -556,6 +587,33 @@ public final class Owners {
             return this;
         }
 
+        /**
+         * <p>When <code>true</code>, marks this owner as the primary owner, the main principal that Payabli sends to the processor. Set it on exactly one owner. If you flag more than one owner, the request fails with HTTP 400 and the response text <code>Only one owner can be primary</code>.</p>
+         * <p>If the application has one owner and you don't flag it, Payabli flags that owner as the primary owner. If the application has two or more owners, flag one of them. Payabli accepts an application with no primary owner, but the processor can reject it at submission.</p>
+         * <p>Responses return <code>null</code> for owners that aren't the primary owner.</p>
+         */
+        @JsonSetter(value = "primaryOwner", nulls = Nulls.SKIP)
+        public Builder primaryOwner(Optional<Boolean> primaryOwner) {
+            this.primaryOwner = primaryOwner;
+            return this;
+        }
+
+        public Builder primaryOwner(Boolean primaryOwner) {
+            this.primaryOwner = Optional.ofNullable(primaryOwner);
+            return this;
+        }
+
+        public Builder primaryOwner(Nullable<Boolean> primaryOwner) {
+            if (primaryOwner.isNull()) {
+                this.primaryOwner = null;
+            } else if (primaryOwner.isEmpty()) {
+                this.primaryOwner = Optional.empty();
+            } else {
+                this.primaryOwner = Optional.of(primaryOwner.get());
+            }
+            return this;
+        }
+
         public Owners build() {
             return new Owners(
                     ownername,
@@ -574,6 +632,7 @@ public final class Owners {
                     ostate,
                     ozip,
                     additionalData,
+                    primaryOwner,
                     additionalProperties);
         }
 

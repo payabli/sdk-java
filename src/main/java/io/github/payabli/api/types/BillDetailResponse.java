@@ -71,6 +71,8 @@ public final class BillDetailResponse {
 
     private final Optional<Integer> status;
 
+    private final Optional<String> statusLabel;
+
     private final Optional<String> statusText;
 
     private final Optional<Double> totalAmount;
@@ -133,6 +135,7 @@ public final class BillDetailResponse {
             Optional<String> paypointLegalname,
             Optional<String> source,
             Optional<Integer> status,
+            Optional<String> statusLabel,
             Optional<String> statusText,
             Optional<Double> totalAmount,
             Optional<VendorQueryRecord> vendor,
@@ -175,6 +178,7 @@ public final class BillDetailResponse {
         this.paypointLegalname = paypointLegalname;
         this.source = source;
         this.status = status;
+        this.statusLabel = statusLabel;
         this.statusText = statusText;
         this.totalAmount = totalAmount;
         this.vendor = vendor;
@@ -361,6 +365,20 @@ public final class BillDetailResponse {
     }
 
     /**
+     * @return The name of the payout's <code>Status</code>: <code>Canceled</code>, <code>Captured</code>, <code>Processing</code>, <code>Processed</code>,
+     * <code>Held</code>, <code>Paid</code>, <code>Authorized</code>, <code>Capturing</code>, <code>Returned</code>, <code>Rejected</code>, <code>Reissued</code>, or
+     * <code>Refunded</code>. Returns <code>null</code> for an unrecognized code. See
+     * <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Pay Out statuses</a>.
+     */
+    @JsonIgnore
+    public Optional<String> getStatusLabel() {
+        if (statusLabel == null) {
+            return Optional.empty();
+        }
+        return statusLabel;
+    }
+
+    /**
      * @return Text description of the payout transaction status.
      */
     @JsonProperty("StatusText")
@@ -466,6 +484,12 @@ public final class BillDetailResponse {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StatusLabel")
+    private Optional<String> _getStatusLabel() {
+        return statusLabel;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("SettlementStatusName")
     private Optional<String> _getSettlementStatusName() {
         return settlementStatusName;
@@ -506,6 +530,7 @@ public final class BillDetailResponse {
                 && paypointLegalname.equals(other.paypointLegalname)
                 && source.equals(other.source)
                 && status.equals(other.status)
+                && statusLabel.equals(other.statusLabel)
                 && statusText.equals(other.statusText)
                 && totalAmount.equals(other.totalAmount)
                 && vendor.equals(other.vendor)
@@ -552,6 +577,7 @@ public final class BillDetailResponse {
                 this.paypointLegalname,
                 this.source,
                 this.status,
+                this.statusLabel,
                 this.statusText,
                 this.totalAmount,
                 this.vendor,
@@ -629,6 +655,8 @@ public final class BillDetailResponse {
 
         private Optional<Integer> status = Optional.empty();
 
+        private Optional<String> statusLabel = Optional.empty();
+
         private Optional<String> statusText = Optional.empty();
 
         private Optional<Double> totalAmount = Optional.empty();
@@ -694,6 +722,7 @@ public final class BillDetailResponse {
             paypointLegalname(other.getPaypointLegalname());
             source(other.getSource());
             status(other.getStatus());
+            statusLabel(other.getStatusLabel());
             statusText(other.getStatusText());
             totalAmount(other.getTotalAmount());
             vendor(other.getVendor());
@@ -1018,6 +1047,34 @@ public final class BillDetailResponse {
         }
 
         /**
+         * <p>The name of the payout's <code>Status</code>: <code>Canceled</code>, <code>Captured</code>, <code>Processing</code>, <code>Processed</code>,
+         * <code>Held</code>, <code>Paid</code>, <code>Authorized</code>, <code>Capturing</code>, <code>Returned</code>, <code>Rejected</code>, <code>Reissued</code>, or
+         * <code>Refunded</code>. Returns <code>null</code> for an unrecognized code. See
+         * <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Pay Out statuses</a>.</p>
+         */
+        @JsonSetter(value = "StatusLabel", nulls = Nulls.SKIP)
+        public Builder statusLabel(Optional<String> statusLabel) {
+            this.statusLabel = statusLabel;
+            return this;
+        }
+
+        public Builder statusLabel(String statusLabel) {
+            this.statusLabel = Optional.ofNullable(statusLabel);
+            return this;
+        }
+
+        public Builder statusLabel(Nullable<String> statusLabel) {
+            if (statusLabel.isNull()) {
+                this.statusLabel = null;
+            } else if (statusLabel.isEmpty()) {
+                this.statusLabel = Optional.empty();
+            } else {
+                this.statusLabel = Optional.of(statusLabel.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>Text description of the payout transaction status.</p>
          */
         @JsonSetter(value = "StatusText", nulls = Nulls.SKIP)
@@ -1263,6 +1320,7 @@ public final class BillDetailResponse {
                     paypointLegalname,
                     source,
                     status,
+                    statusLabel,
                     statusText,
                     totalAmount,
                     vendor,

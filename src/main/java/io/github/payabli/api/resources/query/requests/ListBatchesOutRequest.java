@@ -77,6 +77,7 @@ public final class ListBatchesOutRequest {
      * <p><strong>Accepted field names</strong>:</p>
      * <ul>
      * <li><code>batchDate</code> (gt, ge, lt, le, eq, ne)</li>
+     * <li><code>transferDate</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>batchNumber</code> (ne, eq)</li>
      * <li><code>batchAmount</code> (gt, ge, lt, le, eq, ne)</li>
      * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>
@@ -208,6 +209,7 @@ public final class ListBatchesOutRequest {
          * <p><strong>Accepted field names</strong>:</p>
          * <ul>
          * <li><code>batchDate</code> (gt, ge, lt, le, eq, ne)</li>
+         * <li><code>transferDate</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>batchNumber</code> (ne, eq)</li>
          * <li><code>batchAmount</code> (gt, ge, lt, le, eq, ne)</li>
          * <li><code>parentOrgId</code> (ne, eq, nin, in)</li>

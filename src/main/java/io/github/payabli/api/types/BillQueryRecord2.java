@@ -91,6 +91,8 @@ public final class BillQueryRecord2 {
 
     private final Optional<Integer> status;
 
+    private final Optional<String> statusLabel;
+
     private final Optional<Terms> terms;
 
     private final Optional<Double> totalAmount;
@@ -141,6 +143,7 @@ public final class BillQueryRecord2 {
             Optional<String> paypointLegalname,
             Optional<String> source,
             Optional<Integer> status,
+            Optional<String> statusLabel,
             Optional<Terms> terms,
             Optional<Double> totalAmount,
             Optional<Double> paidAmount,
@@ -182,6 +185,7 @@ public final class BillQueryRecord2 {
         this.paypointLegalname = paypointLegalname;
         this.source = source;
         this.status = status;
+        this.statusLabel = statusLabel;
         this.terms = terms;
         this.totalAmount = totalAmount;
         this.paidAmount = paidAmount;
@@ -535,6 +539,20 @@ public final class BillQueryRecord2 {
     }
 
     /**
+     * @return The name of the bill's <code>Status</code>: <code>Canceled</code>, <code>None</code>, <code>Active</code>, <code>Sent to Approval</code>,
+     * <code>Partially Approved</code>, <code>Rejected</code>, <code>Approved</code>, <code>In Transit</code>, <code>Partially Paid</code>, or <code>Paid</code>.
+     * Returns <code>null</code> for an unrecognized code. See
+     * <a href="/guides/pay-out-status-reference#bill-statuses">Pay Out statuses</a>.
+     */
+    @JsonIgnore
+    public Optional<String> getStatusLabel() {
+        if (statusLabel == null) {
+            return Optional.empty();
+        }
+        return statusLabel;
+    }
+
+    /**
      * @return The payment terms for invoice. If no terms were defined initially, then response data for this field will default to <code>N30</code>.
      */
     @JsonIgnore
@@ -808,6 +826,12 @@ public final class BillQueryRecord2 {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StatusLabel")
+    private Optional<String> _getStatusLabel() {
+        return statusLabel;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("Terms")
     private Optional<Terms> _getTerms() {
         return terms;
@@ -894,6 +918,7 @@ public final class BillQueryRecord2 {
                 && paypointLegalname.equals(other.paypointLegalname)
                 && source.equals(other.source)
                 && status.equals(other.status)
+                && statusLabel.equals(other.statusLabel)
                 && terms.equals(other.terms)
                 && totalAmount.equals(other.totalAmount)
                 && paidAmount.equals(other.paidAmount)
@@ -939,6 +964,7 @@ public final class BillQueryRecord2 {
                 this.paypointLegalname,
                 this.source,
                 this.status,
+                this.statusLabel,
                 this.terms,
                 this.totalAmount,
                 this.paidAmount,
@@ -1025,6 +1051,8 @@ public final class BillQueryRecord2 {
 
         private Optional<Integer> status = Optional.empty();
 
+        private Optional<String> statusLabel = Optional.empty();
+
         private Optional<Terms> terms = Optional.empty();
 
         private Optional<Double> totalAmount = Optional.empty();
@@ -1078,6 +1106,7 @@ public final class BillQueryRecord2 {
             paypointLegalname(other.getPaypointLegalname());
             source(other.getSource());
             status(other.getStatus());
+            statusLabel(other.getStatusLabel());
             terms(other.getTerms());
             totalAmount(other.getTotalAmount());
             paidAmount(other.getPaidAmount());
@@ -1893,6 +1922,34 @@ public final class BillQueryRecord2 {
         }
 
         /**
+         * <p>The name of the bill's <code>Status</code>: <code>Canceled</code>, <code>None</code>, <code>Active</code>, <code>Sent to Approval</code>,
+         * <code>Partially Approved</code>, <code>Rejected</code>, <code>Approved</code>, <code>In Transit</code>, <code>Partially Paid</code>, or <code>Paid</code>.
+         * Returns <code>null</code> for an unrecognized code. See
+         * <a href="/guides/pay-out-status-reference#bill-statuses">Pay Out statuses</a>.</p>
+         */
+        @JsonSetter(value = "StatusLabel", nulls = Nulls.SKIP)
+        public Builder statusLabel(Optional<String> statusLabel) {
+            this.statusLabel = statusLabel;
+            return this;
+        }
+
+        public Builder statusLabel(String statusLabel) {
+            this.statusLabel = Optional.ofNullable(statusLabel);
+            return this;
+        }
+
+        public Builder statusLabel(Nullable<String> statusLabel) {
+            if (statusLabel.isNull()) {
+                this.statusLabel = null;
+            } else if (statusLabel.isEmpty()) {
+                this.statusLabel = Optional.empty();
+            } else {
+                this.statusLabel = Optional.of(statusLabel.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>The payment terms for invoice. If no terms were defined initially, then response data for this field will default to <code>N30</code>.</p>
          */
         @JsonSetter(value = "Terms", nulls = Nulls.SKIP)
@@ -2100,6 +2157,7 @@ public final class BillQueryRecord2 {
                     paypointLegalname,
                     source,
                     status,
+                    statusLabel,
                     terms,
                     totalAmount,
                     paidAmount,

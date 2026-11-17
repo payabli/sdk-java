@@ -42,6 +42,8 @@ public final class QueryPayoutTransactionRecordsItem {
 
     private final Optional<Integer> status;
 
+    private final Optional<String> statusLabel;
+
     private final Optional<String> paymentId;
 
     private final Optional<String> orderId;
@@ -139,6 +141,7 @@ public final class QueryPayoutTransactionRecordsItem {
             Optional<String> paypointLegalname,
             Optional<Long> paypointId,
             Optional<Integer> status,
+            Optional<String> statusLabel,
             Optional<String> paymentId,
             Optional<String> orderId,
             Optional<String> transId,
@@ -191,6 +194,7 @@ public final class QueryPayoutTransactionRecordsItem {
         this.paypointLegalname = paypointLegalname;
         this.paypointId = paypointId;
         this.status = status;
+        this.statusLabel = statusLabel;
         this.paymentId = paymentId;
         this.orderId = orderId;
         this.transId = transId;
@@ -293,6 +297,20 @@ public final class QueryPayoutTransactionRecordsItem {
     @JsonProperty("Status")
     public Optional<Integer> getStatus() {
         return status;
+    }
+
+    /**
+     * @return The name of the payout's <code>Status</code>: <code>Canceled</code>, <code>Captured</code>, <code>Processing</code>, <code>Processed</code>,
+     * <code>Held</code>, <code>Paid</code>, <code>Authorized</code>, <code>Capturing</code>, <code>Returned</code>, <code>Rejected</code>, <code>Reissued</code>, or
+     * <code>Refunded</code>. Returns <code>null</code> for an unrecognized code. See
+     * <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Pay Out statuses</a>.
+     */
+    @JsonIgnore
+    public Optional<String> getStatusLabel() {
+        if (statusLabel == null) {
+            return Optional.empty();
+        }
+        return statusLabel;
     }
 
     @JsonProperty("PaymentId")
@@ -595,6 +613,12 @@ public final class QueryPayoutTransactionRecordsItem {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StatusLabel")
+    private Optional<String> _getStatusLabel() {
+        return statusLabel;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("TransId")
     private Optional<String> _getTransId() {
         return transId;
@@ -668,6 +692,7 @@ public final class QueryPayoutTransactionRecordsItem {
                 && paypointLegalname.equals(other.paypointLegalname)
                 && paypointId.equals(other.paypointId)
                 && status.equals(other.status)
+                && statusLabel.equals(other.statusLabel)
                 && paymentId.equals(other.paymentId)
                 && orderId.equals(other.orderId)
                 && transId.equals(other.transId)
@@ -724,6 +749,7 @@ public final class QueryPayoutTransactionRecordsItem {
                 this.paypointLegalname,
                 this.paypointId,
                 this.status,
+                this.statusLabel,
                 this.paymentId,
                 this.orderId,
                 this.transId,
@@ -795,6 +821,8 @@ public final class QueryPayoutTransactionRecordsItem {
         private Optional<Long> paypointId = Optional.empty();
 
         private Optional<Integer> status = Optional.empty();
+
+        private Optional<String> statusLabel = Optional.empty();
 
         private Optional<String> paymentId = Optional.empty();
 
@@ -896,6 +924,7 @@ public final class QueryPayoutTransactionRecordsItem {
             paypointLegalname(other.getPaypointLegalname());
             paypointId(other.getPaypointId());
             status(other.getStatus());
+            statusLabel(other.getStatusLabel());
             paymentId(other.getPaymentId());
             orderId(other.getOrderId());
             transId(other.getTransId());
@@ -1045,6 +1074,34 @@ public final class QueryPayoutTransactionRecordsItem {
 
         public Builder status(Integer status) {
             this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        /**
+         * <p>The name of the payout's <code>Status</code>: <code>Canceled</code>, <code>Captured</code>, <code>Processing</code>, <code>Processed</code>,
+         * <code>Held</code>, <code>Paid</code>, <code>Authorized</code>, <code>Capturing</code>, <code>Returned</code>, <code>Rejected</code>, <code>Reissued</code>, or
+         * <code>Refunded</code>. Returns <code>null</code> for an unrecognized code. See
+         * <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Pay Out statuses</a>.</p>
+         */
+        @JsonSetter(value = "StatusLabel", nulls = Nulls.SKIP)
+        public Builder statusLabel(Optional<String> statusLabel) {
+            this.statusLabel = statusLabel;
+            return this;
+        }
+
+        public Builder statusLabel(String statusLabel) {
+            this.statusLabel = Optional.ofNullable(statusLabel);
+            return this;
+        }
+
+        public Builder statusLabel(Nullable<String> statusLabel) {
+            if (statusLabel.isNull()) {
+                this.statusLabel = null;
+            } else if (statusLabel.isEmpty()) {
+                this.statusLabel = Optional.empty();
+            } else {
+                this.statusLabel = Optional.of(statusLabel.get());
+            }
             return this;
         }
 
@@ -1697,6 +1754,7 @@ public final class QueryPayoutTransactionRecordsItem {
                     paypointLegalname,
                     paypointId,
                     status,
+                    statusLabel,
                     paymentId,
                     orderId,
                     transId,

@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -64,6 +67,8 @@ public final class VendorDataResponse {
     private final VendorDataResponsePaymentMethod paymentMethod;
 
     private final int vendorStatus;
+
+    private final Optional<String> vendorStatusLabel;
 
     private final int vendorId;
 
@@ -138,6 +143,7 @@ public final class VendorDataResponse {
             VendorResponseBillingData billingData,
             VendorDataResponsePaymentMethod paymentMethod,
             int vendorStatus,
+            Optional<String> vendorStatusLabel,
             int vendorId,
             Optional<String> enrollmentStatus,
             VendorResponseSummary summary,
@@ -184,6 +190,7 @@ public final class VendorDataResponse {
         this.billingData = billingData;
         this.paymentMethod = paymentMethod;
         this.vendorStatus = vendorStatus;
+        this.vendorStatusLabel = vendorStatusLabel;
         this.vendorId = vendorId;
         this.enrollmentStatus = enrollmentStatus;
         this.summary = summary;
@@ -354,6 +361,18 @@ public final class VendorDataResponse {
         return vendorStatus;
     }
 
+    /**
+     * @return The name of the <code>VendorStatus</code>: <code>Inactive</code>, <code>Active</code>, or <code>Deleted</code>. Returns <code>null</code> for
+     * an unrecognized code.
+     */
+    @JsonIgnore
+    public Optional<String> getVendorStatusLabel() {
+        if (vendorStatusLabel == null) {
+            return Optional.empty();
+        }
+        return vendorStatusLabel;
+    }
+
     @JsonProperty("VendorId")
     public int getVendorId() {
         return vendorId;
@@ -521,6 +540,12 @@ public final class VendorDataResponse {
         return storedMethods;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("VendorStatusLabel")
+    private Optional<String> _getVendorStatusLabel() {
+        return vendorStatusLabel;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -553,6 +578,7 @@ public final class VendorDataResponse {
                 && billingData.equals(other.billingData)
                 && paymentMethod.equals(other.paymentMethod)
                 && vendorStatus == other.vendorStatus
+                && vendorStatusLabel.equals(other.vendorStatusLabel)
                 && vendorId == other.vendorId
                 && enrollmentStatus.equals(other.enrollmentStatus)
                 && summary.equals(other.summary)
@@ -603,6 +629,7 @@ public final class VendorDataResponse {
                 this.billingData,
                 this.paymentMethod,
                 this.vendorStatus,
+                this.vendorStatusLabel,
                 this.vendorId,
                 this.enrollmentStatus,
                 this.summary,
@@ -890,6 +917,16 @@ public final class VendorDataResponse {
         _FinalStage addAllContacts(List<ContactsResponse> contacts);
 
         /**
+         * <p>The name of the <code>VendorStatus</code>: <code>Inactive</code>, <code>Active</code>, or <code>Deleted</code>. Returns <code>null</code> for
+         * an unrecognized code.</p>
+         */
+        _FinalStage vendorStatusLabel(Optional<String> vendorStatusLabel);
+
+        _FinalStage vendorStatusLabel(String vendorStatusLabel);
+
+        _FinalStage vendorStatusLabel(Nullable<String> vendorStatusLabel);
+
+        /**
          * <p>Vendor enrollment status</p>
          */
         _FinalStage enrollmentStatus(Optional<String> enrollmentStatus);
@@ -1047,6 +1084,8 @@ public final class VendorDataResponse {
 
         private Optional<String> enrollmentStatus = Optional.empty();
 
+        private Optional<String> vendorStatusLabel = Optional.empty();
+
         private List<ContactsResponse> contacts = new ArrayList<>();
 
         private Optional<String> remitEmail = Optional.empty();
@@ -1078,6 +1117,7 @@ public final class VendorDataResponse {
             billingData(other.getBillingData());
             paymentMethod(other.getPaymentMethod());
             vendorStatus(other.getVendorStatus());
+            vendorStatusLabel(other.getVendorStatusLabel());
             vendorId(other.getVendorId());
             enrollmentStatus(other.getEnrollmentStatus());
             summary(other.getSummary());
@@ -1571,6 +1611,45 @@ public final class VendorDataResponse {
         }
 
         /**
+         * <p>The name of the <code>VendorStatus</code>: <code>Inactive</code>, <code>Active</code>, or <code>Deleted</code>. Returns <code>null</code> for
+         * an unrecognized code.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage vendorStatusLabel(Nullable<String> vendorStatusLabel) {
+            if (vendorStatusLabel.isNull()) {
+                this.vendorStatusLabel = null;
+            } else if (vendorStatusLabel.isEmpty()) {
+                this.vendorStatusLabel = Optional.empty();
+            } else {
+                this.vendorStatusLabel = Optional.of(vendorStatusLabel.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The name of the <code>VendorStatus</code>: <code>Inactive</code>, <code>Active</code>, or <code>Deleted</code>. Returns <code>null</code> for
+         * an unrecognized code.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage vendorStatusLabel(String vendorStatusLabel) {
+            this.vendorStatusLabel = Optional.ofNullable(vendorStatusLabel);
+            return this;
+        }
+
+        /**
+         * <p>The name of the <code>VendorStatus</code>: <code>Inactive</code>, <code>Active</code>, or <code>Deleted</code>. Returns <code>null</code> for
+         * an unrecognized code.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "VendorStatusLabel", nulls = Nulls.SKIP)
+        public _FinalStage vendorStatusLabel(Optional<String> vendorStatusLabel) {
+            this.vendorStatusLabel = vendorStatusLabel;
+            return this;
+        }
+
+        /**
          * <p>Array of objects describing the vendor's contacts.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1648,6 +1727,7 @@ public final class VendorDataResponse {
                     billingData,
                     paymentMethod,
                     vendorStatus,
+                    vendorStatusLabel,
                     vendorId,
                     enrollmentStatus,
                     summary,

@@ -64,9 +64,9 @@ public final class ListLineItemsRequest {
      * &lt;Info&gt;
      * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong>
      * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
      * <p>should become:</p>
-     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20</p>
+     * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&amp;limitRecord=20</p>
      * <p>&lt;/Info&gt;
      * See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.</p>
      * <p><strong>Accepted field names:</strong></p>
@@ -209,9 +209,9 @@ public final class ListLineItemsRequest {
          * &lt;Info&gt;
          * <strong>You must remove <code>parameters=</code> from the request before you send it, otherwise Payabli will ignore the filters.</strong></p>
          * <p>Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove <code>parameters=</code> and run the request in a different client, for example:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&amp;limitRecord=20</p>
          * <p>should become:</p>
-         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&amp;limitRecord=20</p>
+         * <p>--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&amp;limitRecord=20</p>
          * <p>&lt;/Info&gt;
          * See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.</p>
          * <p><strong>Accepted field names:</strong></p>

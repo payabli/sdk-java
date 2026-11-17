@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -35,6 +38,8 @@ public final class TransactionOutQueryRecord {
     private final Optional<String> paypointLegalname;
 
     private final Optional<Integer> status;
+
+    private final Optional<String> statusLabel;
 
     private final Optional<OffsetDateTime> lastUpdated;
 
@@ -110,6 +115,7 @@ public final class TransactionOutQueryRecord {
             Optional<String> paypointDbaname,
             Optional<String> paypointLegalname,
             Optional<Integer> status,
+            Optional<String> statusLabel,
             Optional<OffsetDateTime> lastUpdated,
             Optional<Double> totalAmount,
             Optional<Double> netAmount,
@@ -150,6 +156,7 @@ public final class TransactionOutQueryRecord {
         this.paypointDbaname = paypointDbaname;
         this.paypointLegalname = paypointLegalname;
         this.status = status;
+        this.statusLabel = statusLabel;
         this.lastUpdated = lastUpdated;
         this.totalAmount = totalAmount;
         this.netAmount = netAmount;
@@ -230,6 +237,20 @@ public final class TransactionOutQueryRecord {
     @JsonProperty("Status")
     public Optional<Integer> getStatus() {
         return status;
+    }
+
+    /**
+     * @return The name of the payout's <code>Status</code>: <code>Canceled</code>, <code>Captured</code>, <code>Processing</code>, <code>Processed</code>,
+     * <code>Held</code>, <code>Paid</code>, <code>Authorized</code>, <code>Capturing</code>, <code>Returned</code>, <code>Rejected</code>, <code>Reissued</code>, or
+     * <code>Refunded</code>. Returns <code>null</code> for an unrecognized code. See
+     * <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Pay Out statuses</a>.
+     */
+    @JsonIgnore
+    public Optional<String> getStatusLabel() {
+        if (statusLabel == null) {
+            return Optional.empty();
+        }
+        return statusLabel;
     }
 
     /**
@@ -422,6 +443,12 @@ public final class TransactionOutQueryRecord {
         return payoutProgram;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("StatusLabel")
+    private Optional<String> _getStatusLabel() {
+        return statusLabel;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -441,6 +468,7 @@ public final class TransactionOutQueryRecord {
                 && paypointDbaname.equals(other.paypointDbaname)
                 && paypointLegalname.equals(other.paypointLegalname)
                 && status.equals(other.status)
+                && statusLabel.equals(other.statusLabel)
                 && lastUpdated.equals(other.lastUpdated)
                 && totalAmount.equals(other.totalAmount)
                 && netAmount.equals(other.netAmount)
@@ -485,6 +513,7 @@ public final class TransactionOutQueryRecord {
                 this.paypointDbaname,
                 this.paypointLegalname,
                 this.status,
+                this.statusLabel,
                 this.lastUpdated,
                 this.totalAmount,
                 this.netAmount,
@@ -543,6 +572,8 @@ public final class TransactionOutQueryRecord {
         private Optional<String> paypointLegalname = Optional.empty();
 
         private Optional<Integer> status = Optional.empty();
+
+        private Optional<String> statusLabel = Optional.empty();
 
         private Optional<OffsetDateTime> lastUpdated = Optional.empty();
 
@@ -621,6 +652,7 @@ public final class TransactionOutQueryRecord {
             paypointDbaname(other.getPaypointDbaname());
             paypointLegalname(other.getPaypointLegalname());
             status(other.getStatus());
+            statusLabel(other.getStatusLabel());
             lastUpdated(other.getLastUpdated());
             totalAmount(other.getTotalAmount());
             netAmount(other.getNetAmount());
@@ -742,6 +774,34 @@ public final class TransactionOutQueryRecord {
 
         public Builder status(Integer status) {
             this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        /**
+         * <p>The name of the payout's <code>Status</code>: <code>Canceled</code>, <code>Captured</code>, <code>Processing</code>, <code>Processed</code>,
+         * <code>Held</code>, <code>Paid</code>, <code>Authorized</code>, <code>Capturing</code>, <code>Returned</code>, <code>Rejected</code>, <code>Reissued</code>, or
+         * <code>Refunded</code>. Returns <code>null</code> for an unrecognized code. See
+         * <a href="/guides/pay-out-status-reference#payout-transaction-statuses">Pay Out statuses</a>.</p>
+         */
+        @JsonSetter(value = "StatusLabel", nulls = Nulls.SKIP)
+        public Builder statusLabel(Optional<String> statusLabel) {
+            this.statusLabel = statusLabel;
+            return this;
+        }
+
+        public Builder statusLabel(String statusLabel) {
+            this.statusLabel = Optional.ofNullable(statusLabel);
+            return this;
+        }
+
+        public Builder statusLabel(Nullable<String> statusLabel) {
+            if (statusLabel.isNull()) {
+                this.statusLabel = null;
+            } else if (statusLabel.isEmpty()) {
+                this.statusLabel = Optional.empty();
+            } else {
+                this.statusLabel = Optional.of(statusLabel.get());
+            }
             return this;
         }
 
@@ -1136,6 +1196,7 @@ public final class TransactionOutQueryRecord {
                     paypointDbaname,
                     paypointLegalname,
                     status,
+                    statusLabel,
                     lastUpdated,
                     totalAmount,
                     netAmount,

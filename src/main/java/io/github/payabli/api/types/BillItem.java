@@ -104,8 +104,7 @@ public final class BillItem {
 
     /**
      * @return Internal class of item or product: value <code>0</code> is only for invoices,
-     * <code>1</code> for bills, and <code>2</code> is common for both. Required on invoice line
-     * items — invoice creation fails with <code>Invalid item data</code> if it's omitted.
+     * <code>1</code> for bills, and <code>2</code> is common for both.
      */
     @JsonProperty("itemMode")
     public Optional<Integer> getItemMode() {
@@ -148,7 +147,9 @@ public final class BillItem {
 
     /**
      * @return Per-line total for this item (unit cost times quantity). Distinct from
-     * the invoice's overall total, <code>invoiceAmount</code>. Required on invoice line items.
+     * the invoice's overall total, <code>invoiceAmount</code>. Required on invoice line
+     * items when <code>itemQty</code> and <code>itemCost</code> are greater than 0. If it's missing,
+     * 0, or less, invoice creation fails with <code>Invalid item data</code>.
      */
     @JsonProperty("itemTotalAmount")
     public Optional<Double> getItemTotalAmount() {
@@ -311,8 +312,7 @@ public final class BillItem {
 
         /**
          * <p>Internal class of item or product: value <code>0</code> is only for invoices,
-         * <code>1</code> for bills, and <code>2</code> is common for both. Required on invoice line
-         * items — invoice creation fails with <code>Invalid item data</code> if it's omitted.</p>
+         * <code>1</code> for bills, and <code>2</code> is common for both.</p>
          */
         @JsonSetter(value = "itemMode", nulls = Nulls.SKIP)
         public Builder itemMode(Optional<Integer> itemMode) {
@@ -391,7 +391,9 @@ public final class BillItem {
 
         /**
          * <p>Per-line total for this item (unit cost times quantity). Distinct from
-         * the invoice's overall total, <code>invoiceAmount</code>. Required on invoice line items.</p>
+         * the invoice's overall total, <code>invoiceAmount</code>. Required on invoice line
+         * items when <code>itemQty</code> and <code>itemCost</code> are greater than 0. If it's missing,
+         * 0, or less, invoice creation fails with <code>Invalid item data</code>.</p>
          */
         @JsonSetter(value = "itemTotalAmount", nulls = Nulls.SKIP)
         public Builder itemTotalAmount(Optional<Double> itemTotalAmount) {

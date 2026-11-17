@@ -69,6 +69,8 @@ public final class TransferOutRecord {
 
     private final Optional<Integer> transferStatus;
 
+    private final Optional<String> transferStatusLabel;
+
     private final Optional<Double> grossAmount;
 
     private final Optional<Double> chargeBackAmount;
@@ -122,6 +124,7 @@ public final class TransferOutRecord {
             Optional<OffsetDateTime> transferDate,
             Optional<String> processor,
             Optional<Integer> transferStatus,
+            Optional<String> transferStatusLabel,
             Optional<Double> grossAmount,
             Optional<Double> chargeBackAmount,
             Optional<Double> returnedAmount,
@@ -159,6 +162,7 @@ public final class TransferOutRecord {
         this.transferDate = transferDate;
         this.processor = processor;
         this.transferStatus = transferStatus;
+        this.transferStatusLabel = transferStatusLabel;
         this.grossAmount = grossAmount;
         this.chargeBackAmount = chargeBackAmount;
         this.returnedAmount = returnedAmount;
@@ -199,7 +203,7 @@ public final class TransferOutRecord {
     }
 
     /**
-     * @return The batch number for the transfer.
+     * @return The batch number for the transfer. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is an empty string for those transfers.
      */
     @JsonIgnore
     public Optional<String> getBatchNumber() {
@@ -221,7 +225,7 @@ public final class TransferOutRecord {
     }
 
     /**
-     * @return The number of records in the batch.
+     * @return The number of records in the batch. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is <code>0</code> for those transfers.
      */
     @JsonIgnore
     public Optional<Integer> getBatchRecords() {
@@ -232,7 +236,7 @@ public final class TransferOutRecord {
     }
 
     /**
-     * @return An identifier for the transfer.
+     * @return An identifier for the transfer. Vendor enrichment and bank account verification billing transfers use the format <code>BILL_{paypointId}_{yyyyMMdd}_{feeType}</code>, where <code>feeType</code> is <code>VendorEnrichment</code> or <code>BankAccountVerification</code>.
      */
     @JsonIgnore
     public Optional<String> getTransferIdentifier() {
@@ -243,7 +247,7 @@ public final class TransferOutRecord {
     }
 
     /**
-     * @return The ID of the batch.
+     * @return The ID of the batch. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is <code>0</code> for those transfers.
      */
     @JsonIgnore
     public Optional<Integer> getBatchId() {
@@ -397,7 +401,7 @@ public final class TransferOutRecord {
     }
 
     /**
-     * @return The processor used for the transfer.
+     * @return The processor used for the transfer. This is <code>billing</code> for vendor enrichment and bank account verification billing transfers.
      */
     @JsonIgnore
     public Optional<String> getProcessor() {
@@ -416,6 +420,18 @@ public final class TransferOutRecord {
             return Optional.empty();
         }
         return transferStatus;
+    }
+
+    /**
+     * @return The name of the <code>transferStatus</code>: <code>Pending</code>, <code>In Transit</code>, <code>Transferred</code>, <code>Funded (settled)</code>, <code>Resolved</code>, <code>Exception</code>, <code>ACH Return or Chargeback</code>, <code>Held</code>, <code>Released</code>,
+     * <code>Refunded</code>, or <code>None</code>. Returns <code>null</code> for an unrecognized code.
+     */
+    @JsonIgnore
+    public Optional<String> getTransferStatusLabel() {
+        if (transferStatusLabel == null) {
+            return Optional.empty();
+        }
+        return transferStatusLabel;
     }
 
     /**
@@ -551,7 +567,7 @@ public final class TransferOutRecord {
     }
 
     /**
-     * @return The transfer type. One of <code>debit</code>, <code>credit</code>, or <code>billing</code>.
+     * @return The transfer type. One of <code>debit</code>, <code>credit</code>, or <code>billing</code>. A <code>billing</code> transfer is an ACH debit from the paypoint that collects fees. Billing transfers for payout fees belong to the payout's batch. Vendor enrichment and bank account verification charges are collected in a separate daily debit for each paypoint and fee type. These transfers aren't tied to a batch, so <code>batchId</code> and <code>batchRecords</code> are <code>0</code> and <code>batchNumber</code> is empty. Their <code>grossAmount</code>, <code>billingFeesAmount</code>, and <code>netTransferAmount</code> each hold the charge total as a negative value.
      */
     @JsonIgnore
     public Optional<String> getType() {
@@ -705,6 +721,12 @@ public final class TransferOutRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("transferStatusLabel")
+    private Optional<String> _getTransferStatusLabel() {
+        return transferStatusLabel;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("grossAmount")
     private Optional<Double> _getGrossAmount() {
         return grossAmount;
@@ -822,6 +844,7 @@ public final class TransferOutRecord {
                 && transferDate.equals(other.transferDate)
                 && processor.equals(other.processor)
                 && transferStatus.equals(other.transferStatus)
+                && transferStatusLabel.equals(other.transferStatusLabel)
                 && grossAmount.equals(other.grossAmount)
                 && chargeBackAmount.equals(other.chargeBackAmount)
                 && returnedAmount.equals(other.returnedAmount)
@@ -863,6 +886,7 @@ public final class TransferOutRecord {
                 this.transferDate,
                 this.processor,
                 this.transferStatus,
+                this.transferStatusLabel,
                 this.grossAmount,
                 this.chargeBackAmount,
                 this.returnedAmount,
@@ -934,6 +958,8 @@ public final class TransferOutRecord {
 
         private Optional<Integer> transferStatus = Optional.empty();
 
+        private Optional<String> transferStatusLabel = Optional.empty();
+
         private Optional<Double> grossAmount = Optional.empty();
 
         private Optional<Double> chargeBackAmount = Optional.empty();
@@ -990,6 +1016,7 @@ public final class TransferOutRecord {
             transferDate(other.getTransferDate());
             processor(other.getProcessor());
             transferStatus(other.getTransferStatus());
+            transferStatusLabel(other.getTransferStatusLabel());
             grossAmount(other.getGrossAmount());
             chargeBackAmount(other.getChargeBackAmount());
             returnedAmount(other.getReturnedAmount());
@@ -1058,7 +1085,7 @@ public final class TransferOutRecord {
         }
 
         /**
-         * <p>The batch number for the transfer.</p>
+         * <p>The batch number for the transfer. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is an empty string for those transfers.</p>
          */
         @JsonSetter(value = "batchNumber", nulls = Nulls.SKIP)
         public Builder batchNumber(Optional<String> batchNumber) {
@@ -1108,7 +1135,7 @@ public final class TransferOutRecord {
         }
 
         /**
-         * <p>The number of records in the batch.</p>
+         * <p>The number of records in the batch. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is <code>0</code> for those transfers.</p>
          */
         @JsonSetter(value = "batchRecords", nulls = Nulls.SKIP)
         public Builder batchRecords(Optional<Integer> batchRecords) {
@@ -1133,7 +1160,7 @@ public final class TransferOutRecord {
         }
 
         /**
-         * <p>An identifier for the transfer.</p>
+         * <p>An identifier for the transfer. Vendor enrichment and bank account verification billing transfers use the format <code>BILL_{paypointId}_{yyyyMMdd}_{feeType}</code>, where <code>feeType</code> is <code>VendorEnrichment</code> or <code>BankAccountVerification</code>.</p>
          */
         @JsonSetter(value = "transferIdentifier", nulls = Nulls.SKIP)
         public Builder transferIdentifier(Optional<String> transferIdentifier) {
@@ -1158,7 +1185,7 @@ public final class TransferOutRecord {
         }
 
         /**
-         * <p>The ID of the batch.</p>
+         * <p>The ID of the batch. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is <code>0</code> for those transfers.</p>
          */
         @JsonSetter(value = "batchId", nulls = Nulls.SKIP)
         public Builder batchId(Optional<Integer> batchId) {
@@ -1508,7 +1535,7 @@ public final class TransferOutRecord {
         }
 
         /**
-         * <p>The processor used for the transfer.</p>
+         * <p>The processor used for the transfer. This is <code>billing</code> for vendor enrichment and bank account verification billing transfers.</p>
          */
         @JsonSetter(value = "processor", nulls = Nulls.SKIP)
         public Builder processor(Optional<String> processor) {
@@ -1553,6 +1580,32 @@ public final class TransferOutRecord {
                 this.transferStatus = Optional.empty();
             } else {
                 this.transferStatus = Optional.of(transferStatus.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The name of the <code>transferStatus</code>: <code>Pending</code>, <code>In Transit</code>, <code>Transferred</code>, <code>Funded (settled)</code>, <code>Resolved</code>, <code>Exception</code>, <code>ACH Return or Chargeback</code>, <code>Held</code>, <code>Released</code>,
+         * <code>Refunded</code>, or <code>None</code>. Returns <code>null</code> for an unrecognized code.</p>
+         */
+        @JsonSetter(value = "transferStatusLabel", nulls = Nulls.SKIP)
+        public Builder transferStatusLabel(Optional<String> transferStatusLabel) {
+            this.transferStatusLabel = transferStatusLabel;
+            return this;
+        }
+
+        public Builder transferStatusLabel(String transferStatusLabel) {
+            this.transferStatusLabel = Optional.ofNullable(transferStatusLabel);
+            return this;
+        }
+
+        public Builder transferStatusLabel(Nullable<String> transferStatusLabel) {
+            if (transferStatusLabel.isNull()) {
+                this.transferStatusLabel = null;
+            } else if (transferStatusLabel.isEmpty()) {
+                this.transferStatusLabel = Optional.empty();
+            } else {
+                this.transferStatusLabel = Optional.of(transferStatusLabel.get());
             }
             return this;
         }
@@ -1858,7 +1911,7 @@ public final class TransferOutRecord {
         }
 
         /**
-         * <p>The transfer type. One of <code>debit</code>, <code>credit</code>, or <code>billing</code>.</p>
+         * <p>The transfer type. One of <code>debit</code>, <code>credit</code>, or <code>billing</code>. A <code>billing</code> transfer is an ACH debit from the paypoint that collects fees. Billing transfers for payout fees belong to the payout's batch. Vendor enrichment and bank account verification charges are collected in a separate daily debit for each paypoint and fee type. These transfers aren't tied to a batch, so <code>batchId</code> and <code>batchRecords</code> are <code>0</code> and <code>batchNumber</code> is empty. Their <code>grossAmount</code>, <code>billingFeesAmount</code>, and <code>netTransferAmount</code> each hold the charge total as a negative value.</p>
          */
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
         public Builder type(Optional<String> type) {
@@ -1931,6 +1984,7 @@ public final class TransferOutRecord {
                     transferDate,
                     processor,
                     transferStatus,
+                    transferStatusLabel,
                     grossAmount,
                     chargeBackAmount,
                     returnedAmount,

@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +24,12 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PayabliCredentialsPascal.Builder.class)
 public final class PayabliCredentialsPascal {
+    private final Optional<Boolean> active;
+
+    private final Optional<String> customerId;
+
+    private final Optional<String> clientId;
+
     private final Optional<String> service;
 
     private final Optional<Integer> mode;
@@ -54,6 +63,9 @@ public final class PayabliCredentialsPascal {
     private final Map<String, Object> additionalProperties;
 
     private PayabliCredentialsPascal(
+            Optional<Boolean> active,
+            Optional<String> customerId,
+            Optional<String> clientId,
             Optional<String> service,
             Optional<Integer> mode,
             Optional<Double> minticket,
@@ -70,6 +82,9 @@ public final class PayabliCredentialsPascal {
             Optional<Boolean> absorbDifference,
             Optional<Boolean> allowOverride,
             Map<String, Object> additionalProperties) {
+        this.active = active;
+        this.customerId = customerId;
+        this.clientId = clientId;
         this.service = service;
         this.mode = mode;
         this.minticket = minticket;
@@ -86,6 +101,43 @@ public final class PayabliCredentialsPascal {
         this.absorbDifference = absorbDifference;
         this.allowOverride = allowOverride;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return When <code>true</code>, the gateway for this credential is enabled for the paypoint. The value is
+     * <code>null</code> when the credential isn't linked to a gateway.
+     */
+    @JsonIgnore
+    public Optional<Boolean> getActive() {
+        if (active == null) {
+            return Optional.empty();
+        }
+        return active;
+    }
+
+    /**
+     * @return The customer ID configured for this gateway. Returned only for gateways that use a
+     * customer ID. For all other gateways, or when no customer ID is configured, the value is
+     * <code>null</code>.
+     */
+    @JsonIgnore
+    public Optional<String> getCustomerId() {
+        if (customerId == null) {
+            return Optional.empty();
+        }
+        return customerId;
+    }
+
+    /**
+     * @return The client ID configured for this gateway. Returned only for gateways that use a client
+     * ID. For all other gateways, or when no client ID is configured, the value is <code>null</code>.
+     */
+    @JsonIgnore
+    public Optional<String> getClientId() {
+        if (clientId == null) {
+            return Optional.empty();
+        }
+        return clientId;
     }
 
     /**
@@ -175,6 +227,24 @@ public final class PayabliCredentialsPascal {
         return allowOverride;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("active")
+    private Optional<Boolean> _getActive() {
+        return active;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("customerId")
+    private Optional<String> _getCustomerId() {
+        return customerId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("clientId")
+    private Optional<String> _getClientId() {
+        return clientId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -187,7 +257,10 @@ public final class PayabliCredentialsPascal {
     }
 
     private boolean equalTo(PayabliCredentialsPascal other) {
-        return service.equals(other.service)
+        return active.equals(other.active)
+                && customerId.equals(other.customerId)
+                && clientId.equals(other.clientId)
+                && service.equals(other.service)
                 && mode.equals(other.mode)
                 && minticket.equals(other.minticket)
                 && maxticket.equals(other.maxticket)
@@ -207,6 +280,9 @@ public final class PayabliCredentialsPascal {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.active,
+                this.customerId,
+                this.clientId,
                 this.service,
                 this.mode,
                 this.minticket,
@@ -235,6 +311,12 @@ public final class PayabliCredentialsPascal {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Boolean> active = Optional.empty();
+
+        private Optional<String> customerId = Optional.empty();
+
+        private Optional<String> clientId = Optional.empty();
+
         private Optional<String> service = Optional.empty();
 
         private Optional<Integer> mode = Optional.empty();
@@ -271,6 +353,9 @@ public final class PayabliCredentialsPascal {
         private Builder() {}
 
         public Builder from(PayabliCredentialsPascal other) {
+            active(other.getActive());
+            customerId(other.getCustomerId());
+            clientId(other.getClientId());
             service(other.getService());
             mode(other.getMode());
             minticket(other.getMinticket());
@@ -286,6 +371,85 @@ public final class PayabliCredentialsPascal {
             greaterValueAllowed(other.getGreaterValueAllowed());
             absorbDifference(other.getAbsorbDifference());
             allowOverride(other.getAllowOverride());
+            return this;
+        }
+
+        /**
+         * <p>When <code>true</code>, the gateway for this credential is enabled for the paypoint. The value is
+         * <code>null</code> when the credential isn't linked to a gateway.</p>
+         */
+        @JsonSetter(value = "active", nulls = Nulls.SKIP)
+        public Builder active(Optional<Boolean> active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder active(Boolean active) {
+            this.active = Optional.ofNullable(active);
+            return this;
+        }
+
+        public Builder active(Nullable<Boolean> active) {
+            if (active.isNull()) {
+                this.active = null;
+            } else if (active.isEmpty()) {
+                this.active = Optional.empty();
+            } else {
+                this.active = Optional.of(active.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The customer ID configured for this gateway. Returned only for gateways that use a
+         * customer ID. For all other gateways, or when no customer ID is configured, the value is
+         * <code>null</code>.</p>
+         */
+        @JsonSetter(value = "customerId", nulls = Nulls.SKIP)
+        public Builder customerId(Optional<String> customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        public Builder customerId(String customerId) {
+            this.customerId = Optional.ofNullable(customerId);
+            return this;
+        }
+
+        public Builder customerId(Nullable<String> customerId) {
+            if (customerId.isNull()) {
+                this.customerId = null;
+            } else if (customerId.isEmpty()) {
+                this.customerId = Optional.empty();
+            } else {
+                this.customerId = Optional.of(customerId.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The client ID configured for this gateway. Returned only for gateways that use a client
+         * ID. For all other gateways, or when no client ID is configured, the value is <code>null</code>.</p>
+         */
+        @JsonSetter(value = "clientId", nulls = Nulls.SKIP)
+        public Builder clientId(Optional<String> clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public Builder clientId(String clientId) {
+            this.clientId = Optional.ofNullable(clientId);
+            return this;
+        }
+
+        public Builder clientId(Nullable<String> clientId) {
+            if (clientId.isNull()) {
+                this.clientId = null;
+            } else if (clientId.isEmpty()) {
+                this.clientId = Optional.empty();
+            } else {
+                this.clientId = Optional.of(clientId.get());
+            }
             return this;
         }
 
@@ -468,6 +632,9 @@ public final class PayabliCredentialsPascal {
 
         public PayabliCredentialsPascal build() {
             return new PayabliCredentialsPascal(
+                    active,
+                    customerId,
+                    clientId,
                     service,
                     mode,
                     minticket,

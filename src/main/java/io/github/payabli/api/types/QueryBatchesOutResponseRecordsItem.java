@@ -5,12 +5,15 @@ package io.github.payabli.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.payabli.api.core.Nullable;
+import io.github.payabli.api.core.NullableNonemptyFilter;
 import io.github.payabli.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -55,6 +58,8 @@ public final class QueryBatchesOutResponseRecordsItem {
 
     private final Optional<Integer> batchStatus;
 
+    private final Optional<String> batchStatusLabel;
+
     private final Optional<String> batchStatusText;
 
     private final Optional<Double> cardAmount;
@@ -86,6 +91,8 @@ public final class QueryBatchesOutResponseRecordsItem {
     private final Optional<Integer> paypointId;
 
     private final Optional<String> paypointName;
+
+    private final Optional<OffsetDateTime> transferDate;
 
     private final Optional<Double> vcardAmount;
 
@@ -123,6 +130,7 @@ public final class QueryBatchesOutResponseRecordsItem {
             Optional<Integer> batchProcessingRecords,
             Optional<Integer> batchRecords,
             Optional<Integer> batchStatus,
+            Optional<String> batchStatusLabel,
             Optional<String> batchStatusText,
             Optional<Double> cardAmount,
             Optional<Integer> cardRecords,
@@ -139,6 +147,7 @@ public final class QueryBatchesOutResponseRecordsItem {
             Optional<String> paypointDba,
             Optional<Integer> paypointId,
             Optional<String> paypointName,
+            Optional<OffsetDateTime> transferDate,
             Optional<Double> vcardAmount,
             Optional<Integer> vcardRecords,
             Optional<Integer> vcardStatus,
@@ -165,6 +174,7 @@ public final class QueryBatchesOutResponseRecordsItem {
         this.batchProcessingRecords = batchProcessingRecords;
         this.batchRecords = batchRecords;
         this.batchStatus = batchStatus;
+        this.batchStatusLabel = batchStatusLabel;
         this.batchStatusText = batchStatusText;
         this.cardAmount = cardAmount;
         this.cardRecords = cardRecords;
@@ -181,6 +191,7 @@ public final class QueryBatchesOutResponseRecordsItem {
         this.paypointDba = paypointDba;
         this.paypointId = paypointId;
         this.paypointName = paypointName;
+        this.transferDate = transferDate;
         this.vcardAmount = vcardAmount;
         this.vcardRecords = vcardRecords;
         this.vcardStatus = vcardStatus;
@@ -326,6 +337,19 @@ public final class QueryBatchesOutResponseRecordsItem {
     }
 
     /**
+     * @return The name of the <code>BatchStatus</code>: <code>Open</code>, <code>Closed</code>, <code>Funded</code>, <code>Processed</code>, <code>Paid</code>,
+     * <code>Canceled</code>, <code>Funding Pending</code>, <code>Held</code>, or <code>Released</code>. Returns <code>null</code> for an unrecognized
+     * code. See <a href="/guides/pay-out-status-reference#batch-statuses">Pay Out statuses</a>.
+     */
+    @JsonIgnore
+    public Optional<String> getBatchStatusLabel() {
+        if (batchStatusLabel == null) {
+            return Optional.empty();
+        }
+        return batchStatusLabel;
+    }
+
+    /**
      * @return A text description of the batch status.
      */
     @JsonProperty("BatchStatusText")
@@ -448,6 +472,16 @@ public final class QueryBatchesOutResponseRecordsItem {
     }
 
     /**
+     * @return The date and time, in UTC, of the transfer that funds the batch. For a batch that
+     * hasn't been funded yet, this field returns the time of the request instead, and
+     * <code>transferDate</code> filters don't match that value.
+     */
+    @JsonProperty("TransferDate")
+    public Optional<OffsetDateTime> getTransferDate() {
+        return transferDate;
+    }
+
+    /**
      * @return
      */
     @JsonProperty("VcardAmount")
@@ -511,6 +545,12 @@ public final class QueryBatchesOutResponseRecordsItem {
         return wireStatusText;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("BatchStatusLabel")
+    private Optional<String> _getBatchStatusLabel() {
+        return batchStatusLabel;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -541,6 +581,7 @@ public final class QueryBatchesOutResponseRecordsItem {
                 && batchProcessingRecords.equals(other.batchProcessingRecords)
                 && batchRecords.equals(other.batchRecords)
                 && batchStatus.equals(other.batchStatus)
+                && batchStatusLabel.equals(other.batchStatusLabel)
                 && batchStatusText.equals(other.batchStatusText)
                 && cardAmount.equals(other.cardAmount)
                 && cardRecords.equals(other.cardRecords)
@@ -557,6 +598,7 @@ public final class QueryBatchesOutResponseRecordsItem {
                 && paypointDba.equals(other.paypointDba)
                 && paypointId.equals(other.paypointId)
                 && paypointName.equals(other.paypointName)
+                && transferDate.equals(other.transferDate)
                 && vcardAmount.equals(other.vcardAmount)
                 && vcardRecords.equals(other.vcardRecords)
                 && vcardStatus.equals(other.vcardStatus)
@@ -587,6 +629,7 @@ public final class QueryBatchesOutResponseRecordsItem {
                 this.batchProcessingRecords,
                 this.batchRecords,
                 this.batchStatus,
+                this.batchStatusLabel,
                 this.batchStatusText,
                 this.cardAmount,
                 this.cardRecords,
@@ -603,6 +646,7 @@ public final class QueryBatchesOutResponseRecordsItem {
                 this.paypointDba,
                 this.paypointId,
                 this.paypointName,
+                this.transferDate,
                 this.vcardAmount,
                 this.vcardRecords,
                 this.vcardStatus,
@@ -658,6 +702,8 @@ public final class QueryBatchesOutResponseRecordsItem {
 
         private Optional<Integer> batchStatus = Optional.empty();
 
+        private Optional<String> batchStatusLabel = Optional.empty();
+
         private Optional<String> batchStatusText = Optional.empty();
 
         private Optional<Double> cardAmount = Optional.empty();
@@ -689,6 +735,8 @@ public final class QueryBatchesOutResponseRecordsItem {
         private Optional<Integer> paypointId = Optional.empty();
 
         private Optional<String> paypointName = Optional.empty();
+
+        private Optional<OffsetDateTime> transferDate = Optional.empty();
 
         private Optional<Double> vcardAmount = Optional.empty();
 
@@ -729,6 +777,7 @@ public final class QueryBatchesOutResponseRecordsItem {
             batchProcessingRecords(other.getBatchProcessingRecords());
             batchRecords(other.getBatchRecords());
             batchStatus(other.getBatchStatus());
+            batchStatusLabel(other.getBatchStatusLabel());
             batchStatusText(other.getBatchStatusText());
             cardAmount(other.getCardAmount());
             cardRecords(other.getCardRecords());
@@ -745,6 +794,7 @@ public final class QueryBatchesOutResponseRecordsItem {
             paypointDba(other.getPaypointDba());
             paypointId(other.getPaypointId());
             paypointName(other.getPaypointName());
+            transferDate(other.getTransferDate());
             vcardAmount(other.getVcardAmount());
             vcardRecords(other.getVcardRecords());
             vcardStatus(other.getVcardStatus());
@@ -956,6 +1006,33 @@ public final class QueryBatchesOutResponseRecordsItem {
         }
 
         /**
+         * <p>The name of the <code>BatchStatus</code>: <code>Open</code>, <code>Closed</code>, <code>Funded</code>, <code>Processed</code>, <code>Paid</code>,
+         * <code>Canceled</code>, <code>Funding Pending</code>, <code>Held</code>, or <code>Released</code>. Returns <code>null</code> for an unrecognized
+         * code. See <a href="/guides/pay-out-status-reference#batch-statuses">Pay Out statuses</a>.</p>
+         */
+        @JsonSetter(value = "BatchStatusLabel", nulls = Nulls.SKIP)
+        public Builder batchStatusLabel(Optional<String> batchStatusLabel) {
+            this.batchStatusLabel = batchStatusLabel;
+            return this;
+        }
+
+        public Builder batchStatusLabel(String batchStatusLabel) {
+            this.batchStatusLabel = Optional.ofNullable(batchStatusLabel);
+            return this;
+        }
+
+        public Builder batchStatusLabel(Nullable<String> batchStatusLabel) {
+            if (batchStatusLabel.isNull()) {
+                this.batchStatusLabel = null;
+            } else if (batchStatusLabel.isEmpty()) {
+                this.batchStatusLabel = Optional.empty();
+            } else {
+                this.batchStatusLabel = Optional.of(batchStatusLabel.get());
+            }
+            return this;
+        }
+
+        /**
          * <p>A text description of the batch status.</p>
          */
         @JsonSetter(value = "BatchStatusText", nulls = Nulls.SKIP)
@@ -1149,6 +1226,22 @@ public final class QueryBatchesOutResponseRecordsItem {
             return this;
         }
 
+        /**
+         * <p>The date and time, in UTC, of the transfer that funds the batch. For a batch that
+         * hasn't been funded yet, this field returns the time of the request instead, and
+         * <code>transferDate</code> filters don't match that value.</p>
+         */
+        @JsonSetter(value = "TransferDate", nulls = Nulls.SKIP)
+        public Builder transferDate(Optional<OffsetDateTime> transferDate) {
+            this.transferDate = transferDate;
+            return this;
+        }
+
+        public Builder transferDate(OffsetDateTime transferDate) {
+            this.transferDate = Optional.ofNullable(transferDate);
+            return this;
+        }
+
         @JsonSetter(value = "VcardAmount", nulls = Nulls.SKIP)
         public Builder vcardAmount(Optional<Double> vcardAmount) {
             this.vcardAmount = vcardAmount;
@@ -1256,6 +1349,7 @@ public final class QueryBatchesOutResponseRecordsItem {
                     batchProcessingRecords,
                     batchRecords,
                     batchStatus,
+                    batchStatusLabel,
                     batchStatusText,
                     cardAmount,
                     cardRecords,
@@ -1272,6 +1366,7 @@ public final class QueryBatchesOutResponseRecordsItem {
                     paypointDba,
                     paypointId,
                     paypointName,
+                    transferDate,
                     vcardAmount,
                     vcardRecords,
                     vcardStatus,

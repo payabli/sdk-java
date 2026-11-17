@@ -29,6 +29,8 @@ public final class PayoutSubscriptionQueryRecord {
 
     private final Optional<Integer> status;
 
+    private final Optional<String> statusLabel;
+
     private final Optional<List<GeneralEvents>> events;
 
     private final Optional<PayoutSubscriptionVendor> vendor;
@@ -98,6 +100,7 @@ public final class PayoutSubscriptionQueryRecord {
     private PayoutSubscriptionQueryRecord(
             Optional<Long> idOutSubscription,
             Optional<Integer> status,
+            Optional<String> statusLabel,
             Optional<List<GeneralEvents>> events,
             Optional<PayoutSubscriptionVendor> vendor,
             Optional<List<PayoutSubscriptionBill>> billData,
@@ -133,6 +136,7 @@ public final class PayoutSubscriptionQueryRecord {
             Map<String, Object> additionalProperties) {
         this.idOutSubscription = idOutSubscription;
         this.status = status;
+        this.statusLabel = statusLabel;
         this.events = events;
         this.vendor = vendor;
         this.billData = billData;
@@ -186,6 +190,17 @@ public final class PayoutSubscriptionQueryRecord {
     @JsonProperty("status")
     public Optional<Integer> getStatus() {
         return status;
+    }
+
+    /**
+     * @return The name of the payout subscription's <code>status</code>: <code>Paused</code>, <code>Active</code>, <code>Completed</code>, <code>Marked for Deletion</code>, or <code>In Progress</code>. Returns <code>null</code> for an unrecognized code.
+     */
+    @JsonIgnore
+    public Optional<String> getStatusLabel() {
+        if (statusLabel == null) {
+            return Optional.empty();
+        }
+        return statusLabel;
     }
 
     /**
@@ -439,6 +454,12 @@ public final class PayoutSubscriptionQueryRecord {
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("statusLabel")
+    private Optional<String> _getStatusLabel() {
+        return statusLabel;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("events")
     private Optional<List<GeneralEvents>> _getEvents() {
         return events;
@@ -488,6 +509,7 @@ public final class PayoutSubscriptionQueryRecord {
     private boolean equalTo(PayoutSubscriptionQueryRecord other) {
         return idOutSubscription.equals(other.idOutSubscription)
                 && status.equals(other.status)
+                && statusLabel.equals(other.statusLabel)
                 && events.equals(other.events)
                 && vendor.equals(other.vendor)
                 && billData.equals(other.billData)
@@ -527,6 +549,7 @@ public final class PayoutSubscriptionQueryRecord {
         return Objects.hash(
                 this.idOutSubscription,
                 this.status,
+                this.statusLabel,
                 this.events,
                 this.vendor,
                 this.billData,
@@ -575,6 +598,8 @@ public final class PayoutSubscriptionQueryRecord {
         private Optional<Long> idOutSubscription = Optional.empty();
 
         private Optional<Integer> status = Optional.empty();
+
+        private Optional<String> statusLabel = Optional.empty();
 
         private Optional<List<GeneralEvents>> events = Optional.empty();
 
@@ -648,6 +673,7 @@ public final class PayoutSubscriptionQueryRecord {
         public Builder from(PayoutSubscriptionQueryRecord other) {
             idOutSubscription(other.getIdOutSubscription());
             status(other.getStatus());
+            statusLabel(other.getStatusLabel());
             events(other.getEvents());
             vendor(other.getVendor());
             billData(other.getBillData());
@@ -712,6 +738,31 @@ public final class PayoutSubscriptionQueryRecord {
 
         public Builder status(Integer status) {
             this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        /**
+         * <p>The name of the payout subscription's <code>status</code>: <code>Paused</code>, <code>Active</code>, <code>Completed</code>, <code>Marked for Deletion</code>, or <code>In Progress</code>. Returns <code>null</code> for an unrecognized code.</p>
+         */
+        @JsonSetter(value = "statusLabel", nulls = Nulls.SKIP)
+        public Builder statusLabel(Optional<String> statusLabel) {
+            this.statusLabel = statusLabel;
+            return this;
+        }
+
+        public Builder statusLabel(String statusLabel) {
+            this.statusLabel = Optional.ofNullable(statusLabel);
+            return this;
+        }
+
+        public Builder statusLabel(Nullable<String> statusLabel) {
+            if (statusLabel.isNull()) {
+                this.statusLabel = null;
+            } else if (statusLabel.isEmpty()) {
+                this.statusLabel = Optional.empty();
+            } else {
+                this.statusLabel = Optional.of(statusLabel.get());
+            }
             return this;
         }
 
@@ -1209,6 +1260,7 @@ public final class PayoutSubscriptionQueryRecord {
             return new PayoutSubscriptionQueryRecord(
                     idOutSubscription,
                     status,
+                    statusLabel,
                     events,
                     vendor,
                     billData,

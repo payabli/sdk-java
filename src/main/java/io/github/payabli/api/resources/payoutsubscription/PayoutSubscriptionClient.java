@@ -30,14 +30,14 @@ public class PayoutSubscriptionClient {
     }
 
     /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
+     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public AddPayoutSubscriptionResponse createPayoutSubscription(RequestPayoutSchedule request) {
         return this.rawClient.createPayoutSubscription(request).body();
     }
 
     /**
-     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide.
+     * Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for a step-by-step guide. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public AddPayoutSubscriptionResponse createPayoutSubscription(
             RequestPayoutSchedule request, RequestOptions requestOptions) {
@@ -59,28 +59,28 @@ public class PayoutSubscriptionClient {
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public UpdatePayoutSubscriptionResponse updatePayoutSubscription(long id) {
         return this.rawClient.updatePayoutSubscription(id).body();
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public UpdatePayoutSubscriptionResponse updatePayoutSubscription(long id, RequestOptions requestOptions) {
         return this.rawClient.updatePayoutSubscription(id, requestOptions).body();
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public UpdatePayoutSubscriptionResponse updatePayoutSubscription(long id, UpdatePayoutSubscriptionBody request) {
         return this.rawClient.updatePayoutSubscription(id, request).body();
     }
 
     /**
-     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Updates a payout subscription's details. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public UpdatePayoutSubscriptionResponse updatePayoutSubscription(
             long id, UpdatePayoutSubscriptionBody request, RequestOptions requestOptions) {
@@ -90,14 +90,14 @@ public class PayoutSubscriptionClient {
     }
 
     /**
-     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public DeletePayoutSubscriptionResponse deletePayoutSubscription(long id) {
         return this.rawClient.deletePayoutSubscription(id).body();
     }
 
     /**
-     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information.
+     * Deletes a payout subscription and prevents future payouts. See <a href="/guides/pay-out-developer-payout-subscriptions-manage">Manage payout subscriptions</a> for more information. Temporary API tokens can't call this endpoint, and a request made with one returns HTTP <code>401</code> with response code <code>9001</code>.
      */
     public DeletePayoutSubscriptionResponse deletePayoutSubscription(long id, RequestOptions requestOptions) {
         return this.rawClient.deletePayoutSubscription(id, requestOptions).body();

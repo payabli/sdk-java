@@ -64,6 +64,7 @@ public class BoardingClient {
      *   Legacy boarding is deprecated and will be sunset in Q2 2027. Update the record that holds the data instead, such as [the business](/developers/api-reference/businesses/update-a-business) or [a person](/developers/api-reference/people/update-a-person). Use [Update an application](/developers/api-reference/applications/update-an-application) only for the application's own fields.
      * &lt;/Warning&gt;</p>
      * Updates a boarding application by ID. This endpoint requires an application API token.
+     * <p>If you send <code>ownership</code>, it replaces the application's owners. Include every owner, and set <code>primaryOwner</code> again on the primary owner, or the application loses its primary owner. If you leave <code>ownership</code> out, the owners don't change.</p>
      */
     public PayabliApiResponse00Responsedatanonobject updateApplication(int appId) {
         return this.rawClient.updateApplication(appId).body();
@@ -74,6 +75,7 @@ public class BoardingClient {
      *   Legacy boarding is deprecated and will be sunset in Q2 2027. Update the record that holds the data instead, such as [the business](/developers/api-reference/businesses/update-a-business) or [a person](/developers/api-reference/people/update-a-person). Use [Update an application](/developers/api-reference/applications/update-an-application) only for the application's own fields.
      * &lt;/Warning&gt;</p>
      * Updates a boarding application by ID. This endpoint requires an application API token.
+     * <p>If you send <code>ownership</code>, it replaces the application's owners. Include every owner, and set <code>primaryOwner</code> again on the primary owner, or the application loses its primary owner. If you leave <code>ownership</code> out, the owners don't change.</p>
      */
     public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, RequestOptions requestOptions) {
         return this.rawClient.updateApplication(appId, requestOptions).body();
@@ -84,6 +86,7 @@ public class BoardingClient {
      *   Legacy boarding is deprecated and will be sunset in Q2 2027. Update the record that holds the data instead, such as [the business](/developers/api-reference/businesses/update-a-business) or [a person](/developers/api-reference/people/update-a-person). Use [Update an application](/developers/api-reference/applications/update-an-application) only for the application's own fields.
      * &lt;/Warning&gt;</p>
      * Updates a boarding application by ID. This endpoint requires an application API token.
+     * <p>If you send <code>ownership</code>, it replaces the application's owners. Include every owner, and set <code>primaryOwner</code> again on the primary owner, or the application loses its primary owner. If you leave <code>ownership</code> out, the owners don't change.</p>
      */
     public PayabliApiResponse00Responsedatanonobject updateApplication(int appId, ApplicationData request) {
         return this.rawClient.updateApplication(appId, request).body();
@@ -94,6 +97,7 @@ public class BoardingClient {
      *   Legacy boarding is deprecated and will be sunset in Q2 2027. Update the record that holds the data instead, such as [the business](/developers/api-reference/businesses/update-a-business) or [a person](/developers/api-reference/people/update-a-person). Use [Update an application](/developers/api-reference/applications/update-an-application) only for the application's own fields.
      * &lt;/Warning&gt;</p>
      * Updates a boarding application by ID. This endpoint requires an application API token.
+     * <p>If you send <code>ownership</code>, it replaces the application's owners. Include every owner, and set <code>primaryOwner</code> again on the primary owner, or the application loses its primary owner. If you leave <code>ownership</code> out, the owners don't change.</p>
      */
     public PayabliApiResponse00Responsedatanonobject updateApplication(
             int appId, ApplicationData request, RequestOptions requestOptions) {
