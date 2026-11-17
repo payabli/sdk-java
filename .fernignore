@@ -3,7 +3,7 @@ LICENSE.md
 CONTRIBUTING.md
 
 # Release workflow, kept so Fern can't replace the signed Central upload
-# with an unsigned `./gradlew publish` (DOC-2942)
+# with an unsigned `./gradlew publish`
 .github/workflows/ci.yml
 
 # Separate manual versions of workflows
